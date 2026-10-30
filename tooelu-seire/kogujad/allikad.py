@@ -48,12 +48,16 @@ def arxiv_kirjed(sisu):
 
 # --- OpenAlex (teadustööd, sh ajakirjad ja töödokumendid) -------------------------------------------
 OPENALEX_URL = "https://api.openalex.org/works"
-OPENALEX_PARING = '("artificial intelligence" OR "generative AI") AND (employment OR labor OR jobs OR wages)'
+# Proov 30.10: üldotsing (search) ja otsing kokkuvõttest tõid enamasti teemaväliseid töid (~4/15 asjakohased).
+# Otsing pealkirjast andis käsitsi kontrollis ~13/15 asjakohast.
+OPENALEX_PARING = ('("generative AI" OR "artificial intelligence" OR "large language model" OR automation) AND '
+                   '("labor market" OR "labour market" OR employment OR jobs OR wages OR workforce '
+                   'OR "future of work" OR workers)')
 
 
 def openalex_url(alates, paring=OPENALEX_PARING, mitu=50):
-    param = {"search": paring, "filter": f"from_publication_date:{alates}", "sort": "publication_date:desc",
-             "per-page": mitu}
+    param = {"filter": f"title.search:{paring},from_publication_date:{alates},type:article|preprint|report",
+             "sort": "publication_date:desc", "per-page": mitu}
     if os.environ.get("OPENALEX_API_KEY"):
         param["api_key"] = os.environ["OPENALEX_API_KEY"]
     return OPENALEX_URL + "?" + urllib.parse.urlencode(param)
