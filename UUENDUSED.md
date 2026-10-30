@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 30.10.2026 | Eesti allikad: iga allika tulemus läheb logisse kohe, kui see on valmis, ja Tartu Ülikooli DSpace on viimane (kolmas käivitus ületas 15 minutit, sest DSpace ei vastanud, ning kogu väljund kadus). Töövoo `analyys` tööaeg on 25 minutit. |
 | 30.10.2026 | Eesti allikad, teine proov: ETIS-e publikatsioonid pealkirja otsinguga (parameeter `Title`; `SearchText` ei kitsenda), katkine RSS (Praxis) loetakse kirjete kaupa, Tartu Ülikooli DSpace-ile lisandus kättesaadavuse proov. 2 uut testi. |
 | 30.10.2026 | Lisandus `tooelu-seire/eesti.py`: Eesti allikad, mida OpenAlexis pole. Arenguseire Keskuse, Praxise ja OSKA otsing (WordPressi otsinguvoog), ERR-i ja Novaatori uudised tehisaru sõnadega ning Tartu Ülikooli lõputööd (DSpace). TalTechi digikogu ja ETIS on proovirežiimis. Esimese proovi järel: Riigikogu Toimetised (403) ja Statistikaameti voog (404) välja, Praxise voo vigane „&“ parandatakse, DSpace saab pikema ooteaja. Salvestame ainult pealkirja, lingi, kuupäeva ja otsingusõna. Käivitub töövoo `analyys` teise sammuna. 4 uut testi. Põhjus: Kadri hinnang, et Eesti kohta peaks leiduma sadu materjale, OpenAlex leiab mõnikümmend teadustööd aastas. |
 | 30.10.2026 | Analüüsis on iga töö juures tuumkanali tunnus (`tuum`), et leht ei näitaks tuntud ajakirja juures „pole teada“. Enim tsiteeritud tööde loendid on 25 asemel 50 tööd. Põhjus: Kadri hinnang, et „Viimased 12 kuud“ loend on liiga õhuke. |

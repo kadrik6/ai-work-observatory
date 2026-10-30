@@ -67,7 +67,9 @@ def test_proov_ja_vead_ei_peata(tmp_path, monkeypatch):
         return RSS
 
     monkeypatch.setattr(eesti, "ALLIKAD", {k: eesti.ALLIKAD[k] for k in ("novaator", "tu_dspace", "etis", "taltech_digikogu")})
-    t = eesti.kaivita(tmp_path, hae=hae, paus=0)["allikad"]
+    valmis = []
+    t = eesti.kaivita(tmp_path, hae=hae, paus=0, valmis=lambda nimi, sisu: valmis.append(nimi))["allikad"]
+    assert valmis == list(t)
     assert t["tu_dspace"]["kokku"] == 214 and t["novaator"]["kokku"] == 2
     assert all(v.endswith("HTTP 403") for v in t["etis"]["proov"].values())
     assert list(t["taltech_digikogu"]["proov"].values())[0] == "OK <html> tere maailm </html>"

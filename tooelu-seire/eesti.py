@@ -43,14 +43,14 @@ ALLIKAD = {
     "oska": {"liik": "tööturu prognoos", "wp": "https://oska.kutsekoda.ee/"},
     "err": {"liik": "uudis", "rss": "https://www.err.ee/rss"},
     "novaator": {"liik": "uudis", "rss": "https://novaator.err.ee/rss"},
-    # Proov 30.10: otsing aegus kaks korda (90 s). Proov näitab, kas server on GitHubist üldse kättesaadav.
-    "tu_dspace": {"liik": "lõputöö", "dspace": "https://dspace.ut.ee/",
-                  "proov": ["https://dspace.ut.ee/server/api", "https://dspace.ut.ee/server/oai/request?verb=Identify"]},
     # Proov: vastuse kuju pole veel teada.
     "taltech_digikogu": {"liik": "lõputöö", "proov": ["https://digikogu.taltech.ee/oai?verb=Identify",
                                                      "https://digikogu.taltech.ee/et/Search/Items?search=tehisintellekt"]},
     # Proov 30.10: SearchText, Keyword ja Search ei kitsenda tulemust, Title kitsendab (pealkirja otsing).
     "etis": {"liik": "teadusinfo", "etis": "https://www.etis.ee:2346/api/publication/getitems"},
+    # Proov 30.10: otsing aegus mitu korda ja kolmas käivitus ületas tööaja. Viimaseks, et teisi mitte kinni hoida.
+    # Proov näitab, kas server on GitHubist üldse kättesaadav.
+    "tu_dspace": {"liik": "lõputöö", "dspace": "https://dspace.ut.ee/", "proov": ["https://dspace.ut.ee/server/api"]},
 }
 
 
@@ -210,12 +210,17 @@ def allikas(nimi, seade, hae, paus=1.0):
     return tulem
 
 
-def kaivita(valjund, hae=None, paus=1.0):
-    # Tartu Ülikooli DSpace vastas 30.10 proovis aeglaselt: pikem ooteaeg.
-    hae = hae or (lambda aadress: yhine.hae(aadress, ooteaeg=90))
+def kaivita(valjund, hae=None, paus=1.0, valmis=None):
+    """valmis(nimi, tulem) kutsutakse iga allika järel, et aeglane allikas ei peidaks teiste tulemust."""
+    # Tartu Ülikooli DSpace vastas 30.10 proovis aeglaselt: pikem ooteaeg, aga ainult kaks katset.
+    hae = hae or (lambda aadress: yhine.hae(aadress, ooteaeg=60, katseid=2))
     valjund = Path(valjund)
     valjund.mkdir(parents=True, exist_ok=True)
-    tulem = {"aeg": yhine.nuud(), "allikad": {nimi: allikas(nimi, s, hae, paus) for nimi, s in ALLIKAD.items()}}
+    tulem = {"aeg": yhine.nuud(), "allikad": {}}
+    for nimi, seade in ALLIKAD.items():
+        tulem["allikad"][nimi] = allikas(nimi, seade, hae, paus)
+        if valmis:
+            valmis(nimi, tulem["allikad"][nimi])
     (valjund / "eesti.json").write_text(json.dumps(tulem, ensure_ascii=False, indent=1), encoding="utf-8")
     return tulem
 
@@ -224,10 +229,9 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--valjund", required=True)
     a = p.parse_args(argv)
-    tulem = kaivita(a.valjund)
-    print("EESTI meta " + json.dumps({"aeg": tulem["aeg"], "kuupaev": dt.date.today().isoformat()}))
-    for nimi, sisu in tulem["allikad"].items():
-        print(f"EESTI {nimi} " + json.dumps(sisu, ensure_ascii=False))
+    print("EESTI meta " + json.dumps({"aeg": yhine.nuud(), "kuupaev": dt.date.today().isoformat()}), flush=True)
+    tulem = kaivita(a.valjund, valmis=lambda nimi, sisu: print(f"EESTI {nimi} " + json.dumps(sisu, ensure_ascii=False),
+                                                                flush=True))
     toimis = [n for n, s in tulem["allikad"].items() if s["kirjed"] or any(v.startswith("OK") for v in s["proov"].values())]
     print(f"Töötas {len(toimis)}/{len(ALLIKAD)} allikat: {', '.join(toimis)}", file=sys.stderr)
     return 0 if toimis else 1
