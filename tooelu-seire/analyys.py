@@ -109,6 +109,12 @@ def osad(tana):
                          group_by="authorships.institutions.lineage"), lambda s: grupid(s, 15)),
         "riigid": (url(f"title.search:{PARING},from_publication_date:{alates},{LIIGID}",
                        group_by="authorships.countries"), lambda s: grupid(s, 20)),
+        # CWTS Leideni "core" kanal: rahvusvaheliselt nähtav teadusajakiri. Usaldusväärsuse jämedad lähendid.
+        "tuumkanal": (url(f"title.search:{PARING},from_publication_date:{alates},{LIIGID}",
+                          group_by="primary_location.source.is_core"), grupid),
+        "enim_tsiteeritud_tuum": (url(f"title.search:{PARING},from_publication_date:{alates},{LIIGID},"
+                                      "primary_location.source.is_core:true",
+                                      sort="cited_by_count:desc", select=valik, **{"per-page": 15}), tood),
         "avatud": (url(f"title.search:{PARING},from_publication_date:{alates},{LIIGID}",
                        group_by="open_access.is_oa"), grupid),
         "tagasi_voetud": (url(f"title.search:{PARING},from_publication_date:{alates},{LIIGID},is_retracted:true",

@@ -53,7 +53,9 @@ OPENALEX_URL = "https://api.openalex.org/works"
 # Otsing pealkirjast andis käsitsi kontrollis ~13/15 asjakohast.
 OPENALEX_PARING = ('("generative AI" OR "artificial intelligence" OR "large language model" OR automation) AND '
                    '("labor market" OR "labour market" OR employment OR jobs OR wages OR workforce '
-                   'OR "future of work" OR workers)')
+                   'OR "future of work" OR workers) '
+                   # Analüüs 30.10: "automation" + "job" tõi tootmise ajakavastamise töid ("job shop scheduling").
+                   'AND NOT ("job shop" OR scheduling)')
 
 
 def openalex_url(alates, paring=OPENALEX_PARING, mitu=50):

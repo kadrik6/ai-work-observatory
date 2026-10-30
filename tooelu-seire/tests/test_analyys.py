@@ -43,6 +43,7 @@ def test_teema_paring_on_kitsendus():
     osad = analyys.osad(dt.date(2026, 10, 30))
     assert {f"teema_{k}" for k in analyys.TEEMAD} <= set(osad)
     assert "publication_year%3A2016-2026" in osad["aastad"][0]
+    assert 'NOT ("job shop" OR scheduling)' in analyys.PARING
 
 
 def test_kaivitus_logib_vea_ja_jatkab(tmp_path, monkeypatch):
