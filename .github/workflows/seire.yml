@@ -40,8 +40,9 @@ jobs:
         run: |
           eelmine=""
           [ -f eelmine/nahtud.jsonl ] && eelmine="--eelmine eelmine/nahtud.jsonl"
-          python tooelu-seire/proov.py --valjund valjund $eelmine --paevi 3
-          # kõik seni nähtud kirjed edasi järgmisele käivitusele (ainult artefaktis, mitte repos)
+          python tooelu-seire/proov.py --valjund valjund $eelmine --paevi 30
+          # 30 päeva: OpenAlex indekseerib töid hilinemisega; kordused eemaldab duplikaatide kontroll.
+          # Kõik seni nähtud kirjed lähevad edasi järgmisele käivitusele (ainult artefaktis, mitte repos).
           cat eelmine/nahtud.jsonl valjund/koik.jsonl 2>/dev/null > valjund/nahtud.jsonl || cp valjund/koik.jsonl valjund/nahtud.jsonl
       - name: Kokkuvõte
         if: always()
