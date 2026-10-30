@@ -24,6 +24,24 @@ PANK = json.dumps({"total": 312, "documents": {
     "facets": {"x": 1}}}).encode()
 
 
+RIIGIKOGU = json.dumps([{"link": "https://stenogrammid.riigikogu.ee/1", "date": "2026-09-16T09:00:00Z", "agendaItems": [
+    {"title": "Arupärimine  tööturu kohta", "events": [
+        {"type": "SPEECH", "speaker": "A", "date": "2026-09-16T16:39:05Z", "text": "AI ehk tehisintellekti levik", "link": None},
+        {"type": "SPEECH", "speaker": "B", "date": "2026-09-16T16:40:00Z", "text": "Tehisaru ja töö", "link": "https://s/2"},
+        {"type": "SPEECH", "speaker": "C", "date": "2026-09-16T16:41:00Z", "text": "Eelarve", "link": None},
+        {"type": "VOTE", "text": "tehisaru", "link": None}]}]}]).encode()
+
+
+def test_riigikogu():
+    k = la.riigikogu(RIIGIKOGU)
+    assert [r["koneleja"] for r in k] == ["A", "B"] and k[0]["url"] == "https://stenogrammid.riigikogu.ee/1"
+    assert k[0]["pealkiri"] == "Arupärimine tööturu kohta" and k[0]["avaldatud"] == "2026-09-16" and "text" not in k[0]
+    kuud = la.riigikogu_kuud(dt.date(2026, 10, 30), 3)
+    assert kuud == [(dt.date(2026, 8, 1), dt.date(2026, 8, 31)), (dt.date(2026, 9, 1), dt.date(2026, 9, 30)),
+                    (dt.date(2026, 10, 1), dt.date(2026, 10, 30))]
+    assert la.riigikogu_kuud(dt.date(2026, 1, 15), 2)[0] == (dt.date(2025, 12, 1), dt.date(2025, 12, 31))
+
+
 def test_lahtipakkimine():
     a = la.gdelt_artiklid(GDELT_LIST, "gdelt_eesti")[0]
     assert a["pealkiri"] == "AI ja töö" and a["avaldatud"] == "2026-10-29" and a["domeen"] == "e.ee"
@@ -52,6 +70,8 @@ def test_kaivitus_ei_peatu_vigade_tottu(tmp_path):
             return HN
         if "worldbank" in url:
             return PANK
+        if "riigikogu" in url:
+            return RIIGIKOGU
         if "nber" in url:
             return b"<rss><channel><item><title>Automation and wages</title><link>https://nber.org/1</link></item></channel></rss>"
         raise yhine.KogujaViga(url + ": HTTP 404")
@@ -61,5 +81,5 @@ def test_kaivitus_ei_peatu_vigade_tottu(tmp_path):
     assert valmis == list(t) and t["gdelt_eesti"]["kokku"] == 1 and t["gdelt_eesti"]["aegrida"]
     assert len(t["vikipeedia"]["vead"]) == len(la.VIKI_ARTIKLID)
     assert t["nber"]["kirjed"][0]["url"] == "https://nber.org/1" and t["nber"]["kokku"] == 1
-    assert t["eurofound"]["kirjed"] == [] and all("404" in v for v in t["eurofound"]["proov"].values())
+    assert t["riigikogu"]["kokku"] == 2 * la.RIIGIKOGU_KUID and len(t["riigikogu"]["aegrida"]) == la.RIIGIKOGU_KUID
     assert (tmp_path / "lisaallikad.json").exists()

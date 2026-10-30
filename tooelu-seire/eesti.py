@@ -49,9 +49,8 @@ ALLIKAD = {
     # Proov 30.10: SearchText, Keyword ja Search ei kitsenda tulemust. Title leiab ainult täpse pealkirja (2 kirjet),
     # seega ETIS vajab veel õiget otsinguparameetrit.
     "etis": {"liik": "teadusinfo", "etis": "https://www.etis.ee:2346/api/publication/getitems"},
-    # Proov 30.10: otsing aegus mitu korda ja kolmas käivitus ületas tööaja. Viimaseks, et teisi mitte kinni hoida.
-    # Proov näitab, kas server on GitHubist üldse kättesaadav.
-    "tu_dspace": {"liik": "lõputöö", "dspace": "https://dspace.ut.ee/", "proov": ["https://dspace.ut.ee/server/api"]},
+    # Tartu Ülikooli DSpace (dspace_url, dspace) ei vasta GitHubi serveritele: 30.10 aegus kõigis neljas käivituses,
+    # ka /server/api. Seepärast ei ole see siin; lahtipakkimine jääb, kui seda saab käivitada mujalt.
 }
 
 

@@ -16,6 +16,7 @@ Tulemus on logis (read "LISA <allikas> {json}") ja artefaktis. Repo ega avaldatu
 import argparse
 import datetime as dt
 import json
+import re
 import sys
 import time
 import urllib.parse
@@ -39,6 +40,11 @@ VIKI_ARTIKLID = [("en.wikipedia", "Technological_unemployment"), ("en.wikipedia"
 
 HN = "https://hn.algolia.com/api/v1/search"
 HN_PARING = "AI jobs"
+
+RIIGIKOGU = "https://api.riigikogu.ee/api/steno/verbatims"
+# Riigikogu sõnavõtud, kus on tehisaru sõna. Salvestame ainult kõneleja, kuupäeva, päevakorrapunkti ja lingi.
+RIIGIKOGU_SONAD = re.compile(r"tehisintellekt|tehisaru|keelemudel|chatgpt|\bAI\b", re.I)
+RIIGIKOGU_KUID = 24
 
 PANK = "https://search.worldbank.org/api/v2/wds"
 PANK_PARING = '"artificial intelligence" jobs'
@@ -92,6 +98,37 @@ def hn(sisu):
     return sorted(tulem, key=lambda k: -(k["punkte"] or 0))
 
 
+def riigikogu_kuud(tana, mitu=RIIGIKOGU_KUID):
+    """[(alates, kuni)] kuu kaupa, uusim viimasena; jooksev kuu kuni tänaseni."""
+    kuud = []
+    a, k = tana.year, tana.month
+    for _ in range(mitu):
+        algus = dt.date(a, k, 1)
+        lopp = min(tana, (dt.date(a + (k == 12), k % 12 + 1, 1) - dt.timedelta(days=1)))
+        kuud.append((algus, lopp))
+        a, k = (a - 1, 12) if k == 1 else (a, k - 1)
+    return kuud[::-1]
+
+
+def riigikogu_url(alates, kuni):
+    return RIIGIKOGU + "?" + urllib.parse.urlencode({"startDate": alates.isoformat(), "endDate": kuni.isoformat(), "lang": "ET"})
+
+
+def riigikogu(sisu):
+    """Istungite stenogrammid -> sõnavõtud, kus on tehisaru sõna (ilma tekstita)."""
+    tulem = []
+    for istung in json.loads(sisu):
+        for punkt in istung.get("agendaItems") or []:
+            for e in punkt.get("events") or []:
+                leid = RIIGIKOGU_SONAD.search(e.get("text") or "")
+                if e.get("type") != "SPEECH" or not leid:
+                    continue
+                tulem.append({"allikas": "riigikogu", "liik": "sõnavõtt", "pealkiri": " ".join((punkt.get("title") or "").split()),
+                              "koneleja": e.get("speaker"), "avaldatud": (e.get("date") or istung.get("date") or "")[:10] or None,
+                              "url": e.get("link") or istung.get("link"), "reegel": leid.group(0).lower(), "teemas": True})
+    return tulem
+
+
 def pank_url(mitu=50):
     return PANK + "?" + urllib.parse.urlencode({"format": "json", "qterm": PANK_PARING, "rows": mitu, "srt": "docdt",
                                                 "order": "desc", "fl": "docdt,display_title,url,docty"})
@@ -110,18 +147,12 @@ def pank(sisu):
     return int(d.get("total") or 0), sorted(kirjed, key=lambda k: k["avaldatud"] or "", reverse=True)
 
 
-# Uurimisasutuste uudisvood: ainult tehisaru sõnadega kirjed (eesti.rss filter). Aadressid on proovis.
+# Uurimisasutuste uudisvood: ainult tehisaru sõnadega kirjed (eesti.rss filter).
+# Proov 30.10: Eurofound (429), Cedefop, ILO ja Brookings (403) ning Eesti Panga voog (404) ei ole GitHubist loetavad.
 VOOD = {
     "nber": ("töödokument", ["https://www.nber.org/rss/new.xml"]),
-    "eurofound": ("raport", ["https://www.eurofound.europa.eu/en/rss.xml", "https://www.eurofound.europa.eu/rss.xml"]),
-    "cedefop": ("raport", ["https://www.cedefop.europa.eu/en/rss.xml", "https://www.cedefop.europa.eu/en/news/rss"]),
-    "ilo": ("raport", ["https://www.ilo.org/rss.xml", "https://www.ilo.org/feed"]),
-    "brookings": ("mõttekoda", ["https://www.brookings.edu/feed/"]),
-    "eesti_pank": ("keskpank", ["https://www.eestipank.ee/rss", "https://www.eestipank.ee/en/rss"]),
 }
 PROOVID = {
-    "riigikogu": ["https://api.riigikogu.ee/api/steno/verbatims?startDate=2026-09-01&endDate=2026-10-30&lang=ET",
-                  "https://api.riigikogu.ee/swagger-ui/index.html"],
     "semantic_scholar": ["https://api.semanticscholar.org/graph/v1/paper/search?query=generative+AI+labor+market"
                          "&fields=title,year,citationCount,influentialCitationCount&limit=5"],
 }
@@ -178,6 +209,20 @@ def kaivita(valjund, hae=None, tana=None, paus=1.0, valmis=None):
     def maailmapank(t):
         t["kokku"], t["kirjed"] = pank(hae(pank_url()))
     tee("maailmapank", "raport", maailmapank)
+
+    def riigikogu_too(t):
+        t["aegrida"] = []
+        for alates, kuni in riigikogu_kuud(tana):
+            try:
+                uued = riigikogu(hae(riigikogu_url(alates, kuni)))
+            except yhine.KogujaViga as e:
+                t["vead"].append(str(e))
+                continue
+            t["kirjed"] += uued
+            t["aegrida"].append({"kuu": alates.isoformat()[:7], "sonavotte": len(uued)})
+            time.sleep(paus)
+        t["kokku"] = len(t["kirjed"])
+    tee("riigikogu", "parlament", riigikogu_too)
 
     for nimi, (liik, aadressid) in VOOD.items():
         def voog(t, nimi=nimi, liik=liik, aadressid=aadressid):
