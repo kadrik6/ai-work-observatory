@@ -1,6 +1,7 @@
 name: analyys
 
-# Valdkonna ülevaade OpenAlexist (aastad, teemad, enim tsiteeritud, kanalid, asutused, riigid).
+# Valdkonna ülevaade OpenAlexist (aastad, teemad, enim tsiteeritud, kanalid, asutused, riigid)
+# ja Eesti allikatest (mõttekojad, uudised, lõputööd; read "EESTI ...").
 # Käivitub AINULT käsitsi. Ainult lugemisõigus: repo, avaldatud lehed ja prognoosid ei muutu.
 # Tulemus on logis (read "ANALYYS ...") ja artefaktis 90 päeva.
 
@@ -27,6 +28,9 @@ jobs:
         env:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
         run: python tooelu-seire/analyys.py --valjund valjund
+      - name: Eesti allikad
+        if: always()
+        run: python tooelu-seire/eesti.py --valjund valjund
       - uses: actions/upload-artifact@v4
         if: always()
         with:

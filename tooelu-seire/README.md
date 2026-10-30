@@ -32,6 +32,12 @@ Valdkonna ülevaade: töövoog **analyys** (ainult käsitsi) loeb OpenAlexist ko
 teemade kaupa, enim tsiteeritud tööd, kanalid, asutused, riigid ja Eesti kohta käivad tööd
 (`python3 tooelu-seire/analyys.py --valjund valjund`). Tsitaadid on ainus vaba populaarsuse mõõt; klikke ei avaldata.
 
+Eesti allikad: sama töövoo teine samm (`python3 tooelu-seire/eesti.py --valjund valjund`) loeb allikaid, mida
+OpenAlexis pole: Arenguseire Keskus, Praxis, OSKA ja Riigikogu Toimetised (WordPressi otsinguvoog), ERR ja Novaator
+(uudisvoog, ainult tehisaru sõnadega kirjed) ning Tartu Ülikooli lõputööd (DSpace). TalTechi digikogu, ETIS ja
+Statistikaamet on proovirežiimis: logis on olek ja vastuse algus. Uudisvoog näitab ainult viimaseid kirjeid,
+seepärast koguneb uudiste ajalugu alles igapäevase seirega.
+
 ## Väljund
 
 `olek.json`, `koik.jsonl`, `nahtud.jsonl` (kõik seni nähtud), `kirjed.jsonl` (uued), `versioonid.jsonl`, `duplikaadid.jsonl`, `vead.jsonl`,
