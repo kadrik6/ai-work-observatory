@@ -1,0 +1,55 @@
+name: seire
+
+# Ajastatud kogumine (kord päevas). Ainult lugemisõigus: repo, main, avaldatud lehed ja prognoosid ei muutu.
+# Kandidaadid jäävad käivituse artefakti (90 päeva). Duplikaatide ja versioonide võrdluseks laeb eelmise
+# eduka käivituse artefakti (vajab ainult actions: read).
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: seire
+  cancel-in-progress: false
+
+jobs:
+  kogu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Eelmise käivituse kirjed (kui on)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p eelmine
+          id=$(gh run list -R "$GITHUB_REPOSITORY" -w seire.yml -s success -L 1 --json databaseId -q '.[0].databaseId' || true)
+          if [ -n "$id" ]; then gh run download "$id" -R "$GITHUB_REPOSITORY" -n seire-kandidaadid -D eelmine || true; fi
+          ls -la eelmine
+      - name: Kogumine
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+        run: |
+          eelmine=""
+          [ -f eelmine/nahtud.jsonl ] && eelmine="--eelmine eelmine/nahtud.jsonl"
+          python tooelu-seire/proov.py --valjund valjund $eelmine --paevi 3
+          # kõik seni nähtud kirjed edasi järgmisele käivitusele (ainult artefaktis, mitte repos)
+          cat eelmine/nahtud.jsonl valjund/koik.jsonl 2>/dev/null > valjund/nahtud.jsonl || cp valjund/koik.jsonl valjund/nahtud.jsonl
+      - name: Kokkuvõte
+        if: always()
+        run: cat valjund/kokkuvote.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seire-kandidaadid
+          path: valjund/
+          retention-days: 90
+          if-no-files-found: warn
