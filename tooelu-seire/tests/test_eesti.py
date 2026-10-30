@@ -67,15 +67,33 @@ def test_proov_ja_vead_ei_peata(tmp_path, monkeypatch):
         return RSS
 
     monkeypatch.setattr(eesti, "ALLIKAD", {k: eesti.ALLIKAD[k] for k in ("novaator", "tu_dspace", "etis", "taltech_digikogu")})
-    t = eesti.kaivita(tmp_path, hae=hae, paus=0)["allikad"]
+    valmis = []
+    t = eesti.kaivita(tmp_path, hae=hae, paus=0, valmis=lambda nimi, sisu: valmis.append(nimi))["allikad"]
+    assert valmis == list(t)
     assert t["tu_dspace"]["kokku"] == 214 and t["novaator"]["kokku"] == 2
     assert all(v.endswith("HTTP 403") for v in t["etis"]["proov"].values())
     assert list(t["taltech_digikogu"]["proov"].values())[0] == "OK <html> tere maailm </html>"
     assert json.loads((tmp_path / "eesti.json").read_text(encoding="utf-8"))["allikad"]["etis"]["kirjed"] == []
 
 
-def test_kodeerimata_ampersand_ja_proovi_loik():
-    vigane = RSS.replace(b"<channel>", b"<channel><description>Praxis & partnerid</description>")
-    assert len(eesti.rss(vigane, "praxis", "mõttekoda")) == 2
+ETIS = json.dumps([
+    {"Guid": "g1", "DisplayInfo": "Mets, U. (2025). Tehisintellekti mõju tööjõu oskuste vajadusele. Tallinn.",
+     "PublicationTypeName": "raport", "Title": "Tehisintellekti mõju tööjõu oskuste vajadusele", "TitleTranslation": ""},
+    {"Guid": "g2", "DisplayInfo": "Koit, M. (2011). Tehisintellekt. Tartu.", "Title": "Tehisintellekt",
+     "TitleTranslation": "Artificial Intelligence"},
+]).encode()
+
+
+def test_etis():
+    k = eesti.etis(ETIS, "tehisintellekt")
+    assert [r["avaldatud"] for r in k] == ["2025", "2011"] and [r["teemas"] for r in k] == [True, False]
+    assert k[0]["url"] == "https://www.etis.ee/Portal/Publications/Display/g1" and k[0]["liik"] == "raport"
+    assert "Title=generative+AI" in eesti.etis_url("https://x/api", "generative AI")
+
+
+def test_vigane_voog_loetakse_kirjete_kaupa():
+    vigane = RSS.replace(b"<channel>", b"<channel><description>Praxis & partnerid <b></description>")
+    vigane = vigane.replace(b"<title>Konverents</title>", b"<title>Konverents & <katki</title>")
+    assert len(eesti.rss(vigane, "praxis", "mõttekoda")) == 1
     html = ("<html>" + "x" * 700 + " Tehisintellekt ja töö </html>").encode()
     assert eesti.proov(html).endswith("Tehisintellekt ja töö </html>") and "[…]" in eesti.proov(html)
