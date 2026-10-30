@@ -90,6 +90,8 @@ def tood(sisu):
             "doi": (t.get("doi") or "").removeprefix("https://doi.org/") or None,
             "kanal": allikas.get("display_name"),
             "kanali_liik": allikas.get("type"),
+            # CWTS Leideni tuumkanal; None, kui OpenAlex seda ei tea.
+            "tuum": allikas.get("is_core"),
             "url": t.get("doi") or koht.get("landing_page_url") or t.get("id"),
             "tagasi_voetud": bool(t.get("is_retracted")),
         })
@@ -109,9 +111,9 @@ def osad(tana):
                                       group_by="publication_year"), grupid)
     tulem.update({
         "enim_tsiteeritud": (url(f"title.search:{PARING},from_publication_date:{alates},{LIIGID}",
-                                 sort="cited_by_count:desc", select=valik, **{"per-page": 25}), tood),
+                                 sort="cited_by_count:desc", select=valik, **{"per-page": 50}), tood),
         "enim_tsiteeritud_aasta": (url(f"title.search:{PARING},from_publication_date:{aasta_tagasi},{LIIGID}",
-                                       sort="cited_by_count:desc", select=valik, **{"per-page": 25}), tood),
+                                       sort="cited_by_count:desc", select=valik, **{"per-page": 50}), tood),
         "liigid": (url(f"title.search:{PARING},from_publication_date:{alates},{LIIGID}", group_by="type"), grupid),
         "kanali_liigid": (url(f"title.search:{PARING},from_publication_date:{alates},{LIIGID}",
                               group_by="primary_location.source.type"), grupid),

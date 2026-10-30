@@ -18,7 +18,7 @@ GRUPID = json.dumps({"meta": {"count": 30}, "group_by": [
 TOOD = json.dumps({"meta": {"count": 1}, "results": [
     {"id": "https://openalex.org/W9", "display_name": "GenAI and  wages", "publication_date": "2024-05-01",
      "cited_by_count": 412, "type": "article", "doi": "https://doi.org/10.1/x", "is_retracted": False,
-     "primary_location": {"source": {"display_name": "Science", "type": "journal"}}},
+     "primary_location": {"source": {"display_name": "Science", "type": "journal", "is_core": True}}},
 ]}).encode()
 
 
@@ -35,7 +35,7 @@ def test_grupid_ja_tood():
     assert [r["voti"] for r in g] == ["2025", "S1"]
     t = analyys.tood(TOOD)[0]
     assert t["pealkiri"] == "GenAI and wages" and t["viiteid"] == 412
-    assert t["doi"] == "10.1/x" and t["kanal"] == "Science" and t["kanali_liik"] == "journal"
+    assert t["doi"] == "10.1/x" and t["kanal"] == "Science" and t["kanali_liik"] == "journal" and t["tuum"] is True
 
 
 def test_teema_paring_on_kitsendus():
