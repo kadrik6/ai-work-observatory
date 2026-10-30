@@ -28,6 +28,10 @@ GitHubis: Actions → **proov** → Run workflow. Tulemus on käivituse artefakt
 Ajastatud seire: töövoog **seire** käivitub iga päev ja on käivitatav ka käsitsi. Kandidaadid on artefaktis
 `seire-kandidaadid` (90 päeva). Fail `nahtud.jsonl` kogub kõik seni nähtud kirjed ja on järgmise käivituse võrdlus.
 
+Valdkonna ülevaade: töövoog **analyys** (ainult käsitsi) loeb OpenAlexist koondarvud: tööde arv aastate ja
+teemade kaupa, enim tsiteeritud tööd, kanalid, asutused, riigid ja Eesti kohta käivad tööd
+(`python3 tooelu-seire/analyys.py --valjund valjund`). Tsitaadid on ainus vaba populaarsuse mõõt; klikke ei avaldata.
+
 ## Väljund
 
 `olek.json`, `koik.jsonl`, `nahtud.jsonl` (kõik seni nähtud), `kirjed.jsonl` (uued), `versioonid.jsonl`, `duplikaadid.jsonl`, `vead.jsonl`,

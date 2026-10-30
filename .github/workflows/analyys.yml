@@ -1,0 +1,36 @@
+name: analyys
+
+# Valdkonna ülevaade OpenAlexist (aastad, teemad, enim tsiteeritud, kanalid, asutused, riigid).
+# Käivitub AINULT käsitsi. Ainult lugemisõigus: repo, avaldatud lehed ja prognoosid ei muutu.
+# Tulemus on logis (read "ANALYYS ...") ja artefaktis 90 päeva.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: analyys
+  cancel-in-progress: false
+
+jobs:
+  openalex:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Analüüs
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+        run: python tooelu-seire/analyys.py --valjund valjund
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: analyys
+          path: valjund/
+          retention-days: 90
+          if-no-files-found: warn

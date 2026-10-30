@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 30.10.2026 | Lisandus valdkonna ülevaade `tooelu-seire/analyys.py` ja käsitsi töövoog `analyys`: OpenAlexi koondarvud aastate ja viie hüpoteeside suuna kaupa, enim tsiteeritud tööd, kanalid, asutused, riigid ja Eesti kohta käivad tööd. Ainult lugemisõigus, tulemus logis ja artefaktis. 4 uut testi ilma võrguta. |
 | 30.10.2026 | Seire parandused: OpenAlexi uuendusaeg ei loe enam uueks versiooniks (tekitas valesid versioone); OpenAlexi liik "article" on nüüd "artikkel", mitte "eelretsenseeritud". Kirjed lähevad ka käivituse logisse ülevaatelehe jaoks. Uut versiooni võrreldakse nüüd viimase, mitte esimese nähtud seisuga (muidu oleks sama Eurostati uuendus iga päev "uus"), ja `nahtud.jsonl` hoiab iga tööd üks kord. Esimene päris uus versioon: Eurostat `lfsa_egai2d` uuendati 30.10.2026. |
 | 30.10.2026 | Lisandus ajastatud seire (`seire.yml`, Kadri valik 30.10): kord päevas, ainult lugemisõigus. Kandidaadid jäävad käivituse artefakti 90 päevaks ja võrreldakse eelmise eduka käivituse kirjetega. Repo ega avaldatud lehti see ei muuda. |
 | 30.10.2026 | Esimene proovikäivitus GitHubis: kõik 8 kogujate allikat ja 25 statistika allikat töötasid, duplikaatide tuvastus töötas. Kontrollis selgus, et arXivi päring tõi peamiselt teemaväliseid masinõppe töid: päring kitsendati majanduse ja ühiskonna kategooriatele. ERR-i voo kirjete arv on nüüd olekus näha (0 sobivat uudist ei ole viga, tühi voog on). Kokkuvõttes on näited iga allika kohta. |
