@@ -1,0 +1,34 @@
+name: testid
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  testid:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -r tehisaru-seire/requirements.txt
+      - name: Turvakontroll (privaatsed loendid tulevad saladustest, kui need on lisatud)
+        env:
+          KEELATUD_SONAD: ${{ secrets.KEELATUD_SONAD }}
+          KEELATUD_KAUSTAD: ${{ secrets.KEELATUD_KAUSTAD }}
+        run: python turvakontroll/kontrolli.py
+      - name: Turvakontrolli testid
+        env:
+          KEELATUD_SONAD: ${{ secrets.KEELATUD_SONAD }}
+          KEELATUD_KAUSTAD: ${{ secrets.KEELATUD_KAUSTAD }}
+        run: python -m pytest -q -p no:cacheprovider turvakontroll/tests
+      - name: Seire testid (sh kuldfailitest ja liidesetest)
+        working-directory: tehisaru-seire
+        run: python -m pytest -q

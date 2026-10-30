@@ -1,0 +1,21 @@
+kood,ulem,nimi,kirjeldus
+TA,,Tehisaru kasutus,"Kes kasutab tehisaru, kui palju ja milleks."
+TA.ETT,TA,Ettevõtted,"Ettevõtete tehisaru kasutus, tehnoloogiad ja eesmärgid."
+TA.INI,TA,Inimesed,"Elanike tehisaru kasutus isiklikult, tööl ja õppimisel ning põhjused, miks ei kasutata."
+TA.AVA,TA,Avalik sektor,Riigiasutuste ja omavalitsuste tehisaru kasutus. Võrreldavat ametlikku statistikat on vähe.
+AN,,Andmed ja digitaristu,"Andmeanalüütika, pilveteenused ja muu, millele tehisaru kasutus toetub."
+AN.ETT,AN,Ettevõtete andmekasutus,Kas ettevõtted analüüsivad andmeid ja kasutavad pilveteenuseid.
+OS,,Oskused,"Inimeste digi- ja tehisaruoskused ning see, milliseid oskusi tööandjad otsivad."
+OS.INI,OS,Elanike digi- ja tehisaruoskused,"Ametlik küsitlus elanike digioskuste kohta ja see, kui paljud jätavad tehisaru kasutamata, sest ei oska."
+OS.NOU,OS,Oskusnõudlus,"Töökuulutustes nõutud oskused. Näitab nõudlust, aga kuulutuste valim ei ole representatiivne."
+OS.RAAM,OS,Oskusraamistikud,"ESCO, SFIA jt kirjeldavad ameteid ja oskusi. Need ei ole statistika, vaid sõnastik, millega statistikat siduda."
+TT,,Tööturg,"IKT- ja andmetöötajate hõive, palgad ja tööjõupuudus."
+TT.HOI,TT,Hõive,Mitu inimest töötab IKT-spetsialisti või andmetöötajana.
+TT.PAL,TT,Palgad,IKT- ja andmeametite palgad. Riikide vahel võrreldavad ainult ostujõu järgi korrigeerituna.
+TT.PUU,TT,Tööjõupuudus,Vabad töökohad ja ettevõtete raskused IKT-spetsialistide leidmisel.
+HT,,Haridus ja teadus,"IKT- ja STEM-hariduse lõpetajad, teadlased ja teadustöö."
+HT.LOP,HT,Lõpetajad,IKT ja STEM erialade lõpetajad haridustaseme järgi.
+HT.TEA,HT,Teadlased,Teadlaste ja T&A töötajate arv ja osakaal.
+IN,,Investeeringud,"Raha, mis läheb teadus- ja arendustegevusse ning tehisarusse."
+IN.TA,IN,Teadus- ja arendustegevus,Teadus- ja arendustegevuse kulud sektorite kaupa.
+IN.AI,IN,Tehisaru investeeringud,"Erainvesteeringud tehisarusse. Ametlikku statistikat peaaegu pole, enamik numbreid tuleb erafirmadelt."

@@ -1,0 +1,24 @@
+# Failid, mis tohivad minna privaatsesse GitHubi repot. Teed on projekti juurkausta suhtes.
+# Rida = muster (* sobib ka üle kaustapiiri). Rida, mis algab märgiga !, jätab välja.
+# Kasutusel ainult väljaspool Giti repot. Repos otsustab .gitignore, mida Git jälgib.
+# Kõik, mis siin pole, jääb välja. Kaustad, mida ei tohi kunagi lubada: kontrolli.py (üldised) ja privaatne keelatud-kaustad.txt.
+
+tehisaru-seire/*
+!tehisaru-seire/*__pycache__*
+!tehisaru-seire/.pytest_cache*
+!*/.venv/*
+!*.pyc
+# Isiklikud fotod ei lähe repo (otsus 30.10). Kuldfailitest kasutab sünteetilisi testpilte.
+!tehisaru-seire/raportid/fotod/*
+!tehisaru-seire/raportid/html/fotod/*
+
+# Uus suund (kausta veel pole)
+tooelu-seire/*
+!tooelu-seire/*__pycache__*
+
+# Turvakontroll ise, ilma privaatsete loenditeta (keelatud-*.txt, KLASSID.md)
+turvakontroll/README.md
+turvakontroll/lubatud.txt
+turvakontroll/kontrolli.py
+turvakontroll/arvuti.py
+turvakontroll/tests/*.py

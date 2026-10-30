@@ -1,0 +1,18 @@
+id,kategooria,nimi,kusimus,vordlusalus,markus
+ettevotete-ai-kasutus,TA.ETT,Tehisaru kasutavad ettevõtted,Mitu protsenti ettevõtetest kasutab vähemalt üht tehisaru tehnoloogiat?,eurostat-isoc-eb-ai,"Seire esimene näitaja. Riikide võrdluse alus on Eurostat, sest see on kõigi ELi riikide kohta sama meetodiga."
+ettevotete-ai-tegevusala,TA.ETT,Tehisaru kasutus tegevusalade kaupa,Millistes majandusharudes kasutatakse tehisaru kõige rohkem?,eurostat-isoc-eb-ain2,
+inimeste-ai-kasutus,TA.INI,Tehisaru kasutavad inimesed,Mitu protsenti elanikest kasutas viimase 3 kuu jooksul generatiivse tehisaru tööriistu?,eurostat-isoc-ai-iaiu,"Eurostat nimetab seda generatiivse tehisaru tööriistade kasutuseks, Statistikaamet lihtsalt tehisintellekti kasutamiseks. Kood on sama (I_IUAI / II_IUAI)."
+inimeste-ai-kasutus-too,TA.INI,Tehisaru kasutus tööl,Mitu protsenti elanikest kasutas generatiivset tehisaru tööalaselt?,eurostat-isoc-ai-iaiu-too,
+inimeste-ai-mittekasutus,TA.INI,Miks inimesed tehisaru ei kasuta,Mis põhjustel inimesed generatiivset tehisaru ei kasuta?,eurostat-isoc-ai-iaiuxr,
+avaliku-sektori-ai,TA.AVA,Tehisaru avalikus sektoris,Kui palju kasutavad riigiasutused ja omavalitsused tehisaru?,avalik-sektor-leidmata,Ametlikku võrreldavat allikat pole veel leitud. Eurostati ettevõtete küsitlus avalikku sektorit ei hõlma.
+ettevotete-andmeanaluutika,AN.ETT,Andmeanalüütikat kasutavad ettevõtted,Mitu protsenti ettevõtetest analüüsib andmeid?,andmeanaluutika-tapsustamata,"Statistikaameti uudis 15.09.2025 ütleb, et pooled ettevõtted kasutavad andmeanalüütikat. Tabelit ja Eurostati andmestikku pole veel kinnitatud."
+digioskused,OS.INI,Vähemalt baastasemel digioskused,Mitu protsenti elanikest on vähemalt baastasemel digioskustega?,eurostat-isoc-sk-dskl-i21,ELi digikümnendi siht on 80% aastaks 2030.
+oskusnoudlus-kuulutused,OS.NOU,Tehisaru- ja andmeoskused töökuulutustes,Kui suures osas töökuulutustest nõutakse tehisaru- või andmeoskusi?,cedefop-ovate,
+ikt-spetsialistid,TT.HOI,IKT-spetsialistid hõivatute seas,Mitu protsenti hõivatutest töötab IKT-spetsialistina?,eurostat-isoc-sks-itspt,
+andmeametite-palgad,TT.PAL,Andme- ja tehisaruametite palgad,Kui palju teenivad andmeteadlased ja -insenerid?,palgad-tapsustamata,Palku saab riikide vahel võrrelda ainult ostujõu järgi korrigeerituna ja sama ametiklassifikaatoriga (ISCO-08).
+ikt-toojoupuudus,TT.PUU,Raskused IKT-spetsialistide leidmisel,Mitu protsenti ettevõtetest on IKT-spetsialiste värvates hätta jäänud?,ikt-puudus-tapsustamata,
+ikt-lopetajad,HT.LOP,IKT eriala lõpetajad,Kui suur osa kõrgkooli lõpetajatest lõpetas IKT eriala?,uis-ikt-lopetajad,"Võrdlusalus on UNESCO UIS, sest see annab IKT lõpetajate osakaalu valmis kujul. Andmed tulevad UNESCO, OECD ja Eurostati ühisest hariduse andmekogumisest (UOE)."
+teadlased,HT.TEA,Teadlased elanike kohta,Mitu teadlast (täistööajale taandatud) on miljoni elaniku kohta?,uis-teadlased,"Võrdlusalus on UNESCO UIS, sest see katab ühe määratlusega ka ELi-väliseid riike. ELi riikide puhul tulevad UIS-i numbrid Eurostati ja OECD kaudu."
+ta-kulud,IN.TA,Teadus- ja arendustegevuse kulud,Kui suur on teadus- ja arendustegevuse kulu protsendina SKPst?,eurostat-rd-e-gerdtot,
+ai-investeeringud,IN.AI,Erainvesteeringud tehisarusse,Kui palju erakapitali investeeritakse tehisaruettevõtetesse?,ai-investeeringud-leidmata,Peamised numbrid tulevad erafirmade andmebaasidest (nt OECD.AI kasutab neid). Need on teisesed allikad.
+tehisaru-oskuse-puudus,OS.INI,"Ei kasuta tehisaru, sest ei oska","Mitu protsenti elanikest ei kasutanud generatiivset tehisaru, sest ei osanud seda kasutada?",eurostat-isoc-ai-iaiuxr-oskus,Ainus ametlik otsene tehisaru oskuse näitaja. Eurostat ja Statistikaamet arvutavad seda erinevalt (vt mõõdikud).

@@ -1,0 +1,218 @@
+{
+  "riigid": [
+    "EE",
+    "FI",
+    "SE",
+    "DK",
+    "NO",
+    "DE",
+    "NL",
+    "EU27_2020"
+  ],
+  "naitajad": [
+    {
+      "id": "ettevotete-tehisaru-kasutus",
+      "nimi": "Tehisaru kasutavad ettevõtted",
+      "kusimus": "Kui suur osa Eesti ettevõtetest kasutab tehisaru võrreldes teiste riikidega?",
+      "allikas": "Eurostat",
+      "andmestik": "isoc_eb_ai",
+      "filtrid": {
+        "freq": "A",
+        "indic_is": "E_AI_TANY",
+        "unit": "PC_ENT",
+        "size_emp": "GE10",
+        "nace_r2": "C10-S951_X_K"
+      },
+      "filtrid_kontrollitud": true,
+      "uhik": "% ettevõtetest",
+      "uuendussagedus_kuudes": 12,
+      "mida_see_tahendab": "Näitab, kui laialt on tehisaru jõudnud Eesti ettevõtete igapäevatöösse. Mida rohkem ettevõtteid seda kasutab, seda rohkem töötajaid puutub tehisaruga kokku ja seda olulisemaks muutuvad tehisaru oskused tööturul.",
+      "piirangud": [
+        "Arvestab ainult 10 või enama hõivatuga ettevõtteid. Väikseimad ettevõtted jäävad välja.",
+        "Eurostati kogum jätab välja põllumajanduse, kaevandamise ja finantssektori (NACE C10-S951_X_K). Statistikaameti tabelite \"kõik tegevusalad\" ei ole sellega täpselt sama.",
+        "Mõõdab, kas ettevõte kasutab vähemalt üht tehisaru tehnoloogiat, mitte seda, kui palju või kui hästi.",
+        "Põhineb ettevõtete enda vastustel küsitluses."
+      ],
+      "riiklik_allikas": {
+        "tabel": "majandus/infotehnoloogia/infotehnoloogia-ettevettes/IT1490",
+        "aasta_moode": "Vaatlusperiood",
+        "valikud": {
+          "Näitaja": [
+            "E_AI_TANY"
+          ],
+          "Tegevusala": [
+            "TOTAL"
+          ],
+          "Tööga hõivatud isikute arv": [
+            "TOTAL"
+          ]
+        },
+        "moodik": "sa-it1490"
+      },
+      "teised_allikad": [
+        {
+          "allikas": "Statistikaamet, uudis 15.09.2025",
+          "riik": "EE",
+          "aasta": 2025,
+          "vaartus": 22.0,
+          "usaldus": "ametlik statistika",
+          "url": "https://stat.ee/en/news/statistics-estonias-ict-survey-half-estonian-enterprises-use-data-analytics"
+        },
+        {
+          "allikas": "Statistikaamet, tabel IT149 (kõik tegevusalad, 10+ hõivatut)",
+          "riik": "EE",
+          "aasta": 2025,
+          "vaartus": 22.2,
+          "usaldus": "ametlik statistika",
+          "url": "https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-ettevettes/IT149"
+        },
+        {
+          "allikas": "implicator.ai, viitab Eurostatile",
+          "riik": "EE",
+          "aasta": 2025,
+          "vaartus": 23.4,
+          "usaldus": "teisene allikas",
+          "url": "https://www.implicator.ai/denmark-leads-europe-in-business-ai-use-at-42-eurostat-data-shows.md"
+        }
+      ],
+      "filtrid_kontrollitud_kuupaev": "2026-10-27",
+      "vastuolu_selgitus": "Eurostati 23,4% ja Statistikaameti 22,2% (uudises ümardatud 22%) kirjeldavad sama küsitlust, aga põhjus on veel kinnitamata. Üks võimalik põhjus on erinev tegevusalade kogum: Eurostat jätab välja põllumajanduse, kaevandamise ja finantssektori, Statistikaameti \"kõik tegevusalad\" ei pruugi neid välja jätta. Aastatel 2021–2024 erinevad allikad kõige rohkem 0,1 protsendipunkti, seega ei seleta see üksi 2025. aasta vahet. Kinnitamiseks tuleks küsida Statistikaametilt. Statistikaametil on juba 2026. aasta number (34,1%), Eurostatis seda veel pole. 2026. aasta tabel kasutab uut tegevusalade klassifikaatorit EMTAK 2025, nii et võrdlus varasemate aastatega pole täpne."
+    },
+    {
+      "id": "inimeste-tehisaru-kasutus",
+      "nimi": "Tehisaru kasutavad inimesed",
+      "kusimus": "Kui suur osa Eesti inimestest kasutab generatiivse tehisaru tööriistu võrreldes teiste riikidega?",
+      "allikas": "Eurostat",
+      "andmestik": "isoc_ai_iaiu",
+      "filtrid": {
+        "freq": "A",
+        "indic_is": "I_IUAI",
+        "unit": "PC_IND",
+        "ind_type": "IND_TOTAL"
+      },
+      "filtrid_kontrollitud": true,
+      "filtrid_kontrollitud_kuupaev": "2026-10-27",
+      "uhik": "% 16–74-aastastest",
+      "uuendussagedus_kuudes": 12,
+      "mida_see_tahendab": "Näitab, kui paljud inimesed on generatiivse tehisaru tööriistu (näiteks vestlusroboteid) ise kasutanud. See räägib tehisaru jõudmisest inimeste igapäevaellu ja sellest, kui palju on vaja tehisaru oskuste õpet, mitte sellest, kui hästi inimesed tööriistu kasutavad.",
+      "piirangud": [
+        "Hõlmab 16–74-aastaseid. Nooremad ja vanemad jäävad välja.",
+        "Mõõdab ainult generatiivse tehisaru tööriistade kasutust viimase 3 kuu jooksul, mitte muud tehisaru (näiteks soovitusi või tõlget teistes rakendustes).",
+        "Küsimus oli esimest korda 2025. aastal, seega trendi veel pole.",
+        "Põhineb inimeste enda vastustel küsitluses.",
+        "Statistikaameti tabelis IT71 on kaks protsenti: kõigist inimestest ja ainult internetikasutajatest. Siin on kõigist inimestest; internetikasutajate oma on suurem."
+      ],
+      "teised_allikad": [],
+      "riiklik_allikas": {
+        "tabel": "majandus/infotehnoloogia/infotehnoloogia-leibkonnas/IT71",
+        "aasta_moode": "Vaatlusperiood",
+        "valikud": {
+          "Näitaja": [
+            "PC_IND"
+          ],
+          "Isikute rühm": [
+            "IND_TOTAL"
+          ],
+          "Tehisintellekti kasutamise eesmärk": [
+            "II_IUAI"
+          ]
+        },
+        "moodik": "sa-it71"
+      }
+    },
+    {
+      "id": "tooalane-tehisaru-kasutus",
+      "nimi": "Tehisaru kasutavad inimesed tööl",
+      "kusimus": "Kui suur osa Eesti inimestest kasutab generatiivse tehisaru tööriistu tööalaselt võrreldes teiste riikidega?",
+      "allikas": "Eurostat",
+      "andmestik": "isoc_ai_iaiu",
+      "filtrid": {
+        "freq": "A",
+        "indic_is": "I_IUAIWP",
+        "unit": "PC_IND",
+        "ind_type": "IND_TOTAL"
+      },
+      "filtrid_kontrollitud": true,
+      "filtrid_kontrollitud_kuupaev": "2026-10-27",
+      "uhik": "% 16–74-aastastest",
+      "uuendussagedus_kuudes": 12,
+      "mida_see_tahendab": "Näitab, kui paljud inimesed on generatiivset tehisaru oma töös kasutanud. See on kõige otsesem ametlik märk sellest, kui palju tehisaru oskusi tööl juba vaja läheb. Kasutus ei tähenda, et inimene oskab tööriista hästi kasutada.",
+      "piirangud": [
+        "Protsent on kõigist 16–74-aastastest, mitte ainult töötajatest. Töötajate seas on osakaal suurem.",
+        "Mõõdab ainult generatiivse tehisaru tööriistade kasutust viimase 3 kuu jooksul.",
+        "Eurostat küsis seda esimest korda 2025. aastal, Eurostati aegrida veel pole.",
+        "Põhineb inimeste enda vastustel küsitluses. Kasutus ei näita oskuse taset."
+      ],
+      "teised_allikad": [],
+      "riiklik_allikas": {
+        "tabel": "majandus/infotehnoloogia/infotehnoloogia-leibkonnas/IT71",
+        "aasta_moode": "Vaatlusperiood",
+        "valikud": {
+          "Näitaja": [
+            "PC_IND"
+          ],
+          "Isikute rühm": [
+            "IND_TOTAL"
+          ],
+          "Tehisintellekti kasutamise eesmärk": [
+            "II_IUAIWP"
+          ]
+        },
+        "moodik": "sa-it71-too"
+      }
+    },
+    {
+      "id": "tehisaru-oskuse-puudus",
+      "nimi": "Ei kasuta tehisaru, sest ei oska",
+      "kusimus": "Kui suur osa inimestest jätab generatiivse tehisaru kasutamata, sest ei oska seda kasutada?",
+      "allikas": "Eurostat",
+      "andmestik": "isoc_ai_iaiuxr",
+      "filtrid": {
+        "freq": "A",
+        "indic_is": "I_IUAIX_NUUSE",
+        "unit": "PC_IND",
+        "ind_type": "IND_TOTAL"
+      },
+      "filtrid_kontrollitud": true,
+      "filtrid_kontrollitud_kuupaev": "2026-10-27",
+      "uhik": "% 16–74-aastastest",
+      "uuendussagedus_kuudes": 12,
+      "suund": "vaiksem_parem",
+      "mida_see_tahendab": "Ainus ametlik näitaja, mis mõõdab otse tehisaru oskuse puudust: inimesed, kes ütlevad, et nad ei kasutanud generatiivset tehisaru, sest ei osanud. See näitab, kui paljudele oleks abi tehisaru algõppest.",
+      "piirangud": [
+        "Eurostati põhjused liituvad mittekasutajate seas 100%-ks, nii et iga inimene on ainult ühes reas. Kes ütles ka „pole vaja“, ei ole siin tõenäoliselt kirjas (kinnitamata), nii et number võib oskuse puudust alahinnata.",
+        "Statistikaamet arvutab sama küsimuse teisiti ja saab Eesti 2025. aasta kohta 13,5%. Eurostati ja Statistikaameti numbreid ei tohi omavahel võrrelda.",
+        "Protsent on kõigist 16–74-aastastest. Mittekasutajate seas on osakaal suurem (Eurostat 2025: 9,75%).",
+        "Põhineb inimeste enda hinnangul. See ei ole oskuste test."
+      ],
+      "teised_allikad": [],
+      "vastuolu_selgitus": "Eurostati järgi ei kasutanud 2025. aastal tehisaru oskuse puudumise tõttu 4,7% Eesti 16–74-aastastest, Statistikaameti tabeli IT72 järgi 13,5%. Põhjus on kinnitamata. Tõenäoline põhjus: Eurostati põhjused liituvad mittekasutajate seas 100%-ks, nii et iga inimene on ühes reas. Statistikaameti põhjused liituvad 127%-ks, nii et inimene võib olla mitmes reas. „Pole vaja“ on mõlemas 39,9%, mis sobib sellega, et Eurostat paneb selle põhjuse esimeseks. Kinnitamiseks tuleks küsida Statistikaametilt või Eurostatilt."
+    },
+    {
+      "id": "inimeste-digioskused",
+      "nimi": "Vähemalt baastasemel digioskused",
+      "kusimus": "Kui suurel osal Eesti inimestest on vähemalt baastasemel digioskused võrreldes teiste riikidega?",
+      "allikas": "Eurostat",
+      "andmestik": "isoc_sk_dskl_i21",
+      "filtrid": {
+        "freq": "A",
+        "indic_is": "I_DSK2_BAB",
+        "unit": "PC_IND",
+        "ind_type": "IND_TOTAL"
+      },
+      "filtrid_kontrollitud": true,
+      "filtrid_kontrollitud_kuupaev": "2026-10-27",
+      "uhik": "% 16–74-aastastest",
+      "uuendussagedus_kuudes": 24,
+      "mida_see_tahendab": "Digioskused on tehisaru oskuste alus: kes ei oska teavet otsida, hinnata ega turvaliselt toimetada, sel on raske ka tehisaru kasutada. ELi digikümnendi siht on, et 2030. aastaks oleks vähemalt baastasemel digioskused 80% 16–74-aastastest.",
+      "piirangud": [
+        "Koondnäitaja viiest valdkonnast (teave ja andmed, suhtlus, sisuloome, turvalisus, probleemide lahendamine). Baastase peab olema kõigis viies.",
+        "Arvutatakse selle järgi, mida inimene ütleb end viimase 3 kuu jooksul teinud olevat. See ei ole oskuste test.",
+        "Küsitakse iga kahe aasta tagant (2021, 2023, 2025). Järgmine number on 2027. aasta kohta.",
+        "Ei mõõda tehisaru oskusi eraldi.",
+        "Statistikaamet ei avalda seda koondnäitajat oma andmebaasis (otsitud 27.10.2026), nii et teist allikat pole."
+      ],
+      "teised_allikad": []
+    }
+  ]
+}

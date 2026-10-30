@@ -1,0 +1,149 @@
+{
+ "selgitus": "Failid ja veerud, mida loeb väljaspool seda repot olev leht (lukustatud koopiast). Muuda ainult teadlikult.",
+ "failid": {
+  "allikad/numbrid-2026.csv": [
+   "naitaja",
+   "riik",
+   "aasta",
+   "vaartus",
+   "uhik",
+   "allikas",
+   "avaldatud",
+   "url",
+   "kogum",
+   "maaratlus",
+   "kontrollitud",
+   "vorreldavus_eurostatiga"
+  ],
+  "andmed/ettevotete-tehisaru-kasutus.csv": [
+   "geo",
+   "time",
+   "vaartus",
+   "margend"
+  ],
+  "andmed/ettevotete-tehisaru-kasutus.meta.json": [
+   "allikas_uuendas",
+   "andmestiku_nimi",
+   "filtrid_kontrollitud",
+   "kontrollitud",
+   "naitaja",
+   "naitaja_nimi",
+   "probleemid",
+   "url",
+   "uuem_allikas",
+   "varskus",
+   "vordlus"
+  ],
+  "andmed/inimeste-digioskused.csv": [
+   "geo",
+   "time",
+   "vaartus",
+   "margend"
+  ],
+  "andmed/inimeste-digioskused.meta.json": [
+   "allikas_uuendas",
+   "andmestiku_nimi",
+   "filtrid_kontrollitud",
+   "kontrollitud",
+   "naitaja",
+   "naitaja_nimi",
+   "probleemid",
+   "url",
+   "uuem_allikas",
+   "varskus",
+   "vordlus"
+  ],
+  "andmed/inimeste-tehisaru-kasutus.csv": [
+   "geo",
+   "time",
+   "vaartus",
+   "margend"
+  ],
+  "andmed/inimeste-tehisaru-kasutus.meta.json": [
+   "allikas_uuendas",
+   "andmestiku_nimi",
+   "filtrid_kontrollitud",
+   "kontrollitud",
+   "naitaja",
+   "naitaja_nimi",
+   "probleemid",
+   "url",
+   "uuem_allikas",
+   "varskus",
+   "vordlus"
+  ],
+  "andmed/tehisaru-oskuse-puudus.csv": [
+   "geo",
+   "time",
+   "vaartus",
+   "margend"
+  ],
+  "andmed/tehisaru-oskuse-puudus.meta.json": [
+   "allikas_uuendas",
+   "andmestiku_nimi",
+   "filtrid_kontrollitud",
+   "kontrollitud",
+   "naitaja",
+   "naitaja_nimi",
+   "probleemid",
+   "url",
+   "uuem_allikas",
+   "varskus",
+   "vordlus"
+  ],
+  "andmed/tooalane-tehisaru-kasutus.csv": [
+   "geo",
+   "time",
+   "vaartus",
+   "margend"
+  ],
+  "andmed/tooalane-tehisaru-kasutus.meta.json": [
+   "allikas_uuendas",
+   "andmestiku_nimi",
+   "filtrid_kontrollitud",
+   "kontrollitud",
+   "naitaja",
+   "naitaja_nimi",
+   "probleemid",
+   "url",
+   "uuem_allikas",
+   "varskus",
+   "vordlus"
+  ],
+  "kataloog/vaatlused-api.csv": [
+   "moodik",
+   "riik",
+   "aasta",
+   "vaartus",
+   "avaldatud",
+   "kontrollitud",
+   "kuidas",
+   "url",
+   "markus"
+  ],
+  "kataloog/vaatlused-valis.csv": [
+   "moodik",
+   "riik",
+   "aasta",
+   "vaartus",
+   "avaldatud",
+   "kontrollitud",
+   "kuidas",
+   "url",
+   "markus",
+   "margend"
+  ],
+  "raportid/html/analuus-andmed.csv": [
+   "moodik",
+   "nimi",
+   "uhik",
+   "riik",
+   "aasta",
+   "vaartus",
+   "allikas",
+   "andmestik",
+   "url",
+   "vorreldavus"
+  ]
+ }
+}

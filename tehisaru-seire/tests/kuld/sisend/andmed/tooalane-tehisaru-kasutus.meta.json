@@ -1,0 +1,42 @@
+{
+  "naitaja": "tooalane-tehisaru-kasutus",
+  "andmestiku_nimi": "Individuals - use of generative AI tools",
+  "naitaja_nimi": "Annual; Use of generative AI tools: for professional (work) purposes; Percentage of individuals; All individuals",
+  "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_ai_iaiu?format=JSON&lang=EN&freq=A&indic_is=I_IUAIWP&unit=PC_IND&ind_type=IND_TOTAL&geo=EE&geo=FI&geo=SE&geo=DK&geo=NO&geo=DE&geo=NL&geo=EU27_2020",
+  "allikas_uuendas": "2026-06-05",
+  "kontrollitud": "2026-10-27",
+  "varskus": {
+    "staatus": "ajakohane",
+    "jargmine_oodatav": "2027-06-05"
+  },
+  "filtrid_kontrollitud": true,
+  "probleemid": [
+    {
+      "tase": "hoiatus",
+      "tekst": "Uuem number on juba olemas: Statistikaamet, tabel IT71 (laaditud automaatselt) annab Eesti 2026. aasta väärtuseks 36,9%. Põhiallikas seda veel ei näita."
+    }
+  ],
+  "vordlus": [
+    {
+      "allikas": "Statistikaamet, tabel IT71 (laaditud automaatselt)",
+      "riik": "EE",
+      "aasta": 2026,
+      "vaartus": 36.9,
+      "usaldus": "ametlik statistika",
+      "url": "https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-leibkonnas/IT71",
+      "moodik": "sa-it71-too",
+      "pohivaartus": null,
+      "vahe": null,
+      "vastuolu": null
+    }
+  ],
+  "uuem_allikas": {
+    "allikas": "Statistikaamet, tabel IT71 (laaditud automaatselt)",
+    "riik": "EE",
+    "aasta": 2026,
+    "vaartus": 36.9,
+    "usaldus": "ametlik statistika",
+    "url": "https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-leibkonnas/IT71",
+    "moodik": "sa-it71-too"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "blockReadsOutsideWorkingDirectories": true,
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/*.xlsx)",
+      "Read(**/*.pkl)",
+      "Read(~/.ssh/**)",
+      "Bash(git add -f *)",
+      "Bash(git add --force *)",
+      "Bash(git commit --no-verify *)",
+      "Bash(git commit -n *)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git config core.hooksPath *)",
+      "Bash(gh repo create *)",
+      "Bash(gh repo edit *)"
+    ],
+    "ask": [
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git remote *)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "filesystem": {
+      "denyRead": ["~/", "/mnt/"],
+      "allowRead": [".", "~/.gitconfig", "~/.config/git/", "~/.config/ai-work-observatory/"]
+    }
+  }
+}

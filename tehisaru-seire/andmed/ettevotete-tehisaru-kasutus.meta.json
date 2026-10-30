@@ -1,0 +1,83 @@
+{
+  "naitaja": "ettevotete-tehisaru-kasutus",
+  "andmestiku_nimi": "Artificial intelligence by size class of enterprise",
+  "naitaja_nimi": "Annual; Enterprises using at least one of the AI technologies: AI_TTM, AI_TSR, AI_TNLG, AI_TIR, AI_TML, AI_TPA, AI_TAR, E_AI_TPVSG; Percentage of enterprises; 10 persons employed or more; All activities (except agriculture, forestry and fishing, and mining and quarrying), without financial sector",
+  "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_eb_ai?format=JSON&lang=EN&freq=A&indic_is=E_AI_TANY&unit=PC_ENT&size_emp=GE10&nace_r2=C10-S951_X_K&geo=EE&geo=FI&geo=SE&geo=DK&geo=NO&geo=DE&geo=NL&geo=EU27_2020",
+  "allikas_uuendas": "2026-06-15",
+  "kontrollitud": "2026-10-27",
+  "varskus": {
+    "staatus": "ajakohane",
+    "jargmine_oodatav": "2027-06-15"
+  },
+  "filtrid_kontrollitud": true,
+  "probleemid": [
+    {
+      "tase": "hoiatus",
+      "tekst": "NL 2025: aegrea katkestus."
+    },
+    {
+      "tase": "hoiatus",
+      "tekst": "SE 2023: aegrea katkestus."
+    },
+    {
+      "tase": "hoiatus",
+      "tekst": "Uuem number on juba olemas: Statistikaamet, tabel IT1490 (laaditud automaatselt) annab Eesti 2026. aasta väärtuseks 34,1%. Põhiallikas seda veel ei näita."
+    }
+  ],
+  "vordlus": [
+    {
+      "allikas": "Statistikaamet, uudis 15.09.2025",
+      "riik": "EE",
+      "aasta": 2025,
+      "vaartus": 22.0,
+      "usaldus": "ametlik statistika",
+      "url": "https://stat.ee/en/news/statistics-estonias-ict-survey-half-estonian-enterprises-use-data-analytics",
+      "pohivaartus": 23.4,
+      "vahe": -1.4,
+      "vastuolu": true
+    },
+    {
+      "allikas": "Statistikaamet, tabel IT149 (kõik tegevusalad, 10+ hõivatut)",
+      "riik": "EE",
+      "aasta": 2025,
+      "vaartus": 22.2,
+      "usaldus": "ametlik statistika",
+      "url": "https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-ettevettes/IT149",
+      "pohivaartus": 23.4,
+      "vahe": -1.2,
+      "vastuolu": true
+    },
+    {
+      "allikas": "implicator.ai, viitab Eurostatile",
+      "riik": "EE",
+      "aasta": 2025,
+      "vaartus": 23.4,
+      "usaldus": "teisene allikas",
+      "url": "https://www.implicator.ai/denmark-leads-europe-in-business-ai-use-at-42-eurostat-data-shows.md",
+      "pohivaartus": 23.4,
+      "vahe": 0.0,
+      "vastuolu": false
+    },
+    {
+      "allikas": "Statistikaamet, tabel IT1490 (laaditud automaatselt)",
+      "riik": "EE",
+      "aasta": 2026,
+      "vaartus": 34.1,
+      "usaldus": "ametlik statistika",
+      "url": "https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-ettevettes/IT1490",
+      "moodik": "sa-it1490",
+      "pohivaartus": null,
+      "vahe": null,
+      "vastuolu": null
+    }
+  ],
+  "uuem_allikas": {
+    "allikas": "Statistikaamet, tabel IT1490 (laaditud automaatselt)",
+    "riik": "EE",
+    "aasta": 2026,
+    "vaartus": 34.1,
+    "usaldus": "ametlik statistika",
+    "url": "https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-ettevettes/IT1490",
+    "moodik": "sa-it1490"
+  }
+}

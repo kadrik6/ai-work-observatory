@@ -1,0 +1,623 @@
+/* Kadri disainisüsteem: üks fookus (signal), hall kontekst, pealkiri ütleb leiu.
+   Paigutus: kitsas lugemisveerg (68 märki), graafikud ja tabelid laiemad. */
+:root {
+  --surface: #ffffff;
+  --surface-raised: #f5f5f7;
+  --surface-note: #f3ede1;
+  --ink: #141414;
+  --ink-muted: #555555;
+  --ink-faded: #767676;
+  --signal: #87139f;
+  --signal-tint: #f3e4f7;
+  --on-signal: #ffffff;
+  --context: #bdbdbd;
+  --context-strong: #3d3d3d;
+  --counter: #e0561b;
+  --counter-text: #9a3208;
+  --hairline: #e2e2e2;
+  --grid: #ededed;
+  --control-border: #767676;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: Inter, "Segoe UI", system-ui, sans-serif;
+  --space-1: 4px; --space-2: 8px; --space-3: 16px; --space-4: 24px; --space-5: 32px; --space-6: 48px;
+  --radius-s: 8px; --radius-m: 16px; --radius-pill: 999px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: #141414; --surface-raised: #1e1e22; --surface-note: #2a2620;
+    --ink: #f2f2f2; --ink-muted: #b3b3b3; --ink-faded: #8c8c8c;
+    --signal: #df8cf5; --signal-tint: #3a1a45; --on-signal: #141414;
+    --context: #505050; --context-strong: #d6d6d6;
+    --counter: #ff8a55; --counter-text: #ff8a55;
+    --hairline: #2e2e2e; --grid: #262626; --control-border: #8c8c8c;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --surface: #141414; --surface-raised: #1e1e22; --surface-note: #2a2620;
+  --ink: #f2f2f2; --ink-muted: #b3b3b3; --ink-faded: #8c8c8c;
+  --signal: #df8cf5; --signal-tint: #3a1a45; --on-signal: #141414;
+  --context: #505050; --context-strong: #d6d6d6;
+  --counter: #ff8a55; --counter-text: #ff8a55;
+  --hairline: #2e2e2e; --grid: #262626; --control-border: #8c8c8c;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: var(--signal); text-underline-offset: 3px; }
+a:focus-visible, summary:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; border-radius: 2px; }
+
+/* Päis ja navigatsioon */
+.top { border-bottom: 1px solid var(--hairline); }
+.top .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-5); padding-block: var(--space-3); }
+.mark { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+.top nav { min-width: 0; max-width: 100%; }
+.nav { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; list-style: none; min-width: 0; }
+.nav a { display: block; padding: 6px 12px; border-radius: var(--radius-pill); color: var(--ink-muted); text-decoration: none; font-size: 15px; white-space: nowrap; }
+.nav a:hover { color: var(--ink); background: var(--surface-raised); }
+.nav a[aria-current="page"] { background: var(--signal-tint); color: var(--signal); font-weight: 600; }
+.top-tools { margin-left: auto; display: flex; align-items: center; gap: var(--space-3); font-size: 13px; color: var(--ink-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.top-tools { flex-direction: column; align-items: flex-end; gap: 2px; }
+.top-tools .updated { order: -1; font-size: 11.5px; font-style: italic; line-height: 1.2; }
+.theme-seg { display: inline-flex; padding: 2px; gap: 2px; border: 1px solid var(--hairline); border-radius: var(--radius-pill); background: var(--surface-raised); }
+.theme-seg button { display: grid; place-items: center; width: 30px; height: 26px; color: var(--ink-muted); background: transparent; border: 0; border-radius: var(--radius-pill); padding: 0; cursor: pointer; }
+.theme-seg button:hover { color: var(--ink); }
+.theme-seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--hairline); }
+.theme-seg button:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
+@media (max-width: 700px) { .top .wrap { column-gap: var(--space-2); } .top-tools { order: 1; gap: 2px; font-size: 12px; } .top nav { order: 2; flex-basis: 100%; } }
+
+/* Tüpograafia */
+main .wrap { padding-block: var(--space-6); display: flex; flex-direction: column; gap: var(--space-6); }
+.eyebrow { font-size: 13px; line-height: 1.2; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--signal); margin: 0 0 var(--space-2); }
+h1 { font-family: var(--font-display); font-size: clamp(30px, 5vw, 40px); line-height: 1.1; letter-spacing: -0.02em; margin: 0; text-wrap: balance; max-width: 22em; }
+h2 { font-family: var(--font-display); font-size: clamp(22px, 3.4vw, 28px); line-height: 1.2; margin: 0; text-wrap: balance; max-width: 30em; }
+h3 { font-family: var(--font-display); font-size: 20px; line-height: 1.3; margin: 0; text-wrap: balance; }
+.lead { font-size: 20px; color: var(--ink-muted); max-width: 40em; margin: var(--space-3) 0 0; }
+p { margin: 0; max-width: 40em; }
+.prose { display: flex; flex-direction: column; gap: var(--space-3); }
+.muted { color: var(--ink-muted); }
+.small { font-size: 14px; line-height: 1.45; color: var(--ink-muted); }
+.num { font-variant-numeric: tabular-nums; }
+.hl { color: var(--signal); }
+section { display: flex; flex-direction: column; gap: var(--space-4); }
+.section-head { display: flex; flex-direction: column; gap: var(--space-2); }
+
+/* Olekurida */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--space-3) var(--space-4); margin: 0; padding: var(--space-4) 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+.facts div { min-width: 0; }
+.facts dt { font-size: 14px; color: var(--ink-muted); }
+.facts dd { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 24px; font-variant-numeric: tabular-nums; }
+.facts dd small { font-family: var(--font-body); font-weight: 400; font-size: 14px; color: var(--ink-muted); display: block; }
+
+/* Sildid */
+.tag { display: inline-block; font-size: 13px; line-height: 1.2; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid var(--control-border); color: var(--ink-muted); white-space: nowrap; }
+.tag.ok { border-color: var(--context-strong); color: var(--ink); }
+.tag.risk { border-color: var(--counter); color: var(--counter-text); }
+.tag.focus { border-color: transparent; background: var(--signal-tint); color: var(--signal); }
+
+/* Loendid */
+.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.list > li { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); gap: var(--space-1) var(--space-4); padding: var(--space-3) 0; border-top: 1px solid var(--hairline); }
+.list > li:last-child { border-bottom: 1px solid var(--hairline); }
+.list .when { font-size: 15px; color: var(--ink-muted); font-variant-numeric: tabular-nums; padding-top: 2px; }
+.list .body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.list .body p { max-width: 40em; }
+@media (max-width: 560px) { .list > li { grid-template-columns: 1fr; } }
+
+.pages { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-3); }
+.pages a { display: flex; flex-direction: column; gap: var(--space-1); height: 100%; padding: var(--space-4); border-radius: var(--radius-m); background: var(--surface-raised); color: var(--ink); text-decoration: none; }
+.pages a:hover { outline: 1px solid var(--control-border); }
+.pages strong { font-family: var(--font-display); font-size: 19px; }
+.pages span { font-size: 15px; color: var(--ink-muted); line-height: 1.5; }
+
+/* Graafikud */
+.chart { display: flex; flex-direction: column; gap: var(--space-3); }
+.chart-title { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1.3; margin: 0; max-width: 32em; text-wrap: balance; }
+.chart-sub { font-size: 16px; color: var(--ink-muted); margin-top: calc(-1 * var(--space-2)); }
+.source { font-size: 14px; color: var(--ink-muted); line-height: 1.45; }
+
+.bars { display: grid; grid-template-columns: max-content minmax(0, 1fr) max-content; gap: 6px var(--space-3); align-items: center; margin: 0; padding: 0; list-style: none; }
+.bars li { display: contents; }
+.bars .lab { font-size: 15px; color: var(--ink-muted); }
+.bars .track { height: 22px; position: relative; }
+.bars .bar { position: absolute; inset: 0 auto 0 0; background: var(--context); border-radius: 0 var(--radius-s) var(--radius-s) 0; }
+.bars .val { font-size: 15px; font-variant-numeric: tabular-nums; color: var(--ink-muted); text-align: right; }
+.bars .is-focus .lab, .bars .is-focus .val { color: var(--signal); font-weight: 700; }
+.bars .is-focus .bar { background: var(--signal); }
+.bars .is-ref .lab, .bars .is-ref .val { color: var(--ink); font-weight: 600; }
+.bars .is-ref .bar { background: var(--context-strong); }
+
+.scroll { overflow-x: auto; }
+.scroll > svg { display: block; min-width: 560px; width: 100%; max-width: 720px; height: auto; }
+svg text { font-family: var(--font-body); font-size: 14px; fill: var(--ink-muted); font-variant-numeric: tabular-nums; }
+svg .gridline { stroke: var(--grid); stroke-width: 1; }
+svg .axis { stroke: var(--hairline); stroke-width: 1; }
+svg .ln { fill: none; stroke: var(--context); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+svg .ln.gap { stroke-dasharray: 3 5; }
+svg .ln.ref { stroke: var(--context-strong); }
+svg .ln.focus { stroke: var(--signal); stroke-width: 3; }
+svg .dot { fill: var(--context); }
+svg .dot.ref { fill: var(--context-strong); }
+svg .dot.focus { fill: var(--signal); }
+svg .lab-focus { fill: var(--signal); font-weight: 700; }
+svg .lab-ref { fill: var(--ink); font-weight: 600; }
+svg .ann { fill: var(--ink-muted); }
+
+/* Lahknevuse punktirida */
+.strip { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.strip li { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 4.5rem; gap: var(--space-3); align-items: center; padding: var(--space-2) 0; border-top: 1px solid var(--hairline); }
+.strip li:last-child { border-bottom: 1px solid var(--hairline); }
+.strip .who { font-size: 15px; line-height: 1.35; min-width: 0; }
+.strip .who small { display: block; color: var(--ink-muted); font-size: 13px; }
+.strip .line { position: relative; height: 24px; }
+.strip .line::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid var(--grid); }
+.strip .ref-mark { position: absolute; top: 0; bottom: 0; border-left: 1.5px dashed var(--context-strong); }
+.strip .pt { position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--context-strong); }
+.strip .pt.hollow { background: var(--surface); border: 2px solid var(--context-strong); }
+.strip .is-focus .pt { background: var(--signal); }
+.strip .is-focus .who, .strip .is-focus .v { color: var(--signal); font-weight: 700; }
+.strip .v { text-align: right; font-variant-numeric: tabular-nums; font-size: 15px; }
+.strip-scale { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 4.5rem; gap: var(--space-3); font-size: 13px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.strip-scale div { display: flex; justify-content: space-between; }
+@media (max-width: 560px) {
+  .strip li, .strip-scale { grid-template-columns: minmax(0, 1fr) 4rem; }
+  .strip .line { grid-column: 1 / -1; grid-row: 2; }
+  .strip-scale > span:first-child, .strip-scale > span:last-child { display: none; }
+  .strip-scale div { grid-column: 1 / -1; }
+}
+
+/* Värskuse riba */
+.age { display: flex; flex-direction: column; gap: var(--space-2); }
+.age-track { position: relative; height: 12px; border-radius: var(--radius-pill); background: var(--surface-raised); overflow: hidden; }
+.age-fill { position: absolute; inset: 0 auto 0 0; background: var(--context-strong); border-radius: var(--radius-pill); }
+.age-legend { display: flex; justify-content: space-between; gap: var(--space-3); font-size: 14px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+
+/* Tabelid */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+th { font-weight: 600; color: var(--ink-muted); font-size: 14px; }
+td.r, th.r { text-align: right; }
+tr.is-focus td { color: var(--signal); font-weight: 700; }
+caption { text-align: left; font-size: 14px; color: var(--ink-muted); padding-bottom: var(--space-2); caption-side: top; }
+
+/* Märkus ja kaart */
+.note { background: var(--surface-note); border-radius: var(--radius-m); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+.note p { max-width: 42em; }
+.card { background: var(--surface-raised); border-radius: var(--radius-m); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+
+.items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.items > li { padding: var(--space-4) 0; border-top: 1px solid var(--hairline); display: flex; flex-direction: column; gap: var(--space-2); }
+.items > li:last-child { border-bottom: 1px solid var(--hairline); }
+.items .row { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: baseline; justify-content: space-between; }
+.items .todo { font-size: 15px; color: var(--ink-muted); }
+.items .todo b { color: var(--ink); font-weight: 600; }
+
+
+footer { border-top: 1px solid var(--hairline); }
+footer .wrap { padding-block: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); font-size: 14px; color: var(--ink-muted); line-height: 1.5; }
+footer p { max-width: 60em; }
+
+@media (max-width: 560px) {
+  body { font-size: 17px; }
+  main .wrap { padding-block: var(--space-5); gap: var(--space-5); }
+  .lead { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+.prose a, .source a { overflow-wrap: anywhere; }
+
+/* Kataloog ja allikate võrdlus */
+h4 { font-family: var(--font-display); font-size: 18px; line-height: 1.3; margin: 0; }
+.sub { display: flex; flex-direction: column; gap: var(--space-3); padding-top: var(--space-3); }
+.sub > h3 { font-size: 22px; }
+.legend { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-3) var(--space-4); margin: 0; align-items: baseline; }
+.legend dd { margin: 0; font-size: 16px; color: var(--ink-muted); max-width: 42em; }
+td.is-lahk { color: var(--counter-text); font-weight: 700; }
+td.is-lahk .small { color: var(--counter-text); font-weight: 400; }
+.items ul.small { margin: 0; padding-left: 1.2em; }
+@media (max-width: 560px) {
+  .legend { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .legend dd { margin-bottom: var(--space-2); }
+}
+
+/* Kolm taset: ülevaate kaardid -> näitaja leht -> avatavad detailid */
+.crumbs { display: flex; flex-wrap: wrap; gap: var(--space-2); font-size: 14px; color: var(--ink-muted); margin-bottom: calc(-1 * var(--space-4)); }
+.crumbs a { color: var(--ink-muted); }
+
+.inds { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); }
+.ind a { display: flex; flex-direction: column; gap: var(--space-2); height: 100%; padding: var(--space-5) var(--space-4) var(--space-4); border-radius: var(--radius-m); background: var(--surface-raised); color: var(--ink); text-decoration: none; border: 1px solid transparent; }
+.ind a:hover { border-color: var(--control-border); }
+.ind .eyebrow { margin: 0; }
+.ind-title { font-size: 22px; }
+.ind-big { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); margin-top: var(--space-2); }
+.ind-big span { font-family: var(--font-display); font-weight: 700; font-size: clamp(48px, 9vw, 64px); line-height: 1; letter-spacing: -0.03em; color: var(--signal); font-variant-numeric: tabular-nums; }
+.ind-big small { font-size: 15px; color: var(--ink-muted); }
+.ind-unit { font-weight: 600; }
+.ind-cmp { font-size: 16px; color: var(--ink-muted); }
+.chips { list-style: none; margin: var(--space-2) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.ind-more { margin-top: auto; padding-top: var(--space-3); color: var(--signal); font-weight: 600; }
+
+.rules { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: var(--space-3); }
+.rules li { padding-left: var(--space-1); }
+.rules li::marker { font-family: var(--font-display); font-weight: 700; color: var(--signal); }
+.rules a { display: inline-block; margin-top: 2px; }
+.plain { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: var(--space-2); max-width: 42em; }
+.quote { font-size: 19px; line-height: 1.5; border-left: 3px solid var(--signal); padding-left: var(--space-3); }
+.legend-row { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-bottom: calc(-1 * var(--space-4)); }
+
+/* Avatavad plokid: noolega kokkuvõte, sisu alles klõpsuga */
+summary { cursor: pointer; list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: ""; flex: none; width: 8px; height: 8px; margin-top: 0.55em; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform .15s; color: var(--ink-muted); }
+details[open] > summary::before { transform: rotate(45deg); }
+summary:hover { color: var(--signal); }
+.more-body { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-3) 0 var(--space-2); min-width: 0; }
+
+details.more { border-top: 1px solid var(--hairline); }
+details.more:last-child { border-bottom: 1px solid var(--hairline); }
+details.more > summary { display: flex; gap: var(--space-3); padding: var(--space-3) 0; font-weight: 600; }
+
+.checks { display: flex; flex-direction: column; }
+.check { border-top: 1px solid var(--hairline); }
+.check:last-child { border-bottom: 1px solid var(--hairline); }
+.check > summary { display: grid; grid-template-columns: 8px minmax(0, 13rem) max-content minmax(0, 1fr); gap: var(--space-2) var(--space-3); padding: var(--space-3) 0; align-items: start; }
+.check-name { font-weight: 700; }
+.check-text { font-size: 16px; color: var(--ink-muted); font-weight: 400; }
+.check .tag { margin-top: 2px; }
+.check > .more-body { padding-left: calc(8px + var(--space-3)); }
+@media (max-width: 760px) {
+  .check > summary { grid-template-columns: 8px minmax(0, 1fr); }
+  .check > summary > * { grid-column: 2; justify-self: start; }
+  .check > summary::before { grid-row: 1; }
+}
+
+details.theme { background: var(--surface-raised); border-radius: var(--radius-m); padding: 0 var(--space-4); }
+details.theme > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); padding: var(--space-4) 0; }
+details.theme > summary::before { align-self: center; margin-top: 0; }
+.theme-name { font-family: var(--font-display); font-weight: 700; font-size: 22px; }
+.theme-count { font-size: 15px; color: var(--ink-muted); }
+details.theme .more-body { padding-top: 0; padding-bottom: var(--space-4); }
+details.theme h3 { margin-top: var(--space-3); }
+details.theme .items > li:last-child { border-bottom: 0; }
+main .wrap > details.theme + details.theme { margin-top: calc(-1 * var(--space-6) + var(--space-3)); }
+@media (max-width: 560px) { details.theme { padding: 0 var(--space-3); } }
+.items details.more, .items details.more:last-child { border: 0; }
+.items details.more > summary { padding: var(--space-1) 0; }
+
+/* Analüütiku vaade (analuus.html): tihedam, palju võrdlusi ühes vaates */
+.an-sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
+.an-sum > div { background: var(--surface-raised); border-radius: var(--radius-m); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.an-sum h3 { font-size: 18px; }
+.an-sum .plain { font-size: 16px; gap: var(--space-1); }
+.an-keys { grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-2) var(--space-3); }
+.an-keys dd { font-size: 14px; }
+.an-legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); font-size: 14px; color: var(--ink-muted); align-items: center; }
+.an-legend span { display: inline-flex; align-items: center; gap: var(--space-2); }
+.an-legend i { display: inline-block; flex: none; }
+.k-ee, .k-pt { width: 12px; height: 12px; border-radius: 50%; background: var(--signal); }
+.k-pt { width: 9px; height: 9px; background: var(--context); }
+.k-band { width: 18px; height: 12px; background: var(--hairline); border-radius: 3px; }
+.k-eu { width: 2px; height: 14px; background: var(--context-strong); }
+.k-ln, .k-ln-ee, .k-ln-eu, .k-ln-gap { width: 18px; height: 0; border-top: 2px solid var(--context); }
+.k-ln-ee { border-top: 3px solid var(--signal); }
+.k-ln-eu { border-top-color: var(--context-strong); }
+.k-ln-gap { border-top-style: dashed; }
+.k-db-a, .k-db-b { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--context-strong); background: var(--surface); }
+.k-db-b { background: var(--context-strong); }
+
+/* Indeks: Põhjamaade keskmine = 100 */
+.idx { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr) 3rem; gap: 6px var(--space-3); align-items: center; }
+.idx li { display: contents; }
+.idx .lab { font-size: 15px; line-height: 1.3; }
+.idx .lab small { color: var(--ink-faded); margin-left: 6px; font-size: 13px; }
+.idx .val { text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; }
+.idx-track { position: relative; height: 22px; }
+.idx-track::before { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; border-left: 1px solid var(--context-strong); }
+.idx-bar { position: absolute; top: 3px; bottom: 3px; border-radius: 4px; }
+.idx-bar.up { background: var(--signal); }
+.idx-bar.down { background: var(--counter); }
+.idx-scale { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr) 3rem; gap: var(--space-3); font-size: 13px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.idx-scale div { display: flex; justify-content: space-between; }
+
+/* Profiil: kõik riigid igal näitajal */
+.prof { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.prof-theme { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--signal); padding: var(--space-4) 0 var(--space-1); }
+.prof-row { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 6.5rem minmax(0, 10rem); gap: var(--space-2) var(--space-3); align-items: center; padding: var(--space-2) 0; border-top: 1px solid var(--hairline); }
+.prof-row .who { font-size: 15px; line-height: 1.3; min-width: 0; }
+.prof-row .who a { color: var(--ink); }
+.prof-row .who small { display: block; color: var(--ink-muted); font-size: 13px; }
+.prof-row .v { display: flex; flex-direction: column; text-align: right; font-size: 15px; line-height: 1.25; font-variant-numeric: tabular-nums; }
+.prof-row .v b { color: var(--signal); }
+.prof-row .v small { font-size: 13px; color: var(--ink-muted); }
+.prof-row .verdict .tag { white-space: normal; }
+.prof-line { position: relative; height: 28px; }
+.prof-line::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid var(--grid); }
+.prof-line .band { position: absolute; top: 4px; bottom: 4px; background: var(--hairline); border-radius: 4px; }
+.prof-line .eu { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--context-strong); }
+.prof-line .eu::after, .prof-line .pt::after { content: ""; position: absolute; inset: -8px; }
+.prof-line .pt { position: absolute; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--context-strong); opacity: .55; box-shadow: 0 0 0 2px var(--surface); }
+.prof-line .pt.ee { width: 14px; height: 14px; margin: -7px 0 0 -7px; background: var(--signal); opacity: 1; }
+@media (max-width: 760px) {
+  .prof-row { grid-template-columns: minmax(0, 1fr) 6rem; }
+  .prof-row .prof-line { grid-column: 1 / -1; grid-row: 2; }
+  .prof-row .verdict { grid-column: 1 / -1; }
+  .idx, .idx-scale { grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) 2.5rem; }
+}
+
+/* Tõlgenduskaardid */
+.an-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: var(--space-4); }
+@media (max-width: 560px) { .an-cards { grid-template-columns: minmax(0, 1fr); } }
+.an-card { background: var(--surface-raised); border-radius: var(--radius-m); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; border-top: 4px solid var(--context); }
+.an-card.tugev { border-top-color: var(--signal); }
+.an-card.nork { border-top-color: var(--counter); }
+.an-card.fookus { border-top-color: var(--context-strong); }
+.an-card .eyebrow { margin: 0; color: var(--ink-muted); }
+.an-card h3 { font-size: 19px; }
+.an-claim { display: flex; flex-direction: column; gap: 4px; font-size: 16px; line-height: 1.5; }
+.an-claim .tag { align-self: flex-start; }
+.an-claim .tag { justify-self: start; margin-top: 2px; }
+.an-src { margin-top: auto; padding-top: var(--space-2); border-top: 1px solid var(--hairline); }
+.an-stale { background: var(--surface-note); border-radius: var(--radius-s); padding: var(--space-2) var(--space-3); font-size: 15px; color: var(--counter-text); }
+
+/* Väikesed mitmikud ja muutused */
+.an-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: var(--space-5) var(--space-4); }
+.an-grid.two { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+@media (max-width: 560px) { .an-grid.two { grid-template-columns: minmax(0, 1fr); } }
+.mini, .dumb { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.mini figcaption, .dumb figcaption { display: flex; flex-direction: column; font-size: 15px; line-height: 1.35; }
+.mini svg { display: block; width: 100%; height: auto; }
+.mini svg text { font-size: 12px; }
+svg .hit { fill: transparent; }
+svg .hit:hover { fill: var(--ink); fill-opacity: .08; }
+.dumb ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr) 3.6rem; gap: 4px var(--space-3); align-items: center; }
+.dumb li { display: contents; }
+.dumb .lab { font-size: 14px; color: var(--ink-muted); }
+.dumb .val { text-align: right; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--ink-muted); }
+.dumb .is-focus .lab, .dumb .is-focus .val { color: var(--signal); font-weight: 700; }
+.dumb .is-ref .lab, .dumb .is-ref .val { color: var(--ink); font-weight: 600; }
+.db-track { position: relative; height: 20px; }
+.db-line { position: absolute; top: 50%; height: 2px; margin-top: -1px; background: var(--context); }
+.db-a, .db-b { position: absolute; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; border: 2px solid var(--context-strong); background: var(--surface); }
+.db-b { background: var(--context-strong); }
+.db-a::after, .db-b::after { content: ""; position: absolute; inset: -7px; }
+.is-focus .db-line { background: var(--signal); }
+.is-focus .db-a { border-color: var(--signal); }
+.is-focus .db-b { border-color: var(--signal); background: var(--signal); }
+.db-scale { display: grid; grid-template-columns: max-content minmax(0, 1fr) 3.6rem; gap: var(--space-3); font-size: 12px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.db-scale div { display: flex; justify-content: space-between; }
+
+/* Hajuvusgraafik */
+.scroll > svg.sc { max-width: 680px; }
+svg .sc-pt { fill: var(--context-strong); opacity: .6; stroke: var(--surface); stroke-width: 2; }
+svg .sc-eu { fill: var(--surface); stroke: var(--context-strong); stroke-width: 2; }
+svg .sc-ee { fill: var(--signal); stroke: var(--surface); stroke-width: 2; }
+
+/* Tabelid ja kohtspikker */
+.an-table td.is-ee { color: var(--signal); font-weight: 700; }
+.an-table th[scope="row"] { min-width: 12rem; font-weight: 600; color: var(--ink); }
+.tip { position: fixed; z-index: 10; pointer-events: none; background: var(--ink); color: var(--surface); border-radius: var(--radius-s); padding: 6px 10px; font-size: 14px; line-height: 1.35; display: flex; flex-direction: column; max-width: 260px; box-shadow: 0 4px 16px rgb(0 0 0 / .18); }
+.tip[hidden] { display: none; }
+.tip strong { font-size: 16px; font-variant-numeric: tabular-nums; }
+.tip span { opacity: .8; }
+
+/* Visuaal enne teksti: kaardi graafik, lihtne lause, põhjendus avatav */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.an-vis { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.an-vis-title { font-size: 14px; font-weight: 600; color: var(--ink-muted); margin-top: var(--space-2); }
+.an-vis-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4); }
+.an-plain { font-size: 17px; line-height: 1.5; color: var(--ink); }
+.an-more { border-top: 1px solid var(--hairline); }
+.an-more > summary { display: flex; gap: var(--space-3); padding: var(--space-2) 0; font-size: 15px; font-weight: 600; color: var(--signal); }
+.an-more-body { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-2) 0; }
+.an-card .an-src { margin-top: 0; }
+.an-card .an-vis + .an-plain { margin-top: calc(-1 * var(--space-1)); }
+
+/* Kompaktne profiilirida */
+.mprof { display: grid; grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr) 4rem; gap: var(--space-2); align-items: center; padding: 4px 0; }
+.mprof .lab { font-size: 14px; line-height: 1.25; }
+.mprof .lab small { display: block; color: var(--ink-faded); font-size: 12px; }
+.mprof .v { text-align: right; font-weight: 700; color: var(--signal); font-size: 15px; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.mprof .v small { display: block; font-weight: 400; color: var(--ink-muted); font-size: 12px; }
+.k-target { width: 18px; height: 0; border-top: 2px dashed var(--counter); }
+
+/* Väikesed tulbad */
+.mbars { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr) max-content; gap: 4px var(--space-3); align-items: center; }
+.mbars li { display: contents; }
+.mbars .lab { font-size: 14px; color: var(--ink-muted); }
+.mbars .track { position: relative; height: 16px; }
+.mbars .bar { position: absolute; inset: 0 auto 0 0; background: var(--context); border-radius: 0 4px 4px 0; }
+.mbars .ref { position: absolute; top: -3px; bottom: -3px; border-left: 2px solid var(--context-strong); }
+.mbars .val { font-size: 14px; text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-muted); }
+.mbars .ee .lab, .mbars .ee .val { color: var(--signal); font-weight: 700; }
+.mbars .ee .bar { background: var(--signal); }
+.mbars .eu .lab, .mbars .eu .val { color: var(--ink); font-weight: 600; }
+.mbars .eu .bar { background: var(--context-strong); }
+.mbars .risk .lab, .mbars .risk .val { color: var(--counter-text); font-weight: 600; }
+.mbars .risk .bar { background: var(--counter); }
+.mbars-ref { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; color: var(--ink-muted); }
+.mbars-ref i { width: 2px; height: 12px; background: var(--context-strong); }
+.idx-mini { grid-template-columns: max-content minmax(0, 1fr) 3.5rem; }
+
+/* Väike joongraafik */
+.an-svg { display: block; width: 100%; height: auto; max-width: 520px; }
+.an-svg text { font-size: 12px; }
+svg .area { fill: var(--hairline); }
+svg .target { stroke: var(--counter); stroke-width: 1.5; stroke-dasharray: 5 4; }
+svg .brace { stroke: var(--ink); stroke-width: 1.5; }
+svg .ann-strong { fill: var(--ink); font-weight: 700; }
+
+/* Suured numbrid enne → pärast */
+.an-nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--space-3); margin: var(--space-2) 0 0; }
+.an-nums div { background: var(--surface); border-radius: var(--radius-s); padding: var(--space-3); }
+.an-nums dt { font-size: 13px; color: var(--ink-muted); }
+.an-nums dd { margin: 0; font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+.an-nums dd .from { color: var(--ink-muted); font-size: 18px; }
+.an-nums dd b { color: var(--signal); }
+.an-nums dd.small { font-family: var(--font-body); font-size: 13px; font-weight: 400; color: var(--ink-muted); }
+
+/* Õige ja vale */
+.ov { display: flex; flex-direction: column; gap: var(--space-2); }
+.ov p { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-3); border-radius: var(--radius-s); background: var(--surface); border-left: 4px solid var(--context-strong); font-size: 16px; }
+.ov p.ov-no { border-left-color: var(--counter); color: var(--ink-muted); }
+.ov p.ov-no span:last-child { text-decoration: line-through; text-decoration-color: var(--counter); }
+.ov b { display: block; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+.ov .ov-ic { font-weight: 700; font-size: 18px; line-height: 1.3; }
+.ov-no .ov-ic { color: var(--counter-text); }
+
+/* Kataloogi kaart */
+.cov { display: flex; flex-direction: column; gap: var(--space-3); }
+.cov-row { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr); gap: var(--space-3); align-items: start; }
+.cov-name { font-weight: 600; font-size: 15px; line-height: 1.3; }
+.cov-name small { display: block; font-weight: 400; color: var(--ink-muted); font-size: 13px; }
+.cov-tiles { display: flex; flex-wrap: wrap; gap: 6px; }
+.tile { display: flex; flex-direction: column; justify-content: space-between; width: 150px; min-height: 64px; padding: 8px 10px; border-radius: var(--radius-s); text-decoration: none; font-size: 13px; line-height: 1.3; border: 1.5px solid transparent; }
+.tile small { font-size: 12px; opacity: .8; margin-top: 4px; }
+.tile:hover { outline: 2px solid var(--ink); outline-offset: 1px; }
+.t-seires { background: var(--signal); color: var(--on-signal); }
+.t-andmed { background: var(--context-strong); color: var(--surface); }
+.t-kav { background: var(--surface); border-color: var(--control-border); color: var(--ink); }
+.t-puudu { background: var(--surface); border-color: var(--counter); border-style: dashed; color: var(--counter-text); }
+.tile-key { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid transparent; }
+.cov-compact .cov-row { grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); gap: var(--space-2); }
+.cov-compact .cov-name { font-size: 13px; }
+.cov-compact .tile { width: 22px; min-height: 22px; padding: 0; }
+@media (max-width: 560px) {
+  .cov-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+  .tile { width: calc(50% - 3px); }
+  .cov-compact .tile { width: 22px; }
+  .mprof { grid-template-columns: minmax(0, 1fr) 3.6rem; }
+  .mprof .prof-line { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* Ülevaate kaardi asukoharida */
+.ind-loc { display: flex; flex-direction: column; gap: 6px; margin-top: var(--space-1); }
+.ind-loc-cap { font-size: 15px; color: var(--ink-muted); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.ind-loc-cap .k-eu { display: inline-block; width: 2px; height: 13px; background: var(--context-strong); }
+.loc { display: flex; flex-direction: column; gap: 2px; }
+.loc-scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-faded); font-variant-numeric: tabular-nums; }
+.ind .prof-line .pt { opacity: .7; }
+.tile-key.t-kav { border-color: var(--control-border); }
+.tile-key.t-puudu { border-color: var(--counter); border-style: dashed; }
+.ind .prof-line .pt.ee { opacity: 1; }
+svg .ann-strong { paint-order: stroke; stroke: var(--surface-raised); stroke-width: 4px; stroke-linejoin: round; }
+svg .lab-target { fill: var(--counter-text); }
+
+/* Avalehe päis foto peal: hall pehme foto, nurgaudu all vasakul, tekst udu peal. Ainult avalehel. */
+.hero-photo { padding-top: var(--space-4); }
+.hero-stack { display: grid; border-radius: var(--radius-s); overflow: hidden; background: var(--surface-raised); }
+.hero-stack > * { grid-area: 1 / 1; min-width: 0; }
+.hero-stack img { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 2.4 / 1; object-fit: cover; opacity: .5; }
+.hero-scrim { background: radial-gradient(ellipse 70% 110% at 0% 100%, var(--surface) 0%, color-mix(in srgb, var(--surface) 88%, transparent) 45%, color-mix(in srgb, var(--surface) 45%, transparent) 65%, transparent 82%); }
+.hero-text { position: relative; align-self: end; justify-self: start; max-width: 28rem; padding: var(--space-4) var(--space-4) 56px; display: grid; gap: 10px; }
+.hero-text h1 { font-size: clamp(22px, 3.6vw, 30px); line-height: 1.15; letter-spacing: -0.01em; }
+.hero-text .lead { font-size: 15px; color: var(--ink); margin: 0; }
+.photo-meta { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px 16px; margin-top: var(--space-1); font-size: 12px; color: var(--ink-muted); }
+.photo-credit { margin-left: auto; text-align: right; font-style: italic; }
+.hero-photo + main .wrap { padding-top: var(--space-5); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero-stack img { filter: brightness(.78); } }
+:root[data-theme="dark"] .hero-stack img { filter: brightness(.78); }
+@media (max-width: 560px) {
+  .hero-stack { display: block; overflow: visible; background: none; }
+  .hero-scrim { display: none; }
+  .hero-stack img { border-radius: var(--radius-s) var(--radius-s) 0 0; -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
+  .hero-text { margin-top: -36px; padding: 0; max-width: none; }
+  .hero-text h1 { font-size: 26px; }
+}
+/* Ülevaate kaardi riikide joon: rohkem õhku üles ja alla */
+.ind-loc { gap: var(--space-2); margin: var(--space-3) 0 var(--space-2); }
+.ind .loc { gap: 6px; }
+.ind .prof-line { height: 36px; }
+
+/* Analüütiku vaate esimene vaade: kokkuvõte + indeks kohe nähtaval, tugev ja nõrk kõrvuti */
+.an-hero { display: flex; flex-direction: column; gap: var(--space-3); }
+.an-hero-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-3) var(--space-5); margin-bottom: var(--space-2); }
+.an-hero-sub { font-size: 18px; color: var(--ink-muted); margin: var(--space-2) 0 0; max-width: 34em; }
+.an-score { display: flex; gap: var(--space-3); }
+.an-score p { margin: 0; display: flex; align-items: baseline; gap: 8px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-m); background: var(--surface-raised); border-top: 3px solid var(--signal); }
+.an-score p.down { border-top-color: var(--counter); }
+.an-score b { font-family: var(--font-display); font-size: 40px; line-height: 1; color: var(--signal); }
+.an-score .down b { color: var(--counter-text); }
+.an-score span { font-size: 14px; line-height: 1.25; color: var(--ink-muted); max-width: 8.5em; }
+.an-jump { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+.an-jump a { font-size: 15px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--control-border); text-decoration: none; color: var(--ink); }
+.an-jump a:hover { border-color: var(--signal); color: var(--signal); }
+.an-duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); align-items: start; }
+.an-duo > div { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.an-col { font-size: 18px; padding-bottom: var(--space-2); border-bottom: 3px solid var(--signal); }
+.an-col.down { border-bottom-color: var(--counter); }
+@media (max-width: 760px) { .an-duo { grid-template-columns: minmax(0, 1fr); } .an-score b { font-size: 32px; } }
+.an-hero .k-up { color: var(--signal); font-weight: 600; }
+.an-hero .k-down { color: var(--counter-text); font-weight: 600; }
+.an-score span { max-width: 10em; }
+@media (max-width: 560px) {
+  .an-hero .idx, .an-hero .idx-scale { grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr) 2.2rem; gap: 6px var(--space-2); }
+  .an-hero .idx .lab { font-size: 13px; }
+  .an-hero .idx .lab small { display: none; }
+  .an-hero .idx-scale span:nth-child(2n) { visibility: hidden; }
+}
+
+/* Ülevaate tabloo: kõik näitajad ühes vaates, rida = näitaja (sama loogika nagu analüütiku vaates) */
+.tabloo { list-style: none; margin: 0; padding: 0 var(--space-4); background: var(--surface-raised); border-radius: var(--radius-m); }
+.tb-head, .tb-row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .8fr) minmax(0, 1.45fr) minmax(0, 1fr); gap: var(--space-2) var(--space-4); align-items: center; }
+.tb-head { padding: var(--space-3) 0 var(--space-2); font-size: 13px; font-weight: 600; color: var(--ink-muted); border-bottom: 1px solid var(--hairline); }
+.tb-row { padding: var(--space-4) 0; border-bottom: 1px solid var(--hairline); }
+.tb-row:last-child { border-bottom: 0; }
+.tb-name { display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: var(--ink); }
+.tb-name .eyebrow { font-size: 11px; }
+.tb-name b { font-size: 17px; line-height: 1.25; text-decoration: underline; text-decoration-color: var(--hairline); text-underline-offset: 3px; }
+.tb-name:hover b { color: var(--signal); text-decoration-color: currentColor; }
+.tb-name small { font-size: 13px; color: var(--ink-muted); }
+.tb-big { margin: 0; display: flex; flex-direction: column; }
+.tb-big span { font-family: var(--font-display); font-size: 36px; line-height: 1; color: var(--signal); }
+.tb-big small { font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
+.tb-loc { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.tb-loc .ind-loc-cap { font-size: 13px; }
+.tb-loc .prof-line { height: 30px; }
+.tb-loc .prof-line .pt { opacity: .7; }
+.tb-loc .prof-line .pt.ee { opacity: 1; }
+.tb-trust { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-muted); }
+.tb-trust .tr { display: flex; align-items: center; gap: 8px; }
+.tb-trust .tr i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--context-strong); flex: none; }
+.tb-trust .tr.ok { color: var(--ink); }
+.tb-trust .tr.ok i { background: var(--context-strong); }
+.tb-trust .tr.risk { color: var(--counter-text); font-weight: 600; }
+.tb-trust .tr.risk i { background: var(--counter); border-color: var(--counter); }
+.tb-rule { grid-column: 1 / -1; margin: 0; max-width: none; font-size: 14px; color: var(--ink-muted); background: var(--surface); border-radius: var(--radius-s); padding: var(--space-2) var(--space-3); }
+.tb-rule b { color: var(--ink); }
+.edasi { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); }
+.edasi a { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: var(--space-4); border-radius: var(--radius-m); background: var(--surface-raised); text-decoration: none; color: var(--ink-muted); font-size: 15px; border-top: 3px solid var(--signal); }
+.edasi a b { color: var(--ink); font-size: 18px; }
+.edasi a:hover b { color: var(--signal); }
+@media (max-width: 760px) {
+  .tb-head { display: none; }
+  .tb-row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3); }
+  .tb-loc, .tb-trust { grid-column: 1 / -1; }
+  .tb-trust { flex-direction: row; flex-wrap: wrap; gap: 4px 14px; }
+  .tb-big { text-align: right; }
+  .tb-big span { font-size: 30px; }
+}
+/* Tabloo read hõredamaks: rohkem reavahet ja õhku */
+.tb-row { padding: var(--space-5) 0; row-gap: var(--space-4); }
+.tb-name { gap: 6px; }
+.tb-name b { line-height: 1.35; }
+.tb-name small, .tb-big small, .tb-loc .ind-loc-cap { line-height: 1.5; }
+.tb-big small { margin-top: 8px; }
+.tb-loc { gap: 8px; }
+.tb-trust { gap: 8px; line-height: 1.45; }
+.tb-rule { line-height: 1.6; padding: var(--space-3) var(--space-4); }
+@media (max-width: 760px) { .tb-row { row-gap: var(--space-4); } .tb-trust { gap: 6px 16px; } }

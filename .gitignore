@@ -1,0 +1,34 @@
+# Lubatud nimekiri: kõik on keelatud, välja arvatud allpool lubatud.
+# Uus kaust (nt tooelu-seire/) läheb repo alles siis, kui see on siia lisatud.
+*
+!*/
+!.gitignore
+!.gitattributes
+!.editorconfig
+!CLAUDE.md
+!README.md
+!UUENDUSED.md
+!.claude/settings.json
+!.githooks/pre-commit
+!.github/workflows/*.yml
+!tehisaru-seire/**
+!turvakontroll/**
+
+# Lubatud kaustades uuesti välja: vahemälu, keskkond, võtmed, isiklikud fotod, privaatsed loendid
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+.env
+.env.*
+.claude/settings.local.json
+tehisaru-seire/raportid/fotod/
+tehisaru-seire/raportid/html/fotod/
+turvakontroll/keelatud-*.txt
+turvakontroll/KLASSID.md
+*.xlsx
+*.xls
+*.zip
+*.pdf
+*.docx
+*.pkl

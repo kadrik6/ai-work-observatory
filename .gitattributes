@@ -1,0 +1,7 @@
+# Kõik tekstifailid on repos ja töökaustas LF-reavahetusega, ka Windowsis (kuldfailitest võrdleb baite).
+* text=auto eol=lf
+# CSV-d kirjutab Pythoni csv-moodul \r\n-ga; jätame baidid täpselt nii, nagu need on.
+*.csv -text
+*.jpg binary
+*.jpeg binary
+*.png binary
