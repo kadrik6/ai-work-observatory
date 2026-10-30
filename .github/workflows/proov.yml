@@ -1,0 +1,85 @@
+name: proov
+
+# Kogujate proovikäivitus. Käivitub AINULT käsitsi (Actions -> proov -> Run workflow).
+# Kirjutab ainult käivitaja ajutisse kausta ja laeb tulemuse üles Actionsi artefaktina (14 päeva).
+# Ei commit'i, ei push'i, ei muuda avaldatud lehti ega kinnitatud andmeid: õigus on ainult lugeda.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: proov
+  cancel-in-progress: false
+
+jobs:
+  uuringud-ja-teated:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Esimene käivitus
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+        run: python tooelu-seire/proov.py --valjund valjund/1
+      - name: Teine käivitus (duplikaatide ja versioonide kontroll sama päeva andmetel)
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+        run: python tooelu-seire/proov.py --valjund valjund/2 --eelmine valjund/1/koik.jsonl
+      - name: Kokkuvõte
+        if: always()
+        run: cat valjund/*/kokkuvote.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: proov-uuringud-${{ github.run_number }}
+          path: valjund/
+          retention-days: 14
+          if-no-files-found: warn
+
+  statistika:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Eurostat ja Statistikaamet (run.py)
+        working-directory: tehisaru-seire
+        run: python run.py 2>&1 | tee ../run.log || echo "run.py lõpetas veaga" >> ../run.log
+      - name: OECD, ILO ja riiklikud statistikaametid (lae_valis.py)
+        working-directory: tehisaru-seire
+        run: python kataloog/lae_valis.py 2>&1 | tee ../lae_valis.log || echo "lae_valis.py lõpetas veaga" >> ../lae_valis.log
+      - name: Mis muutuks võrreldes repo andmetega (ainult käivitaja ajutises koopias)
+        if: always()
+        run: |
+          mkdir -p valjund
+          mv run.log lae_valis.log valjund/ 2>/dev/null || true
+          git status --porcelain > valjund/muutunud-failid.txt
+          git diff --stat > valjund/muutused.txt
+          git diff -- tehisaru-seire/kataloog/valis-olek.csv > valjund/valis-olek.diff || true
+          cp tehisaru-seire/kataloog/valis-olek.csv valjund/ 2>/dev/null || true
+          {
+            echo "## Statistika proov"
+            echo
+            echo "Andmeid ei salvestatud repo. Muutunud failid käivitaja koopias:"
+            echo '```'
+            cat valjund/muutused.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: proov-statistika-${{ github.run_number }}
+          path: |
+            valjund/
+            tehisaru-seire/andmed/
+            tehisaru-seire/kataloog/vaatlused-valis.csv
+          retention-days: 14
+          if-no-files-found: warn

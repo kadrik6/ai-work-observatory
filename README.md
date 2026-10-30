@@ -5,7 +5,7 @@ Tehisaru kasutuse, oskuste ja tööturu mõju seire. Andmed tulevad avalikest al
 | Kaust | Mis |
 |---|---|
 | `tehisaru-seire/` | Suund 1: tehisaru kasutus ja oskused. Siin on ka **ühine kiht**: allikate register, näitajate kataloog, laadijad ja kontrollid. Vt `tehisaru-seire/README.md`. |
-| `tooelu-seire/` | Suund 2 (tuleb): tehisaru mõju tööturule |
+| `tooelu-seire/` | Suund 2: tehisaru mõju tööturule. Praegu ainult kogujate proovirežiim (kontrollimata kandidaadid). Vt `tooelu-seire/README.md`. |
 | `turvakontroll/` | Mis tohib repo minna; arvuti kontroll |
 | `CLAUDE.md` | Claude Code'i ühised reeglid |
 | `UUENDUSED.md` | Muudatuste logi |
@@ -43,10 +43,20 @@ Kaitse on viiekihiline:
 
 Täpsemalt: `turvakontroll/README.md`.
 
+## GitHub Actions
+
+| Töövoog | Käivitub | Õigused | Mida teeb |
+|---|---|---|---|
+| `testid` | iga push ja pull request | ainult lugemine | turvakontroll ja kõik testid |
+| `proov` | ainult käsitsi | ainult lugemine | kogujate ja statistika laadijate proov; tulemus on artefakt (14 päeva), repo ei muutu |
+
+Ajastatud seiret veel pole. See lisandub alles pärast õnnestunud ja kontrollitud proovikäivitust.
+
 ## Testid
 
 | Testid | Kus jooksevad |
 |---|---|
 | `tehisaru-seire/tests` (sh kuldfailitest ja liidesetest) | kohapeal ja GitHub Actionsis |
 | `turvakontroll/tests` | kohapeal ja GitHub Actionsis |
+| `tooelu-seire/tests` (kogujad ilma võrguta) | kohapeal ja GitHub Actionsis |
 | Välise lehe testid | ainult selle lehe juures, mitte siin. Siinne liidesetest kontrollib faile, mida see leht loeb. |

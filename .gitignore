@@ -13,6 +13,7 @@
 !.github/workflows/*.yml
 !tehisaru-seire/**
 !turvakontroll/**
+!tooelu-seire/**
 
 # Lubatud kaustades uuesti välja: vahemälu, keskkond, võtmed, isiklikud fotod, privaatsed loendid
 __pycache__/
@@ -26,6 +27,7 @@ tehisaru-seire/raportid/fotod/
 tehisaru-seire/raportid/html/fotod/
 turvakontroll/keelatud-*.txt
 turvakontroll/KLASSID.md
+valjund/
 *.xlsx
 *.xls
 *.zip

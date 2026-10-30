@@ -32,3 +32,6 @@ jobs:
       - name: Seire testid (sh kuldfailitest ja liidesetest)
         working-directory: tehisaru-seire
         run: python -m pytest -q
+      - name: Tööelu seire kogujate testid (ilma võrguta)
+        working-directory: tooelu-seire
+        run: python -m pytest -q -p no:cacheprovider

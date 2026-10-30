@@ -2,7 +2,7 @@
 
 Kaks uurimissuunda, ühine andmekiht (arhitektuur C, kinnitatud 30.10.2026):
 - `tehisaru-seire/`: tehisaru kasutus ja oskused + ÜHINE KIHT (`seire/`, `allikad/`, `kataloog/`)
-- `tooelu-seire/` (tuleb): tehisaru mõju tööturule (kandidaadid, hüpoteesid, prognoosid)
+- `tooelu-seire/`: tehisaru mõju tööturule. Praegu kogujate proovirežiim; kõik kirjed on kontrollimata kandidaadid
 - `turvakontroll/`: mis tohib repo minna
 
 Suuna oma reeglid on selle kausta `CLAUDE.md`-s. Siin on ainult ühised reeglid; neid seal ei korrata.
@@ -32,6 +32,7 @@ Kirjuta eesti keeles, lihtsalt ja täislausetega. Koodi nimed jäävad nagu on.
 ```
 python3 turvakontroll/arvuti.py                       # kas arvuti on korras
 python3 -m pytest -q -p no:cacheprovider turvakontroll/tests
+python3 -m pytest -q -p no:cacheprovider tooelu-seire/tests
 cd tehisaru-seire && python3 -m pytest -q
 ```
 Samad testid jooksevad GitHub Actionsis (`.github/workflows/testid.yml`).
