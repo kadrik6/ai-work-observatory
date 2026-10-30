@@ -29,6 +29,18 @@ from kogujad import allikad, yhine  # noqa: E402
 
 PARING = allikad.OPENALEX_PARING
 LIIGID = "type:article|preprint|report"
+# Lai päring pealkirjast ja kokkuvõttest. Kasutame Eesti ja uusimate tööde jaoks, kus pealkirja päring jätab
+# liiga palju välja (30.10: Eesti kohta leidis pealkirja päring vaid 4 tööd).
+PARING_LAI = ('("artificial intelligence" OR "generative AI" OR "large language model" OR ChatGPT OR automation '
+              'OR "machine learning" OR robots) AND ("labor market" OR "labour market" OR employment OR jobs '
+              'OR workforce OR workers OR skills OR wages OR occupations OR "future of work") '
+              'AND NOT ("job shop" OR scheduling)')
+# Eestikeelsed tööd: OpenAlexi tüvestamine on inglise keele oma, seepärast mitu sõnavormi.
+PARING_ET = ('(tehisintellekt OR tehisintellekti OR tehisaru OR masinõpe OR automatiseerimine OR "suur keelemudel") AND '
+             '(tööturg OR tööturu OR tööturul OR töötajad OR töötajate OR tööjõud OR tööjõu OR oskused OR oskuste '
+             'OR töökohad OR töökohtade OR töö)')
+EESTI = "authorships.countries:EE"
+LIIGID_LAI = "type:article|preprint|report|dissertation|book-chapter|book"
 
 # Viis hüpoteeside suunda (kirjeldused/tooelu-observatoorium-arhitektuur.md) ja generatiivne tehisaru eraldi.
 TEEMAD = {
@@ -126,6 +138,33 @@ def osad(tana):
                               f"to_publication_date:{aasta_tagasi},{LIIGID},cited_by_count:0", **{"per-page": 1}), arv),
         "eesti": (url(f"title.search:{PARING},abstract.search:Estonia OR Estonian,{LIIGID}",
                       sort="cited_by_count:desc", select=valik, **{"per-page": 10}), tood),
+        # Uusimad: viimase 60 päeva tööd avaldamise järjekorras (pealkirja päring, et jääks teema juurde).
+        "uusimad": (url(f"title.search:{PARING},from_publication_date:{(tana - dt.timedelta(days=60)).isoformat()},"
+                        f"to_publication_date:{tana.isoformat()},{LIIGID}",
+                        sort="publication_date:desc", select=valik, **{"per-page": 50}), tood),
+        "lai_aastad": (url(f"title_and_abstract.search:{PARING_LAI},publication_year:{aasta - 10}-{aasta},{LIIGID}",
+                           group_by="publication_year"), grupid),
+        # Eesti kolmel moel: Eesti autorid, Eesti mainimine kokkuvõttes, eestikeelsed tööd.
+        "eesti_autorid_aastad": (url(f"title_and_abstract.search:{PARING_LAI},{EESTI},{LIIGID_LAI}",
+                                     group_by="publication_year"), grupid),
+        "eesti_autorid_liigid": (url(f"title_and_abstract.search:{PARING_LAI},{EESTI},{LIIGID_LAI}",
+                                     group_by="type"), grupid),
+        "eesti_autorid_asutused": (url(f"title_and_abstract.search:{PARING_LAI},{EESTI},{LIIGID_LAI}",
+                                       group_by="authorships.institutions.lineage"), lambda s: grupid(s, 15)),
+        "eesti_autorid_uusimad": (url(f"title_and_abstract.search:{PARING_LAI},{EESTI},{LIIGID_LAI},"
+                                      f"to_publication_date:{tana.isoformat()}",
+                                      sort="publication_date:desc", select=valik, **{"per-page": 50}), tood),
+        "eesti_autorid_tsiteeritud": (url(f"title_and_abstract.search:{PARING_LAI},{EESTI},{LIIGID_LAI}",
+                                          sort="cited_by_count:desc", select=valik, **{"per-page": 25}), tood),
+        "eesti_mainitud_aastad": (url(f"title_and_abstract.search:({PARING_LAI}) AND (Estonia OR Estonian),{LIIGID_LAI}",
+                                      group_by="publication_year"), grupid),
+        "eesti_mainitud_uusimad": (url(f"title_and_abstract.search:({PARING_LAI}) AND (Estonia OR Estonian),{LIIGID_LAI},"
+                                       f"to_publication_date:{tana.isoformat()}",
+                                       sort="publication_date:desc", select=valik, **{"per-page": 50}), tood),
+        "eesti_keeles_aastad": (url(f"title_and_abstract.search:{PARING_ET},language:et",
+                                    group_by="publication_year"), grupid),
+        "eesti_keeles": (url(f"title_and_abstract.search:{PARING_ET},language:et",
+                             sort="publication_date:desc", select=valik, **{"per-page": 50}), tood),
     })
     return tulem
 
