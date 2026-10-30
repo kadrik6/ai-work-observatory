@@ -72,7 +72,7 @@ def test_arxiv_versioon_ja_pealkiri():
 def test_openalex_liik():
     k = allikad.openalex_kirjed(OPENALEX)
     assert [x["voti"] for x in k] == ["W1", "W2"]
-    assert [x["allika_liik"] for x in k] == ["eelretsenseeritud", "eeltrukk"]
+    assert [x["allika_liik"] for x in k] == ["artikkel", "eeltrukk"]
 
 
 def test_rss_kahepoolne_filter():
@@ -111,6 +111,12 @@ def test_uus_versioon_eelmise_kaivituse_jargi():
     uued, versioonid, dup = yhine.eralda(allikad.arxiv_kirjed(ARXIV), vana)
     assert not uued and len(dup) == 1
     assert versioonid[0]["voti"] == "2610.01234" and versioonid[0]["eelmine_versioon"] == 1
+
+
+def test_openalexi_uuendusaeg_ei_ole_uus_versioon():
+    vana = allikad.openalex_kirjed(OPENALEX.replace(b"2026-10-25T00", b"2026-10-20T00"))
+    _, versioonid, dup = yhine.eralda(allikad.openalex_kirjed(OPENALEX), vana)
+    assert not versioonid and len(dup) == 2
 
 
 def test_eurostat_uus_uuendus_on_versioon():

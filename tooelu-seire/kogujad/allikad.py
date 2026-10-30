@@ -47,6 +47,7 @@ def arxiv_kirjed(sisu):
 
 
 # --- OpenAlex (teadustööd, sh ajakirjad ja töödokumendid) -------------------------------------------
+# OpenAlexi tüüp "article" ei tähenda, et töö on eelretsenseeritud, seepärast liik "artikkel".
 OPENALEX_URL = "https://api.openalex.org/works"
 # Proov 30.10: üldotsing (search) ja otsing kokkuvõttest tõid enamasti teemaväliseid töid (~4/15 asjakohased).
 # Otsing pealkirjast andis käsitsi kontrollis ~13/15 asjakohast.
@@ -69,7 +70,7 @@ def openalex_kirjed(sisu):
         tuup = (w.get("type") or "").lower()
         tulem.append({
             "allikas": "openalex", "voti": (w.get("id") or "").rsplit("/", 1)[-1],
-            "allika_liik": {"preprint": "eeltrukk", "article": "eelretsenseeritud", "report": "raport"}.get(tuup, tuup or "teadmata"),
+            "allika_liik": {"preprint": "eeltrukk", "article": "artikkel", "report": "raport"}.get(tuup, tuup or "teadmata"),
             "pealkiri": w.get("display_name") or w.get("title") or "", "url": w.get("id"), "doi": w.get("doi"),
             "avaldatud": w.get("publication_date"), "uuendatud": (w.get("updated_date") or "")[:10] or None,
         })

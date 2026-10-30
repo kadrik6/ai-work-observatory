@@ -93,6 +93,10 @@ def _on_uuem(uus, vana):
         return False
     if uus.get("versioon") and vana.get("versioon"):
         return uus["versioon"] > vana["versioon"]
+    # 'uuendatud' on uus versioon ainult statistikas (andmestiku uus seis). OpenAlexi updated_date muutub ka
+    # metaandmete värskendusel; proovis 30.10 tekitas see valesid "uusi versioone".
+    if uus.get("allika_liik") != "ametlik_statistika":
+        return False
     return bool(uus.get("uuendatud") and vana.get("uuendatud") and uus["uuendatud"] > vana["uuendatud"])
 
 

@@ -50,11 +50,14 @@ jobs:
           python - <<'PY'
           import json, pathlib
           v = pathlib.Path("valjund")
-          uued = {(k["allikas"], k["voti"]) for k in map(json.loads, (v / "kirjed.jsonl").read_text().splitlines())}
+          def votmed(nimi):
+              return {(k["allikas"], k["voti"]) for k in map(json.loads, (v / nimi).read_text().splitlines())}
+          uued, versioonid = votmed("kirjed.jsonl"), votmed("versioonid.jsonl")
           print("OLEK " + json.dumps(json.loads((v / "olek.json").read_text()), ensure_ascii=False))
           for rida in (v / "koik.jsonl").read_text().splitlines():
               k = json.loads(rida)
               k["uus"] = (k["allikas"], k["voti"]) in uued
+              k["uus_versioon"] = (k["allikas"], k["voti"]) in versioonid
               print("KIRJE " + json.dumps(k, ensure_ascii=False))
           PY
       - name: Kokkuvõte
