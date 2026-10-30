@@ -44,6 +44,19 @@ jobs:
           # 30 päeva: OpenAlex indekseerib töid hilinemisega; kordused eemaldab duplikaatide kontroll.
           # Kõik seni nähtud kirjed lähevad edasi järgmisele käivitusele (ainult artefaktis, mitte repos).
           cat eelmine/nahtud.jsonl valjund/koik.jsonl 2>/dev/null > valjund/nahtud.jsonl || cp valjund/koik.jsonl valjund/nahtud.jsonl
+      - name: Kirjed logisse (ülevaatelehe jaoks; repo privaatne, ainult pealkiri, link ja kuupäevad)
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          v = pathlib.Path("valjund")
+          uued = {(k["allikas"], k["voti"]) for k in map(json.loads, (v / "kirjed.jsonl").read_text().splitlines())}
+          print("OLEK " + json.dumps(json.loads((v / "olek.json").read_text()), ensure_ascii=False))
+          for rida in (v / "koik.jsonl").read_text().splitlines():
+              k = json.loads(rida)
+              k["uus"] = (k["allikas"], k["voti"]) in uued
+              print("KIRJE " + json.dumps(k, ensure_ascii=False))
+          PY
       - name: Kokkuvõte
         if: always()
         run: cat valjund/kokkuvote.md >> "$GITHUB_STEP_SUMMARY" || true
