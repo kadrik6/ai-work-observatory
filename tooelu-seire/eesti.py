@@ -36,18 +36,19 @@ ALLIKAD = {
     "arenguseire": {"liik": "mõttekoda", "wp": "https://arenguseire.ee/"},
     "praxis": {"liik": "mõttekoda", "wp": "https://www.praxis.ee/"},
     "oska": {"liik": "tööturu prognoos", "wp": "https://oska.kutsekoda.ee/"},
-    "riigikogu_toimetised": {"liik": "ajakiri", "wp": "https://rito.riigikogu.ee/"},
     "err": {"liik": "uudis", "rss": "https://www.err.ee/rss"},
     "novaator": {"liik": "uudis", "rss": "https://novaator.err.ee/rss"},
     "tu_dspace": {"liik": "lõputöö", "dspace": "https://dspace.ut.ee/"},
     # Proov: vastuse kuju pole veel teada.
     "taltech_digikogu": {"liik": "lõputöö", "proov": ["https://digikogu.taltech.ee/oai?verb=Identify",
                                                      "https://digikogu.taltech.ee/et/Search/Items?search=tehisintellekt"]},
+    # Proov 30.10: API vastab, aga SearchText ei kitsenda tulemust. Otsime õiget parameetrit ja juhendit.
     "etis": {"liik": "teadusinfo", "proov": [
-        "https://www.etis.ee:2346/api/publication/getitems?Format=json&Take=5&Skip=0&SearchText=tehisintellekt",
-        "https://www.etis.ee:7443/api/publication/getitems?Format=json&Take=5&Skip=0&SearchText=tehisintellekt"]},
-    "statistikaamet": {"liik": "statistika", "proov": ["https://www.stat.ee/et/rss.xml",
-                                                      "https://www.stat.ee/et/avasta-statistikat/rss"]},
+        "https://www.etis.ee:2346/api/help",
+        "https://www.etis.ee:2346/swagger/index.html",
+        "https://www.etis.ee:2346/api/publication/getitems?Format=json&Take=2&Skip=0&Title=tehisintellekt",
+        "https://www.etis.ee:2346/api/publication/getitems?Format=json&Take=2&Skip=0&Keyword=tehisintellekt",
+        "https://www.etis.ee:2346/api/publication/getitems?Format=json&Take=2&Skip=0&Search=tehisintellekt"]},
 }
 
 
@@ -70,7 +71,12 @@ def rss(sisu, allikas, liik, reegel=None):
     "teemas" näitab, kas tehisaru sõna on pealkirjas või kokkuvõttes. Otsingu leid võib olla ka teksti sees.
     """
     tulem = []
-    for i in ET.fromstring(sisu).iter("item"):
+    try:
+        juur = ET.fromstring(sisu)
+    except ET.ParseError:
+        # Proov 30.10: Praxise voos on kodeerimata "&". Parandame ainult selle ja proovime uuesti.
+        juur = ET.fromstring(re.sub(rb"&(?!#?\w+;)", b"&amp;", sisu))
+    for i in juur.iter("item"):
         pealkiri = " ".join((i.findtext("title") or "").split())
         leid = TEHISARU.search(pealkiri + " " + (i.findtext("description") or ""))
         if reegel is None and not leid:
@@ -85,7 +91,7 @@ def wp_url(alus, sona, leht):
     return alus + "?" + urllib.parse.urlencode({"s": sona, "feed": "rss2", "paged": leht})
 
 
-def dspace_url(alus, mitu=100):
+def dspace_url(alus, mitu=50):
     return alus + "server/api/discover/search/objects?" + urllib.parse.urlencode(
         {"query": DSPACE_PARING, "dsoType": "ITEM", "sort": "dc.date.issued,DESC", "size": mitu})
 
@@ -106,9 +112,12 @@ def dspace(sisu, alus, allikas, liik):
     return tulemus["page"]["totalElements"], kirjed
 
 
-def proov(sisu):
-    """Tundmatu vastus: ainult algus ühe reana, et järgmine kord saaks lahtipakkimise kirjutada."""
-    return " ".join(sisu[:600].decode("utf-8", "replace").split())
+def proov(sisu, sona="tehisintellekt"):
+    """Tundmatu vastus: algus ja koht, kus otsingusõna esimest korda esineb, et järgmine kord saaks
+    lahtipakkimise kirjutada."""
+    tekst = " ".join(sisu.decode("utf-8", "replace").split())
+    koht = tekst.lower().find(sona, 600)
+    return tekst[:600] + (f" […] {tekst[max(koht - 300, 0):koht + 900]}" if koht > 0 else "")
 
 
 def koonda(kirjed):
@@ -169,7 +178,8 @@ def allikas(nimi, seade, hae, paus=1.0):
 
 
 def kaivita(valjund, hae=None, paus=1.0):
-    hae = hae or yhine.hae
+    # Tartu Ülikooli DSpace vastas 30.10 proovis aeglaselt: pikem ooteaeg.
+    hae = hae or (lambda aadress: yhine.hae(aadress, ooteaeg=90))
     valjund = Path(valjund)
     valjund.mkdir(parents=True, exist_ok=True)
     tulem = {"aeg": yhine.nuud(), "allikad": {nimi: allikas(nimi, s, hae, paus) for nimi, s in ALLIKAD.items()}}

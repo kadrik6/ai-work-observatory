@@ -33,10 +33,11 @@ teemade kaupa, enim tsiteeritud tööd, kanalid, asutused, riigid ja Eesti kohta
 (`python3 tooelu-seire/analyys.py --valjund valjund`). Tsitaadid on ainus vaba populaarsuse mõõt; klikke ei avaldata.
 
 Eesti allikad: sama töövoo teine samm (`python3 tooelu-seire/eesti.py --valjund valjund`) loeb allikaid, mida
-OpenAlexis pole: Arenguseire Keskus, Praxis, OSKA ja Riigikogu Toimetised (WordPressi otsinguvoog), ERR ja Novaator
-(uudisvoog, ainult tehisaru sõnadega kirjed) ning Tartu Ülikooli lõputööd (DSpace). TalTechi digikogu, ETIS ja
-Statistikaamet on proovirežiimis: logis on olek ja vastuse algus. Uudisvoog näitab ainult viimaseid kirjeid,
+OpenAlexis pole: Arenguseire Keskus, Praxis ja OSKA (WordPressi otsinguvoog), ERR ja Novaator
+(uudisvoog, ainult tehisaru sõnadega kirjed) ning Tartu Ülikooli lõputööd (DSpace). TalTechi digikogu ja ETIS
+on proovirežiimis: logis on olek ja vastuse algus. Uudisvoog näitab ainult viimaseid kirjeid,
 seepärast koguneb uudiste ajalugu alles igapäevase seirega.
+Riigikogu Toimetised (HTTP 403) ja Statistikaameti voog (HTTP 404) ei ole automaatselt loetavad (proov 30.10).
 
 ## Väljund
 
