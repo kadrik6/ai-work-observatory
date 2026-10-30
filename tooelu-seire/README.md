@@ -34,8 +34,9 @@ teemade kaupa, enim tsiteeritud tööd, kanalid, asutused, riigid ja Eesti kohta
 
 Eesti allikad: sama töövoo teine samm (`python3 tooelu-seire/eesti.py --valjund valjund`) loeb allikaid, mida
 OpenAlexis pole: Arenguseire Keskus, Praxis ja OSKA (WordPressi otsinguvoog), ERR ja Novaator
-(uudisvoog, ainult tehisaru sõnadega kirjed), ETIS-e publikatsioonid (pealkirja otsing) ning Tartu Ülikooli
-lõputööd (DSpace). TalTechi digikogu on proovirežiimis: logis on olek ja vastuse algus. Uudisvoog näitab ainult viimaseid kirjeid,
+(uudisvoog, ainult tehisaru sõnadega kirjed). Proovis veel ei tööta: ETIS (parameeter `Title` leiab ainult täpse
+pealkirja), Tartu Ülikooli DSpace (ei vasta GitHubi serveritele), Praxis (voos pole kirjeid) ja TalTechi digikogu
+(ainult HTML-leht): logis on olek ja vastuse algus. Uudisvoog näitab ainult viimaseid kirjeid,
 seepärast koguneb uudiste ajalugu alles igapäevase seirega.
 Riigikogu Toimetised (HTTP 403) ja Statistikaameti voog (HTTP 404) ei ole automaatselt loetavad (proov 30.10).
 

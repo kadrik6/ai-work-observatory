@@ -46,7 +46,8 @@ ALLIKAD = {
     # Proov: vastuse kuju pole veel teada.
     "taltech_digikogu": {"liik": "lõputöö", "proov": ["https://digikogu.taltech.ee/oai?verb=Identify",
                                                      "https://digikogu.taltech.ee/et/Search/Items?search=tehisintellekt"]},
-    # Proov 30.10: SearchText, Keyword ja Search ei kitsenda tulemust, Title kitsendab (pealkirja otsing).
+    # Proov 30.10: SearchText, Keyword ja Search ei kitsenda tulemust. Title leiab ainult täpse pealkirja (2 kirjet),
+    # seega ETIS vajab veel õiget otsinguparameetrit.
     "etis": {"liik": "teadusinfo", "etis": "https://www.etis.ee:2346/api/publication/getitems"},
     # Proov 30.10: otsing aegus mitu korda ja kolmas käivitus ületas tööaja. Viimaseks, et teisi mitte kinni hoida.
     # Proov näitab, kas server on GitHubist üldse kättesaadav.
