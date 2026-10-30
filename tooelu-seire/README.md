@@ -40,6 +40,10 @@ pealkirja), Tartu Ülikooli DSpace (ei vasta GitHubi serveritele), Praxis (voos 
 seepärast koguneb uudiste ajalugu alles igapäevase seirega.
 Riigikogu Toimetised (HTTP 403) ja Statistikaameti voog (HTTP 404) ei ole automaatselt loetavad (proov 30.10).
 
+Lisaallikad: kolmas samm (`python3 tooelu-seire/lisaallikad.py --valjund valjund`) mõõdab tähelepanu ja toob raporteid:
+GDELT (uudiste arv ja nimekiri, maailm ja Eesti, viimased 3 kuud), Vikipeedia vaatamised, Hacker Newsi enim hääli
+saanud lood, Maailmapanga dokumendid ning uurimisasutuste uudisvood. Need on populaarsuse lähendid, mitte klikid.
+
 ## Väljund
 
 `olek.json`, `koik.jsonl`, `nahtud.jsonl` (kõik seni nähtud), `kirjed.jsonl` (uued), `versioonid.jsonl`, `duplikaadid.jsonl`, `vead.jsonl`,

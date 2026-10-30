@@ -31,6 +31,9 @@ jobs:
       - name: Eesti allikad
         if: always()
         run: python tooelu-seire/eesti.py --valjund valjund
+      - name: Lisaallikad
+        if: always()
+        run: python tooelu-seire/lisaallikad.py --valjund valjund
       - uses: actions/upload-artifact@v4
         if: always()
         with:
