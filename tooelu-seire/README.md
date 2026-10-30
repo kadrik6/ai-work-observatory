@@ -20,7 +20,7 @@ Sama töö eri allikates (nt arXiv ja OpenAlex) tuvastatakse DOI või normalisee
 
 ```
 python3 tooelu-seire/proov.py --valjund /tmp/proov1
-python3 tooelu-seire/proov.py --valjund /tmp/proov2 --eelmine /tmp/proov1/koik.jsonl
+python3 tooelu-seire/proov.py --valjund /tmp/proov2 --eelmine /tmp/proov1/nahtud.jsonl
 ```
 
 GitHubis: Actions → **proov** → Run workflow. Tulemus on käivituse artefaktis (14 päeva).
@@ -30,7 +30,7 @@ Ajastatud seire: töövoog **seire** käivitub iga päev ja on käivitatav ka k�
 
 ## Väljund
 
-`olek.json`, `koik.jsonl`, `kirjed.jsonl` (uued), `versioonid.jsonl`, `duplikaadid.jsonl`, `vead.jsonl`,
+`olek.json`, `koik.jsonl`, `nahtud.jsonl` (kõik seni nähtud), `kirjed.jsonl` (uued), `versioonid.jsonl`, `duplikaadid.jsonl`, `vead.jsonl`,
 `kokkuvote.md`. Väljumiskood on 0, kui vähemalt üks allikas töötas.
 
 ## Veel tegemata

@@ -30,7 +30,7 @@ jobs:
       - name: Teine käivitus (duplikaatide ja versioonide kontroll sama päeva andmetel)
         env:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
-        run: python tooelu-seire/proov.py --valjund valjund/2 --eelmine valjund/1/koik.jsonl
+        run: python tooelu-seire/proov.py --valjund valjund/2 --eelmine valjund/1/nahtud.jsonl
       - name: Kokkuvõte
         if: always()
         run: cat valjund/*/kokkuvote.md >> "$GITHUB_STEP_SUMMARY" || true

@@ -71,9 +71,9 @@ def eralda(kirjed, varasemad=()):
     Uus versioon: sama allika võti, aga suurem versiooninumber (nt arXiv v1 -> v2) või uuem 'uuendatud'.
     """
     nahtud = {}
-    for k in varasemad:
+    for k in varasemad:  # vanemad ees: hilisem kirje asendab varasema, võrdlus käib viimase seisuga
         for v in votmed(k):
-            nahtud.setdefault(v, k)
+            nahtud[v] = k
     uued, versioonid, duplikaadid = [], [], []
     for k in kirjed:
         vana = next((nahtud[v] for v in votmed(k) if v in nahtud), None)
@@ -86,6 +86,14 @@ def eralda(kirjed, varasemad=()):
         for v in votmed(k):
             nahtud[v] = k
     return uued, versioonid, duplikaadid
+
+
+def koonda(varasemad, kirjed):
+    """Kõik seni nähtud kirjed, iga töö (allikas + võti) üks kord, viimase seisuga. Järgmise käivituse võrdlus."""
+    viimane = {}
+    for k in list(varasemad) + list(kirjed):
+        viimane[(k["allikas"], k["voti"])] = k
+    return list(viimane.values())
 
 
 def _on_uuem(uus, vana):

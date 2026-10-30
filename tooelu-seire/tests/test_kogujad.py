@@ -133,13 +133,23 @@ def test_proov_kirjutab_ainult_valjundisse_ja_logib_vead(tmp_path):
     vead = yhine.loe_jsonl(tmp_path / "v" / "vead.jsonl")
     assert [v["allikas"] for v in vead] == ["err"] and "403" in vead[0]["viga"]
     assert sorted(p.name for p in (tmp_path / "v").iterdir()) == [
-        "duplikaadid.jsonl", "kirjed.jsonl", "koik.jsonl", "kokkuvote.md", "olek.json", "vead.jsonl", "versioonid.jsonl"]
+        "duplikaadid.jsonl", "kirjed.jsonl", "koik.jsonl", "kokkuvote.md", "nahtud.jsonl", "olek.json", "vead.jsonl",
+        "versioonid.jsonl"]
     assert "KONTROLLIMATA" in (tmp_path / "v" / "kokkuvote.md").read_text(encoding="utf-8")
+
+
+def test_versioon_vorreldakse_viimase_seisuga():
+    vanem = allikad.eurostat_kirje("isoc_eb_ain2", EUROSTAT.replace(b"2026-10-15", b"2026-04-01"))
+    viimane = allikad.eurostat_kirje("isoc_eb_ain2", EUROSTAT)
+    _, versioonid, dup = yhine.eralda([viimane], [vanem, viimane])
+    assert not versioonid and len(dup) == 1
+    assert yhine.koonda([vanem], [viimane]) == [viimane]
 
 
 def test_teine_kaivitus_leiab_duplikaadid(tmp_path):
     proov.kaivita(tmp_path / "a", hae=vale_hae(KOIK))
-    k = proov.kaivita(tmp_path / "b", eelmine=[tmp_path / "a" / "koik.jsonl"], hae=vale_hae(KOIK))
+    assert len(yhine.loe_jsonl(tmp_path / "a" / "nahtud.jsonl")) == len(yhine.loe_jsonl(tmp_path / "a" / "koik.jsonl"))
+    k = proov.kaivita(tmp_path / "b", eelmine=[tmp_path / "a" / "nahtud.jsonl"], hae=vale_hae(KOIK))
     assert k["uusi"] == 0 and k["uusi_versioone"] == 0 and k["duplikaate"] > 0
 
 

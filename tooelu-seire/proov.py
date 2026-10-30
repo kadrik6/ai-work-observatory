@@ -1,11 +1,12 @@
 """Kogujate proovikäivitus. Kirjutab ainult väljundkausta; repo faile, avaldatud lehti ega prognoose ei muuda.
 
     python tooelu-seire/proov.py --valjund valjund                         üks käivitus
-    python tooelu-seire/proov.py --valjund uus --eelmine vana/koik.jsonl    võrdle eelmise käivitusega
+    python tooelu-seire/proov.py --valjund uus --eelmine vana/nahtud.jsonl  võrdle varasemate käivitustega
 
 Väljund:
     olek.json           iga allika kohta ok/viga, kirjete arv, aeg
-    koik.jsonl          kõik selle käivituse kirjed (järgmise käivituse --eelmine)
+    koik.jsonl          kõik selle käivituse kirjed
+    nahtud.jsonl        kõik seni nähtud kirjed, igaüks üks kord viimase seisuga (järgmise käivituse --eelmine)
     kirjed.jsonl        uued KONTROLLIMATA kandidaadid
     versioonid.jsonl    sama töö uuem versioon (nt arXiv v2)
     duplikaadid.jsonl   kirjed, mis olid juba olemas
@@ -32,7 +33,8 @@ def kaivita(valjund, eelmine=(), paevi=14, hae=None):
     kirjed, olek = allikad.hae_koik(alates, hae=hae)
     varasemad = [k for tee in eelmine for k in yhine.loe_jsonl(tee)]
     uued, versioonid, duplikaadid = yhine.eralda(kirjed, varasemad)
-    for nimi, rida in [("koik", kirjed), ("kirjed", uued), ("versioonid", versioonid), ("duplikaadid", duplikaadid)]:
+    for nimi, rida in [("koik", kirjed), ("nahtud", yhine.koonda(varasemad, kirjed)), ("kirjed", uued),
+                       ("versioonid", versioonid), ("duplikaadid", duplikaadid)]:
         (valjund / f"{nimi}.jsonl").unlink(missing_ok=True)
         yhine.kirjuta_jsonl(valjund / f"{nimi}.jsonl", rida)
     vead = [{"allikas": n, **o} for n, o in olek.items() if o["olek"] == "viga"]
@@ -69,7 +71,7 @@ def kokkuvote(k, uued, koik=()):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--valjund", required=True, help="kaust, kuhu tulemus kirjutatakse (ei lähe repo)")
-    ap.add_argument("--eelmine", nargs="*", default=[], help="varasemate käivituste koik.jsonl (duplikaadid, versioonid)")
+    ap.add_argument("--eelmine", nargs="*", default=[], help="varasema käivituse nahtud.jsonl (duplikaadid, versioonid)")
     ap.add_argument("--paevi", type=int, default=14, help="mitu päeva tagasi OpenAlexist otsida")
     args = ap.parse_args(argv)
     k = kaivita(args.valjund, args.eelmine, args.paevi)
