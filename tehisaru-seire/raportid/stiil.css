@@ -528,7 +528,7 @@ svg .lab-target { fill: var(--counter-text); }
 .hero-text .lead { font-size: 15px; color: var(--ink); margin: 0; }
 .photo-meta { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px 16px; margin-top: var(--space-1); font-size: 12px; color: var(--ink-muted); }
 .photo-credit { margin-left: auto; text-align: right; font-style: italic; }
-.hero-photo + main .wrap { padding-top: var(--space-5); }
+.hero-photo + .wrap { padding-top: var(--space-5); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero-stack img { filter: brightness(.78); } }
 :root[data-theme="dark"] .hero-stack img { filter: brightness(.78); }
 @media (max-width: 560px) {
@@ -621,3 +621,26 @@ svg .lab-target { fill: var(--counter-text); }
 .tb-trust { gap: 8px; line-height: 1.45; }
 .tb-rule { line-height: 1.6; padding: var(--space-3) var(--space-4); }
 @media (max-width: 760px) { .tb-row { row-gap: var(--space-4); } .tb-trust { gap: 6px 16px; } }
+
+/* Disaini- ja infokvaliteedi nõuded (30.10): fookus nähtav igal juhtelemendil, kaart kaardis ära,
+   tähendus ka tekstina (mitte ainult värviga), foto ei lükka leidu allapoole, vähem liikumist. */
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
+.tb-name .eyebrow { text-transform: none; letter-spacing: 0; font-size: 13px; }
+.tb-rule { background: none; border-radius: 0; border-left: 3px solid var(--context-strong); padding: 2px 0 2px var(--space-3); color: var(--ink); }
+.hero-stack img { aspect-ratio: 3 / 1; }
+.idx .lab .idx-maas { color: var(--counter-text); font-weight: 600; }
+.idx .lab .idx-maas { white-space: nowrap; }
+.idx .lab .idx-maas::before { content: "·\00a0"; color: var(--ink-muted); font-weight: 400; }
+@media (max-width: 560px) { .an-hero .idx .lab small.idx-maas { display: inline; } .an-hero .idx .lab small.idx-maas::before { content: ""; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+.ind-loc-cap .nw { display: flex; flex-basis: 100%; align-items: center; gap: 4px; white-space: nowrap; }
+.skip { position: absolute; left: 16px; top: -100px; z-index: 10; padding: 8px 12px; background: var(--surface); color: var(--signal); border-radius: var(--radius-s); }
+.skip:focus { top: 8px; }
+main .wrap.hero-photo { display: block; padding-block: var(--space-4) 0; }
+main .hero-photo + .wrap { padding-top: var(--space-5); }
+/* Hall tulp vähemalt 3:1 kaardi taustaga (sama token kui hetkeseisu raportis): #767676 heledas, #8c8c8c tumedas. */
+:root { --bar-ctx: #767676; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bar-ctx: #8c8c8c; } }
+:root[data-theme="dark"] { --bar-ctx: #8c8c8c; }
+.bars .bar, .mbars .bar { background: var(--bar-ctx); }
+.bars .is-ref .bar { background: var(--context-strong); }

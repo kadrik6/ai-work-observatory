@@ -225,6 +225,7 @@ def leht(fail, pealkiri, sisu, uuendatud, ylal=""):
         "document.documentElement.setAttribute('data-theme',t);})();</script>\n"
     )
     keha = (
+        '<a class="skip" href="#sisu">Liigu sisu juurde</a>'
         '<header class="top"><div class="wrap">'
         '<a class="mark" href="index.html">Tehisaru seire</a>'
         f'<nav aria-label="Raporti lehed"><ul class="nav">{nav}</ul></nav>'
@@ -233,15 +234,12 @@ def leht(fail, pealkiri, sisu, uuendatud, ylal=""):
         f'<button type="button" data-t="light" aria-label="Hele režiim" title="Hele">{IKOON_PAIKE}</button>'
         f'<button type="button" data-t="dark" aria-label="Tume režiim" title="Tume">{IKOON_KUU}</button>'
         "</div></div></div></header>\n"
-        + ylal
-        + f'<main><div class="wrap">{sisu}</div></main>\n'
+        # Avalehe fotopäis koos pealkirjaga on samuti põhisisu osa.
+        + f'<main id="sisu">{ylal}<div class="wrap">{sisu}</div></main>\n'
         '<footer><div class="wrap">'
-        f"<p>Koostatud {kuupaev(uuendatud)} seire andmefailidest. Kõik numbrid tulevad otse failidest "
-        "naitajad.json ja andmed/. Käsitsi on kantud sündmuste logi, lahknevuste olek, riskide selgitused ja teiste riikide "
-        "uuemad numbrid (fail riiklikud.csv); iga käsitsi kantud number viitab oma allikale.</p>"
-        "<p>Allikad: Eurostat (taaskasutus viitega lubatud), Statistikaamet, OECD ja riikide statistikaametid "
-        "(iga allikas on lehel Teemad ja allikad). "
-        "Projekti kood: kaust tehisaru-seire, raporti generaator raportid/koosta.py.</p>"
+        f"<p>Koostatud {kuupaev(uuendatud)}. Allikad: Eurostat (taaskasutus viitega lubatud), Statistikaamet, OECD ja "
+        "riikide statistikaametid. Kust iga number tuleb ja mis on käsitsi kantud: "
+        '<a href="kuidas.html#allikad">Kuidas see töötab</a>.</p>'
         "</div></footer>\n"
         "<script>(function(){var r=document.documentElement,bb=document.querySelectorAll('.theme-seg button');"
         "function show(){var c=r.getAttribute('data-theme')==='dark'?'dark':'light';"
@@ -386,8 +384,9 @@ def andmetabel(x):
             f'<td class="r">{arv(s[a][0]) + (f" ({e(s[a][1])})" if s[a][1] else "") if a in s else "–"}</td>'
             for a in aastad)
         read.append(f'<tr class="{"is-focus" if g == FOOKUS else ""}"><th scope="row">{riik(g)}</th>{lahtrid}</tr>')
-    return (f'<div class="table-wrap"><table><caption>{e(x["n"]["uhik"])}. '
-            "Sulgudes Eurostati märgend: (b) aegrea katkestus.</caption>"
+    mm = lipud(x, aastad)
+    selg = ("Sulgudes Eurostati märgend: " + ", ".join(f"({m}) {LIPUD.get(m, 'märgend')}" for m in mm) + ".") if mm else ""
+    return (f'<div class="table-wrap"><table><caption>{e(kogum(x["n"]))}. {selg}</caption>'
             f'<thead><tr><th scope="col">Riik</th>{pea}</tr></thead><tbody>{"".join(read)}</tbody></table></div>')
 
 
@@ -411,6 +410,32 @@ SONASTUS = {
 LAUSED = {
     "inimeste-digioskused": "Eurostati järgi olid {a}. aastal vähemalt baastasemel digioskused {v}%-l Eesti 16–74-aastastest",
 }
+
+
+# Eurostati märgendid. Joonise all selgitatakse ainult neid, mis joonisel on.
+LIPUD = {"b": "aegrea katkestus", "p": "esialgne", "e": "hinnanguline", "u": "väike usaldusväärsus", "d": "määratlus erineb"}
+# Kõik viis näitajat on küsitlused: number on vastajate endi vastus, mitte mõõdetud kasutus (selgitus lehel Kuidas see töötab).
+ANDMELIIK = '<a href="kuidas.html#allikad">küsitlus</a>, vastajate endi vastused'
+
+
+def lipud(x, aastad):
+    """{märgend: ["Holland 2025", ...]} kõigi riikide ja antud aastate kohta."""
+    leitud = {}
+    for g, v in x["seeria"].items():
+        for a in aastad:
+            for m in (v[a][1] or "") if a in v else "":
+                leitud.setdefault(m, []).append(f"{riik(g)} {a}")
+    return leitud
+
+
+def lipud_lause(x, aastad):
+    return " ".join(f"({m}) {LIPUD.get(m, 'Eurostati märgend')}: {', '.join(kus)}." for m, kus in lipud(x, aastad).items())
+
+
+def kogum(n):
+    """Ühik koos sellega, kelle kohta number on, näiteks „% vähemalt 10 töötajaga ettevõtetest“."""
+    kelle = SONASTUS.get(n["id"], ("", ""))[1].removeprefix("Eesti ")
+    return f"% {kelle}" if kelle else n["uhik"]
 
 
 def arv_k(v):
@@ -747,9 +772,9 @@ def kaart(x, c, K):
            f"Võrdlusriikide seas {koha_tekst(x, koht, kokku)}.") if el is not None else ""
     # Pilt enne teksti: Eesti punkt võrdlusriikide seas, kriips = ELi keskmine. Lause jääb ekraanilugejale.
     punktid = [(riik(g), v[a][0], f"{arv(v[a][0])}%", g == FOOKUS) for g, v in s.items() if a in v and g != VIIDE]
-    asukoht = (f'<div class="tb-loc"><p class="ind-loc-cap">{a}: {koht}./{kokku}'
+    asukoht = (f'<div class="tb-loc"><p class="ind-loc-cap">Eurostat {a}: Eesti {arv(ee)}%, {koht}. koht {kokku}-st'
                + (" (väiksem on parem)" if vaiksem_parem(x) else "")
-               + (f' · <i class="k-eu"></i> EL {arv(el)}%' if el is not None else "") + "</p>"
+               + (f'<span class="nw"><i class="k-eu"></i> EL {arv(el)}%</span>' if el is not None else "") + "</p>"
                + pildid.asukoht(punktid, el=(el, f"{arv(el)}%") if el is not None else None, title=True)
                + f'<p class="sr-only">{e(vrd)}</p></div>')
     usaldus = "".join(f'<li class="tr {k["klass"]}"><i aria-hidden="true"></i>{e(k["luhi"])}: {e(k["silt"])}</li>'
@@ -793,7 +818,7 @@ def avaleht(D, K, tana):
     pais_rida = ('<li class="tb-head" aria-hidden="true"><span>Näitaja</span><span>Eesti uusim</span>'
                  '<span>Koht 7 riigi seas</span><span>Kas võib usaldada</span></li>')
     tabloo = (f'<ul class="tabloo">{pais_rida}{"".join(kaart(x, x["k"], K) for x in NN)}</ul>'
-              '<p class="small">Punktireal on Eesti lilla, teised riigid hallid ja kriips ELi keskmine. '
+              '<p class="small">Punktireal on Eesti suurem lilla punkt, teised riigid hallid ja püstkriips ELi keskmine. '
               'Iga näitaja kõik reeglid, allikad ja ajalugu on tema lehel.</p>')
 
     uudised = [s for s in D["sundmused"] if s["liik"] in ("allikas", "lahknevus")][:3]
@@ -886,8 +911,9 @@ def ajas_plokk(x, c, K):
         sisu = (
             '<div class="card"><div class="chart">'
             f'<h3 class="chart-title">{pealk}</h3>'
-            f'<p class="chart-sub">{e(n["uhik"])}, {x["aastad"][0]}–{a}, Eurostat</p>{jooned(x)}'
-            '<p class="source">Katkendjoon: vahepealse aasta kohta väärtust pole. Enne kasvu tõlgendamist vaata, '
+            f'<p class="chart-sub">{e(kogum(n))}, {x["aastad"][0]}–{a}, Eurostat · {ANDMELIIK}</p>{jooned(x)}'
+            '<p class="source">Katkendjoon: vahepealse aasta kohta väärtust pole. '
+            f'{e(lipud_lause(x, x["aastad"]))} Enne kasvu tõlgendamist vaata, '
             'kas mõõtmisviis on muutunud (<a href="#usaldus">usaldus</a>).</p></div></div>')
         return sektsioon("Muutus ajas", sisu, "Aegrida", "ajas")
     tekst = f"Eurostat küsis seda esimest korda {a}. aastal, nii et Eurostati aegrida veel pole."
@@ -938,9 +964,9 @@ def naitaja_leht(x, D, K, tana):
         f'<h3 class="chart-title">Eesti on {kokku} võrdlusriigi seas {koht}. kohal'
         + (" (väiksem on parem)" if vaiksem_parem(x) else "")
         + (f", ELi keskmine on {arv(el)}%" if el is not None else "") + "</h3>"
-        f'<p class="chart-sub">{e(n["uhik"])}, {a}</p>{tulbad(x, a)}'
+        f'<p class="chart-sub">{e(kogum(n))}, {a} · {ANDMELIIK}</p>{tulbad(x, a)}'
         f'<p class="source">Allikas: Eurostat, andmestik <code>{e(n["andmestik"])}</code>, uuendatud {kuupaev(meta["allikas_uuendas"])}. '
-        "Riike võrreldakse Eurostati numbritega, sest need on kõigi riikide kohta sama meetodiga.</p></div></div>")
+        f"Riike võrreldakse Eurostati numbritega, sest need on kõigi riikide kohta sama meetodiga. {e(lipud_lause(x, [a]))}</p></div></div>")
 
     read = "".join(
         f'<details class="check" id="usaldus-{k["id"]}"><summary><span class="check-name">{e(k["nimi"])}</span>'
@@ -1048,6 +1074,9 @@ def kuidas_leht(D, K, tana):
         "enne Eurostati. Need on samast küsitlusest, aga vahel uue klassifikaatoriga, nii et neid näidatakse eraldi.</p>"
         "<p><b>ELi-väliste riikide numbrid on teistest küsitlustest.</b> Ühendkuningriik, USA ja Kanada küsivad teist küsimust "
         "või teise perioodi kohta. Neid näidatakse eraldi ja ei järjestata koos Eurostati numbritega.</p>"
+        "<p><b>Kõik näitajad on küsitlused.</b> Ettevõtted ja inimesed vastavad ise, mida nad kasutavad või oskavad. "
+        "Number näitab nende vastust, mitte mõõdetud kasutust, ja sellel on valimiviga. Väike vahe kahe riigi või aasta "
+        "vahel ei pruugi olla päris vahe.</p>"
         "<p><b>Numbreid käsitsi ei kirjutata.</b> Iga number tuleb andmefailist. Käsitsi on kantud ainult sündmuste logi, "
         "väidete hinnangud ja teiste riikide uuemad numbrid, igaüks viitega allikale.</p></div>")
     varskus = (

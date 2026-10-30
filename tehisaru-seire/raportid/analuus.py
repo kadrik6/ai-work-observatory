@@ -178,7 +178,8 @@ def indeksi_joonis(k, P):
         # Värv tuleb hinnangust, et see klapiks kokkuvõttega: lilla = Põhjamaade tasemel, oranž = maas.
         klass = "up" if S["hinnang"] in ("yle", "vahemik") else "down"
         read.append(
-            f'<li><span class="lab">{S["nimi"]}<small>{S["a"]}</small></span>'
+            f'<li><span class="lab">{S["nimi"]}<small>{S["a"]}</small>'
+            + ('<small class="idx-maas">maas</small>' if klass == "down" else "") + '</span>'
             f'<span class="idx-track"{tip(k.arv(i, 0), S["nimi"] + ", Põhjamaade keskmine = 100")}>'
             f'<span class="idx-bar {klass}" style="left:{x0:.1f}%;width:{x1 - x0:.1f}%"></span></span>'
             f'<span class="val">{k.arv(i, 0)}</span></li>')
