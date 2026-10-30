@@ -13,8 +13,13 @@ from . import yhine
 
 # --- arXiv (eeltrükid, versioonidega) -------------------------------------------------------------
 ARXIV_URL = "https://export.arxiv.org/api/query"
-ARXIV_PARING = ('(all:"artificial intelligence" OR all:"generative AI" OR all:"large language model") '
-                'AND (all:labor OR all:labour OR all:employment OR all:jobs OR all:occupations OR all:wages)')
+# Proov 30.10: laiem päring (all:, ilma kategooriata) tõi peamiselt masinõppe töid ("jobs" = Kubernetes jne).
+# Kitsendatud majanduse ja ühiskonna kategooriatele ning kokkuvõttele; "occupations" tõi müra (occupancy).
+ARXIV_PARING = ('(cat:econ.GN OR cat:econ.EM OR cat:cs.CY OR cat:q-fin.GN) '
+                'AND (abs:"labor market" OR abs:"labour market" OR abs:employment OR abs:"future of work" '
+                'OR abs:workforce OR abs:wages) '
+                'AND (abs:"artificial intelligence" OR abs:"generative AI" OR abs:"large language model" '
+                'OR abs:automation)')
 ATOM = {"a": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
 
 
@@ -76,6 +81,11 @@ MARKSONAD = {
 }
 
 
+def rss_arv(sisu):
+    """Mitu kirjet voos kokku (enne filtrit). 0 sobivat kirjet on normaalne, 0 kirjet voos ei ole."""
+    return sum(1 for _ in ET.fromstring(sisu).iter("item"))
+
+
 def rss_kirjed(sisu, allikas="err"):
     """Kõik RSS-i kirjed, millel on mõni märksõna. Salvestatakse ainult pealkiri, link, kuupäev ja reegel."""
     juur = ET.fromstring(sisu)
@@ -123,16 +133,24 @@ def hae_koik(alates, hae=None):
     """Käivitab kõik allikad. Tagastab (kirjed, olek), kus olek on iga allika kohta ok/viga, arv ja aeg."""
     hae = hae or yhine.hae
     kirjed, olek = [], {}
-    tood = [("arxiv", lambda: arxiv_kirjed(hae(arxiv_url()))),
-            ("openalex", lambda: openalex_kirjed(hae(openalex_url(alates)))),
-            ("err", lambda: rss_kirjed(hae(ERR_URL)))]
-    tood += [(f"eurostat:{k}", (lambda k=k: [eurostat_kirje(k, hae(eurostat_url(k)))])) for k in EUROSTAT_ANDMESTIKUD]
+    def err():
+        sisu = hae(ERR_URL)
+        arv = rss_arv(sisu)
+        if not arv:
+            raise ValueError("voos pole ühtki kirjet")
+        return rss_kirjed(sisu), {"voos": arv}
+
+    tood = [("arxiv", lambda: (arxiv_kirjed(hae(arxiv_url())), {})),
+            ("openalex", lambda: (openalex_kirjed(hae(openalex_url(alates))), {})),
+            ("err", err)]
+    tood += [(f"eurostat:{k}", (lambda k=k: ([eurostat_kirje(k, hae(eurostat_url(k)))], {})))
+             for k in EUROSTAT_ANDMESTIKUD]
     for nimi, too in tood:
         algus = yhine.nuud()
         try:
-            uued = too()
+            uued, lisa = too()
             kirjed.extend(uued)
-            olek[nimi] = {"olek": "ok", "kirjeid": len(uued), "aeg": algus}
+            olek[nimi] = {"olek": "ok", "kirjeid": len(uued), "aeg": algus, **lisa}
         except (yhine.KogujaViga, ET.ParseError, json.JSONDecodeError, KeyError, ValueError) as e:
             olek[nimi] = {"olek": "viga", "viga": f"{type(e).__name__}: {e}", "aeg": algus}
     if "openalex" in olek and not os.environ.get("OPENALEX_API_KEY"):

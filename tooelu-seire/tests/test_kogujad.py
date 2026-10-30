@@ -80,6 +80,14 @@ def test_rss_kahepoolne_filter():
     assert [(x["voti"], x["suund"]) for x in k] == [("g1", "kadu"), ("g2", "loomine")]
 
 
+def test_tyhi_voog_on_viga_aga_sobimatud_kirjed_mitte(tmp_path):
+    tyhi = b'<?xml version="1.0"?><rss version="2.0"><channel></channel></rss>'
+    k = proov.kaivita(tmp_path / "a", hae=vale_hae({**KOIK, allikad.ERR_URL: tyhi}))
+    assert k["allikad"]["err"]["olek"] == "viga"
+    k = proov.kaivita(tmp_path / "b", hae=vale_hae(KOIK))
+    assert k["allikad"]["err"] == {**k["allikad"]["err"], "olek": "ok", "voos": 3, "kirjeid": 2}
+
+
 def test_eurostat_vintage():
     k = allikad.eurostat_kirje("isoc_eb_ain2", EUROSTAT)
     assert k["uuendatud"] == "2026-10-15T23:00:00+0200" and k["viimane_periood"] == "2025"

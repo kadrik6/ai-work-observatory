@@ -54,9 +54,12 @@ def kokkuvote(k, uued, koik=()):
             "| Allikas | Olek | Kirjeid | Märkus |", "|---|---|---|---|"]
     for nimi, o in k["allikad"].items():
         markus = re.sub(r"https?://([^/?]+)\S*", r"\1", o.get("viga", o.get("markus", "")))
+        if "voos" in o:
+            markus = f"voos {o['voos']} kirjet, märksõnaga {o['kirjeid']}. {markus}".strip()
         read.append(f"| {nimi} | {o['olek']} | {o.get('kirjeid', '')} | {markus} |")
-    read += ["", "## Näited (kuni 10)", ""]
-    read += [f"- [{x['allikas']}] {x['pealkiri'][:120]}" for x in uued[:10]]
+    read += ["", "## Näited uutest (kuni 3 iga allika kohta), asjakohasuse kontrolliks", ""]
+    for allikas in dict.fromkeys(x["allikas"] for x in uued):
+        read += [f"- [{allikas}] {x['pealkiri'][:120]}" for x in [y for y in uued if y["allikas"] == allikas][:3]]
     hoiatused = [x for x in koik if x.get("markus")]
     if hoiatused:
         read += ["", "## Hoiatused", ""] + [f"- {x['allikas']}:{x['voti']}: {x['markus']}" for x in hoiatused]
