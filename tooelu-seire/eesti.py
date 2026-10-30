@@ -28,6 +28,11 @@ TEHISARU = re.compile(r"tehisintellekt|tehisaru|keelemudel|masinõpe|chatgpt|aut
 # WordPressi otsing leiab sõna ka teksti seest, seepärast mitu kitsast otsingut.
 WP_OTSINGUD = ["tehisaru", "tehisintellekt", "automatiseerimine"]
 WP_LEHTI = 5
+ETIS_OTSINGUD = ["tehisintellekt", "tehisaru", "artificial intelligence", "generative AI", "automatiseerimine",
+                 "keelemudel", "language model"]
+# ETIS-e otsing on pealkirjast ja leiab tehisaru tööd igalt alalt. Teemas = pealkirjas on ka töö või oskused.
+TOO = re.compile(r"töö|oskus|kutse|tööjõu|töötaja|tööandja|ametikoh|pädevus|labou?r|work|job|employ|skill|occupation"
+                 r"|competenc|career|karjäär", re.I)
 DSPACE_PARING = ('(tehisintellekt OR tehisintellekti OR tehisaru OR "artificial intelligence" OR "generative AI" '
                  'OR ChatGPT OR keelemudel OR automatiseerimine) AND (töö OR tööturg OR tööturu OR töötajad '
                  'OR töötajate OR oskused OR tööandja OR "labour market" OR employment OR workers OR skills OR workplace)')
@@ -38,17 +43,14 @@ ALLIKAD = {
     "oska": {"liik": "tööturu prognoos", "wp": "https://oska.kutsekoda.ee/"},
     "err": {"liik": "uudis", "rss": "https://www.err.ee/rss"},
     "novaator": {"liik": "uudis", "rss": "https://novaator.err.ee/rss"},
-    "tu_dspace": {"liik": "lõputöö", "dspace": "https://dspace.ut.ee/"},
+    # Proov 30.10: otsing aegus kaks korda (90 s). Proov näitab, kas server on GitHubist üldse kättesaadav.
+    "tu_dspace": {"liik": "lõputöö", "dspace": "https://dspace.ut.ee/",
+                  "proov": ["https://dspace.ut.ee/server/api", "https://dspace.ut.ee/server/oai/request?verb=Identify"]},
     # Proov: vastuse kuju pole veel teada.
     "taltech_digikogu": {"liik": "lõputöö", "proov": ["https://digikogu.taltech.ee/oai?verb=Identify",
                                                      "https://digikogu.taltech.ee/et/Search/Items?search=tehisintellekt"]},
-    # Proov 30.10: API vastab, aga SearchText ei kitsenda tulemust. Otsime õiget parameetrit ja juhendit.
-    "etis": {"liik": "teadusinfo", "proov": [
-        "https://www.etis.ee:2346/api/help",
-        "https://www.etis.ee:2346/swagger/index.html",
-        "https://www.etis.ee:2346/api/publication/getitems?Format=json&Take=2&Skip=0&Title=tehisintellekt",
-        "https://www.etis.ee:2346/api/publication/getitems?Format=json&Take=2&Skip=0&Keyword=tehisintellekt",
-        "https://www.etis.ee:2346/api/publication/getitems?Format=json&Take=2&Skip=0&Search=tehisintellekt"]},
+    # Proov 30.10: SearchText, Keyword ja Search ei kitsenda tulemust, Title kitsendab (pealkirja otsing).
+    "etis": {"liik": "teadusinfo", "etis": "https://www.etis.ee:2346/api/publication/getitems"},
 }
 
 
@@ -74,8 +76,13 @@ def rss(sisu, allikas, liik, reegel=None):
     try:
         juur = ET.fromstring(sisu)
     except ET.ParseError:
-        # Proov 30.10: Praxise voos on kodeerimata "&". Parandame ainult selle ja proovime uuesti.
-        juur = ET.fromstring(re.sub(rb"&(?!#?\w+;)", b"&amp;", sisu))
+        # Proov 30.10: Praxise voog ei ole korrektne XML. Loeme kirjed ükshaaval ja jätame katkised välja.
+        juur = ET.Element("rss")
+        for tykk in re.findall(rb"<item>.*?</item>", sisu, re.S):
+            try:
+                juur.append(ET.fromstring(re.sub(rb"&(?!#?\w+;)", b"&amp;", tykk)))
+            except ET.ParseError:
+                continue
     for i in juur.iter("item"):
         pealkiri = " ".join((i.findtext("title") or "").split())
         leid = TEHISARU.search(pealkiri + " " + (i.findtext("description") or ""))
@@ -110,6 +117,24 @@ def dspace(sisu, alus, allikas, liik):
                        "avaldatud": kuupaev(esimene("dc.date.issued")), "reegel": "otsing",
                        "teemas": bool(TEHISARU.search(pealkiri))})
     return tulemus["page"]["totalElements"], kirjed
+
+
+def etis_url(alus, sona, mitu=200):
+    return alus + "?" + urllib.parse.urlencode({"Format": "json", "Take": mitu, "Skip": 0, "Title": sona})
+
+
+def etis(sisu, sona):
+    """ETIS-e publikatsioonid. Aasta on kirjes "(AAAA)" kujul, link on ETIS-e portaali kirje."""
+    kirjed = []
+    for t in json.loads(sisu):
+        pealkiri = " ".join((t.get("Title") or t.get("DisplayInfo") or "").split())
+        tolge = t.get("TitleTranslation") or ""
+        aasta = re.search(r"\((\d{4})\)", t.get("DisplayInfo") or "")
+        kirjed.append({"allikas": "etis", "liik": t.get("PublicationTypeName") or "teadusinfo", "pealkiri": pealkiri,
+                       "url": f"https://www.etis.ee/Portal/Publications/Display/{t['Guid']}" if t.get("Guid") else None,
+                       "avaldatud": aasta.group(1) if aasta else None, "reegel": sona,
+                       "teemas": bool(TOO.search(pealkiri + " " + tolge)), "viide": t.get("DisplayInfo")})
+    return kirjed
 
 
 def proov(sisu, sona="tehisintellekt"):
@@ -164,6 +189,14 @@ def allikas(nimi, seade, hae, paus=1.0):
             tulem["kirjed"] += uued
         except (yhine.KogujaViga, ValueError, KeyError) as e:
             tulem["vead"].append(str(e))
+    if "etis" in seade:
+        for sona in ETIS_OTSINGUD:
+            try:
+                tulem["kirjed"] += etis(hae(etis_url(seade["etis"], sona)), sona)
+            except (yhine.KogujaViga, ValueError, KeyError, TypeError) as e:
+                tulem["vead"].append(str(e))
+            if paus:
+                time.sleep(paus)
     for aadress in seade.get("proov", []):
         try:
             tulem["proov"][yhine.peida_votmed(aadress)] = "OK " + proov(hae(aadress))
@@ -172,7 +205,7 @@ def allikas(nimi, seade, hae, paus=1.0):
         if paus:
             time.sleep(paus)
     tulem["kirjed"] = koonda(tulem["kirjed"])
-    if tulem["kokku"] is None and ("wp" in seade or "rss" in seade):
+    if tulem["kokku"] is None and ("wp" in seade or "rss" in seade or "etis" in seade):
         tulem["kokku"] = len(tulem["kirjed"])
     return tulem
 
