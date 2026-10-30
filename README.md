@@ -49,8 +49,7 @@ Täpsemalt: `turvakontroll/README.md`.
 |---|---|---|---|
 | `testid` | iga push ja pull request | ainult lugemine | turvakontroll ja kõik testid |
 | `proov` | ainult käsitsi | ainult lugemine | kogujate ja statistika laadijate proov; tulemus on artefakt (14 päeva), repo ei muutu |
-
-Ajastatud seiret veel pole. See lisandub alles pärast õnnestunud ja kontrollitud proovikäivitust.
+| `seire` | iga päev 05:17 UTC ja käsitsi | lugemine (+ eelmise käivituse artefakti lugemine) | kogujad; kontrollimata kandidaadid artefaktis (90 päeva); repo, `main`, avaldatud lehed ja prognoosid ei muutu |
 
 ## Testid
 

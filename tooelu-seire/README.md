@@ -25,6 +25,9 @@ python3 tooelu-seire/proov.py --valjund /tmp/proov2 --eelmine /tmp/proov1/koik.j
 
 GitHubis: Actions → **proov** → Run workflow. Tulemus on käivituse artefaktis (14 päeva).
 
+Ajastatud seire: töövoog **seire** käivitub iga päev ja on käivitatav ka käsitsi. Kandidaadid on artefaktis
+`seire-kandidaadid` (90 päeva). Fail `nahtud.jsonl` kogub kõik seni nähtud kirjed ja on järgmise käivituse võrdlus.
+
 ## Väljund
 
 `olek.json`, `koik.jsonl`, `kirjed.jsonl` (uued), `versioonid.jsonl`, `duplikaadid.jsonl`, `vead.jsonl`,
@@ -32,5 +35,4 @@ GitHubis: Actions → **proov** → Run workflow. Tulemus on käivituse artefakt
 
 ## Veel tegemata
 
-Ajastatud seire, kandidaatide püsiv hoidmine ja inimese ülevaatus. Need tulevad alles pärast õnnestunud
-ja kontrollitud proovikäivitust.
+Kandidaatide püsiv hoidmine repos ja inimese ülevaatus. Kandidaadid ei muuda kinnitatud andmeid ega avaldatud lehti.
