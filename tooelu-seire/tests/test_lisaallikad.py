@@ -25,7 +25,7 @@ PANK = json.dumps({"total": 312, "documents": {
 
 
 RIIGIKOGU = json.dumps([{"link": "https://stenogrammid.riigikogu.ee/1", "date": "2026-09-16T09:00:00Z", "agendaItems": [
-    {"title": "Arupärimine  tööturu kohta", "events": [
+    {"title": "<p>Arupärimine  tööturu kohta</p>", "events": [
         {"type": "SPEECH", "speaker": "A", "date": "2026-09-16T16:39:05Z", "text": "AI ehk tehisintellekti levik", "link": None},
         {"type": "SPEECH", "speaker": "B", "date": "2026-09-16T16:40:00Z", "text": "Tehisaru ja töö", "link": "https://s/2"},
         {"type": "SPEECH", "speaker": "C", "date": "2026-09-16T16:41:00Z", "text": "Eelarve", "link": None},

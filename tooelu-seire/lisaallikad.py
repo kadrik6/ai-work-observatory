@@ -123,7 +123,9 @@ def riigikogu(sisu):
                 leid = RIIGIKOGU_SONAD.search(e.get("text") or "")
                 if e.get("type") != "SPEECH" or not leid:
                     continue
-                tulem.append({"allikas": "riigikogu", "liik": "sõnavõtt", "pealkiri": " ".join((punkt.get("title") or "").split()),
+                # Päevakorrapunkti pealkirjas on HTML-märgendid (<p>), need võtame ära.
+                pealkiri = " ".join(re.sub(r"<[^>]+>", " ", punkt.get("title") or "").replace("&nbsp;", " ").split())
+                tulem.append({"allikas": "riigikogu", "liik": "sõnavõtt", "pealkiri": pealkiri,
                               "koneleja": e.get("speaker"), "avaldatud": (e.get("date") or istung.get("date") or "")[:10] or None,
                               "url": e.get("link") or istung.get("link"), "reegel": leid.group(0).lower(), "teemas": True})
     return tulem
