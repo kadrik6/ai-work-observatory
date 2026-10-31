@@ -58,3 +58,14 @@ def test_koondamise_pohjused_ei_yleta_kogusummat():
     k = LEIUD["tulevik"]["koondamise_pohjused"]
     assert k["uuring"] in UURINGUD
     assert 0 < sum(r["teateid"] for r in k["read"]) <= k["kokku"]
+
+
+def test_tookorralduse_vaade():
+    t = LEIUD["tookorraldus"]
+    assert t["uuring"] in UURINGUD
+    for r in t["koos"]:
+        # Kui mõju üksi ei olnud oluline, on väärtus tühi, mitte null.
+        assert r["uksi"] is None or r["uksi"] > 0, r["nimi"]
+        assert r["koos"] > (r["uksi"] or 0), r["nimi"]
+    for r in t["jarjepidevus"]:
+        assert r["regulaarne"] > r["uks_kord"] > 0, r["nimi"]

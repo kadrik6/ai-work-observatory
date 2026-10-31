@@ -409,6 +409,20 @@
    "kus": "maailm",
    "valim": "maailma tööturu mudel",
    "leid": "Maailma töötus püsib 2026. aastal 4,9% juures, noorte töötus on 12,4%. ILO nimetab kiiret tehisaru kasutuselevõttu riskiks, mis võib väljavaadet halvendada."
+  },
+  {
+   "id": "kim2026",
+   "autorid": "Kim, Kim, Koning (INSEAD, Harvard Business School)",
+   "aasta": 2026,
+   "pealkiri": "Mapping AI into Production: A Field Experiment on Firm Performance",
+   "kanal": "INSEAD töödokument 2026/20/STR",
+   "retsenseeritud": false,
+   "url": "https://aiinstitute.hbs.edu/everyone-has-ai-which-firms-are-going-to-win/",
+   "avaldatud": "2026-03-30",
+   "meetod": "katse",
+   "kus": "maailm",
+   "valim": "515 kiire kasvuga idufirmat, loosiga kahte rühma",
+   "leid": "Kõik firmad said samad tehisaru tööriistad ja koolituse. Pooled said lisaks näiteid, kuidas tehisarule üles ehitatud firmad on ümber korraldanud töövood, meeskonnad ja ärimudeli. Need firmad leidsid 44% rohkem kasutusviise, said 18% tõenäolisemalt maksvaid kliente, teenisid 1,9 korda rohkem tulu ja vajasid 39,5% vähem välist kapitali. Peamine takistus ei olnud tehnoloogia ega oskused, vaid oskus leida, kus tehisaru väärtust loob."
   }
  ],
  "kiirus": [
@@ -676,5 +690,63 @@
    ],
    "markus": "Muud põhjused on jääk: aruanne neid üksikult ei loetle. Koondamisteateid oli 41% vähem kui aasta varem, värbamisplaane 25% rohkem."
   }
+ },
+ "tookorraldus": {
+  "uuring": "vahter2026",
+  "maaratlus": [
+   "uued äripraktikad",
+   "töökorraldus",
+   "vastutuse jaotus",
+   "otsustamise viis",
+   "koostöö väljaspool ettevõtet"
+  ],
+  "maaratluse_allikas": "Euroopa innovatsiooniuuring (CIS) ja OECD Oslo käsiraamat, konkurentsivõime raport 2026 lisa 9.1",
+  "tehisaru_ettevotted": [
+   "paindlikum töökorraldus",
+   "tugevam strateegiline teadlikkus",
+   "töötajatel rohkem iseseisvust",
+   "otsustusõigus antud keskastme juhtidele",
+   "rohkem tähelepanu kultuurile ja juhtimise kvaliteedile"
+  ],
+  "tehisaru_ettevotted_allikas": "Vadi jt 2026, Eesti juhtimisvaldkonna uuring (konkurentsivõime raport 2026, tekstikast 9.1); kirjeldav seos, mitte mõju",
+  "koos": [
+   {
+    "nimi": "Tehisaru, töötlev tööstus",
+    "uksi": null,
+    "koos": 18.9,
+    "tabel": "9.1"
+   },
+   {
+    "nimi": "Tehisaru, teadmusmahukad teenused",
+    "uksi": null,
+    "koos": 23.2,
+    "tabel": "9.1"
+   },
+   {
+    "nimi": "Automatiseerimine, väikeettevõtted (kuni 50 töötajat)",
+    "uksi": 6.8,
+    "koos": 15.3,
+    "tabel": "9.2"
+   },
+   {
+    "nimi": "Automatiseerimine, keskmised ja suured",
+    "uksi": 4.7,
+    "koos": 6.2,
+    "tabel": "9.2"
+   }
+  ],
+  "jarjepidevus": [
+   {
+    "nimi": "Kohalikke ressursse väärindavad sektorid",
+    "uks_kord": 6,
+    "regulaarne": 31
+   },
+   {
+    "nimi": "Tehnoloogiamahukas tööstus",
+    "uks_kord": 12,
+    "regulaarne": 30
+   }
+  ],
+  "markus": "Töökorralduse muutmine on uuringus jah/ei tunnus. Uuring ei ütle, milline muutus aitas kõige rohkem."
  }
 }
