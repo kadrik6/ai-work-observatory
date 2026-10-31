@@ -22,6 +22,9 @@ def test_arv_on_ainult_eesti_kohta():
     # Kui Eesti arvu ei ole teada (näiteks ainult Balti riigid kokku), on arv tühi, mitte hinnatud.
     for j in K["juhtumid"]:
         assert j["arv_eestis"] is None or (isinstance(j["arv_eestis"], int) and j["arv_eestis"] > 0), j["id"]
+        if "arv_ulem" in j:
+            # Ülempiir on ainult siis, kui täpset arvu pole.
+            assert j["arv_eestis"] is None and isinstance(j["arv_ulem"], int), j["id"]
 
 
 def test_uuemad_ees():

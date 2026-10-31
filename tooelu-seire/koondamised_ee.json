@@ -1,5 +1,5 @@
 {
- "kirjeldus": "Eesti koondamised, kus on küsitud, kas tehisaru oli põhjus. Kogutud käsitsi uudistest, kontrollitud lingi kaudu. See ei ole täielik nimekiri. Uudistest hoitakse ainult pealkirja, linki, kuupäeva ja oma sõnadega lühikest põhjust, mitte artikli teksti.",
+ "kirjeldus": "Eesti koondamised, kus on küsitud, kas tehisaru oli põhjus. Kogutud käsitsi uudistest, kontrollitud lingi kaudu. See ei ole täielik nimekiri. Uudistest hoitakse ainult pealkirja, linki, kuupäeva ja oma sõnadega lühikest põhjust, mitte artikli teksti. Väli arv_ulem on Eesti arvu ülempiir, kui teatati vahemik.",
  "kontrollitud": "2026-10-31",
  "rollid": {
   "otsene": "Ettevõte ütleb, et tehisaru teeb tööd inimeste asemel.",
@@ -77,7 +77,8 @@
    "pohjus": "Tehnoloogia ja IT-juhtimise ühendamine. Lühiteates tehisaru ei mainita, täisartikkel on tasuline.",
    "pealkiri": "Telia koondab Eestis kuni 50 töötajat, Soomes-Rootsis kordades rohkem",
    "url": "https://www.personaliuudised.ee/uudised/2026/01/07/telia-koondab-eestis-kuni-50-tootajat-soomes-rootsis-kordades-rohkem",
-   "allikas": "Personaliuudised"
+   "allikas": "Personaliuudised",
+   "arv_ulem": 50
   }
  ]
 }
