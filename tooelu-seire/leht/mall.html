@@ -69,6 +69,7 @@
   .ts { --ts-signal: #87139f; --ts-context: var(--cds-chart-muted); }
   .ts-sig { color: var(--ts-signal); }
   .ts-tabs { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); border-bottom: 2px solid var(--color-fg); }
+  .ts > .ts-tabs { margin-block: calc(var(--cds-gap-lg) - var(--cds-gap-xl)); }
   .ts-tab { font: inherit; font-size: var(--cds-font-size-body); font-weight: 700; color: var(--color-fg-muted); background: none; border: 0; border-bottom: 3px solid transparent; padding: var(--cds-pad-sm) var(--cds-pad-md); margin-bottom: -2px; cursor: pointer; }
   .ts-tab[aria-selected="true"] { color: var(--ts-signal); border-bottom-color: var(--ts-signal); }
   .ts-tab:focus-visible { outline: 3px solid var(--color-fg); outline-offset: 2px; }
