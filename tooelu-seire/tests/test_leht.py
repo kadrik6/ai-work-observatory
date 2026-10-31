@@ -57,3 +57,19 @@ def test_valdkondade_jaotus_tuleb_tookausta_andmetest(tmp_path):
 
 def test_ilma_valdkondade_andmeteta_plokki_pole(tmp_path):
     assert "Millistest valdkondadest?" not in ehita(tmp_path)
+
+
+def test_pikkadel_tabelitel_on_ridade_valik():
+    # Kadri 31.10.2026: vaikimisi 12 rida, valik 12 / 24 / 48 / kõik.
+    s = (LEHT / "mall.html").read_text(encoding="utf-8")
+    assert "const LK_VALIKUD = [12, 24, 48];" in s
+    for nimi in ("a-tood", "a-hn", "a-raportid", "a-tood-eesti", "a-rk", "a-ea-tabel", "tabel"):
+        assert f"'{nimi}'" in s.split("const LK_VALIKUD")[1].split("forEach")[0], nimi
+        assert f'data-draw="{nimi}"' in s, nimi
+
+
+def test_publikatsioon_ei_ole_too():
+    # Kadri 31.10.2026: „töö“ tähendab lehel ainult palgatööd.
+    s = (LEHT / "mall.html").read_text(encoding="utf-8")
+    for vale in (">Töö</th>", "Teadustöid", "Teadustööd", "Uusimad ja enim tsiteeritud tööd", "Eesti autorite töid"):
+        assert vale not in s, vale

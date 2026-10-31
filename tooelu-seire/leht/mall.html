@@ -70,6 +70,13 @@
   .ts-sig { color: var(--ts-signal); }
   .ts-tabs { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); border-bottom: 2px solid var(--color-fg); }
   .ts > .ts-tabs { margin-block: calc(var(--cds-gap-lg) - var(--cds-gap-xl)); }
+  .ts-lk { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-xs) var(--cds-gap-sm); margin-top: var(--cds-gap-sm); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .ts-lk-n { margin-right: var(--cds-gap-xs); font-variant-numeric: tabular-nums; }
+  .ts-lk button { font: inherit; font-weight: 700; min-height: 32px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--color-border-line); background: var(--color-panel); color: var(--color-fg); cursor: pointer; }
+  .ts-lk button[aria-pressed="true"] { background: var(--ts-signal); border-color: var(--ts-signal); color: #fff; }
+  .ts-lk button:focus-visible { outline: 3px solid var(--color-fg); outline-offset: 2px; }
+  tr.ts-lk-peidus { display: none; }
+  .ts-twbox.ts-lk-vaba, .ts-tablebox.ts-lk-vaba { max-height: none; }
   .ts-tab { font: inherit; font-size: var(--cds-font-size-body); font-weight: 700; color: var(--color-fg-muted); background: none; border: 0; border-bottom: 3px solid transparent; padding: var(--cds-pad-sm) var(--cds-pad-md); margin-bottom: -2px; cursor: pointer; }
   .ts-tab[aria-selected="true"] { color: var(--ts-signal); border-bottom-color: var(--ts-signal); }
   .ts-tab:focus-visible { outline: 3px solid var(--color-fg); outline-offset: 2px; }
@@ -893,7 +900,7 @@
         <table class="ts-tw" data-source="a_tood" data-row-key="id">
           <thead>
             <tr>
-              <th data-field="pealkiri">Töö</th>
+              <th data-field="pealkiri">Publikatsioon</th>
               <th data-field="klass" class="ts-col-hide">Kanal</th>
               <th data-field="viiteid" class="ts-num" data-draw="a-tood-veerg" data-source="a_tood">Viiteid</th>
             </tr>
@@ -1044,7 +1051,7 @@
         </div>
         <div class="ts-twbox">
           <table class="ts-tw" data-source="a_tood">
-            <thead><tr><th>Töö</th><th class="ts-col-hide">Kanal</th><th class="ts-num">Avaldatud</th></tr></thead>
+            <thead><tr><th>Publikatsioon</th><th class="ts-col-hide">Kanal</th><th class="ts-num">Avaldatud</th></tr></thead>
             <tbody data-draw="a-tood-eesti"></tbody>
           </table>
         </div>
@@ -1371,7 +1378,7 @@
 
   dash.draw('arv', (el) => {
     const d = dash.data('kandidaadid');
-    el.textContent = d.status === 'ok' ? `Näitan ${valitud().length} kirjet ${d.data.length}-st.` : '—';
+    el.textContent = d.status === 'ok' ? `Valikule vastab ${valitud().length} kirjet ${d.data.length}-st.` : '—';
   });
 
   dash.draw('tabel', (tb) => {
@@ -1840,6 +1847,39 @@
     if (!r || r.length < 2) { pealkiri(el, null); return; }
     const lyh = (n) => (NIMED[n] || n).replace(' (USA)', '');
     pealkiri(el, ['Kõige rohkem publikatsioone avaldavad ', { sig: `${lyh(r[0].nimi)} ja ${lyh(r[1].nimi)}` }]);
+  });
+
+  // Pikad tabelid: vaikimisi 12 rida, valik 12 / 24 / 48 / kõik (Kadri 31.10.2026 19:35)
+  const LK_VALIKUD = [12, 24, 48];
+  ['a-tood', 'a-hn', 'a-raportid', 'a-tood-eesti', 'a-rk', 'a-ea-tabel', 'tabel'].forEach((nimi) => {
+    document.querySelectorAll(`tbody[data-draw="${nimi}"]`).forEach((tb) => {
+      let piir = LK_VALIKUD[0];
+      const kast = tb.closest('.ts-twbox, .ts-tablebox') || tb.closest('table');
+      const riba = el_('div', 'ts-lk');
+      riba.setAttribute('role', 'group');
+      riba.setAttribute('aria-label', 'Mitu rida näidata');
+      riba.hidden = true;
+      kast.after(riba);
+      const rakenda = () => {
+        const read = [...tb.rows];
+        read.forEach((r, i) => r.classList.toggle('ts-lk-peidus', piir > 0 && i >= piir));
+        kast.classList.toggle('ts-lk-vaba', piir > 0);
+        riba.replaceChildren();
+        riba.hidden = read.length <= LK_VALIKUD[0];
+        if (riba.hidden) return;
+        const naha = piir > 0 ? Math.min(piir, read.length) : read.length;
+        riba.append(el_('span', 'ts-lk-n', `Näitan ${naha} rida ${read.length}-st. Näita:`));
+        [...LK_VALIKUD.filter((v) => v < read.length), 0].forEach((v) => {
+          const b = el_('button', null, v ? String(v) : `kõik (${read.length})`);
+          b.type = 'button';
+          b.setAttribute('aria-pressed', String(v === piir || (v === 0 && piir >= read.length)));
+          b.addEventListener('click', () => { piir = v; rakenda(); riba.querySelector('[aria-pressed="true"]').focus(); });
+          riba.append(b);
+        });
+      };
+      new MutationObserver(rakenda).observe(tb, { childList: true });
+      rakenda();
+    });
   });
 
   const tabs = document.querySelectorAll('.ts-tab');
