@@ -9,7 +9,8 @@
   "kusitlus": "Esinduslik küsitlus. Inimesed hindavad ise, näiteks säästetud aega.",
   "hinnang": "Hinnang, mitu ülesannet tehisaru võiks teha. Ei mõõda, mis tegelikult juhtus.",
   "mudel": "Majandusmudel ja olemasolevad hinnangud. Prognoos, mitte mõõtmine.",
-  "ekspertintervjuud": "Ekspertide intervjuud ja olemasolev statistika. Näitab takistusi, mitte mõju suurust."
+  "ekspertintervjuud": "Ekspertide intervjuud ja olemasolev statistika. Näitab takistusi, mitte mõju suurust.",
+  "prognoos": "Ametlik prognoos või tööandjate ootus tuleviku kohta. Arvutatud eelduste põhjal, mitte mõõdetud. Näitab suunda, mitte kindlat tulemust."
  },
  "kindlus": {
   "tugev": [
@@ -25,6 +26,9 @@
    "hinnang",
    "mudel",
    "ekspertintervjuud"
+  ],
+  "prognoos": [
+   "prognoos"
   ]
  },
  "uuringud": [
@@ -279,6 +283,132 @@
    "kus": "Eesti",
    "valim": "ekspertide intervjuud ja ettevõtete statistika",
    "leid": "Tehisaru kasutas 2024. aastal 14% ja 2025. aasta esimesel poolel 22% Eesti ettevõtetest (Taanis 2024. aastal 28%). Kõige rohkem piirab kasutust oskuste nappus: ei teata, millal ja milleks tehisaru kasutada. Takistab ka andmete ebaühtlane kvaliteet."
+  },
+  {
+   "id": "bessen2025",
+   "autorid": "Bessen, Goos, Salomons, van den Berge",
+   "aasta": 2025,
+   "pealkiri": "What Happens to Workers at Firms that Automate?",
+   "kanal": "Review of Economics and Statistics 107(1); arv CPB töödokumendist 390",
+   "retsenseeritud": true,
+   "url": "https://www.cpb.nl/sites/default/files/omnidownload/CPB-Discussion-Paper-390-Automatic-Reaction-What-Happens-to-Workers-at-Firms-that-Automate.pdf",
+   "avaldatud": "2025-01-15",
+   "meetod": "registriandmed",
+   "kus": "Holland",
+   "valim": "kõik erasektori ettevõtted ja töötajad 2000–2016",
+   "leid": "Kui ettevõte automatiseeris, lahkusid seal töötanud inimesed sagedamini ja töötasid vähem päevi. Viie aastaga kaotati kokku umbes 8% ühe aasta palgatulust (töödokumendi hinnang). Toetused katsid sellest vaid osa. Rohkem kaotasid vanemad ja kauaaegsed töötajad. Inimesi tõrjuti välja palju vähem kui massikoondamistel. Uuring käsitleb automatiseerimist üldiselt, mitte tehisaru."
+  },
+  {
+   "id": "challenger2026",
+   "autorid": "Challenger, Gray & Christmas",
+   "aasta": 2026,
+   "pealkiri": "Challenger Report: Layoffs Fall, Hiring Picks Up, AI Leads for Fifth Straight Month",
+   "kanal": "ettevõtte kuuaruanne",
+   "retsenseeritud": false,
+   "url": "https://www.challengergray.com/blog/challenger-report-layoffs-fall-hiring-picks-up-ai-leads-for-fifth-straight-month/",
+   "avaldatud": "2026-08-06",
+   "meetod": "kirjeldav",
+   "kus": "USA",
+   "valim": "ettevõtete avalikud koondamisteated",
+   "leid": "Jaanuarist juulini 2026 teatati 477 033 koondamisest. Neist 112 713 (umbes 24%) puhul nimetati põhjuseks tehisaru, juulis 33%. Need on teated, mitte tegelikud koondamised. Aruanne ise märgib, et tehisaru põhjuseks märkimine on ebamäärane."
+  },
+  {
+   "id": "goldman2025",
+   "autorid": "Briggs, Dong (Goldman Sachs Research)",
+   "aasta": 2025,
+   "pealkiri": "How Will AI Affect the Global Workforce?",
+   "kanal": "panga analüüs",
+   "retsenseeritud": false,
+   "url": "https://www.goldmansachs.com/insights/articles/how-will-ai-affect-the-global-workforce",
+   "avaldatud": "2025-08-13",
+   "meetod": "mudel",
+   "kus": "USA",
+   "valim": "üle 800 ameti hinnang ja varasemate tehnoloogiamuutuste ajalugu",
+   "leid": "Kui tehisaru võetakse laialt kasutusele, võib see USA-s tõrjuda välja 6–7% töötajatest (eri eeldustel 3–14%). Üleminekuajal tõuseks töötus trendist umbes 0,5 protsendipunkti; varasemate tehnoloogiate puhul kadus see mõju umbes kahe aastaga. 20–30-aastaste töötus tehnoloogiaametites on 2025. aasta algusest tõusnud ligi 3 protsendipunkti."
+  },
+  {
+   "id": "bls2026",
+   "autorid": "U.S. Bureau of Labor Statistics",
+   "aasta": 2026,
+   "pealkiri": "Employment Projections: 2025–2035 Summary",
+   "kanal": "USA tööstatistika ameti prognoos",
+   "retsenseeritud": false,
+   "url": "https://www.bls.gov/news.release/ecopro.nr0.htm",
+   "avaldatud": "2026-08-27",
+   "meetod": "prognoos",
+   "kus": "USA",
+   "valim": "22 ametite pearühma ja üle 800 ameti",
+   "leid": "Töökohti lisandub 10 aastaga 3,5% (eelmisel kümnendil 10,9%). Kõige kiiremini kasvavad tervishoiu ametid, sest rahvastik vananeb. Kõige kiiremini kahaneb kontori- ja haldustöö (−4%, 752 100 töökohta), osaliselt tehisaru ja automatiseerimise tõttu. Amet ise soovitab vaadata suunda, mitte täpseid arve."
+  },
+  {
+   "id": "oska2023",
+   "autorid": "Rosenblad, Leoma, Krusell (OSKA, Kutsekoda)",
+   "aasta": 2023,
+   "pealkiri": "OSKA üldprognoos 2022–2031",
+   "kanal": "OSKA tööjõuvajaduse prognoos",
+   "retsenseeritud": false,
+   "url": "https://uuringud.oska.kutsekoda.ee/uuringud/oska-uldprognoos",
+   "avaldatud": "2023-03-06",
+   "meetod": "prognoos",
+   "kus": "Eesti",
+   "valim": "registriandmed ja OSKA valdkonnauuringud",
+   "leid": "Töökohti lisandub enim info ja side, finants- ja kindlustuse ning tervishoiu ja sotsiaalhoolekande alal. Kasvavad ka inseneri-, mehhatrooniku- ja elektrikuametid. Väheneb veondus ja laondus, kinnisvara, haldus ja kaubandus; ametitest kontoritöötajad, klienditeenindajad ja lihttöölised. Pensionile jääjate ja uute kohtade jaoks on vaja 18 000 inimest aastas, koolist tuleb tööturule alla 16 000."
+  },
+  {
+   "id": "wef2025",
+   "autorid": "World Economic Forum",
+   "aasta": 2025,
+   "pealkiri": "Future of Jobs Report 2025",
+   "kanal": "tööandjate küsitlus",
+   "retsenseeritud": false,
+   "url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/digest/",
+   "avaldatud": "2025-01-07",
+   "meetod": "prognoos",
+   "kus": "maailm",
+   "valim": "üle 1000 suurtööandja ootused aastani 2030",
+   "leid": "Tööandjate ootuse järgi tekib 2025–2030 170 miljonit töökohta ja kaob 92 miljonit, netona +78 miljonit. Arvuliselt kasvavad enim põllutöölised, kullerid, ehitajad, müüjad ja hooldustöötajad; kiiremini tehnoloogiaametid. Enim kahanevad kassapidajad, sekretärid, postitöötajad, pangatellerid ja andmesisestajad."
+  },
+  {
+   "id": "cedefop2026",
+   "autorid": "Cedefop (EURESi kokkuvõte)",
+   "aasta": 2026,
+   "pealkiri": "Mida tähendab 2035. aasta oskuste prognoos sinu jaoks",
+   "kanal": "ELi oskuste prognoos",
+   "retsenseeritud": false,
+   "url": "https://eures.europa.eu/spotting-tomorrows-jobs-what-2035-skills-forecast-means-you-2026-09-15_et",
+   "avaldatud": "2026-09-15",
+   "meetod": "prognoos",
+   "kus": "EL",
+   "valim": "ELi riikide tööturu mudel",
+   "leid": "ELi tööhõive kasvab 2023–2035 üle 4%, IKT-töökohad umbes 2,5% aastas. Suur osa nõudlusest tuleb pensionile jääjate asendamisest. Puudus on oodata juhtidest ja tervishoiutöötajatest."
+  },
+  {
+   "id": "rm2026",
+   "autorid": "Rahandusministeerium",
+   "aasta": 2026,
+   "pealkiri": "Rahandusministeeriumi 2026. aasta suvine majandusprognoos",
+   "kanal": "riigi majandusprognoos",
+   "retsenseeritud": false,
+   "url": "https://www.fin.ee/sites/default/files/documents/2026-08/Rahandusministeeriumi%202026.%20aasta%20suvine%20majandusprognoos.pdf",
+   "avaldatud": "2026-08",
+   "meetod": "prognoos",
+   "kus": "Eesti",
+   "valim": "makromajanduse prognoos 2026–2030",
+   "leid": "Töötuse määr oli 2025. aastal 7,5%. Prognoosi järgi langeb see 2026. aastal 6,7%-ni ja 2030. aastaks 6,1%-ni, loomuliku taseme lähedale. Hõive kasv püsib väike. Tehisaru mõju ei ole töötuse prognoosis eraldi välja toodud."
+  },
+  {
+   "id": "ilo2026",
+   "autorid": "ILO",
+   "aasta": 2026,
+   "pealkiri": "Employment and Social Trends 2026",
+   "kanal": "ILO aastaraport",
+   "retsenseeritud": false,
+   "url": "https://www.ilo.org/publications/flagship-reports/employment-and-social-trends-2026",
+   "avaldatud": "2026-01-14",
+   "meetod": "prognoos",
+   "kus": "maailm",
+   "valim": "maailma tööturu mudel",
+   "leid": "Maailma töötus püsib 2026. aastal 4,9% juures, noorte töötus on 12,4%. ILO nimetab kiiret tehisaru kasutuselevõttu riskiks, mis võib väljavaadet halvendada."
   }
  ],
  "kiirus": [
@@ -416,5 +546,107 @@
    "miks": "See ei ole vastuolu, vaid eri küsimus. Mõlemad on sama Tartu Ülikooli töörühma tulemused. 2024. aasta 7,4% on keskmine kõigi 2021. aastal tehisaru kasutanud ettevõtete kohta ühe aasta andmetel. 2026. aasta analüüs jagab kasutajad kaheks: ilma töökorralduse muutmiseta mõju ei leitud, koos sellega 19–23%. Kui kasutajate seas on mõlemat tüüpi ettevõtteid, sobib keskmine 7% nende vahele. Ettevaatust: 2024. aasta tulemus on ühe aasta ja vähese kasutajaga, 2026. aasta 19–23% on nõrga statistilise olulisusega.",
    "staatus": "selgitatud"
   }
- ]
+ ],
+ "tulevik": {
+  "ametid": {
+   "uuring": "bls2026",
+   "yhik": "muutus 2025–2035, %",
+   "read": [
+    {
+     "nimi": "Tervishoiu abitöötajad",
+     "muutus": 13.3
+    },
+    {
+     "nimi": "Tervishoiu spetsialistid ja tehnikud",
+     "muutus": 8.0
+    },
+    {
+     "nimi": "Teadlased",
+     "muutus": 7.5
+    },
+    {
+     "nimi": "Sotsiaal- ja kogukonnatöö",
+     "muutus": 7.4
+    },
+    {
+     "nimi": "IT ja matemaatika",
+     "muutus": 7.3
+    },
+    {
+     "nimi": "Kõik ametid kokku",
+     "muutus": 3.5,
+     "kokku": true
+    },
+    {
+     "nimi": "Tootmine",
+     "muutus": -0.4
+    },
+    {
+     "nimi": "Müük",
+     "muutus": -1.4
+    },
+    {
+     "nimi": "Kontori- ja haldustöö",
+     "muutus": -4.0
+    }
+   ]
+  },
+  "eesti_ametid": {
+   "uuring": "oska2023",
+   "kasvab": [
+    "IT ja side",
+    "finants ja kindlustus",
+    "tervishoid ja sotsiaalhoolekanne",
+    "insenerid, mehhatroonikud, elektrikud"
+   ],
+   "kahaneb": [
+    "veondus ja laondus",
+    "kinnisvara ja haldustegevus",
+    "hulgi- ja jaekaubandus",
+    "kontoritöötajad, klienditeenindajad, lihttöölised"
+   ]
+  },
+  "tootus_ee": {
+   "uuring": "rm2026",
+   "read": [
+    {
+     "aasta": 2025,
+     "protsent": 7.5,
+     "tegelik": true
+    },
+    {
+     "aasta": 2026,
+     "protsent": 6.7,
+     "tegelik": false
+    },
+    {
+     "aasta": 2027,
+     "protsent": 6.4,
+     "tegelik": false
+    },
+    {
+     "aasta": 2028,
+     "protsent": 6.3,
+     "tegelik": false
+    },
+    {
+     "aasta": 2029,
+     "protsent": 6.2,
+     "tegelik": false
+    },
+    {
+     "aasta": 2030,
+     "protsent": 6.1,
+     "tegelik": false
+    }
+   ]
+  },
+  "kaotus": [
+   "challenger2026",
+   "bessen2025",
+   "canaries2026",
+   "humlum2025",
+   "goldman2025"
+  ]
+ }
 }

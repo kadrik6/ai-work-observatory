@@ -46,9 +46,11 @@ saanud lood, Maailmapanga dokumendid ning uurimisasutuste uudisvood. Need on pop
 
 ## Kontrollitud leiud
 
-`leiud.json` on eraldi kiht: käsitsi valitud ja kontrollitud leiud tehisaru mõjust tööle (17 uuringut, 31.10.2026).
+`leiud.json` on eraldi kiht: käsitsi valitud ja kontrollitud leiud tehisaru mõjust tööle (27 allikat, 31.10.2026).
 Iga rida: autorid, kanal, link, kuupäev, meetod, valim ja leid oma sõnadega. Kindlus tuleneb meetodist
 (katse ja registriandmed tugev, kirjeldav ja küsitlus keskmine, hinnang, mudel ja intervjuud nõrk). Artikli teksti ei hoita.
+Ametlikud prognoosid ja tööandjate ootused on eraldi klassis `prognoos`: need näitavad suunda, mitte mõõdetud mõju.
+Osa `tulevik` toidab vahekaarti „Tulevik“ (töö kaotanud, kasvavad ametid, töötuse prognoos).
 Kogujad seda faili ei muuda. Leht „Tehisaru ja töö“ (vahekaart „Mida leiti“) on ehitatud sellest. Testid: `tests/test_leiud.py`.
 
 ## Väljund

@@ -34,3 +34,20 @@ def test_kiiruse_graafikus_on_ainult_katsed():
 def test_puuduv_mojuhinnang_ei_ole_null():
     tehisaru_yksi = [r for r in LEIUD["eesti_tootlikkus"]["read"] if r["nimi"] == "Tehisaru üksi"][0]
     assert tehisaru_yksi["toostus"] is None and tehisaru_yksi["teenused"] is None
+
+
+def test_tuleviku_vaade_viitab_olemasolevatele_uuringutele():
+    t = LEIUD["tulevik"]
+    viited = [t["ametid"]["uuring"], t["eesti_ametid"]["uuring"], t["tootus_ee"]["uuring"]] + t["kaotus"]
+    assert set(viited) <= set(UURINGUD)
+
+
+def test_tuleviku_arvud_on_margitud_prognoosiks():
+    # Ametite ja töötuse graafikud näitavad prognoose. Neid ei tohi esitada mõõdetud tulemusena.
+    t = LEIUD["tulevik"]
+    for osa in ("ametid", "eesti_ametid", "tootus_ee"):
+        assert UURINGUD[t[osa]["uuring"]]["meetod"] == "prognoos", osa
+    read = t["tootus_ee"]["read"]
+    assert [r["aasta"] for r in read] == sorted(r["aasta"] for r in read)
+    # Tegelik arv on ainult esimene aasta, ülejäänud on prognoos.
+    assert [r["tegelik"] for r in read] == [True] + [False] * (len(read) - 1)
