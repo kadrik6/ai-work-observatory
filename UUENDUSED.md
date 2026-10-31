@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 31.10.2026 | Leht „Tehisaru ja töö“ telefonis ja tahvlis (Kadri 31.10 20:35): vastusekaardid on alla 1024 px laiusel ühes veerus (enne jäi tahvlis vastus kitsasse vasakusse veergu); telefonis on vahekaardid ühel keritaval real, väiksemad vahed ja ääred, numbrikastid ühes veerus, tõendi selgitus loeteluna ning kahe tekstiveeruga tabelid ridade kaupa. Parandatud kaks külgsuunas üle ääre minekut (360 px: lahknevuste tabel; 800 px: koondamiste silt). |
 | 31.10.2026 | Leht „Tehisaru ja töö“: lehe sisu suurim laius 72rem asemel 110rem, nii et laial ekraanil ei jää vasakule ja paremale tühja ala (Kadri kommentaar 31.10 19:48). Lõikude endi laius jääb loetavaks. |
 | 31.10.2026 | Leht „Tehisaru ja töö“: uus sissejuhatus (Kadri valik 31.10 19:45). Pealkiri „Mida tehisaru tööga päriselt teeb ja kui kindlalt me seda teame“, üks lause eesmärgist, kolm peamist leidu (3 katset 4-st kiirem; USA noorte hõive −19%; Eesti tootlikkus +19–23% ainult koos töökorralduse muutmisega), igaüks link oma kaardile, ja tõendi tugevuse selgitus. Vahekaardid on küsimused: „Mida teame?“, „Mis ees ootab?“, „Mida maailmas uuritakse?“, „Mida Eestis uuritakse?“, „Kui värsked on andmed?“ (aadressid #leiud, #tulevik jne ei muutunud). Uus test `test_peamised_leiud_viitavad_olemasolevatele_kaartidele`. |
 | 31.10.2026 | Leht „Tehisaru ja töö“: vastusekastide suurte pealkirjade (nt „Ainult koos muutustega“) reavahe on 1,15 (Kadri kommentaar 31.10 19:40). |

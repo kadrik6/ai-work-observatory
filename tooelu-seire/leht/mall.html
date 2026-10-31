@@ -1,13 +1,13 @@
 <meta name="dash-one-writer">
 <style>
-  .ts { display: grid; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); color: var(--color-fg); max-width: 110rem; margin-inline: auto; }
+  .ts { --ts-gap: var(--cds-gap-xl); display: grid; gap: var(--ts-gap); font-family: var(--font-anthropic-sans); color: var(--color-fg); max-width: 110rem; margin-inline: auto; }
   .ts-head { display: grid; gap: var(--cds-gap-sm); max-width: 46rem; }
   .ts-eyebrow { margin: 0; font-size: var(--cds-font-size-caption); letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--color-fg-muted); }
   .ts-title { margin: 0; font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-title); font-weight: 700; line-height: 1.1; text-wrap: balance; }
   .ts-lead { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.5; }
   .ts .ts-lead b { font-weight: 700; font-variant-numeric: tabular-nums; }
   .ts-note { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.45; }
-  .ts-tiles { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
+  .ts-tiles { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
   .ts-tile { display: grid; gap: var(--cds-gap-xs); align-content: start; padding: var(--cds-pad-md) var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); border: 1px solid var(--color-border-line); }
   .ts-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
   .ts-tile-value { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-title); font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
@@ -69,7 +69,7 @@
   .ts { --ts-signal: #87139f; --ts-context: var(--cds-chart-muted); }
   .ts-sig { color: var(--ts-signal); }
   .ts-tabs { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); border-bottom: 2px solid var(--color-fg); }
-  .ts > .ts-pohi { margin-top: calc(var(--cds-gap-lg) - var(--cds-gap-xl)); display: grid; gap: var(--cds-gap-md); }
+  .ts > .ts-pohi { margin-top: calc(var(--cds-gap-lg) - var(--ts-gap)); display: grid; gap: var(--cds-gap-md); }
   .ts-pohi-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
   .ts-pohi-kaart { display: grid; gap: var(--cds-gap-sm); align-content: start; height: 100%; box-sizing: border-box; padding: var(--cds-pad-md) var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); border: 1px solid var(--color-border-line); color: var(--color-fg); text-decoration: none; }
   .ts-pohi-kaart:hover { border-color: var(--ts-signal); }
@@ -80,7 +80,18 @@
   .ts-pohi-legend { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 2; }
   .ts-pohi-legend .ts-tag { margin-inline: 2px 4px; }
   .ts-leiu-kaart[id] { scroll-margin-top: 16px; }
-  .ts > .ts-tabs { margin-block: calc(var(--cds-gap-lg) - var(--cds-gap-xl)); }
+  .ts > .ts-tabs { margin-block: calc(var(--cds-gap-lg) - var(--ts-gap)); }
+  .ts-lg { display: inline; margin-right: 10px; }
+  /* Telefon ja tahvel (Kadri 31.10.2026 20:35): vähem hajutatud, vahekaardid ühel real */
+  @media (max-width: 40rem) {
+    .ts { --ts-gap: 32px; }
+    .ts-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(to right, #000 85%, transparent); mask-image: linear-gradient(to right, #000 85%, transparent); }
+    .ts-tabs::-webkit-scrollbar { display: none; }
+    .ts-tab { flex: none; white-space: nowrap; padding: var(--cds-pad-sm) 12px; }
+    .ts-lg { display: block; margin: 0 0 4px; }
+    .ts-pohi-legend b { display: block; margin-bottom: 4px; }
+    .ts-pohi-arv { font-size: 24px; }
+  }
   .ts-lk { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-xs) var(--cds-gap-sm); margin-top: var(--cds-gap-sm); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
   .ts-lk-n { margin-right: var(--cds-gap-xs); font-variant-numeric: tabular-nums; }
   .ts-lk button { font: inherit; font-weight: 700; min-height: 32px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--color-border-line); background: var(--color-panel); color: var(--color-fg); cursor: pointer; }
@@ -98,7 +109,7 @@
   .ts-csub { margin: 0; font-size: var(--cds-font-size-body); color: var(--color-fg-muted); line-height: 1.45; max-width: 44rem; }
   .ts-source { margin: 0; font-size: 13.6px; color: var(--color-fg-muted); line-height: 1.45; }
   .ts-source b { font-weight: 700; color: var(--color-fg); }
-  .ts-chartcard { display: grid; gap: var(--cds-gap-md); align-content: start; min-width: 0; padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); }
+  .ts-chartcard { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--cds-gap-md); align-content: start; min-width: 0; padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); }
   .ts-head-sm { display: grid; gap: var(--cds-gap-xs); }
 
   /* Tulbad aastate kaupa: number tulba kohal, viimane esile */
@@ -138,9 +149,9 @@
 
   /* Leiukaart: küsimus ja vastus vasakul, graafik paremal */
   .ts-finding { display: grid; gap: var(--cds-gap-lg); grid-template-columns: minmax(0, 1fr); padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); }
-  @media (min-width: 48rem) { .ts-finding { grid-template-columns: minmax(14rem, 1fr) minmax(0, 2fr); } }
+  @media (min-width: 64rem) { .ts-finding { grid-template-columns: minmax(14rem, 1fr) minmax(0, 2fr); } }
   .ts-verdict { display: grid; gap: var(--cds-gap-sm); align-content: start; align-self: start; padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-bg); order: 2; }
-  @media (min-width: 48rem) { .ts-verdict { order: 0; } }
+  @media (min-width: 64rem) { .ts-verdict { order: 0; } }
   .ts-verdict h3 { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-fg-muted); }
   .ts-verdict .ts-v-big { margin: 0 0 var(--cds-gap-sm); font-family: var(--font-anthropic-serif); font-size: 28px; font-weight: 700; line-height: 1.15; text-wrap: balance; }
   .ts-verdict p { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.5; }
@@ -317,7 +328,7 @@
       <li><a class="ts-pohi-kaart" href="#k-tookohad" data-kaart="k-tookohad"><span class="ts-pohi-arv">−19%</span><span class="ts-pohi-lause">Töökohti kokkuvõttes veel ei kao, aga USA-s palgatakse tehisarule avatud ametitesse vähem 22–25-aastaseid.</span><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span></a></li>
       <li><a class="ts-pohi-kaart" href="#k-tootlikkus" data-kaart="k-tootlikkus"><span class="ts-pohi-arv">19–23%</span><span class="ts-pohi-lause">Eesti ettevõtete tootlikkus tõusis ainult siis, kui tehisaruga koos muudeti töökorraldust.</span><span class="ts-tag ts-tag-tugev">Tugev tõend</span></a></li>
     </ul>
-    <p class="ts-pohi-legend"><b>Kuidas lugeda:</b> <span class="ts-tag ts-tag-tugev">Tugev tõend</span> katse või registriandmed, näitab põhjust · <span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> küsitlus või kirjeldav analüüs · <span class="ts-tag ts-tag-nork">Nõrk tõend</span> hinnang, mudel või eksperdid · <span class="ts-tag ts-tag-prognoos">Prognoos</span> ootus, mitte mõõtmine. <a href="#kindlus" data-kindlus>Täpsemalt</a></p>
+    <p class="ts-pohi-legend"><b>Kuidas lugeda:</b> <span class="ts-lg"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> katse või registriandmed, näitab põhjust</span> <span class="ts-lg"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> küsitlus või kirjeldav analüüs</span> <span class="ts-lg"><span class="ts-tag ts-tag-nork">Nõrk tõend</span> hinnang, mudel või eksperdid</span> <span class="ts-lg"><span class="ts-tag ts-tag-prognoos">Prognoos</span> ootus, mitte mõõtmine</span> <a href="#kindlus" data-kindlus>Täpsemalt</a></p>
   </section>
 
   <nav class="ts-tabs" role="tablist" aria-label="Vaated">
@@ -1925,6 +1936,7 @@
       document.querySelectorAll('#' + o.getAttribute('aria-controls')).forEach((p) => { p.hidden = !valitud; });
     });
     ['nadalad', 'euro', 'a-teemad', 'a-riigid', 'a-asutused', 'a-kanalid', 'a-eesti-moodused', 'a-eesti-asutused', 'a-ea-allikad'].forEach((n) => dash.draw(n));
+    try { t.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) {}
     try { history.replaceState(null, '', '#' + t.id.replace('tab-', '')); } catch (e) {}
   }));
   // Otselink vahekaardile: #eesti või #seire

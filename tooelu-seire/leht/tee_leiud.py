@@ -49,7 +49,7 @@ def tabel(ids, pealkiri='Uuringud selle vastuse taga'):
 <td><p class="ts-leid">{e(u['leid'])}</p><p class="ts-leid-meta">{silt(u)}<span class="ts-t-sub">{e(u['kus'])}: {e(u['valim'])}</span></p></td></tr>''')
     return f'''<details class="ts-details">
           <summary>{pealkiri} ({len(ids)})</summary>
-          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud ts-tw-pinu"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
 {''.join(read)}
           </tbody></table></div>
         </details>'''
@@ -211,7 +211,7 @@ moodmine = f"""          <div class="ts-head-sm">
           <ol class="ts-trep" aria-label="Töökorralduse muutuse mõõtmise astmed">{trep}</ol>
           <details class="ts-details">
             <summary>Kuidas iga astet mõõdetakse ja kes seda teeb</summary>
-            <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-trep"><thead><tr><th>Aste</th><th>Kuidas</th><th>Kus seda tehakse</th></tr></thead><tbody>{trep_tabel}</tbody></table></div>
+            <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-trep ts-tw-pinu"><thead><tr><th>Aste</th><th>Kuidas</th><th>Kus seda tehakse</th></tr></thead><tbody>{trep_tabel}</tbody></table></div>
             <p class="ts-csub">MOPS-i 20%: <a href="{e(MO['mooduli_allikas'])}" target="_blank" rel="noopener">USA statistikaameti blogi 22.2.2019</a>. BTOS-i küsimused: Bonney jt 2026, lisa. Eesti: <a href="{e(MO['eesti_allikad']['laius'])}" target="_blank" rel="noopener">Eurostat isoc_eb_ai</a> (tehisaru kasutuse eesmärgid, 2025), <a href="{e(MO['eesti_allikad']['innovatsiooniuuring'])}" target="_blank" rel="noopener">Statistikaameti innovatsiooniuuringu käsiraamat</a> (küsimus F1).</p>
           </details>
           <div class="ts-pair">
@@ -423,7 +423,7 @@ paneel = f'''  <div class="ts-panel" id="paneel-leiud" role="tabpanel" aria-labe
         <p class="ts-kicker">Usaldus</p>
         <h2 class="ts-ctitle" id="leiud-vastuolud">Kus uuringud lahknevad</h2>
       </div>
-      <table class="ts-tw"><thead><tr><th>Mis lahkneb</th><th>Selgitus</th></tr></thead><tbody>{''.join(vread)}</tbody></table>
+      <table class="ts-tw ts-tw-pinu"><thead><tr><th>Mis lahkneb</th><th>Selgitus</th></tr></thead><tbody>{''.join(vread)}</tbody></table>
       <details class="ts-details" id="kindlus">
         <summary>Kuidas leiud valiti ja mida kindlus tähendab</summary>
         <ul>
@@ -559,7 +559,18 @@ css = '''
   .ts-trep-jah .ts-trep-st { background: var(--ts-signal); border-color: var(--ts-signal); color: var(--surface); }
   .ts-trep-osaliselt .ts-trep-st { border-color: var(--ts-signal); color: var(--ts-signal); }
   @media (max-width: 40rem) { .ts-vm li { grid-template-columns: 1fr; gap: 2px; } }
-  @media (max-width: 40rem) { .ts-hb-pohj .ts-hb li { grid-template-columns: 1fr; gap: 2px; } .ts-hb-pohj .ts-hb-name { text-align: left; white-space: normal; overflow: visible; text-overflow: clip; } }
+  @media (max-width: 40rem) { .ts-hb-pohj .ts-hb li { grid-template-columns: 1fr; gap: 2px; } .ts-hb-pohj .ts-hb-name { text-align: left; white-space: normal; overflow: visible; text-overflow: clip; } }  /* Telefonis kahe tekstiveeruga tabelid ridade kaupa (Kadri 31.10.2026 20:35) */
+  @media (max-width: 40rem) {
+    .ts-tw-pinu thead { display: none; }
+    .ts-tw-pinu td { display: block; width: auto !important; }
+    .ts-tw-pinu td + td { border-top: 0; padding-top: 0; }
+    .ts-tw-pinu tr + tr td:first-child { border-top-width: 2px; }
+    .ts-kb-puudu { white-space: normal; }
+    .ts-finding, .ts-chartcard, .ts-verdict { padding: var(--cds-pad-md); }
+    .ts-tile { padding: var(--cds-pad-sm) var(--cds-pad-md); }
+    .ts-dv-track::before { top: 0; bottom: 0; }
+  }
+  .ts-kb-puudu { max-width: calc(100% - 12px); }
 '''
 
 
