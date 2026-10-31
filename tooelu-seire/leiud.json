@@ -647,6 +647,34 @@
    "canaries2026",
    "humlum2025",
    "goldman2025"
-  ]
+  ],
+  "koondamise_pohjused": {
+   "uuring": "challenger2026",
+   "periood": "jaanuar–juuli 2026",
+   "kokku": 477033,
+   "read": [
+    {
+     "nimi": "Tehisaru",
+     "teateid": 112713
+    },
+    {
+     "nimi": "Turu- ja majandusolud",
+     "teateid": 90075
+    },
+    {
+     "nimi": "Tegevuse lõpetamine",
+     "teateid": 84630
+    },
+    {
+     "nimi": "Ümberkorraldamine",
+     "teateid": 57476
+    },
+    {
+     "nimi": "Lepingu kaotus",
+     "teateid": 40758
+    }
+   ],
+   "markus": "Muud põhjused on jääk: aruanne neid üksikult ei loetle. Koondamisteateid oli 41% vähem kui aasta varem, värbamisplaane 25% rohkem."
+  }
  }
 }

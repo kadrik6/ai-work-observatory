@@ -51,3 +51,10 @@ def test_tuleviku_arvud_on_margitud_prognoosiks():
     assert [r["aasta"] for r in read] == sorted(r["aasta"] for r in read)
     # Tegelik arv on ainult esimene aasta, ülejäänud on prognoos.
     assert [r["tegelik"] for r in read] == [True] + [False] * (len(read) - 1)
+
+
+def test_koondamise_pohjused_ei_yleta_kogusummat():
+    # Jääk "muud põhjused" arvutatakse lehel; loetletud põhjused ei tohi kokku ületada kõiki teateid.
+    k = LEIUD["tulevik"]["koondamise_pohjused"]
+    assert k["uuring"] in UURINGUD
+    assert 0 < sum(r["teateid"] for r in k["read"]) <= k["kokku"]
