@@ -253,14 +253,14 @@ for g in riigid:
 el = es('EU27_2020', '2025')[0]
 riigiread = ''.join(li)
 eesti_rida = [('2021', es('EE', '2021')[0]), ('2023', es('EE', '2023')[0]), ('2024', es('EE', '2024')[0]), ('2025', es('EE', '2025')[0]), ('2026', 34.1)]
-cols = ''.join(f'<div class="ts-col{" is-fokus" if a == "2025" else ""}{" ts-col-uus" if a == "2026" else ""}"><span class="ts-col-v">{yks(x)}%</span><span class="ts-col-bar" style="height:{x / 36 * 100:.1f}%"></span><span class="ts-col-y">{a}{"<small>uus rida</small>" if a == "2026" else ""}</span></div>' for a, x in eesti_rida)
+cols = ''.join(f'<div class="ts-col{" is-fokus" if a == "2025" else ""}{" ts-col-uus" if a == "2026" else ""}"><span class="ts-col-v">{yks(x)}%</span><span class="ts-col-bar" style="height:{x / 36 * 100:.1f}%"></span><span class="ts-col-y">{a}{"<small>Statistikaamet</small>" if a == "2026" else ""}</span></div>' for a, x in eesti_rida)
 kordne = es('EE', '2025')[0] / es('EE', '2023')[0]
 eesti2 = f'''          <div class="ts-head-sm">
             <p class="ts-kicker">Eesti ettevõtted, kus kasutati tehisaru, vähemalt 10 hõivatuga</p>
             <h4 class="ts-ctitle ts-ctitle-sm">Tehisaru kasutavate ettevõtete osa kasvas 2023–2025 <span class="ts-sig">üle {int(kordne)} korra</span></h4>
           </div>
-          <div class="ts-cols ts-cols-sm" role="img" aria-label="Eesti ettevõtete tehisaru kasutus Eurostati järgi: 2021 2,8%, 2023 5,2%, 2024 13,9%, 2025 23,4%. Statistikaameti uues reas 2026: 34,1%, ei ole Eurostati reaga võrreldav">{cols}</div>
-          <p class="ts-csub">2021–2025 Eurostat. Viirutatud 2026 tulp on Statistikaameti uus rida (IT1490, uus tegevusalade klassifikaator). See ei ole Eurostati reaga võrreldav, seega 2025 ja 2026 vahet ei arvutata. Statistikaameti enda 2025. aasta arv vana klassifikaatori järgi on 22,2%.</p>
+          <div class="ts-cols ts-cols-sm" role="img" aria-label="Eesti ettevõtete tehisaru kasutus Eurostati järgi: 2021 2,8%, 2023 5,2%, 2024 13,9%, 2025 23,4%. 2026 Statistikaameti arv uue klassifikaatori järgi 34,1%, Eurostati arvudega ei ole võrreldav">{cols}</div>
+          <p class="ts-csub">2021–2025 Eurostat. Viirutatud 2026. aasta tulp on Statistikaameti arv, mis on arvutatud uue tegevusalade klassifikaatori järgi (tabel IT1490). Seda ei saa Eurostati 2021–2025 arvudega võrrelda, seega 2025 ja 2026 vahet ei arvutata. Statistikaameti enda 2025. aasta arv vana klassifikaatori järgi on 22,2%.</p>
           <div class="ts-head-sm">
             <p class="ts-kicker">Sama näitaja ELi riikides ja Norras, 2025</p>
             <h4 class="ts-ctitle ts-ctitle-sm">Eesti on ELis <span class="ts-sig">{koht}. kohal</span>, EL keskmisest veidi eespool ({yks(el)}%)</h4>
@@ -458,7 +458,7 @@ css = '''
   .ts-dv-v { position: absolute; top: 50%; transform: translateY(-50%); padding: 0 6px; white-space: nowrap; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink-muted); }
   .ts-dv li.is-fokus .ts-dv-bar { background: var(--ts-signal); }
   .ts-dv li.is-fokus .ts-dv-v, .ts-dv li.is-fokus .ts-hb-name { color: var(--ts-signal); font-weight: 700; }
-  .ts-pair { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
+  .ts-pair { display: grid; align-items: start; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
   .ts-pair > div { display: grid; gap: 6px; align-content: start; padding: var(--cds-pad-md); border-radius: 12px; background: var(--surface); }
   .ts-pair p { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.4; }
   .ts-pair .ts-t-sub { display: block; font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
@@ -538,9 +538,11 @@ css = '''
   .ts-tw-koond td:first-child { width: 24%; }
   .ts-tw-koond td.ts-num .ts-t-sub { font-weight: 400; }
   @media (max-width: 40rem) { .ts-tw-koond thead { display: none; } .ts-tw-koond td { display: block; width: auto !important; text-align: left; } .ts-tw-koond td + td { border-top: 0; } .ts-tw-koond td.ts-num { text-align: left; padding-top: 0; } .ts-tw-koond td:first-child { padding-bottom: 2px; } }
-  .ts-col-uus .ts-col-bar { background: repeating-linear-gradient(135deg, var(--ts-context) 0 4px, transparent 4px 8px) !important; border: 1px solid var(--ts-context); margin-left: 6px; }
+  .ts-col-uus .ts-col-bar { background: repeating-linear-gradient(135deg, var(--ts-context) 0 4px, transparent 4px 8px) !important; border: 1px solid var(--ts-context); }
   .ts-col-uus .ts-col-v { color: var(--ink-muted); }
-  .ts-col-y small { display: block; font-size: 11px; color: var(--ink-muted); }
+  .ts-col-uus .ts-col-y { position: relative; justify-self: stretch; text-align: center; }
+  .ts-col-y small { position: absolute; right: 0; top: 100%; white-space: nowrap; font-size: 12px; color: var(--ink-muted); }
+  .ts-cols:has(.ts-col-uus) { margin-bottom: 20px; }
   .ts-vm { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
   .ts-vm li { display: grid; grid-template-columns: 11rem 1fr; gap: 12px; align-items: baseline; padding-bottom: 10px; border-bottom: 1px solid var(--color-border-line); }
   .ts-vm-kes { font-weight: 700; color: var(--ink); }

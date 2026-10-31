@@ -128,7 +128,7 @@
   /* Leiukaart: küsimus ja vastus vasakul, graafik paremal */
   .ts-finding { display: grid; gap: var(--cds-gap-lg); grid-template-columns: minmax(0, 1fr); padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); }
   @media (min-width: 48rem) { .ts-finding { grid-template-columns: minmax(14rem, 1fr) minmax(0, 2fr); } }
-  .ts-verdict { display: grid; gap: var(--cds-gap-sm); align-content: start; padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-bg); order: 2; }
+  .ts-verdict { display: grid; gap: var(--cds-gap-sm); align-content: start; align-self: start; padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-bg); order: 2; }
   @media (min-width: 48rem) { .ts-verdict { order: 0; } }
   .ts-verdict h3 { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-fg-muted); }
   .ts-verdict .ts-v-big { margin: 0 0 var(--cds-gap-sm); font-family: var(--font-anthropic-serif); font-size: 28px; font-weight: 700; }
