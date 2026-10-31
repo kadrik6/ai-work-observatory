@@ -30,7 +30,8 @@ def test_eli_keskmine_on_umardatud_pool_yles(tmp_path):
 
 def test_2026_tulp_on_eraldi_reana(tmp_path):
     s = ehita(tmp_path)
-    assert "ts-col-uus" in s and "ei ole Eurostati reaga võrreldav" in s
+    assert "ts-col-uus" in s and "Seda ei saa Eurostati 2021–2025 arvudega võrrelda" in s
+    assert "uus rida" not in s  # Kadri 31.10: silt tekitas segadust
     assert "kaks aastat varem iga seitsmes" not in s
 
 
