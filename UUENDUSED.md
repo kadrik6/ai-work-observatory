@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 31.10.2026 | Leht „Tehisaru ja töö“: sõna „töö“ tähendab lehel ainult palgatööd. Teadustööde kohta on nüüd „publikatsioon“ (vahekaardid „Mida uuritakse“ ja „Seire seis“, graafikute pealkirjad, vihjed ja tabelite märkused); „töövoog“ on „automaatne käivitus“. Kadri märkus 31.10 19:33, et kaks tähendust segunesid. `test_leht.py` ootab uut sõnastust. |
 | 31.10.2026 | Leht „Tehisaru ja töö“: vahekaartide riba ees ja järel on vahe 48 px asemel 24 px (Kadri kommentaar 31.10 19:31). |
 | 31.10.2026 | Leht „Tehisaru ja töö“, „Mida uuritakse: maailm“: plaadi ja jaotise „Kui palju?“ selgitus ütleb nüüd lihtsalt, mida loetakse (teadustööd, mille pealkiri räägib korraga tehisarust või automatiseerimisest ja tööst, näiteks „AI and the labor market“). Kadri kommentaari põhjal 31.10 19:20. |
 | 31.10.2026 | Leht „Tehisaru ja töö“, „Mida uuritakse: maailm“ → „Kui palju?“: teadustööde jaotus valdkonniti (OpenAlexi peamise teema väli, 2026 ja 2025), Kadri kommentaari põhjal. `analyys.py` küsib nüüd ka osad `valdkonnad` ja `valdkonnad_eelmine`; esimene seis on käsitsi päring 31.10. Uued testid: 1 `test_analyys.py`, 2 `test_leht.py`. |

@@ -561,7 +561,7 @@ css = '''
 '''
 
 
-# Teadustööde jaotus valdkonniti (Kadri kommentaar 31.10 „Kui palju?“ juures). Andmed käivitusest töökaustas.
+# Publikatsioonide jaotus valdkonniti (Kadri kommentaar 31.10 „Kui palju?“ juures). Andmed käivitusest töökaustas.
 VALDKOND_ET = {'Economics, Econometrics and Finance': 'Majandus ja rahandus', 'Business, Management and Accounting': 'Ärijuhtimine',
                'Social Sciences': 'Sotsiaalteadused', 'Computer Science': 'Informaatika', 'Medicine': 'Meditsiin',
                'Decision Sciences': 'Otsustusteadus', 'Psychology': 'Psühholoogia', 'Health Professions': 'Tervishoiu kutsealad',
@@ -593,11 +593,11 @@ if VK and VK.get('read'):
     kasv = max((r for r in read if r[2] >= 10 and not r[0].startswith('Muud')), key=lambda r: r[1] / r[2])
     valdkonnad_html = f"""        <div class="ts-head-sm ts-vk-head">
           <p class="ts-kicker">Millistest valdkondadest?</p>
-          <h3 class="ts-ctitle ts-ctitle-sm">Üle poole töödest ({yks(kaks)}%) on <span class="ts-sig">majanduse ja ärijuhtimise</span> valdkonnast</h3>
-          <p class="ts-csub">Tööde osa {VK['aasta']}. aastal valdkonniti, %, ja tööde arv. Kriips näitab {VK['aasta'] - 1}. aastat. Kõige kiiremini kasvas {e(kasv[0].lower())} ({kasv[2]} → {kasv[1]} tööd).</p>
+          <h3 class="ts-ctitle ts-ctitle-sm">Üle poole publikatsioonidest ({yks(kaks)}%) on <span class="ts-sig">majanduse ja ärijuhtimise</span> valdkonnast</h3>
+          <p class="ts-csub">Publikatsioonide osa {VK['aasta']}. aastal valdkonniti, %, ja nende arv. Kriips näitab {VK['aasta'] - 1}. aastat. Kõige kiiremini kasvas {e(kasv[0].lower())} ({kasv[2]} → {kasv[1]} publikatsiooni).</p>
         </div>
-        <ul class="ts-hb ts-hb-vk" aria-label="Teadustööde osa valdkonniti">{''.join(li)}</ul>
-        <p class="ts-source"><b>Valdkond</b> on OpenAlexi automaatne liigitus töö peamise teema järgi. See näitab, kes uurib (näiteks majandusteadlased või meditsiin), mitte seda, millist majandusharu töö uurib. Päring {'.'.join(str(int(x)) for x in reversed(VK['aeg'][:10].split('-')))}: {VK['aasta']} {k26} tööd, {VK['aasta'] - 1} {k25} tööd.</p>
+        <ul class="ts-hb ts-hb-vk" aria-label="Publikatsioonide osa valdkonniti">{''.join(li)}</ul>
+        <p class="ts-source"><b>Valdkond</b> on OpenAlexi automaatne liigitus publikatsiooni peamise teema järgi. See näitab, kes uurib (näiteks majandusteadlased või meditsiin), mitte seda, millist majandusharu publikatsioon uurib. Päring {'.'.join(str(int(x)) for x in reversed(VK['aeg'][:10].split('-')))}: {VK['aasta']} {k26} publikatsiooni, {VK['aasta'] - 1} {k25} publikatsiooni.</p>
 """
 s = open(LEHT + 'mall.html').read()
 

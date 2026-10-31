@@ -52,7 +52,7 @@ def test_valdkondade_jaotus_tuleb_tookausta_andmetest(tmp_path):
     s = ehita(tmp_path)
     assert "Millistest valdkondadest?" in s and "Majandus ja rahandus" in s
     assert "60,0% · 60" in s and "(90,0%)" in s  # kaks suurimat kokku
-    assert "Päring 31.10.2026: 2026 100 tööd, 2025 50 tööd." in s
+    assert "Päring 31.10.2026: 2026 100 publikatsiooni, 2025 50 publikatsiooni." in s
 
 
 def test_ilma_valdkondade_andmeteta_plokki_pole(tmp_path):
