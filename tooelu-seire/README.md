@@ -44,6 +44,13 @@ Lisaallikad: kolmas samm (`python3 tooelu-seire/lisaallikad.py --valjund valjund
 GDELT (uudiste arv ja nimekiri, maailm ja Eesti, viimased 3 kuud), Vikipeedia vaatamised, Hacker Newsi enim hääli
 saanud lood, Maailmapanga dokumendid ning uurimisasutuste uudisvood. Need on populaarsuse lähendid, mitte klikid.
 
+## Kontrollitud leiud
+
+`leiud.json` on eraldi kiht: käsitsi valitud ja kontrollitud leiud tehisaru mõjust tööle (17 uuringut, 31.10.2026).
+Iga rida: autorid, kanal, link, kuupäev, meetod, valim ja leid oma sõnadega. Kindlus tuleneb meetodist
+(katse ja registriandmed tugev, kirjeldav ja küsitlus keskmine, hinnang, mudel ja intervjuud nõrk). Artikli teksti ei hoita.
+Kogujad seda faili ei muuda. Leht „Tehisaru ja töö“ (vahekaart „Mida leiti“) on ehitatud sellest. Testid: `tests/test_leiud.py`.
+
 ## Väljund
 
 `olek.json`, `koik.jsonl`, `nahtud.jsonl` (kõik seni nähtud), `kirjed.jsonl` (uued), `versioonid.jsonl`, `duplikaadid.jsonl`, `vead.jsonl`,
