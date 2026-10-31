@@ -74,3 +74,13 @@ def test_publikatsioon_ei_ole_too():
     s = (LEHT / "mall.html").read_text(encoding="utf-8")
     for vale in (">Töö</th>", "Teadustöid", "Teadustööd", "Uusimad ja enim tsiteeritud tööd", "Eesti autorite töid"):
         assert vale not in s, vale
+
+
+def test_peamised_leiud_viitavad_olemasolevatele_kaartidele(tmp_path):
+    # Kadri 31.10.2026: sissejuhatuses kolm peamist leidu, igaüks link oma kaardile.
+    import re
+    s = ehita(tmp_path)
+    lingid = re.findall(r'data-kaart="([\w-]+)"', s)
+    assert len(lingid) == 3
+    for k in lingid + ["kindlus"]:
+        assert f'id="{k}"' in s, k

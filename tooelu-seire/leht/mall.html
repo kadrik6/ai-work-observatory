@@ -69,6 +69,17 @@
   .ts { --ts-signal: #87139f; --ts-context: var(--cds-chart-muted); }
   .ts-sig { color: var(--ts-signal); }
   .ts-tabs { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); border-bottom: 2px solid var(--color-fg); }
+  .ts > .ts-pohi { margin-top: calc(var(--cds-gap-lg) - var(--cds-gap-xl)); display: grid; gap: var(--cds-gap-md); }
+  .ts-pohi-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
+  .ts-pohi-kaart { display: grid; gap: var(--cds-gap-sm); align-content: start; height: 100%; box-sizing: border-box; padding: var(--cds-pad-md) var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); border: 1px solid var(--color-border-line); color: var(--color-fg); text-decoration: none; }
+  .ts-pohi-kaart:hover { border-color: var(--ts-signal); }
+  .ts-pohi-kaart:focus-visible { outline: 3px solid var(--color-fg); outline-offset: 2px; }
+  .ts-pohi-arv { font-family: var(--font-anthropic-serif); font-size: 28px; font-weight: 700; line-height: 1.15; color: var(--ts-signal); font-variant-numeric: tabular-nums; }
+  .ts-pohi-lause { font-size: var(--cds-font-size-body); line-height: 1.45; }
+  .ts-pohi-kaart .ts-tag { justify-self: start; }
+  .ts-pohi-legend { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 2; }
+  .ts-pohi-legend .ts-tag { margin-inline: 2px 4px; }
+  .ts-leiu-kaart[id] { scroll-margin-top: 16px; }
   .ts > .ts-tabs { margin-block: calc(var(--cds-gap-lg) - var(--cds-gap-xl)); }
   .ts-lk { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-xs) var(--cds-gap-sm); margin-top: var(--cds-gap-sm); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
   .ts-lk-n { margin-right: var(--cds-gap-xs); font-variant-numeric: tabular-nums; }
@@ -295,16 +306,26 @@
 <div class="ts">
   <header class="ts-head">
     <p class="ts-kicker">Tehisaru ja tööturg</p>
-    <h1 class="ts-title">Tehisaru ja <span class="ts-sig">töö</span>: mida leiti ja mida uuritakse</h1>
-    <p class="ts-lead">Mida uuringud on tehisaru mõjust tööle seni leidnud ja kui kindlad need leiud on. Tuleviku vahekaart koondab prognoosid ametite ja töötuse kohta. Ülejäänud vahekaardid näitavad, mida ja kui palju maailmas ja Eestis uuritakse (seis <span data-draw="a-aeg" data-source="a_jaotused" data-field="liik">—</span>).</p>
+    <h1 class="ts-title">Mida tehisaru <span class="ts-sig">tööga</span> päriselt teeb ja kui kindlalt me seda teame</h1>
+    <p class="ts-lead">Siia on koondatud kontrollitud uuringud ja ametlik statistika, et näha, mis on mõõdetud, mis on alles prognoos ja kus andmed puuduvad.</p>
   </header>
 
+  <section class="ts-pohi" aria-labelledby="pohi-pealkiri">
+    <h2 class="ts-kicker" id="pohi-pealkiri">Kolm peamist leidu</h2>
+    <ul class="ts-pohi-list">
+      <li><a class="ts-pohi-kaart" href="#k-kiirus" data-kaart="k-kiirus"><span class="ts-pohi-arv">3 katset 4-st</span><span class="ts-pohi-lause">Tehisaruga tehti töö kiiremini. Kogenud arendajad oma projektis olid aga 19% aeglasemad.</span><span class="ts-tag ts-tag-tugev">Tugev tõend</span></a></li>
+      <li><a class="ts-pohi-kaart" href="#k-tookohad" data-kaart="k-tookohad"><span class="ts-pohi-arv">−19%</span><span class="ts-pohi-lause">Töökohti kokkuvõttes veel ei kao, aga USA-s palgatakse tehisarule avatud ametitesse vähem 22–25-aastaseid.</span><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span></a></li>
+      <li><a class="ts-pohi-kaart" href="#k-tootlikkus" data-kaart="k-tootlikkus"><span class="ts-pohi-arv">19–23%</span><span class="ts-pohi-lause">Eesti ettevõtete tootlikkus tõusis ainult siis, kui tehisaruga koos muudeti töökorraldust.</span><span class="ts-tag ts-tag-tugev">Tugev tõend</span></a></li>
+    </ul>
+    <p class="ts-pohi-legend"><b>Kuidas lugeda:</b> <span class="ts-tag ts-tag-tugev">Tugev tõend</span> katse või registriandmed, näitab põhjust · <span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> küsitlus või kirjeldav analüüs · <span class="ts-tag ts-tag-nork">Nõrk tõend</span> hinnang, mudel või eksperdid · <span class="ts-tag ts-tag-prognoos">Prognoos</span> ootus, mitte mõõtmine. <a href="#kindlus" data-kindlus>Täpsemalt</a></p>
+  </section>
+
   <nav class="ts-tabs" role="tablist" aria-label="Vaated">
-    <button class="ts-tab" type="button" role="tab" id="tab-leiud" aria-controls="paneel-leiud" aria-selected="true">Mida leiti</button>
-    <button class="ts-tab" type="button" role="tab" id="tab-tulevik" aria-controls="paneel-tulevik" aria-selected="false">Tulevik</button>
-    <button class="ts-tab" type="button" role="tab" id="tab-analyys" aria-controls="paneel-analyys" aria-selected="false">Mida uuritakse: maailm</button>
-    <button class="ts-tab" type="button" role="tab" id="tab-eesti" aria-controls="paneel-eesti" aria-selected="false">Mida uuritakse: Eesti</button>
-    <button class="ts-tab" type="button" role="tab" id="tab-seire" aria-controls="paneel-seire" aria-selected="false">Seire seis</button>
+    <button class="ts-tab" type="button" role="tab" id="tab-leiud" aria-controls="paneel-leiud" aria-selected="true">Mida teame?</button>
+    <button class="ts-tab" type="button" role="tab" id="tab-tulevik" aria-controls="paneel-tulevik" aria-selected="false">Mis ees ootab?</button>
+    <button class="ts-tab" type="button" role="tab" id="tab-analyys" aria-controls="paneel-analyys" aria-selected="false">Mida maailmas uuritakse?</button>
+    <button class="ts-tab" type="button" role="tab" id="tab-eesti" aria-controls="paneel-eesti" aria-selected="false">Mida Eestis uuritakse?</button>
+    <button class="ts-tab" type="button" role="tab" id="tab-seire" aria-controls="paneel-seire" aria-selected="false">Kui värsked on andmed?</button>
   </nav>
 
 <!--LEIUD-->  <div class="ts-panel" id="paneel-leiud" role="tabpanel" aria-labelledby="tab-leiud">
@@ -968,8 +989,8 @@
         <h2 class="ts-ctitle">Viis harjumust, et olla <span class="ts-sig">teistest ees</span></h2>
       </div>
       <ol class="ts-proc">
-        <li><span class="ts-proc-n">1</span><div><div class="ts-proc-t">Iga päev</div><div class="ts-proc-d">2 minutit: vahekaart Seire seis näitab uusi publikatsioone ja Eesti uudiseid.</div></div></li>
-        <li><span class="ts-proc-n">2</span><div><div class="ts-proc-t">Iga nädal</div><div class="ts-proc-d">15 minutit: vaata tabelis „Uusimad“ ja vahekaarti Eesti, loe 2–3 kokkuvõtet.</div></div></li>
+        <li><span class="ts-proc-n">1</span><div><div class="ts-proc-t">Iga päev</div><div class="ts-proc-d">2 minutit: vahekaart „Kui värsked on andmed?“ näitab uusi publikatsioone ja Eesti uudiseid.</div></div></li>
+        <li><span class="ts-proc-n">2</span><div><div class="ts-proc-t">Iga nädal</div><div class="ts-proc-d">15 minutit: vaata tabelis „Uusimad“ ja vahekaarti „Mida Eestis uuritakse?“, loe 2–3 kokkuvõtet.</div></div></li>
         <li><span class="ts-proc-n">3</span><div><div class="ts-proc-t">Jälgi tippe</div><div class="ts-proc-d">Uus publikatsioon ülal olevatest asutustest on tõenäoliselt oluline.</div></div></li>
         <li><span class="ts-proc-n">4</span><div><div class="ts-proc-t">Kontrolli</div><div class="ts-proc-d">Enne järeldust otsi tuumajakirja või ametlikku statistikat.</div></div></li>
         <li><span class="ts-proc-n">5</span><div><div class="ts-proc-t">Mõtle Eestile</div><div class="ts-proc-d">Eesti publikatsioone on aastas mõnikümmend. Lisa Statistikaamet, Eurostat ja Arenguseire Keskus.</div></div></li>
@@ -1499,7 +1520,7 @@
   tekst('a-eesti', () => { const k = kokku(); return k ? arvEE(k.eesti2026) : null; });
   tekst('a-lai2026', () => { const k = kokku(); return k ? arvEE(k.lai2026) : null; });
   tekst('a-eesti-markus', () => { const k = kokku(); return k ? `laia otsinguga, ${komaga(100 * k.eesti2026 / k.lai2026, 2)}% maailma ${arvEE(k.lai2026)} publikatsioonist` : null; });
-  tekst('a-eesti-vordlus', () => { const k = kokku(); return k ? `Võrdluseks: sama laia otsinguga on maailmas 2026. aastal ${arvEE(k.lai2026)} publikatsiooni. Vahekaardi Maailm arvud on kitsama otsinguga (ainult pealkiri).` : null; });
+  tekst('a-eesti-vordlus', () => { const k = kokku(); return k ? `Võrdluseks: sama laia otsinguga on maailmas 2026. aastal ${arvEE(k.lai2026)} publikatsiooni. Vahekaardi „Mida maailmas uuritakse?“ arvud on kitsama otsinguga (ainult pealkiri).` : null; });
   dash.draw('a-eesti-pealkiri', (el) => {
     const a = jaotus('eesti_aasta');
     if (!a || !a.length) { pealkiri(el, null); return; }
@@ -1881,6 +1902,20 @@
       rakenda();
     });
   });
+
+  // Peamiste leidude lingid: ava „Mida teame?“ ja keri kaardini; „Täpsemalt“ avab kindluse selgituse
+  document.querySelectorAll('.ts-pohi-kaart').forEach((a) => a.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    document.getElementById('tab-leiud').click();
+    const k = document.getElementById(a.dataset.kaart);
+    if (k) { k.scrollIntoView({ behavior: 'smooth', block: 'start' }); k.setAttribute('tabindex', '-1'); k.focus({ preventScroll: true }); }
+  }));
+  document.querySelectorAll('[data-kindlus]').forEach((a) => a.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    document.getElementById('tab-leiud').click();
+    const d = document.getElementById('kindlus');
+    if (d) { d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  }));
 
   const tabs = document.querySelectorAll('.ts-tab');
   tabs.forEach((t) => t.addEventListener('click', () => {

@@ -55,8 +55,8 @@ def tabel(ids, pealkiri='Uuringud selle vastuse taga'):
         </details>'''
 
 
-def kaart(kysimus, vastus, lause, sisu, ids, allikas):
-    return f'''      <section class="ts-finding ts-leiu-kaart">
+def kaart(kysimus, vastus, lause, sisu, ids, allikas, kid=None):
+    return f'''      <section class="ts-finding ts-leiu-kaart"{f' id="{kid}"' if kid else ''}>
         <div class="ts-verdict">
           <h3>{kysimus}</h3>
           <p class="ts-v-big">{vastus}</p>
@@ -404,15 +404,15 @@ paneel = f'''  <div class="ts-panel" id="paneel-leiud" role="tabpanel" aria-labe
 
     <section class="ts-eesti" aria-labelledby="leiud-maailm">
       <h2 class="ts-ctitle" id="leiud-maailm">Maailm</h2>
-{kaart('Kas tehisaru teeb töö kiiremaks?', 'Sageli jah', 'Katsetes tehti kirjutamis-, programmeerimis- ja konsultatsiooniülesandeid kiiremini. Tuttavas keerulises töös võib tehisaru ka aeglustada.', kiirus, ['peng2023', 'noy2023', 'dellacqua2023', 'metr2025', 'brynjolfsson2023'], 'juhuslikud katsed 2023–2025; klienditugi: Brynjolfsson, Li, Raymond 2023.')}
-{kaart('Kas töökohti kaob?', 'Kogu tööturul veel mitte', 'Taanis ja USA-s ei ole tööhõive ega palk kokkuvõttes muutunud. USA noorte ja vabakutseliste juures on langus näha.', tookohad, ['humlum2025', 'yale2025', 'canaries2026', 'demirci2025', 'teutloff2025', 'hui2024'], 'Taani registriandmed, USA tööjõu-uuring ja palgaandmed, vabakutseliste platvormid; 2024–2026.')}
+{kaart('Kas tehisaru teeb töö kiiremaks?', 'Sageli jah', 'Katsetes tehti kirjutamis-, programmeerimis- ja konsultatsiooniülesandeid kiiremini. Tuttavas keerulises töös võib tehisaru ka aeglustada.', kiirus, ['peng2023', 'noy2023', 'dellacqua2023', 'metr2025', 'brynjolfsson2023'], 'juhuslikud katsed 2023–2025; klienditugi: Brynjolfsson, Li, Raymond 2023.', kid='k-kiirus')}
+{kaart('Kas töökohti kaob?', 'Kogu tööturul veel mitte', 'Taanis ja USA-s ei ole tööhõive ega palk kokkuvõttes muutunud. USA noorte ja vabakutseliste juures on langus näha.', tookohad, ['humlum2025', 'yale2025', 'canaries2026', 'demirci2025', 'teutloff2025', 'hui2024'], 'Taani registriandmed, USA tööjõu-uuring ja palgaandmed, vabakutseliste platvormid; 2024–2026.', kid='k-tookohad')}
 {kaart('Keda see puudutab?', 'Iga neljandat töötajat', 'Rikastes riikides ja kontoritöös rohkem, naisi rohkem kui mehi.', avatus, ['ilo2025', 'eloundou2023'], 'ILO töödokument 140, mai 2025. Avatus on hinnang ülesannete kohta, mitte mõõdetud muutus.')}
 {kaart('Kas kasu jõuab majandusse?', 'Seni vähe', 'Ajasääst on kogu tööaja suhtes väike ja mudelid ennustavad tagasihoidlikku kasvu.', majandus, ['bick2024', 'acemoglu2024'], 'Bick, Blandin, Deming 2024 (küsitlus); Acemoglu 2024 (mudel).')}
     </section>
 
     <section class="ts-eesti" aria-labelledby="leiud-eesti">
       <h2 class="ts-ctitle" id="leiud-eesti">Eesti</h2>
-{kaart('Kas tehisaru tõstab Eesti ettevõtete tootlikkust?', 'Ainult koos muutustega', 'Tehisaru üksi olulist mõju ei andnud. Koos töökorralduse muutmisega tõusis tootlikkus 19–23%.', eesti1, ['vahter2026', 'vahter2024'], 'konkurentsivõime eksperdikogu raport 2026 (ptk 9) ja Arenguseire lühiraport 18.6.2026, Tartu Ülikooli projekt MKM-POL15.')}
+{kaart('Kas tehisaru tõstab Eesti ettevõtete tootlikkust?', 'Ainult koos muutustega', 'Tehisaru üksi olulist mõju ei andnud. Koos töökorralduse muutmisega tõusis tootlikkus 19–23%.', eesti1, ['vahter2026', 'vahter2024'], 'konkurentsivõime eksperdikogu raport 2026 (ptk 9) ja Arenguseire lühiraport 18.6.2026, Tartu Ülikooli projekt MKM-POL15.', kid='k-tootlikkus')}
 {kaart('Mida töökorralduse muutmine tähendab ja kus see mõjus?', 'Teenustes ja väikefirmades kõige rohkem', 'Muutus tähendab uut tööjaotust, vastutust ja otsustamist. Eesti andmetes andis see koos tehnoloogiaga suurima kasvu teadmusmahukates teenustes ja väikeettevõtetes. Milline muutus aitas kõige rohkem, uuring ei ütle.', tookorraldus, ['vahter2026', 'kim2026', 'bbh2002', 'calvino2023', 'dellacqua2026', 'gds2025'], 'konkurentsivõime eksperdikogu raport 2026, ptk 9 (tabelid 9.1, 9.2, tekstikastid 9.1–9.3, lisa 9.1); Kim, Kim, Koning 2026; välismaa uuringud tabelis.')}
 {kaart('Kuidas töökorralduse muutust paremini mõõta?', 'Küsida, mida muudeti, ja siduda registritega', 'Eesti uuringud näitavad, kas töökorraldust muudeti, aga ei seo seda tehisaruga. USA statistikaamet küsib tehisaru kasutajatelt, mida muudeti. Eesti eelis on registrid, mis näitavad, mis päriselt juhtus.', moodmine, ['bonney2026', 'gds2025', 'kim2026', 'dellacqua2026'], 'USA statistikaamet (BTOS 2026, MOPS), Suurbritannia GDS 2025, katsed 2026; astmete järjestus ja Eesti hinnang on koostaja oma.')}
 {kaart('Mis takistab?', 'Oskused ja andmed', 'Kasutajaid tuleb kiiresti juurde, aga OSKA ekspertide hinnangul ei tea paljud, milleks tehisaru kasutada.', eesti2, ['oska2025'], 'takistused: OSKA rakendusuuring 2025 (Leemet, Mets).')}
@@ -424,7 +424,7 @@ paneel = f'''  <div class="ts-panel" id="paneel-leiud" role="tabpanel" aria-labe
         <h2 class="ts-ctitle" id="leiud-vastuolud">Kus uuringud lahknevad</h2>
       </div>
       <table class="ts-tw"><thead><tr><th>Mis lahkneb</th><th>Selgitus</th></tr></thead><tbody>{''.join(vread)}</tbody></table>
-      <details class="ts-details">
+      <details class="ts-details" id="kindlus">
         <summary>Kuidas leiud valiti ja mida kindlus tähendab</summary>
         <ul>
           <li>Iga küsimuse kohta valisin tugevaima meetodiga ja enim viidatud uuringud ning lisasin uusimad (2025–2026). See ei ole süstemaatiline ülevaade.</li>

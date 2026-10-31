@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 31.10.2026 | Leht „Tehisaru ja töö“: uus sissejuhatus (Kadri valik 31.10 19:45). Pealkiri „Mida tehisaru tööga päriselt teeb ja kui kindlalt me seda teame“, üks lause eesmärgist, kolm peamist leidu (3 katset 4-st kiirem; USA noorte hõive −19%; Eesti tootlikkus +19–23% ainult koos töökorralduse muutmisega), igaüks link oma kaardile, ja tõendi tugevuse selgitus. Vahekaardid on küsimused: „Mida teame?“, „Mis ees ootab?“, „Mida maailmas uuritakse?“, „Mida Eestis uuritakse?“, „Kui värsked on andmed?“ (aadressid #leiud, #tulevik jne ei muutunud). Uus test `test_peamised_leiud_viitavad_olemasolevatele_kaartidele`. |
 | 31.10.2026 | Leht „Tehisaru ja töö“: vastusekastide suurte pealkirjade (nt „Ainult koos muutustega“) reavahe on 1,15 (Kadri kommentaar 31.10 19:40). |
 | 31.10.2026 | Leht „Tehisaru ja töö“: valged vastusekastid ja kõrvuti kastid on sisu kõrgused, mitte halli kaardi kõrgused (Kadri kommentaar 31.10 19:39). Eesti tehisaru kasutuse graafikus on 2026 tulba all „uus rida“ asemel „Statistikaamet“ ja selgitus lihtsam (Kadri 19:38); 2026 tulp on nüüd samal nulljoonel kui teised (enne tõstis kaherealine silt seda üles). |
 | 31.10.2026 | Leht „Tehisaru ja töö“: seitsmes pikas tabelis (publikatsioonid maailm ja Eesti, Hacker News, Maailmapank/NBER, Riigikogu, Eesti allikad, seire kandidaadid) on vaikimisi 12 rida ja valik 12 / 24 / 48 / kõik (Kadri 31.10 19:35). Tabelite veerg „Töö“ on nüüd „Publikatsioon“. 2 uut testi `test_leht.py`-s. |
