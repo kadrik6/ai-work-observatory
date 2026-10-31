@@ -478,6 +478,9 @@ css = '''
   .ts-leiu-sisu > .ts-csub { margin-top: var(--cds-gap-xs); }
   /* Õhk graafiku ümber: tekst ei tohi olla visuaali vastas kinni (Kadri 31.10). */
   .ts-details > .ts-twbox { margin-top: var(--cds-gap-sm); }
+  .ts-vk-head { margin-top: var(--cds-gap-lg); }
+  .ts-hb-vk { margin-block: var(--cds-gap-sm); }
+  @media (max-width: 40rem) { .ts-hb-vk li { grid-template-columns: 1fr; gap: 2px; } .ts-hb-vk .ts-hb-name { text-align: left; white-space: normal; overflow: visible; text-overflow: clip; } }
   .ts-details > .ts-twbox + * { margin-top: 12px; }
   .ts-leiu-sisu > :is(ul, ol, .ts-cols, .ts-dv, .ts-hd, .ts-hb, .ts-kb, .ts-trep, .ts-vm, .ts-chips, .ts-pair, .ts-twbox, table) { margin-block: var(--cds-gap-sm); }
   @media (max-width: 40rem) {
@@ -557,6 +560,45 @@ css = '''
   @media (max-width: 40rem) { .ts-hb-pohj .ts-hb li { grid-template-columns: 1fr; gap: 2px; } .ts-hb-pohj .ts-hb-name { text-align: left; white-space: normal; overflow: visible; text-overflow: clip; } }
 '''
 
+
+# Teadustööde jaotus valdkonniti (Kadri kommentaar 31.10 „Kui palju?“ juures). Andmed käivitusest töökaustas.
+VALDKOND_ET = {'Economics, Econometrics and Finance': 'Majandus ja rahandus', 'Business, Management and Accounting': 'Ärijuhtimine',
+               'Social Sciences': 'Sotsiaalteadused', 'Computer Science': 'Informaatika', 'Medicine': 'Meditsiin',
+               'Decision Sciences': 'Otsustusteadus', 'Psychology': 'Psühholoogia', 'Health Professions': 'Tervishoiu kutsealad',
+               'Engineering': 'Inseneeria', 'Mathematics': 'Matemaatika', 'Environmental Science': 'Keskkonnateadus',
+               'Arts and Humanities': 'Humanitaaria', 'Agricultural and Biological Sciences': 'Põllumajandus ja bioloogia'}
+valdkonnad_html = ''
+try:
+    VK = json.load(open(TOO + 'analyys/a_valdkonnad.json'))
+except (OSError, ValueError):
+    VK = None
+if VK and VK.get('read'):
+    k26 = sum(r['arv'] for r in VK['read']); k25 = sum(r['arv'] for r in VK['eelmine']) or None
+    e25 = {r['voti']: r['arv'] for r in VK['eelmine']}
+    suured = [r for r in VK['read'] if r['arv'] / k26 >= 0.01]
+    vaiksed = [r for r in VK['read'] if r['arv'] / k26 < 0.01]
+    read = [(VALDKOND_ET.get(r['nimi'], r['nimi']), r['arv'], e25.get(r['voti'], 0)) for r in suured]
+    if vaiksed:
+        read.append((f'Muud ({len(vaiksed)} valdkonda)', sum(r['arv'] for r in vaiksed),
+                     sum(v for k, v in e25.items() if k not in {r['voti'] for r in suured})))
+    vmax = max(max(a / k26, (b / k25 if k25 else 0)) for _, a, b in read) * 100 * 1.6
+    li = []
+    for i, (nm, a, b) in enumerate(read):
+        o26 = 100 * a / k26; o25 = 100 * b / k25 if k25 else None
+        tick = f'<span class="ts-hb-tick" style="left:{o25 / vmax * 100:.1f}%" title="{VK["aasta"] - 1}: {yks(o25)}%"></span>' if o25 is not None else ''
+        li.append(f'<li class="{"is-fokus" if i == 0 else ""}"><span class="ts-hb-name">{e(nm)}</span><span class="ts-hb-track">'
+                  f'<span class="ts-hb-bar" style="width:{o26 / vmax * 100:.1f}%"></span>{tick}'
+                  f'<span class="ts-hb-v" style="left:{max(o26, o25 or 0) / vmax * 100:.1f}%">{yks(o26)}% · {a}</span></span></li>')
+    kaks = 100 * (read[0][1] + read[1][1]) / k26
+    kasv = max((r for r in read if r[2] >= 10 and not r[0].startswith('Muud')), key=lambda r: r[1] / r[2])
+    valdkonnad_html = f"""        <div class="ts-head-sm ts-vk-head">
+          <p class="ts-kicker">Millistest valdkondadest?</p>
+          <h3 class="ts-ctitle ts-ctitle-sm">Üle poole töödest ({yks(kaks)}%) on <span class="ts-sig">majanduse ja ärijuhtimise</span> valdkonnast</h3>
+          <p class="ts-csub">Tööde osa {VK['aasta']}. aastal valdkonniti, %, ja tööde arv. Kriips näitab {VK['aasta'] - 1}. aastat. Kõige kiiremini kasvas {e(kasv[0].lower())} ({kasv[2]} → {kasv[1]} tööd).</p>
+        </div>
+        <ul class="ts-hb ts-hb-vk" aria-label="Teadustööde osa valdkonniti">{''.join(li)}</ul>
+        <p class="ts-source"><b>Valdkond</b> on OpenAlexi automaatne liigitus töö peamise teema järgi. See näitab, kes uurib (näiteks majandusteadlased või meditsiin), mitte seda, millist majandusharu töö uurib. Päring {'.'.join(str(int(x)) for x in reversed(VK['aeg'][:10].split('-')))}: {VK['aasta']} {k26} tööd, {VK['aasta'] - 1} {k25} tööd.</p>
+"""
 s = open(LEHT + 'mall.html').read()
 
 
@@ -583,6 +625,7 @@ if 'paneel-tulevik' not in s:
         'aria-controls="paneel-leiud" aria-selected="true">Mida leiti</button>\n    <button class="ts-tab" type="button" role="tab" id="tab-tulevik" aria-controls="paneel-tulevik" aria-selected="false">Tulevik</button>')
     rep('  <div class="ts-panel" id="paneel-analyys"', '<!--TULEVIK--><!--/TULEVIK-->  <div class="ts-panel" id="paneel-analyys"')
 import re
+s = re.sub(r'<!--VALDKONNAD-->.*?<!--/VALDKONNAD-->', lambda m: '<!--VALDKONNAD-->' + valdkonnad_html + '<!--/VALDKONNAD-->', s, flags=re.S)
 s = re.sub(r'<!--TULEVIK-->.*?<!--/TULEVIK-->', lambda m: '<!--TULEVIK-->' + paneel_t + '<!--/TULEVIK-->', s, flags=re.S)
 s = re.sub(r'<!--LEIUD-->.*?(?=<!--TULEVIK-->)', lambda m: '<!--LEIUD-->' + paneel, s, flags=re.S)
 s = re.sub(r'/\*LEIUD-CSS\*/.*?(?=</style>)', lambda m: '/*LEIUD-CSS*/' + css, s, count=1, flags=re.S)

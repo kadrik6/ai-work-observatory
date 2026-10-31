@@ -79,6 +79,9 @@ kokku={'aeg':o['meta']['aeg'],'t2025':yr[2025],'t2026':yr[2026],'alates2023':sum
  'lai2026':{r['voti']:r['arv'] for r in o['lai_aastad']}['2026'],'lai2025':{r['voti']:r['arv'] for r in o['lai_aastad']}['2025'],'eesti2026':{r['voti']:r['arv'] for r in o['eesti_autorid_aastad']}.get('2026',0),
  'kaivitus':f'https://github.com/kadrik6/ai-work-observatory/actions/runs/{RUN}'}
 for k,v in kokku.items(): j.append({'jaotus':'kokku','nimi':k,'arv':v if isinstance(v,(int,float)) else None,'liik':v if isinstance(v,str) else ''})
+# Valdkonnad (OpenAlexi peamise teema väli), kui käivitus need andis
+valdkonnad={'aeg':o['meta']['aeg'],'aasta':yr and max(yr),'read':o.get('valdkonnad',[]),'eelmine':o.get('valdkonnad_eelmine',[])}
+if valdkonnad['read']: json.dump(valdkonnad,open('a_valdkonnad.json','w'),ensure_ascii=False,indent=1)
 for nm,d in [('a_aastad',aastad),('a_teemad',teemad),('a_tood',tood),('a_jaotused',j)]:
     json.dump(d,open(nm+'.json','w'),ensure_ascii=False,indent=1)
 from collections import Counter

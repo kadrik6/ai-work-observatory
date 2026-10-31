@@ -38,3 +38,22 @@ def test_mallis_ja_eurostati_failis_pole_kandidaate():
     # Kandidaatide pealkirjad jäävad käivituse artefakti (Kadri otsus 30.10), mitte repo.
     for f in ("mall.html", "eurostat_isoc_eb_ai_2026-10-31.json"):
         assert "openalex.org/W" not in (LEHT / f).read_text(encoding="utf-8"), f
+
+
+def test_valdkondade_jaotus_tuleb_tookausta_andmetest(tmp_path):
+    import json
+    (tmp_path / "analyys").mkdir()
+    rida = lambda v, n, a: {"voti": v, "nimi": n, "arv": a}
+    (tmp_path / "analyys" / "a_valdkonnad.json").write_text(json.dumps({
+        "aeg": "2026-10-31T19:25:00Z", "aasta": 2026,
+        "read": [rida("20", "Economics, Econometrics and Finance", 60), rida("14", "Business, Management and Accounting", 30),
+                 rida("27", "Medicine", 10)],
+        "eelmine": [rida("20", "Economics, Econometrics and Finance", 40), rida("27", "Medicine", 10)]}), encoding="utf-8")
+    s = ehita(tmp_path)
+    assert "Millistest valdkondadest?" in s and "Majandus ja rahandus" in s
+    assert "60,0% · 60" in s and "(90,0%)" in s  # kaks suurimat kokku
+    assert "Päring 31.10.2026: 2026 100 tööd, 2025 50 tööd." in s
+
+
+def test_ilma_valdkondade_andmeteta_plokki_pole(tmp_path):
+    assert "Millistest valdkondadest?" not in ehita(tmp_path)
