@@ -423,6 +423,76 @@
    "kus": "maailm",
    "valim": "515 kiire kasvuga idufirmat, loosiga kahte rühma",
    "leid": "Kõik firmad said samad tehisaru tööriistad ja koolituse. Pooled said lisaks näiteid, kuidas tehisarule üles ehitatud firmad on ümber korraldanud töövood, meeskonnad ja ärimudeli. Need firmad leidsid 44% rohkem kasutusviise, said 18% tõenäolisemalt maksvaid kliente, teenisid 1,9 korda rohkem tulu ja vajasid 39,5% vähem välist kapitali. Peamine takistus ei olnud tehnoloogia ega oskused, vaid oskus leida, kus tehisaru väärtust loob."
+  },
+  {
+   "id": "bbh2002",
+   "autorid": "Bresnahan, Brynjolfsson, Hitt",
+   "aasta": 2002,
+   "pealkiri": "Information Technology, Workplace Organization, and the Demand for Skilled Labor: Firm-Level Evidence",
+   "kanal": "Quarterly Journal of Economics 117(1)",
+   "retsenseeritud": true,
+   "url": "https://academic.oup.com/qje/article-abstract/117/1/339/1851770",
+   "avaldatud": "2002-02",
+   "meetod": "kusitlus",
+   "kus": "USA",
+   "valim": "suured USA firmad: töökorralduse küsitlus koos firmade finants- ja IT-andmetega",
+   "leid": "IT kasutus, töö ümberkorraldamine (otsustusõiguse jagamine, meeskonnatöö) ja oskustega töötajad täiendavad üksteist. Kasu tuleb siis, kui kõik kolm muutuvad koos. See on Eesti tehisaru tulemusega sama muster arvutiajastust."
+  },
+  {
+   "id": "calvino2023",
+   "autorid": "Calvino, Fontanelli (OECD)",
+   "aasta": 2023,
+   "pealkiri": "A portrait of AI adopters across countries: Firm characteristics, assets' complementarities and productivity",
+   "kanal": "OECD Science, Technology and Industry Working Papers 2023/02",
+   "retsenseeritud": false,
+   "url": "https://www.oecd.org/en/publications/a-portrait-of-ai-adopters-across-countries_0fb79bb9-en.html",
+   "avaldatud": "2023-04-11",
+   "meetod": "kusitlus",
+   "kus": "11 OECD riiki",
+   "valim": "riikide statistikaametite ettevõtete IT-uuringute mikroandmed, ühtne kood",
+   "leid": "Tehisaru kasutavad firmad on tootlikumad, eriti suured. Kui arvestada IT-oskusi, kiiret internetti ja muid digitehnoloogiaid, jääb tehisaru enda eelis paljudes riikides väiksemaks või kaob. Toetavad eeldused on tootlikkuse eelise juures kesksed."
+  },
+  {
+   "id": "dellacqua2026",
+   "autorid": "Dell'Acqua, Ayoubi, Lifshitz-Assaf, Sadun, Mollick jt",
+   "aasta": 2026,
+   "pealkiri": "The Cybernetic Teammate: A Field Experiment on Generative AI and Teamwork",
+   "kanal": "Organization Science (NBER töödokument 33641)",
+   "retsenseeritud": true,
+   "url": "https://www.nber.org/papers/w33641",
+   "avaldatud": "2026-06",
+   "meetod": "katse",
+   "kus": "maailm",
+   "valim": "776 Procter & Gamble'i töötajat, eelregistreeritud välikatse päris tootearenduse ülesannetega",
+   "leid": "Üks inimene tehisaruga saavutas sama tulemuse kui kahene meeskond ilma tehisaruta. Tehisaruga tegid teadus- ja äritöötajad tasakaalustatumaid ettepanekuid, seega vähenes osakondade eraldatus. Autorite järeldus: organisatsioon peab meeskonnatöö ülesehituse üle vaatama."
+  },
+  {
+   "id": "gds2025",
+   "autorid": "Government Digital Service (Suurbritannia)",
+   "aasta": 2025,
+   "pealkiri": "Microsoft 365 tehisaruabilise katse valitsusülene raport (Cross-Government Findings Report)",
+   "kanal": "gov.uk (link avab gov.uk otsingu, esimene tulemus on raport)",
+   "retsenseeritud": false,
+   "url": "https://www.gov.uk/search/all?keywords=%22Cross-Government+Findings+Report%22",
+   "avaldatud": "2025-06-02",
+   "meetod": "kusitlus",
+   "kus": "Suurbritannia avalik sektor",
+   "valim": "20 000 ametnikku 12 asutusest, 30.9–31.12.2024; küsitlusele vastas 7115",
+   "leid": "Kasutajad hindasid, et säästsid keskmiselt 26 minutit päevas. Raport ütleb ise, et ei saanud mõõta, milleks säästetud aega kasutati. Kasu oli suurem neil, kes olid tehisaruga tuttavamad, seega oli vaja koolitust ja muudatuste juhtimist."
+  },
+  {
+   "id": "bonney2026",
+   "autorid": "Bonney, Breaux, Dinlersoz, Foster, Haltiwanger, Pande (USA statistikaamet)",
+   "aasta": 2026,
+   "pealkiri": "The Microstructure of AI Diffusion: Evidence from Firms, Business Functions, and Worker Tasks",
+   "kanal": "Census Bureau CES töödokument 26-25",
+   "retsenseeritud": false,
+   "url": "https://www2.census.gov/library/working-papers/2026/adrm/ces/CES-WP-26-25.pdf",
+   "avaldatud": "2026-04",
+   "meetod": "kusitlus",
+   "kus": "USA",
+   "valim": "ametliku ettevõtete kiiruuringu BTOS 2026. aasta tehisaru lisa, esinduslik, viide nov 2025 – jaan 2026",
+   "leid": "Tehisaru kasutas 18% firmadest (töötajate arvuga kaalutult 32%). Uuring mõõdab kolme kihti: firma, äritegevuse valdkond ja töötaja ülesanne. Laiem kasutus valdkondades seostub parema äritulemusega. Tehisaruga seotud töötajate vähendamist teatas 2% firmadest."
   }
  ],
  "kiirus": [
@@ -747,6 +817,83 @@
     "regulaarne": 30
    }
   ],
-  "markus": "Töökorralduse muutmine on uuringus jah/ei tunnus. Uuring ei ütle, milline muutus aitas kõige rohkem."
+  "markus": "Töökorralduse muutmine on uuringus jah/ei tunnus. Uuring ei ütle, milline muutus aitas kõige rohkem.",
+  "valismaa": [
+   {
+    "uuring": "bbh2002",
+    "lause": "Arvutiajastul andis IT kasu ainult koos töö ümberkorraldamise ja oskustega."
+   },
+   {
+    "uuring": "calvino2023",
+    "lause": "11 riigi andmetes seletavad tehisaru kasutajate eelist suuresti toetavad eeldused, eriti IT-oskused."
+   },
+   {
+    "uuring": "dellacqua2026",
+    "lause": "Tehisaruga üksik töötaja jõudis kahese meeskonna tasemele, seega muutub meeskondade vajadus."
+   },
+   {
+    "uuring": "kim2026",
+    "lause": "Ümberkorraldamise näited andsid 1,9 korda rohkem tulu, kuigi tööriistad olid kõigil samad."
+   },
+   {
+    "uuring": "gds2025",
+    "lause": "Avalik sektor mõõtis säästetud aega, aga mitte seda, mis säästetud ajaga tehti."
+   }
+  ],
+  "moodmine": {
+   "kirjeldus": "Mõõtmise astmed nõrgemast tugevamani",
+   "astmed": [
+    {
+     "kusimus": "Kas töökorraldust muudeti?",
+     "kuidas": "jah/ei küsimus ettevõtete innovatsiooniuuringus",
+     "naide": "Euroopa innovatsiooniuuring (CIS), ka Eestis",
+     "eesti": "jah",
+     "eesti_tekst": "Selle põhjal on tehtud Eesti tootlikkuse uuring."
+    },
+    {
+     "kusimus": "Mida muudeti?",
+     "kuidas": "valikvastustega nimekiri: töövood, koolitus, värbamine, andmehaldus, rollid, otsustusõigus",
+     "naide": "USA statistikaameti kiiruuring BTOS küsib tehisaru kasutajatelt, milliseid muudatusi nad tegid",
+     "eesti": "ei",
+     "eesti_tekst": "Seepärast ei tea me, milline muutus aitas."
+    },
+    {
+     "kusimus": "Kui laialt?",
+     "kuidas": "mitmes äritegevuse valdkonnas ja milliste töötajate ülesannetes tehisaru kasutatakse",
+     "naide": "BTOS 2026: firma, valdkonna ja töötaja ülesande kiht eraldi",
+     "eesti": "ei",
+     "eesti_tekst": "Eesti IT-uuring küsib, kas ja milleks tehisaru kasutatakse, aga mitte, kui laialt."
+    },
+    {
+     "kusimus": "Kui hästi juhitakse?",
+     "kuidas": "juhtimistavade skoor: eesmärgid, jälgimine, tagasiside, andmete kasutus otsustes",
+     "naide": "USA MOPS, 16 küsimust; 2010. ja 2015. aasta tööstuse andmetes seletas skoor umbes 20% firmade tootlikkuse erinevusest",
+     "eesti": "osaliselt",
+     "eesti_tekst": "Eesti juhtimisvaldkonna uuring (Vadi jt) on olemas, aga seda ei ole seotud registritega."
+    },
+    {
+     "kusimus": "Mis päriselt juhtus?",
+     "kuidas": "registrijäljed enne ja pärast: ametite koosseis, uued rollid, palgad, värbamine, tootlikkus",
+     "naide": "Eesti töötajate register ja äriregister, nagu Tartu Ülikooli tootlikkuse uuringus",
+     "eesti": "osaliselt",
+     "eesti_tekst": "Andmed on olemas ja Eesti on siin tugev. Neid seotakse praegu ainult jah/ei tunnusega."
+    },
+    {
+     "kusimus": "Kas muutus oli põhjus?",
+     "kuidas": "katse või järkjärguline kasutuselevõtt, kus osa üksusi alustab hiljem",
+     "naide": "Kim jt 2026 (515 idufirmat), Dell'Acqua jt 2026 (776 töötajat)",
+     "eesti": "ei",
+     "eesti_tekst": "Avalikus sektoris oleks võimalik, kui asutused alustavad eri aegadel ja mõõdavad sama moodi."
+    }
+   ],
+   "allikad": [
+    "bonney2026",
+    "dellacqua2026",
+    "kim2026",
+    "gds2025"
+   ],
+   "mooduli_allikas": "https://www.census.gov/newsroom/blogs/research-matters/2019/02/fresh_uses_for_them.html",
+   "avalik_sektor": "Kui mõõta ainult säästetud aega, jääb nägemata, kas töö muutus. Lisaks ajale tasub küsida, mida säästetud ajaga tehti ja kas ülesanded või rollid muutusid."
+  }
  }
 }

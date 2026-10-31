@@ -69,3 +69,17 @@ def test_tookorralduse_vaade():
         assert r["koos"] > (r["uksi"] or 0), r["nimi"]
     for r in t["jarjepidevus"]:
         assert r["regulaarne"] > r["uks_kord"] > 0, r["nimi"]
+
+
+def test_tookorralduse_moodmise_astmed():
+    t = LEIUD["tookorraldus"]
+    for r in t["valismaa"]:
+        assert r["uuring"] in UURINGUD and r["lause"], r
+    m = t["moodmine"]
+    assert len(m["astmed"]) >= 3
+    for a in m["astmed"]:
+        for v in ("kusimus", "kuidas", "naide", "eesti", "eesti_tekst"):
+            assert a[v], (a, v)
+        assert a["eesti"] in {"jah", "osaliselt", "ei"}, a["kusimus"]
+    assert all(i in UURINGUD for i in m["allikad"])
+    assert m["mooduli_allikas"].startswith("https://")
