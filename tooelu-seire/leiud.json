@@ -853,16 +853,16 @@
     {
      "kusimus": "Mida muudeti?",
      "kuidas": "valikvastustega nimekiri: töövood, koolitus, värbamine, andmehaldus, rollid, otsustusõigus",
-     "naide": "USA statistikaameti kiiruuring BTOS küsib tehisaru kasutajatelt, milliseid muudatusi nad tegid",
-     "eesti": "ei",
-     "eesti_tekst": "Seepärast ei tea me, milline muutus aitas."
+     "naide": "USA statistikaameti kiiruuring BTOS küsib tehisaru kasutajatelt, milliseid muudatusi nad tegid; Eesti innovatsiooniuuring (küsimus F1) küsib protsessiuuenduse valdkondi",
+     "eesti": "osaliselt",
+     "eesti_tekst": "Innovatsiooniuuring eristab töökorralduse ja äriprotsesside korralduse muutust, aga ei seo neid tehisaruga ega küsi täpsemalt. Seepärast ei tea me, milline muutus aitas."
     },
     {
      "kusimus": "Kui laialt?",
      "kuidas": "mitmes äritegevuse valdkonnas ja milliste töötajate ülesannetes tehisaru kasutatakse",
-     "naide": "BTOS 2026: firma, valdkonna ja töötaja ülesande kiht eraldi",
-     "eesti": "ei",
-     "eesti_tekst": "Eesti IT-uuring küsib, kas ja milleks tehisaru kasutatakse, aga mitte, kui laialt."
+     "naide": "BTOS 2026: firma, valdkonna ja töötaja ülesande kiht eraldi; Eurostati IT-uuring: tehisaru kasutuse eesmärgid ja nende arv",
+     "eesti": "osaliselt",
+     "eesti_tekst": "IT-uuring näitab, mitmes valdkonnas tehisaru kasutatakse: 2025. aastal kasutas 10,9% ettevõtetest seda vähemalt kahes valdkonnas (Eurostat). Töötajate ülesannete tasandit ei mõõdeta."
     },
     {
      "kusimus": "Kui hästi juhitakse?",
@@ -893,7 +893,11 @@
     "gds2025"
    ],
    "mooduli_allikas": "https://www.census.gov/newsroom/blogs/research-matters/2019/02/fresh_uses_for_them.html",
-   "avalik_sektor": "Kui mõõta ainult säästetud aega, jääb nägemata, kas töö muutus. Lisaks ajale tasub küsida, mida säästetud ajaga tehti ja kas ülesanded või rollid muutusid."
+   "avalik_sektor": "Kui mõõta ainult säästetud aega, jääb nägemata, kas töö muutus. Lisaks ajale tasub küsida, mida säästetud ajaga tehti ja kas ülesanded või rollid muutusid.",
+   "eesti_allikad": {
+    "laius": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table",
+    "innovatsiooniuuring": "https://stat.ee/sites/default/files/2021-05/Innovatsiooniuuring_kasiraamat.pdf"
+   }
   }
  }
 }

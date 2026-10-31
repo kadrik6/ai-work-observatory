@@ -1,0 +1,1857 @@
+<meta name="dash-one-writer">
+<style>
+  .ts { display: grid; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); color: var(--color-fg); max-width: 72rem; margin-inline: auto; }
+  .ts-head { display: grid; gap: var(--cds-gap-sm); max-width: 46rem; }
+  .ts-eyebrow { margin: 0; font-size: var(--cds-font-size-caption); letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--color-fg-muted); }
+  .ts-title { margin: 0; font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-title); font-weight: 700; line-height: 1.1; text-wrap: balance; }
+  .ts-lead { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.5; }
+  .ts .ts-lead b { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ts-note { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.45; }
+  .ts-tiles { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
+  .ts-tile { display: grid; gap: var(--cds-gap-xs); align-content: start; padding: var(--cds-pad-md) var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); border: 1px solid var(--color-border-line); }
+  .ts-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .ts-tile-value { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-title); font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .ts-tile-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.4; }
+  .ts-grid { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); align-items: start; }
+  .ts-card { position: relative; display: grid; gap: var(--cds-gap-sm); align-content: start; min-width: 0; padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); border: 1px solid var(--color-border-line); }
+  .ts-card h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: 700; line-height: 1.3; text-wrap: balance; }
+  .ts-sub { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.45; }
+  .ts-groups { display: grid; gap: var(--cds-gap-md); min-height: 9rem; }
+  .ts-group { display: grid; gap: var(--cds-gap-xs); }
+  .ts-group-name { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: .1em; font-weight: 700; }
+  .ts-chips { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); }
+  .ts-chip { display: inline-flex; align-items: center; gap: var(--cds-gap-xs); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-radius: 999px; border: 1px solid var(--color-border-line); background: var(--color-bg); font-size: var(--cds-font-size-caption); }
+  .ts-chip-n { color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .ts-dot { width: .5rem; height: .5rem; border-radius: 50%; flex: none; }
+  .ts-dot.is-ok { background: var(--color-ok); }
+  .ts-dot.is-bad { background: var(--color-bad); }
+  .ts-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0; padding: 0; list-style: none; }
+  .ts-legend li { display: inline-flex; align-items: center; gap: var(--cds-gap-xs); }
+  .ts-swatch { width: .75rem; height: .75rem; border-radius: 3px; background: var(--cds-chart-muted); }
+  .ts-chart { position: relative; min-height: 15rem; }
+  .ts-chart svg { display: block; overflow: visible; }
+  .ts-tip { position: absolute; z-index: 2; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; }
+  .ts-tip-head { color: var(--cds-text-secondary); }
+  .ts-tip-row { display: flex; align-items: center; gap: var(--cds-gap-xs); font-variant-numeric: tabular-nums; }
+  .ts-news { display: grid; gap: var(--cds-gap-sm); margin: 0; padding: 0; list-style: none; min-height: 3rem; }
+  .ts-news li { display: grid; gap: var(--cds-gap-xs); padding-block: var(--cds-pad-sm); border-top: 1px solid var(--color-border-line); }
+  .ts-news li:first-child { border-top: 0; padding-top: 0; }
+  .ts-tag { justify-self: start; font-size: var(--cds-font-size-caption); font-weight: 700; padding: 0 var(--cds-pad-sm); border-radius: 999px; border: 1px solid var(--color-border-line); }
+  .ts-link { color: var(--color-fg); text-decoration: underline; text-decoration-color: var(--color-border-line); text-underline-offset: .2em; }
+  .ts-link:hover { text-decoration-color: currentColor; }
+  .ts-meta { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .ts-empty { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .ts-euro { display: grid; gap: var(--cds-gap-md); min-height: 14rem; }
+  .ts-eurow { display: grid; gap: var(--cds-gap-xs); }
+  .ts-eurow svg { display: block; }
+  .ts-controls { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
+  .ts-search { flex: 1 1 14rem; min-width: 0; font: inherit; font-size: var(--cds-font-size-body); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-radius: var(--cds-radius); border: 1px solid var(--color-border-line); background: var(--color-bg); color: var(--color-fg); }
+  .ts-filter { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-radius: 999px; border: 1px solid var(--color-border-line); background: var(--color-bg); color: var(--color-fg); cursor: pointer; }
+  .ts-filter[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+  .ts-search:focus-visible, .ts-filter:focus-visible, .ts-sort:focus-visible, .ts-link:focus-visible { outline: 3px solid var(--color-fg); outline-offset: 2px; }
+  .ts-tablebox { max-height: 34rem; overflow: auto; border-top: 1px solid var(--color-border-line); }
+  .ts-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); }
+  .ts-table th { position: sticky; top: 0; background: var(--color-panel); text-align: left; padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
+  .ts-table td { padding: var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); vertical-align: top; line-height: 1.4; }
+  .ts-table td:last-child { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .ts-sort { font: inherit; font-weight: 700; color: var(--color-fg); background: none; border: 0; padding: 0; cursor: pointer; }
+  .ts-sort::after { content: ""; display: inline-block; width: 1em; color: var(--color-fg-muted); }
+  th[aria-sort="ascending"] .ts-sort::after { content: " ↑"; }
+  th[aria-sort="descending"] .ts-sort::after { content: " ↓"; }
+  @media (max-width: 40rem) { .ts-col-liik { display: none; } }
+  .ts-details { font-size: var(--cds-font-size-body); line-height: 1.55; }
+  .ts-details summary { cursor: pointer; font-weight: 700; }
+  .ts-details ul { margin: var(--cds-gap-sm) 0 0; padding-left: 1.2em; display: grid; gap: var(--cds-gap-xs); max-width: 46rem; }
+  [data-dash-source-state=empty] { color: transparent; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+  .ts-fail { display: flex; align-items: center; justify-content: center; gap: var(--cds-gap-xs); min-height: inherit; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .ts-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+  .ts { --ts-signal: #87139f; --ts-context: var(--cds-chart-muted); }
+  .ts-sig { color: var(--ts-signal); }
+  .ts-tabs { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); border-bottom: 2px solid var(--color-fg); }
+  .ts-tab { font: inherit; font-size: var(--cds-font-size-body); font-weight: 700; color: var(--color-fg-muted); background: none; border: 0; border-bottom: 3px solid transparent; padding: var(--cds-pad-sm) var(--cds-pad-md); margin-bottom: -2px; cursor: pointer; }
+  .ts-tab[aria-selected="true"] { color: var(--ts-signal); border-bottom-color: var(--ts-signal); }
+  .ts-tab:focus-visible { outline: 3px solid var(--color-fg); outline-offset: 2px; }
+  .ts-panel { display: grid; gap: var(--cds-gap-xl); }
+  .ts-panel[hidden] { display: none; }
+  .ts-kicker { margin: 0; font-size: var(--cds-font-size-caption); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ts-signal); }
+  .ts-ctitle { margin: 0; font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-heading); font-weight: 700; line-height: 1.25; text-wrap: balance; }
+  .ts-csub { margin: 0; font-size: var(--cds-font-size-body); color: var(--color-fg-muted); line-height: 1.45; max-width: 44rem; }
+  .ts-source { margin: 0; font-size: 13.6px; color: var(--color-fg-muted); line-height: 1.45; }
+  .ts-source b { font-weight: 700; color: var(--color-fg); }
+  .ts-chartcard { display: grid; gap: var(--cds-gap-md); align-content: start; min-width: 0; padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); }
+  .ts-head-sm { display: grid; gap: var(--cds-gap-xs); }
+
+  /* Tulbad aastate kaupa: number tulba kohal, viimane esile */
+  .ts-cols { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; align-items: end; height: 15rem; padding-top: 1.6rem; }
+  .ts-col { display: grid; grid-template-rows: auto 1fr auto; align-items: end; justify-items: center; height: 100%; min-width: 0; }
+  .ts-col-v { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--color-fg-muted); white-space: nowrap; margin-bottom: 4px; }
+  .ts-col-bar { width: 100%; max-width: 3.5rem; background: var(--ts-context); border-radius: 3px 3px 0 0; align-self: end; }
+  .ts-col-y { font-size: 14px; color: var(--color-fg-muted); padding-top: 6px; font-variant-numeric: tabular-nums; }
+  .ts-col.is-fokus .ts-col-bar { background: var(--ts-signal); }
+  .ts-col.is-fokus .ts-col-v { color: var(--ts-signal); }
+  @media (max-width: 40rem) { .ts-col.is-minor .ts-col-v { visibility: hidden; } .ts-col.is-minor .ts-col-y { visibility: hidden; } }
+
+  /* Järjestatud rõhttulbad, väärtus kohe tulba järel, kriips varasema aasta jaoks */
+  .ts-hb { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .ts-hb li { display: grid; grid-template-columns: minmax(5.5rem, 32%) minmax(0, 1fr); align-items: center; gap: var(--cds-gap-sm); font-size: 14px; }
+  .ts-hb-name { text-align: right; color: var(--color-fg-muted); line-height: 1.25; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .ts-hb-track { position: relative; height: 1.25rem; border-left: 1px solid var(--color-fg); }
+  .ts-hb-bar { position: absolute; left: 0; top: 2px; bottom: 2px; background: var(--ts-context); border-radius: 0 3px 3px 0; }
+  .ts-hb-tick { position: absolute; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: var(--color-fg); }
+  .ts-hb-v { position: absolute; top: 50%; transform: translateY(-50%); padding-left: 6px; white-space: nowrap; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--color-fg-muted); }
+  .ts-hb li.is-fokus .ts-hb-name, .ts-hb li.is-fokus .ts-hb-v { color: var(--ts-signal); font-weight: 700; }
+  .ts-hb li.is-fokus .ts-hb-bar { background: var(--ts-signal); }
+  .ts-hb li.is-ink .ts-hb-name, .ts-hb li.is-ink .ts-hb-v { color: var(--color-fg); font-weight: 700; }
+  .ts-hb li.is-ink .ts-hb-bar { background: var(--color-fg); }
+  .ts-key { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: 13.6px; color: var(--color-fg-muted); }
+  .ts-key span { display: inline-flex; align-items: center; gap: 6px; }
+  .ts-key i { display: inline-block; width: 2px; height: 14px; background: var(--color-fg); }
+
+  /* Plokkdiagramm: osakaalud ühe tulbana, number sees, nimi kõrval */
+  .ts-blocks { display: grid; gap: 4px; max-width: 34rem; }
+  .ts-block { display: grid; grid-template-columns: minmax(7rem, 42%) 1fr; gap: var(--cds-gap-md); align-items: center; }
+  .ts-block-box { display: flex; align-items: center; justify-content: center; min-height: 2.25rem; border-radius: 3px; background: var(--ts-context); color: var(--color-fg); font-family: var(--font-anthropic-serif); font-weight: 700; font-size: 18px; font-variant-numeric: tabular-nums; }
+  .ts-block-name { font-size: var(--cds-font-size-body); color: var(--color-fg); line-height: 1.3; }
+  .ts-block-name small { display: block; font-size: 13.6px; color: var(--color-fg-muted); }
+  .ts-block.is-fokus .ts-block-box { background: var(--ts-signal); color: #fff; font-size: 28px; }
+  .ts-block.is-fokus .ts-block-name { color: var(--ts-signal); font-weight: 700; }
+
+  /* Leiukaart: küsimus ja vastus vasakul, graafik paremal */
+  .ts-finding { display: grid; gap: var(--cds-gap-lg); grid-template-columns: minmax(0, 1fr); padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); }
+  @media (min-width: 48rem) { .ts-finding { grid-template-columns: minmax(14rem, 1fr) minmax(0, 2fr); } }
+  .ts-verdict { display: grid; gap: var(--cds-gap-sm); align-content: start; padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-bg); order: 2; }
+  @media (min-width: 48rem) { .ts-verdict { order: 0; } }
+  .ts-verdict h3 { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-fg-muted); }
+  .ts-verdict .ts-v-big { margin: 0 0 var(--cds-gap-sm); font-family: var(--font-anthropic-serif); font-size: 28px; font-weight: 700; }
+  .ts-verdict p { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.5; }
+  .ts-verdict .ts-v-key { color: var(--ts-signal); font-weight: 700; }
+
+  /* Raamitud tabel */
+  .ts-tw { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .ts-tw th { text-align: left; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--color-fg-muted); padding: 9px 14px; border: 1px solid var(--color-border-line); background: var(--color-panel); position: sticky; top: 0; }
+  .ts-tw td { padding: 9px 14px; border: 1px solid var(--color-border-line); vertical-align: top; background: var(--color-bg); line-height: 1.4; }
+  .ts-tw .ts-t-name { font-family: var(--font-anthropic-serif); font-weight: 700; color: var(--color-fg); text-decoration: none; }
+  .ts-tw a.ts-t-name:hover { text-decoration: underline; }
+  .ts-tw .ts-t-sub { display: block; font-size: 13px; color: var(--color-fg-muted); margin-top: 2px; }
+  .ts-tw .ts-t-key { font-weight: 700; color: var(--ts-signal); }
+  .ts-tw .ts-t-key.is-muted { color: var(--color-fg); }
+  .ts-tw tr.is-gap td { background: color-mix(in srgb, var(--ts-signal) 7%, var(--color-bg)); }
+  .ts-tw .ts-num { text-align: right; font-family: var(--font-anthropic-serif); font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; }
+  .ts-tw .ts-num-kp { font-family: inherit; font-size: 14px; font-weight: 600; white-space: nowrap; }
+  .ts-tw th.ts-num { font-family: inherit; font-size: 12px; }
+  .ts-grid3 { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); align-items: start; }
+  .ts-twbox { max-height: 36rem; overflow: auto; }
+  @media (max-width: 40rem) { .ts-tw .ts-col-hide { display: none; } }
+
+  /* Protsessiriba */
+  .ts-proc { display: grid; gap: var(--cds-gap-md); margin: 0; padding: 0; list-style: none; position: relative; }
+  .ts-proc li { display: grid; grid-template-columns: 2.5rem 1fr; gap: var(--cds-gap-md); align-items: start; position: relative; }
+  .ts-proc li::before { content: ""; position: absolute; left: calc(1.25rem - 1.5px); top: 2.5rem; bottom: calc(-1 * var(--cds-gap-md)); width: 3px; background: var(--ts-signal); }
+  .ts-proc li:last-child::before { display: none; }
+  .ts-proc-n { width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 3px solid var(--ts-signal); display: grid; place-items: center; font-weight: 700; color: var(--ts-signal); background: var(--color-panel); position: relative; z-index: 1; }
+  .ts-proc li:first-child .ts-proc-n { background: var(--ts-signal); color: #fff; }
+  .ts-proc-t { font-family: var(--font-anthropic-serif); font-weight: 700; font-size: 18px; }
+  .ts-proc-d { font-size: var(--cds-font-size-body); color: var(--color-fg-muted); line-height: 1.45; }
+  @media (min-width: 56rem) {
+    .ts-proc { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--cds-gap-md); }
+    .ts-proc li { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .ts-proc li::before { left: calc(50% + 1.25rem); right: calc(-50% - var(--cds-gap-md) + 1.25rem); top: calc(1.25rem - 1.5px); bottom: auto; width: auto; height: 3px; }
+  }
+
+  .ts-eesti { display: grid; gap: var(--cds-gap-md); }
+  #a-eesti-allikad .ts-twbox { max-height: 28rem; }
+  .ts-kp-kitsas { display: none; }
+  #a-riigikogu .ts-cols { gap: 3px; }
+  #a-riigikogu .ts-col-v { font-size: 12px; }
+  .ts-col.ts-col-peida-v .ts-col-v { visibility: hidden; }
+  #a-riigikogu .ts-col-y { overflow: visible; }
+  @media (max-width: 40rem) { #a-eesti-allikad .ts-num-kp { display: none; } .ts-kp-kitsas { display: inline; } }
+  .ts-ctitle-sm { font-size: 18px; }
+  .ts-cols-sm { height: 11rem; }
+  .ts-big { font-family: var(--font-anthropic-serif); font-size: 48px; font-weight: 700; line-height: 1; color: var(--ts-signal); font-variant-numeric: tabular-nums; }
+  .ts-tile.is-fokus .ts-tile-value { color: var(--ts-signal); }
+  .ts-ladder { margin: var(--cds-gap-sm) 0 0; padding-left: 1.4em; display: grid; gap: var(--cds-gap-xs); font-size: var(--cds-font-size-body); line-height: 1.5; }
+<!--LEIUD-CSS-->
+  /* Mida leiti */
+  .ts-leiu-sisu { display: grid; gap: var(--cds-gap-md); align-content: start; min-width: 0; }
+  .ts-leiu-kaart .ts-verdict p.ts-v-big { color: var(--ts-signal); }
+  .ts-tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .04em; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--ink-muted); color: var(--ink); white-space: nowrap; }
+  .ts-tag-tugev { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+  .ts-tag-nork { border-style: dashed; color: var(--ink-muted); }
+  .ts-inline { display: inline !important; }
+  .ts-leid { margin: 0 0 6px; font-size: 14px; line-height: 1.45; }
+  .ts-leid-meta { margin: 0; display: grid; gap: 4px; }
+  .ts-tw-leiud td:first-child { width: 42%; }
+  .ts-twbox-auto { max-height: none; }
+  .ts-dv { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .ts-dv li { display: grid; grid-template-columns: minmax(5.5rem, 32%) minmax(0, 1fr); align-items: center; gap: var(--cds-gap-sm); font-size: 14px; }
+  .ts-dv-track { position: relative; height: 1.6rem; }
+  .ts-dv-track::before { content: ""; position: absolute; left: var(--null); top: -4px; bottom: -4px; width: 1px; background: var(--ink); }
+  .ts-dv-bar { position: absolute; top: 3px; bottom: 3px; background: var(--ts-context); border-radius: 3px; }
+  .ts-dv-v { position: absolute; top: 50%; transform: translateY(-50%); padding: 0 6px; white-space: nowrap; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink-muted); }
+  .ts-dv li.is-fokus .ts-dv-bar { background: var(--ts-signal); }
+  .ts-dv li.is-fokus .ts-dv-v, .ts-dv li.is-fokus .ts-hb-name { color: var(--ts-signal); font-weight: 700; }
+  .ts-pair { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
+  .ts-pair > div { display: grid; gap: 6px; align-content: start; padding: var(--cds-pad-md); border-radius: 12px; background: var(--surface); }
+  .ts-pair p { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.4; }
+  .ts-pair .ts-t-sub { display: block; font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
+  .ts-g-row { align-items: start !important; }
+  .ts-g-bars { display: grid; gap: 4px; }
+  .ts-g-track { height: 1.25rem; }
+  .ts-g-track .ts-hb-v small { font-weight: 400; color: var(--ink-muted); }
+  .ts-g-puudu { font-size: 14px; color: var(--ink-muted); font-style: italic; border-left: 1px solid var(--ink); padding-left: 6px; }
+  .ts-g .ts-hb-name { padding-top: 1px; }
+  .ts-hb-2026 .ts-hb-bar { background: var(--ink) !important; }
+  .ts-hb-2026 .ts-hb-v { color: var(--ink) !important; }
+  .ts-hb-riigid li { font-size: 13px; }
+  .ts-hb-riigid .ts-hb-track { height: 1.05rem; }
+  .ts-hb-v small { font-weight: 400; }
+  .ts-hb-v small b { font-weight: 700; color: var(--ink); }
+  .ts-leiu-sisu > .ts-head-sm:not(:first-child) { margin-top: var(--cds-gap-md); }
+  .ts-leiu-sisu > .ts-csub { margin-top: var(--cds-gap-xs); }
+  @media (max-width: 40rem) {
+    .ts-dv li { grid-template-columns: 1fr; gap: 2px; }
+    .ts-dv .ts-hb-name { text-align: left; }
+    .ts-g li { grid-template-columns: 1fr; gap: 2px; }
+    .ts-g .ts-hb-name { text-align: left; display: block; }
+    .ts-tw-leiud thead { display: none; }
+    .ts-tw-leiud td { display: block; width: auto !important; }
+    .ts-tw-leiud td + td { border-top: 0; }
+  }
+  .ts-leiu-kaart .ts-verdict { order: 0; }
+  .ts-tag-prognoos { border-style: dotted; color: var(--ink-muted); }
+  .ts-dv li.is-ink .ts-dv-bar { background: var(--ink); }
+  .ts-dv li.is-ink .ts-dv-v, .ts-dv li.is-ink .ts-hb-name { color: var(--ink); font-weight: 700; }
+  .ts-col.is-ink .ts-col-bar { background: var(--ink); }
+  .ts-col.is-ink .ts-col-v { color: var(--ink); }
+  .ts-suunad ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 4px; font-size: var(--cds-font-size-body); }
+  .ts-suunad .ts-kicker { margin: 0; }
+  .ts-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .ts-chips li { padding: 4px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--ts-signal); color: var(--ink); font-size: 14px; }
+  .ts-hd { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .ts-hd li { display: grid; grid-template-columns: minmax(7rem, 32%) minmax(0, 1fr); align-items: center; gap: var(--cds-gap-sm); font-size: 14px; }
+  .ts-hd .ts-hb-name { text-align: right; color: var(--ink); }
+  .ts-hd-track { position: relative; height: 2.6rem; border-left: 1px solid var(--ink); margin-right: 7rem; }
+  .ts-hd-line { position: absolute; top: 0.8rem; height: 2px; background: var(--ts-context); }
+  .ts-hd-a, .ts-hd-b { position: absolute; top: 0.8rem; width: 14px; height: 14px; border-radius: 50%; transform: translate(-50%, -6px); }
+  .ts-hd-a { background: var(--ts-context); }
+  .ts-hd-ns { background: var(--surface); border: 2px dashed var(--ink-muted); transform: translate(0, -6px); }
+  .ts-hd-b { background: var(--ts-signal); }
+  .ts-hd-v { position: absolute; top: 0.8rem; transform: translate(12px, -50%); white-space: nowrap; font-weight: 700; color: var(--ts-signal); font-variant-numeric: tabular-nums; }
+  .ts-hd-av { position: absolute; left: 0; bottom: 0; padding-left: 4px; font-size: 12px; color: var(--ink-muted); white-space: nowrap; }
+  .ts-pair ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 4px; }
+  @media (max-width: 40rem) { .ts-hd li { grid-template-columns: 1fr; gap: 2px; } .ts-hd .ts-hb-name { text-align: left; } .ts-hd-track { margin-right: 6.5rem; } }
+  .ts-roll-otsene, .ts-roll-osaline { background: var(--ts-signal); border-color: var(--ts-signal); color: var(--surface); }
+  .ts-roll-kaudne { border-color: var(--ts-signal); color: var(--ts-signal); }
+  .ts-roll-tulevikus { border-style: dashed; }
+  .ts-roll-ei_mainita { border-color: var(--ink-muted); color: var(--ink-muted); }
+  .ts-tw-koond td .ts-tag { margin-bottom: 6px; }
+  .ts-kb li { grid-template-columns: minmax(7rem, 26%) minmax(0, 1fr); }
+  .ts-kb .ts-hb-name { color: var(--ink); }
+  .ts-kb .ts-hb-name small { color: var(--ink-muted); font-weight: 400; }
+  .ts-kb .ts-hb-track { height: 1.6rem; }
+  .ts-kb .ts-hb-v small { font-weight: 400; }
+  .ts-kb-osaline, .ts-kb-otsene { background: var(--ts-signal) !important; }
+  .ts-kb-kaudne { background: color-mix(in srgb, var(--ts-signal) 28%, transparent) !important; box-shadow: inset 0 0 0 2px var(--ts-signal); }
+  .ts-kb-tulevikus { background: transparent !important; box-shadow: inset 0 0 0 2px var(--ink); }
+  .ts-kb-ei_mainita { background: var(--ts-context) !important; }
+  .ts-kb-ulem { background-image: repeating-linear-gradient(135deg, transparent 0 5px, var(--surface) 5px 8px) !important; }
+  .ts-kb-puudu { position: absolute; left: 6px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--ink-muted); white-space: nowrap; }
+  .ts-kb-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 var(--cds-gap-sm); font-size: 13px; color: var(--ink-muted); }
+  .ts-kb-leg { display: inline-flex; align-items: center; gap: 6px; }
+  .ts-kb-leg i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; }
+  @media (max-width: 40rem) { .ts-kb li { grid-template-columns: 1fr; gap: 2px; } .ts-kb .ts-hb-name { text-align: left; } .ts-kb-puudu { white-space: normal; position: static; transform: none; display: block; padding: 2px 0 0 6px; } .ts-kb .ts-hb-track:has(.ts-kb-puudu) { height: auto; } }
+  .ts-tw-koond td:first-child { width: 24%; }
+  .ts-tw-koond td.ts-num .ts-t-sub { font-weight: 400; }
+  @media (max-width: 40rem) { .ts-tw-koond thead { display: none; } .ts-tw-koond td { display: block; width: auto !important; text-align: left; } .ts-tw-koond td + td { border-top: 0; } .ts-tw-koond td.ts-num { text-align: left; padding-top: 0; } .ts-tw-koond td:first-child { padding-bottom: 2px; } }
+  .ts-vm { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .ts-vm li { display: grid; grid-template-columns: 11rem 1fr; gap: 12px; align-items: baseline; padding-bottom: 10px; border-bottom: 1px solid var(--color-border-line); }
+  .ts-vm-kes { font-weight: 700; color: var(--ink); }
+  .ts-vm-lause { color: var(--ink); }
+  .ts-vm .ts-inline { display: inline-block; margin-left: 4px; }
+  .ts-trep { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .ts-trep li { display: grid; grid-template-columns: 2.2rem 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--color-border-line); }
+  .ts-trep-n { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; font-weight: 700; border: 2px solid var(--ink-muted); color: var(--ink-muted); background: var(--surface); }
+  .ts-trep-jah .ts-trep-n { background: var(--ts-signal); border-color: var(--ts-signal); color: var(--surface); }
+  .ts-trep-osaliselt .ts-trep-n { border-color: var(--ts-signal); color: var(--ts-signal); background: repeating-linear-gradient(135deg, transparent 0 4px, color-mix(in srgb, var(--ts-signal) 22%, transparent) 4px 7px); }
+  .ts-trep-q { margin: 0; font-weight: 700; color: var(--ink); }
+  .ts-trep-t { margin: 2px 0 0; color: var(--ink-muted); }
+  .ts-trep-st { display: inline-block; margin-left: 6px; font-size: 12px; font-weight: 700; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--ink-muted); color: var(--ink-muted); white-space: nowrap; }
+  .ts-trep-jah .ts-trep-st { background: var(--ts-signal); border-color: var(--ts-signal); color: var(--surface); }
+  .ts-trep-osaliselt .ts-trep-st { border-color: var(--ts-signal); color: var(--ts-signal); }
+  @media (max-width: 40rem) { .ts-vm li { grid-template-columns: 1fr; gap: 2px; } }
+  @media (max-width: 40rem) { .ts-hb-pohj .ts-hb li { grid-template-columns: 1fr; gap: 2px; } .ts-hb-pohj .ts-hb-name { text-align: left; white-space: normal; overflow: visible; text-overflow: clip; } }
+</style>
+
+<div class="ts">
+  <header class="ts-head">
+    <p class="ts-kicker">Tehisaru ja tööturg</p>
+    <h1 class="ts-title">Tehisaru ja <span class="ts-sig">töö</span>: mida leiti ja mida uuritakse</h1>
+    <p class="ts-lead">Mida uuringud on tehisaru mõjust tööle seni leidnud ja kui kindlad need leiud on. Tuleviku vahekaart koondab prognoosid ametite ja töötuse kohta. Ülejäänud vahekaardid näitavad, mida ja kui palju maailmas ja Eestis uuritakse (seis <span data-draw="a-aeg" data-source="a_jaotused" data-field="liik">—</span>).</p>
+  </header>
+
+  <nav class="ts-tabs" role="tablist" aria-label="Vaated">
+    <button class="ts-tab" type="button" role="tab" id="tab-leiud" aria-controls="paneel-leiud" aria-selected="true">Mida leiti</button>
+    <button class="ts-tab" type="button" role="tab" id="tab-tulevik" aria-controls="paneel-tulevik" aria-selected="false">Tulevik</button>
+    <button class="ts-tab" type="button" role="tab" id="tab-analyys" aria-controls="paneel-analyys" aria-selected="false">Mida uuritakse: maailm</button>
+    <button class="ts-tab" type="button" role="tab" id="tab-eesti" aria-controls="paneel-eesti" aria-selected="false">Mida uuritakse: Eesti</button>
+    <button class="ts-tab" type="button" role="tab" id="tab-seire" aria-controls="paneel-seire" aria-selected="false">Seire seis</button>
+  </nav>
+
+<!--LEIUD-->  <div class="ts-panel" id="paneel-leiud" role="tabpanel" aria-labelledby="tab-leiud">
+    <section class="ts-leiud-algus">
+      <p class="ts-lead">Neli vastust maailma ja neli Eesti uuringute põhjal. Iga vastuse juures on, kui kindel see on ja millised uuringud selle taga on. Leiud on kontrollitud allikast 31.10.2026.</p>
+    </section>
+
+    <section class="ts-eesti" aria-labelledby="leiud-maailm">
+      <h2 class="ts-ctitle" id="leiud-maailm">Maailm</h2>
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Kas tehisaru teeb töö kiiremaks?</h3>
+          <p class="ts-v-big">Sageli jah</p>
+          <p>Katsetes tehti kirjutamis-, programmeerimis- ja konsultatsiooniülesandeid kiiremini. Tuttavas keerulises töös võib tehisaru ka aeglustada.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Aeg ühel ülesandel, tehisaruga võrreldes ilma</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Kolmes katses neljast tehti töö kiiremini, kogenud arendajad olid <span class="ts-sig">aeglasemad</span></h4>
+          </div>
+          <ul class="ts-dv" aria-label="Ajasääst neljas katses"><li class=""><span class="ts-hb-name">Programmeerimine, uus ülesanne</span>
+<span class="ts-dv-track" style="--null:20.0%"><span class="ts-dv-bar" style="left:20.0%;width:44.6%"></span>
+<span class="ts-dv-v" style="left:64.6%">55,8% kiiremini</span></span></li><li class=""><span class="ts-hb-name">Kirjutamisülesanded</span>
+<span class="ts-dv-track" style="--null:20.0%"><span class="ts-dv-bar" style="left:20.0%;width:32.0%"></span>
+<span class="ts-dv-v" style="left:52.0%">40% kiiremini</span></span></li><li class=""><span class="ts-hb-name">Konsultatsiooniülesanded</span>
+<span class="ts-dv-track" style="--null:20.0%"><span class="ts-dv-bar" style="left:20.0%;width:20.1%"></span>
+<span class="ts-dv-v" style="left:40.1%">25,1% kiiremini</span></span></li><li class="is-fokus"><span class="ts-hb-name">Kogenud arendajad oma projektis</span>
+<span class="ts-dv-track" style="--null:20.0%"><span class="ts-dv-bar" style="left:4.8%;width:15.2%"></span>
+<span class="ts-dv-v" style="left:20.0%">19% aeglasemalt</span></span></li></ul>
+          <p class="ts-csub">Klienditoes lahendati tunnis 14% rohkem pöördumisi, algajatel 34% rohkem. Kogenud töötajate tulemus peaaegu ei muutunud.</p>
+          <p class="ts-source"><b>Allikas:</b> juhuslikud katsed 2023–2025; klienditugi: Brynjolfsson, Li, Raymond 2023.</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (5)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://arxiv.org/abs/2302.06590" target="_blank" rel="noopener">The Impact of AI on Developer Productivity (arXiv 2302.06590)</a>
+<span class="ts-t-sub">Peng, Kalliamvakou, Cihon, Demirer · arXiv eeltrükk · 2023-02-13</span></td>
+<td><p class="ts-leid">GitHubi tehisaru-paarisprogrammeerija kasutajad tegid ülesande 55,8% kiiremini kui võrdlusrühm.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">juhuslik katse · retsenseerimata</span><span class="ts-t-sub">värvatud arendajad: tarkvaraarendajad, üks ülesanne (HTTP-server JavaScriptis)</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.science.org/doi/10.1126/science.adh2586" target="_blank" rel="noopener">Experimental evidence on the productivity effects of generative artificial intelligence</a>
+<span class="ts-t-sub">Noy, Zhang · Science · 2023</span></td>
+<td><p class="ts-leid">ChatGPT-ga kulus ülesandele 40% vähem aega ja kvaliteet tõusis 18%. Nõrgemad töötajad võitsid rohkem, erinevus töötajate vahel vähenes.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">juhuslik katse</span><span class="ts-t-sub">veebikatse: 453 kõrgharidusega spetsialisti, ametipõhised kirjutamisülesanded</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.hbs.edu/faculty/Pages/item.aspx?num=64700" target="_blank" rel="noopener">Navigating the Jagged Technological Frontier</a>
+<span class="ts-t-sub">Dell&#x27;Acqua, McFowland, Mollick jt · Harvard Business Schooli töödokument · 2023</span></td>
+<td><p class="ts-leid">Ülesannetes, mis jäid tehisaru võimete piiresse, tehti 12,2% rohkem ülesandeid ja 25,1% kiiremini ning kvaliteet oli parem. Ülesandes väljaspool piiri oli tehisaruga lahendus 19% väiksema tõenäosusega õige.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">juhuslik katse · retsenseerimata</span><span class="ts-t-sub">Boston Consulting Group: 758 konsultanti, 18 realistlikku ülesannet</span></p></td></tr><tr><td><a class="ts-t-name" href="https://arxiv.org/abs/2507.09089" target="_blank" rel="noopener">Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity</a>
+<span class="ts-t-sub">METR (Becker jt) · arXiv eeltrükk · 2025-07</span></td>
+<td><p class="ts-leid">Tehisaruga kulus ülesandele 19% rohkem aega. Arendajad ise arvasid, et tehisaru säästis 20% aega.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">juhuslik katse · retsenseerimata</span><span class="ts-t-sub">avatud lähtekoodiga projektid: 16 kogenud arendajat, 246 ülesannet oma tuttavas projektis</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.nber.org/papers/w31161" target="_blank" rel="noopener">Generative AI at Work</a>
+<span class="ts-t-sub">Brynjolfsson, Li, Raymond · NBER töödokument 31161 · 2023-04</span></td>
+<td><p class="ts-leid">Tunnis lahendati 14% rohkem pöördumisi, algajatel ja madalama oskusega töötajatel 34% rohkem. Kogenud töötajate tulemus peaaegu ei muutunud.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">loomulik katse · retsenseerimata</span><span class="ts-t-sub">klienditugi, USA ettevõte: 5179 klienditoe töötajat</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Kas töökohti kaob?</h3>
+          <p class="ts-v-big">Kogu tööturul veel mitte</p>
+          <p>Taanis ja USA-s ei ole tööhõive ega palk kokkuvõttes muutunud. USA noorte ja vabakutseliste juures on langus näha.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Muutus pärast ChatGPT tulekut</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Kogu tööturul muutust pole, langus on <span class="ts-sig">noortel ja vabakutselistel</span></h4>
+            <p class="ts-csub">Iga rida mõõdab eri asja, seepärast on need tabelis, mitte ühel graafikul.</p>
+          </div>
+          <table class="ts-tw"><thead><tr><th>Kes</th><th class="ts-num">Muutus</th></tr></thead><tbody><tr><td><span class="ts-t-name">Kogu tööturg, Taani</span><span class="ts-t-sub">tulu ja töötunnid ei muutunud, mõju alla 2%</span></td>
+<td class="ts-num ">muutust pole</td></tr><tr><td><span class="ts-t-name">Kogu tööturg, USA</span><span class="ts-t-sub">ametite jaotus muutub sama kiiresti kui interneti ajal</span></td>
+<td class="ts-num ">muutust pole</td></tr><tr><td><span class="ts-t-name">22–25-aastased avatud ametites, USA</span><span class="ts-t-sub">hõive võrreldes vähem avatud ametitega, noori palgatakse vähem</span></td>
+<td class="ts-num ts-t-key">−19%</td></tr><tr><td><span class="ts-t-name">Vabakutselised: kirjutamine ja kodeerimine</span><span class="ts-t-sub">tööpakkumisi 8 kuuga</span></td>
+<td class="ts-num ts-t-key">−21%</td></tr><tr><td><span class="ts-t-name">Vabakutselised: kirjutamine ja tõlge</span><span class="ts-t-sub">nõudlus võrreldes trendiga</span></td>
+<td class="ts-num ts-t-key">−20…50%</td></tr></tbody></table>
+          <p class="ts-source"><b>Allikas:</b> Taani registriandmed, USA tööjõu-uuring ja palgaandmed, vabakutseliste platvormid; 2024–2026.</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (6)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://www.nber.org/papers/w33777" target="_blank" rel="noopener">Still Waters, Rapid Currents: Early Labor Market Transformation under Generative AI</a>
+<span class="ts-t-sub">Humlum, Vestergaard · NBER töödokument 33777 · 2025-05 (uuendatud 2026-03)</span></td>
+<td><p class="ts-leid">Kaks aastat pärast ChatGPT tulekut ei muutunud tulu ega töötunnid: üle 2% mõju on välistatud. Muutus töö sisu: tekkisid uued ülesanded.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">registri- või platvormiandmed · retsenseerimata</span><span class="ts-t-sub">Taani: suured kasutusküsitlused seotud Taani registriandmetega</span></p></td></tr><tr><td><a class="ts-t-name" href="https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs" target="_blank" rel="noopener">Evaluating the Impact of AI on the Labor Market: Current State of Affairs</a>
+<span class="ts-t-sub">Gimbel, Kinder, Kendall, Lee (Yale Budget Lab) · Yale Budget Lab analüüs · 2025</span></td>
+<td><p class="ts-leid">Ametite jaotus muutub umbes sama kiiresti kui interneti leviku ajal ja muutus algas enne ChatGPT-d. Tehisarule avatud ametite osakaal ei ole muutunud.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">kirjeldav analüüs · retsenseerimata</span><span class="ts-t-sub">USA: USA tööjõu-uuring (CPS), 33 kuud pärast ChatGPT tulekut</span></p></td></tr><tr><td><a class="ts-t-name" href="https://digitaleconomy.stanford.edu/publications/canaries-in-the-coal-mine/" target="_blank" rel="noopener">Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence</a>
+<span class="ts-t-sub">Brynjolfsson, Chandar, Chen · Stanford Digital Economy Labi töödokument · 2026-08-12 (uuendatud versioon)</span></td>
+<td><p class="ts-leid">Laialdast töökohtade kadu ei ole. 22–25-aastaste hõive tehisarule avatud ametites on 19% madalam kui vähem avatud ametites eakaaslastel. Vahe tuleb sellest, et noori palgatakse vähem, ja see on 2025. aastast suurenenud.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">kirjeldav analüüs · retsenseerimata</span><span class="ts-t-sub">USA: ADP palgaandmed miljonite töötajate kohta kuni juunini 2026</span></p></td></tr><tr><td><a class="ts-t-name" href="https://doi.org/10.1287/mnsc.2024.05420" target="_blank" rel="noopener">Who Is AI Replacing? The Impact of Generative AI on Online Freelancing Platforms</a>
+<span class="ts-t-sub">Demirci jt · Management Science · 2025</span></td>
+<td><p class="ts-leid">Kirjutamise ja kodeerimise tööpakkumisi oli 8 kuud pärast ChatGPT tulekut 21% vähem kui käsitööd vajavates töödes. Pildiloome pakkumisi oli 17% vähem.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">registri- või platvormiandmed</span><span class="ts-t-sub">ülemaailmne vabakutseliste platvorm: platvormi tööpakkumised enne ja pärast ChatGPT-d</span></p></td></tr><tr><td><a class="ts-t-name" href="https://consensus.app/papers/details/fff15f92cf285909977621c2b9708521/" target="_blank" rel="noopener">Winners and losers of generative AI: Early Evidence of Shifts in Freelancer Demand</a>
+<span class="ts-t-sub">Teutloff jt · Journal of Economic Behavior &amp; Organization · 2025</span></td>
+<td><p class="ts-leid">Asendatavate oskuste (kirjutamine, tõlge) nõudlus oli 20–50% väiksem kui trendi järgi. Tehisaru täiendavates oskustes nõudlus kasvas, näiteks masinõppe programmeerimises 24%.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">registri- või platvormiandmed</span><span class="ts-t-sub">vabakutseliste platvorm: 116 oskuste rühma tööpakkumistest</span></p></td></tr><tr><td><a class="ts-t-name" href="https://doi.org/10.1287/orsc.2023.18441" target="_blank" rel="noopener">The Short-Term Effects of Generative Artificial Intelligence on Employment: Evidence from an Online Labor Market</a>
+<span class="ts-t-sub">Hui, Reshef, Zhou · Organization Science · 2024</span></td>
+<td><p class="ts-leid">Enim mõjutatud ametites vähenesid vabakutseliste tööd ja tulu. Parimad vabakutselised ei olnud kaitstud.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">registri- või platvormiandmed</span><span class="ts-t-sub">vabakutseliste platvorm: vabakutselised enim mõjutatud ametites</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Keda see puudutab?</h3>
+          <p class="ts-v-big">Iga neljandat töötajat</p>
+          <p>Rikastes riikides ja kontoritöös rohkem, naisi rohkem kui mehi.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Töötajad ametites, kus osa ülesandeid on tehisarule avatud</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Kõrge sissetulekuga riikides on avatud <span class="ts-sig">iga kolmas</span> töötaja</h4>
+          </div>
+          <ul class="ts-hb"><li class="is-fokus"><span class="ts-hb-name">Kõrge sissetulekuga riigid</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:85.0%"></span><span class="ts-hb-v" style="left:85.0%">34%</span></span></li><li class=""><span class="ts-hb-name">Maailm</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:62.5%"></span><span class="ts-hb-v" style="left:62.5%">25%</span></span></li><li class=""><span class="ts-hb-name">Madala sissetulekuga riigid</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:27.5%"></span><span class="ts-hb-v" style="left:27.5%">11%</span></span></li></ul>
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Kõige avatumas rühmas, kõrge sissetulekuga riigid</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Naisi on seal ligi <span class="ts-sig">kolm korda</span> rohkem kui mehi</h4>
+          </div>
+          <ul class="ts-hb"><li class="is-fokus"><span class="ts-hb-name">Naised</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:24.0%"></span><span class="ts-hb-v" style="left:24.0%">9,6%</span></span></li><li class=""><span class="ts-hb-name">Mehed</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:8.8%"></span><span class="ts-hb-v" style="left:8.8%">3,5%</span></span></li></ul>
+          <p class="ts-csub">Avatud ei tähenda kaotatud. ILO hinnangul on kõige tõenäolisem, et töö muutub. Katsetes võitsid algajad ja nõrgemad töötajad rohkem kui kogenud.</p>
+          <p class="ts-source"><b>Allikas:</b> ILO töödokument 140, mai 2025. Avatus on hinnang ülesannete kohta, mitte mõõdetud muutus.</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (2)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure" target="_blank" rel="noopener">Generative AI and Jobs: A Refined Global Index of Occupational Exposure</a>
+<span class="ts-t-sub">ILO · ILO töödokument 140 · 2025-05-20</span></td>
+<td><p class="ts-leid">Iga neljas töötaja maailmas on ametis, kus osa ülesandeid on tehisarule avatud. Kõrge sissetulekuga riikides 34%, madala sissetulekuga riikides 11%. Kõige avatumas rühmas on naisi rohkem kui mehi. Kõige tõenäolisem mõju on töö muutumine, mitte kadumine.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-nork">Nõrk tõend</span> <span class="ts-t-sub ts-inline">hinnang ülesannete kohta · retsenseerimata</span><span class="ts-t-sub">maailm: 2861 ülesannet, 1640 töötaja küsitlus ja ekspertide arutelud</span></p></td></tr><tr><td><a class="ts-t-name" href="https://arxiv.org/abs/2303.10130" target="_blank" rel="noopener">GPTs are GPTs: An Early Look at the Labor Market Impact Potential of Large Language Models</a>
+<span class="ts-t-sub">Eloundou, Manning, Mishkin, Rock · arXiv eeltrükk · 2023</span></td>
+<td><p class="ts-leid">Umbes 80% USA töötajatest võib mõjutada vähemalt 10% oma ülesannetest ja umbes 19% vähemalt pooli ülesandeid. Ajakava kohta autorid ennustust ei tee.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-nork">Nõrk tõend</span> <span class="ts-t-sub ts-inline">hinnang ülesannete kohta · retsenseerimata</span><span class="ts-t-sub">USA: USA ametite ülesanded, hinnangud inimestelt ja GPT-4-lt</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Kas kasu jõuab majandusse?</h3>
+          <p class="ts-v-big">Seni vähe</p>
+          <p>Ajasääst on kogu tööaja suhtes väike ja mudelid ennustavad tagasihoidlikku kasvu.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-pair">
+            <div><span class="ts-big">1,4%</span><p>kogu tööajast säästeti inimeste enda hinnangul <span class="ts-t-sub">USA, 2024. aasta lõpp, küsitlus</span></p></div>
+            <div><span class="ts-big">≤0,66%</span><p>kogutootlikkuse kasv 10 aastaga majandusmudeli järgi <span class="ts-t-sub">USA, prognoos 2024</span></p></div>
+          </div>
+          <p class="ts-csub">Need on eri mõõdikud ja neid ei liideta. Optimistlikumaid prognoose on ka: OSKA viitab Implement Consulting Groupi 2024. aasta hinnangule, et Eesti SKP kasv võib tippaastal ulatuda 8%-ni. Seda algallikat ei ole siin kontrollitud.</p>
+          <p class="ts-source"><b>Allikas:</b> Bick, Blandin, Deming 2024 (küsitlus); Acemoglu 2024 (mudel).</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (2)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://www.nber.org/papers/w32966" target="_blank" rel="noopener">The Rapid Adoption of Generative AI</a>
+<span class="ts-t-sub">Bick, Blandin, Deming · NBER töödokument 32966 (Management Science 2026) · 2024-09 (uuendatud 2025-02)</span></td>
+<td><p class="ts-leid">23% töötajatest kasutas tehisaru tööl eelmisel nädalal, 9% iga päev. Inimeste enda hinnangul säästeti 1,4% kogu tööajast.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">küsitlus</span><span class="ts-t-sub">USA: esinduslikud küsitlused, 18–64-aastased, 2024. aasta lõpp</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.nber.org/papers/w32487" target="_blank" rel="noopener">The Simple Macroeconomics of AI</a>
+<span class="ts-t-sub">Acemoglu · NBER töödokument 32487 · 2024-05</span></td>
+<td><p class="ts-leid">Kogutootlikkus kasvab 10 aastaga kõige rohkem 0,66%, tõenäoliselt alla 0,53%.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-nork">Nõrk tõend</span> <span class="ts-t-sub ts-inline">majandusmudel · retsenseerimata</span><span class="ts-t-sub">USA: olemasolevad hinnangud ülesannete avatusele ja ajasäästule</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+    </section>
+
+    <section class="ts-eesti" aria-labelledby="leiud-eesti">
+      <h2 class="ts-ctitle" id="leiud-eesti">Eesti</h2>
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Kas tehisaru tõstab Eesti ettevõtete tootlikkust?</h3>
+          <p class="ts-v-big">Ainult koos muutustega</p>
+          <p>Tehisaru üksi olulist mõju ei andnud. Koos töökorralduse muutmisega tõusis tootlikkus 19–23%.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Tootlikkuse kasv Eesti ettevõtetes, 2000–2023</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Tehisaru tõstis tootlikkust ainult <span class="ts-sig">koos töökorralduse muutmisega</span></h4>
+            <p class="ts-csub">Igal real ülemine tulp on töötlev tööstus, alumine teadmusmahukad teenused. Tehisaru koos muutustega on statistiliselt oluline, aga nõrgemalt kui automatiseerimine.</p>
+          </div>
+          <ul class="ts-hb ts-g"><li class="ts-g-row is-fokus"><span class="ts-hb-name">Tehisaru koos töökorralduse muutmisega</span><span class="ts-g-bars"><span class="ts-hb-track ts-g-track"><span class="ts-hb-bar" style="width:47.2%"></span><span class="ts-hb-v" style="left:47.2%">18,9% <small>tööstus</small></span></span><span class="ts-hb-track ts-g-track"><span class="ts-hb-bar" style="width:58.0%"></span><span class="ts-hb-v" style="left:58.0%">23,2% <small>teenused</small></span></span></span></li><li class="ts-g-row "><span class="ts-hb-name">Automatiseerimine koos töökorralduse muutmisega</span><span class="ts-g-bars"><span class="ts-hb-track ts-g-track"><span class="ts-hb-bar" style="width:23.2%"></span><span class="ts-hb-v" style="left:23.2%">9,3% <small>tööstus</small></span></span><span class="ts-hb-track ts-g-track"><span class="ts-hb-bar" style="width:62.0%"></span><span class="ts-hb-v" style="left:62.0%">24,8% <small>teenused</small></span></span></span></li><li class="ts-g-row "><span class="ts-hb-name">Automatiseerimine üksi</span><span class="ts-g-bars"><span class="ts-hb-track ts-g-track"><span class="ts-hb-bar" style="width:15.8%"></span><span class="ts-hb-v" style="left:15.8%">6,3% <small>tööstus</small></span></span><span class="ts-hb-track ts-g-track"><span class="ts-hb-bar" style="width:22.2%"></span><span class="ts-hb-v" style="left:22.2%">8,9% <small>teenused</small></span></span></span></li><li class="ts-g-row"><span class="ts-hb-name">Tehisaru üksi</span><span class="ts-g-puudu">olulist mõju ei leitud</span></li></ul>
+          <p class="ts-source"><b>Allikas:</b> konkurentsivõime eksperdikogu raport 2026 (ptk 9) ja Arenguseire lühiraport 18.6.2026, Tartu Ülikooli projekt MKM-POL15.</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (2)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://arenguseire.ee/raportid/eesti-majanduse-olukord-ja-valjavaated-2026-konkurentsivoime-eksperdikogu-raport-riigikogule/" target="_blank" rel="noopener">Tehnoloogilise arenguga seotud trendid Eesti ettevõtluses</a>
+<span class="ts-t-sub">Vahter, Tiwari, Pustovalova, Vadi, Masso jt (Tartu Ülikool, projekt MKM-POL15) · Konkurentsivõime eksperdikogu raport 2026, ptk 9, ja Arenguseire lühiraport 18.06.2026 · 2026-06-18 ja 2026-09-28</span></td>
+<td><p class="ts-leid">Tehisaru kasutuselevõtt ilma töökorralduse või juhtimise muutmiseta ei tõstnud tootlikkust statistiliselt olulisel määral. Koos töökorralduse muutmisega tõusis tootlikkus töötlevas tööstuses 18,9% ja teadmusmahukates teenustes 23,2%, aga see tulemus on tabeli nõrgima olulisusega (üks tärn). Laiema oskuste profiiliga töötajad teenivad umbes 6% rohkem.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">registri- või platvormiandmed · retsenseerimata</span><span class="ts-t-sub">Eesti: Eesti ettevõtete ja töötajate andmed 2000–2023: Statistikaameti innovatsiooni- ja IT-uuringud, äriregister, töötajate register</span></p></td></tr><tr><td><a class="ts-t-name" href="https://arenguseire.ee/raportid/eesti-majanduse-olukord-ja-valjavaated-konkurentsivoime-eksperdikogu-raport-riigikogule/" target="_blank" rel="noopener">Eesti majanduse olukord ja väljavaated. Konkurentsivõime eksperdikogu raport Riigikogule (ptk 5.5)</a>
+<span class="ts-t-sub">Tartu Ülikooli töörühm (Vahter jt), konkurentsivõime eksperdikogu · Konkurentsivõime eksperdikogu raport 2024; Arenguseire aastaraamat 2024 kordab seda · 2024-06</span></td>
+<td><p class="ts-leid">Tehisaru kasutuselevõtt 2021. aastal oli seotud keskmiselt 7,4% suurema kogutootlikkusega juba samal aastal. See on keskmine kõigi tehisaru kasutanud ettevõtete kohta, töökorralduse muutmist eraldi ei vaadatud. Andmed on ajast enne generatiivset tehisaru.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">registri- või platvormiandmed · retsenseerimata</span><span class="ts-t-sub">Eesti: Statistikaameti ettevõtete IT-uuring 2021 ja äriregister 2020–2021; tehisaru kasutas siis vähe ettevõtteid</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Mida töökorralduse muutmine tähendab ja kus see mõjus?</h3>
+          <p class="ts-v-big">Teenustes ja väikefirmades kõige rohkem</p>
+          <p>Muutus tähendab uut tööjaotust, vastutust ja otsustamist. Eesti andmetes andis see koos tehnoloogiaga suurima kasvu teadmusmahukates teenustes ja väikeettevõtetes. Milline muutus aitas kõige rohkem, uuring ei ütle.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Mida töökorralduse muutmine uuringus tähendab</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Viis asja, mida ettevõte võib uut moodi teha</h4>
+          </div>
+          <ul class="ts-chips"><li>uued äripraktikad</li><li>töökorraldus</li><li>vastutuse jaotus</li><li>otsustamise viis</li><li>koostöö väljaspool ettevõtet</li></ul>
+          <p class="ts-csub">Määratlus: Euroopa innovatsiooniuuring (CIS) ja OECD Oslo käsiraamat, konkurentsivõime raport 2026 lisa 9.1. Töökorralduse muutmine on uuringus jah/ei tunnus. Uuring ei ütle, milline muutus aitas kõige rohkem.</p>
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Tootlikkuse kasv Eesti ettevõtetes, 2000–2023: tehnoloogia üksi ja koos töökorralduse muutmisega</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Muutustest võitsid kõige rohkem <span class="ts-sig">teenused ja väikeettevõtted</span></h4>
+          </div>
+          <ul class="ts-hd" aria-label="Tootlikkuse kasv tehnoloogia üksi ja koos töökorralduse muutmisega"><li><span class="ts-hb-name">Tehisaru, töötlev tööstus</span><span class="ts-hd-track"><span class="ts-hd-line" style="left:0.0%;width:54.0%"></span><span class="ts-hd-a ts-hd-ns" style="left:0%"></span><span class="ts-hd-b" style="left:54.0%"></span><span class="ts-hd-v" style="left:54.0%">koos 18,9%</span><span class="ts-hd-av">üksi: pole oluline</span></span></li><li><span class="ts-hb-name">Tehisaru, teadmusmahukad teenused</span><span class="ts-hd-track"><span class="ts-hd-line" style="left:0.0%;width:66.3%"></span><span class="ts-hd-a ts-hd-ns" style="left:0%"></span><span class="ts-hd-b" style="left:66.3%"></span><span class="ts-hd-v" style="left:66.3%">koos 23,2%</span><span class="ts-hd-av">üksi: pole oluline</span></span></li><li><span class="ts-hb-name">Automatiseerimine, väikeettevõtted (kuni 50 töötajat)</span><span class="ts-hd-track"><span class="ts-hd-line" style="left:19.4%;width:24.3%"></span><span class="ts-hd-a" style="left:19.4%"></span><span class="ts-hd-b" style="left:43.7%"></span><span class="ts-hd-v" style="left:43.7%">koos 15,3%</span><span class="ts-hd-av">üksi 6,8%</span></span></li><li><span class="ts-hb-name">Automatiseerimine, keskmised ja suured</span><span class="ts-hd-track"><span class="ts-hd-line" style="left:13.4%;width:4.3%"></span><span class="ts-hd-a" style="left:13.4%"></span><span class="ts-hd-b" style="left:17.7%"></span><span class="ts-hd-v" style="left:17.7%">koos 6,2%</span><span class="ts-hd-av">üksi 4,7%</span></span></li></ul>
+          <p class="ts-csub">Hall täpp on tehnoloogia üksi, lilla koos töökorralduse muutmisega. Tehisaru read: konkurentsivõime raport 2026 tabel 9.1; automatiseerimise read: tabel 9.2 (töötlev tööstus). Tehisaru tulemus on nõrgima olulisusega.</p>
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Automatiseerimise mõju tootlikkusele: ühekordne või regulaarne investeering</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Järjepidev investeerimine andis <span class="ts-sig">2,5–5 korda</span> suurema mõju</h4>
+          </div>
+          <ul class="ts-hd" aria-label="Ühekordne ja regulaarne automatiseerimisinvesteering"><li><span class="ts-hb-name">Kohalikke ressursse väärindavad sektorid</span><span class="ts-hd-track"><span class="ts-hd-line" style="left:17.1%;width:71.4%"></span><span class="ts-hd-a" style="left:17.1%"></span><span class="ts-hd-b" style="left:88.6%"></span><span class="ts-hd-v" style="left:88.6%">regulaarne 31%</span><span class="ts-hd-av">ühekordne 6%</span></span></li><li><span class="ts-hb-name">Tehnoloogiamahukas tööstus</span><span class="ts-hd-track"><span class="ts-hd-line" style="left:34.3%;width:51.4%"></span><span class="ts-hd-a" style="left:34.3%"></span><span class="ts-hd-b" style="left:85.7%"></span><span class="ts-hd-v" style="left:85.7%">regulaarne 30%</span><span class="ts-hd-av">ühekordne 12%</span></span></li></ul>
+          <div class="ts-pair">
+            <div><p class="ts-kicker">Mida teevad teisiti ettevõtted, kes peavad tehisaru oluliseks</p><ul><li>paindlikum töökorraldus</li><li>tugevam strateegiline teadlikkus</li><li>töötajatel rohkem iseseisvust</li><li>otsustusõigus antud keskastme juhtidele</li><li>rohkem tähelepanu kultuurile ja juhtimise kvaliteedile</li></ul><span class="ts-t-sub">Vadi jt 2026, Eesti juhtimisvaldkonna uuring (konkurentsivõime raport 2026, tekstikast 9.1); kirjeldav seos, mitte mõju</span></div>
+            <div><p class="ts-kicker">Katse: näited töökorralduse muutmisest</p><span class="ts-big">1,9×</span><p>rohkem tulu said idufirmad, kellele näidati, kuidas teised on töövood ja meeskonnad tehisaru ümber korraldanud. Tööriistad ja koolitus olid kõigil samad. <span class="ts-t-sub">Kim, Kim, Koning (INSEAD, Harvard Business School) 2026, 515 firmat, retsenseerimata</span></p></div>
+          </div>
+          <p class="ts-csub">Näide samast katsest: üks firma ehitas dispetšeri, raamatupidaja, graafikukoostaja ja võlgade sissenõudja töö ümber tehisaru moodulite ahelaks. Eesti ehitusettevõtete uuringutes (Laager 2026, Moorats 2026) kasutatakse tehisaru pigem selleks, et sama teha väiksema ressursiga, mitte töökorraldust ümber mõtestada.</p>
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Välismaa uuringud</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Mujal sama muster: kasu tuleb siis, kui <span class="ts-sig">töö ümber korraldatakse</span></h4>
+          </div>
+          <ul class="ts-vm"><li><span class="ts-vm-kes">Bresnahan jt 2002</span><span class="ts-vm-lause">Arvutiajastul andis IT kasu ainult koos töö ümberkorraldamise ja oskustega. <span class="ts-inline"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">küsitlus</span></span></span></li><li><span class="ts-vm-kes">Calvino jt 2023</span><span class="ts-vm-lause">11 riigi andmetes seletavad tehisaru kasutajate eelist suuresti toetavad eeldused, eriti IT-oskused. <span class="ts-inline"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">küsitlus · retsenseerimata</span></span></span></li><li><span class="ts-vm-kes">Dell'Acqua jt 2026</span><span class="ts-vm-lause">Tehisaruga üksik töötaja jõudis kahese meeskonna tasemele, seega muutub meeskondade vajadus. <span class="ts-inline"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">juhuslik katse</span></span></span></li><li><span class="ts-vm-kes">Kim jt 2026</span><span class="ts-vm-lause">Ümberkorraldamise näited andsid 1,9 korda rohkem tulu, kuigi tööriistad olid kõigil samad. <span class="ts-inline"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">juhuslik katse · retsenseerimata</span></span></span></li><li><span class="ts-vm-kes">Government Digital Service 2025</span><span class="ts-vm-lause">Avalik sektor mõõtis säästetud aega, aga mitte seda, mis säästetud ajaga tehti. <span class="ts-inline"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">küsitlus · retsenseerimata</span></span></span></li></ul>
+          <p class="ts-source"><b>Allikas:</b> konkurentsivõime eksperdikogu raport 2026, ptk 9 (tabelid 9.1, 9.2, tekstikastid 9.1–9.3, lisa 9.1); Kim, Kim, Koning 2026; välismaa uuringud tabelis.</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (6)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://arenguseire.ee/raportid/eesti-majanduse-olukord-ja-valjavaated-2026-konkurentsivoime-eksperdikogu-raport-riigikogule/" target="_blank" rel="noopener">Tehnoloogilise arenguga seotud trendid Eesti ettevõtluses</a>
+<span class="ts-t-sub">Vahter, Tiwari, Pustovalova, Vadi, Masso jt (Tartu Ülikool, projekt MKM-POL15) · Konkurentsivõime eksperdikogu raport 2026, ptk 9, ja Arenguseire lühiraport 18.06.2026 · 2026-06-18 ja 2026-09-28</span></td>
+<td><p class="ts-leid">Tehisaru kasutuselevõtt ilma töökorralduse või juhtimise muutmiseta ei tõstnud tootlikkust statistiliselt olulisel määral. Koos töökorralduse muutmisega tõusis tootlikkus töötlevas tööstuses 18,9% ja teadmusmahukates teenustes 23,2%, aga see tulemus on tabeli nõrgima olulisusega (üks tärn). Laiema oskuste profiiliga töötajad teenivad umbes 6% rohkem.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">registri- või platvormiandmed · retsenseerimata</span><span class="ts-t-sub">Eesti: Eesti ettevõtete ja töötajate andmed 2000–2023: Statistikaameti innovatsiooni- ja IT-uuringud, äriregister, töötajate register</span></p></td></tr><tr><td><a class="ts-t-name" href="https://aiinstitute.hbs.edu/everyone-has-ai-which-firms-are-going-to-win/" target="_blank" rel="noopener">Mapping AI into Production: A Field Experiment on Firm Performance</a>
+<span class="ts-t-sub">Kim, Kim, Koning (INSEAD, Harvard Business School) · INSEAD töödokument 2026/20/STR · 2026-03-30</span></td>
+<td><p class="ts-leid">Kõik firmad said samad tehisaru tööriistad ja koolituse. Pooled said lisaks näiteid, kuidas tehisarule üles ehitatud firmad on ümber korraldanud töövood, meeskonnad ja ärimudeli. Need firmad leidsid 44% rohkem kasutusviise, said 18% tõenäolisemalt maksvaid kliente, teenisid 1,9 korda rohkem tulu ja vajasid 39,5% vähem välist kapitali. Peamine takistus ei olnud tehnoloogia ega oskused, vaid oskus leida, kus tehisaru väärtust loob.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">juhuslik katse · retsenseerimata</span><span class="ts-t-sub">maailm: 515 kiire kasvuga idufirmat, loosiga kahte rühma</span></p></td></tr><tr><td><a class="ts-t-name" href="https://academic.oup.com/qje/article-abstract/117/1/339/1851770" target="_blank" rel="noopener">Information Technology, Workplace Organization, and the Demand for Skilled Labor: Firm-Level Evidence</a>
+<span class="ts-t-sub">Bresnahan, Brynjolfsson, Hitt · Quarterly Journal of Economics 117(1) · 2002-02</span></td>
+<td><p class="ts-leid">IT kasutus, töö ümberkorraldamine (otsustusõiguse jagamine, meeskonnatöö) ja oskustega töötajad täiendavad üksteist. Kasu tuleb siis, kui kõik kolm muutuvad koos. See on Eesti tehisaru tulemusega sama muster arvutiajastust.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">küsitlus</span><span class="ts-t-sub">USA: suured USA firmad: töökorralduse küsitlus koos firmade finants- ja IT-andmetega</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.oecd.org/en/publications/a-portrait-of-ai-adopters-across-countries_0fb79bb9-en.html" target="_blank" rel="noopener">A portrait of AI adopters across countries: Firm characteristics, assets&#x27; complementarities and productivity</a>
+<span class="ts-t-sub">Calvino, Fontanelli (OECD) · OECD Science, Technology and Industry Working Papers 2023/02 · 2023-04-11</span></td>
+<td><p class="ts-leid">Tehisaru kasutavad firmad on tootlikumad, eriti suured. Kui arvestada IT-oskusi, kiiret internetti ja muid digitehnoloogiaid, jääb tehisaru enda eelis paljudes riikides väiksemaks või kaob. Toetavad eeldused on tootlikkuse eelise juures kesksed.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">küsitlus · retsenseerimata</span><span class="ts-t-sub">11 OECD riiki: riikide statistikaametite ettevõtete IT-uuringute mikroandmed, ühtne kood</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.nber.org/papers/w33641" target="_blank" rel="noopener">The Cybernetic Teammate: A Field Experiment on Generative AI and Teamwork</a>
+<span class="ts-t-sub">Dell&#x27;Acqua, Ayoubi, Lifshitz-Assaf, Sadun, Mollick jt · Organization Science (NBER töödokument 33641) · 2026-06</span></td>
+<td><p class="ts-leid">Üks inimene tehisaruga saavutas sama tulemuse kui kahene meeskond ilma tehisaruta. Tehisaruga tegid teadus- ja äritöötajad tasakaalustatumaid ettepanekuid, seega vähenes osakondade eraldatus. Autorite järeldus: organisatsioon peab meeskonnatöö ülesehituse üle vaatama.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">juhuslik katse</span><span class="ts-t-sub">maailm: 776 Procter &amp; Gamble&#x27;i töötajat, eelregistreeritud välikatse päris tootearenduse ülesannetega</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.gov.uk/search/all?keywords=%22Cross-Government+Findings+Report%22" target="_blank" rel="noopener">Microsoft 365 tehisaruabilise katse valitsusülene raport (Cross-Government Findings Report)</a>
+<span class="ts-t-sub">Government Digital Service (Suurbritannia) · gov.uk (link avab gov.uk otsingu, esimene tulemus on raport) · 2025-06-02</span></td>
+<td><p class="ts-leid">Kasutajad hindasid, et säästsid keskmiselt 26 minutit päevas. Raport ütleb ise, et ei saanud mõõta, milleks säästetud aega kasutati. Kasu oli suurem neil, kes olid tehisaruga tuttavamad, seega oli vaja koolitust ja muudatuste juhtimist.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">küsitlus · retsenseerimata</span><span class="ts-t-sub">Suurbritannia avalik sektor: 20 000 ametnikku 12 asutusest, 30.9–31.12.2024; küsitlusele vastas 7115</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Kuidas töökorralduse muutust paremini mõõta?</h3>
+          <p class="ts-v-big">Küsida, mida muudeti, ja siduda registritega</p>
+          <p>Praegu teame ainult, kas töökorraldust muudeti. USA statistikaamet küsib juba, mida muudeti ja kui laialt. Eesti eelis on registrid, mis näitavad, mis päriselt juhtus.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Mõõtmise astmed nõrgemast tugevamani</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Eesti mõõdab täielikult <span class="ts-sig">ainult esimest astet</span></h4>
+          </div>
+          <ol class="ts-trep" aria-label="Töökorralduse muutuse mõõtmise astmed"><li class="ts-trep-jah"><span class="ts-trep-n">1</span><div><p class="ts-trep-q">Kas töökorraldust muudeti? <span class="ts-trep-st">Eestis olemas</span></p><p class="ts-trep-t">Selle põhjal on tehtud Eesti tootlikkuse uuring.</p></div></li><li class="ts-trep-ei"><span class="ts-trep-n">2</span><div><p class="ts-trep-q">Mida muudeti? <span class="ts-trep-st">Eestis puudub</span></p><p class="ts-trep-t">Seepärast ei tea me, milline muutus aitas.</p></div></li><li class="ts-trep-ei"><span class="ts-trep-n">3</span><div><p class="ts-trep-q">Kui laialt? <span class="ts-trep-st">Eestis puudub</span></p><p class="ts-trep-t">Eesti IT-uuring küsib, kas ja milleks tehisaru kasutatakse, aga mitte, kui laialt.</p></div></li><li class="ts-trep-osaliselt"><span class="ts-trep-n">4</span><div><p class="ts-trep-q">Kui hästi juhitakse? <span class="ts-trep-st">Eestis osaliselt</span></p><p class="ts-trep-t">Eesti juhtimisvaldkonna uuring (Vadi jt) on olemas, aga seda ei ole seotud registritega.</p></div></li><li class="ts-trep-osaliselt"><span class="ts-trep-n">5</span><div><p class="ts-trep-q">Mis päriselt juhtus? <span class="ts-trep-st">Eestis osaliselt</span></p><p class="ts-trep-t">Andmed on olemas ja Eesti on siin tugev. Neid seotakse praegu ainult jah/ei tunnusega.</p></div></li><li class="ts-trep-ei"><span class="ts-trep-n">6</span><div><p class="ts-trep-q">Kas muutus oli põhjus? <span class="ts-trep-st">Eestis puudub</span></p><p class="ts-trep-t">Avalikus sektoris oleks võimalik, kui asutused alustavad eri aegadel ja mõõdavad sama moodi.</p></div></li></ol>
+          <details class="ts-details">
+            <summary>Kuidas iga astet mõõdetakse ja kes seda teeb</summary>
+            <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-trep"><thead><tr><th>Aste</th><th>Kuidas</th><th>Kus seda tehakse</th></tr></thead><tbody><tr><td><span class="ts-t-name">1. Kas töökorraldust muudeti?</span></td><td>jah/ei küsimus ettevõtete innovatsiooniuuringus</td><td>Euroopa innovatsiooniuuring (CIS), ka Eestis</td></tr><tr><td><span class="ts-t-name">2. Mida muudeti?</span></td><td>valikvastustega nimekiri: töövood, koolitus, värbamine, andmehaldus, rollid, otsustusõigus</td><td>USA statistikaameti kiiruuring BTOS küsib tehisaru kasutajatelt, milliseid muudatusi nad tegid</td></tr><tr><td><span class="ts-t-name">3. Kui laialt?</span></td><td>mitmes äritegevuse valdkonnas ja milliste töötajate ülesannetes tehisaru kasutatakse</td><td>BTOS 2026: firma, valdkonna ja töötaja ülesande kiht eraldi</td></tr><tr><td><span class="ts-t-name">4. Kui hästi juhitakse?</span></td><td>juhtimistavade skoor: eesmärgid, jälgimine, tagasiside, andmete kasutus otsustes</td><td>USA MOPS, 16 küsimust; 2010. ja 2015. aasta tööstuse andmetes seletas skoor umbes 20% firmade tootlikkuse erinevusest</td></tr><tr><td><span class="ts-t-name">5. Mis päriselt juhtus?</span></td><td>registrijäljed enne ja pärast: ametite koosseis, uued rollid, palgad, värbamine, tootlikkus</td><td>Eesti töötajate register ja äriregister, nagu Tartu Ülikooli tootlikkuse uuringus</td></tr><tr><td><span class="ts-t-name">6. Kas muutus oli põhjus?</span></td><td>katse või järkjärguline kasutuselevõtt, kus osa üksusi alustab hiljem</td><td>Kim jt 2026 (515 idufirmat), Dell&#x27;Acqua jt 2026 (776 töötajat)</td></tr></tbody></table></div>
+            <p class="ts-csub">MOPS-i 20%: <a href="https://www.census.gov/newsroom/blogs/research-matters/2019/02/fresh_uses_for_them.html" target="_blank" rel="noopener">USA statistikaameti blogi 22.2.2019</a>. BTOS-i küsimused: Bonney jt 2026, lisa.</p>
+          </details>
+          <div class="ts-pair">
+            <div><p class="ts-kicker">Avaliku sektori lõks</p><span class="ts-big">26 min</span><p>päevas säästsid Suurbritannia ametnikud enda hinnangul tehisaruga. Mis selle ajaga tehti, jäi mõõtmata. <span class="ts-t-sub">GDS 2025, 20 000 ametnikku, küsitlus</span></p></div>
+            <div><p class="ts-kicker">Mida siit õppida</p><p>Kui mõõta ainult säästetud aega, jääb nägemata, kas töö muutus. Lisaks ajale tasub küsida, mida säästetud ajaga tehti ja kas ülesanded või rollid muutusid.</p></div>
+          </div>
+          <p class="ts-csub">Kõige odavam samm Eestile oleks teine aste: lisada olemasolevasse küsitlusse nimekiri, mida muudeti, ja siduda vastused registritega. Siis saaks vastata küsimusele, milline muutus tootlikkust tõstis. See on koostaja ettepanek, mitte ühegi asutuse otsus.</p>
+          <p class="ts-source"><b>Allikas:</b> USA statistikaamet (BTOS 2026, MOPS), Suurbritannia GDS 2025, katsed 2026; astmete järjestus ja Eesti hinnang on koostaja oma.</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (4)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://www2.census.gov/library/working-papers/2026/adrm/ces/CES-WP-26-25.pdf" target="_blank" rel="noopener">The Microstructure of AI Diffusion: Evidence from Firms, Business Functions, and Worker Tasks</a>
+<span class="ts-t-sub">Bonney, Breaux, Dinlersoz, Foster, Haltiwanger, Pande (USA statistikaamet) · Census Bureau CES töödokument 26-25 · 2026-04</span></td>
+<td><p class="ts-leid">Tehisaru kasutas 18% firmadest (töötajate arvuga kaalutult 32%). Uuring mõõdab kolme kihti: firma, äritegevuse valdkond ja töötaja ülesanne. Laiem kasutus valdkondades seostub parema äritulemusega. Tehisaruga seotud töötajate vähendamist teatas 2% firmadest.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">küsitlus · retsenseerimata</span><span class="ts-t-sub">USA: ametliku ettevõtete kiiruuringu BTOS 2026. aasta tehisaru lisa, esinduslik, viide nov 2025 – jaan 2026</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.gov.uk/search/all?keywords=%22Cross-Government+Findings+Report%22" target="_blank" rel="noopener">Microsoft 365 tehisaruabilise katse valitsusülene raport (Cross-Government Findings Report)</a>
+<span class="ts-t-sub">Government Digital Service (Suurbritannia) · gov.uk (link avab gov.uk otsingu, esimene tulemus on raport) · 2025-06-02</span></td>
+<td><p class="ts-leid">Kasutajad hindasid, et säästsid keskmiselt 26 minutit päevas. Raport ütleb ise, et ei saanud mõõta, milleks säästetud aega kasutati. Kasu oli suurem neil, kes olid tehisaruga tuttavamad, seega oli vaja koolitust ja muudatuste juhtimist.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">küsitlus · retsenseerimata</span><span class="ts-t-sub">Suurbritannia avalik sektor: 20 000 ametnikku 12 asutusest, 30.9–31.12.2024; küsitlusele vastas 7115</span></p></td></tr><tr><td><a class="ts-t-name" href="https://aiinstitute.hbs.edu/everyone-has-ai-which-firms-are-going-to-win/" target="_blank" rel="noopener">Mapping AI into Production: A Field Experiment on Firm Performance</a>
+<span class="ts-t-sub">Kim, Kim, Koning (INSEAD, Harvard Business School) · INSEAD töödokument 2026/20/STR · 2026-03-30</span></td>
+<td><p class="ts-leid">Kõik firmad said samad tehisaru tööriistad ja koolituse. Pooled said lisaks näiteid, kuidas tehisarule üles ehitatud firmad on ümber korraldanud töövood, meeskonnad ja ärimudeli. Need firmad leidsid 44% rohkem kasutusviise, said 18% tõenäolisemalt maksvaid kliente, teenisid 1,9 korda rohkem tulu ja vajasid 39,5% vähem välist kapitali. Peamine takistus ei olnud tehnoloogia ega oskused, vaid oskus leida, kus tehisaru väärtust loob.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">juhuslik katse · retsenseerimata</span><span class="ts-t-sub">maailm: 515 kiire kasvuga idufirmat, loosiga kahte rühma</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.nber.org/papers/w33641" target="_blank" rel="noopener">The Cybernetic Teammate: A Field Experiment on Generative AI and Teamwork</a>
+<span class="ts-t-sub">Dell&#x27;Acqua, Ayoubi, Lifshitz-Assaf, Sadun, Mollick jt · Organization Science (NBER töödokument 33641) · 2026-06</span></td>
+<td><p class="ts-leid">Üks inimene tehisaruga saavutas sama tulemuse kui kahene meeskond ilma tehisaruta. Tehisaruga tegid teadus- ja äritöötajad tasakaalustatumaid ettepanekuid, seega vähenes osakondade eraldatus. Autorite järeldus: organisatsioon peab meeskonnatöö ülesehituse üle vaatama.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">juhuslik katse</span><span class="ts-t-sub">maailm: 776 Procter &amp; Gamble&#x27;i töötajat, eelregistreeritud välikatse päris tootearenduse ülesannetega</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Mis takistab?</h3>
+          <p class="ts-v-big">Oskused ja andmed</p>
+          <p>Kasutajaid tuleb kiiresti juurde, aga OSKA ekspertide hinnangul ei tea paljud, milleks tehisaru kasutada.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Eesti ettevõtted, kus kasutati tehisaru, vähemalt 10 hõivatuga</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Tehisaru kasutas 2026. aastal <span class="ts-sig">iga kolmas</span> ettevõte, kaks aastat varem iga seitsmes</h4>
+          </div>
+          <div class="ts-cols ts-cols-sm" role="img" aria-label="Eesti ettevõtete tehisaru kasutus: 2021 2,8%, 2023 5,2%, 2024 13,9%, 2025 23,4%, 2026 34,1%"><div class="ts-col"><span class="ts-col-v">2,8%</span><span class="ts-col-bar" style="height:7.7%"></span><span class="ts-col-y">2021</span></div><div class="ts-col"><span class="ts-col-v">5,2%</span><span class="ts-col-bar" style="height:14.4%"></span><span class="ts-col-y">2023</span></div><div class="ts-col"><span class="ts-col-v">13,9%</span><span class="ts-col-bar" style="height:38.6%"></span><span class="ts-col-y">2024</span></div><div class="ts-col"><span class="ts-col-v">23,4%</span><span class="ts-col-bar" style="height:65.0%"></span><span class="ts-col-y">2025</span></div><div class="ts-col is-fokus"><span class="ts-col-v">34,1%</span><span class="ts-col-bar" style="height:94.7%"></span><span class="ts-col-y">2026</span></div></div>
+          <p class="ts-csub">2021–2025 Eurostat, 2026 Statistikaamet. 2026. aastal on Statistikaametil uus tegevusalade klassifikaator, nii et 2025 ja 2026 ei ole päris täpselt võrreldavad.</p>
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Sama näitaja ELi riikides ja Norras, 2025</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Eesti on ELis <span class="ts-sig">9. kohal</span>, EL keskmisest veidi eespool (19,9%)</h4>
+            <p class="ts-csub">Tulp on 2025. aasta Eurostati arv. Kolm riiki on avaldanud juba 2026. aasta arvu: see on teise, tumeda tulbana.</p>
+          </div>
+          <ul class="ts-hb ts-hb-riigid"><li class=" ts-g-row"><span class="ts-hb-name">Taani</span><span class="ts-g-bars"><span class="ts-hb-track"><span class="ts-hb-bar" style="width:49.4%"></span><span class="ts-hb-v" style="left:49.4%">42%</span></span><span class="ts-hb-track ts-hb-2026"><span class="ts-hb-bar" style="width:69.4%"></span><span class="ts-hb-v" style="left:69.4%">2026: 59%</span></span></span></li><li class=""><span class="ts-hb-name">Soome</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:44.5%"></span><span class="ts-hb-v" style="left:44.5%">37,8%</span></span></li><li class=""><span class="ts-hb-name">Rootsi</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:41.2%"></span><span class="ts-hb-v" style="left:41.2%">35%</span></span></li><li class=""><span class="ts-hb-name">Belgia</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:40.6%"></span><span class="ts-hb-v" style="left:40.6%">34,5%</span></span></li><li class=""><span class="ts-hb-name">Luksemburg</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:39.5%"></span><span class="ts-hb-v" style="left:39.5%">33,6%</span></span></li><li class=""><span class="ts-hb-name">Holland</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:39.1%"></span><span class="ts-hb-v" style="left:39.1%">33,2% <small>(aegrea katkestus)</small></span></span></li><li class=""><span class="ts-hb-name">Austria</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:35.2%"></span><span class="ts-hb-v" style="left:35.2%">29,9%</span></span></li><li class=" ts-g-row"><span class="ts-hb-name">Norra</span><span class="ts-g-bars"><span class="ts-hb-track"><span class="ts-hb-bar" style="width:34.0%"></span><span class="ts-hb-v" style="left:34.0%">28,9%</span></span><span class="ts-hb-track ts-hb-2026"><span class="ts-hb-bar" style="width:56.5%"></span><span class="ts-hb-v" style="left:56.5%">2026: 48%</span></span></span></li><li class=""><span class="ts-hb-name">Saksamaa</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:30.6%"></span><span class="ts-hb-v" style="left:30.6%">26%</span></span></li><li class="is-fokus ts-g-row"><span class="ts-hb-name">Eesti</span><span class="ts-g-bars"><span class="ts-hb-track"><span class="ts-hb-bar" style="width:27.5%"></span><span class="ts-hb-v" style="left:27.5%">23,4%</span></span><span class="ts-hb-track ts-hb-2026"><span class="ts-hb-bar" style="width:40.1%"></span><span class="ts-hb-v" style="left:40.1%">2026: 34,1%</span></span></span></li><li class=""><span class="ts-hb-name">Sloveenia</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:25.4%"></span><span class="ts-hb-v" style="left:25.4%">21,6%</span></span></li><li class=""><span class="ts-hb-name">Malta</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:25.3%"></span><span class="ts-hb-v" style="left:25.3%">21,5%</span></span></li><li class=""><span class="ts-hb-name">Leedu</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:25.1%"></span><span class="ts-hb-v" style="left:25.1%">21,3%</span></span></li><li class=""><span class="ts-hb-name">Hispaania</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:23.8%"></span><span class="ts-hb-v" style="left:23.8%">20,3%</span></span></li><li class="is-ink"><span class="ts-hb-name">EL keskmine</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:23.5%"></span><span class="ts-hb-v" style="left:23.5%">19,9%</span></span></li><li class=""><span class="ts-hb-name">Iirimaa</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:23.1%"></span><span class="ts-hb-v" style="left:23.1%">19,6%</span></span></li><li class=""><span class="ts-hb-name">Prantsusmaa</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:21.4%"></span><span class="ts-hb-v" style="left:21.4%">18,2%</span></span></li><li class=""><span class="ts-hb-name">Slovakkia</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:21.2%"></span><span class="ts-hb-v" style="left:21.2%">18%</span></span></li><li class=""><span class="ts-hb-name">Tšehhi</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:20.7%"></span><span class="ts-hb-v" style="left:20.7%">17,6%</span></span></li><li class=""><span class="ts-hb-name">Itaalia</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:19.3%"></span><span class="ts-hb-v" style="left:19.3%">16,4%</span></span></li><li class=""><span class="ts-hb-name">Horvaatia</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:17.9%"></span><span class="ts-hb-v" style="left:17.9%">15,2%</span></span></li><li class=""><span class="ts-hb-name">Läti</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:14.4%"></span><span class="ts-hb-v" style="left:14.4%">12,2%</span></span></li><li class=""><span class="ts-hb-name">Portugal</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:13.6%"></span><span class="ts-hb-v" style="left:13.6%">11,5%</span></span></li><li class=""><span class="ts-hb-name">Ungari</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:12.2%"></span><span class="ts-hb-v" style="left:12.2%">10,4%</span></span></li><li class=""><span class="ts-hb-name">Küpros</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:10.9%"></span><span class="ts-hb-v" style="left:10.9%">9,3%</span></span></li><li class=""><span class="ts-hb-name">Kreeka</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:10.5%"></span><span class="ts-hb-v" style="left:10.5%">8,9%</span></span></li><li class=""><span class="ts-hb-name">Bulgaaria</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:10.1%"></span><span class="ts-hb-v" style="left:10.1%">8,6%</span></span></li><li class=""><span class="ts-hb-name">Poola</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:9.8%"></span><span class="ts-hb-v" style="left:9.8%">8,4%</span></span></li><li class=""><span class="ts-hb-name">Rumeenia</span><span class="ts-hb-track"><span class="ts-hb-bar" style="width:6.1%"></span><span class="ts-hb-v" style="left:6.1%">5,2%</span></span></li></ul>
+          <p class="ts-source"><b>Allikas:</b> Eurostat isoc_eb_ai (uuendatud 15.6.2026, laaditud 31.10.2026), vähemalt 10 hõivatuga ettevõtted, v.a finantssektor ja põllumajandus. 2026: Eesti Statistikaamet IT1490, 16.9.2026; Taani Danmarks Statistik ITAV28, 15.9.2026; Norra SSB tabel 14942, 25.9.2026. Ka Taanis ja Norras on 2026. aastal uus tegevusalade klassifikaator. Teiste riikide 2026. aasta arve me veel ei leidnud; Eurostat koondab need hiljem.</p>
+          <p class="ts-csub">Mis takistab: OSKA ekspertide hinnangul ei teata ettevõtted sageli, millal ja milleks tehisaru kasutada. Takistab ka andmete ebaühtlane kvaliteet.</p>
+          <p class="ts-source"><b>Allikas:</b> takistused: OSKA rakendusuuring 2025 (Leemet, Mets).</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (1)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://oska.kutsekoda.ee/tehisintellekti-teadlik-kasutamine-vajab-eesti-ettevotetes-veel-arendamist/" target="_blank" rel="noopener">Tehisintellekti mõju tööjõu oskuste vajadusele ettevõtluses</a>
+<span class="ts-t-sub">Leemet, Mets (OSKA, Kutsekoda) · OSKA rakendusuuring · 2025-11-04</span></td>
+<td><p class="ts-leid">Tehisaru kasutas 2024. aastal 14% ja 2025. aasta esimesel poolel 22% Eesti ettevõtetest (Taanis 2024. aastal 28%). Kõige rohkem piirab kasutust oskuste nappus: ei teata, millal ja milleks tehisaru kasutada. Takistab ka andmete ebaühtlane kvaliteet.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-nork">Nõrk tõend</span> <span class="ts-t-sub ts-inline">ekspertintervjuud · retsenseerimata</span><span class="ts-t-sub">Eesti: ekspertide intervjuud ja ettevõtete statistika</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+    </section>
+
+    <section class="ts-chartcard" aria-labelledby="leiud-vastuolud">
+      <div class="ts-head-sm">
+        <p class="ts-kicker">Usaldus</p>
+        <h2 class="ts-ctitle" id="leiud-vastuolud">Kus uuringud lahknevad</h2>
+      </div>
+      <table class="ts-tw"><thead><tr><th>Mis lahkneb</th><th>Selgitus</th></tr></thead><tbody><tr><td><span class="ts-t-name">Programmeerimises leiti nii 56% kiirem kui 19% aeglasem töö.</span><span class="ts-t-sub"><a href="https://arxiv.org/abs/2302.06590" target="_blank" rel="noopener">Peng 2023</a>, <a href="https://arxiv.org/abs/2507.09089" target="_blank" rel="noopener">METR 2025</a></span></td><td><span class="ts-tag">osaliselt selgitatud</span> GitHubi katses tegid arendajad uut lihtsat ülesannet, METR-i katses kogenud arendajad oma suures tuttavas projektis. Tulemus sõltub ülesandest ja kogemusest.</td></tr><tr><td><span class="ts-t-name">Noorte hõive langus USA-s, aga kogu tööturul muutust pole.</span><span class="ts-t-sub"><a href="https://digitaleconomy.stanford.edu/publications/canaries-in-the-coal-mine/" target="_blank" rel="noopener">Brynjolfsson 2026</a>, <a href="https://www.nber.org/papers/w33777" target="_blank" rel="noopener">Humlum 2025</a>, <a href="https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs" target="_blank" rel="noopener">Gimbel 2025</a></span></td><td><span class="ts-tag">osaliselt selgitatud</span> Need ei ole tingimata vastuolus: langus on kitsas rühmas ja tuleb väiksemast palkamisest. Yale&#x27;i andmetes on noori vastajaid vähe.</td></tr><tr><td><span class="ts-t-name">Arenguseire 2024–2025: tehisaru tõstab tootlikkust üle 7%. Arenguseire 2026: tehisaru üksi ei tõsta tootlikkust olulisel määral.</span><span class="ts-t-sub"><a href="https://arenguseire.ee/raportid/eesti-majanduse-olukord-ja-valjavaated-konkurentsivoime-eksperdikogu-raport-riigikogule/" target="_blank" rel="noopener">Tartu Ülikooli töörühm 2024</a>, <a href="https://arenguseire.ee/raportid/eesti-majanduse-olukord-ja-valjavaated-2026-konkurentsivoime-eksperdikogu-raport-riigikogule/" target="_blank" rel="noopener">Vahter 2026</a></span></td><td><span class="ts-tag ts-tag-tugev">selgitatud</span> See ei ole vastuolu, vaid eri küsimus. Mõlemad on sama Tartu Ülikooli töörühma tulemused. 2024. aasta 7,4% on keskmine kõigi 2021. aastal tehisaru kasutanud ettevõtete kohta ühe aasta andmetel. 2026. aasta analüüs jagab kasutajad kaheks: ilma töökorralduse muutmiseta mõju ei leitud, koos sellega 19–23%. Kui kasutajate seas on mõlemat tüüpi ettevõtteid, sobib keskmine 7% nende vahele. Ettevaatust: 2024. aasta tulemus on ühe aasta ja vähese kasutajaga, 2026. aasta 19–23% on nõrga statistilise olulisusega.</td></tr></tbody></table>
+      <details class="ts-details">
+        <summary>Kuidas leiud valiti ja mida kindlus tähendab</summary>
+        <ul>
+          <li>Iga küsimuse kohta valisin tugevaima meetodiga ja enim viidatud uuringud ning lisasin uusimad (2025–2026). See ei ole süstemaatiline ülevaade.</li>
+          <li>Arvud on võetud uuringu kokkuvõttest või asutuse enda teatest ja kontrollitud lingi kaudu 31.10.2026. Täisteksti ei ole loetud.</li>
+          <li>Retsenseerimata töödokumendi tulemus võib hiljem muutuda.</li>
+          <li><b>Tugev tõend, juhuslik katse.</b> Juhuslik katse: osalejad jagati loosiga tehisaruga ja ilma. Näitab põhjust, aga ülesanded on kitsad.</li><li><b>Tugev tõend, loomulik katse.</b> Tööriist võeti kasutusele eri aegadel. Võrreldakse enne ja pärast. Näitab põhjust, kui ajastus oli juhuslik.</li><li><b>Tugev tõend, registri- või platvormiandmed.</b> Ametlikud või ettevõtete andmed paljude inimeste või firmade kohta, võrdlusrühmaga.</li><li><b>Keskmine tõend, kirjeldav analüüs.</b> Suured andmed, aga võrdlus ei tõesta põhjust. Autorid ise nimetavad tulemust varajaseks märgiks.</li><li><b>Keskmine tõend, küsitlus.</b> Esinduslik küsitlus. Inimesed hindavad ise, näiteks säästetud aega.</li><li><b>Nõrk tõend, hinnang ülesannete kohta.</b> Hinnang, mitu ülesannet tehisaru võiks teha. Ei mõõda, mis tegelikult juhtus.</li><li><b>Nõrk tõend, majandusmudel.</b> Majandusmudel ja olemasolevad hinnangud. Prognoos, mitte mõõtmine.</li><li><b>Nõrk tõend, ekspertintervjuud.</b> Ekspertide intervjuud ja olemasolev statistika. Näitab takistusi, mitte mõju suurust.</li><li><b>Prognoos, prognoos või ootus, mitte mõõtmine.</b> Ametlik prognoos või tööandjate ootus tuleviku kohta. Arvutatud eelduste põhjal, mitte mõõdetud. Näitab suunda, mitte kindlat tulemust.</li>
+        </ul>
+      </details>
+    </section>
+  </div>
+
+<!--TULEVIK-->  <div class="ts-panel" id="paneel-tulevik" role="tabpanel" aria-labelledby="tab-tulevik" hidden>
+    <section class="ts-leiud-algus">
+      <p class="ts-lead">Neli küsimust tuleviku kohta. Kahe esimese vastus põhineb andmetel ja ettevõtete endi sõnadel, kaks viimast on prognoosid: need näitavad suunda, mitte kindlat tulemust. Kontrollitud allikast 31.10.2026.</p>
+    </section>
+    <section class="ts-eesti" aria-label="Tulevik">
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Mis saab tehisaru tõttu töö kaotanud inimestest?</h3>
+          <p class="ts-v-big">Keegi ei loe neid eraldi</p>
+          <p>Otsest mõõtmist pole. Varasema automatiseerimise järel kaotasid inimesed osa sissetulekust, enim vanemad ja kauaaegsed töötajad. Tehisaru mõju on seni näha eelkõige selles, et noori palgatakse vähem.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-pair">
+            <div><span class="ts-big">24%</span><p>USA koondamisteadetest nimetas 2026. aasta esimesel seitsmel kuul põhjuseks tehisaru <span class="ts-t-sub">112 713 teadet 477 033st, Challenger, Gray &amp; Christmas</span></p></div>
+            <div><span class="ts-big">≈8%</span><p>ühe aasta palgast kaotasid viie aastaga inimesed, kelle ettevõte automatiseeris <span class="ts-t-sub">Holland 2000–2016, registriandmed, automatiseerimine üldiselt</span></p></div>
+          </div>
+          <p class="ts-csub">Need on eri mõõdikud ja neid ei liideta. Teade ei tähenda tegelikku koondamist ja tehisaru märkimine põhjuseks on ebamäärane. Eestis ega ELis ei loe keegi tehisaru tõttu koondatuid eraldi.</p>
+          <div class="ts-head-sm">
+            <p class="ts-kicker">USA koondamisteated põhjuse järgi, jaanuar–juuli 2026, % kõigist</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Tehisaru on suurim üksikpõhjus, aga <span class="ts-sig">kolm neljandikku</span> teadetest on muudel põhjustel</h4>
+          </div>
+          <div class="ts-hb-pohj"><ul class="ts-hb"><li class="is-fokus"><span class="ts-hb-name">Tehisaru</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:78.7%"></span><span class="ts-hb-v" style="left:78.7%">23,6%</span></span></li><li class=""><span class="ts-hb-name">Turu- ja majandusolud</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:63.0%"></span><span class="ts-hb-v" style="left:63.0%">18,9%</span></span></li><li class=""><span class="ts-hb-name">Tegevuse lõpetamine</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:59.0%"></span><span class="ts-hb-v" style="left:59.0%">17,7%</span></span></li><li class=""><span class="ts-hb-name">Ümberkorraldamine</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:40.0%"></span><span class="ts-hb-v" style="left:40.0%">12%</span></span></li><li class=""><span class="ts-hb-name">Lepingu kaotus</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:28.3%"></span><span class="ts-hb-v" style="left:28.3%">8,5%</span></span></li><li class=""><span class="ts-hb-name">Muud põhjused (jääk)</span>
+<span class="ts-hb-track"><span class="ts-hb-bar" style="width:64.0%"></span><span class="ts-hb-v" style="left:64.0%">19,2%</span></span></li></ul></div>
+          <p class="ts-csub">Kokku 477 033 teadet. Muud põhjused on jääk: aruanne neid üksikult ei loetle. Koondamisteateid oli 41% vähem kui aasta varem, värbamisplaane 25% rohkem. Väljaspool tehnoloogiasektorit on tehisaruga seotud koondamisi vähe.</p>
+          <p class="ts-source"><b>Allikas:</b> Challenger, Gray &amp; Christmas juuli 2026; Bessen jt 2025 (REStat); Brynjolfsson jt 2026; Humlum, Vestergaard 2025; Goldman Sachs 2025.</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (5)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://www.challengergray.com/blog/challenger-report-layoffs-fall-hiring-picks-up-ai-leads-for-fifth-straight-month/" target="_blank" rel="noopener">Challenger Report: Layoffs Fall, Hiring Picks Up, AI Leads for Fifth Straight Month</a>
+<span class="ts-t-sub">Challenger, Gray &amp; Christmas · ettevõtte kuuaruanne · 2026-08-06</span></td>
+<td><p class="ts-leid">Jaanuarist juulini 2026 teatati 477 033 koondamisest. Neist 112 713 (umbes 24%) puhul nimetati põhjuseks tehisaru, juulis 33%. Need on teated, mitte tegelikud koondamised. Aruanne ise märgib, et tehisaru põhjuseks märkimine on ebamäärane.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">kirjeldav analüüs · retsenseerimata</span><span class="ts-t-sub">USA: ettevõtete avalikud koondamisteated</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.cpb.nl/sites/default/files/omnidownload/CPB-Discussion-Paper-390-Automatic-Reaction-What-Happens-to-Workers-at-Firms-that-Automate.pdf" target="_blank" rel="noopener">What Happens to Workers at Firms that Automate?</a>
+<span class="ts-t-sub">Bessen, Goos, Salomons, van den Berge · Review of Economics and Statistics 107(1); arv CPB töödokumendist 390 · 2025-01-15</span></td>
+<td><p class="ts-leid">Kui ettevõte automatiseeris, lahkusid seal töötanud inimesed sagedamini ja töötasid vähem päevi. Viie aastaga kaotati kokku umbes 8% ühe aasta palgatulust (töödokumendi hinnang). Toetused katsid sellest vaid osa. Rohkem kaotasid vanemad ja kauaaegsed töötajad. Inimesi tõrjuti välja palju vähem kui massikoondamistel. Uuring käsitleb automatiseerimist üldiselt, mitte tehisaru.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">registri- või platvormiandmed</span><span class="ts-t-sub">Holland: kõik erasektori ettevõtted ja töötajad 2000–2016</span></p></td></tr><tr><td><a class="ts-t-name" href="https://digitaleconomy.stanford.edu/publications/canaries-in-the-coal-mine/" target="_blank" rel="noopener">Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence</a>
+<span class="ts-t-sub">Brynjolfsson, Chandar, Chen · Stanford Digital Economy Labi töödokument · 2026-08-12 (uuendatud versioon)</span></td>
+<td><p class="ts-leid">Laialdast töökohtade kadu ei ole. 22–25-aastaste hõive tehisarule avatud ametites on 19% madalam kui vähem avatud ametites eakaaslastel. Vahe tuleb sellest, et noori palgatakse vähem, ja see on 2025. aastast suurenenud.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> <span class="ts-t-sub ts-inline">kirjeldav analüüs · retsenseerimata</span><span class="ts-t-sub">USA: ADP palgaandmed miljonite töötajate kohta kuni juunini 2026</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.nber.org/papers/w33777" target="_blank" rel="noopener">Still Waters, Rapid Currents: Early Labor Market Transformation under Generative AI</a>
+<span class="ts-t-sub">Humlum, Vestergaard · NBER töödokument 33777 · 2025-05 (uuendatud 2026-03)</span></td>
+<td><p class="ts-leid">Kaks aastat pärast ChatGPT tulekut ei muutunud tulu ega töötunnid: üle 2% mõju on välistatud. Muutus töö sisu: tekkisid uued ülesanded.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> <span class="ts-t-sub ts-inline">registri- või platvormiandmed · retsenseerimata</span><span class="ts-t-sub">Taani: suured kasutusküsitlused seotud Taani registriandmetega</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.goldmansachs.com/insights/articles/how-will-ai-affect-the-global-workforce" target="_blank" rel="noopener">How Will AI Affect the Global Workforce?</a>
+<span class="ts-t-sub">Briggs, Dong (Goldman Sachs Research) · panga analüüs · 2025-08-13</span></td>
+<td><p class="ts-leid">Kui tehisaru võetakse laialt kasutusele, võib see USA-s tõrjuda välja 6–7% töötajatest (eri eeldustel 3–14%). Üleminekuajal tõuseks töötus trendist umbes 0,5 protsendipunkti; varasemate tehnoloogiate puhul kadus see mõju umbes kahe aastaga. 20–30-aastaste töötus tehnoloogiaametites on 2025. aasta algusest tõusnud ligi 3 protsendipunkti.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-nork">Nõrk tõend</span> <span class="ts-t-sub ts-inline">majandusmudel · retsenseerimata</span><span class="ts-t-sub">USA: üle 800 ameti hinnang ja varasemate tehnoloogiamuutuste ajalugu</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Kas tehisaru on Eesti koondamiste põhjus?</h3>
+          <p class="ts-v-big">Pigem kaudselt</p>
+          <p>Põhjusena nimetab tehisaru ainult Telia ja ka seal koos kulude vähendamisega. Pipedrive’is muutis tehisaru turgu ja klientide ootusi, Swedbank peab seda tuleviku riskiks.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Eesti suuremad koondamised 2026, koondatavaid Eestis</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Suurimas, Pipedrive’i koondamises oli tehisaru <span class="ts-sig">kaudne põhjus</span>; otse nimetas seda ainult Telia</h4>
+          </div>
+          <p class="ts-kb-legend"><span class="ts-kb-leg"><i class="ts-kb-osaline"></i>tehisaru üks põhjustest</span><span class="ts-kb-leg"><i class="ts-kb-kaudne"></i>kaudne: tehisaru muutis turgu</span><span class="ts-kb-leg"><i class="ts-kb-ei_mainita"></i>tehisaru ei mainita</span></p>
+          <ul class="ts-hb ts-kb" aria-label="Eesti koondamised 2026 ja tehisaru roll"><li><span class="ts-hb-name"><b>Pipedrive</b> <small>29.10.</small></span><span class="ts-hb-track"><span class="ts-hb-bar ts-kb-kaudne" style="width:53.4%"></span><span class="ts-hb-v" style="left:53.4%">267 <small>· kaudne põhjus</small></span></span></li><li><span class="ts-hb-name"><b>Coolbet (VG Estonia)</b> <small>29.10.</small></span><span class="ts-hb-track"><span class="ts-hb-bar ts-kb-ei_mainita" style="width:26.8%"></span><span class="ts-hb-v" style="left:26.8%">134 <small>· ei mainita</small></span></span></li><li><span class="ts-hb-name"><b>Telia Eesti</b> <small>12.10.</small></span><span class="ts-hb-track"><span class="ts-hb-bar ts-kb-osaline" style="width:20.0%"></span><span class="ts-hb-v" style="left:20.0%">100 <small>· üks põhjustest</small></span></span></li><li><span class="ts-hb-name"><b>Telia Eesti</b> <small>9.1.</small></span><span class="ts-hb-track"><span class="ts-hb-bar ts-kb-ei_mainita ts-kb-ulem" style="width:10.0%"></span><span class="ts-hb-v" style="left:10.0%">kuni 50 <small>· ei mainita</small></span></span></li><li><span class="ts-hb-name"><b>Swedbank</b> <small>27.10.</small></span><span class="ts-hb-track"><span class="ts-kb-puudu">Eesti arv teadmata (umbes 100 Balti riikides kokku) · tuleviku risk</span></span></li></ul>
+          <p class="ts-csub">Tehisaru roll on see, mida ettevõte ise ütles, mitte meie hinnang. 3 juhtumis 5-st mainiti tehisaru, aga üheski polnud see ainus põhjus. Arve ei liideta. Nimekiri ei ole täielik.</p>
+          <details class="ts-details"><summary>Põhjused ettevõtete sõnul (5)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-koond"><thead><tr><th>Ettevõte</th><th class="ts-num">Eestis</th><th>Tehisaru roll ja põhjus ettevõtte sõnul</th></tr></thead><tbody><tr><td><a class="ts-t-name" href="https://www.err.ee/1610180251/pipedrive-koondab-massiliselt-tootajaid-ja-paneb-kontoreid-kinni" target="_blank" rel="noopener">Pipedrive</a><span class="ts-t-sub">29.10.2026 · tarkvara</span></td>
+<td class="ts-num"><span class="ts-t-name">267</span><span class="ts-t-sub">267 töökohta 380st (70%), Tallinnas 219 ja Tartus 48</span></td>
+<td><span class="ts-tag ts-roll-kaudne">Kaudne</span><p class="ts-leid">Väikeettevõtted küsivad tarkvarasoovitusi tehisarult, tasuta veebiliiklus langes ja kliendid ootavad tarkvaralt rohkem automaatikat. Vähem juhtimistasandeid ja asukohti. Tegevjuhi sõnul ei asendata inimesi tehisaruga.</p><span class="ts-t-sub">Ütles: tegevjuht Paulo Cunha töötajatele saadetud kirjas. Allikas: ERR (Äripäeva põhjal)</span></td></tr><tr><td><a class="ts-t-name" href="https://news.err.ee/1610180281/coolbet-estonia-to-shed-up-to-134-jobs-at-tallinn-hq" target="_blank" rel="noopener">Coolbet (VG Estonia)</a><span class="ts-t-sub">29.10.2026 · hasartmängud veebis</span></td>
+<td class="ts-num"><span class="ts-t-name">134</span><span class="ts-t-sub">kuni 134 töökohta, peaaegu pool Tallinna peakontorist</span></td>
+<td><span class="ts-tag ts-roll-ei_mainita">Ei mainita</span><p class="ts-leid">Äriprobleemid, oodatust nõrgemad tulemused ettevõtetele müügis ning kasvav regulatsiooni- ja maksusurve.</p><span class="ts-t-sub">Ütles: tegevdirektor Tomas Graham ERR-ile. Allikas: ERR News</span></td></tr><tr><td><a class="ts-t-name" href="https://news.err.ee/1610178361/swedbank-lays-off-100-in-baltic-states-warns-ai-could-mean-more-cuts" target="_blank" rel="noopener">Swedbank</a><span class="ts-t-sub">27.10.2026 · pangandus</span></td>
+<td class="ts-num"><span class="ts-t-name">?</span><span class="ts-t-sub">umbes 100 Balti riikides kokku, Eesti osa ei ole teada</span></td>
+<td><span class="ts-tag ts-roll-tulevikus">Tulevikus võimalik</span><p class="ts-leid">Suured IT- ja arendusinvesteeringud on tehtud ning nii palju inimesi pole enam vaja. Tehisaru võib tulevikus koondamisi juurde tuua, kui see on inimesest odavam.</p><span class="ts-t-sub">Ütles: Swedbank Eesti juht Olavi Lepp ERR-ile. Allikas: ERR News</span></td></tr><tr><td><a class="ts-t-name" href="https://news.err.ee/1610163940/telia-to-cut-100-jobs-in-estonia-as-telecom-group-plans-900-layoffs" target="_blank" rel="noopener">Telia Eesti</a><span class="ts-t-sub">12.10.2026 · telekommunikatsioon</span></td>
+<td class="ts-num"><span class="ts-t-name">100</span><span class="ts-t-sub">umbes 100 töökohta Eestis, kontsernis 900</span></td>
+<td><span class="ts-tag ts-roll-osaline">Üks põhjustest</span><p class="ts-leid">Tõhusam organisatsioon ja kulude vähendamine. Selleks kasutatakse üha rohkem tehisaru, digitaliseerimist ja automatiseerimist.</p><span class="ts-t-sub">Ütles: ettevõtte pressiteade. Allikas: ERR News</span></td></tr><tr><td><a class="ts-t-name" href="https://www.personaliuudised.ee/uudised/2026/01/07/telia-koondab-eestis-kuni-50-tootajat-soomes-rootsis-kordades-rohkem" target="_blank" rel="noopener">Telia Eesti</a><span class="ts-t-sub">9.1.2026 · telekommunikatsioon</span></td>
+<td class="ts-num"><span class="ts-t-name">?</span><span class="ts-t-sub">30–50 ametikohta</span></td>
+<td><span class="ts-tag ts-roll-ei_mainita">Ei mainita</span><p class="ts-leid">Tehnoloogia ja IT-juhtimise ühendamine. Lühiteates tehisaru ei mainita, täisartikkel on tasuline.</p><span class="ts-t-sub">Ütles: Äripäev. Allikas: Personaliuudised</span></td></tr></tbody></table></div>
+          <ul><li><b>Otsene.</b> Ettevõte ütleb, et tehisaru teeb tööd inimeste asemel.</li><li><b>Üks põhjustest.</b> Ettevõte nimetab tehisaru ühe põhjusena koos teistega, näiteks kulude vähendamise või automatiseerimisega.</li><li><b>Kaudne.</b> Ettevõte ütleb, et tehisaru muutis turgu või klientide ootusi, aga ei asenda inimesi.</li><li><b>Tulevikus võimalik.</b> Praegune koondamine on muul põhjusel, aga ettevõte ütleb, et tehisaru võib tulevikus töökohti vähendada.</li><li><b>Ei mainita.</b> Teates ega uudises tehisaru ei mainita.</li></ul></details>
+          <p class="ts-source"><b>Allikas:</b> ERR, ERR News, Personaliuudised; kogutud käsitsi 31.10.2026. Täieliku arvu annaks Töötukassa kollektiivse koondamise teadete statistika, mida siin veel ei ole.</p>
+          
+        </div>
+      </section>
+
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Millised ametid 5–10 aastaga kasvavad?</h3>
+          <p class="ts-v-big">Tervis, hooldus ja tehnoloogia</p>
+          <p>USA ametlik prognoos ja OSKA näevad sama suunda: kasvavad tervishoid, sotsiaaltöö, IT ja inseneriametid, kahanevad kontoritöö ja müük.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-head-sm">
+            <p class="ts-kicker">USA ametite pearühmad, töökohtade muutus 2025–2035, prognoos</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Tervishoid kasvab kõige kiiremini, <span class="ts-sig">kontoritöö kahaneb</span> kõige rohkem</h4>
+          </div>
+          <ul class="ts-dv ts-dv-amet" aria-label="USA ametite pearühmade muutus 2025–2035"><li class=""><span class="ts-hb-name">Tervishoiu abitöötajad</span>
+<span class="ts-dv-track" style="--null:27.3%"><span class="ts-dv-bar" style="left:27.3%;width:60.5%"></span>
+<span class="ts-dv-v" style="left:87.7%">+13,3%</span></span></li><li class=""><span class="ts-hb-name">Tervishoiu spetsialistid ja tehnikud</span>
+<span class="ts-dv-track" style="--null:27.3%"><span class="ts-dv-bar" style="left:27.3%;width:36.4%"></span>
+<span class="ts-dv-v" style="left:63.6%">+8%</span></span></li><li class=""><span class="ts-hb-name">Teadlased</span>
+<span class="ts-dv-track" style="--null:27.3%"><span class="ts-dv-bar" style="left:27.3%;width:34.1%"></span>
+<span class="ts-dv-v" style="left:61.4%">+7,5%</span></span></li><li class=""><span class="ts-hb-name">Sotsiaal- ja kogukonnatöö</span>
+<span class="ts-dv-track" style="--null:27.3%"><span class="ts-dv-bar" style="left:27.3%;width:33.6%"></span>
+<span class="ts-dv-v" style="left:60.9%">+7,4%</span></span></li><li class=""><span class="ts-hb-name">IT ja matemaatika</span>
+<span class="ts-dv-track" style="--null:27.3%"><span class="ts-dv-bar" style="left:27.3%;width:33.2%"></span>
+<span class="ts-dv-v" style="left:60.5%">+7,3%</span></span></li><li class="is-ink"><span class="ts-hb-name">Kõik ametid kokku</span>
+<span class="ts-dv-track" style="--null:27.3%"><span class="ts-dv-bar" style="left:27.3%;width:15.9%"></span>
+<span class="ts-dv-v" style="left:43.2%">+3,5%</span></span></li><li class=""><span class="ts-hb-name">Tootmine</span>
+<span class="ts-dv-track" style="--null:27.3%"><span class="ts-dv-bar" style="left:25.5%;width:1.8%"></span>
+<span class="ts-dv-v" style="left:27.3%">−0,4%</span></span></li><li class=""><span class="ts-hb-name">Müük</span>
+<span class="ts-dv-track" style="--null:27.3%"><span class="ts-dv-bar" style="left:20.9%;width:6.4%"></span>
+<span class="ts-dv-v" style="left:27.3%">−1,4%</span></span></li><li class="is-fokus"><span class="ts-hb-name">Kontori- ja haldustöö</span>
+<span class="ts-dv-track" style="--null:27.3%"><span class="ts-dv-bar" style="left:9.1%;width:18.2%"></span>
+<span class="ts-dv-v" style="left:27.3%">−4%</span></span></li></ul>
+          <p class="ts-csub">Üksikametitest kasvavad kõige kiiremini õendusspetsialistid (+41%), päikesepaneelide paigaldajad (+36,5%), andmeteadlased (+34,6%) ja tuuleturbiinide tehnikud (+29,5%). Kontori- ja haldustöös kaob 752 100 töökohta, USA tööstatistika amet seob selle osaliselt tehisaruga.</p>
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Eesti, OSKA prognoos 2022–2031</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Eestis on suund sama, aga <span class="ts-sig">inimesi on vaja rohkem</span>, kui koolist tuleb</h4>
+          </div>
+          <div class="ts-pair ts-suunad">
+            <div><p class="ts-kicker">Töökohti lisandub</p><ul><li>IT ja side</li><li>finants ja kindlustus</li><li>tervishoid ja sotsiaalhoolekanne</li><li>insenerid, mehhatroonikud, elektrikud</li></ul></div>
+            <div><p class="ts-kicker">Töökohti väheneb</p><ul><li>veondus ja laondus</li><li>kinnisvara ja haldustegevus</li><li>hulgi- ja jaekaubandus</li><li>kontoritöötajad, klienditeenindajad, lihttöölised</li></ul></div>
+          </div>
+          <p class="ts-csub">Kõige rohkem inimesi on Eestis vaja pensionile jääjate asemele: müüjad, õpetajad, raamatupidajad, ehitajad, arstid, sõidukijuhid. Kokku 18 000 inimest aastas, koolist tuleb tööturule alla 16 000. OSKA prognoos on tehtud enne 2023. aastat; uuem trendiülevaade „Töö ja oskused 2035“ (29.10.2025) on kvalitatiivne ja arve ametite kaupa ei anna.</p>
+          <p class="ts-csub">Maailmas ootavad suurtööandjad aastaks 2030 170 miljonit uut ja 92 miljonit kaduvat töökohta (WEF). ELis kasvab hõive 2023–2035 üle 4% (Cedefop). Need on eri prognoosid ja neid ei liideta.</p>
+          <p class="ts-source"><b>Allikas:</b> USA tööstatistika amet 27.8.2026; OSKA üldprognoos 6.3.2023; WEF 2025; Cedefop EURESi kaudu 15.9.2026.</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (4)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://www.bls.gov/news.release/ecopro.nr0.htm" target="_blank" rel="noopener">Employment Projections: 2025–2035 Summary</a>
+<span class="ts-t-sub">U.S. Bureau of Labor Statistics · USA tööstatistika ameti prognoos · 2026-08-27</span></td>
+<td><p class="ts-leid">Töökohti lisandub 10 aastaga 3,5% (eelmisel kümnendil 10,9%). Kõige kiiremini kasvavad tervishoiu ametid, sest rahvastik vananeb. Kõige kiiremini kahaneb kontori- ja haldustöö (−4%, 752 100 töökohta), osaliselt tehisaru ja automatiseerimise tõttu. Amet ise soovitab vaadata suunda, mitte täpseid arve.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-prognoos">Prognoos</span> <span class="ts-t-sub ts-inline">prognoos või ootus, mitte mõõtmine</span><span class="ts-t-sub">USA: 22 ametite pearühma ja üle 800 ameti</span></p></td></tr><tr><td><a class="ts-t-name" href="https://uuringud.oska.kutsekoda.ee/uuringud/oska-uldprognoos" target="_blank" rel="noopener">OSKA üldprognoos 2022–2031</a>
+<span class="ts-t-sub">Rosenblad, Leoma, Krusell (OSKA, Kutsekoda) · OSKA tööjõuvajaduse prognoos · 2023-03-06</span></td>
+<td><p class="ts-leid">Töökohti lisandub enim info ja side, finants- ja kindlustuse ning tervishoiu ja sotsiaalhoolekande alal. Kasvavad ka inseneri-, mehhatrooniku- ja elektrikuametid. Väheneb veondus ja laondus, kinnisvara, haldus ja kaubandus; ametitest kontoritöötajad, klienditeenindajad ja lihttöölised. Pensionile jääjate ja uute kohtade jaoks on vaja 18 000 inimest aastas, koolist tuleb tööturule alla 16 000.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-prognoos">Prognoos</span> <span class="ts-t-sub ts-inline">prognoos või ootus, mitte mõõtmine</span><span class="ts-t-sub">Eesti: registriandmed ja OSKA valdkonnauuringud</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/digest/" target="_blank" rel="noopener">Future of Jobs Report 2025</a>
+<span class="ts-t-sub">World Economic Forum · tööandjate küsitlus · 2025-01-07</span></td>
+<td><p class="ts-leid">Tööandjate ootuse järgi tekib 2025–2030 170 miljonit töökohta ja kaob 92 miljonit, netona +78 miljonit. Arvuliselt kasvavad enim põllutöölised, kullerid, ehitajad, müüjad ja hooldustöötajad; kiiremini tehnoloogiaametid. Enim kahanevad kassapidajad, sekretärid, postitöötajad, pangatellerid ja andmesisestajad.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-prognoos">Prognoos</span> <span class="ts-t-sub ts-inline">prognoos või ootus, mitte mõõtmine</span><span class="ts-t-sub">maailm: üle 1000 suurtööandja ootused aastani 2030</span></p></td></tr><tr><td><a class="ts-t-name" href="https://eures.europa.eu/spotting-tomorrows-jobs-what-2035-skills-forecast-means-you-2026-09-15_et" target="_blank" rel="noopener">Mida tähendab 2035. aasta oskuste prognoos sinu jaoks</a>
+<span class="ts-t-sub">Cedefop (EURESi kokkuvõte) · ELi oskuste prognoos · 2026-09-15</span></td>
+<td><p class="ts-leid">ELi tööhõive kasvab 2023–2035 üle 4%, IKT-töökohad umbes 2,5% aastas. Suur osa nõudlusest tuleb pensionile jääjate asendamisest. Puudus on oodata juhtidest ja tervishoiutöötajatest.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-prognoos">Prognoos</span> <span class="ts-t-sub ts-inline">prognoos või ootus, mitte mõõtmine</span><span class="ts-t-sub">EL: ELi riikide tööturu mudel</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+      <section class="ts-finding ts-leiu-kaart">
+        <div class="ts-verdict">
+          <h3>Kui suur on töötus tulevikus?</h3>
+          <p class="ts-v-big">Eestis umbes 6%</p>
+          <p>Prognoosid ei oota tehisaru tõttu suurt töötust. Eestis langeb töötus prognoosi järgi loomuliku taseme lähedale.</p>
+        </div>
+        <div class="ts-leiu-sisu">
+          <div class="ts-head-sm">
+            <p class="ts-kicker">Eesti töötuse määr, %</p>
+            <h4 class="ts-ctitle ts-ctitle-sm">Rahandusministeeriumi prognoosis langeb töötus <span class="ts-sig">2030. aastaks 6,1%-ni</span></h4>
+          </div>
+          <div class="ts-cols ts-cols-sm" role="img" aria-label="Eesti töötuse määr: 2025 tegelik 7,5%, prognoos 2026 6,7%, 2027 6,4%, 2028 6,3%, 2029 6,2%, 2030 6,1%"><div class="ts-col is-ink"><span class="ts-col-v">7,5%</span><span class="ts-col-bar" style="height:93.8%"></span><span class="ts-col-y">2025</span></div><div class="ts-col"><span class="ts-col-v">6,7%</span><span class="ts-col-bar" style="height:83.8%"></span><span class="ts-col-y">2026*</span></div><div class="ts-col"><span class="ts-col-v">6,4%</span><span class="ts-col-bar" style="height:80.0%"></span><span class="ts-col-y">2027*</span></div><div class="ts-col"><span class="ts-col-v">6,3%</span><span class="ts-col-bar" style="height:78.8%"></span><span class="ts-col-y">2028*</span></div><div class="ts-col"><span class="ts-col-v">6,2%</span><span class="ts-col-bar" style="height:77.5%"></span><span class="ts-col-y">2029*</span></div><div class="ts-col is-fokus"><span class="ts-col-v">6,1%</span><span class="ts-col-bar" style="height:76.2%"></span><span class="ts-col-y">2030*</span></div></div>
+          <p class="ts-csub">2025 on tegelik arv, tärniga aastad on prognoos. Prognoos ei arvesta tehisaru mõju eraldi.</p>
+          <div class="ts-pair">
+            <div><span class="ts-big">4,9%</span><p>maailma töötus 2026. aastal <span class="ts-t-sub">ILO prognoos, jaanuar 2026</span></p></div>
+            <div><span class="ts-big">+0,5 pp</span><p>lisatöötus USA-s tehisaru üleminekuajal, mis varasemate tehnoloogiate puhul kadus umbes kahe aastaga <span class="ts-t-sub">Goldman Sachs 2025, stsenaarium</span></p></div>
+          </div>
+          <p class="ts-csub">Need on eri mõõdikud eri riikidest ja neid ei liideta. Eesti kohta tehisaru töötuse stsenaariumi me ei leidnud.</p>
+          <p class="ts-source"><b>Allikas:</b> Rahandusministeeriumi suvine majandusprognoos 2026 (tabel 1); ILO Employment and Social Trends 2026; Goldman Sachs 2025.</p>
+          <details class="ts-details">
+          <summary>Uuringud selle vastuse taga (3)</summary>
+          <div class="ts-twbox ts-twbox-auto"><table class="ts-tw ts-tw-leiud"><thead><tr><th>Uuring</th><th>Mida leiti ja kui kindel</th></tr></thead><tbody>
+<tr><td><a class="ts-t-name" href="https://www.fin.ee/sites/default/files/documents/2026-08/Rahandusministeeriumi%202026.%20aasta%20suvine%20majandusprognoos.pdf" target="_blank" rel="noopener">Rahandusministeeriumi 2026. aasta suvine majandusprognoos</a>
+<span class="ts-t-sub">Rahandusministeerium · riigi majandusprognoos · 2026-08</span></td>
+<td><p class="ts-leid">Töötuse määr oli 2025. aastal 7,5%. Prognoosi järgi langeb see 2026. aastal 6,7%-ni ja 2030. aastaks 6,1%-ni, loomuliku taseme lähedale. Hõive kasv püsib väike. Tehisaru mõju ei ole töötuse prognoosis eraldi välja toodud.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-prognoos">Prognoos</span> <span class="ts-t-sub ts-inline">prognoos või ootus, mitte mõõtmine</span><span class="ts-t-sub">Eesti: makromajanduse prognoos 2026–2030</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.ilo.org/publications/flagship-reports/employment-and-social-trends-2026" target="_blank" rel="noopener">Employment and Social Trends 2026</a>
+<span class="ts-t-sub">ILO · ILO aastaraport · 2026-01-14</span></td>
+<td><p class="ts-leid">Maailma töötus püsib 2026. aastal 4,9% juures, noorte töötus on 12,4%. ILO nimetab kiiret tehisaru kasutuselevõttu riskiks, mis võib väljavaadet halvendada.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-prognoos">Prognoos</span> <span class="ts-t-sub ts-inline">prognoos või ootus, mitte mõõtmine</span><span class="ts-t-sub">maailm: maailma tööturu mudel</span></p></td></tr><tr><td><a class="ts-t-name" href="https://www.goldmansachs.com/insights/articles/how-will-ai-affect-the-global-workforce" target="_blank" rel="noopener">How Will AI Affect the Global Workforce?</a>
+<span class="ts-t-sub">Briggs, Dong (Goldman Sachs Research) · panga analüüs · 2025-08-13</span></td>
+<td><p class="ts-leid">Kui tehisaru võetakse laialt kasutusele, võib see USA-s tõrjuda välja 6–7% töötajatest (eri eeldustel 3–14%). Üleminekuajal tõuseks töötus trendist umbes 0,5 protsendipunkti; varasemate tehnoloogiate puhul kadus see mõju umbes kahe aastaga. 20–30-aastaste töötus tehnoloogiaametites on 2025. aasta algusest tõusnud ligi 3 protsendipunkti.</p><p class="ts-leid-meta"><span class="ts-tag ts-tag-nork">Nõrk tõend</span> <span class="ts-t-sub ts-inline">majandusmudel · retsenseerimata</span><span class="ts-t-sub">USA: üle 800 ameti hinnang ja varasemate tehnoloogiamuutuste ajalugu</span></p></td></tr>
+          </tbody></table></div>
+        </details>
+        </div>
+      </section>
+
+    </section>
+  </div>
+
+<!--/TULEVIK-->  <div class="ts-panel" id="paneel-analyys" role="tabpanel" aria-labelledby="tab-analyys" hidden>
+    <section class="ts-tiles" aria-label="Peamised arvud">
+      <div class="ts-tile is-fokus">
+        <span class="ts-tile-label">Töid 2026 (seni)</span>
+        <span class="ts-tile-value" data-draw="a-t2026" data-source="a_jaotused" data-field="arv">—</span>
+        <span class="ts-tile-note">pealkirjas tehisaru ja töö (2025: <span data-draw="a-t2025" data-source="a_jaotused" data-field="arv">—</span>). Laiem otsing, ka kokkuvõttes: <span data-draw="a-lai2026" data-source="a_jaotused">—</span></span>
+      </div>
+      <div class="ts-tile">
+        <span class="ts-tile-label">Tuumajakirjades</span>
+        <span class="ts-tile-value" data-draw="a-tuum" data-source="a_jaotused" data-field="arv">—</span>
+        <span class="ts-tile-note">ülejäänud muudes ajakirjades või eeltrükiserverites</span>
+      </div>
+      <div class="ts-tile">
+        <span class="ts-tile-label">Aasta hiljem viiteta</span>
+        <span class="ts-tile-value" data-draw="a-viiteta" data-source="a_jaotused" data-field="arv">—</span>
+        <span class="ts-tile-note">keegi pole neid töid tsiteerinud</span>
+      </div>
+    </section>
+
+    <div class="ts-grid">
+      <section class="ts-chartcard" id="a-aastad">
+        <div class="ts-head-sm">
+          <p class="ts-kicker">Kui palju?</p>
+          <h2 class="ts-ctitle" data-draw="a-aastad-pealkiri" data-source="a_aastad">—</h2>
+          <p class="ts-csub">Teadustööd, mille pealkirjas on tehisaru ja töö, aastas. 2026 on poolik ja OpenAlex lisab töid hilinemisega.</p>
+        </div>
+        <div class="ts-cols" data-draw="a-aastad" data-source="a_aastad" role="img" aria-label="Teadustööde arv aastas 2016–2026"></div>
+        <p class="ts-source"><b>Allikas:</b> OpenAlex, pealkirjas tehisaru või automatiseerimine ja töö või tööturg.</p>
+      </section>
+
+      <section class="ts-chartcard" id="a-teemad">
+        <div class="ts-head-sm">
+          <p class="ts-kicker">Mis kasvab?</p>
+          <h2 class="ts-ctitle" data-draw="a-teemad-pealkiri" data-source="a_teemad">—</h2>
+          <p class="ts-csub">Teema osakaal kõigist töödest 2026. aastal, %. Kriips näitab 2025. aastat.</p>
+        </div>
+        <ul class="ts-hb" data-draw="a-teemad" data-source="a_teemad"></ul>
+        <div class="ts-key"><span><i></i>2025</span><span>sulgudes muutus protsendipunktides</span></div>
+        <p class="ts-source"><b>Märkus:</b> teema on pealkirja märksõnad ja üks töö võib olla mitme teema all.</p>
+      </section>
+    </div>
+
+    <section class="ts-finding" id="a-usaldus">
+      <div class="ts-verdict">
+        <h3>Kas neid allikaid saab usaldada?</h3>
+        <p class="ts-v-big">Osaliselt</p>
+        <h3>Mida see tähendab</h3>
+        <p><span class="ts-v-key">Ära tee järeldust ühe töö põhjal.</span> Eeltrükk ja uudis on vihje. Kinnitust otsi tuumajakirjast või ametlikust statistikast.</p>
+        <details class="ts-details">
+          <summary>Usaldusväärsuse redel</summary>
+          <ol class="ts-ladder">
+            <li><b>Ametlik statistika</b>: mõõdab, mis päriselt juhtus.</li>
+            <li><b>Tuumajakiri</b>: eelretsenseeritud ja nähtav.</li>
+            <li><b>Asutuse töödokument</b> (NBER, IMF, OECD): tugev, aga retsenseerimata.</li>
+            <li><b>Muu ajakiri</b>: kvaliteet on väga erinev.</li>
+            <li><b>Eeltrükk</b> (SSRN, Zenodo, arXiv): kiire ja kontrollimata.</li>
+            <li><b>Uudis</b>: varajane signaal, mitte tõend.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="ts-head-sm" style="align-content:start; gap: var(--cds-gap-md)">
+        <p class="ts-kicker">Kui usaldusväärne?</p>
+        <h2 class="ts-ctitle" data-draw="a-usaldus-pealkiri" data-source="a_jaotused">—</h2>
+        <p class="ts-csub">Kus 2023–2026 tööd ilmusid, % töödest. Tuumajakiri on CWTS Leideni loendis.</p>
+        <div class="ts-blocks" data-draw="a-usaldus" data-source="a_jaotused"></div>
+        <p class="ts-source"><b>Allikas:</b> OpenAlex, kanali liik ja tuumkanali tunnus.</p>
+      </div>
+    </section>
+
+    <section class="ts-chartcard" id="a-tood">
+      <div class="ts-head-sm">
+        <p class="ts-kicker">Mida loetakse?</p>
+        <h2 class="ts-ctitle">Uusimad ja enim tsiteeritud tööd</h2>
+        <p class="ts-csub" data-draw="a-tood-markus" data-source="a_tood">—</p>
+      </div>
+      <div class="ts-controls">
+        <button class="ts-filter ts-grupp" type="button" data-grupp="uusimad" aria-pressed="true">Uusimad</button>
+        <button class="ts-filter ts-grupp" type="button" data-grupp="aasta" aria-pressed="false">Enim tsiteeritud, 12 kuud</button>
+        <button class="ts-filter ts-grupp" type="button" data-grupp="koik" aria-pressed="false">Enim tsiteeritud alates 2023</button>
+      </div>
+      <div class="ts-twbox">
+        <table class="ts-tw" data-source="a_tood" data-row-key="id">
+          <thead>
+            <tr>
+              <th data-field="pealkiri">Töö</th>
+              <th data-field="klass" class="ts-col-hide">Kanal</th>
+              <th data-field="viiteid" class="ts-num" data-draw="a-tood-veerg" data-source="a_tood">Viiteid</th>
+            </tr>
+          </thead>
+          <tbody data-draw="a-tood"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="ts-grid">
+      <section class="ts-chartcard" id="a-hn">
+        <div class="ts-head-sm">
+          <p class="ts-kicker">Mida arutatakse?</p>
+          <h2 class="ts-ctitle" data-draw="a-hn-pealkiri" data-source="a_lisa">—</h2>
+          <p class="ts-csub">Tehnoloogiakogukonna Hacker Newsi enim hääli saanud lood tehisarust ja tööst viimase 12 kuu jooksul. Hääled ja kommentaarid on tähelepanu mõõt, mitte tõendi kvaliteet.</p>
+        </div>
+        <div class="ts-twbox">
+          <table class="ts-tw"><thead><tr><th>Lugu</th><th class="ts-num">Hääli</th></tr></thead><tbody data-draw="a-hn" data-source="a_lisa"></tbody></table>
+        </div>
+        <p class="ts-source"><b>Allikas:</b> Hacker News (Algolia otsing), lood vähemalt 100 häälega.</p>
+      </section>
+      <section class="ts-chartcard" id="a-raportid">
+        <div class="ts-head-sm">
+          <p class="ts-kicker">Mida asutused avaldavad?</p>
+          <h2 class="ts-ctitle">Maailmapanga ja NBER-i raportid ning töödokumendid</h2>
+          <p class="ts-csub">Ainult need, mille pealkirjas on tehisaru või automatiseerimine. Töödokument on retsenseerimata.</p>
+        </div>
+        <div class="ts-twbox">
+          <table class="ts-tw"><thead><tr><th>Dokument</th><th class="ts-num">Avaldatud</th></tr></thead><tbody data-draw="a-raportid" data-source="a_lisa"></tbody></table>
+        </div>
+        <p class="ts-source"><b>Allikas:</b> Maailmapanga dokumendiregister, NBER-i uute tööde voog. <span data-draw="a-lisa-markus" data-source="a_jaotused"></span></p>
+      </section>
+    </div>
+
+    <div class="ts-grid3">
+      <section class="ts-chartcard" id="a-riigid">
+        <div class="ts-head-sm">
+          <p class="ts-kicker">Kes uurib?</p>
+          <h2 class="ts-ctitle" data-draw="a-riigid-pealkiri" data-source="a_jaotused">—</h2>
+          <p class="ts-csub">Tööde arv autorite riigi järgi, 2023–2026.</p>
+        </div>
+        <ul class="ts-hb" data-draw="a-riigid" data-source="a_jaotused"></ul>
+      </section>
+      <section class="ts-chartcard" id="a-asutused">
+        <div class="ts-head-sm">
+          <p class="ts-kicker">Kes uurib?</p>
+          <h2 class="ts-ctitle" data-draw="a-asutused-pealkiri" data-source="a_jaotused">—</h2>
+          <p class="ts-csub">Tööde arv autorite asutuse järgi, 2023–2026.</p>
+        </div>
+        <ul class="ts-hb" data-draw="a-asutused" data-source="a_jaotused"></ul>
+      </section>
+      <section class="ts-chartcard" id="a-kanalid">
+        <div class="ts-head-sm">
+          <p class="ts-kicker">Kus avaldatakse?</p>
+          <h2 class="ts-ctitle">Suurimad kanalid on <span class="ts-sig">eeltrükiserverid</span>, mitte ajakirjad</h2>
+          <p class="ts-csub">Tööde arv kanali järgi, 2023–2026. Maht ei tähenda kvaliteeti.</p>
+        </div>
+        <ul class="ts-hb" data-draw="a-kanalid" data-source="a_jaotused"></ul>
+      </section>
+    </div>
+
+    <section class="ts-chartcard" id="a-kursis">
+      <div class="ts-head-sm">
+        <p class="ts-kicker">Kuidas olla kursis?</p>
+        <h2 class="ts-ctitle">Viis harjumust, et olla <span class="ts-sig">teistest ees</span></h2>
+      </div>
+      <ol class="ts-proc">
+        <li><span class="ts-proc-n">1</span><div><div class="ts-proc-t">Iga päev</div><div class="ts-proc-d">2 minutit: vahekaart Seire seis näitab uusi töid ja Eesti uudiseid.</div></div></li>
+        <li><span class="ts-proc-n">2</span><div><div class="ts-proc-t">Iga nädal</div><div class="ts-proc-d">15 minutit: vaata tabelis „Uusimad“ ja vahekaarti Eesti, loe 2–3 kokkuvõtet.</div></div></li>
+        <li><span class="ts-proc-n">3</span><div><div class="ts-proc-t">Jälgi tippe</div><div class="ts-proc-d">Uus töö ülal olevatest asutustest on tõenäoliselt oluline.</div></div></li>
+        <li><span class="ts-proc-n">4</span><div><div class="ts-proc-t">Kontrolli</div><div class="ts-proc-d">Enne järeldust otsi tuumajakirja või ametlikku statistikat.</div></div></li>
+        <li><span class="ts-proc-n">5</span><div><div class="ts-proc-t">Mõtle Eestile</div><div class="ts-proc-d">Eesti töid on aastas mõnikümmend. Lisa Statistikaamet, Eurostat ja Arenguseire Keskus.</div></div></li>
+      </ol>
+    </section>
+
+    <details class="ts-details" id="a-kuidas">
+      <summary>Kuidas see analüüs on tehtud</summary>
+      <ul>
+        <li>Töövoog <b>analyys</b> loeb OpenAlexist koondarvud. Otsing on pealkirjast: tehisaru, generatiivne tehisaru, suur keelemudel või automatiseerimine ning tööturg, töökohad, palgad, tööjõud või töötajad. Tootmise ajakavastamise tööd („job shop scheduling“) on välja jäetud.</li>
+        <li>Eesti ja uusimate tööde jaoks on otsing laiem: pealkiri ja kokkuvõte, lisaks masinõpe ja robotid ning oskused ja ametid. Eesti tööde nimekirjas on ainult tööd, mille pealkiri puudutab tehisaru, automatiseerimist või digit; ülejäänud on teema servas ja jäetud välja.</li>
+        <li>Klikke, allalaadimisi ja jagamisi ei avalda ükski vaba allikas (Altmetric ja PlumX on tasulised). Populaarsust näitab siin viidete arv.</li>
+        <li>Teemad on pealkirja märksõnad viie hüpoteeside suuna kaupa ja generatiivne tehisaru eraldi. Teema ei ütle, mida töö leidis.</li>
+        <li>OpenAlexi liik „artikkel“ ei tähenda, et töö on eelretsenseeritud. Seepärast on usaldusväärsus mõõdetud kanali järgi.</li>
+        <li>Sama töö eeltrükk ja ajakirjaversioon on tabelis üks rida; teise versiooni viited on märgitud eraldi.</li>
+        <li>See on hetkeseis ühest käivitusest: <a class="ts-link" data-draw="a-kaivitus" data-source="a_jaotused" href="https://github.com/kadrik6/ai-work-observatory/actions/workflows/analyys.yml">Actions → analyys</a>.</li>
+      </ul>
+    </details>
+  </div>
+
+  <div class="ts-panel" id="paneel-eesti" role="tabpanel" aria-labelledby="tab-eesti" hidden>
+    <section class="ts-tiles" aria-label="Eesti peamised arvud">
+      <div class="ts-tile is-fokus">
+        <span class="ts-tile-label">Eesti autorite töid 2026</span>
+        <span class="ts-tile-value" data-draw="a-eesti" data-source="a_jaotused">—</span>
+        <span class="ts-tile-note" data-draw="a-eesti-markus" data-source="a_jaotused">—</span>
+      </div>
+      <div class="ts-tile">
+        <span class="ts-tile-label">Eesti autorite töid kokku</span>
+        <span class="ts-tile-value" data-draw="a-eesti-kokku" data-source="a_jaotused">—</span>
+        <span class="ts-tile-note" data-draw="a-eesti-kokku-markus" data-source="a_jaotused">—</span>
+      </div>
+      <div class="ts-tile">
+        <span class="ts-tile-label">Eestikeelseid töid</span>
+        <span class="ts-tile-value" data-draw="a-eesti-keeles" data-source="a_jaotused">—</span>
+        <span class="ts-tile-note">enamik Tartu Ülikooli lõputööd</span>
+      </div>
+      <div class="ts-tile">
+        <span class="ts-tile-label">Asutuste ja meedia materjale</span>
+        <span class="ts-tile-value" data-draw="a-ea-arv" data-source="a_eesti_allikad">—</span>
+        <span class="ts-tile-note">OSKA, Arenguseire Keskus, ERR, Novaator</span>
+      </div>
+    </section>
+    <section class="ts-eesti" id="a-eesti" aria-labelledby="a-eesti-pealkiri">
+      <div class="ts-head-sm">
+        <p class="ts-kicker">Eesti</p>
+        <h2 class="ts-ctitle" id="a-eesti-pealkiri" data-draw="a-eesti-pealkiri" data-source="a_jaotused">—</h2>
+        <p class="ts-csub">Eesti on leitud kolmel moel: autoril on Eesti asutus, kokkuvõttes on Eesti mainitud või töö on eesti keeles. Otsing on pealkirjast ja kokkuvõttest, seega osa töid on teema servas. <span data-draw="a-eesti-vordlus" data-source="a_jaotused"></span></p>
+      </div>
+      <div class="ts-grid3">
+        <section class="ts-chartcard">
+          <div class="ts-head-sm">
+            <h3 class="ts-ctitle ts-ctitle-sm">Eesti autorite tööd aastas</h3>
+            <p class="ts-csub">2026 on poolik.</p>
+          </div>
+          <div class="ts-cols ts-cols-sm" data-draw="a-eesti-aastad" data-source="a_jaotused" role="img" aria-label="Eesti autorite tööd aastas 2016–2026"></div>
+        </section>
+        <section class="ts-chartcard">
+          <div class="ts-head-sm">
+            <h3 class="ts-ctitle ts-ctitle-sm">Kolm moodust leida Eestit</h3>
+            <p class="ts-csub">Tööde arv kokku, kõik aastad. Üks töö võib olla mitmes reas.</p>
+          </div>
+          <ul class="ts-hb" data-draw="a-eesti-moodused" data-source="a_jaotused"></ul>
+        </section>
+        <section class="ts-chartcard">
+          <div class="ts-head-sm">
+            <h3 class="ts-ctitle ts-ctitle-sm">Kes Eestis uurib</h3>
+            <p class="ts-csub">Eesti autorite tööd asutuse järgi.</p>
+          </div>
+          <ul class="ts-hb" data-draw="a-eesti-asutused" data-source="a_jaotused"></ul>
+        </section>
+      </div>
+      <p class="ts-source"><b>Allikas:</b> OpenAlex.</p>
+
+      <section class="ts-chartcard" id="a-tood-eesti-kaart">
+        <div class="ts-head-sm">
+          <h3 class="ts-ctitle">Eesti teadustööd, uusim ees</h3>
+          <p class="ts-csub" data-draw="a-tood-eesti-markus" data-source="a_tood">—</p>
+        </div>
+        <div class="ts-twbox">
+          <table class="ts-tw" data-source="a_tood">
+            <thead><tr><th>Töö</th><th class="ts-col-hide">Kanal</th><th class="ts-num">Avaldatud</th></tr></thead>
+            <tbody data-draw="a-tood-eesti"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="ts-chartcard" id="a-riigikogu">
+        <div class="ts-head-sm">
+          <p class="ts-kicker">Riigikogu</p>
+          <h3 class="ts-ctitle" data-draw="a-rk-pealkiri" data-source="a_jaotused">—</h3>
+          <p class="ts-csub">Täiskogu istungite sõnavõtud, kus on sõna tehisintellekt, tehisaru, keelemudel, ChatGPT või AI, kuu kaupa. Juulis ja augustis on Riigikogu suvepuhkusel.</p>
+        </div>
+        <div class="ts-cols ts-cols-sm" data-draw="a-rk-kuud" data-source="a_jaotused" role="img" aria-label="Riigikogu sõnavõtud tehisaru kohta kuu kaupa"></div>
+        <details class="ts-details">
+          <summary>Sõnavõtud, uusim ees</summary>
+          <div class="ts-twbox">
+            <table class="ts-tw"><thead><tr><th>Päevakorrapunkt</th><th class="ts-num">Kuupäev</th></tr></thead><tbody data-draw="a-rk" data-source="a_lisa"></tbody></table>
+          </div>
+        </details>
+        <p class="ts-source"><b>Allikas:</b> Riigikogu stenogrammide API. Loeme sõnavõtte, mitte teksti sisu.</p>
+      </section>
+      <section class="ts-chartcard" id="a-eesti-allikad">
+        <div class="ts-head-sm">
+          <p class="ts-kicker">Väljaspool teadusartikleid</p>
+          <h3 class="ts-ctitle" data-draw="a-ea-pealkiri" data-source="a_eesti_allikad">—</h3>
+          <p class="ts-csub">Mõttekoja väljaanded, tööturu prognoosid ja uudised, kus tehisaru on pealkirjas või kokkuvõttes. Uudistevoog näitab ainult viimaseid päevi.</p>
+        </div>
+        <ul class="ts-hb" data-draw="a-ea-allikad" data-source="a_eesti_allikad"></ul>
+        <div class="ts-controls" data-draw="a-ea-nupud" data-source="a_eesti_allikad"></div>
+        <div class="ts-twbox">
+          <table class="ts-tw" data-source="a_eesti_allikad">
+            <thead><tr><th>Pealkiri</th><th class="ts-num ts-num-kp">Avaldatud</th></tr></thead>
+            <tbody data-draw="a-ea-tabel"></tbody>
+          </table>
+        </div>
+        <p class="ts-source" data-draw="a-ea-allikas" data-source="a_eesti_allikad">—</p>
+      </section>
+    </section>
+
+  </div>
+
+  <div class="ts-panel" id="paneel-seire" role="tabpanel" aria-labelledby="tab-seire" hidden>
+  <header class="ts-head" id="ulevaade">
+    <p class="ts-kicker">Igapäevane kogumine · proovirežiim</p>
+    <h2 class="ts-ctitle">Seire viimane käivitus</h2>
+    <p class="ts-lead">Vastas <b data-draw="toimis" data-source="kaivitus" data-field="toimis" data-row="0">—</b> allikat <b data-draw="allikaid" data-source="kaivitus" data-field="allikaid" data-row="0">—</b>-st. Kogutud on <b data-draw="kandidaate" data-source="kaivitus" data-field="kandidaate" data-row="0">—</b> uurimust ja uudist, mis võivad puudutada tehisaru mõju tööle. Seis: <span data-draw="aeg" data-source="kaivitus" data-field="aeg" data-row="0">—</span>.</p>
+    <p class="ts-note">Kõik kirjed on kontrollimata kandidaadid. Kogumine ei tee järeldusi ega muuda kinnitatud andmeid, prognoose ega avaldatud lehti.</p>
+  </header>
+
+  <section class="ts-tiles" aria-label="Käivituse kokkuvõte">
+    <div class="ts-tile">
+      <span class="ts-tile-label">Allikaid vastas</span>
+      <span class="ts-tile-value"><span data-draw="toimis" data-source="kaivitus" data-field="toimis" data-row="0">—</span> / <span data-draw="allikaid" data-source="kaivitus" data-field="allikaid" data-row="0">—</span></span>
+      <span class="ts-tile-note">arXiv, OpenAlex, ERR ja 5 Eurostati andmestikku</span>
+    </div>
+    <div class="ts-tile">
+      <span class="ts-tile-label">Kandidaate</span>
+      <span class="ts-tile-value" data-draw="kandidaate" data-source="kaivitus" data-field="kandidaate" data-row="0">—</span>
+      <span class="ts-tile-note">uurimused ja uudised, ilma statistikata</span>
+    </div>
+    <div class="ts-tile">
+      <span class="ts-tile-label">Juba varem nähtud</span>
+      <span class="ts-tile-value" data-draw="duplikaate" data-source="kaivitus" data-field="duplikaate" data-row="0">—</span>
+      <span class="ts-tile-note">sama töö varasemast käivitusest või teisest allikast</span>
+    </div>
+    <div class="ts-tile">
+      <span class="ts-tile-label">Uusi versioone</span>
+      <span class="ts-tile-value" data-draw="versioone" data-source="kaivitus" data-field="uusi_versioone" data-row="0">—</span>
+      <span class="ts-tile-note">nt arXivi v2 või Eurostati uus andmeseis</span>
+    </div>
+  </section>
+
+  <div class="ts-grid">
+    <section class="ts-card" id="allikad">
+      <h2>Allikate seis</h2>
+      <p class="ts-sub">Iga allika vastus viimases käivituses. Roheline täpp: allikas vastas.</p>
+      <div class="ts-groups" data-draw="allikad" data-source="allikad">—</div>
+    </section>
+
+    <section class="ts-card" id="uudised">
+      <h2>Varajane hoiatus: Eesti uudised</h2>
+      <p class="ts-sub">ERR-i uudisvoost tulevad ainult märksõnaga uudised kolmes suunas: töökohtade kadu, ümberkorraldus ja uued töökohad. Voos on korraga umbes ühe päeva uudised.</p>
+      <p class="ts-empty" id="uudised-tyhi" hidden>Selles käivituses ei leidnud ükski uudis märksõnu.</p>
+      <ul class="ts-news" data-draw="err" data-source="kandidaadid"></ul>
+    </section>
+  </div>
+
+  <section class="ts-card" id="nadalad">
+    <h2>Kandidaadid nädalate kaupa</h2>
+    <p class="ts-sub">Kuupäev on arXivis töö viimane uuendus, OpenAlexis avaldamine ja ERR-is uudise aeg. OpenAlex otsib viimase 30 päeva töid, arXiv 50 viimati uuendatud tööd.</p>
+    <ul class="ts-legend">
+      <li><span class="ts-swatch" data-seeria="arXiv"></span>arXiv (eeltrükid)</li>
+      <li><span class="ts-swatch" data-seeria="OpenAlex"></span>OpenAlex (artiklid)</li>
+      <li><span class="ts-swatch" data-seeria="ERR uudised"></span>ERR uudised</li>
+    </ul>
+    <div class="ts-chart" data-draw="nadalad" data-source="kandidaadid"></div>
+  </section>
+
+  <section class="ts-card" id="eurostat">
+    <h2>Eurostati andmestike värskus</h2>
+    <p class="ts-sub">Millal Eurostat andmestikku viimati uuendas ja mis periood on viimane. Lilla täpp: uuendatud viimase 14 päeva jooksul. Kriipsjoon: käivituse päev.</p>
+    <div class="ts-euro" data-draw="euro" data-source="eurostat"></div>
+  </section>
+
+  <section class="ts-card" id="koik">
+    <h2>Kõik kandidaadid</h2>
+    <p class="ts-sub">Otsi pealkirjast või vali allikas. Pealkiri viib allika lehele. <span data-draw="arv" data-source="kandidaadid">—</span></p>
+    <div class="ts-controls">
+      <input class="ts-search" id="ts-otsing" type="search" placeholder="Otsi pealkirjast, nt wages või jobs" aria-label="Otsi pealkirjast">
+      <button class="ts-filter" type="button" data-allikas="" aria-pressed="true">Kõik</button>
+      <button class="ts-filter" type="button" data-allikas="arXiv" aria-pressed="false">arXiv</button>
+      <button class="ts-filter" type="button" data-allikas="OpenAlex" aria-pressed="false">OpenAlex</button>
+      <button class="ts-filter" type="button" data-allikas="ERR uudised" aria-pressed="false">ERR</button>
+    </div>
+    <div class="ts-tablebox">
+      <table class="ts-table" data-source="kandidaadid" data-row-key="id">
+        <thead>
+          <tr>
+            <th data-field="pealkiri" aria-sort="none"><button class="ts-sort" type="button" data-sort="pealkiri">Pealkiri</button></th>
+            <th data-field="allikas" aria-sort="none"><button class="ts-sort" type="button" data-sort="allikas">Allikas</button></th>
+            <th data-field="liik" class="ts-col-liik" aria-sort="none"><button class="ts-sort" type="button" data-sort="liik">Liik</button></th>
+            <th data-field="kuupaev" aria-sort="descending"><button class="ts-sort" type="button" data-sort="kuupaev">Kuupäev</button></th>
+          </tr>
+        </thead>
+        <tbody data-draw="tabel"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <details class="ts-details" id="kuidas">
+    <summary>Kuidas see töötab</summary>
+    <ul>
+      <li>Kogumine käib GitHubis iga päev kell 05:17 UTC (07:17 Eesti aja järgi). Töövoog saab ainult lugeda: repo, avaldatud lehed ja prognoosid ei muutu.</li>
+      <li>Iga käivitus võrdleb kirjeid kõigi varem nähtutega. Sama töö tuntakse ära allika tunnuse, DOI või pealkirja järgi, ka siis, kui see on nii arXivis kui OpenAlexis.</li>
+      <li>Uus versioon on arXivi uus versiooninumber või Eurostati andmestiku uus seis. OpenAlexi metaandmete värskendus ei ole uus versioon.</li>
+      <li>OpenAlexi liik „artikkel“ ei tähenda, et töö on eelretsenseeritud. arXivi tööd on eeltrükid.</li>
+      <li>See leht on hetkeseis ühest käivitusest. Kandidaadid ise jäävad GitHubis käivituse juurde 90 päevaks: <a class="ts-link" href="https://github.com/kadrik6/ai-work-observatory/actions/workflows/seire.yml">Actions → seire</a>.</li>
+    </ul>
+  </details>
+  </div>
+</div>
+
+<script>
+(() => {
+  const LIIK = { eeltrukk: 'eeltrükk', artikkel: 'artikkel', teade: 'uudis', raport: 'raport' };
+  const SUUND = { kadu: 'töökohtade kadu', umberkorraldus: 'ümberkorraldus', loomine: 'uued töökohad' };
+  const SEERIAD = ['arXiv', 'OpenAlex', 'ERR uudised'];
+  const NIMI = { 'ERR uudised': 'ERR', arXiv: 'arXiv', OpenAlex: 'OpenAlex' };
+  const RYHM = { uuringud: 'Uuringud', teated: 'Uudised', statistika: 'Statistika' };
+  const kp = d3.utcFormat('%-d.%m.%Y');
+  const kpLyhike = d3.utcFormat('%-d.%m');
+  const paev = (s) => (s ? new Date(String(s).slice(0, 10) + 'T00:00:00Z') : null);
+  const ohutu = (u) => (/^https?:\/\//.test(u || '') ? u : null);
+  const varv = (s) => (s === 'ERR uudised' ? dash.colors[0] : s === 'OpenAlex' ? dash.colors[1] : 'var(--cds-chart-muted)');
+  let otsing = '';
+  let filter = '';
+  let jarjestus = { key: 'kuupaev', dir: -1 };
+
+  const ebaonn = (el, d) => {
+    if (d.status === 'error' || d.status === 'connect') {
+      const f = document.createElement('div');
+      f.className = 'ts-fail';
+      f.textContent = 'Failed to load';
+      el.append(f);
+    }
+  };
+  const el_ = (tag, cls, text) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  };
+
+  dash.onData(() => {
+    document.querySelectorAll('.ts-swatch[data-seeria]').forEach((s) => { s.style.background = varv(s.dataset.seeria); });
+    const k = dash.data('kandidaadid');
+    const err = k.status === 'ok' ? k.data.filter((r) => r.allikas === 'ERR uudised').length : 1;
+    document.querySelectorAll('#uudised-tyhi').forEach((p) => { p.hidden = err > 0; });
+  });
+
+  const vaartus = (name, field, fmt) => dash.draw(name, (el) => {
+    const d = dash.data('kaivitus');
+    const r = d.status === 'ok' ? d.data[0] : null;
+    el.textContent = r && r[field] != null ? (fmt ? fmt(r[field]) : d3.format(',')(Number(r[field])).replace(/,/g, ' ')) : '—';
+  });
+  vaartus('toimis', 'toimis');
+  vaartus('allikaid', 'allikaid');
+  vaartus('kandidaate', 'kandidaate');
+  vaartus('duplikaate', 'duplikaate');
+  vaartus('versioone', 'uusi_versioone');
+  vaartus('aeg', 'aeg', (v) => d3.utcFormat('%-d.%m.%Y kell %H:%M UTC')(new Date(v)));
+
+  dash.draw('allikad', (el) => {
+    const d = dash.data('allikad');
+    el.replaceChildren();
+    if (d.status !== 'ok') { if (d.status === 'error' || d.status === 'connect') ebaonn(el, d); else el.textContent = '—'; return; }
+    for (const ryhm of ['uuringud', 'teated', 'statistika']) {
+      const read = d.data.filter((r) => r['rühm'] === ryhm);
+      if (!read.length) continue;
+      const g = el_('div', 'ts-group');
+      g.append(el_('span', 'ts-group-name', RYHM[ryhm]));
+      const chips = el_('div', 'ts-chips');
+      for (const r of read) {
+        const c = el_('span', 'ts-chip');
+        c.append(el_('span', 'ts-dot ' + (r.olek === 'ok' ? 'is-ok' : 'is-bad')));
+        c.append(el_('span', null, r.nimi));
+        let n = 'ei vastanud';
+        if (r.olek === 'ok') {
+          if (ryhm === 'statistika') n = 'vastas';
+          else if (r.voos != null) n = `${r.kirjeid} / ${r.voos} uudisest`;
+          else n = `${r.kirjeid} kirjet`;
+        }
+        c.append(el_('span', 'ts-chip-n', n));
+        chips.append(c);
+      }
+      g.append(chips);
+      el.append(g);
+    }
+  });
+
+  dash.draw('err', (ul) => {
+    const d = dash.data('kandidaadid');
+    ul.replaceChildren();
+    if (d.status !== 'ok') return;
+    for (const r of d.data.filter((x) => x.allikas === 'ERR uudised')) {
+      const li = el_('li');
+      li.append(el_('span', 'ts-tag', SUUND[r.suund] || r.suund || 'muu'));
+      const u = ohutu(r.url);
+      const a = el_(u ? 'a' : 'span', 'ts-link', r.pealkiri);
+      if (u) { a.href = u; a.target = '_blank'; a.rel = 'noopener'; }
+      li.append(a);
+      li.append(el_('span', 'ts-meta', `${kp(paev(r.kuupaev))} · märksõna: ${r.reegel}`));
+      ul.append(li);
+    }
+  });
+
+  dash.draw('nadalad', (el) => {
+    const d = dash.data('kandidaadid');
+    el.replaceChildren();
+    if (d.status !== 'ok') { ebaonn(el, d); return; }
+    const read = d.data.filter((r) => r.kuupaev).map((r) => ({ allikas: r.allikas, nadal: d3.utcMonday.floor(paev(r.kuupaev)) }));
+    if (!read.length) return;
+    const nadalad = d3.utcMonday.range(d3.min(read, (r) => r.nadal), d3.utcMonday.offset(d3.max(read, (r) => r.nadal), 1));
+    const loend = nadalad.map((w) => Object.assign({ nadal: w }, ...SEERIAD.map((s) => ({ [s]: 0 }))));
+    const koht = new Map(nadalad.map((w, i) => [+w, i]));
+    read.forEach((r) => { const i = koht.get(+r.nadal); if (i != null && SEERIAD.includes(r.allikas)) loend[i][r.allikas] += 1; });
+    const kokku = (c) => SEERIAD.reduce((s, k) => s + c[k], 0);
+    const W = Math.max(280, el.clientWidth || 600);
+    const H = 240;
+    const y = d3.scaleLinear([0, d3.max(loend, kokku) || 1], [H - 28, 10]).nice();
+    const ticks = y.ticks(4);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Kandidaadid nädalate kaupa allikate järgi');
+    const probe = svg.append('text').attr('font-size', 12).text(String(ticks[ticks.length - 1]));
+    const ml = Math.ceil(probe.node().getComputedTextLength()) + 10;
+    probe.remove();
+    const x = d3.scaleBand(nadalad.map((w) => +w), [ml, W - 4]).padding(0.25);
+    const g = svg.append('g');
+    g.selectAll('line.grid').data(ticks).join('line').attr('x1', ml).attr('x2', W - 4).attr('y1', (t) => y(t)).attr('y2', (t) => y(t)).attr('stroke', 'var(--cds-chart-grid)');
+    g.selectAll('text.yt').data(ticks).join('text').attr('x', ml - 6).attr('y', (t) => y(t)).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text((t) => t);
+    const kiht = d3.stack().keys(SEERIAD)(loend);
+    kiht.forEach((s) => {
+      g.append('g').attr('fill', varv(s.key)).selectAll('rect').data(s.filter((p) => p[1] > p[0])).join('rect')
+        .attr('x', (p) => x(+p.data.nadal)).attr('width', x.bandwidth()).attr('y', (p) => y(p[1])).attr('height', (p) => Math.max(0, y(p[0]) - y(p[1]) - 1)).attr('rx', 2);
+    });
+    g.append('line').attr('x1', ml).attr('x2', W - 4).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', 'var(--cds-chart-axis)');
+    const samm = Math.max(1, Math.ceil(nadalad.length / Math.max(2, Math.floor((W - ml) / 56))));
+    g.selectAll('text.xt').data(nadalad.filter((_, i) => i % samm === 0)).join('text').attr('x', (w) => x(+w) + x.bandwidth() / 2).attr('y', H - 8).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text((w) => kpLyhike(w));
+    const tip = el_('div', 'ts-tip');
+    tip.hidden = true;
+    el.append(tip);
+    g.selectAll('rect.hit').data(loend).join('rect').attr('x', (c) => x(+c.nadal) - (x.step() - x.bandwidth()) / 2).attr('width', x.step()).attr('y', 0).attr('height', H - 28).attr('fill', 'transparent')
+      .on('pointermove', (ev, c) => {
+        tip.replaceChildren(el_('div', 'ts-tip-head', `Nädal ${kp(c.nadal)}–${kp(d3.utcDay.offset(c.nadal, 6))}`));
+        SEERIAD.forEach((s) => {
+          if (!c[s]) return;
+          const r = el_('div', 'ts-tip-row');
+          const sw = el_('span', 'ts-swatch'); sw.style.background = varv(s);
+          r.append(sw, el_('span', null, `${NIMI[s]}: ${c[s]}`));
+          tip.append(r);
+        });
+        if (!kokku(c)) tip.append(el_('div', null, 'kandidaate pole'));
+        tip.hidden = false;
+        const [px] = d3.pointer(ev, el);
+        const w = tip.offsetWidth;
+        tip.style.left = Math.min(Math.max(0, px - w / 2), el.clientWidth - w) + 'px';
+        tip.style.top = '0px';
+      })
+      .on('pointerleave', () => { tip.hidden = true; });
+  });
+
+  dash.draw('euro', (el) => {
+    const d = dash.data('eurostat');
+    el.replaceChildren();
+    if (d.status !== 'ok') { ebaonn(el, d); return; }
+    const k = dash.data('kaivitus');
+    const tana = k.status === 'ok' && k.data[0] ? d3.utcDay.floor(new Date(k.data[0].aeg)) : d3.utcDay.floor(new Date());
+    const read = d.data.slice().sort((a, b) => d3.descending(a.uuendatud, b.uuendatud));
+    const algus = d3.min([d3.utcMonth.offset(tana, -6), ...read.map((r) => paev(r.uuendatud))]);
+    const W = Math.max(260, el.clientWidth || 600);
+    const x = d3.scaleUtc([algus, tana], [8, W - 8]);
+    for (const r of read) {
+      const rida = el_('div', 'ts-eurow');
+      const u = ohutu(r.url);
+      const nimi = el_(u ? 'a' : 'span', 'ts-link');
+      if (u) { nimi.href = u; nimi.target = '_blank'; nimi.rel = 'noopener'; }
+      const b = el_('b', null, r.kood);
+      nimi.append(b, document.createTextNode(' · ' + r.pealkiri));
+      rida.append(nimi);
+      rida.append(el_('span', 'ts-meta', `uuendatud ${kp(paev(r.uuendatud))} · viimane periood ${r.viimane_periood}`));
+      const varske = (tana - paev(r.uuendatud)) / 864e5 <= 14;
+      const svg = d3.select(rida).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} 18`).attr('aria-hidden', 'true');
+      svg.append('line').attr('x1', 8).attr('x2', W - 8).attr('y1', 9).attr('y2', 9).attr('stroke', 'var(--cds-chart-grid)').attr('stroke-width', 2);
+      svg.append('line').attr('x1', x(tana)).attr('x2', x(tana)).attr('y1', 1).attr('y2', 17).attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '3 3');
+      svg.append('circle').attr('cx', x(paev(r.uuendatud))).attr('cy', 9).attr('r', 6).attr('fill', varske ? dash.colors[0] : 'var(--cds-chart-muted)');
+      el.append(rida);
+    }
+  });
+
+  const valitud = () => {
+    const d = dash.data('kandidaadid');
+    if (d.status !== 'ok') return [];
+    const q = otsing.trim().toLowerCase();
+    return d.data.filter((r) => (!filter || r.allikas === filter) && (!q || String(r.pealkiri).toLowerCase().includes(q)));
+  };
+
+  dash.draw('arv', (el) => {
+    const d = dash.data('kandidaadid');
+    el.textContent = d.status === 'ok' ? `Näitan ${valitud().length} kirjet ${d.data.length}-st.` : '—';
+  });
+
+  dash.draw('tabel', (tb) => {
+    tb.replaceChildren();
+    const read = valitud().slice().sort((a, b) => d3.ascending(String(a[jarjestus.key] || ''), String(b[jarjestus.key] || '')) * jarjestus.dir);
+    for (const r of read) {
+      const tr = el_('tr');
+      tr.dataset.key = r.id;
+      const t1 = el_('td');
+      const u = ohutu(r.url);
+      const a = el_(u ? 'a' : 'span', 'ts-link', r.pealkiri);
+      if (u) { a.href = u; a.target = '_blank'; a.rel = 'noopener'; }
+      t1.append(a);
+      const t3 = el_('td', 'ts-col-liik', LIIK[r.liik] || r.liik || '');
+      tr.append(t1, el_('td', null, NIMI[r.allikas] || r.allikas), t3, el_('td', null, r.kuupaev ? kp(paev(r.kuupaev)) : ''));
+      tb.append(tr);
+    }
+  });
+
+  const uuenda = () => { dash.draw('tabel'); dash.draw('arv'); };
+  document.querySelectorAll('#ts-otsing').forEach((i) => i.addEventListener('input', () => { otsing = i.value; uuenda(); }));
+  document.querySelectorAll('.ts-filter').forEach((b) => b.addEventListener('click', () => {
+    filter = b.dataset.allikas;
+    document.querySelectorAll('.ts-filter').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+    uuenda();
+  }));
+  document.querySelectorAll('.ts-sort').forEach((b) => b.addEventListener('click', () => {
+    const key = b.dataset.sort;
+    jarjestus = { key, dir: jarjestus.key === key ? -jarjestus.dir : (key === 'kuupaev' ? -1 : 1) };
+    document.querySelectorAll('.ts-table th').forEach((th) => {
+      const s = th.querySelector('.ts-sort');
+      th.setAttribute('aria-sort', s && s.dataset.sort === key ? (jarjestus.dir === 1 ? 'ascending' : 'descending') : 'none');
+    });
+    dash.draw('tabel');
+  }));
+})();
+</script>
+<script>
+(() => {
+  const arvEE = (v) => d3.format(',')(v).replace(/,/g, ' ');
+  const komaga = (v, k = 1) => d3.format(`.${k}f`)(v).replace('.', ',').replace('-', '−');
+  const ohutu = (u) => (/^https?:\/\//.test(u || '') ? u : null);
+  const JARK = { 2: 'iga teine', 3: 'iga kolmas', 4: 'iga neljas', 5: 'iga viies', 6: 'iga kuues', 7: 'iga seitsmes', 8: 'iga kaheksas', 9: 'iga üheksas', 10: 'iga kümnes' };
+  const KLASS = {
+    'tuumajakiri': ['Tuumajakiri', 'eelretsenseeritud, CWTS Leideni loendis', false],
+    'muu ajakiri': ['Muu ajakiri', 'ei ole tuumajakirjade loendis', true],
+    'ajakiri': ['Ajakiri', 'tuumkanali tunnus pole teada', true],
+    'eeltrükk või töödokument': ['Eeltrükk', 'retsenseerimata töödokument või eeltrükk', true],
+    'lõputöö': ['Lõputöö', 'ülikooli hoidlas, juhendatud', true],
+    'raamat': ['Raamat või peatükk', 'kirjastuse retsensioon on erinev', true],
+    'muu': ['Muu kanal', 'konverents, raport vm', true],
+  };
+  const MOODUS = { autor: 'Eesti autor', mainitud: 'Eesti mainitud', keel: 'eesti keeles' };
+  const NIMED = {
+    'United States': 'USA', China: 'Hiina', India: 'India', 'United Kingdom': 'Suurbritannia', Indonesia: 'Indoneesia',
+    Nigeria: 'Nigeeria', Turkey: 'Türgi', Pakistan: 'Pakistan', Australia: 'Austraalia', Germany: 'Saksamaa', Italy: 'Itaalia',
+    Malaysia: 'Malaisia', Canada: 'Kanada', Spain: 'Hispaania', 'South Korea': 'Lõuna-Korea', 'Saudi Arabia': 'Saudi Araabia',
+    Poland: 'Poola', Egypt: 'Egiptus', Netherlands: 'Holland', Romania: 'Rumeenia',
+    'Massachusetts Institute of Technology': 'MIT', 'National Bureau of Economic Research': 'NBER (USA)',
+    'University of London': 'Londoni Ülikool', 'Stanford University': 'Stanford', 'Harvard University': 'Harvard',
+    'New York University': 'New Yorgi Ülikool', 'University of Toronto': 'Toronto Ülikool', 'The University of Melbourne': 'Melbourne\'i Ülikool',
+    'University of Johannesburg': 'Johannesburgi Ülikool', 'Maastricht University': 'Maastrichti Ülikool',
+    'University of Tartu': 'Tartu Ülikool', 'Tallinn University of Technology': 'TalTech', 'Tallinn University': 'Tallinna Ülikool',
+    'Estonian Business School': 'EBS', 'Estonian University of Life Sciences': 'Maaülikool', 'University of Turku': 'Turu Ülikool',
+    'Estonian Academy of Arts': 'Kunstiakadeemia', 'University of Helsinki': 'Helsingi Ülikool',
+    'Töö ja organisatsiooni ümberkorraldus': 'Töö ümberkorraldus', 'Värbamine ja vabad töökohad': 'Värbamine',
+  };
+  let grupp = 'uusimad';
+  const kuupaev = (s) => (s ? d3.utcFormat('%-d.%m.%Y')(new Date(s)) : '');
+
+  const el_ = (tag, cls, text) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  };
+  const ebaonn = (el, d) => {
+    if (d && (d.status === 'error' || d.status === 'connect')) el.append(el_('div', 'ts-fail', 'Failed to load'));
+  };
+  // Pealkiri osadest: tekst või { sig } (lilla), { ink } (rõhutatud must)
+  const pealkiri = (el, osad) => {
+    el.replaceChildren();
+    if (!osad) { el.textContent = '—'; return; }
+    osad.forEach((o) => {
+      if (typeof o === 'string') el.append(document.createTextNode(o));
+      else el.append(el_('span', o.sig != null ? 'ts-sig' : null, o.sig != null ? o.sig : o.ink));
+    });
+  };
+  const kokku = () => {
+    const d = dash.data('a_jaotused');
+    if (d.status !== 'ok') return null;
+    const m = {};
+    d.data.filter((r) => r.jaotus === 'kokku').forEach((r) => { m[r.nimi] = r.arv != null ? r.arv : r.liik; });
+    return m;
+  };
+  const jaotus = (nimi) => {
+    const d = dash.data('a_jaotused');
+    return d.status === 'ok' ? d.data.filter((r) => r.jaotus === nimi) : null;
+  };
+  const teemad = () => {
+    const d = dash.data('a_teemad');
+    return d.status === 'ok' ? d.data.map((r) => ({ ...r, muutus: r.osa2026 - r.osa2025 })) : null;
+  };
+  const tekst = (name, fn) => dash.draw(name, (el) => {
+    const v = fn();
+    el.textContent = v == null ? '—' : v;
+  });
+
+  dash.onData(() => {
+    if (dash.colors && dash.colors[0]) document.querySelectorAll('.ts').forEach((t) => t.style.setProperty('--ts-signal', dash.colors[0]));
+  });
+
+  tekst('a-t2026', () => { const k = kokku(); return k ? arvEE(k.t2026) : null; });
+  tekst('a-t2025', () => { const k = kokku(); return k ? arvEE(k.t2025) : null; });
+  tekst('a-aeg', () => { const k = kokku(); return k ? d3.utcFormat('%-d.%m.%Y')(new Date(k.aeg)) : null; });
+  tekst('a-tuum', () => { const k = kokku(); return k ? Math.round(100 * k.tuum / k.kanaliga) + '%' : null; });
+  tekst('a-viiteta', () => { const k = kokku(); return k ? Math.round(100 * k.viiteta / k.vanad) + '%' : null; });
+  tekst('a-eesti', () => { const k = kokku(); return k ? arvEE(k.eesti2026) : null; });
+  tekst('a-lai2026', () => { const k = kokku(); return k ? arvEE(k.lai2026) : null; });
+  tekst('a-eesti-markus', () => { const k = kokku(); return k ? `laia otsinguga, ${komaga(100 * k.eesti2026 / k.lai2026, 2)}% maailma ${arvEE(k.lai2026)} tööst` : null; });
+  tekst('a-eesti-vordlus', () => { const k = kokku(); return k ? `Võrdluseks: sama laia otsinguga on maailmas 2026. aastal ${arvEE(k.lai2026)} tööd. Vahekaardi Maailm arvud on kitsama otsinguga (ainult pealkiri).` : null; });
+  dash.draw('a-eesti-pealkiri', (el) => {
+    const a = jaotus('eesti_aasta');
+    if (!a || !a.length) { pealkiri(el, null); return; }
+    const t = a.find((r) => r.nimi === '2026');
+    const enne = d3.max(a.filter((r) => r.nimi !== '2026'), (r) => r.arv);
+    pealkiri(el, t && t.arv > enne
+      ? ['Eesti autoritelt on 2026. aastal juba ', { sig: `${t.arv} tööd` }, ', rohkem kui ühelgi varasemal aastal']
+      : ['Eesti autoritelt ilmub ', { sig: 'mõnikümmend tööd aastas' }]);
+  });
+  dash.draw('a-eesti-aastad', (el) => {
+    const a = jaotus('eesti_aasta');
+    el.replaceChildren();
+    if (!a) { ebaonn(el, dash.data('a_jaotused')); return; }
+    const read = a.filter((r) => +r.nimi >= 2016).sort((x, y) => x.nimi - y.nimi);
+    const max = d3.max(read, (r) => r.arv) || 1;
+    read.forEach((r, i) => {
+      const poolik = r.nimi === '2026';
+      const c = el_('div', 'ts-col' + (poolik ? ' is-fokus' : '') + (i % 2 === (read.length - 1) % 2 ? '' : ' is-minor'));
+      c.append(el_('span', 'ts-col-v', arvEE(r.arv)));
+      const b = el_('span', 'ts-col-bar');
+      b.style.height = (100 * r.arv / max) + '%';
+      c.append(b, el_('span', 'ts-col-y', poolik ? '26*' : `’${r.nimi.slice(2)}`));
+      c.title = `${r.nimi}: ${arvEE(r.arv)} tööd${poolik ? ' (poolik aasta)' : ''}`;
+      el.append(c);
+    });
+  });
+  dash.draw('a-kaivitus', (a) => { const k = kokku(); const u = k && ohutu(k.kaivitus); if (u) a.href = u; });
+
+  // Kui palju: tulbad aastate kaupa, 2026 esile
+  dash.draw('a-aastad-pealkiri', (el) => {
+    const k = kokku();
+    pealkiri(el, k ? ['2026. aastal on juba ', { sig: komaga(k.t2026 / k.t2025) + ' korda' }, ' rohkem töid kui terve 2025. aasta'] : null);
+  });
+  dash.draw('a-aastad', (el) => {
+    const d = dash.data('a_aastad');
+    el.replaceChildren();
+    if (d.status !== 'ok') { ebaonn(el, d); return; }
+    const read = d.data.slice().sort((a, b) => a.aasta - b.aasta);
+    const max = d3.max(read, (r) => r.koik) || 1;
+    read.forEach((r, i) => {
+      const c = el_('div', 'ts-col' + (r.poolik ? ' is-fokus' : '') + (i % 2 === (read.length - 1) % 2 ? '' : ' is-minor'));
+      c.append(el_('span', 'ts-col-v', arvEE(r.koik)));
+      const b = el_('span', 'ts-col-bar');
+      b.style.height = (100 * r.koik / max) + '%';
+      c.append(b, el_('span', 'ts-col-y', r.poolik ? `${r.aasta}*` : String(r.aasta)));
+      c.title = `${r.aasta}: ${arvEE(r.koik)} tööd${r.poolik ? ' (poolik aasta)' : ''}`;
+      el.append(c);
+    });
+  });
+
+  // Mis kasvab: osakaal 2026, kriips 2025; kiireim kasv lilla, kõige väiksem must
+  dash.draw('a-teemad-pealkiri', (el) => {
+    const t = teemad();
+    if (!t || !t.length) { pealkiri(el, null); return; }
+    const s = t.slice().sort((a, b) => b.muutus - a.muutus);
+    const top = s[0];
+    const alt = s[s.length - 1];
+    pealkiri(el, [{ sig: top.nimi }, ' kasvas kõige rohkem, ', alt.nimi.toLowerCase(), alt.muutus <= 0.5 ? ' ei kasvanud' : ' kõige vähem']);
+  });
+  dash.draw('a-teemad', (ul) => {
+    const t = teemad();
+    ul.replaceChildren();
+    if (!t) { ebaonn(ul, dash.data('a_teemad')); return; }
+    const s = t.slice().sort((a, b) => b.osa2026 - a.osa2026);
+    const top = t.reduce((a, b) => (b.muutus > a.muutus ? b : a));
+    const alt = t.reduce((a, b) => (b.muutus < a.muutus ? b : a));
+    const max = d3.max(t, (r) => Math.max(r.osa2026, r.osa2025)) * ((ul.clientWidth || 600) < 380 ? 2.1 : 1.45);
+    s.forEach((r) => {
+      const li = el_('li', r === top ? 'is-fokus' : r === alt ? 'is-ink' : null);
+      const nm = el_('span', 'ts-hb-name', NIMED[r.nimi] || r.nimi);
+      nm.title = r.nimi;
+      li.append(nm);
+      const tr = el_('span', 'ts-hb-track');
+      const bar = el_('span', 'ts-hb-bar');
+      bar.style.width = (100 * r.osa2026 / max) + '%';
+      const tick = el_('span', 'ts-hb-tick');
+      tick.style.left = (100 * r.osa2025 / max) + '%';
+      tick.title = `2025: ${komaga(r.osa2025)}%`;
+      const v = el_('span', 'ts-hb-v', `${komaga(r.osa2026)}% (${r.muutus >= 0 ? '+' : ''}${komaga(r.muutus)})`);
+      v.style.left = (100 * Math.max(r.osa2026, r.osa2025) / max) + '%';
+      tr.append(bar, tick, v);
+      li.append(tr);
+      li.title = `${r.nimi}: ${r.a2025} → ${r.a2026} tööd`;
+      ul.append(li);
+    });
+  });
+
+  // Kui usaldusväärne: plokkdiagramm, tuumajakiri lilla
+  dash.draw('a-usaldus-pealkiri', (el) => {
+    const k = kokku();
+    if (!k) { pealkiri(el, null); return; }
+    const n = Math.round(k.kanaliga / k.tuum);
+    pealkiri(el, ['Ainult ', { sig: JARK[n] || `${Math.round(100 * k.tuum / k.kanaliga)}%` }, ' töö ilmub tuumajakirjas']);
+  });
+  dash.draw('a-usaldus', (el) => {
+    const u = jaotus('usaldus');
+    el.replaceChildren();
+    if (!u) { ebaonn(el, dash.data('a_jaotused')); return; }
+    const sum = d3.sum(u, (r) => r.arv);
+    const NIMI = { tuum: 'eelretsenseeritud ja nähtav', ajakiri: 'kvaliteet väga erinev', hoidla: 'SSRN, Zenodo, arXiv jt, kontrollimata', muu: 'raamatud, konverentsid jm' };
+    const jarj = ['tuum', 'ajakiri', 'hoidla', 'muu'];
+    u.slice().sort((a, b) => jarj.indexOf(a.liik) - jarj.indexOf(b.liik)).forEach((r) => {
+      const pct = 100 * r.arv / sum;
+      if (pct < 1) return;
+      const b = el_('div', 'ts-block' + (r.liik === 'tuum' ? ' is-fokus' : ''));
+      const box = el_('div', 'ts-block-box', `${Math.round(pct)}%`);
+      box.style.minHeight = `max(2.25rem, ${(pct / 100 * 16).toFixed(2)}rem)`;
+      const nm = el_('div', 'ts-block-name', r.nimi);
+      nm.append(el_('small', null, `${arvEE(r.arv)} tööd · ${NIMI[r.liik] || ''}`));
+      b.append(box, nm);
+      el.append(b);
+    });
+  });
+
+  // Eesti allikad väljaspool OpenAlexit
+  const EA_NIMI = { arenguseire: 'Arenguseire Keskus', oska: 'OSKA', praxis: 'Praxis', tu_dspace: 'TÜ lõputööd', err: 'ERR uudised', novaator: 'Novaator', taltech_digikogu: 'TalTechi digikogu', etis: 'ETIS' };
+  let eaValik = 'koik';
+  const eaKirjed = () => { const d = dash.data('a_eesti_allikad'); return d.status === 'ok' ? d.data.filter((r) => r.teemas) : null; };
+  const eaArvud = () => {
+    const k = eaKirjed();
+    if (!k) return null;
+    return Array.from(d3.rollup(k, (v) => v.length, (r) => r.allikas), ([allikas, arv]) => ({ allikas, arv })).sort((a, b) => b.arv - a.arv);
+  };
+  dash.draw('a-ea-pealkiri', (el) => {
+    const a = eaArvud();
+    if (!a || !a.length) { pealkiri(el, null); return; }
+    const kokku = d3.sum(a, (r) => r.arv);
+    pealkiri(el, ['Eesti asutustelt ja meediast lisandub ', { sig: `${arvEE(kokku)} materjali` }, `, kõige rohkem ${EA_NIMI[a[0].allikas] || a[0].allikas}`]);
+  });
+  dash.draw('a-ea-allikad', (ul) => {
+    const a = eaArvud();
+    ul.replaceChildren();
+    if (!a) { ebaonn(ul, dash.data('a_eesti_allikad')); return; }
+    const max = (d3.max(a, (r) => r.arv) || 1) * ((ul.clientWidth || 600) < 380 ? 1.5 : 1.25);
+    a.forEach((r, i) => {
+      const li = el_('li', i === 0 ? 'is-fokus' : null);
+      li.append(el_('span', 'ts-hb-name', EA_NIMI[r.allikas] || r.allikas));
+      const tr = el_('span', 'ts-hb-track');
+      const bar = el_('span', 'ts-hb-bar');
+      bar.style.width = (100 * r.arv / max) + '%';
+      const v = el_('span', 'ts-hb-v', arvEE(r.arv));
+      v.style.left = (100 * r.arv / max) + '%';
+      tr.append(bar, v);
+      li.append(tr);
+      ul.append(li);
+    });
+  });
+  dash.draw('a-ea-nupud', (el) => {
+    const a = eaArvud();
+    el.replaceChildren();
+    if (!a) return;
+    [{ allikas: 'koik' }, ...a].forEach((r) => {
+      const b = el_('button', 'ts-filter', r.allikas === 'koik' ? 'Kõik' : (EA_NIMI[r.allikas] || r.allikas));
+      b.type = 'button';
+      b.setAttribute('aria-pressed', String(eaValik === r.allikas));
+      b.addEventListener('click', () => { eaValik = r.allikas; dash.draw('a-ea-nupud'); dash.draw('a-ea-tabel'); });
+      el.append(b);
+    });
+  });
+  dash.draw('a-ea-tabel', (tb) => {
+    const k = eaKirjed();
+    tb.replaceChildren();
+    if (!k) return;
+    k.filter((r) => eaValik === 'koik' || r.allikas === eaValik)
+      .sort((a, b) => (b.avaldatud || '').localeCompare(a.avaldatud || ''))
+      .forEach((r) => {
+        const tr = el_('tr');
+        const t1 = el_('td');
+        const u = ohutu(r.url);
+        const a = el_(u ? 'a' : 'span', 'ts-t-name', r.pealkiri);
+        if (u) { a.href = u; a.target = '_blank'; a.rel = 'noopener'; }
+        const kp = r.avaldatud && r.avaldatud.length === 10 ? kuupaev(r.avaldatud) : (r.avaldatud || '');
+        const sub = el_('span', 'ts-t-sub', [EA_NIMI[r.allikas] || r.allikas, r.liik].filter(Boolean).join(' · '));
+        if (kp) sub.append(el_('span', 'ts-kp-kitsas', ' · ' + kp));
+        t1.append(a, sub);
+        tr.append(t1, el_('td', 'ts-num ts-num-kp', kp));
+        tb.append(tr);
+      });
+  });
+  dash.draw('a-ea-allikas', (el) => {
+    const k = kokku();
+    el.replaceChildren();
+    const b = el_('b', null, 'Allikas: ');
+    el.append(b, document.createTextNode('Arenguseire Keskuse ja OSKA veebiotsing, ERR-i ja Novaatori uudisvoog. ' + (k && k.ea_markus ? k.ea_markus : '')));
+  });
+
+  // Lisaallikad: Hacker News, raportid, Riigikogu
+  const lisa = (allikad) => { const d = dash.data('a_lisa'); return d.status === 'ok' ? d.data.filter((r) => allikad.includes(r.allikas) && r.teemas) : null; };
+  const rida = (tb, r, sub, num) => {
+    const tr = el_('tr');
+    const t1 = el_('td');
+    const u = ohutu(r.url);
+    const a = el_(u ? 'a' : 'span', 'ts-t-name', r.pealkiri);
+    if (u) { a.href = u; a.target = '_blank'; a.rel = 'noopener'; }
+    t1.append(a, el_('span', 'ts-t-sub', sub));
+    tr.append(t1, el_('td', 'ts-num ts-num-kp', num));
+    tb.append(tr);
+  };
+  dash.draw('a-hn-pealkiri', (el) => {
+    const k = lisa(['hacker_news']);
+    if (!k || !k.length) { pealkiri(el, null); return; }
+    const top = k.slice().sort((a, b) => b.punkte - a.punkte)[0];
+    pealkiri(el, ['Kõige rohkem arutati lugu ', { sig: `„${top.pealkiri}“` }]);
+  });
+  dash.draw('a-hn', (tb) => {
+    const k = lisa(['hacker_news']);
+    tb.replaceChildren();
+    if (!k) return;
+    k.sort((a, b) => b.punkte - a.punkte).forEach((r) => rida(tb, r, `${arvEE(r.kommentaare || 0)} kommentaari · ${kuupaev(r.avaldatud)}`, arvEE(r.punkte)));
+  });
+  dash.draw('a-raportid', (tb) => {
+    const k = lisa(['maailmapank', 'nber']);
+    tb.replaceChildren();
+    if (!k) return;
+    const NM = { maailmapank: 'Maailmapank', nber: 'NBER' };
+    k.sort((a, b) => (b.avaldatud || '9').localeCompare(a.avaldatud || '9')).forEach((r) => rida(tb, r, [NM[r.allikas], r.liik].filter(Boolean).join(' · '), r.avaldatud ? kuupaev(r.avaldatud) : 'uus'));
+  });
+  tekst('a-lisa-markus', () => { const k = kokku(); return k && k.lisa_markus ? k.lisa_markus : ''; });
+  dash.draw('a-rk-pealkiri', (el) => {
+    const a = jaotus('rk_kuu');
+    if (!a || !a.length) { pealkiri(el, null); return; }
+    const kokkuRk = d3.sum(a, (r) => r.arv);
+    const tipp = a.slice().sort((x, y) => y.arv - x.arv)[0];
+    const KUU = ['jaanuaris', 'veebruaris', 'märtsis', 'aprillis', 'mais', 'juunis', 'juulis', 'augustis', 'septembris', 'oktoobris', 'novembris', 'detsembris'];
+    pealkiri(el, ['Tehisaru oli Riigikogus juttu ', { sig: `${arvEE(kokkuRk)} sõnavõtus` }, `, kõige rohkem ${tipp.nimi.slice(0, 4)}. aasta ${KUU[+tipp.nimi.slice(5) - 1]}`]);
+  });
+  dash.draw('a-rk-kuud', (el) => {
+    const a = jaotus('rk_kuu');
+    el.replaceChildren();
+    if (!a) { ebaonn(el, dash.data('a_jaotused')); return; }
+    const read = a.slice().sort((x, y) => x.nimi.localeCompare(y.nimi));
+    const max = d3.max(read, (r) => r.arv) || 1;
+    const tipp = read.findIndex((r) => r.arv === max);
+    read.forEach((r, i) => {
+      const viimane = i === read.length - 1;
+      // Väärtus ainult tipul ja viimasel kuul, aasta silt jaanuaril: 24 tulpa jääb kitsal ekraanil loetavaks.
+      const c = el_('div', 'ts-col' + (i === tipp ? ' is-fokus' : '') + (i === tipp || viimane ? '' : ' ts-col-peida-v'));
+      c.append(el_('span', 'ts-col-v', arvEE(r.arv)));
+      const b = el_('span', 'ts-col-bar');
+      b.style.height = (100 * r.arv / max) + '%';
+      c.append(b, el_('span', 'ts-col-y', r.nimi.slice(5) === '01' ? r.nimi.slice(0, 4) : '\u00a0'));
+      c.title = `${r.nimi}: ${arvEE(r.arv)} sõnavõttu${viimane ? ' (poolik kuu)' : ''}`;
+      el.append(c);
+    });
+  });
+  dash.draw('a-rk', (tb) => {
+    const k = lisa(['riigikogu']);
+    tb.replaceChildren();
+    if (!k) return;
+    k.sort((a, b) => (b.avaldatud || '').localeCompare(a.avaldatud || '')).forEach((r) => rida(tb, r, r.koneleja || '', kuupaev(r.avaldatud)));
+  });
+
+  // Mida loetakse: raamitud tabel
+  const KUUPAEVAGA = new Set(['uusimad', 'eesti']);
+  dash.draw('a-tood-markus', (el) => {
+    const k = kokku();
+    const M = {
+      uusimad: 'Viimase 60 päeva tööd, uusim ees. Värske töö on vähe tsiteeritud, sest ta on värske: vaata kanalit ja asutust.',
+      aasta: 'Viimase 12 kuu tööd viidete järgi. Populaarsust mõõdab viidete arv: klikke ja jagamisi ükski vaba allikas ei avalda.',
+      koik: 'Alates 2023 ilmunud tööd viidete järgi. Need on valdkonna põhitööd, millele teised toetuvad.',
+      eesti: `Eesti autorite, Eestit mainivad ja eestikeelsed tööd, uusim ees.${k && k.eesti_valja ? ` ${k.eesti_valja} teema servas olevat tööd on välja jäetud.` : ''}`,
+    };
+    el.textContent = M[grupp] || '';
+  });
+  dash.draw('a-tood-veerg', (th) => { th.textContent = KUUPAEVAGA.has(grupp) ? 'Avaldatud' : 'Viiteid'; });
+  const ridu = (tb, grupp) => {
+    const d = dash.data('a_tood');
+    tb.replaceChildren();
+    if (d.status !== 'ok') return;
+    const jarjest = KUUPAEVAGA.has(grupp) ? (a, b) => (b.avaldatud || '').localeCompare(a.avaldatud || '') || b.viiteid - a.viiteid : (a, b) => b.viiteid - a.viiteid;
+    for (const r of d.data.filter((x) => x.grupp === grupp).sort(jarjest)) {
+      const [klass, selgitus, tavaline] = KLASS[r.klass] || [r.klass, '', true];
+      const tr = el_('tr', r.klass === 'eeltrükk või töödokument' ? 'is-gap' : null);
+      tr.dataset.key = r.id;
+      const t1 = el_('td');
+      const u = ohutu(r.url);
+      const a = el_(u ? 'a' : 'span', 'ts-t-name', r.pealkiri);
+      if (u) { a.href = u; a.target = '_blank'; a.rel = 'noopener'; }
+      t1.append(a);
+      const sub = [r.moodus ? MOODUS[r.moodus] : null, r.kanal, KUUPAEVAGA.has(grupp) ? (r.viiteid ? `${arvEE(r.viiteid)} viidet` : null) : (r.avaldatud ? r.avaldatud.slice(0, 4) : null)].filter(Boolean).join(' · ');
+      t1.append(el_('span', 'ts-t-sub', sub + (r.teine ? ` · teine versioon: ${r.teine}` : '')));
+      const t2 = el_('td', 'ts-col-hide');
+      t2.append(el_('span', 'ts-t-key' + (tavaline ? ' is-muted' : ''), klass), el_('span', 'ts-t-sub', selgitus));
+      tr.append(t1, t2, el_('td', 'ts-num' + (KUUPAEVAGA.has(grupp) ? ' ts-num-kp' : ''), KUUPAEVAGA.has(grupp) ? kuupaev(r.avaldatud) : arvEE(r.viiteid)));
+      tb.append(tr);
+    }
+  };
+  dash.draw('a-tood', (tb) => ridu(tb, grupp));
+  dash.draw('a-tood-eesti', (tb) => ridu(tb, 'eesti'));
+  tekst('a-tood-eesti-markus', () => {
+    const k = kokku();
+    return k ? `Eesti autorite, Eestit mainivad ja eestikeelsed tööd, mille pealkiri puudutab tehisaru või automatiseerimist. ${k.eesti_valja} teema servas olevat tööd on välja jäetud.` : null;
+  });
+  tekst('a-eesti-kokku', () => { const k = kokku(); return k ? arvEE(k.eesti_autorid) : null; });
+  tekst('a-eesti-kokku-markus', () => { const k = kokku(); return k ? `kõik aastad; lisaks ${arvEE(k.eesti_mainitud)} Eestit mainivat tööd` : null; });
+  tekst('a-eesti-keeles', () => { const k = kokku(); return k ? arvEE(k.eesti_keeles) : null; });
+  tekst('a-ea-arv', () => { const k = eaKirjed(); return k ? arvEE(k.length) : null; });
+  document.querySelectorAll('.ts-grupp').forEach((b) => b.addEventListener('click', () => {
+    grupp = b.dataset.grupp;
+    document.querySelectorAll('.ts-grupp').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+    dash.draw('a-tood');
+    dash.draw('a-tood-markus');
+    dash.draw('a-tood-veerg');
+  }));
+
+  // Kes uurib: järjestatud rõhttulbad, väärtus kohe tulba järel
+  const tulbad = (name, nimi, fokus) => dash.draw(name, (ul) => {
+    const read = jaotus(nimi);
+    ul.replaceChildren();
+    if (!read) { ebaonn(ul, dash.data('a_jaotused')); return; }
+    const r10 = read.slice(0, 10);
+    const max = (d3.max(r10, (r) => r.arv) || 1) * ((ul.clientWidth || 600) < 380 ? 1.5 : 1.25);
+    r10.forEach((r, i) => {
+      const li = el_('li', fokus(r, i) ? 'is-fokus' : null);
+      const nm = el_('span', 'ts-hb-name', NIMED[r.nimi] || r.nimi);
+      nm.title = r.nimi;
+      li.append(nm);
+      const tr = el_('span', 'ts-hb-track');
+      const bar = el_('span', 'ts-hb-bar');
+      bar.style.width = (100 * r.arv / max) + '%';
+      const v = el_('span', 'ts-hb-v', arvEE(r.arv));
+      v.style.left = (100 * r.arv / max) + '%';
+      tr.append(bar, v);
+      li.append(tr);
+      ul.append(li);
+    });
+  });
+  tulbad('a-riigid', 'riik', (r, i) => i < 3);
+  tulbad('a-asutused', 'asutus', (r, i) => i < 2);
+  tulbad('a-kanalid', 'kanal', (r) => r.liik === 'hoidla');
+  tulbad('a-eesti-moodused', 'eesti_moodus', (r, i) => i === 0);
+  tulbad('a-eesti-asutused', 'eesti_asutus', (r, i) => i < 3);
+  dash.draw('a-riigid-pealkiri', (el) => {
+    const r = jaotus('riik');
+    const k = kokku();
+    if (!r || r.length < 3 || !k) { pealkiri(el, null); return; }
+    const kolm = r.slice(0, 3);
+    const n = Math.round(k.alates2023 / d3.sum(kolm, (x) => x.arv));
+    const nm = kolm.map((x) => NIMED[x.nimi] || x.nimi);
+    const OSA = { 2: 'poole', 3: 'kolmandiku', 4: 'neljandiku', 5: 'viiendiku', 6: 'kuuendiku' };
+    pealkiri(el, [{ sig: `${nm[0]}, ${nm[1]} ja ${nm[2]}` }, ` annavad ${OSA[n] || 'suure osa'} töödest`]);
+  });
+  dash.draw('a-asutused-pealkiri', (el) => {
+    const r = jaotus('asutus');
+    if (!r || r.length < 2) { pealkiri(el, null); return; }
+    const lyh = (n) => (NIMED[n] || n).replace(' (USA)', '');
+    pealkiri(el, ['Kõige rohkem töid avaldavad ', { sig: `${lyh(r[0].nimi)} ja ${lyh(r[1].nimi)}` }]);
+  });
+
+  const tabs = document.querySelectorAll('.ts-tab');
+  tabs.forEach((t) => t.addEventListener('click', () => {
+    tabs.forEach((o) => {
+      const valitud = o === t;
+      o.setAttribute('aria-selected', String(valitud));
+      document.querySelectorAll('#' + o.getAttribute('aria-controls')).forEach((p) => { p.hidden = !valitud; });
+    });
+    ['nadalad', 'euro', 'a-teemad', 'a-riigid', 'a-asutused', 'a-kanalid', 'a-eesti-moodused', 'a-eesti-asutused', 'a-ea-allikad'].forEach((n) => dash.draw(n));
+    try { history.replaceState(null, '', '#' + t.id.replace('tab-', '')); } catch (e) {}
+  }));
+  // Otselink vahekaardile: #eesti või #seire
+  const algus = document.getElementById('tab-' + (location.hash || '').slice(1));
+  if (algus) algus.click();
+})();
+</script>
