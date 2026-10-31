@@ -476,6 +476,10 @@ css = '''
   .ts-hb-v small b { font-weight: 700; color: var(--ink); }
   .ts-leiu-sisu > .ts-head-sm:not(:first-child) { margin-top: var(--cds-gap-md); }
   .ts-leiu-sisu > .ts-csub { margin-top: var(--cds-gap-xs); }
+  /* Õhk graafiku ümber: tekst ei tohi olla visuaali vastas kinni (Kadri 31.10). */
+  .ts-details > .ts-twbox { margin-top: var(--cds-gap-sm); }
+  .ts-details > .ts-twbox + * { margin-top: 12px; }
+  .ts-leiu-sisu > :is(ul, ol, .ts-cols, .ts-dv, .ts-hd, .ts-hb, .ts-kb, .ts-trep, .ts-vm, .ts-chips, .ts-pair, .ts-twbox, table) { margin-block: var(--cds-gap-sm); }
   @media (max-width: 40rem) {
     .ts-dv li { grid-template-columns: 1fr; gap: 2px; }
     .ts-dv .ts-hb-name { text-align: left; }
@@ -573,7 +577,7 @@ if 'paneel-leiud' not in s:
     rep('id="tab-eesti" aria-controls="paneel-eesti" aria-selected="false">Eesti</button>', 'id="tab-eesti" aria-controls="paneel-eesti" aria-selected="false">Mida uuritakse: Eesti</button>')
     rep('''  <div class="ts-panel" id="paneel-analyys" role="tabpanel" aria-labelledby="tab-analyys">''',
         '<!--LEIUD-->' + '''  <div class="ts-panel" id="paneel-analyys" role="tabpanel" aria-labelledby="tab-analyys" hidden>''')
-    rep('</style>', '<!--LEIUD-CSS--></style>')
+    rep('</style>', '/*LEIUD-CSS*/</style>')
 if 'paneel-tulevik' not in s:
     rep('aria-controls="paneel-leiud" aria-selected="true">Mida leiti</button>',
         'aria-controls="paneel-leiud" aria-selected="true">Mida leiti</button>\n    <button class="ts-tab" type="button" role="tab" id="tab-tulevik" aria-controls="paneel-tulevik" aria-selected="false">Tulevik</button>')
@@ -581,7 +585,7 @@ if 'paneel-tulevik' not in s:
 import re
 s = re.sub(r'<!--TULEVIK-->.*?<!--/TULEVIK-->', lambda m: '<!--TULEVIK-->' + paneel_t + '<!--/TULEVIK-->', s, flags=re.S)
 s = re.sub(r'<!--LEIUD-->.*?(?=<!--TULEVIK-->)', lambda m: '<!--LEIUD-->' + paneel, s, flags=re.S)
-s = re.sub(r'<!--LEIUD-CSS-->.*?(?=</style>)', lambda m: '<!--LEIUD-CSS-->' + css, s, count=1, flags=re.S)
+s = re.sub(r'/\*LEIUD-CSS\*/.*?(?=</style>)', lambda m: '/*LEIUD-CSS*/' + css, s, count=1, flags=re.S)
 os.makedirs(TOO, exist_ok=True)
 open(TOO + 'leht-mall.html', 'w').write(s)
 print('ok', len(s))
