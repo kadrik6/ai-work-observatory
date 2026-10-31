@@ -12,67 +12,409 @@
   "ekspertintervjuud": "Ekspertide intervjuud ja olemasolev statistika. Näitab takistusi, mitte mõju suurust."
  },
  "kindlus": {
-  "tugev": ["katse", "loomulik_katse", "registriandmed"],
-  "keskmine": ["kirjeldav", "kusitlus"],
-  "nork": ["hinnang", "mudel", "ekspertintervjuud"]
+  "tugev": [
+   "katse",
+   "loomulik_katse",
+   "registriandmed"
+  ],
+  "keskmine": [
+   "kirjeldav",
+   "kusitlus"
+  ],
+  "nork": [
+   "hinnang",
+   "mudel",
+   "ekspertintervjuud"
+  ]
  },
  "uuringud": [
-  {"id": "peng2023", "autorid": "Peng, Kalliamvakou, Cihon, Demirer", "aasta": 2023, "pealkiri": "The Impact of AI on Developer Productivity (arXiv 2302.06590)", "kanal": "arXiv eeltrükk", "retsenseeritud": false, "url": "https://arxiv.org/abs/2302.06590", "avaldatud": "2023-02-13", "meetod": "katse", "kus": "värvatud arendajad", "valim": "tarkvaraarendajad, üks ülesanne (HTTP-server JavaScriptis)", "leid": "GitHubi tehisaru-paarisprogrammeerija kasutajad tegid ülesande 55,8% kiiremini kui võrdlusrühm."},
-  {"id": "noy2023", "autorid": "Noy, Zhang", "aasta": 2023, "pealkiri": "Experimental evidence on the productivity effects of generative artificial intelligence", "kanal": "Science", "retsenseeritud": true, "url": "https://www.science.org/doi/10.1126/science.adh2586", "avaldatud": "2023", "meetod": "katse", "kus": "veebikatse", "valim": "453 kõrgharidusega spetsialisti, ametipõhised kirjutamisülesanded", "leid": "ChatGPT-ga kulus ülesandele 40% vähem aega ja kvaliteet tõusis 18%. Nõrgemad töötajad võitsid rohkem, erinevus töötajate vahel vähenes."},
-  {"id": "dellacqua2023", "autorid": "Dell'Acqua, McFowland, Mollick jt", "aasta": 2023, "pealkiri": "Navigating the Jagged Technological Frontier", "kanal": "Harvard Business Schooli töödokument", "retsenseeritud": false, "url": "https://www.hbs.edu/faculty/Pages/item.aspx?num=64700", "avaldatud": "2023", "meetod": "katse", "kus": "Boston Consulting Group", "valim": "758 konsultanti, 18 realistlikku ülesannet", "leid": "Ülesannetes, mis jäid tehisaru võimete piiresse, tehti 12,2% rohkem ülesandeid ja 25,1% kiiremini ning kvaliteet oli parem. Ülesandes väljaspool piiri oli tehisaruga lahendus 19% väiksema tõenäosusega õige."},
-  {"id": "metr2025", "autorid": "METR (Becker jt)", "aasta": 2025, "pealkiri": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity", "kanal": "arXiv eeltrükk", "retsenseeritud": false, "url": "https://arxiv.org/abs/2507.09089", "avaldatud": "2025-07", "meetod": "katse", "kus": "avatud lähtekoodiga projektid", "valim": "16 kogenud arendajat, 246 ülesannet oma tuttavas projektis", "leid": "Tehisaruga kulus ülesandele 19% rohkem aega. Arendajad ise arvasid, et tehisaru säästis 20% aega."},
-  {"id": "brynjolfsson2023", "autorid": "Brynjolfsson, Li, Raymond", "aasta": 2023, "pealkiri": "Generative AI at Work", "kanal": "NBER töödokument 31161", "retsenseeritud": false, "url": "https://www.nber.org/papers/w31161", "avaldatud": "2023-04", "meetod": "loomulik_katse", "kus": "klienditugi, USA ettevõte", "valim": "5179 klienditoe töötajat", "leid": "Tunnis lahendati 14% rohkem pöördumisi, algajatel ja madalama oskusega töötajatel 34% rohkem. Kogenud töötajate tulemus peaaegu ei muutunud."},
-  {"id": "humlum2025", "autorid": "Humlum, Vestergaard", "aasta": 2025, "pealkiri": "Still Waters, Rapid Currents: Early Labor Market Transformation under Generative AI", "kanal": "NBER töödokument 33777", "retsenseeritud": false, "url": "https://www.nber.org/papers/w33777", "avaldatud": "2025-05 (uuendatud 2026-03)", "meetod": "registriandmed", "kus": "Taani", "valim": "suured kasutusküsitlused seotud Taani registriandmetega", "leid": "Kaks aastat pärast ChatGPT tulekut ei muutunud tulu ega töötunnid: üle 2% mõju on välistatud. Muutus töö sisu: tekkisid uued ülesanded."},
-  {"id": "yale2025", "autorid": "Gimbel, Kinder, Kendall, Lee (Yale Budget Lab)", "aasta": 2025, "pealkiri": "Evaluating the Impact of AI on the Labor Market: Current State of Affairs", "kanal": "Yale Budget Lab analüüs", "retsenseeritud": false, "url": "https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs", "avaldatud": "2025", "meetod": "kirjeldav", "kus": "USA", "valim": "USA tööjõu-uuring (CPS), 33 kuud pärast ChatGPT tulekut", "leid": "Ametite jaotus muutub umbes sama kiiresti kui interneti leviku ajal ja muutus algas enne ChatGPT-d. Tehisarule avatud ametite osakaal ei ole muutunud."},
-  {"id": "canaries2026", "autorid": "Brynjolfsson, Chandar, Chen", "aasta": 2026, "pealkiri": "Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence", "kanal": "Stanford Digital Economy Labi töödokument", "retsenseeritud": false, "url": "https://digitaleconomy.stanford.edu/publications/canaries-in-the-coal-mine/", "avaldatud": "2026-08-12 (uuendatud versioon)", "meetod": "kirjeldav", "kus": "USA", "valim": "ADP palgaandmed miljonite töötajate kohta kuni juunini 2026", "leid": "Laialdast töökohtade kadu ei ole. 22–25-aastaste hõive tehisarule avatud ametites on 19% madalam kui vähem avatud ametites eakaaslastel. Vahe tuleb sellest, et noori palgatakse vähem, ja see on 2025. aastast suurenenud."},
-  {"id": "demirci2025", "autorid": "Demirci jt", "aasta": 2025, "pealkiri": "Who Is AI Replacing? The Impact of Generative AI on Online Freelancing Platforms", "kanal": "Management Science", "retsenseeritud": true, "url": "https://doi.org/10.1287/mnsc.2024.05420", "avaldatud": "2025", "meetod": "registriandmed", "kus": "ülemaailmne vabakutseliste platvorm", "valim": "platvormi tööpakkumised enne ja pärast ChatGPT-d", "leid": "Kirjutamise ja kodeerimise tööpakkumisi oli 8 kuud pärast ChatGPT tulekut 21% vähem kui käsitööd vajavates töödes. Pildiloome pakkumisi oli 17% vähem."},
-  {"id": "teutloff2025", "autorid": "Teutloff jt", "aasta": 2025, "pealkiri": "Winners and losers of generative AI: Early Evidence of Shifts in Freelancer Demand", "kanal": "Journal of Economic Behavior & Organization", "retsenseeritud": true, "url": "https://consensus.app/papers/details/fff15f92cf285909977621c2b9708521/", "avaldatud": "2025", "meetod": "registriandmed", "kus": "vabakutseliste platvorm", "valim": "116 oskuste rühma tööpakkumistest", "leid": "Asendatavate oskuste (kirjutamine, tõlge) nõudlus oli 20–50% väiksem kui trendi järgi. Tehisaru täiendavates oskustes nõudlus kasvas, näiteks masinõppe programmeerimises 24%."},
-  {"id": "hui2024", "autorid": "Hui, Reshef, Zhou", "aasta": 2024, "pealkiri": "The Short-Term Effects of Generative Artificial Intelligence on Employment: Evidence from an Online Labor Market", "kanal": "Organization Science", "retsenseeritud": true, "url": "https://doi.org/10.1287/orsc.2023.18441", "avaldatud": "2024", "meetod": "registriandmed", "kus": "vabakutseliste platvorm", "valim": "vabakutselised enim mõjutatud ametites", "leid": "Enim mõjutatud ametites vähenesid vabakutseliste tööd ja tulu. Parimad vabakutselised ei olnud kaitstud."},
-  {"id": "eloundou2023", "autorid": "Eloundou, Manning, Mishkin, Rock", "aasta": 2023, "pealkiri": "GPTs are GPTs: An Early Look at the Labor Market Impact Potential of Large Language Models", "kanal": "arXiv eeltrükk", "retsenseeritud": false, "url": "https://arxiv.org/abs/2303.10130", "avaldatud": "2023", "meetod": "hinnang", "kus": "USA", "valim": "USA ametite ülesanded, hinnangud inimestelt ja GPT-4-lt", "leid": "Umbes 80% USA töötajatest võib mõjutada vähemalt 10% oma ülesannetest ja umbes 19% vähemalt pooli ülesandeid. Ajakava kohta autorid ennustust ei tee."},
-  {"id": "ilo2025", "autorid": "ILO", "aasta": 2025, "pealkiri": "Generative AI and Jobs: A Refined Global Index of Occupational Exposure", "kanal": "ILO töödokument 140", "retsenseeritud": false, "url": "https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure", "avaldatud": "2025-05-20", "meetod": "hinnang", "kus": "maailm", "valim": "2861 ülesannet, 1640 töötaja küsitlus ja ekspertide arutelud", "leid": "Iga neljas töötaja maailmas on ametis, kus osa ülesandeid on tehisarule avatud. Kõrge sissetulekuga riikides 34%, madala sissetulekuga riikides 11%. Kõige avatumas rühmas on naisi rohkem kui mehi. Kõige tõenäolisem mõju on töö muutumine, mitte kadumine."},
-  {"id": "acemoglu2024", "autorid": "Acemoglu", "aasta": 2024, "pealkiri": "The Simple Macroeconomics of AI", "kanal": "NBER töödokument 32487", "retsenseeritud": false, "url": "https://www.nber.org/papers/w32487", "avaldatud": "2024-05", "meetod": "mudel", "kus": "USA", "valim": "olemasolevad hinnangud ülesannete avatusele ja ajasäästule", "leid": "Kogutootlikkus kasvab 10 aastaga kõige rohkem 0,66%, tõenäoliselt alla 0,53%."},
-  {"id": "bick2024", "autorid": "Bick, Blandin, Deming", "aasta": 2024, "pealkiri": "The Rapid Adoption of Generative AI", "kanal": "NBER töödokument 32966 (Management Science 2026)", "retsenseeritud": true, "url": "https://www.nber.org/papers/w32966", "avaldatud": "2024-09 (uuendatud 2025-02)", "meetod": "kusitlus", "kus": "USA", "valim": "esinduslikud küsitlused, 18–64-aastased, 2024. aasta lõpp", "leid": "23% töötajatest kasutas tehisaru tööl eelmisel nädalal, 9% iga päev. Inimeste enda hinnangul säästeti 1,4% kogu tööajast."},
-  {"id": "vahter2026", "autorid": "Arenguseire Keskus; Vahter, Tiwari, Masso, Vadi, Varblane jt (Tartu Ülikool)", "aasta": 2026, "pealkiri": "Tehnoloogilise arenguga seotud trendid Eesti ettevõtluses", "kanal": "Arenguseire Keskuse lühiraport", "retsenseeritud": false, "url": "https://arenguseire.ee/raportid/tehnoloogilise-arenguga-seotud-trendid-eesti-ettevotluses/", "avaldatud": "2026-06-18", "meetod": "registriandmed", "kus": "Eesti", "valim": "Eesti ettevõtete andmed, 2000–2023", "leid": "Tehisaru üksi ei tõstnud tootlikkust statistiliselt olulisel määral. Koos töökorralduse muutmisega tõusis tootlikkus töötlevas tööstuses 18,9% ja teadmusmahukates teenustes 23,2%. Laiema oskuste profiiliga töötajad teenivad umbes 6% rohkem."},
-  {"id": "arenguseire2025", "autorid": "Arenguseire Keskus (viitab Tartu Ülikooli uuringule)", "aasta": 2025, "pealkiri": "Arenguseire aastaraamat: tehisaru suurendab lõhesid Eesti majanduses", "kanal": "Arenguseire Keskuse uudis aastaraamatu kohta", "retsenseeritud": false, "url": "https://arenguseire.ee/uudised/arenguseire-aastaraamat-tehisaru-suurendab-lohesid-eesti-majanduses/", "avaldatud": "2025-04-14", "meetod": "registriandmed", "kus": "Eesti", "valim": "Tartu Ülikooli uuring, täpsem viide uudises puudub", "leid": "Juba lühiajaline tehisaru rakendamine tõstab ettevõtte tootlikkust üle 7%. Kasu on suurem, kui tehisaru kasutatakse põhitegevuses ja muudetakse ärimudelit."},
-  {"id": "oska2025", "autorid": "Leemet, Mets (OSKA, Kutsekoda)", "aasta": 2025, "pealkiri": "Tehisintellekti mõju tööjõu oskuste vajadusele ettevõtluses", "kanal": "OSKA rakendusuuring", "retsenseeritud": false, "url": "https://oska.kutsekoda.ee/tehisintellekti-teadlik-kasutamine-vajab-eesti-ettevotetes-veel-arendamist/", "avaldatud": "2025-11-04", "meetod": "ekspertintervjuud", "kus": "Eesti", "valim": "ekspertide intervjuud ja ettevõtete statistika", "leid": "Tehisaru kasutas 2024. aastal 14% ja 2025. aasta esimesel poolel 22% Eesti ettevõtetest (Taanis 2024. aastal 28%). Kõige rohkem piirab kasutust oskuste nappus: ei teata, millal ja milleks tehisaru kasutada. Takistab ka andmete ebaühtlane kvaliteet."}
+  {
+   "id": "peng2023",
+   "autorid": "Peng, Kalliamvakou, Cihon, Demirer",
+   "aasta": 2023,
+   "pealkiri": "The Impact of AI on Developer Productivity (arXiv 2302.06590)",
+   "kanal": "arXiv eeltrükk",
+   "retsenseeritud": false,
+   "url": "https://arxiv.org/abs/2302.06590",
+   "avaldatud": "2023-02-13",
+   "meetod": "katse",
+   "kus": "värvatud arendajad",
+   "valim": "tarkvaraarendajad, üks ülesanne (HTTP-server JavaScriptis)",
+   "leid": "GitHubi tehisaru-paarisprogrammeerija kasutajad tegid ülesande 55,8% kiiremini kui võrdlusrühm."
+  },
+  {
+   "id": "noy2023",
+   "autorid": "Noy, Zhang",
+   "aasta": 2023,
+   "pealkiri": "Experimental evidence on the productivity effects of generative artificial intelligence",
+   "kanal": "Science",
+   "retsenseeritud": true,
+   "url": "https://www.science.org/doi/10.1126/science.adh2586",
+   "avaldatud": "2023",
+   "meetod": "katse",
+   "kus": "veebikatse",
+   "valim": "453 kõrgharidusega spetsialisti, ametipõhised kirjutamisülesanded",
+   "leid": "ChatGPT-ga kulus ülesandele 40% vähem aega ja kvaliteet tõusis 18%. Nõrgemad töötajad võitsid rohkem, erinevus töötajate vahel vähenes."
+  },
+  {
+   "id": "dellacqua2023",
+   "autorid": "Dell'Acqua, McFowland, Mollick jt",
+   "aasta": 2023,
+   "pealkiri": "Navigating the Jagged Technological Frontier",
+   "kanal": "Harvard Business Schooli töödokument",
+   "retsenseeritud": false,
+   "url": "https://www.hbs.edu/faculty/Pages/item.aspx?num=64700",
+   "avaldatud": "2023",
+   "meetod": "katse",
+   "kus": "Boston Consulting Group",
+   "valim": "758 konsultanti, 18 realistlikku ülesannet",
+   "leid": "Ülesannetes, mis jäid tehisaru võimete piiresse, tehti 12,2% rohkem ülesandeid ja 25,1% kiiremini ning kvaliteet oli parem. Ülesandes väljaspool piiri oli tehisaruga lahendus 19% väiksema tõenäosusega õige."
+  },
+  {
+   "id": "metr2025",
+   "autorid": "METR (Becker jt)",
+   "aasta": 2025,
+   "pealkiri": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity",
+   "kanal": "arXiv eeltrükk",
+   "retsenseeritud": false,
+   "url": "https://arxiv.org/abs/2507.09089",
+   "avaldatud": "2025-07",
+   "meetod": "katse",
+   "kus": "avatud lähtekoodiga projektid",
+   "valim": "16 kogenud arendajat, 246 ülesannet oma tuttavas projektis",
+   "leid": "Tehisaruga kulus ülesandele 19% rohkem aega. Arendajad ise arvasid, et tehisaru säästis 20% aega."
+  },
+  {
+   "id": "brynjolfsson2023",
+   "autorid": "Brynjolfsson, Li, Raymond",
+   "aasta": 2023,
+   "pealkiri": "Generative AI at Work",
+   "kanal": "NBER töödokument 31161",
+   "retsenseeritud": false,
+   "url": "https://www.nber.org/papers/w31161",
+   "avaldatud": "2023-04",
+   "meetod": "loomulik_katse",
+   "kus": "klienditugi, USA ettevõte",
+   "valim": "5179 klienditoe töötajat",
+   "leid": "Tunnis lahendati 14% rohkem pöördumisi, algajatel ja madalama oskusega töötajatel 34% rohkem. Kogenud töötajate tulemus peaaegu ei muutunud."
+  },
+  {
+   "id": "humlum2025",
+   "autorid": "Humlum, Vestergaard",
+   "aasta": 2025,
+   "pealkiri": "Still Waters, Rapid Currents: Early Labor Market Transformation under Generative AI",
+   "kanal": "NBER töödokument 33777",
+   "retsenseeritud": false,
+   "url": "https://www.nber.org/papers/w33777",
+   "avaldatud": "2025-05 (uuendatud 2026-03)",
+   "meetod": "registriandmed",
+   "kus": "Taani",
+   "valim": "suured kasutusküsitlused seotud Taani registriandmetega",
+   "leid": "Kaks aastat pärast ChatGPT tulekut ei muutunud tulu ega töötunnid: üle 2% mõju on välistatud. Muutus töö sisu: tekkisid uued ülesanded."
+  },
+  {
+   "id": "yale2025",
+   "autorid": "Gimbel, Kinder, Kendall, Lee (Yale Budget Lab)",
+   "aasta": 2025,
+   "pealkiri": "Evaluating the Impact of AI on the Labor Market: Current State of Affairs",
+   "kanal": "Yale Budget Lab analüüs",
+   "retsenseeritud": false,
+   "url": "https://budgetlab.yale.edu/research/evaluating-impact-ai-labor-market-current-state-affairs",
+   "avaldatud": "2025",
+   "meetod": "kirjeldav",
+   "kus": "USA",
+   "valim": "USA tööjõu-uuring (CPS), 33 kuud pärast ChatGPT tulekut",
+   "leid": "Ametite jaotus muutub umbes sama kiiresti kui interneti leviku ajal ja muutus algas enne ChatGPT-d. Tehisarule avatud ametite osakaal ei ole muutunud."
+  },
+  {
+   "id": "canaries2026",
+   "autorid": "Brynjolfsson, Chandar, Chen",
+   "aasta": 2026,
+   "pealkiri": "Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence",
+   "kanal": "Stanford Digital Economy Labi töödokument",
+   "retsenseeritud": false,
+   "url": "https://digitaleconomy.stanford.edu/publications/canaries-in-the-coal-mine/",
+   "avaldatud": "2026-08-12 (uuendatud versioon)",
+   "meetod": "kirjeldav",
+   "kus": "USA",
+   "valim": "ADP palgaandmed miljonite töötajate kohta kuni juunini 2026",
+   "leid": "Laialdast töökohtade kadu ei ole. 22–25-aastaste hõive tehisarule avatud ametites on 19% madalam kui vähem avatud ametites eakaaslastel. Vahe tuleb sellest, et noori palgatakse vähem, ja see on 2025. aastast suurenenud."
+  },
+  {
+   "id": "demirci2025",
+   "autorid": "Demirci jt",
+   "aasta": 2025,
+   "pealkiri": "Who Is AI Replacing? The Impact of Generative AI on Online Freelancing Platforms",
+   "kanal": "Management Science",
+   "retsenseeritud": true,
+   "url": "https://doi.org/10.1287/mnsc.2024.05420",
+   "avaldatud": "2025",
+   "meetod": "registriandmed",
+   "kus": "ülemaailmne vabakutseliste platvorm",
+   "valim": "platvormi tööpakkumised enne ja pärast ChatGPT-d",
+   "leid": "Kirjutamise ja kodeerimise tööpakkumisi oli 8 kuud pärast ChatGPT tulekut 21% vähem kui käsitööd vajavates töödes. Pildiloome pakkumisi oli 17% vähem."
+  },
+  {
+   "id": "teutloff2025",
+   "autorid": "Teutloff jt",
+   "aasta": 2025,
+   "pealkiri": "Winners and losers of generative AI: Early Evidence of Shifts in Freelancer Demand",
+   "kanal": "Journal of Economic Behavior & Organization",
+   "retsenseeritud": true,
+   "url": "https://consensus.app/papers/details/fff15f92cf285909977621c2b9708521/",
+   "avaldatud": "2025",
+   "meetod": "registriandmed",
+   "kus": "vabakutseliste platvorm",
+   "valim": "116 oskuste rühma tööpakkumistest",
+   "leid": "Asendatavate oskuste (kirjutamine, tõlge) nõudlus oli 20–50% väiksem kui trendi järgi. Tehisaru täiendavates oskustes nõudlus kasvas, näiteks masinõppe programmeerimises 24%."
+  },
+  {
+   "id": "hui2024",
+   "autorid": "Hui, Reshef, Zhou",
+   "aasta": 2024,
+   "pealkiri": "The Short-Term Effects of Generative Artificial Intelligence on Employment: Evidence from an Online Labor Market",
+   "kanal": "Organization Science",
+   "retsenseeritud": true,
+   "url": "https://doi.org/10.1287/orsc.2023.18441",
+   "avaldatud": "2024",
+   "meetod": "registriandmed",
+   "kus": "vabakutseliste platvorm",
+   "valim": "vabakutselised enim mõjutatud ametites",
+   "leid": "Enim mõjutatud ametites vähenesid vabakutseliste tööd ja tulu. Parimad vabakutselised ei olnud kaitstud."
+  },
+  {
+   "id": "eloundou2023",
+   "autorid": "Eloundou, Manning, Mishkin, Rock",
+   "aasta": 2023,
+   "pealkiri": "GPTs are GPTs: An Early Look at the Labor Market Impact Potential of Large Language Models",
+   "kanal": "arXiv eeltrükk",
+   "retsenseeritud": false,
+   "url": "https://arxiv.org/abs/2303.10130",
+   "avaldatud": "2023",
+   "meetod": "hinnang",
+   "kus": "USA",
+   "valim": "USA ametite ülesanded, hinnangud inimestelt ja GPT-4-lt",
+   "leid": "Umbes 80% USA töötajatest võib mõjutada vähemalt 10% oma ülesannetest ja umbes 19% vähemalt pooli ülesandeid. Ajakava kohta autorid ennustust ei tee."
+  },
+  {
+   "id": "ilo2025",
+   "autorid": "ILO",
+   "aasta": 2025,
+   "pealkiri": "Generative AI and Jobs: A Refined Global Index of Occupational Exposure",
+   "kanal": "ILO töödokument 140",
+   "retsenseeritud": false,
+   "url": "https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure",
+   "avaldatud": "2025-05-20",
+   "meetod": "hinnang",
+   "kus": "maailm",
+   "valim": "2861 ülesannet, 1640 töötaja küsitlus ja ekspertide arutelud",
+   "leid": "Iga neljas töötaja maailmas on ametis, kus osa ülesandeid on tehisarule avatud. Kõrge sissetulekuga riikides 34%, madala sissetulekuga riikides 11%. Kõige avatumas rühmas on naisi rohkem kui mehi. Kõige tõenäolisem mõju on töö muutumine, mitte kadumine."
+  },
+  {
+   "id": "acemoglu2024",
+   "autorid": "Acemoglu",
+   "aasta": 2024,
+   "pealkiri": "The Simple Macroeconomics of AI",
+   "kanal": "NBER töödokument 32487",
+   "retsenseeritud": false,
+   "url": "https://www.nber.org/papers/w32487",
+   "avaldatud": "2024-05",
+   "meetod": "mudel",
+   "kus": "USA",
+   "valim": "olemasolevad hinnangud ülesannete avatusele ja ajasäästule",
+   "leid": "Kogutootlikkus kasvab 10 aastaga kõige rohkem 0,66%, tõenäoliselt alla 0,53%."
+  },
+  {
+   "id": "bick2024",
+   "autorid": "Bick, Blandin, Deming",
+   "aasta": 2024,
+   "pealkiri": "The Rapid Adoption of Generative AI",
+   "kanal": "NBER töödokument 32966 (Management Science 2026)",
+   "retsenseeritud": true,
+   "url": "https://www.nber.org/papers/w32966",
+   "avaldatud": "2024-09 (uuendatud 2025-02)",
+   "meetod": "kusitlus",
+   "kus": "USA",
+   "valim": "esinduslikud küsitlused, 18–64-aastased, 2024. aasta lõpp",
+   "leid": "23% töötajatest kasutas tehisaru tööl eelmisel nädalal, 9% iga päev. Inimeste enda hinnangul säästeti 1,4% kogu tööajast."
+  },
+  {
+   "id": "vahter2026",
+   "autorid": "Vahter, Tiwari, Pustovalova, Vadi, Masso jt (Tartu Ülikool, projekt MKM-POL15)",
+   "aasta": 2026,
+   "pealkiri": "Tehnoloogilise arenguga seotud trendid Eesti ettevõtluses",
+   "kanal": "Konkurentsivõime eksperdikogu raport 2026, ptk 9, ja Arenguseire lühiraport 18.06.2026",
+   "retsenseeritud": false,
+   "url": "https://arenguseire.ee/raportid/eesti-majanduse-olukord-ja-valjavaated-2026-konkurentsivoime-eksperdikogu-raport-riigikogule/",
+   "avaldatud": "2026-06-18 ja 2026-09-28",
+   "meetod": "registriandmed",
+   "kus": "Eesti",
+   "valim": "Eesti ettevõtete ja töötajate andmed 2000–2023: Statistikaameti innovatsiooni- ja IT-uuringud, äriregister, töötajate register",
+   "leid": "Tehisaru kasutuselevõtt ilma töökorralduse või juhtimise muutmiseta ei tõstnud tootlikkust statistiliselt olulisel määral. Koos töökorralduse muutmisega tõusis tootlikkus töötlevas tööstuses 18,9% ja teadmusmahukates teenustes 23,2%, aga see tulemus on tabeli nõrgima olulisusega (üks tärn). Laiema oskuste profiiliga töötajad teenivad umbes 6% rohkem."
+  },
+  {
+   "id": "vahter2024",
+   "autorid": "Tartu Ülikooli töörühm (Vahter jt), konkurentsivõime eksperdikogu",
+   "aasta": 2024,
+   "pealkiri": "Eesti majanduse olukord ja väljavaated. Konkurentsivõime eksperdikogu raport Riigikogule (ptk 5.5)",
+   "kanal": "Konkurentsivõime eksperdikogu raport 2024; Arenguseire aastaraamat 2024 kordab seda",
+   "retsenseeritud": false,
+   "url": "https://arenguseire.ee/raportid/eesti-majanduse-olukord-ja-valjavaated-konkurentsivoime-eksperdikogu-raport-riigikogule/",
+   "avaldatud": "2024-06",
+   "meetod": "registriandmed",
+   "kus": "Eesti",
+   "valim": "Statistikaameti ettevõtete IT-uuring 2021 ja äriregister 2020–2021; tehisaru kasutas siis vähe ettevõtteid",
+   "leid": "Tehisaru kasutuselevõtt 2021. aastal oli seotud keskmiselt 7,4% suurema kogutootlikkusega juba samal aastal. See on keskmine kõigi tehisaru kasutanud ettevõtete kohta, töökorralduse muutmist eraldi ei vaadatud. Andmed on ajast enne generatiivset tehisaru."
+  },
+  {
+   "id": "oska2025",
+   "autorid": "Leemet, Mets (OSKA, Kutsekoda)",
+   "aasta": 2025,
+   "pealkiri": "Tehisintellekti mõju tööjõu oskuste vajadusele ettevõtluses",
+   "kanal": "OSKA rakendusuuring",
+   "retsenseeritud": false,
+   "url": "https://oska.kutsekoda.ee/tehisintellekti-teadlik-kasutamine-vajab-eesti-ettevotetes-veel-arendamist/",
+   "avaldatud": "2025-11-04",
+   "meetod": "ekspertintervjuud",
+   "kus": "Eesti",
+   "valim": "ekspertide intervjuud ja ettevõtete statistika",
+   "leid": "Tehisaru kasutas 2024. aastal 14% ja 2025. aasta esimesel poolel 22% Eesti ettevõtetest (Taanis 2024. aastal 28%). Kõige rohkem piirab kasutust oskuste nappus: ei teata, millal ja milleks tehisaru kasutada. Takistab ka andmete ebaühtlane kvaliteet."
+  }
  ],
  "kiirus": [
-  {"uuring": "peng2023", "nimi": "Programmeerimine, uus ülesanne", "kiiremini": 55.8},
-  {"uuring": "noy2023", "nimi": "Kirjutamisülesanded", "kiiremini": 40},
-  {"uuring": "dellacqua2023", "nimi": "Konsultatsiooniülesanded", "kiiremini": 25.1},
-  {"uuring": "metr2025", "nimi": "Kogenud arendajad oma projektis", "kiiremini": -19}
+  {
+   "uuring": "peng2023",
+   "nimi": "Programmeerimine, uus ülesanne",
+   "kiiremini": 55.8
+  },
+  {
+   "uuring": "noy2023",
+   "nimi": "Kirjutamisülesanded",
+   "kiiremini": 40
+  },
+  {
+   "uuring": "dellacqua2023",
+   "nimi": "Konsultatsiooniülesanded",
+   "kiiremini": 25.1
+  },
+  {
+   "uuring": "metr2025",
+   "nimi": "Kogenud arendajad oma projektis",
+   "kiiremini": -19
+  }
  ],
  "tookohad": [
-  {"uuring": "humlum2025", "kes": "Kogu tööturg, Taani", "muutus": "0", "selgitus": "tulu ja töötunnid ei muutunud, mõju alla 2%"},
-  {"uuring": "yale2025", "kes": "Kogu tööturg, USA", "muutus": "0", "selgitus": "ametite jaotus muutub sama kiiresti kui interneti ajal"},
-  {"uuring": "canaries2026", "kes": "22–25-aastased avatud ametites, USA", "muutus": "−19%", "selgitus": "hõive võrreldes vähem avatud ametitega, noori palgatakse vähem"},
-  {"uuring": "demirci2025", "kes": "Vabakutselised: kirjutamine ja kodeerimine", "muutus": "−21%", "selgitus": "tööpakkumisi 8 kuuga"},
-  {"uuring": "teutloff2025", "kes": "Vabakutselised: kirjutamine ja tõlge", "muutus": "−20…50%", "selgitus": "nõudlus võrreldes trendiga"}
+  {
+   "uuring": "humlum2025",
+   "kes": "Kogu tööturg, Taani",
+   "muutus": "0",
+   "selgitus": "tulu ja töötunnid ei muutunud, mõju alla 2%"
+  },
+  {
+   "uuring": "yale2025",
+   "kes": "Kogu tööturg, USA",
+   "muutus": "0",
+   "selgitus": "ametite jaotus muutub sama kiiresti kui interneti ajal"
+  },
+  {
+   "uuring": "canaries2026",
+   "kes": "22–25-aastased avatud ametites, USA",
+   "muutus": "−19%",
+   "selgitus": "hõive võrreldes vähem avatud ametitega, noori palgatakse vähem"
+  },
+  {
+   "uuring": "demirci2025",
+   "kes": "Vabakutselised: kirjutamine ja kodeerimine",
+   "muutus": "−21%",
+   "selgitus": "tööpakkumisi 8 kuuga"
+  },
+  {
+   "uuring": "teutloff2025",
+   "kes": "Vabakutselised: kirjutamine ja tõlge",
+   "muutus": "−20…50%",
+   "selgitus": "nõudlus võrreldes trendiga"
+  }
  ],
  "avatus": {
   "uuring": "ilo2025",
   "riigid": [
-   {"nimi": "Kõrge sissetulekuga riigid", "protsent": 34},
-   {"nimi": "Maailm", "protsent": 25},
-   {"nimi": "Madala sissetulekuga riigid", "protsent": 11}
+   {
+    "nimi": "Kõrge sissetulekuga riigid",
+    "protsent": 34
+   },
+   {
+    "nimi": "Maailm",
+    "protsent": 25
+   },
+   {
+    "nimi": "Madala sissetulekuga riigid",
+    "protsent": 11
+   }
   ],
   "sugu_korge_sissetulek": [
-   {"nimi": "Naised", "protsent": 9.6},
-   {"nimi": "Mehed", "protsent": 3.5}
+   {
+    "nimi": "Naised",
+    "protsent": 9.6
+   },
+   {
+    "nimi": "Mehed",
+    "protsent": 3.5
+   }
   ]
  },
  "eesti_tootlikkus": {
   "uuring": "vahter2026",
   "read": [
-   {"nimi": "Tehisaru koos töökorralduse muutmisega", "toostus": 18.9, "teenused": 23.2},
-   {"nimi": "Automatiseerimine koos töökorralduse muutmisega", "toostus": 9.3, "teenused": 24.8},
-   {"nimi": "Automatiseerimine üksi", "toostus": 6.3, "teenused": 8.9},
-   {"nimi": "Tehisaru üksi", "toostus": null, "teenused": null}
+   {
+    "nimi": "Tehisaru koos töökorralduse muutmisega",
+    "toostus": 18.9,
+    "teenused": 23.2
+   },
+   {
+    "nimi": "Automatiseerimine koos töökorralduse muutmisega",
+    "toostus": 9.3,
+    "teenused": 24.8
+   },
+   {
+    "nimi": "Automatiseerimine üksi",
+    "toostus": 6.3,
+    "teenused": 8.9
+   },
+   {
+    "nimi": "Tehisaru üksi",
+    "toostus": null,
+    "teenused": null
+   }
   ]
  },
  "vastuolud": [
-  {"uuringud": ["peng2023", "metr2025"], "mis": "Programmeerimises leiti nii 56% kiirem kui 19% aeglasem töö.", "miks": "GitHubi katses tegid arendajad uut lihtsat ülesannet, METR-i katses kogenud arendajad oma suures tuttavas projektis. Tulemus sõltub ülesandest ja kogemusest."},
-  {"uuringud": ["canaries2026", "humlum2025", "yale2025"], "mis": "Noorte hõive langus USA-s, aga kogu tööturul muutust pole.", "miks": "Need ei ole tingimata vastuolus: langus on kitsas rühmas ja tuleb väiksemast palkamisest. Yale'i andmetes on noori vastajaid vähe."},
-  {"uuringud": ["arenguseire2025", "vahter2026"], "mis": "Arenguseire 2025: tehisaru tõstab tootlikkust üle 7%. Arenguseire 2026: tehisaru üksi ei tõsta tootlikkust olulisel määral.", "miks": "Põhjus on selgitamata. Võimalik, et tegu on eri uuringute, perioodide või mõõdikutega. 2025. aasta uudis ei viita täpsele uuringule."}
+  {
+   "uuringud": [
+    "peng2023",
+    "metr2025"
+   ],
+   "mis": "Programmeerimises leiti nii 56% kiirem kui 19% aeglasem töö.",
+   "miks": "GitHubi katses tegid arendajad uut lihtsat ülesannet, METR-i katses kogenud arendajad oma suures tuttavas projektis. Tulemus sõltub ülesandest ja kogemusest.",
+   "staatus": "osaliselt selgitatud"
+  },
+  {
+   "uuringud": [
+    "canaries2026",
+    "humlum2025",
+    "yale2025"
+   ],
+   "mis": "Noorte hõive langus USA-s, aga kogu tööturul muutust pole.",
+   "miks": "Need ei ole tingimata vastuolus: langus on kitsas rühmas ja tuleb väiksemast palkamisest. Yale'i andmetes on noori vastajaid vähe.",
+   "staatus": "osaliselt selgitatud"
+  },
+  {
+   "uuringud": [
+    "vahter2024",
+    "vahter2026"
+   ],
+   "mis": "Arenguseire 2024–2025: tehisaru tõstab tootlikkust üle 7%. Arenguseire 2026: tehisaru üksi ei tõsta tootlikkust olulisel määral.",
+   "miks": "See ei ole vastuolu, vaid eri küsimus. Mõlemad on sama Tartu Ülikooli töörühma tulemused. 2024. aasta 7,4% on keskmine kõigi 2021. aastal tehisaru kasutanud ettevõtete kohta ühe aasta andmetel. 2026. aasta analüüs jagab kasutajad kaheks: ilma töökorralduse muutmiseta mõju ei leitud, koos sellega 19–23%. Kui kasutajate seas on mõlemat tüüpi ettevõtteid, sobib keskmine 7% nende vahele. Ettevaatust: 2024. aasta tulemus on ühe aasta ja vähese kasutajaga, 2026. aasta 19–23% on nõrga statistilise olulisusega.",
+   "staatus": "selgitatud"
+  }
  ]
 }
