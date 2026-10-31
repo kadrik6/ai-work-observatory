@@ -1,0 +1,83 @@
+{
+ "kirjeldus": "Eesti koondamised, kus on küsitud, kas tehisaru oli põhjus. Kogutud käsitsi uudistest, kontrollitud lingi kaudu. See ei ole täielik nimekiri. Uudistest hoitakse ainult pealkirja, linki, kuupäeva ja oma sõnadega lühikest põhjust, mitte artikli teksti.",
+ "kontrollitud": "2026-10-31",
+ "rollid": {
+  "otsene": "Ettevõte ütleb, et tehisaru teeb tööd inimeste asemel.",
+  "osaline": "Ettevõte nimetab tehisaru ühe põhjusena koos teistega, näiteks kulude vähendamise või automatiseerimisega.",
+  "kaudne": "Ettevõte ütleb, et tehisaru muutis turgu või klientide ootusi, aga ei asenda inimesi.",
+  "tulevikus": "Praegune koondamine on muul põhjusel, aga ettevõte ütleb, et tehisaru võib tulevikus töökohti vähendada.",
+  "ei_mainita": "Teates ega uudises tehisaru ei mainita."
+ },
+ "juhtumid": [
+  {
+   "id": "pipedrive-2026-10",
+   "kuupaev": "2026-10-29",
+   "ettevote": "Pipedrive",
+   "sektor": "tarkvara",
+   "arv_eestis": 267,
+   "arv_tekst": "267 töökohta 380st (70%), Tallinnas 219 ja Tartus 48",
+   "roll": "kaudne",
+   "kes_utles": "tegevjuht Paulo Cunha töötajatele saadetud kirjas",
+   "pohjus": "Väikeettevõtted küsivad tarkvarasoovitusi tehisarult, tasuta veebiliiklus langes ja kliendid ootavad tarkvaralt rohkem automaatikat. Vähem juhtimistasandeid ja asukohti. Tegevjuhi sõnul ei asendata inimesi tehisaruga.",
+   "pealkiri": "Pipedrive koondab massiliselt töötajaid ja paneb kontoreid kinni",
+   "url": "https://www.err.ee/1610180251/pipedrive-koondab-massiliselt-tootajaid-ja-paneb-kontoreid-kinni",
+   "allikas": "ERR (Äripäeva põhjal)"
+  },
+  {
+   "id": "coolbet-2026-10",
+   "kuupaev": "2026-10-29",
+   "ettevote": "Coolbet (VG Estonia)",
+   "sektor": "hasartmängud veebis",
+   "arv_eestis": 134,
+   "arv_tekst": "kuni 134 töökohta, peaaegu pool Tallinna peakontorist",
+   "roll": "ei_mainita",
+   "kes_utles": "tegevdirektor Tomas Graham ERR-ile",
+   "pohjus": "Äriprobleemid, oodatust nõrgemad tulemused ettevõtetele müügis ning kasvav regulatsiooni- ja maksusurve.",
+   "pealkiri": "Coolbet Estonia to shed up to 134 jobs at Tallinn HQ",
+   "url": "https://news.err.ee/1610180281/coolbet-estonia-to-shed-up-to-134-jobs-at-tallinn-hq",
+   "allikas": "ERR News"
+  },
+  {
+   "id": "swedbank-2026-10",
+   "kuupaev": "2026-10-27",
+   "ettevote": "Swedbank",
+   "sektor": "pangandus",
+   "arv_eestis": null,
+   "arv_tekst": "umbes 100 Balti riikides kokku, Eesti osa ei ole teada",
+   "roll": "tulevikus",
+   "kes_utles": "Swedbank Eesti juht Olavi Lepp ERR-ile",
+   "pohjus": "Suured IT- ja arendusinvesteeringud on tehtud ning nii palju inimesi pole enam vaja. Tehisaru võib tulevikus koondamisi juurde tuua, kui see on inimesest odavam.",
+   "pealkiri": "Swedbank lays off 100 in Baltic states, warns AI could mean more cuts",
+   "url": "https://news.err.ee/1610178361/swedbank-lays-off-100-in-baltic-states-warns-ai-could-mean-more-cuts",
+   "allikas": "ERR News"
+  },
+  {
+   "id": "telia-2026-10",
+   "kuupaev": "2026-10-12",
+   "ettevote": "Telia Eesti",
+   "sektor": "telekommunikatsioon",
+   "arv_eestis": 100,
+   "arv_tekst": "umbes 100 töökohta Eestis, kontsernis 900",
+   "roll": "osaline",
+   "kes_utles": "ettevõtte pressiteade",
+   "pohjus": "Tõhusam organisatsioon ja kulude vähendamine. Selleks kasutatakse üha rohkem tehisaru, digitaliseerimist ja automatiseerimist.",
+   "pealkiri": "Telia to cut 100 jobs in Estonia as telecom group plans 900 layoffs",
+   "url": "https://news.err.ee/1610163940/telia-to-cut-100-jobs-in-estonia-as-telecom-group-plans-900-layoffs",
+   "allikas": "ERR News"
+  },
+  {
+   "id": "telia-2026-01",
+   "kuupaev": "2026-01-09",
+   "ettevote": "Telia Eesti",
+   "sektor": "telekommunikatsioon",
+   "arv_eestis": null,
+   "arv_tekst": "30–50 ametikohta",
+   "roll": "ei_mainita",
+   "kes_utles": "Äripäev",
+   "pohjus": "Tehnoloogia ja IT-juhtimise ühendamine. Lühiteates tehisaru ei mainita, täisartikkel on tasuline.",
+   "pealkiri": "Telia koondab Eestis kuni 50 töötajat, Soomes-Rootsis kordades rohkem",
+   "url": "https://www.personaliuudised.ee/uudised/2026/01/07/telia-koondab-eestis-kuni-50-tootajat-soomes-rootsis-kordades-rohkem",
+   "allikas": "Personaliuudised"
+  }
+ ]
+}

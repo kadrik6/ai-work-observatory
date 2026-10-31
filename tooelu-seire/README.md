@@ -53,6 +53,13 @@ Ametlikud prognoosid ja tööandjate ootused on eraldi klassis `prognoos`: need 
 Osa `tulevik` toidab vahekaarti „Tulevik“ (töö kaotanud, kasvavad ametid, töötuse prognoos).
 Kogujad seda faili ei muuda. Leht „Tehisaru ja töö“ (vahekaart „Mida leiti“) on ehitatud sellest. Testid: `tests/test_leiud.py`.
 
+## Eesti koondamised
+
+`koondamised_ee.json` on käsitsi kontrollitud nimekiri Eesti koondamistest ja sellest, mida ettevõte ise tehisaru rolli kohta ütles
+(otsene, üks põhjustest, kaudne, tulevikus võimalik, ei mainita). Roll on ettevõtte sõna, mitte meie hinnang. Uudisest hoitakse ainult
+pealkirja, linki, kuupäeva ja oma sõnadega lühikest põhjust. Uued juhtumid tulevad ERR-i varajase hoiatuse kandidaatidest
+(märksõna „koonda“), inimene kontrollib need ja lisab siia. Testid: `tests/test_koondamised_ee.py`.
+
 ## Väljund
 
 `olek.json`, `koik.jsonl`, `nahtud.jsonl` (kõik seni nähtud), `kirjed.jsonl` (uued), `versioonid.jsonl`, `duplikaadid.jsonl`, `vead.jsonl`,
