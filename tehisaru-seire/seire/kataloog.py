@@ -48,6 +48,10 @@ OLEKUD = {
 JARJEKORD = list(VORREDAVUS)
 STAATUSED = {"kooskolas": "kooskõlas", "vaike_vahe": "väike vahe", "lahknevus": "lahknevus"}
 
+# Otsuskriitilised lahtrid: Eesti ja ELi viimane aasta võrdlusaluses. Just neid numbreid lugeja kasutab,
+# nii et nende kooskõla näidatakse eraldi. Üldine klappimise määr võib kõrge olla ja peita vea selles lahtris.
+KRIITILISED_RIIGID = ("EE", "EU27_2020")
+
 # Eurostat avaldab protsendid kahe komakohaga. Seire CSV kaotab lõpunullid (23.40 -> 23.4).
 EUROSTATI_TAPSUS = 2
 
@@ -188,6 +192,9 @@ def vordle(K, moiste_id):
             vaat[v["moodik"]][(v["riik"], v["aasta"])] = v
     alus = vaat.get(alus_id, {})
 
+    alus_viimane = {}
+    for riik_, aasta in alus:
+        alus_viimane[riik_] = max(aasta, alus_viimane.get(riik_, aasta))
     paarid = []
     for m in mood:
         if m["vorreldavus"] not in ("sama", "osaliselt"):
@@ -195,7 +202,10 @@ def vordle(K, moiste_id):
         for votm, v in sorted(vaat[m["id"]].items()):
             if votm in alus:
                 paarid.append({"moodik": m["id"], "klass": m["vorreldavus"], "riik": votm[0], "aasta": votm[1],
-                               "alus": alus[votm]["vaartus"], "teine": v["vaartus"], **hinda_vahe(alus[votm], v)})
+                               "alus": alus[votm]["vaartus"], "teine": v["vaartus"], **hinda_vahe(alus[votm], v),
+                               # koopia: allikas kordab võrdlusaluse numbrit (nt OECD ELi riikide kohta), see ei kinnita
+                               "koopia": m.get("koopia") == "jah",
+                               "kriitiline": votm[0] in KRIITILISED_RIIGID and votm[1] == alus_viimane[votm[0]]})
 
     riigid = {}
     for m in mood:
@@ -221,6 +231,23 @@ def vordle(K, moiste_id):
 
     return {"moiste": moiste, "alus_id": alus_id, "moodikud": mood, "vaatlused": vaat,
             "paarid": paarid, "riigid": riigid}
+
+
+def klappimine(paarid):
+    """Kaks klappimise numbrit sama mõõdikuga allikate kohta: kõik sõltumatud võrdlused ja kriitilised lahtrid.
+
+    Koopiaid (allikas kordab võrdlusalust) ei loeta, sest nende kokkulangemine ei ole sõltumatu kinnitus.
+    """
+    sama = [p for p in paarid if p["klass"] == "sama"]
+    soltumatud = [p for p in sama if not p["koopia"]]
+    kriitilised = [p for p in soltumatud if p["kriitiline"]]
+
+    def loe(pp):
+        return {"klapib": sum(1 for p in pp if p["staatus"] == "kooskolas"), "kokku": len(pp),
+                "lahknevused": [p for p in pp if p["staatus"] == "lahknevus"],
+                "vaikesed": [p for p in pp if p["staatus"] == "vaike_vahe"]}
+
+    return {"koik": loe(soltumatud), "kriitilised": loe(kriitilised), "koopiaid": len(sama) - len(soltumatud)}
 
 
 def vorreldavad_moisted(K):
