@@ -44,6 +44,8 @@
   .ts-euro { display: grid; gap: var(--cds-gap-md); min-height: 14rem; }
   .ts-eurow { display: grid; gap: var(--cds-gap-xs); }
   .ts-eurow svg { display: block; }
+  .ts-eurow.is-lai { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--cds-gap-lg); align-items: center; }
+  .ts-eurow.is-lai svg { grid-column: 2; grid-row: 1 / span 2; }
   .ts-controls { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
   .ts-search { flex: 1 1 14rem; min-width: 0; font: inherit; font-size: var(--cds-font-size-body); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-radius: var(--cds-radius); border: 1px solid var(--color-border-line); background: var(--color-bg); color: var(--color-fg); }
   .ts-filter { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-radius: 999px; border: 1px solid var(--color-border-line); background: var(--color-bg); color: var(--color-fg); cursor: pointer; }
@@ -83,11 +85,12 @@
   .ts-kest .ts-tabs { margin-top: 0; }
   .ts-avaleht { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--cds-gap-lg); }
   .ts-panel { grid-template-columns: minmax(0, 1fr); }
-  .ts-avaleht .ts-head { max-width: 60rem; grid-template-columns: minmax(0, 1fr); min-width: 0; }
-  .ts-meta { margin: 8px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 16px 24px; padding-top: 16px; border-top: 2px solid var(--color-fg); max-width: 64rem; }
-  .ts-meta div { display: grid; gap: 4px; align-content: start; }
-  .ts-meta dt { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
-  .ts-meta dd { margin: 0; font-weight: 700; line-height: 1.4; }
+  .ts-avaleht .ts-head { grid-template-columns: minmax(0, 1fr); min-width: 0; max-width: none; }
+  .ts-avaleht .ts-head > :not(.ts-meta) { max-width: 52rem; }
+  dl.ts-meta { margin: 8px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 16px 24px; padding-top: 16px; border-top: 2px solid var(--color-fg); }
+  dl.ts-meta div { display: grid; gap: 4px; align-content: start; }
+  dl.ts-meta dt { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  dl.ts-meta dd { margin: 0; font-weight: 700; line-height: 1.4; }
   .ts-avaleht > .ts-pohi { margin-top: 8px; display: grid; gap: var(--cds-gap-md); }
   .ts-pohi-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
   .ts-pohi-kaart { display: grid; gap: var(--cds-gap-sm); align-content: start; height: 100%; box-sizing: border-box; padding: var(--cds-pad-md) var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); border: 1px solid var(--color-border-line); color: var(--color-fg); text-decoration: none; }
@@ -167,9 +170,10 @@
 
   /* Leiukaart: küsimus ja vastus vasakul, graafik paremal */
   .ts-finding { display: grid; gap: var(--cds-gap-lg); grid-template-columns: minmax(0, 1fr); padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-panel); }
-  @media (min-width: 64rem) { .ts-finding { grid-template-columns: minmax(14rem, 1fr) minmax(0, 2fr); } }
+  @media (min-width: 64rem) { .ts-finding { grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr); } }
+  @media (min-width: 90rem) { .ts-finding { grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr); } }
   .ts-verdict { display: grid; gap: var(--cds-gap-sm); align-content: start; align-self: start; padding: var(--cds-pad-lg); border-radius: var(--cds-radius); background: var(--color-bg); order: 2; }
-  @media (min-width: 64rem) { .ts-verdict { order: 0; } }
+  @media (min-width: 64rem) { .ts-verdict { order: 0; position: sticky; top: 16px; } }
   .ts-verdict h3 { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-fg-muted); }
   .ts-verdict .ts-v-big { margin: 0 0 var(--cds-gap-sm); font-family: var(--font-anthropic-serif); font-size: 28px; font-weight: 700; line-height: 1.15; text-wrap: balance; }
   .ts-verdict p { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.5; }
@@ -1397,10 +1401,11 @@
     const tana = k.status === 'ok' && k.data[0] ? d3.utcDay.floor(new Date(k.data[0].aeg)) : d3.utcDay.floor(new Date());
     const read = d.data.slice().sort((a, b) => d3.descending(a.uuendatud, b.uuendatud));
     const algus = d3.min([d3.utcMonth.offset(tana, -6), ...read.map((r) => paev(r.uuendatud))]);
-    const W = Math.max(260, el.clientWidth || 600);
+    const lai = (el.clientWidth || 0) >= 900;
+    const W = Math.max(260, (el.clientWidth || 600) * (lai ? 0.5 : 1));
     const x = d3.scaleUtc([algus, tana], [8, W - 8]);
     for (const r of read) {
-      const rida = el_('div', 'ts-eurow');
+      const rida = el_('div', lai ? 'ts-eurow is-lai' : 'ts-eurow');
       const u = ohutu(r.url);
       const nimi = el_(u ? 'a' : 'span', 'ts-link');
       if (u) { nimi.href = u; nimi.target = '_blank'; nimi.rel = 'noopener'; }
