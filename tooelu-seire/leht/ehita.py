@@ -72,7 +72,7 @@ head='''<title>TOOELU · Tehisaru ja töö</title>
     --hairline: #2e2e2e; --grid: #262626; --control-border: #8c8c8c; color-scheme: dark;
   }
   body { margin: 0; background: var(--surface); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5;
-    padding-block: 8px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    padding-block: 8px 64px; padding-left: max(clamp(20px, 4vw, 64px), env(safe-area-inset-left, 0px)); padding-right: max(clamp(20px, 4vw, 64px), env(safe-area-inset-right, 0px)); }
   a { color: var(--signal); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>

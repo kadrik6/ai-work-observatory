@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-02 | TOOELU leht: külgedel on rohkem vaba ruumi. Vahe kasvab ekraani laiusega: telefonis 20 px, arvutis kuni 64 px. |
 | 2026-11-02 | TOOELU leht: laial ekraanil kasutab leht ruumi paremini. Leiukaartide vastusekast on kitsam ja jääb kerimisel nähtavale, nii et joonised saavad rohkem laiust. Allikate rida päises ulatub üle kogu laiuse. Eurostati andmestike värskuses on nimi ja ajatelg ühel real. Parandatud viga, mille tõttu mõne loendi kuupäevarea kohal oli paks joon. |
 | 2026-11-02 | TOOELU leht: algus nagu „Tehisaru 2027“ lehel. Üleval on nimi, „Seis 31.10.2026“ ja heleda/tumeda teema lüliti, siis vahelehed. Pealkiri, sissejuhatus, allikate rida ja kolm peamist leidu on nüüd esimese vahelehe sees. |
 | 31.10.2026 | Leht „Tehisaru ja töö“ telefonis ja tahvlis (Kadri 31.10 20:35): vastusekaardid on alla 1024 px laiusel ühes veerus (enne jäi tahvlis vastus kitsasse vasakusse veergu); telefonis on vahekaardid ühel keritaval real, väiksemad vahed ja ääred, numbrikastid ühes veerus, tõendi selgitus loeteluna ning kahe tekstiveeruga tabelid ridade kaupa. Parandatud kaks külgsuunas üle ääre minekut (360 px: lahknevuste tabel; 800 px: koondamiste silt). |
