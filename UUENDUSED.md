@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-02 | TOOELU leiud: allikate topeltkontrolli parandused. Dell'Acqua jt 2023: „19% väiksema tõenäosusega õige“ asemel „19 protsendipunkti võrra harvem õige“. Teutloff jt viitab DOI-le 10.1016/j.jebo.2024.106845, Kim jt SSRN DOI-le 10.2139/ssrn.6513481 (HBS-i kokkuvõte lisalingina, uus väli lisa_url). GDS-i raporti otselink jäi muutmata, sest raporti aadressis on turvakontrolli keelatud sõna. Uus test kontrollib, et uuringute lingid ei ole vahendajalingid. |
 | 2026-11-02 | TOOELU leht: külgedel on rohkem vaba ruumi. Vahe kasvab ekraani laiusega: telefonis 20 px, arvutis kuni 64 px. |
 | 2026-11-02 | TOOELU leht: laial ekraanil kasutab leht ruumi paremini. Leiukaartide vastusekast on kitsam ja jääb kerimisel nähtavale, nii et joonised saavad rohkem laiust. Allikate rida päises ulatub üle kogu laiuse. Eurostati andmestike värskuses on nimi ja ajatelg ühel real. Parandatud viga, mille tõttu mõne loendi kuupäevarea kohal oli paks joon. |
 | 2026-11-02 | TOOELU leht: algus nagu „Tehisaru 2027“ lehel. Üleval on nimi, „Seis 31.10.2026“ ja heleda/tumeda teema lüliti, siis vahelehed. Pealkiri, sissejuhatus, allikate rida ja kolm peamist leidu on nüüd esimese vahelehe sees. |

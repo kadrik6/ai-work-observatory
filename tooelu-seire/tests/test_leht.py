@@ -84,3 +84,15 @@ def test_peamised_leiud_viitavad_olemasolevatele_kaartidele(tmp_path):
     assert len(lingid) == 3
     for k in lingid + ["kindlus"]:
         assert f'id="{k}"' in s, k
+
+
+def test_uuringute_lingid_viitavad_otse_allikale():
+    import json
+    leiud = json.loads((Path(__file__).resolve().parents[1] / 'leiud.json').read_text(encoding='utf-8'))
+    for u in leiud['uuringud']:
+        for vaali in ('url', 'lisa_url'):
+            url = u.get(vaali)
+            if not url:
+                continue
+            assert url.startswith('https://'), (u['id'], url)
+            assert 'consensus.app' not in url, (u['id'], url)

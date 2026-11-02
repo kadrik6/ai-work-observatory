@@ -45,7 +45,7 @@ def tabel(ids, pealkiri='Uuringud selle vastuse taga'):
     for i in ids:
         u = U[i]
         read.append(f'''<tr><td><a class="ts-t-name" href="{e(u['url'])}" target="_blank" rel="noopener">{e(u['pealkiri'])}</a>
-<span class="ts-t-sub">{e(u['autorid'])} · {e(u['kanal'])} · {e(u['avaldatud'])}</span></td>
+<span class="ts-t-sub">{e(u['autorid'])} · {e(u['kanal'])} · {e(u['avaldatud'])}{f' · <a href="{e(u["lisa_url"])}" target="_blank" rel="noopener">{e(u.get("lisa_nimi", "lisalink"))}</a>' if u.get('lisa_url') else ''}</span></td>
 <td><p class="ts-leid">{e(u['leid'])}</p><p class="ts-leid-meta">{silt(u)}<span class="ts-t-sub">{e(u['kus'])}: {e(u['valim'])}</span></p></td></tr>''')
     return f'''<details class="ts-details">
           <summary>{pealkiri} ({len(ids)})</summary>

@@ -72,7 +72,7 @@
    "meetod": "katse",
    "kus": "Boston Consulting Group",
    "valim": "758 konsultanti, 18 realistlikku ülesannet",
-   "leid": "Ülesannetes, mis jäid tehisaru võimete piiresse, tehti 12,2% rohkem ülesandeid ja 25,1% kiiremini ning kvaliteet oli parem. Ülesandes väljaspool piiri oli tehisaruga lahendus 19% väiksema tõenäosusega õige."
+   "leid": "Ülesannetes, mis jäid tehisaru võimete piiresse, tehti 12,2% rohkem ülesandeid ja 25,1% kiiremini ning kvaliteet oli parem. Ülesandes väljaspool piiri oli tehisaruga lahendus 19 protsendipunkti võrra harvem õige."
   },
   {
    "id": "metr2025",
@@ -165,7 +165,7 @@
    "pealkiri": "Winners and losers of generative AI: Early Evidence of Shifts in Freelancer Demand",
    "kanal": "Journal of Economic Behavior & Organization",
    "retsenseeritud": true,
-   "url": "https://consensus.app/papers/details/fff15f92cf285909977621c2b9708521/",
+   "url": "https://doi.org/10.1016/j.jebo.2024.106845",
    "avaldatud": "2025",
    "meetod": "registriandmed",
    "kus": "vabakutseliste platvorm",
@@ -417,7 +417,9 @@
    "pealkiri": "Mapping AI into Production: A Field Experiment on Firm Performance",
    "kanal": "INSEAD töödokument 2026/20/STR",
    "retsenseeritud": false,
-   "url": "https://aiinstitute.hbs.edu/everyone-has-ai-which-firms-are-going-to-win/",
+   "url": "https://doi.org/10.2139/ssrn.6513481",
+   "lisa_url": "https://aiinstitute.hbs.edu/everyone-has-ai-which-firms-are-going-to-win/",
+   "lisa_nimi": "HBS-i kokkuvõte",
    "avaldatud": "2026-03-30",
    "meetod": "katse",
    "kus": "maailm",
