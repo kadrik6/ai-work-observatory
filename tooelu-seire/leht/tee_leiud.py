@@ -398,6 +398,29 @@ paneel_t = f'''  <div class="ts-panel" id="paneel-tulevik" role="tabpanel" aria-
 '''
 
 paneel = f'''  <div class="ts-panel" id="paneel-leiud" role="tabpanel" aria-labelledby="tab-leiud">
+    <div class="ts-avaleht">
+  <header class="ts-head">
+    <p class="ts-kicker">Tehisaru ja tööturg · kontrollitud uuringud</p>
+    <h1 class="ts-title">Mida tehisaru <span class="ts-sig">tööga</span> päriselt teeb ja kui kindlalt me seda teame</h1>
+    <p class="ts-lead">Siia on koondatud kontrollitud uuringud ja ametlik statistika, et näha, mis on mõõdetud, mis on alles prognoos ja kus andmed puuduvad. Iga arv on lingitud allikaga.</p>
+    <dl class="ts-meta">
+      <div><dt>Uuringud</dt><dd>{len(L['uuringud'])} uuringut: NBER, ILO, OECD, Stanford, Tartu Ülikool jt</dd></div>
+      <div><dt>Statistika</dt><dd>Eurostat, Statistikaamet, USA tööstatistika amet</dd></div>
+      <div><dt>Prognoosid</dt><dd>OSKA, Rahandusministeerium, Cedefop, WEF</dd></div>
+      <div><dt>Uuendamine</dt><dd>leiud käsitsi ({kp_ee}), teadustööde seire iga päev</dd></div>
+    </dl>
+  </header>
+  <section class="ts-pohi" aria-labelledby="pohi-pealkiri">
+    <h2 class="ts-kicker" id="pohi-pealkiri">Kolm peamist leidu</h2>
+    <ul class="ts-pohi-list">
+      <li><a class="ts-pohi-kaart" href="#k-kiirus" data-kaart="k-kiirus"><span class="ts-pohi-arv">3 katset 4-st</span><span class="ts-pohi-lause">Tehisaruga tehti töö kiiremini. Kogenud arendajad oma projektis olid aga 19% aeglasemad.</span><span class="ts-tag ts-tag-tugev">Tugev tõend</span></a></li>
+      <li><a class="ts-pohi-kaart" href="#k-tookohad" data-kaart="k-tookohad"><span class="ts-pohi-arv">−19%</span><span class="ts-pohi-lause">Töökohti kokkuvõttes veel ei kao, aga USA-s palgatakse tehisarule avatud ametitesse vähem 22–25-aastaseid.</span><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span></a></li>
+      <li><a class="ts-pohi-kaart" href="#k-tootlikkus" data-kaart="k-tootlikkus"><span class="ts-pohi-arv">19–23%</span><span class="ts-pohi-lause">Eesti ettevõtete tootlikkus tõusis ainult siis, kui tehisaruga koos muudeti töökorraldust.</span><span class="ts-tag ts-tag-tugev">Tugev tõend</span></a></li>
+    </ul>
+    <p class="ts-pohi-legend"><b>Kuidas lugeda:</b> <span class="ts-lg"><span class="ts-tag ts-tag-tugev">Tugev tõend</span> katse või registriandmed, näitab põhjust</span> <span class="ts-lg"><span class="ts-tag ts-tag-keskmine">Keskmine tõend</span> küsitlus või kirjeldav analüüs</span> <span class="ts-lg"><span class="ts-tag ts-tag-nork">Nõrk tõend</span> hinnang, mudel või eksperdid</span> <span class="ts-lg"><span class="ts-tag ts-tag-prognoos">Prognoos</span> ootus, mitte mõõtmine</span> <a href="#kindlus" data-kindlus>Täpsemalt</a></p>
+  </section>
+    </div>
+
     <section class="ts-leiud-algus">
       <p class="ts-lead">Neli vastust maailma ja neli Eesti uuringute põhjal. Iga vastuse juures on, kui kindel see on ja millised uuringud selle taga on. Leiud on kontrollitud allikast {kp_ee}.</p>
     </section>
@@ -641,6 +664,7 @@ import re
 s = re.sub(r'<!--VALDKONNAD-->.*?<!--/VALDKONNAD-->', lambda m: '<!--VALDKONNAD-->' + valdkonnad_html + '<!--/VALDKONNAD-->', s, flags=re.S)
 s = re.sub(r'<!--TULEVIK-->.*?<!--/TULEVIK-->', lambda m: '<!--TULEVIK-->' + paneel_t + '<!--/TULEVIK-->', s, flags=re.S)
 s = re.sub(r'<!--LEIUD-->.*?(?=<!--TULEVIK-->)', lambda m: '<!--LEIUD-->' + paneel, s, flags=re.S)
+s = re.sub(r'<span class="ts-seis">Seis [^<]*</span>', f'<span class="ts-seis">Seis {kp_ee}</span>', s)
 s = re.sub(r'/\*LEIUD-CSS\*/.*?(?=</style>)', lambda m: '/*LEIUD-CSS*/' + css, s, count=1, flags=re.S)
 os.makedirs(TOO, exist_ok=True)
 open(TOO + 'leht-mall.html', 'w').write(s)
