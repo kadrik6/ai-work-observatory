@@ -685,3 +685,28 @@ svg.cal .today { stroke: var(--counter); stroke-width: 1.5; }
 svg.cal .today-lab { fill: var(--counter-text); font-weight: 600; }
 svg.cal .ln { stroke: var(--context); stroke-width: 2; }
 svg .dot.hollow { fill: var(--surface); stroke: var(--context-strong); stroke-width: 1.5; }
+
+/* Uuringute kast näitaja lehel: üksikud uuringud, eraldi ametlikust numbrist */
+.studies { list-style: none; padding-left: 0; gap: var(--space-4); }
+.study { display: flex; flex-direction: column; gap: var(--space-1); padding-top: var(--space-3); border-top: 1px solid var(--hairline); }
+.study:first-child { border-top: 0; padding-top: 0; }
+.study-link { font-weight: 600; }
+.study .tag { margin-left: var(--space-1); }
+
+/* Ühise saidi osade riba (sama kujundus lehel „Tehisaru ja töö“) */
+.osad { background: var(--surface-raised); border-bottom: 1px solid var(--hairline); font-size: 14px; }
+.osad .wrap { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); }
+.osad a { display: inline-flex; gap: 6px; align-items: baseline; padding: 10px 0; color: var(--ink-muted); text-decoration: none; border-bottom: 2px solid transparent; }
+.osad a b { color: var(--ink); font-weight: 600; }
+.osad a[aria-current="page"] { border-bottom-color: var(--signal); }
+.osad a[aria-current="page"] b { color: var(--signal); }
+.osad a:hover b { text-decoration: underline; }
+@media (max-width: 40rem) { .osad a span { display: none; } }
+
+/* Avalehe plokk „Kust vastus tuleb“ */
+.qgroups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: var(--space-3); }
+.qgroup { background: var(--surface-raised); border-radius: var(--radius-m); padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+.qgroup h3 { margin: 0; font-size: 17px; }
+.qgroup .plain { list-style: none; padding-left: 0; gap: 6px; }
+.qgroup .n { color: var(--ink-muted); font-weight: 400; font-variant-numeric: tabular-nums; }
+.qgroup-mol { border-top: 3px solid var(--signal); }

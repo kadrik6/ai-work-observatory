@@ -1,5 +1,7 @@
 """Lehe „Tehisaru ja töö“ generaator: ehitub repo failidest ja näitab parandatud kohti õigesti."""
+import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -96,3 +98,12 @@ def test_uuringute_lingid_viitavad_otse_allikale():
                 continue
             assert url.startswith('https://'), (u['id'], url)
             assert 'consensus.app' not in url, (u['id'], url)
+
+
+def test_uuringult_viide_seire_naitajale_ja_osade_riba(tmp_path):
+    """Ühine sait (3.11.2026): uuring viitab sama küsimuse seire näitajale, mõlemal osal on sama riba."""
+    s = ehita(tmp_path)
+    naitajad = {n["id"] for n in json.loads((LEHT.parent.parent / "tehisaru-seire" / "naitajad.json").read_text(encoding="utf-8"))["naitajad"]}
+    viited = re.findall(r'href="([a-z-]+)\.html#uuringud">Eesti number: ', s)
+    assert viited and set(viited) <= naitajad
+    assert '<nav class="osad"' in s and 'href="index.html"><b>Mida mõõdetakse</b>' in s

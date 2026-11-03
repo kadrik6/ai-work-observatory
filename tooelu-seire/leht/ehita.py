@@ -113,6 +113,8 @@ s=s.replace("Iga allika vastus viimases käivituses. Roheline täpp: allikas vas
 s=s.replace("</style>","  .ts-tile-value, .ts-num, .ts-tw .ts-num, .ts-block-box, .ts-big { font-family: var(--body) !important; letter-spacing: -0.01em; }\n</style>",1)
 out="<script>document.documentElement.lang=\"et\"</script>\n"+head+s
 open(B+'tehisaru-ja-too.html','w').write(out)
+# Ühise saidi versioon (seire artefaktis kõrvalfail): täisdokument, sest ainult avaleht saab raami avaldamisel.
+open(B+'tehisaru-ja-too-uhine.html','w').write('<!doctype html>\n<html lang="et">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'+head+'</head>\n<body>\n'+s+'</body>\n</html>\n')
 # eelvaade kohaliku d3-ga
 open(B+'eelvaade.html','w').write('<!doctype html><html lang="et"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">'+out.replace('https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js','d3.min.js'))
 print(len(out))

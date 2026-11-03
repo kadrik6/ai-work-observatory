@@ -72,6 +72,14 @@
   .ts-sig { color: var(--ts-signal); }
   .ts-tabs { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); border-bottom: 2px solid var(--color-fg); }
   .ts-kest { display: grid; }
+  /* Ühise saidi osade riba, sama nagu seire lehtedel (tehisaru-seire/raportid/stiil.css) */
+  .osad { display: flex; flex-wrap: wrap; gap: 0 24px; font-size: 14px; border-bottom: 1px solid var(--color-border-line); }
+  .osad a { display: inline-flex; gap: 6px; align-items: baseline; padding: 10px 0; color: var(--color-fg-muted); text-decoration: none; border-bottom: 2px solid transparent; }
+  .osad a b { color: var(--color-fg); font-weight: 600; }
+  .osad a[aria-current="page"] { border-bottom-color: var(--ts-signal); }
+  .osad a[aria-current="page"] b { color: var(--ts-signal); }
+  .osad a:hover b { text-decoration: underline; }
+  @media (max-width: 40rem) { .osad a span { display: none; } }
   .ts-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; padding-block: 8px 16px; border-bottom: 1px solid var(--color-border-line); }
   .ts-brand { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px; }
   .ts-brand-nimi { font-family: var(--font-anthropic-serif); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
@@ -338,6 +346,7 @@
 
 <div class="ts">
   <div class="ts-kest">
+  <nav class="osad" aria-label="Saidi osad"><a href="index.html"><b>Mida mõõdetakse</b> <span>ametlik statistika</span></a><a href="tehisaru-ja-too.html" aria-current="page"><b>Mida uuritakse</b> <span>uuringud ja raportid</span></a></nav>
   <header class="ts-top">
     <p class="ts-brand"><span class="ts-brand-nimi">Tehisaru ja töö</span> <span class="ts-brand-sub">Uuringud ja ametlik statistika</span></p>
     <div class="ts-top-r">
