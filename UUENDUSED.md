@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-03 | Seire andmed 3.11.2026: 7 uut 2025. aasta T&A kulu numbrit (rd_e_gerdtot); ILO SDMX andis kohalikult 403, vanad read alles |
 | 2026-11-03 | TOOELU: `tee_leiud.py` töötab jälle Python 3.10-ga. Üks f-string kasutas sees samu jutumärke, mida 3.10 ei luba, ja GitHub Actionsi 3.10 test kukkus 2.11 alates. Leht ise ei muutunud. |
 | 2026-11-02 | TOOELU leiud: allikate topeltkontrolli parandused. Dell'Acqua jt 2023: „19% väiksema tõenäosusega õige“ asemel „19 protsendipunkti võrra harvem õige“. Teutloff jt viitab DOI-le 10.1016/j.jebo.2024.106845, Kim jt SSRN DOI-le 10.2139/ssrn.6513481 (HBS-i kokkuvõte lisalingina, uus väli lisa_url). GDS-i raporti otselink jäi muutmata, sest raporti aadressis on turvakontrolli keelatud sõna. Uus test kontrollib, et uuringute lingid ei ole vahendajalingid. |
 | 2026-11-02 | TOOELU leht: külgedel on rohkem vaba ruumi. Vahe kasvab ekraani laiusega: telefonis 20 px, arvutis kuni 64 px. |
