@@ -273,7 +273,7 @@ eesti2 = f'''          <div class="ts-head-sm">
 vread = []
 for v in L['vastuolud']:
     lingid = ', '.join(f'<a href="{e(U[i]["url"])}" target="_blank" rel="noopener">{e(U[i]["autorid"].split(",")[0].split(";")[0].split(" (")[0])} {U[i]["aasta"]}</a>' for i in v['uuringud'])
-    vread.append(f'<tr><td><span class="ts-t-name">{e(v["mis"])}</span><span class="ts-t-sub">{lingid}</span></td><td><span class="ts-tag{' ts-tag-tugev' if v.get('staatus') == 'selgitatud' else ''}">{e(v.get('staatus', 'selgitamata'))}</span> {e(v["miks"])}</td></tr>')
+    vread.append(f'<tr><td><span class="ts-t-name">{e(v["mis"])}</span><span class="ts-t-sub">{lingid}</span></td><td><span class="ts-tag{" ts-tag-tugev" if v.get("staatus") == "selgitatud" else ""}">{e(v.get("staatus", "selgitamata"))}</span> {e(v["miks"])}</td></tr>')
 
 meetodid = ''.join(f'<li><b>{K_NIMI[KINDLUS[m]]}, {M_NIMI[m]}.</b> {e(t)}</li>' for m, t in L['meetodid'].items())
 kp = L['kontrollitud']
