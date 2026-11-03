@@ -1,6 +1,6 @@
 name: seire
 
-# Ajastatud kogumine (kord päevas). Ainult lugemisõigus: repo, main, avaldatud lehed ja prognoosid ei muutu.
+# Ajastatud kogumine (kord päevas): uued tööd (tooelu-seire) ja statistika uued numbrid (tehisaru-seire). Ainult lugemisõigus: repo, main, avaldatud lehed ja prognoosid ei muutu.
 # Kandidaadid jäävad käivituse artefakti (90 päeva). Duplikaatide ja versioonide võrdluseks laeb eelmise
 # eduka käivituse artefakti (vajab ainult actions: read).
 
@@ -20,7 +20,7 @@ concurrency:
 jobs:
   kogu:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -43,6 +43,14 @@ jobs:
           python tooelu-seire/proov.py --valjund valjund $eelmine --paevi 30
           # 30 päeva: OpenAlex indekseerib töid hilinemisega; kordused eemaldab duplikaatide kontroll.
           # valjund/nahtud.jsonl (kõik seni nähtud, viimase seisuga) läheb edasi järgmisele käivitusele artefaktis.
+      - name: Statistika värskendus (Tehisaru 2027 allikad; lehte ei muuda)
+        if: always()
+        working-directory: tehisaru-seire
+        run: |
+          python run.py
+          python kataloog/lae_valis.py
+          python kataloog/uued_numbrid.py --valjund ../valjund/uued-numbrid
+          echo "UUED_NUMBRID $(python -c 'import json;print(len(json.load(open("../valjund/uued-numbrid/uued-numbrid.json"))))')"
       - name: Kirjed logisse (ülevaatelehe jaoks; repo privaatne, ainult pealkiri, link ja kuupäevad)
         if: always()
         run: |
@@ -61,7 +69,9 @@ jobs:
           PY
       - name: Kokkuvõte
         if: always()
-        run: cat valjund/kokkuvote.md >> "$GITHUB_STEP_SUMMARY" || true
+        run: |
+          cat valjund/kokkuvote.md >> "$GITHUB_STEP_SUMMARY" || true
+          cat valjund/uued-numbrid/uued-numbrid.md >> "$GITHUB_STEP_SUMMARY" || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
