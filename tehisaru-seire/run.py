@@ -9,6 +9,7 @@ Tulemused:
     andmed/<id>.csv         andmed tabelina
     andmed/<id>.meta.json   metaandmed: allikas, värskus, kontrollid
     andmed/muutused.csv     iga muutunud väärtus koos kuupäevaga
+    andmed/el27.csv         ELi kaardi jaoks iga näitaja viimane aasta kõigi 27 riigi kohta
     kaardid/<id>.md         numbrikaart
     kaardid/<id>.svg        graafik
     kaardid/README.md       avaleht kõigi näitajatega
@@ -27,6 +28,8 @@ JUUR = Path(__file__).parent
 ANDMED = JUUR / "andmed"
 KAARDID = JUUR / "kaardid"
 MUUTUSED = ANDMED / "muutused.csv"
+EL27 = ANDMED / "el27.csv"  # ELi kaardi jaoks: iga näitaja viimane aasta kõigi 27 riigi kohta
+KAARDI_VAHEMALT = 20  # kaardi aasta peab olema vähemalt nii mitme riigi kohta olemas
 VALJAD = ["geo", "time", "vaartus", "margend"]
 
 
@@ -69,6 +72,14 @@ def loe_muutused(naitaja_id):
         return [m for m in csv.DictReader(f) if m["naitaja"] == naitaja_id]
 
 
+def paringu_filtrid(naitaja):
+    """Filtrid päringu jaoks. Valikuline "alates" piirab aegrida (pikkade aegridade puhul, nt T&A kulud 1980-st)."""
+    filtrid = dict(naitaja["filtrid"])
+    if naitaja.get("alates"):
+        filtrid["sinceTimePeriod"] = str(naitaja["alates"])
+    return filtrid
+
+
 def tootle(naitaja, riigid, andmed, tana, riiklik=None, riikliku_viga=None):
     """Üks näitaja algusest lõpuni: andmed → kontroll → usaldus → kaart.
 
@@ -97,7 +108,7 @@ def tootle(naitaja, riigid, andmed, tana, riiklik=None, riikliku_viga=None):
         "naitaja": naitaja["id"],
         "andmestiku_nimi": andmed.get("label", ""),
         "naitaja_nimi": "; ".join(moodete_nimed.get(n, {}).get(k, k) for n, k in naitaja["filtrid"].items()),
-        "url": eurostat.koosta_url(naitaja["andmestik"], naitaja["filtrid"], riigid),
+        "url": eurostat.koosta_url(naitaja["andmestik"], paringu_filtrid(naitaja), riigid),
         "allikas_uuendas": uuendatud.isoformat(),
         "kontrollitud": tana,
         "varskus": varskus,
@@ -136,6 +147,32 @@ def tootle(naitaja, riigid, andmed, tana, riiklik=None, riikliku_viga=None):
         "vigu": sum(p["tase"] == "viga" for p in probleemid),
         "hoiatusi": sum(p["tase"] == "hoiatus" for p in probleemid),
     }
+
+
+def kaardi_read(naitaja, andmed):
+    """Kaardi read: viimane aasta, mille kohta on vähemalt KAARDI_VAHEMALT riigi number."""
+    read = [r for r in eurostat.json_stat_ridadeks(andmed) if r["vaartus"] is not None]
+    aastad = sorted({r["time"] for r in read if sum(x["time"] == r["time"] for x in read) >= KAARDI_VAHEMALT})
+    if not aastad:
+        return []
+    return [{"naitaja": naitaja["id"], "geo": r["geo"], "time": r["time"], "vaartus": r["vaartus"], "margend": r["margend"]}
+            for r in sorted(read, key=lambda r: r["geo"]) if r["time"] == aastad[-1]]
+
+
+def lae_kaart(naitaja, riigid):
+    """Laadib kaardi jaoks kõigi ELi riikide kaks viimast aastat. Viga ei peata seiret."""
+    filtrid = dict(naitaja["filtrid"], lastTimePeriod="2")
+    try:
+        return kaardi_read(naitaja, eurostat.lae(naitaja["andmestik"], filtrid, riigid)), None
+    except Exception as viga:  # võrk või muutunud andmestik
+        return [], f"ELi kaardi andmeid ei õnnestunud laadida: {viga}"
+
+
+def salvesta_kaart(read):
+    with open(EL27, "w", encoding="utf-8", newline="") as f:
+        kirjutaja = csv.DictWriter(f, fieldnames=["naitaja", "geo", "time", "vaartus", "margend"], lineterminator="\n")
+        kirjutaja.writeheader()
+        kirjutaja.writerows(read)
 
 
 def uuri(andmestik):
@@ -188,14 +225,27 @@ def main():
     seadistus = loe_seadistus()
     tana = date.today().isoformat()
     kokkuvotted = []
+    kaart_read = []
+    vanad_kaart = {}
+    if EL27.exists():
+        with open(EL27, encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                vanad_kaart.setdefault(r["naitaja"], []).append(r)
     for naitaja in seadistus["naitajad"]:
         print(f"Laadin: {naitaja['nimi']} ({naitaja['andmestik']})")
-        andmed = eurostat.lae(naitaja["andmestik"], naitaja["filtrid"], seadistus["riigid"])
+        andmed = eurostat.lae(naitaja["andmestik"], paringu_filtrid(naitaja), seadistus["riigid"])
         riiklik, riikliku_viga = lae_riiklik(naitaja)
         kokkuvote = tootle(naitaja, seadistus["riigid"], andmed, tana, riiklik, riikliku_viga)
         print(f"    Eesti {kokkuvote['aasta']}: {kokkuvote['eesti']} · staatus {kokkuvote['staatus']} · vigu {kokkuvote['vigu']} · hoiatusi {kokkuvote['hoiatusi']}")
         kokkuvotted.append(kokkuvote)
+        if seadistus.get("kaardi_riigid"):
+            uued, viga = lae_kaart(naitaja, seadistus["kaardi_riigid"])
+            if viga:
+                print(f"    {viga} Jätan eelmised kaardi andmed alles.")
+            kaart_read.extend(uued or vanad_kaart.get(naitaja["id"], []))
 
+    if seadistus.get("kaardi_riigid"):
+        salvesta_kaart(kaart_read)
     (KAARDID / "README.md").write_text(kaart.koosta_avaleht(kokkuvotted), encoding="utf-8")
     print("\nValmis. Ava kaardid/README.md")
     return 1 if any(k["vigu"] for k in kokkuvotted) else 0

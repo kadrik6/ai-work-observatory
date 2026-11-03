@@ -18,6 +18,8 @@ python3 raportid/koosta.py    # ehita raport kausta raportid/html/
   võrreldavusklassi enne, kui seda kuskil võrreldakse.
 
 ## Raport
+- Kõik lehed, graafikud ja tabelid järgivad projekti disaini- ja infokvaliteedi nõudeid (30.10.2026). Need on projekti
+  dokumendis `kirjeldused/disaini-ja-infokvaliteedi-nouded.md`, mis repo ei kuulu. Kui see pole sulle kättesaadav, küsi Kadrilt.
 - Visuaal enne teksti: graafik ja üks lause, detailid lahti klõpsates. Leht peab olema 5 minutiga mõistetav.
 - Fotosid repos pole. Raport ehitub ilma nendeta; avaldamiseks pane fotod kohapeal kausta `raportid/fotod/`.
 - `tests/test_raport_kuld.py` kukub, kui raporti KOOD muudab lehti. Andmete muutus seda testi ei kuku.

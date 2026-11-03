@@ -644,3 +644,44 @@ main .hero-photo + .wrap { padding-top: var(--space-5); }
 :root[data-theme="dark"] { --bar-ctx: #8c8c8c; }
 .bars .bar, .mbars .bar { background: var(--bar-ctx); }
 .bars .is-ref .bar { background: var(--context-strong); }
+
+/* Sihid (3.11.2026): katkendjoonega tulp ja joon. Siht ei ole riik, seepärast ilma täiteta. */
+.bars .is-target .lab, .bars .is-target .val { color: var(--ink); font-weight: 600; }
+.bars .is-target .bar { background: transparent; border: 2px dashed var(--context-strong); border-left: 0; box-sizing: border-box; }
+svg .target { stroke: var(--context-strong); stroke-width: 1.5; stroke-dasharray: 6 4; }
+svg .target-lab { fill: var(--ink); font-weight: 600; paint-order: stroke; stroke: var(--surface-raised); stroke-width: 4px; stroke-linejoin: round; }
+
+/* ELi kaart (3.11.2026): üks toon, viis heledusastet. Eesti on tumeda piirjoonega. */
+.map-pick { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-4) 0; }
+.map-pick button { font: inherit; font-size: 15px; padding: 8px 14px; border-radius: var(--radius-pill); border: 1px solid var(--control-border); background: var(--surface); color: var(--ink); cursor: pointer; }
+.map-pick button[aria-pressed="true"] { background: var(--signal); border-color: var(--signal); color: var(--on-signal); font-weight: 600; }
+.map-pick button:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
+.map-fig { margin: 0 0 var(--space-5); }
+.map-fig[hidden] { display: none; }
+svg.eumap { display: block; width: 100%; max-width: 620px; height: auto; margin-top: var(--space-4); }
+.map-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+svg.eumap use { stroke: var(--surface); stroke-width: 0.6; stroke-linejoin: round; }
+svg.eumap use.bg { fill: var(--surface); stroke: var(--hairline); }
+svg.eumap use.na { fill: var(--surface); stroke: var(--control-border); stroke-dasharray: 2 2; }
+svg.eumap use.c0 { fill: var(--signal); fill-opacity: 0.14; }
+.map-legend i.c0 { background: var(--signal); opacity: 0.14; }
+svg.eumap use.c1 { fill: var(--signal); fill-opacity: 0.32; }
+.map-legend i.c1 { background: var(--signal); opacity: 0.32; }
+svg.eumap use.c2 { fill: var(--signal); fill-opacity: 0.52; }
+.map-legend i.c2 { background: var(--signal); opacity: 0.52; }
+svg.eumap use.c3 { fill: var(--signal); fill-opacity: 0.74; }
+.map-legend i.c3 { background: var(--signal); opacity: 0.74; }
+svg.eumap use.c4 { fill: var(--signal); fill-opacity: 1; }
+.map-legend i.c4 { background: var(--signal); opacity: 1; }
+svg.eumap use.ee { stroke: var(--ink); stroke-width: 2; }
+svg.eumap use:hover { stroke: var(--ink); stroke-width: 1.5; }
+.map-legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); list-style: none; margin: var(--space-3) 0 0; padding: 0; font-size: 14px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.map-legend li { display: flex; align-items: center; gap: 6px; }
+.map-legend i { display: inline-block; width: 18px; height: 12px; border-radius: 3px; }
+.map-legend i.na { background: var(--surface); border: 1px dashed var(--control-border); opacity: 1; }
+
+/* Kalender (3.11.2026) */
+svg.cal .today { stroke: var(--counter); stroke-width: 1.5; }
+svg.cal .today-lab { fill: var(--counter-text); font-weight: 600; }
+svg.cal .ln { stroke: var(--context); stroke-width: 2; }
+svg .dot.hollow { fill: var(--surface); stroke: var(--context-strong); stroke-width: 1.5; }

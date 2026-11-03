@@ -76,7 +76,18 @@
         }
       ],
       "filtrid_kontrollitud_kuupaev": "2026-10-27",
-      "vastuolu_selgitus": "Eurostati 23,4% ja Statistikaameti 22,2% (uudises ümardatud 22%) kirjeldavad sama küsitlust, aga põhjus on veel kinnitamata. Üks võimalik põhjus on erinev tegevusalade kogum: Eurostat jätab välja põllumajanduse, kaevandamise ja finantssektori, Statistikaameti \"kõik tegevusalad\" ei pruugi neid välja jätta. Aastatel 2021–2024 erinevad allikad kõige rohkem 0,1 protsendipunkti, seega ei seleta see üksi 2025. aasta vahet. Kinnitamiseks tuleks küsida Statistikaametilt. Statistikaametil on juba 2026. aasta number (34,1%), Eurostatis seda veel pole. 2026. aasta tabel kasutab uut tegevusalade klassifikaatorit EMTAK 2025, nii et võrdlus varasemate aastatega pole täpne."
+      "vastuolu_selgitus": "Eurostati 23,4% ja Statistikaameti 22,2% (uudises ümardatud 22%) kirjeldavad sama küsitlust, aga põhjus on veel kinnitamata. Üks võimalik põhjus on erinev tegevusalade kogum: Eurostat jätab välja põllumajanduse, kaevandamise ja finantssektori, Statistikaameti \"kõik tegevusalad\" ei pruugi neid välja jätta. Aastatel 2021–2024 erinevad allikad kõige rohkem 0,1 protsendipunkti, seega ei seleta see üksi 2025. aasta vahet. Kinnitamiseks tuleks küsida Statistikaametilt. Statistikaametil on juba 2026. aasta number (34,1%), Eurostatis seda veel pole. 2026. aasta tabel kasutab uut tegevusalade klassifikaatorit EMTAK 2025, nii et võrdlus varasemate aastatega pole täpne.",
+      "sihid": [
+        {
+          "riik": "EE",
+          "aasta": 2030,
+          "vaartus": 75,
+          "allikas": "Eesti digiühiskonna arengukava 2035",
+          "url": "https://valitsus.ee/sites/default/files/documents/2026-06/DYAK%202035%20arengukava.pdf",
+          "markus": "Arengukava mõõdab sihti Statistikaameti numbriga (kõik tegevusalad), mitte Eurostati ELiga võrreldava numbriga. Sama siht on 75% avaliku sektori asutuste kohta.",
+          "kontrollitud": "2026-11-03"
+        }
+      ]
     },
     {
       "id": "inimeste-tehisaru-kasutus",
@@ -212,7 +223,18 @@
         "Ei mõõda tehisaru oskusi eraldi.",
         "Statistikaamet ei avalda seda koondnäitajat oma andmebaasis (otsitud 27.10.2026), nii et teist allikat pole."
       ],
-      "teised_allikad": []
+      "teised_allikad": [],
+      "sihid": [
+        {
+          "riik": "EU27_2020",
+          "aasta": 2030,
+          "vaartus": 80,
+          "allikas": "ELi digikümnendi poliitikaprogramm 2030, otsus (EL) 2022/2481, artikkel 4",
+          "url": "https://eur-lex.europa.eu/eli/dec/2022/2481/oj",
+          "markus": "Siht on ELi kui terviku kohta, mitte iga riigi kohta eraldi.",
+          "kontrollitud": "2026-11-03"
+        }
+      ]
     }
   ]
 }
