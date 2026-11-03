@@ -18,6 +18,8 @@ from pathlib import Path
 KULD = Path(__file__).resolve().parent
 JUUR = KULD.parent.parent
 SISEND = KULD / "sisend"
+# Ühise saidi teise osa (Tehisaru ja töö) uuringud, külmutatud. Koopias läheb see kõrvalkausta tooelu-seire/.
+SISEND_TOOELU = KULD / "sisend-tooelu"
 VIITED = KULD / "viited.json"
 KUUPAEV = "2026-10-27"  # sisendi seis; lehtedel on kirjas „Uuendatud“ selle kuupäevaga
 # Andmefailid ja fotod, mis koopias asendatakse külmutatud sisendiga. Kõik muu (kood, stiil) võetakse päris kaustast.
@@ -55,6 +57,7 @@ def ehita(siht):
         for p in koopia.glob(muster):
             shutil.rmtree(p) if p.is_dir() else p.unlink()
     shutil.copytree(SISEND, koopia, dirs_exist_ok=True)
+    shutil.copytree(SISEND_TOOELU, siht / "tooelu-seire")
     subprocess.run([sys.executable, "-I", "-c", KAIVITA, KUUPAEV], cwd=koopia, check=True, capture_output=True)
     valja = koopia / "raportid" / "html"
     return {p.relative_to(valja).as_posix(): rasi(p) for p in sorted(valja.rglob("*")) if p.is_file()}

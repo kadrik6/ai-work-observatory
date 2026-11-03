@@ -13,6 +13,12 @@ Kataloog jagab kogu seire statistika teemadeks ja paneb sama küsimuse kohta eri
 | `moodikud.csv` | üks allikas oma määratlusega: populatsioon, ühik, periood, klassifikaator, võrreldavus, olek | Statistikaamet IT149, „sama mõõdik“ |
 | `vaatlused-api.csv`, `vaatlused-muud.csv` | number riigi ja aasta kohta | sa-it149, EE, 2025, 22.2 |
 
+## Uuringud küsimuste juures
+
+`uuringud.csv` seob küsimuse (`moisted.csv` id) uuringuga failist `tooelu-seire/leiud.json` (uuringu id). Veerg `seos` ütleb ühe lausega, mida uuring numbrile lisab. Uuringu andmeid (autor, aasta, meetod, leid) siia ei kopeerita, need loetakse failist `leiud.json`.
+
+Uuring on väide, mitte mõõdik: seda ei panda kunagi samale joonisele ega samasse tabelisse kui ametlikku numbrit. Seireraportis on see näitaja lehel eraldi kastis „Mida uuringud ütlevad“. Ühe küsimuse juures on kuni 3 uuringut, faili järjekorras. Test `tests/test_uuringud.py` kontrollib, et iga id on olemas.
+
 Seire põhinäitaja (Eurostat `isoc_eb_ai`) numbreid kataloogi ei kopeerita. Need loetakse otse failist `andmed/<näitaja>.csv` (mõõdiku veerg `naitaja`).
 
 Teemad: tehisaru kasutus, andmed ja digitaristu, oskused, tööturg, haridus ja teadus, investeeringud.

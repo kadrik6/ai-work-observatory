@@ -28,6 +28,38 @@ M_NIMI = {'katse': 'juhuslik katse', 'loomulik_katse': 'loomulik katse', 'regist
           'ekspertintervjuud': 'ekspertintervjuud', 'prognoos': 'prognoos või ootus, mitte mõõtmine'}
 e = html.escape
 
+# Ühine sait (Kadri otsus 3.11.2026): uuringu juurest viide seire näitajale, kui sama küsimuse kohta on Eesti number.
+# Seos tuleb ühise kihi failist tehisaru-seire/kataloog/uuringud.csv. Seire lehed on samas artefaktis kõrval.
+import csv  # noqa: E402
+SEIRE = os.path.join(os.path.dirname(TS.rstrip('/')), 'tehisaru-seire') + '/'
+
+
+def seire_viited():
+    """uuringu id -> [(seire lehe fail, näitaja nimi)]; tühi, kui seire kausta pole."""
+    try:
+        with open(SEIRE + 'kataloog/moodikud.csv', encoding='utf-8-sig', newline='') as f:
+            moodikud = {r['id']: r for r in csv.DictReader(f)}
+        with open(SEIRE + 'kataloog/moisted.csv', encoding='utf-8-sig', newline='') as f:
+            alus = {r['id']: r['vordlusalus'] for r in csv.DictReader(f)}
+        with open(SEIRE + 'kataloog/uuringud.csv', encoding='utf-8', newline='') as f:
+            seosed = list(csv.DictReader(f))
+        nimed = {n['id']: n['nimi'] for n in json.load(open(SEIRE + 'naitajad.json', encoding='utf-8'))['naitajad']}
+    except (OSError, ValueError, KeyError):
+        return {}  # seire kausta pole või fail on vigane: leht ehitub ilma viideteta
+    viited = {}
+    for r in seosed:
+        nid = moodikud.get(alus.get(r['kusimus'], ''), {}).get('naitaja', '')
+        if nid in nimed and (nid + '.html', nimed[nid]) not in viited.get(r['uuring'], []):
+            viited.setdefault(r['uuring'], []).append((nid + '.html', nimed[nid]))
+    return viited
+
+
+SEIRE_VIITED = seire_viited()
+
+
+def seire_link(i):
+    return ''.join(f' · <a href="{e(f)}#uuringud">Eesti number: {e(nimi)}</a>' for f, nimi in SEIRE_VIITED.get(i, []))
+
 
 def arv(x, koma=1):
     s = f'{abs(x):.{koma}f}'.rstrip('0').rstrip('.') if isinstance(x, float) else str(abs(x))
@@ -45,7 +77,7 @@ def tabel(ids, pealkiri='Uuringud selle vastuse taga'):
     for i in ids:
         u = U[i]
         read.append(f'''<tr><td><a class="ts-t-name" href="{e(u['url'])}" target="_blank" rel="noopener">{e(u['pealkiri'])}</a>
-<span class="ts-t-sub">{e(u['autorid'])} · {e(u['kanal'])} · {e(u['avaldatud'])}{f' · <a href="{e(u["lisa_url"])}" target="_blank" rel="noopener">{e(u.get("lisa_nimi", "lisalink"))}</a>' if u.get('lisa_url') else ''}</span></td>
+<span class="ts-t-sub">{e(u['autorid'])} · {e(u['kanal'])} · {e(u['avaldatud'])}{f' · <a href="{e(u["lisa_url"])}" target="_blank" rel="noopener">{e(u.get("lisa_nimi", "lisalink"))}</a>' if u.get('lisa_url') else ''}{seire_link(i)}</span></td>
 <td><p class="ts-leid">{e(u['leid'])}</p><p class="ts-leid-meta">{silt(u)}<span class="ts-t-sub">{e(u['kus'])}: {e(u['valim'])}</span></p></td></tr>''')
     return f'''<details class="ts-details">
           <summary>{pealkiri} ({len(ids)})</summary>

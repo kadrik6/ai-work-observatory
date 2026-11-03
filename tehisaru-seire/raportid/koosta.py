@@ -40,6 +40,14 @@ RIIGID = {
     "SI": "Sloveenia", "SK": "Slovakkia",
 }
 FOOKUS = "EE"
+# Uuringud tulevad suuna „Tehisaru ja töö“ failist. Kui faili pole (nt ainult seire kaust), jääb kast ära.
+LEIUD = JUUR.parent / "tooelu-seire" / "leiud.json"
+TOOELU_LEHT = "tehisaru-ja-too.html"  # ühise saidi teine osa, avaldatakse samas artefaktis
+UURINGUID_KUNI = 3
+TOEND = {"tugev": "Tugev tõend", "keskmine": "Keskmine tõend", "nork": "Nõrk tõend", "prognoos": "Prognoos"}
+MEETOD = {"katse": "juhuslik katse", "loomulik_katse": "loomulik katse", "registriandmed": "registri- või platvormiandmed",
+          "kirjeldav": "kirjeldav analüüs", "kusitlus": "küsitlus", "hinnang": "hinnang ülesannete kohta",
+          "mudel": "majandusmudel", "ekspertintervjuud": "ekspertintervjuud", "prognoos": "prognoos, mitte mõõtmine"}
 VIIDE = "EU27_2020"
 MARGENDID = {"b": "aegrea katkestus", "p": "esialgne", "e": "hinnang", "u": "ebausaldusväärne", "c": "konfidentsiaalne"}
 # Kolm taset: ülevaade (vastus) -> näitaja leht (number ja usaldus) -> teemad ja metoodika.
@@ -138,7 +146,31 @@ def lae():
         "el27": loe_csv(JUUR / "andmed" / "el27.csv"),
         "sarnased": loe_csv(SIIN / "sarnased.csv"),
         "lugejad": loe_csv(SIIN / "lugejad.csv"),
+        "uuringud": lae_uuringud(),
     }
+
+
+def lae_uuringud():
+    """Küsimuse id -> uuringud (leiud.json kirje + veerg seos), faili kataloog/uuringud.csv järjekorras."""
+    seosed = JUUR / "kataloog" / "uuringud.csv"
+    if not LEIUD.exists() or not seosed.exists():
+        return {}
+    try:
+        L = loe_json(LEIUD)
+        U = {u["id"]: u for u in L["uuringud"]}
+    except (ValueError, KeyError, TypeError) as viga:
+        # Teise osa vigane fail ei tohi peatada ametliku statistika lehti: kast jääb lihtsalt ära.
+        print(f"Hoiatus: {LEIUD} ei ole loetav ({viga}), uuringute kaste ei tehta.", file=sys.stderr)
+        return {}
+    tugevus = {m: k for k, ms in L.get("kindlus", {}).items() for m in ms}
+    tulem = {}
+    for r in loe_csv(seosed):
+        u = U.get(r["uuring"])
+        if u is None:
+            print(f"Hoiatus: uuringud.csv viitab uuringule {r['uuring']}, mida leiud.json-is pole.", file=sys.stderr)
+            continue
+        tulem.setdefault(r["kusimus"], []).append({**u, "seos": r["seos"], "toend": tugevus.get(u["meetod"], "")})
+    return tulem
 
 
 def andmeprobleemid(x):
@@ -218,6 +250,22 @@ IKOON_KUU = ('<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"
              'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>')
 
 
+# Ühise saidi kaks osa (Kadri otsus 3.11.2026). Sama riba on lehel „Tehisaru ja töö“ (tooelu-seire/leht/mall.html).
+KOHAL = ' aria-current="page"'
+OSAD = [("mootmine", "index.html", "Mida mõõdetakse", "ametlik statistika"),
+        ("uuringud", TOOELU_LEHT, "Mida uuritakse", "uuringud ja raportid")]
+
+
+def osade_riba(praegu):
+    """Riba lehe kohal, mis vahetab saidi osa. Ilma teise osata (leiud.json puudub) riba pole."""
+    if not LEIUD.exists():
+        return ""
+    lingid = "".join(
+        f'<a href="{f}"{KOHAL if k == praegu else ""}><b>{e(nimi)}</b> <span>{e(selg)}</span></a>'
+        for k, f, nimi, selg in OSAD)
+    return f'<nav class="osad" aria-label="Saidi osad"><div class="wrap">{lingid}</div></nav>'
+
+
 def leht(fail, pealkiri, sisu, uuendatud, ylal=""):
     praegune = ' aria-current="page"'
     nav = "".join(
@@ -236,7 +284,8 @@ def leht(fail, pealkiri, sisu, uuendatud, ylal=""):
     )
     keha = (
         '<a class="skip" href="#sisu">Liigu sisu juurde</a>'
-        '<header class="top"><div class="wrap">'
+        + osade_riba("mootmine")
+        + '<header class="top"><div class="wrap">'
         '<a class="mark" href="index.html">Tehisaru seire</a>'
         f'<nav aria-label="Raporti lehed"><ul class="nav">{nav}</ul></nav>'
         f'<div class="top-tools"><span class="updated">Uuendatud {kuupaev(uuendatud)}</span>'
@@ -854,6 +903,45 @@ def kaart(x, c, K):
 
 # ---------- lehed ----------
 
+def kusimuse_naitaja(K, mid):
+    """Küsimuse seire näitaja id võrdlusaluse mõõdiku kaudu (sama reegel nagu lehel „Tehisaru ja töö“), või ""."""
+    return K["moodikud"].get(K["moisted"][mid]["vordlusalus"], {}).get("naitaja", "")
+
+
+# Avalehe plokk „Kust vastus tuleb“: rühm ütleb, kui kaugel on ametlik number; uuringute arv on iga küsimuse juures.
+NUMBRI_OLEK = [
+    ("seires", "Seire näitaja", "Number, usaldus ja uuringud on näitaja lehel."),
+    ("andmed", "Numbrid kataloogis", "Numbrid on teemade lehel, eraldi näitajat veel pole."),
+    ("kavandatud", "Allikas teada, andmed laadimata", "Ametlik allikas on leitud, aga seire ei lae seda veel."),
+    ("allikas_leidmata", "Ametlikku allikat pole leitud", "Võrreldavat ametlikku numbrit pole veel leitud."),
+]
+
+
+def kusimuste_kaart(D, K):
+    """Iga kataloogi küsimus täpselt ühes rühmas võrdlusaluse oleku järgi, juures seotud uuringute arv."""
+    lehed = {x["n"]["id"]: fail_naitajale(x) for x in D["naitajad"]}
+    ryhmad = {k: [] for k, _, _ in NUMBRI_OLEK}
+    for mid, mo in K["moisted"].items():
+        nid = kusimuse_naitaja(K, mid)
+        olek = "seires" if nid in lehed else K["moodikud"].get(mo["vordlusalus"], {}).get("olek", "allikas_leidmata")
+        olek = olek if olek in ryhmad else "allikas_leidmata"
+        n_uur = len(D["uuringud"].get(mid, []))
+        if nid in lehed:
+            nimi = f'<a href="{lehed[nid]}">{e(mo["nimi"])}</a>'
+            uur = f' · <a class="n" href="{lehed[nid]}#uuringud">{n_uur} uuring{"ut" if n_uur > 1 else ""}</a>' if n_uur else ""
+        else:
+            nimi = f'<a href="teemad.html#{e(mid)}">{e(mo["nimi"])}</a>'
+            uur = f' · <a class="n" href="{TOOELU_LEHT}">{n_uur} uuring{"ut" if n_uur > 1 else ""}</a>' if n_uur else ""
+        ryhmad[olek].append(f'<li data-kusimus="{e(mid)}">{nimi}{uur}</li>')
+    plokk = "".join(
+        f'<div class="qgroup qgroup-{k}"><h3>{e(pealk)} <span class="n">{len(ryhmad[k])}</span></h3><p class="small">{e(selg)}</p>'
+        f'<ul class="plain">{"".join(ryhmad[k])}</ul></div>'
+        for k, pealk, selg in NUMBRI_OLEK if ryhmad[k])
+    return (f'<div class="qgroups">{plokk}</div>'
+            '<p class="small">Rühm näitab, kui kaugel on ametlik number. Uuringute arv näitab, mitu uuringut on küsimusega '
+            'seotud: need on üksikud tulemused oma valimi ja meetodiga, mitte ametlik statistika, ja neid ei panda numbriga '
+            'samale joonisele.</p>')
+
 def avaleht(D, K, tana):
     NN = D["naitajad"]
     kk = kataloog.kokkuvote(K)
@@ -893,10 +981,13 @@ def avaleht(D, K, tana):
         ("teemad.html", "Teemad ja allikad", f'{kk["moisteid"]} küsimust {kk["teemasid"]} teemas, andmed {kk["moisteid_andmetega"]} kohta. Kust iga number tuleb.'),
         ("kuidas.html", "Kuidas see töötab", "Mida märgid tähendavad, seire enda nõrkused ja muudatuste logi."),
     ]
+    if D["uuringud"]:
+        edasi.insert(0, (TOOELU_LEHT, "Mida uuritakse", "Mida uuringud leiavad tehisaru mõjust tööle ja kui kindlad need leiud on."))
     edasi_html = '<ul class="edasi">' + "".join(
         f'<li><a href="{f}"><b>{e(t)} <span aria-hidden="true">→</span></b><span>{e(d)}</span></a></li>' for f, t, d in edasi) + "</ul>"
     sisu = (
         sektsioon(f"{len(NN)} näitajat ühe pilguga", tabloo, "Eesti uusimad numbrid", "tabloo")
+        + (sektsioon("Kust vastus tuleb", kusimuste_kaart(D, K), "Mõõdikud ja uuringud", "kusimused") if D["uuringud"] else "")
         + sektsioon("Mis on andmetes uut", f'<ul class="list">{uut}</ul><p><a href="kuidas.html#logi">Kogu muudatuste logi</a></p>', "Uuendused")
         + sektsioon("Kuhu edasi", edasi_html, "Süvitsi"))
     return leht("index.html", "Tehisaru seire", sisu, tana, avafoto(h1, lead, tana))
@@ -1016,6 +1107,32 @@ def kriitilise_hoiatus(x, D, K, c):
             + " ".join(osad) + ' <a href="#usaldus-kooskola">Vaata põhjendust</a></p></div>')
 
 
+def uuringute_kast(D, c):
+    """Kast „Mida uuringud ütlevad“: üksikud uuringud sama küsimuse kohta, eraldi ametlikust numbrist."""
+    if not c["moiste"]:
+        return ""
+    U = D["uuringud"].get(c["moiste"]["id"], [])[:UURINGUID_KUNI]
+    if not U:
+        return ""
+    read = []
+    for u in U:
+        tunnus = " · ".join(x for x in [
+            e(u["kus"]), e(MEETOD.get(u["meetod"], u["meetod"])),
+            "retsenseeritud" if u.get("retsenseeritud") else "retsenseerimata"] if x)
+        read.append(
+            '<li class="study">'
+            f'<p class="study-link">{e(u["seos"])}</p>'
+            f'<p class="small"><b>{e(u["autorid"])} {e(str(u["aasta"]))}</b> · {tunnus}'
+            + (f' <span class="tag">{e(TOEND[u["toend"]])}</span>' if u["toend"] in TOEND else "") + "</p>"
+            + avatav("Mida uuring leidis", f'<p>{e(u["leid"])}</p><p class="small">{linkita(u["pealkiri"], u.get("url"))}</p>')
+            + "</li>")
+    sisu = ('<p class="small">Need on üksikud uuringud, mitte ametlik statistika. Nende numbreid ei saa ülal oleva '
+            'numbriga otse võrrelda, sest kogum, aeg ja meetod on teised.</p>'
+            f'<ul class="plain studies">{"".join(read)}</ul>'
+            f'<p class="small"><a href="{TOOELU_LEHT}">Kõik uuringud lehel „Tehisaru ja töö“</a></p>')
+    return sektsioon("Mida uuringud ütlevad", sisu, "Uuringud", "uuringud")
+
+
 def naitaja_leht(x, D, K, tana):
     n, meta, a, s, c = x["n"], x["meta"], x["viimane"], x["seeria"], x["k"]
     ee, tekst = leid(x)
@@ -1083,7 +1200,7 @@ def naitaja_leht(x, D, K, tana):
     sisu = (teekond + pais(f'Näitaja · {c["ala"]["nimi"] if c["ala"] else ""}', h1, e(n["mida_see_tahendab"]))
             + f'<dl class="facts">{"".join(faktid)}</dl>' + kriitiline + oige
             + sektsioon("Võrdlus riikidega", riigid, "Riigid", "riigid")
-            + uuemad_plokk(x, c) + ajas_plokk(x, c, K) + usaldus
+            + uuemad_plokk(x, c) + ajas_plokk(x, c, K) + usaldus + uuringute_kast(D, c)
             + sektsioon("Andmed ja määratlus", lisad, "Detailid", "detailid"))
     return leht(fail_naitajale(x), f'{n["nimi"]} · Tehisaru seire', sisu, tana)
 
