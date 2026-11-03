@@ -65,6 +65,16 @@ def test_osade_riba_on_igal_lehel_ja_lingid_viivad_olemasolevale_lehele(tmp_path
     lehed = {p.name for p in tmp_path.glob("*.html")} | {koosta.TOOELU_LEHT}
     for p in tmp_path.glob("*.html"):
         s = p.read_text(encoding="utf-8")
-        assert 'aria-current="page"><b>Mida mõõdetakse' in s, p.name
+        osa = "Mida väidetakse" if p.name == koosta.VAITED_LEHT else "Mida mõõdetakse"
+        assert f'aria-current="page"><b>{osa}' in s, p.name
+        assert s.count('aria-current="page"><b>') == 1, p.name
         for siht in re.findall(r'href="([a-z0-9-]+\.html)', s):
             assert siht in lehed, f"{p.name} viitab lehele {siht}, mida pole"
+
+
+def test_tooelu_lehe_osade_riba_on_sama_mis_seires():
+    """Lehe „Tehisaru ja töö“ mall kirjutab osade riba käsitsi; see peab sisaldama samu osi samas järjekorras."""
+    mall = (koosta.JUUR.parent / "tooelu-seire" / "leht" / "mall.html").read_text(encoding="utf-8")
+    nav = re.search(r'<nav class="osad".*?</nav>', mall, re.S).group(0)
+    lingid = re.findall(r'<a href="([^"]+)"[^>]*><b>([^<]+)</b> <span>([^<]+)</span>', nav)
+    assert lingid == [(f, nimi, selg) for _, f, nimi, selg in koosta.OSAD]
