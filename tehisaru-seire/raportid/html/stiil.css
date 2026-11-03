@@ -702,7 +702,8 @@ svg .dot.hollow { fill: var(--surface); stroke: var(--context-strong); stroke-wi
 .osad a[aria-current="page"] { border-bottom-color: var(--signal); }
 .osad a[aria-current="page"] b { color: var(--signal); }
 .osad a:hover b { text-decoration: underline; }
-@media (max-width: 40rem) { .osad a span { display: none; } }
+/* Neli osa ei mahu kirjeldustega ühele reale; kirjeldus on lingi title-sildis. */
+.osad a span { display: none; }
 
 /* Avalehe plokk „Kust vastus tuleb“ */
 .qgroups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: var(--space-3); }
@@ -725,3 +726,20 @@ svg .dot.hollow { fill: var(--surface); stroke: var(--context-strong); stroke-wi
 .claim-src b { color: var(--ink); }
 ol.steps { padding-left: 1.4em; display: flex; flex-direction: column; gap: var(--space-2); }
 @media (max-width: 40rem) { .vbar { flex-direction: column; } .vb-seg { min-height: 40px; } }
+
+/* Leht „Mida otsustatakse“: ajajoon ja tähtaegade loend */
+svg.otsjoon { width: 100%; height: auto; display: block; overflow: visible; }
+svg.otsjoon .axis { stroke: var(--context-strong); stroke-width: 1.5; }
+svg.otsjoon .tick { stroke: var(--context-strong); }
+svg.otsjoon .yr { fill: var(--ink-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+svg.otsjoon .today { stroke: var(--counter); stroke-width: 2; }
+svg.otsjoon .today-lab { fill: var(--counter-text); font-size: 13px; font-weight: 600; }
+svg.otsjoon .dot.law { fill: var(--signal); }
+svg.otsjoon .dot.law-next { fill: var(--surface); stroke: var(--signal); stroke-width: 2; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px var(--space-3); align-items: center; }
+.legend .key { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: -8px; vertical-align: middle; }
+.legend .key.law { background: var(--signal); }
+.legend .key.law-next { border: 2px solid var(--signal); }
+.legend .key.hollow { border: 1.5px solid var(--context-strong); }
+.decisions h4 { margin: 0; font-size: 17px; }
+@media (max-width: 560px) { svg.otsjoon, svg.otsjoon + .legend { display: none; } }
