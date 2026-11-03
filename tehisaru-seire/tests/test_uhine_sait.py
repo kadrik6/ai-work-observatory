@@ -65,7 +65,7 @@ def test_osade_riba_on_igal_lehel_ja_lingid_viivad_olemasolevale_lehele(tmp_path
     lehed = {p.name for p in tmp_path.glob("*.html")} | {koosta.TOOELU_LEHT}
     for p in tmp_path.glob("*.html"):
         s = p.read_text(encoding="utf-8")
-        osa = "Mida väidetakse" if p.name == koosta.VAITED_LEHT else "Mida mõõdetakse"
+        osa = {koosta.VAITED_LEHT: "Mida väidetakse", koosta.OTSUSED_LEHT: "Mida otsustatakse"}.get(p.name, "Mida mõõdetakse")
         assert f'aria-current="page"><b>{osa}' in s, p.name
         assert s.count('aria-current="page"><b>') == 1, p.name
         for siht in re.findall(r'href="([a-z0-9-]+\.html)', s):

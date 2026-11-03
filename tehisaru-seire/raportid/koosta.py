@@ -57,6 +57,11 @@ HINNANGUD = {
     "Täpsustus puudu": (1, "warn", "Number vastab allikale, aga lausest puudub, keda või mida see kirjeldab."),
     "Vastab allikale": (2, "ok", "Lause ütleb sama, mida allikas."),
 }
+# Osa „Mida otsustatakse“ (3.11.2026): seaduste tähtajad ühises kihis, sihid tulevad registrist naitajad.json.
+OTSUSED = JUUR / "kataloog" / "otsused.csv"
+OTSUSED_LEHT = "otsused.html"
+KUU_NIM = ["jaanuar", "veebruar", "märts", "aprill", "mai", "juuni", "juuli", "august", "september", "oktoober",
+           "november", "detsember"]
 RASKUS = {0: ("Ütleb muud kui allikas", "risk"), 1: ("Vajab täpsustust", "warn"), 2: ("Vastab allikale", "ok")}
 TOEND = {"tugev": "Tugev tõend", "keskmine": "Keskmine tõend", "nork": "Nõrk tõend", "prognoos": "Prognoos"}
 MEETOD = {"katse": "juhuslik katse", "loomulik_katse": "loomulik katse", "registriandmed": "registri- või platvormiandmed",
@@ -303,7 +308,8 @@ IKOON_KUU = ('<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"
 KOHAL = ' aria-current="page"'
 OSAD = [("mootmine", "index.html", "Mida mõõdetakse", "ametlik statistika"),
         ("uuringud", TOOELU_LEHT, "Mida uuritakse", "uuringud ja raportid"),
-        ("vaited", VAITED_LEHT, "Mida väidetakse", "avalike lausete kontroll")]
+        ("vaited", VAITED_LEHT, "Mida väidetakse", "avalike lausete kontroll"),
+        ("otsused", OTSUSED_LEHT, "Mida otsustatakse", "seadused ja sihid")]
 
 
 def osade_riba(praegu):
@@ -311,7 +317,7 @@ def osade_riba(praegu):
     if not LEIUD.exists():
         return ""
     lingid = "".join(
-        f'<a href="{f}"{KOHAL if k == praegu else ""}><b>{e(nimi)}</b> <span>{e(selg)}</span></a>'
+        f'<a href="{f}" title="{e(selg)}"{KOHAL if k == praegu else ""}><b>{e(nimi)}</b> <span>{e(selg)}</span></a>'
         for k, f, nimi, selg in OSAD)
     return f'<nav class="osad" aria-label="Saidi osad"><div class="wrap">{lingid}</div></nav>'
 
@@ -1038,6 +1044,8 @@ def avaleht(D, K, tana):
         edasi.insert(1 if D["uuringud"] else 0,
                      (VAITED_LEHT, "Mida väidetakse",
                       f'{nv} {"avalik lause" if nv == 1 else "avalikku lauset"}, kontrollitud algallika vastu.'))
+    edasi.insert(sum(1 for f, _, _ in edasi if f in (TOOELU_LEHT, VAITED_LEHT)),
+                 (OTSUSED_LEHT, "Mida otsustatakse", "Tehisaru määruse tähtajad ja ametlikud sihid ühel ajajoonel."))
     edasi_html = '<ul class="edasi">' + "".join(
         f'<li><a href="{f}"><b>{e(t)} <span aria-hidden="true">→</span></b><span>{e(d)}</span></a></li>' for f, t, d in edasi) + "</ul>"
     sisu = (
@@ -1507,6 +1515,148 @@ def vaited_leht(D, tana):
     return leht(VAITED_LEHT, "Mida väidetakse · Tehisaru seire", sisu, tana, osa="vaited")
 
 
+def vaike_algus(t):
+    """Esitäht väikeseks lause keskel, aga lühend (VKEde, IKT) jääb nii, nagu on."""
+    return t if t[1:2].isupper() else t[:1].lower() + t[1:]
+
+
+def lae_otsused(D):
+    """Seaduste tähtajad failist otsused.csv ja näitajate sihid registrist, ajalises järjekorras.
+    Aastata siht (nt T&A 3%) läheb loendi lõppu."""
+    tulem = [{**r, "naitaja": ""} for r in loe_csv(OTSUSED)]
+    for x in D["naitajad"]:
+        n = x["n"]
+        for sh in n.get("sihid") or []:
+            uhik = n.get("uhik", "")
+            arvu = f'{arv_s(sh["vaartus"])}{uhik}' if uhik.startswith("%") else f'{arv_s(sh["vaartus"])} {uhik}'.strip()
+            kelle = "Eesti" if sh["riik"] == FOOKUS else "EL kokku" if sh["riik"] == VIIDE else riik(sh["riik"])
+            tulem.append({
+                "id": f'siht-{n["id"]}-{sh["riik"]}', "kuupaev": str(sh["aasta"]) if sh.get("aasta") else "",
+                "tapsus": "aasta" if sh.get("aasta") else "",
+                "tase": "Eesti" if sh["riik"] == FOOKUS else "EL" if sh["riik"] == VIIDE else riik(sh["riik"]),
+                "liik": "siht", "nimi": f'Siht: {vaike_algus(n["nimi"])} {arvu}',
+                "mida_tahendab": sh.get("markus", ""), "kelle_jaoks": kelle, "allikas": sh["allikas"],
+                "url": sh.get("url", ""), "kontrollitud": sh.get("kontrollitud", ""), "naitaja": n["id"]})
+    tulem.sort(key=lambda o: (o["kuupaev"] == "", o["kuupaev"]))
+    return tulem
+
+
+def otsuse_aeg(o):
+    """Kuupäev nii täpselt, kui allikas selle annab."""
+    k = o["kuupaev"]
+    if not k:
+        return "aastata"
+    if o["tapsus"] == "aasta" or len(k) == 4:
+        return f"aastaks {k[:4]}" if o["liik"] == "siht" else k[:4]
+    if o["tapsus"] == "kuu" or len(k) == 7:
+        return f"{KUU_NIM[int(k[5:7]) - 1]} {k[:4]}"
+    return kuupaev(k)
+
+
+def otsus_kehtib(o, tana):
+    """Kas tähtaeg on käes. Kuu täpsusega tähtaeg on käes alles selle kuu algusest.
+    Siht ei hakka „kehtima“: selle tähtaeg on möödas, kui sihi aasta on läbi."""
+    k = o["kuupaev"]
+    if not k:
+        return False
+    if o["liik"] == "siht" or len(k) == 4:
+        return int(k[:4]) < int(tana[:4])
+    return (k + "-01")[:10] <= tana if len(k) == 7 else k[:10] <= tana
+
+
+def murdaasta(k):
+    """Kuupäev aastaarvuna joonise jaoks (2026-08-02 -> 2026,58)."""
+    if len(k) == 4:
+        return int(k) + 0.5  # siht on aasta kohta; punkt aasta keskel, et seda ei loetaks järgmise aasta omaks
+    d = dt.date.fromisoformat((k + "-15")[:10] if len(k) == 7 else k[:10])
+    return d.year + (d.timetuple().tm_yday - 1) / 366
+
+
+def otsuste_joon(OO, tana):
+    """Ajajoon: iga tähtaeg punktina, sihid rõngana, tänane päev joonena. Sildid on loendis, mitte joonisel."""
+    oo = [o for o in OO if o["kuupaev"]]
+    if not oo:
+        return ""
+    a0 = int(min(o["kuupaev"][:4] for o in oo))
+    a1 = max(int(max(o["kuupaev"][:4] for o in oo)), int(tana[:4])) + 1
+    W, X0, X1 = 1000, 24, 976
+    x = lambda t: X0 + (t - a0) / (a1 - a0) * (X1 - X0)
+    tikid = "".join(
+        f'<line class="tick" x1="{x(a):.1f}" x2="{x(a):.1f}" y1="56" y2="64"/>'
+        f'<text class="yr" x="{x(a):.1f}" y="84" text-anchor="middle">{a}</text>' for a in range(a0, a1 + 1))
+    read, punktid = [], []  # iga rea viimase punkti x; punkt läheb madalaimasse ritta, kus see ei kattu
+    for o in oo:
+        xx = x(murdaasta(o["kuupaev"]))
+        rida = next((i for i, v in enumerate(read) if xx - v >= 14), len(read))
+        if rida == len(read):
+            read.append(xx)
+        read[rida] = xx
+        y = 44 - min(rida, 2) * 14  # üle kolme rea ei lähe; iga punkti nimi on selle title-sildis
+        klass = "dot hollow" if o["liik"] == "siht" else "dot law" if otsus_kehtib(o, tana) else "dot law-next"
+        punktid.append(f'<circle class="{klass}" cx="{xx:.1f}" cy="{y}" r="6"><title>{e(otsuse_aeg(o))}: {e(o["nimi"])}</title></circle>')
+    tx = x(murdaasta(tana))
+    tana_j = (f'<line class="today" x1="{tx:.1f}" x2="{tx:.1f}" y1="4" y2="64"/>'
+              f'<text class="today-lab" x="{tx + 6:.1f}" y="14">täna</text>')
+    silt = otsuste_loendus([o for o in oo if otsus_kehtib(o, tana)], [o for o in oo if not otsus_kehtib(o, tana)])
+    return (f'<svg class="otsjoon" viewBox="0 0 {W} 92" role="img" aria-label="Ajajoon {a0}–{a1}. {e(silt)}.">'
+            f'<line class="axis" x1="{X0}" x2="{X1}" y1="60" y2="60"/>{tikid}{tana_j}{"".join(punktid)}</svg>'
+            '<p class="small legend"><span class="key law"></span> seaduse tähtaeg, mis on käes '
+            '<span class="key law-next"></span> tulev tähtaeg <span class="key hollow"></span> siht</p>')
+
+
+def otsuse_kirje(o, D, moodas=False):
+    link = linkita(o["allikas"], o.get("url"))
+    num = (f' · <a href="{fail_naitajale(x)}">Näitaja leht</a>'
+           if o["naitaja"] and (x := next((x for x in D["naitajad"] if x["n"]["id"] == o["naitaja"]), None)) else "")
+    silt = "Siht" if o["liik"] == "siht" else "Seadus"
+    if o["liik"] == "siht" and moodas:
+        silt = "Siht, tähtaeg möödas"
+    return (f'<li class="decision"><span class="when">{e(otsuse_aeg(o))}</span><div class="body">'
+            f'<div class="row"><h4>{e(o["nimi"])}</h4><span class="tag">{e(o["tase"])} · {silt}</span></div>'
+            f'<p>{e(o["mida_tahendab"])}</p>'
+            f'<p class="small">Kelle jaoks: {e(o["kelle_jaoks"])} · Allikas: {link}{num}</p></div></li>')
+
+
+def mitu(n, ainsus, mitmus):
+    return f"{n} {ainsus if n == 1 else mitmus}"
+
+
+def otsuste_loendus(kaes, ees):
+    """Seaduste tähtajad ja sihid eraldi, sest siht ei hakka kehtima nagu seadus."""
+    def osa(L):
+        t = sum(1 for o in L if o["liik"] != "siht")
+        h = len(L) - t
+        return " ja ".join(x for x in [mitu(t, "seaduse tähtaeg", "seaduse tähtaega") if t else "",
+                                       mitu(h, "siht", "sihti") if h else ""] if x)
+    osad = [f"{nimi} {osa(L)}" for nimi, L in (("käes või möödas", kaes), ("ees", ees)) if L]
+    lause = "; ".join(osad) or "otsuseid pole"
+    return lause[:1].upper() + lause[1:]
+
+
+def otsused_leht(D, tana):
+    OO = lae_otsused(D)
+    kaes = [o for o in OO if otsus_kehtib(o, tana)]
+    ees = [o for o in OO if not otsus_kehtib(o, tana)]
+    jarg = next((o for o in ees if o["liik"] != "siht" and o["kuupaev"]), None)
+    lause = (otsuste_loendus(kaes, ees) + "."
+             + (f' Järgmine: {otsuse_aeg(jarg)}, {vaike_algus(jarg["nimi"])}.' if jarg else ""))
+    kokku = f'<div class="vsum">{otsuste_joon(OO, tana)}<p>{e(lause)}</p></div>' if OO else ""
+    loend = lambda L, m=False: f'<ol class="list decisions">{"".join(otsuse_kirje(o, D, m) for o in L)}</ol>'
+    sisu = (pais("Mida otsustatakse", "Mis on otsustatud ja millal see kehtima hakkab?",
+                 "Seadused ja ametlikud sihid, mis puudutavad tehisaru, tööd ja oskusi. Igal real on ametlik allikas.")
+            + kokku
+            + (sektsioon("Tulekul", loend(ees), "Ees", "ees") if ees else "")
+            + (sektsioon("Juba käes", loend(list(reversed(kaes)), True), "Käes", "kaes")
+               if kaes else "")
+            + sektsioon("Mida see leht ei näita",
+                        '<ul class="plain"><li>Siin on ainult vastu võetud otsused ja nende ametlikud kuupäevad, mitte ettepanekud ega lubadused.</li>'
+                        '<li>Siht ja praegune number on eri lehtedel: sihti mõõdetakse sageli teise allikaga kui ELi võrdlust, '
+                        'nii et neid ei panda siin kõrvuti. Kui sihti mõõdetakse teise numbriga, on see sihi juures kirjas.</li>'
+                        '<li>Seaduse tähtaeg näitab, millal kohustus hakkab kehtima, mitte seda, kas seda täidetakse.</li></ul>',
+                        "Piirid", "piirid"))
+    return leht(OTSUSED_LEHT, "Mida otsustatakse · Tehisaru seire", sisu, tana, osa="otsused")
+
+
 def naitaja_link(D, nid):
     x = next((x for x in D["naitajad"] if x["n"]["id"] == nid), None)
     return f'<a href="{fail_naitajale(x)}">{e(x["n"]["nimi"])}</a>' if x else e(nid)
@@ -1706,7 +1856,9 @@ def main():
              "kuidas.html": kuidas_leht(D, K, tana)}
     for x in D["naitajad"]:
         lehed[fail_naitajale(x)] = naitaja_leht(x, D, K, tana)
-    lehed[VAITED_LEHT] = vaited_leht(D, tana)  # osade riba viitab sellele igalt lehelt, ka siis, kui väiteid pole
+    # Osade riba viitab neile igalt lehelt, nii et need ehitatakse ka siis, kui väiteid või otsuseid pole.
+    lehed[VAITED_LEHT] = vaited_leht(D, tana)
+    lehed[OTSUSED_LEHT] = otsused_leht(D, tana)
     lehed.update(analuus.analuusi_leht(sys.modules[__name__], D, K, tana))
     for nimi, sisu in lehed.items():
         (VALJA / nimi).write_text(sisu, encoding="utf-8")

@@ -106,4 +106,4 @@ def test_uuringult_viide_seire_naitajale_ja_osade_riba(tmp_path):
     naitajad = {n["id"] for n in json.loads((LEHT.parent.parent / "tehisaru-seire" / "naitajad.json").read_text(encoding="utf-8"))["naitajad"]}
     viited = re.findall(r'href="([a-z-]+)\.html#uuringud">Eesti number: ', s)
     assert viited and set(viited) <= naitajad
-    assert '<nav class="osad"' in s and 'href="index.html"><b>Mida mõõdetakse</b>' in s
+    assert '<nav class="osad"' in s and re.search(r'href="index.html"[^>]*><b>Mida mõõdetakse</b>', s)

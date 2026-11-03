@@ -29,6 +29,10 @@ Fail `vaited.csv` (3.11.2026) hoiab avalikke lauseid tehisaru, töö ja oskuste 
 
 Iga rida vajab ütleja linki (`url`), algallika linki (`algallika_url`) ja algallika täpset sõnastust (`algallikas_utleb`). Ilma algallikata hinnangut ei tehta. `hinnang` peab olema loendis `HINNANGUD` failis `raportid/koosta.py`; seal on ka iga hinnangu tähendus. Veerus `uuringud` on tühikuga eraldatud uuringute id-d failist `tooelu-seire/leiud.json`. Veerus `kusimus` on kataloogi küsimuse id, kui lause käib selle küsimuse kohta. Hinnang on lause kohta, mitte inimese kohta. Testid: `tests/test_vaited.py`.
 
+## Otsused ja sihid ajajoonel
+
+Fail `otsused.csv` (3.11.2026) hoiab seaduste tähtaegu, praegu ELi tehisintellekti määruse omi. Leht on `raportid/html/otsused.html` („Mida otsustatakse“, saidi neljas osa). Sihid tulevad registri `naitajad.json` väljalt `sihid`, neid siia ei kopeerita. Veerg `tapsus` on `paev`, `kuu` või `aasta`: kui allikas annab ainult kuu, ei kirjutata päeva juurde. Lehel ei ole sihti ja praegust numbrit kõrvuti, sest sihti mõõdetakse sageli teise allikaga; sihi juures on link näitaja lehele. Testid: `tests/test_otsused.py`.
+
 ## Võrreldavuse klassid
 
 Iga küsimuse juures on üks **võrdlusalus** (tavaliselt Eurostat, sest see on kõigi ELi riikide kohta sama meetodiga). Iga teine mõõdik on selle suhtes ühes klassis:

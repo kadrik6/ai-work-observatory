@@ -103,7 +103,7 @@ def test_leht_naitab_iga_lauset_ja_parema_lause(tmp_path, monkeypatch):
         for r in csv.DictReader(f):
             if r["liik"] == "vaide":
                 assert koosta.e(r["pealkiri"]) in s
-    assert 'href="vaited.html" aria-current="page"' in s
+    assert 'title="avalike lausete kontroll" aria-current="page"><b>Mida väidetakse' in s
     assert 'href="vaited.html"' in (tmp_path / "html" / "index.html").read_text(encoding="utf-8")
 
 
