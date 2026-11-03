@@ -709,4 +709,4 @@ svg .dot.hollow { fill: var(--surface); stroke: var(--context-strong); stroke-wi
 .qgroup h3 { margin: 0; font-size: 17px; }
 .qgroup .plain { list-style: none; padding-left: 0; gap: 6px; }
 .qgroup .n { color: var(--ink-muted); font-weight: 400; font-variant-numeric: tabular-nums; }
-.qgroup-mol { border-top: 3px solid var(--signal); }
+.qgroup-seires { border-top: 3px solid var(--signal); }

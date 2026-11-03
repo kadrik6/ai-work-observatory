@@ -155,8 +155,13 @@ def lae_uuringud():
     seosed = JUUR / "kataloog" / "uuringud.csv"
     if not LEIUD.exists() or not seosed.exists():
         return {}
-    L = loe_json(LEIUD)
-    U = {u["id"]: u for u in L["uuringud"]}
+    try:
+        L = loe_json(LEIUD)
+        U = {u["id"]: u for u in L["uuringud"]}
+    except (ValueError, KeyError, TypeError) as viga:
+        # Teise osa vigane fail ei tohi peatada ametliku statistika lehti: kast jääb lihtsalt ära.
+        print(f"Hoiatus: {LEIUD} ei ole loetav ({viga}), uuringute kaste ei tehta.", file=sys.stderr)
+        return {}
     tugevus = {m: k for k, ms in L.get("kindlus", {}).items() for m in ms}
     tulem = {}
     for r in loe_csv(seosed):
@@ -898,38 +903,44 @@ def kaart(x, c, K):
 
 # ---------- lehed ----------
 
-def kusimuste_kaart(D, K):
-    """Avalehe plokk: iga kataloogi küsimuse juures, kas vastus tuleb seire näitajast, uuringutest või mõlemast."""
-    lehed = {}
-    for x in D["naitajad"]:
-        m = next((m for m in K["moodikud"].values() if m["naitaja"] == x["n"]["id"]), None)
-        if m:
-            lehed[m["moiste"]] = fail_naitajale(x)
-    # Number = seire näitaja või kataloogis vähemalt üks vaatlus (nt UNESCO teadlaste arv).
-    numbriga = set(lehed) | {K["moodikud"][v["moodik"]]["moiste"] for v in K["vaatlused"] if v["moodik"] in K["moodikud"]}
-    rühmad = {"mol": [], "num": [], "uur": [], "pole": []}
-    for mid, mo in K["moisted"].items():
-        n_uur = len(D["uuringud"].get(mid, []))
-        siht = f'{lehed[mid]}' if mid in lehed else f"teemad.html#{e(mid)}"
-        if mid in numbriga and n_uur:
-            rühmad["mol"].append(f'<li><a href="{siht}{"#uuringud" if mid in lehed else ""}">{e(mo["nimi"])}</a> <span class="n">{n_uur}</span></li>')
-        elif mid in numbriga:
-            rühmad["num"].append(f'<li><a href="{siht}">{e(mo["nimi"])}</a></li>')
-        elif n_uur:
-            rühmad["uur"].append(f'<li><a href="teemad.html#{e(mid)}">{e(mo["nimi"])}</a> <span class="n">{n_uur}</span></li>')
-        else:
-            rühmad["pole"].append(f'<li><a href="teemad.html#{e(mid)}">{e(mo["nimi"])}</a></li>')
-    pealkirjad = {"mol": "Number ja uuringud", "num": "Ainult number", "uur": "Ainult uuringud", "pole": "Veel ei kumbagi"}
-    selg = {"mol": "Number ja uuringud on samal lehel, uuringud eraldi kastis.", "num": "Sobivat uuringut pole veel leitud.",
-            "uur": "Ametlikku numbrit pole veel leitud.", "pole": "Küsimus on kataloogis, aga numbrit ega uuringut veel pole."}
-    plokk = "".join(
-        f'<div class="qgroup qgroup-{k}"><h3>{pealkirjad[k]} <span class="n">{len(v)}</span></h3><p class="small">{selg[k]}</p>'
-        f'<ul class="plain">{"".join(v)}</ul></div>'
-        for k, v in rühmad.items() if v)
-    return (f'<div class="qgroups">{plokk}</div>'
-            '<p class="small">Number on ametlik statistika, mida saab riikide vahel võrrelda. Uuring on ühe töörühma tulemus '
-            'oma valimi ja meetodiga. Neid ei panda kunagi samale joonisele. Arv nime kõrval näitab uuringute arvu.</p>')
+def kusimuse_naitaja(K, mid):
+    """Küsimuse seire näitaja id võrdlusaluse mõõdiku kaudu (sama reegel nagu lehel „Tehisaru ja töö“), või ""."""
+    return K["moodikud"].get(K["moisted"][mid]["vordlusalus"], {}).get("naitaja", "")
 
+
+# Avalehe plokk „Kust vastus tuleb“: rühm ütleb, kui kaugel on ametlik number; uuringute arv on iga küsimuse juures.
+NUMBRI_OLEK = [
+    ("seires", "Seire näitaja", "Number, usaldus ja uuringud on näitaja lehel."),
+    ("andmed", "Numbrid kataloogis", "Numbrid on teemade lehel, eraldi näitajat veel pole."),
+    ("kavandatud", "Allikas teada, andmed laadimata", "Ametlik allikas on leitud, aga seire ei lae seda veel."),
+    ("allikas_leidmata", "Ametlikku allikat pole leitud", "Võrreldavat ametlikku numbrit pole veel leitud."),
+]
+
+
+def kusimuste_kaart(D, K):
+    """Iga kataloogi küsimus täpselt ühes rühmas võrdlusaluse oleku järgi, juures seotud uuringute arv."""
+    lehed = {x["n"]["id"]: fail_naitajale(x) for x in D["naitajad"]}
+    ryhmad = {k: [] for k, _, _ in NUMBRI_OLEK}
+    for mid, mo in K["moisted"].items():
+        nid = kusimuse_naitaja(K, mid)
+        olek = "seires" if nid in lehed else K["moodikud"].get(mo["vordlusalus"], {}).get("olek", "allikas_leidmata")
+        olek = olek if olek in ryhmad else "allikas_leidmata"
+        n_uur = len(D["uuringud"].get(mid, []))
+        if nid in lehed:
+            nimi = f'<a href="{lehed[nid]}">{e(mo["nimi"])}</a>'
+            uur = f' · <a class="n" href="{lehed[nid]}#uuringud">{n_uur} uuring{"ut" if n_uur > 1 else ""}</a>' if n_uur else ""
+        else:
+            nimi = f'<a href="teemad.html#{e(mid)}">{e(mo["nimi"])}</a>'
+            uur = f' · <a class="n" href="{TOOELU_LEHT}">{n_uur} uuring{"ut" if n_uur > 1 else ""}</a>' if n_uur else ""
+        ryhmad[olek].append(f'<li data-kusimus="{e(mid)}">{nimi}{uur}</li>')
+    plokk = "".join(
+        f'<div class="qgroup qgroup-{k}"><h3>{e(pealk)} <span class="n">{len(ryhmad[k])}</span></h3><p class="small">{e(selg)}</p>'
+        f'<ul class="plain">{"".join(ryhmad[k])}</ul></div>'
+        for k, pealk, selg in NUMBRI_OLEK if ryhmad[k])
+    return (f'<div class="qgroups">{plokk}</div>'
+            '<p class="small">Rühm näitab, kui kaugel on ametlik number. Uuringute arv näitab, mitu uuringut on küsimusega '
+            'seotud: need on üksikud tulemused oma valimi ja meetodiga, mitte ametlik statistika, ja neid ei panda numbriga '
+            'samale joonisele.</p>')
 
 def avaleht(D, K, tana):
     NN = D["naitajad"]

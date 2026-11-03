@@ -38,3 +38,8 @@ def test_kordusi_pole_ja_kusimuse_kohta_kuni_kolm():
     paarid = Counter((x["kusimus"], x["uuring"]) for x in r)
     assert max(paarid.values()) == 1
     assert max(Counter(x["kusimus"] for x in r).values()) <= SUURIM
+
+
+def test_seoses_pole_numbreid():
+    """Uuringu number jääb „Mida uuring leidis“ alla, et seda ei loetaks kõrvuti ametliku numbriga."""
+    assert not [x for x in read() if any(c.isdigit() for c in x["seos"])]

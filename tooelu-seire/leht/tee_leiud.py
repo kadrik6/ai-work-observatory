@@ -44,8 +44,8 @@ def seire_viited():
         with open(SEIRE + 'kataloog/uuringud.csv', encoding='utf-8', newline='') as f:
             seosed = list(csv.DictReader(f))
         nimed = {n['id']: n['nimi'] for n in json.load(open(SEIRE + 'naitajad.json', encoding='utf-8'))['naitajad']}
-    except FileNotFoundError:
-        return {}
+    except (OSError, ValueError, KeyError):
+        return {}  # seire kausta pole või fail on vigane: leht ehitub ilma viideteta
     viited = {}
     for r in seosed:
         nid = moodikud.get(alus.get(r['kusimus'], ''), {}).get('naitaja', '')

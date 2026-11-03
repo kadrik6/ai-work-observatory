@@ -112,7 +112,12 @@ s=s.replace("Iga allika vastus viimases käivituses. Roheline täpp: allikas vas
 # Numbrid Interis (disainisüsteem: Space Grotesk ainult pealkirjades)
 s=s.replace("</style>","  .ts-tile-value, .ts-num, .ts-tw .ts-num, .ts-block-box, .ts-big { font-family: var(--body) !important; letter-spacing: -0.01em; }\n</style>",1)
 out="<script>document.documentElement.lang=\"et\"</script>\n"+head+s
-open(B+'tehisaru-ja-too.html','w').write(out)
+# Üksik leht (oma artefakt) ei näe seire lehti: osade riba ja „Eesti number“ lingid ainult ühises versioonis.
+import re
+def yksik(x):
+    x = re.sub(r'\s*<nav class="osad".*?</nav>', '', x, count=1, flags=re.S)
+    return re.sub(r' · <a href="[a-z0-9-]+\.html#uuringud">Eesti number: [^<]*</a>', '', x)
+open(B+'tehisaru-ja-too.html','w').write(yksik(out))
 # Ühise saidi versioon (seire artefaktis kõrvalfail): täisdokument, sest ainult avaleht saab raami avaldamisel.
 open(B+'tehisaru-ja-too-uhine.html','w').write('<!doctype html>\n<html lang="et">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'+head+'</head>\n<body>\n'+s+'</body>\n</html>\n')
 # eelvaade kohaliku d3-ga

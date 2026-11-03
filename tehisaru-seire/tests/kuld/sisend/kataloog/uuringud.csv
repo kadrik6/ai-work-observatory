@@ -1,25 +1,18 @@
 kusimus,uuring,seos
-ettevotete-ai-kasutus,oska2025,"Selgitab, miks Eesti ettevõtted tehisaru veel vähe kasutavad: kõige rohkem piirab oskus otsustada, milleks seda kasutada."
-ettevotete-ai-kasutus,calvino2023,"Näitab, millised firmad tehisaru kasutavad: suuremad ja juba digitaalsed. Kasutajate tootlikkuse eelis tuleb osaliselt nendest eeldustest."
-ettevotete-ai-kasutus,bonney2026,"USA ametlik uuring mõõdab kasutust kolmes kihis (firma, äritegevuse valdkond, töötaja ülesanne). Euroopa küsitlus mõõdab ainult firma kihti."
-digiintensiivsus,vahter2026,"Eesti andmetel tõi tehisaru tootlikkust ainult koos töökorralduse muutusega. Digitehnoloogia hulk üksi ei ütle, kas see aitab."
-digiintensiivsus,kim2026,"Samad tööriistad andsid suurema kasu firmadele, kes nägid, kuidas töövooge ümber korraldada."
-digiintensiivsus,bbh2002,"Arvutiajastu sama muster: tehnoloogia, töökorraldus ja oskused annavad kasu ainult koos."
-ettevotete-ai-tegevusala,bonney2026,Kasutus äritegevuse valdkondade kaupa; laiem kasutus valdkondades seostub parema äritulemusega.
-inimeste-ai-kasutus,bick2024,USA esinduslik küsitlus: kui tihti inimesed tehisaru kasutavad ja kui palju aega nende hinnangul säästavad.
-inimeste-ai-kasutus,humlum2025,Taani registriandmed: laialdane kasutus ei muutnud kahe aastaga tulu ega töötunde.
-inimeste-ai-kasutus-too,humlum2025,"Taani registriandmed: tööalane kasutus muutis töö sisu, aga mitte palka ega töötunde."
-inimeste-ai-kasutus-too,bick2024,"USA: 23% töötajatest kasutas tehisaru tööl eelmisel nädalal, säästetud aeg oli enda hinnangul 1,4% tööajast."
-inimeste-ai-kasutus-too,brynjolfsson2023,"Klienditoe loomulik katse: kasu oli suurim algajatel, kogenud töötajatel peaaegu puudus."
-avaliku-sektori-ai,gds2025,"Ühendkuningriigi ametnike katse: kasutajad hindasid säästu 26 minutile päevas, aga säästetud aja kasutust ei mõõdetud."
-digioskused,oska2025,"Eesti tööandjate vaade: tehisaru kasutust piirab enim oskus otsustada, millal ja milleks seda kasutada."
-digioskused,cedefop2026,ELi oskuste prognoos aastani 2035.
-tehisaru-oskuse-puudus,oska2025,"Eesti ettevõtetes on sama takistus: ei teata, millal ja milleks tehisaru kasutada."
-oskusnoudlus-kuulutused,teutloff2025,Vabakutseliste platvormil vähenes asendatavate oskuste nõudlus 20–50% ja kasvas tehisaru täiendavate oskuste nõudlus.
-oskusnoudlus-kuulutused,demirci2025,Kirjutamise ja kodeerimise tööpakkumisi oli pärast ChatGPT tulekut 21% vähem.
-oskusnoudlus-kuulutused,hui2024,Enim mõjutatud ametites vähenesid vabakutseliste tööd ja tulu.
-ikt-spetsialistid,cedefop2026,"Prognoos: IKT-töökohad kasvavad ELis umbes 2,5% aastas."
-ikt-spetsialistid,oska2023,Prognoos: Eestis lisandub töökohti enim info ja side alal.
-ikt-spetsialistid,metr2025,"Kogenud arendajad olid tehisaruga 19% aeglasemad, kuigi arvasid end kiiremaks. Teised katsed näitavad kiirenemist."
-ikt-toojoupuudus,oska2023,"Prognoos: pensionile jääjate ja uute kohtade jaoks on vaja 18 000 inimest aastas, koolist tuleb alla 16 000."
-ikt-toojoupuudus,cedefop2026,ELi prognoos: suur osa nõudlusest tuleb pensionile jääjate asendamisest.
+ettevotete-ai-kasutus,oska2025,"Eesti ekspertide ja ettevõtete vaade: kasutust piirab kõige rohkem see, et ei teata, millal ja milleks tehisaru kasutada."
+ettevotete-ai-kasutus,calvino2023,"Kui arvestada firmade IT-oskusi, kiiret internetti ja muid digitehnoloogiaid, jääb tehisaru kasutajate tootlikkuse eelis paljudes riikides väiksemaks või kaob."
+ettevotete-ai-kasutus,bonney2026,"USA uuring mõõdab lisaks firmale ka seda, kui laialt kasutatakse tehisaru äritegevuse valdkondades ja töötajate ülesannetes."
+digiintensiivsus,vahter2026,"Eesti andmetel ei seostunud tehisaru kasutuselevõtt üksi olulise tootlikkuse kasvuga; koos töökorralduse muutmisega oli seos olemas, aga statistiliselt nõrk."
+digiintensiivsus,bbh2002,"Arvutiajastu uuring: IT, töökorraldus ja oskused täiendavad üksteist ning kasu tuleb siis, kui kõik kolm muutuvad koos."
+inimeste-ai-kasutus,bick2024,"USA esinduslik küsitlus mõõdab ka seda, kui tihti inimesed tehisaru kasutavad ja kui palju aega nad enda hinnangul säästavad."
+inimeste-ai-kasutus,humlum2025,Taani registriandmetes ei muutnud laialdane kasutus kahe aasta jooksul inimeste tulu ega töötunde.
+inimeste-ai-kasutus-too,humlum2025,"Taanis muutis tööalane kasutus töö sisu (tekkisid uued ülesanded), aga mitte tulu ega töötunde."
+inimeste-ai-kasutus-too,bick2024,USA küsitlus mõõdab tööalast kasutust eelmise nädala ja iga päeva kaupa ning säästetud aega töötajate enda hinnangul.
+avaliku-sektori-ai,gds2025,"Ühendkuningriigi ametnike proovikasutus: kasutajad hindasid aja säästu ise, aga seda, milleks säästetud aega kasutati, ei mõõdetud."
+digioskused,oska2025,"Eesti ettevõtete vaates on tehisaru kasutamise suurim takistus oskuste nappus: ei teata, millal ja milleks tehisaru kasutada."
+tehisaru-oskuse-puudus,oska2025,"Ka Eesti ettevõtetes nimetati oskuste nappust kõige suuremaks takistuseks. See uuring räägib ettevõtetest, näitaja aga elanikest."
+oskusnoudlus-kuulutused,teutloff2025,"Ühel vabakutseliste platvormil jäi asendatavate oskuste (kirjutamine, tõlge) nõudlus trendist allapoole ja tehisaru täiendavate oskuste nõudlus kasvas."
+oskusnoudlus-kuulutused,demirci2025,Ühel vabakutseliste platvormil vähenesid kirjutamise ja kodeerimise tööpakkumised võrreldes käsitööd vajavate töödega.
+oskusnoudlus-kuulutused,hui2024,Ühel vabakutseliste platvormil vähenesid enim mõjutatud ametites tööd ja tulu.
+ikt-spetsialistid,cedefop2026,"ELi prognoos ootab IKT-töökohtade kiiremat kasvu kui tööhõivel tervikuna. See on prognoos, mitte mõõtmine."
+ikt-spetsialistid,oska2023,"Eesti prognoos: info ja side on üks kolmest valdkonnast, kus töökohti lisandub kõige rohkem."
