@@ -34,6 +34,10 @@ RIIGID = {
     "EE": "Eesti", "FI": "Soome", "SE": "Rootsi", "DK": "Taani", "NO": "Norra",
     "DE": "Saksamaa", "NL": "Holland", "EU27_2020": "EL27",
     "UK": "Ühendkuningriik", "US": "USA", "CA": "Kanada", "KR": "Lõuna-Korea", "JP": "Jaapan",
+    "AT": "Austria", "BE": "Belgia", "BG": "Bulgaaria", "CY": "Küpros", "CZ": "Tšehhi", "EL": "Kreeka", "ES": "Hispaania",
+    "FR": "Prantsusmaa", "HR": "Horvaatia", "HU": "Ungari", "IE": "Iirimaa", "IT": "Itaalia", "LT": "Leedu",
+    "LU": "Luksemburg", "LV": "Läti", "MT": "Malta", "PL": "Poola", "PT": "Portugal", "RO": "Rumeenia",
+    "SI": "Sloveenia", "SK": "Slovakkia",
 }
 FOOKUS = "EE"
 VIIDE = "EU27_2020"
@@ -42,6 +46,7 @@ MARGENDID = {"b": "aegrea katkestus", "p": "esialgne", "e": "hinnang", "u": "eba
 # Näitajate lehed (<id>.html) avanevad ülevaate kaartidelt, navis on ainult üldlehed.
 LEHED = [
     ("index.html", "Ülevaade"),
+    ("kaart.html", "ELi kaart"),
     ("teemad.html", "Teemad ja allikad"),
     ("analuus.html", "Analüütiku vaade"),
     ("kuidas.html", "Kuidas see töötab"),
@@ -130,6 +135,9 @@ def lae():
         "sundmused": sorted(loe_csv(SIIN / "sundmused.csv"), key=lambda r: r["kuupaev"], reverse=True),
         "lahknevused": loe_csv(SIIN / "lahknevused.csv"),
         "riskid": loe_csv(SIIN / "riskid.csv"),
+        "el27": loe_csv(JUUR / "andmed" / "el27.csv"),
+        "sarnased": loe_csv(SIIN / "sarnased.csv"),
+        "lugejad": loe_csv(SIIN / "lugejad.csv"),
     }
 
 
@@ -191,7 +199,9 @@ def leid(x):
         osa.append("ELi keskmisest rohkem" if ee > el else "ELi keskmisest vähem")
     rohkem, vahem = ("vähem", "rohkem") if vaiksem_parem(x) else ("rohkem", "vähem")
     if koht == kokku:
-        osa.append(f"kuid kõigist võrdlusriikidest {vahem}")
+        # „kuid“ ainult siis, kui ELi võrdlus ütleb vastupidist (ELi keskmisest rohkem, kuid ...).
+        sidesona = "ja" if el is not None and (ee < el) != vaiksem_parem(x) else "kuid"
+        osa.append(f"{sidesona} kõigist võrdlusriikidest {vahem}")
     elif koht == 1:
         osa.append(f"ja kõigist võrdlusriikidest {rohkem}")
     else:
@@ -288,11 +298,36 @@ def sektsioon(pealkiri, sisu, eyebrow=None, ank=None):
 
 # ---------- graafikud ----------
 
+def siht(x):
+    """Näitaja esimene ametlik siht (või None). Siht on registris naitajad.json väljal "sihid"."""
+    s = x["n"].get("sihid") or []
+    return s[0] if s else None
+
+
+def siht_silt(s):
+    kelle = "Eesti" if s["riik"] == FOOKUS else "EL kokku" if s["riik"] == VIIDE else riik(s["riik"])
+    return f'Siht{" " + str(s["aasta"]) if s.get("aasta") else ""} ({kelle})'
+
+
+def arv_s(v):
+    """Sihi number: täisarv ilma komakohata (75%, mitte 75,0%)."""
+    return arv(v, 0) if float(v) == int(v) else arv(v)
+
+
 def tulbad(x, aasta):
     s = sorted(((g, v[aasta][0], v[aasta][1]) for g, v in x["seeria"].items() if aasta in v), key=lambda t: -t[1])
+    sh = siht(x)
+    if sh:
+        s = sorted(s + [("siht", sh["vaartus"], "")], key=lambda t: -t[1])
     tipp = max(v for _, v, _ in s)
     read = []
     for g, v, m in s:
+        if g == "siht":
+            read.append(
+                f'<li class="is-target"><span class="lab">{e(siht_silt(sh))}</span>'
+                f'<span class="track"><span class="bar" style="width:{v / tipp * 100:.1f}%"></span></span>'
+                f'<span class="val">{arv_s(v)}%</span></li>')
+            continue
         klass = "is-focus" if g == FOOKUS else "is-ref" if g == VIIDE else ""
         lab = riik(g) + (" (ELi keskmine)" if g == VIIDE else "")
         mrk = f' <span class="small">({e(m)})</span>' if m else ""
@@ -309,7 +344,14 @@ def jooned(x):
     ml, mr, mt, mb = 36, 128, 14, 30
     a0, a1 = aastad[0], aastad[-1]
     tipp = max(v for s in x["seeria"].values() for v, _ in s.values())
-    ymax = int(-(-tipp // 10) * 10)
+    sh = siht(x)
+    if sh:
+        tipp = max(tipp, sh["vaartus"])
+    # Samm 10 nagu varem; väikeste väärtuste (nt T&A kulu % SKPst) puhul 1 või 0,5.
+    samm = 10 if tipp > 10 else 1 if tipp > 3 else 0.5
+    ymax = -(-tipp // samm) * samm
+    if samm >= 1:
+        ymax = int(ymax)
 
     def X(a):
         return ml + (a - a0) / (a1 - a0) * (W - ml - mr)
@@ -318,11 +360,18 @@ def jooned(x):
         return mt + (1 - v / ymax) * (H - mt - mb)
 
     osad = []
-    for t in range(0, ymax + 1, 10):
+    for i in range(int(round(ymax / samm)) + 1):
+        t = i * samm if samm < 1 else int(i * samm)
         osad.append(f'<line class="gridline" x1="{ml}" x2="{W - mr}" y1="{Y(t):.1f}" y2="{Y(t):.1f}"/>')
-        osad.append(f'<text x="{ml - 8}" y="{Y(t) + 5:.1f}" text-anchor="end">{t}</text>')
+        osad.append(f'<text x="{ml - 8}" y="{Y(t) + 5:.1f}" text-anchor="end">{arv(t) if samm < 1 else t}</text>')
+    if sh:
+        osad.append(f'<line class="target" x1="{ml}" x2="{W - mr}" y1="{Y(sh["vaartus"]):.1f}" y2="{Y(sh["vaartus"]):.1f}"/>')
+        osad.append(f'<text class="target-lab" x="{ml + 6}" y="{Y(sh["vaartus"]) - 7:.1f}">'
+                    f'{e(siht_silt(sh))}: {arv_s(sh["vaartus"])}%</text>')
+    iga = 1 if a1 - a0 <= 8 else 2 if a1 - a0 <= 16 else 5
     for a in range(a0, a1 + 1):
-        osad.append(f'<text x="{X(a):.1f}" y="{H - 8}" text-anchor="middle">{a}</text>')
+        if (a1 - a) % iga == 0:
+            osad.append(f'<text x="{X(a):.1f}" y="{H - 8}" text-anchor="middle">{a}</text>')
 
     jrk = sorted(x["seeria"], key=lambda g: (g == FOOKUS, g == VIIDE))  # fookus joonistatakse viimasena
     sildid = []
@@ -405,10 +454,15 @@ SONASTUS = {
     "tooalane-tehisaru-kasutus": ("kasutas viimase 3 kuu jooksul generatiivse tehisaru tööriistu tööalaselt", "Eesti 16–74-aastastest"),
     "tehisaru-oskuse-puudus": ("jättis generatiivse tehisaru kasutamata, sest ei osanud seda kasutada,", "Eesti 16–74-aastastest"),
     "inimeste-digioskused": ("olid vähemalt baastasemel digioskused", "Eesti 16–74-aastastest"),
+    "ettevotete-digiintensiivsus": ("olid vähemalt baastasemel digiintensiivsusega", "Eesti 10–249 hõivatuga ettevõtetest"),
+    "ta-kulud": ("kulutati teadus- ja arendustegevusele", "Eesti SKPst"),
 }
 # Kui tavaline lausemall („Eurostati järgi {tegu} {aasta}. aastal {v}% {kelle}“) on kohmakas, terve lause siit.
 LAUSED = {
     "inimeste-digioskused": "Eurostati järgi olid {a}. aastal vähemalt baastasemel digioskused {v}%-l Eesti 16–74-aastastest",
+    "ettevotete-digiintensiivsus": ("Eurostati järgi oli {a}. aastal vähemalt baastasemel digiintensiivsusega "
+                                    "{v}% Eesti 10–249 hõivatuga ettevõtetest"),
+    "ta-kulud": "Eurostati järgi kulutati Eestis {a}. aastal teadus- ja arendustegevusele {v}% SKPst",
 }
 
 
@@ -834,6 +888,7 @@ def avaleht(D, K, tana):
         + (f'<a class="small" href="{e(s["url"])}">Allikas</a>' if s.get("url") else "") + "</div></li>"
         for s in uudised)
     edasi = [
+        ("kaart.html", "ELi kaart", "Kõik 27 ELi riiki kaardil. Kus Eesti paikneb iga näitaja järgi."),
         ("analuus.html", "Analüütiku vaade", f"{len(hea)} näitajat {len(P)}-st Põhjamaade tasemel. Tugevad ja nõrgad küljed, kas vahe väheneb."),
         ("teemad.html", "Teemad ja allikad", f'{kk["moisteid"]} küsimust {kk["teemasid"]} teemas, andmed {kk["moisteid_andmetega"]} kohta. Kust iga number tuleb.'),
         ("kuidas.html", "Kuidas see töötab", "Mida märgid tähendavad, seire enda nõrkused ja muudatuste logi."),
@@ -975,6 +1030,10 @@ def naitaja_leht(x, D, K, tana):
     faktid = [f'<div><dt>Eesti {a}</dt><dd class="hl">{arv(ee)}%<small>Eurostat, ELiga võrreldav</small></dd></div>']
     if el is not None:
         faktid.append(f'<div><dt>ELi keskmine {a}</dt><dd>{arv(el)}%<small>Eurostat</small></dd></div>')
+    sh = siht(x)
+    if sh:
+        faktid.append(f'<div><dt>{e(siht_silt(sh))}</dt><dd>{arv_s(sh["vaartus"])}%'
+                      f'<small>{e(sh["allikas"].split(",")[0])}</small></dd></div>')
     faktid.append(f'<div><dt>Koht võrdlusriikide seas</dt><dd>{koht}.<small>{kokku} riigist'
                   f'{", väiksem on parem" if vaiksem_parem(x) else ""}</small></dd></div>')
     if c["ee_uus"]:
@@ -995,7 +1054,12 @@ def naitaja_leht(x, D, K, tana):
         + (f", ELi keskmine on {arv(el)}%" if el is not None else "") + "</h3>"
         f'<p class="chart-sub">{e(kogum(n))}, {a} · {ANDMELIIK}</p>{tulbad(x, a)}'
         f'<p class="source">Allikas: Eurostat, andmestik <code>{e(n["andmestik"])}</code>, uuendatud {kuupaev(meta["allikas_uuendas"])}. '
-        f"Riike võrreldakse Eurostati numbritega, sest need on kõigi riikide kohta sama meetodiga. {e(lipud_lause(x, [a]))}</p></div></div>")
+        f"Riike võrreldakse Eurostati numbritega, sest need on kõigi riikide kohta sama meetodiga. {e(lipud_lause(x, [a]))}</p>"
+        + (f'<p class="source">Katkendjoonega tulp on siht: {linkita(sh["allikas"], sh.get("url"))}. {e(sh.get("markus", ""))}</p>'
+           if sh else "")
+        + (f'<p class="source"><a href="kaart.html#{e(n["id"])}">Vaata kõiki 27 ELi riiki kaardil</a></p>'
+           if any(r["naitaja"] == n["id"] for r in D["el27"]) else "")
+        + "</div></div>")
 
     read = "".join(
         f'<details class="check" id="usaldus-{k["id"]}"><summary><span class="check-name">{e(k["nimi"])}</span>'
@@ -1022,6 +1086,208 @@ def naitaja_leht(x, D, K, tana):
             + uuemad_plokk(x, c) + ajas_plokk(x, c, K) + usaldus
             + sektsioon("Andmed ja määratlus", lisad, "Detailid", "detailid"))
     return leht(fail_naitajale(x), f'{n["nimi"]} · Tehisaru seire', sisu, tana)
+
+
+# ---------- ELi kaart ----------
+
+KAARDI_KLASSE = 5
+
+
+def kaardi_klassid(vaartused):
+    """Võrdsed vahemikud väikseimast suurimani, ümardatud ilusateks piirideks."""
+    lo, hi = min(vaartused), max(vaartused)
+    samm = (hi - lo) / KAARDI_KLASSE or 1
+    kohti = 0 if samm >= 2 else 1 if samm >= 0.2 else 2
+    piirid = [round(lo + i * samm, kohti) for i in range(KAARDI_KLASSE + 1)]
+    piirid[0], piirid[-1] = min(piirid[0], lo), max(piirid[-1], hi)
+    return piirid, kohti
+
+
+def klass(v, piirid):
+    for i in range(KAARDI_KLASSE):
+        if v <= piirid[i + 1]:
+            return i
+    return KAARDI_KLASSE - 1
+
+
+def euroopa_kaart(x, read, kuju):
+    """Üks näitaja ELi kaardil. read: [(riik, väärtus, märgend)] ühe aasta kohta."""
+    n = x["n"]
+    vv = {g: (v, m) for g, v, m, _ in read}
+    piirid, kohti = kaardi_klassid([v for v, _ in vv.values()])
+    # Kujud on lehel üks kord (<defs>), iga kaart viitab neile <use> kaudu. Nii jääb leht väikeseks.
+    osad = [f'<use href="#t-{g}" class="bg"/>' for g in sorted(kuju["taust"])]
+    ee_tee = ""
+    for g in sorted(kuju["el"]):
+        if g in vv:
+            v, m = vv[g]
+            silt = f'{riik(g)}: {arv(v)}%' + (f" ({m})" if m else "")
+            tee = f'<use href="#k-{g}" class="c{klass(v, piirid)}{" ee" if g == FOOKUS else ""}"><title>{e(silt)}</title></use>'
+        else:
+            tee = f'<use href="#k-{g}" class="na"><title>{e(riik(g))}: andmeid pole</title></use>'
+        if g == FOOKUS:
+            ee_tee = tee  # Eesti joonistatakse viimasena, et piirjoon jääks peale
+        else:
+            osad.append(tee)
+    osad.append(ee_tee)
+    jrk = sorted(vv.items(), key=lambda t: t[1][0] if vaiksem_parem(x) else -t[1][0])
+    tipp = max(v for v, _ in vv.values())
+    koht = [g for g, _ in jrk].index(FOOKUS) + 1 if FOOKUS in vv else None
+    aasta = read[0][3] if read else ""
+    pealk = (f"Eesti on ELi {len(vv)} riigi seas {koht}. kohal" + (" (väiksem on parem)" if vaiksem_parem(x) else "")
+             + f": {arv(vv[FOOKUS][0])}%") if koht else n["nimi"]
+    legend = "".join(
+        f'<li><i class="c{i}"></i>{arv(piirid[i], kohti)}–{arv(piirid[i + 1], kohti)}%</li>' for i in range(KAARDI_KLASSE))
+    tulbad_html = "".join(
+        f'<li class="{"is-focus" if g == FOOKUS else ""}"><span class="lab">{e(riik(g))}</span>'
+        f'<span class="track"><span class="bar" style="width:{v / tipp * 100:.1f}%"></span></span>'
+        f'<span class="val">{arv(v)}%{f" ({e(m)})" if m else ""}</span></li>' for g, (v, m) in jrk)
+    mm = sorted({c for _, m in vv.values() for c in m})
+    return (
+        f'<figure class="card map-fig" id="{e(n["id"])}" data-k="{e(n["id"])}"><div class="chart">'
+        f'<h3 class="chart-title">{pealk}</h3>'
+        f'<p class="chart-sub">{e(n["nimi"])} · {e(kogum(n))}, {aasta} · Eurostat</p>'
+        f'<svg class="eumap" viewBox="{kuju["viewBox"]}" role="img" aria-label="{e(n["nimi"])} ELi riikides {aasta}. '
+        f'Kõik väärtused on kaardi all loendis.">{"".join(osad)}</svg>'
+        f'<ul class="map-legend" aria-label="Värvide tähendus">{legend}<li><i class="na"></i>andmeid pole</li></ul>'
+        f'<p class="source">Mida tumedam, seda suurem number. Eesti on tumeda piirjoonega. '
+        + ("Selles näitajas on väiksem number parem. " if vaiksem_parem(x) else "")
+        + (" ".join(f"({m}) {LIPUD.get(m, 'Eurostati märgend')}." for m in mm) + " " if mm else "")
+        + f'<a href="{fail_naitajale(x)}">Näitaja leht ja usaldus</a></p>'
+        + avatav(f"Kõik {len(vv)} riiki järjekorras", f'<ul class="bars" role="list">{tulbad_html}</ul>')
+        + "</div></figure>")
+
+
+def euroopa_leht(D, tana):
+    kuju_p = SIIN / "euroopa.json"
+    kuju = loe_json(kuju_p) if kuju_p.exists() else None
+    rida = {}
+    for r in D["el27"]:
+        rida.setdefault(r["naitaja"], []).append((r["geo"], float(r["vaartus"]), r["margend"], r["time"]))
+    NN = [x for x in D["naitajad"] if x["n"]["id"] in rida]
+    if not kuju or not NN:
+        sisu = (pais("ELi kaart", "Kaardi andmeid pole veel laaditud")
+                + '<div class="note"><p>Käivita <code>python run.py</code>, siis tekib fail <code>andmed/el27.csv</code>.</p></div>')
+        return leht("kaart.html", "ELi kaart · Tehisaru seire", sisu, tana)
+    nupud = "".join(
+        f'<button type="button" data-k="{e(x["n"]["id"])}" aria-pressed="{"true" if i == 0 else "false"}">{e(x["n"]["nimi"])}</button>'
+        for i, x in enumerate(NN))
+    kaardid = "".join(euroopa_kaart(x, rida[x["n"]["id"]], kuju) for x in NN)
+    kujud = ('<svg class="map-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>'
+             + "".join(f'<path id="k-{g}" d="{d}"/>' for g, d in sorted(kuju["el"].items()))
+             + "".join(f'<path id="t-{g}" d="{d}"/>' for g, d in sorted(kuju["taust"].items()))
+             + "</defs></svg>")
+    skript = (
+        "<script>(function(){var bb=document.querySelectorAll('.map-pick button'),ff=document.querySelectorAll('.map-fig');"
+        "function vali(k){var ok=false;ff.forEach(function(f){var s=f.dataset.k===k;f.hidden=!s;ok=ok||s;});"
+        "if(!ok){return vali(ff[0].dataset.k);}bb.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.k===k));});}"
+        "bb.forEach(function(b){b.addEventListener('click',function(){vali(b.dataset.k);"
+        "try{history.replaceState(null,'','#'+b.dataset.k);}catch(e){}});});"
+        "vali((location.hash||'').slice(1)||ff[0].dataset.k);})();</script>")
+    sisu = (pais("ELi kaart", "Kus Eesti ELi riikide seas paikneb",
+                 "Kaardil on kõik 27 ELi riiki Eurostati viimase aasta numbriga. Vali näitaja.")
+            + f'<div class="map-pick" role="group" aria-label="Näitaja">{nupud}</div>'
+            + kujud + kaardid
+            + f'<p class="small">Riigipiirid: {e(kuju["allikas"])}. Ülemeremaad pole kaardil. '
+              "Kaardi värvid jagavad riigid viide võrdsesse vahemikku väikseimast suurimani.</p>"
+            + skript)
+    return leht("kaart.html", "ELi kaart · Tehisaru seire", sisu, tana)
+
+
+# ---------- kalender, mõisted, lugejad ----------
+
+def kalender(D, tana):
+    """Millal tuleb iga näitaja uus number: viimane uuendus ja järgmine oodatav (arvutatud uuendussagedusest)."""
+    t0 = dt.date.fromisoformat(tana)
+    read = []
+    for x in D["naitajad"]:
+        v = x["meta"].get("varskus", {})
+        if not v.get("jargmine_oodatav"):
+            continue
+        read.append((x, dt.date.fromisoformat(x["meta"]["allikas_uuendas"]), dt.date.fromisoformat(v["jargmine_oodatav"])))
+    if not read:
+        return ""
+    read.sort(key=lambda r: r[2])
+    a0 = dt.date(min(min(r[1] for r in read).year, t0.year), 1, 1)
+    a1 = dt.date(max(r[2] for r in read).year + 1, 1, 1)
+    W, ml, mr, rida, mt = 680, 300, 16, 30, 26
+    H = mt + rida * len(read) + 8
+
+    def X(d):
+        return ml + (d - a0).days / (a1 - a0).days * (W - ml - mr)
+
+    osad = []
+    for aasta in range(a0.year, a1.year + 1):
+        x_ = X(dt.date(aasta, 1, 1))
+        osad.append(f'<line class="gridline" x1="{x_:.1f}" x2="{x_:.1f}" y1="{mt - 6}" y2="{H - 4}"/>')
+        if aasta < a1.year:
+            osad.append(f'<text x="{X(dt.date(aasta, 7, 1)):.1f}" y="14" text-anchor="middle">{aasta}</text>')
+    osad.append(f'<line class="today" x1="{X(t0):.1f}" x2="{X(t0):.1f}" y1="{mt - 8}" y2="{H - 4}"/>')
+    osad.append(f'<text class="today-lab" x="{X(t0) + 4:.1f}" y="{mt - 10}">täna</text>')
+    for i, (x, eel, jargm) in enumerate(read):
+        y = mt + i * rida + rida / 2
+        nimi = x["n"]["nimi"] if len(x["n"]["nimi"]) <= 36 else x["n"]["nimi"][:35] + "…"
+        osad.append(f'<text x="{ml - 10}" y="{y + 4:.1f}" text-anchor="end">{e(nimi)}</text>')
+        osad.append(f'<line class="ln" x1="{X(eel):.1f}" x2="{X(jargm):.1f}" y1="{y:.1f}" y2="{y:.1f}"/>')
+        osad.append(f'<circle class="dot hollow" cx="{X(eel):.1f}" cy="{y:.1f}" r="4"><title>Viimati uuendatud {kuupaev(eel.isoformat())}</title></circle>')
+        osad.append(f'<circle class="dot focus" cx="{X(jargm):.1f}" cy="{y:.1f}" r="5"><title>Järgmine oodatav {kuupaev(jargm.isoformat())}</title></circle>')
+    tulevased = [r for r in read if r[2] >= t0]
+    if tulevased:
+        x, _, j = tulevased[0]
+        pealk = f"Järgmine uus number tuleb eeldatavasti {KUUD[j.month - 1]} {j.year}: {x['n']['nimi'].lower()}"
+    else:
+        pealk = "Kõigi näitajate oodatav uuendus on möödas"
+    tabel = "".join(
+        f'<tr><th scope="row"><a href="{fail_naitajale(x)}">{e(x["n"]["nimi"])}</a></th><td>{e(x["n"]["andmestik"])}</td>'
+        f'<td class="r">{kuupaev(eel.isoformat())}</td><td class="r">{kuupaev(j.isoformat())}</td>'
+        f'<td class="r">{x["n"]["uuendussagedus_kuudes"]} kuud</td></tr>' for x, eel, j in read)
+    return (
+        '<div class="card"><div class="chart">'
+        f'<h3 class="chart-title">{e(pealk)}</h3>'
+        '<p class="chart-sub">Õõnes ring: Eurostat uuendas viimati. Täidetud ring: järgmine oodatav uuendus.</p>'
+        f'<div class="scroll"><svg class="cal" viewBox="0 0 {W} {H}" role="img" aria-label="Näitajate uuendamise kalender. '
+        f'Kuupäevad on all tabelis.">{"".join(osad)}</svg></div>'
+        '<p class="source">Oodatav kuupäev on arvutatud: viimane uuendus pluss näitaja tavaline uuendussagedus. '
+        "Eurostat võib avaldada varem või hiljem. Statistikaamet avaldab Eesti numbri sageli mõni kuu enne Eurostati.</p>"
+        + avatav("Kuupäevad tabelina", '<div class="table-wrap"><table><thead><tr><th scope="col">Näitaja</th>'
+                 '<th scope="col">Andmestik</th><th class="r" scope="col">Viimati uuendatud</th>'
+                 '<th class="r" scope="col">Järgmine oodatav</th><th class="r" scope="col">Sagedus</th></tr></thead>'
+                 f'<tbody>{tabel}</tbody></table></div>')
+        + "</div></div>")
+
+
+KUUD = ["jaanuaris", "veebruaris", "märtsis", "aprillis", "mais", "juunis", "juulis", "augustis", "septembris",
+        "oktoobris", "novembris", "detsembris"]
+
+
+def naitaja_link(D, nid):
+    x = next((x for x in D["naitajad"] if x["n"]["id"] == nid), None)
+    return f'<a href="{fail_naitajale(x)}">{e(x["n"]["nimi"])}</a>' if x else e(nid)
+
+
+def sarnased_tabel(D):
+    if not D["sarnased"]:
+        return ""
+    read = "".join(
+        f'<tr><th scope="row">{e(r["moiste"])}</th><td>{e(r["mida_mootab"])}</td><td>{e(r["kelle_kohta"])}</td>'
+        f'<td>{e(r["ara_aja_segi"])}</td><td>{naitaja_link(D, r["naitaja"])}</td></tr>' for r in D["sarnased"])
+    return ('<p>Need mõisted kõlavad sarnaselt, aga mõõdavad eri asja. Kui kaks numbrit tunduvad vastuolus, '
+            'on põhjus sageli siin.</p><div class="table-wrap"><table><thead><tr><th scope="col">Mõiste</th>'
+            '<th scope="col">Mida mõõdab</th><th scope="col">Kelle kohta</th><th scope="col">Ära aja segi</th>'
+            f'<th scope="col">Näitaja</th></tr></thead><tbody>{read}</tbody></table></div>')
+
+
+def lugejate_tabel(D):
+    if not D["lugejad"]:
+        return ""
+    read = "".join(
+        f'<tr><th scope="row">{e(r["lugeja"])}</th><td>{e(r["kusimus"])}</td>'
+        f'<td>{", ".join(naitaja_link(D, nid.strip()) for nid in r["naitajad"].split(";"))}</td>'
+        f'<td>{e(r["ettevaatust"])}</td></tr>' for r in D["lugejad"])
+    return ('<p>Sama number vastab eri lugejale eri küsimusele. Tabel näitab, kust alustada ja millele tähelepanu pöörata.</p>'
+            '<div class="table-wrap"><table><thead><tr><th scope="col">Lugeja</th><th scope="col">Küsimus</th>'
+            '<th scope="col">Vaata</th><th scope="col">Pea meeles</th></tr></thead>'
+            f'<tbody>{read}</tbody></table></div>')
 
 
 def teemade_leht(D, K, tana):
@@ -1165,6 +1431,9 @@ def kuidas_leht(D, K, tana):
     sisu = (pais("Kuidas see töötab", "Kust numbrid tulevad, mida märgid tähendavad ja mis on muutunud",
                  "Selle lehe abil saab kontrollida, kuidas seire numbreid kogub ja hindab. Numbrid ise on näitajate lehtedel.")
             + sektsioon("Kust numbrid tulevad", allikad, "Allikad", "allikad")
+            + (sektsioon("Millal tuleb uus number", kal, "Kalender", "kalender") if (kal := kalender(D, tana)) else "")
+            + (sektsioon("Sarnased mõisted, mis mõõdavad eri asja", sar, "Mõisted", "moisted") if (sar := sarnased_tabel(D)) else "")
+            + (sektsioon("Kellele mis number vastab", lug, "Lugejad", "lugejad") if (lug := lugejate_tabel(D)) else "")
             + sektsioon("Mida märgid tähendavad", margid, "Märgid", "margid")
             + sektsioon("Seire enda nõrkused", f'<ul class="items">{s_html}</ul>', "Ausalt", "seire")
             + sektsioon("Muudatuste logi", logi, "Logi", "logi")
@@ -1186,7 +1455,8 @@ def main():
     if VALJA.exists():
         shutil.rmtree(VALJA)  # vanad lehed ei tohi jääda maha
     VALJA.mkdir()
-    lehed = {"index.html": avaleht(D, K, tana), "teemad.html": teemade_leht(D, K, tana), "kuidas.html": kuidas_leht(D, K, tana)}
+    lehed = {"index.html": avaleht(D, K, tana), "kaart.html": euroopa_leht(D, tana), "teemad.html": teemade_leht(D, K, tana),
+             "kuidas.html": kuidas_leht(D, K, tana)}
     for x in D["naitajad"]:
         lehed[fail_naitajale(x)] = naitaja_leht(x, D, K, tana)
     lehed.update(analuus.analuusi_leht(sys.modules[__name__], D, K, tana))

@@ -9,6 +9,35 @@
     "NL",
     "EU27_2020"
   ],
+  "kaardi_riigid": [
+    "AT",
+    "BE",
+    "BG",
+    "CY",
+    "CZ",
+    "DE",
+    "DK",
+    "EE",
+    "EL",
+    "ES",
+    "FI",
+    "FR",
+    "HR",
+    "HU",
+    "IE",
+    "IT",
+    "LT",
+    "LU",
+    "LV",
+    "MT",
+    "NL",
+    "PL",
+    "PT",
+    "RO",
+    "SE",
+    "SI",
+    "SK"
+  ],
   "naitajad": [
     {
       "id": "ettevotete-tehisaru-kasutus",
@@ -76,7 +105,18 @@
         }
       ],
       "filtrid_kontrollitud_kuupaev": "2026-10-27",
-      "vastuolu_selgitus": "Eurostati 23,4% ja Statistikaameti 22,2% (uudises ümardatud 22%) kirjeldavad sama küsitlust, aga põhjus on veel kinnitamata. Üks võimalik põhjus on erinev tegevusalade kogum: Eurostat jätab välja põllumajanduse, kaevandamise ja finantssektori, Statistikaameti \"kõik tegevusalad\" ei pruugi neid välja jätta. Aastatel 2021–2024 erinevad allikad kõige rohkem 0,1 protsendipunkti, seega ei seleta see üksi 2025. aasta vahet. Kinnitamiseks tuleks küsida Statistikaametilt. Statistikaametil on juba 2026. aasta number (34,1%), Eurostatis seda veel pole. 2026. aasta tabel kasutab uut tegevusalade klassifikaatorit EMTAK 2025, nii et võrdlus varasemate aastatega pole täpne."
+      "vastuolu_selgitus": "Eurostati 23,4% ja Statistikaameti 22,2% (uudises ümardatud 22%) kirjeldavad sama küsitlust, aga põhjus on veel kinnitamata. Üks võimalik põhjus on erinev tegevusalade kogum: Eurostat jätab välja põllumajanduse, kaevandamise ja finantssektori, Statistikaameti \"kõik tegevusalad\" ei pruugi neid välja jätta. Aastatel 2021–2024 erinevad allikad kõige rohkem 0,1 protsendipunkti, seega ei seleta see üksi 2025. aasta vahet. Kinnitamiseks tuleks küsida Statistikaametilt. Statistikaametil on juba 2026. aasta number (34,1%), Eurostatis seda veel pole. 2026. aasta tabel kasutab uut tegevusalade klassifikaatorit EMTAK 2025, nii et võrdlus varasemate aastatega pole täpne.",
+      "sihid": [
+        {
+          "riik": "EE",
+          "aasta": 2030,
+          "vaartus": 75,
+          "allikas": "Eesti digiühiskonna arengukava 2035",
+          "url": "https://valitsus.ee/sites/default/files/documents/2026-06/DYAK%202035%20arengukava.pdf",
+          "markus": "Arengukava mõõdab sihti Statistikaameti numbriga (kõik tegevusalad), mitte Eurostati ELiga võrreldava numbriga. Sama siht on 75% avaliku sektori asutuste kohta.",
+          "kontrollitud": "2026-11-03"
+        }
+      ]
     },
     {
       "id": "inimeste-tehisaru-kasutus",
@@ -212,7 +252,92 @@
         "Ei mõõda tehisaru oskusi eraldi.",
         "Statistikaamet ei avalda seda koondnäitajat oma andmebaasis (otsitud 27.10.2026), nii et teist allikat pole."
       ],
-      "teised_allikad": []
+      "teised_allikad": [],
+      "sihid": [
+        {
+          "riik": "EU27_2020",
+          "aasta": 2030,
+          "vaartus": 80,
+          "allikas": "ELi digikümnendi poliitikaprogramm 2030, otsus (EL) 2022/2481, artikkel 4",
+          "url": "https://eur-lex.europa.eu/eli/dec/2022/2481/oj",
+          "markus": "Siht on ELi kui terviku kohta, mitte iga riigi kohta eraldi.",
+          "kontrollitud": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "ettevotete-digiintensiivsus",
+      "nimi": "Vähemalt baastasemel digiintensiivsusega VKEd",
+      "kusimus": "Kui suur osa Eesti väikestest ja keskmistest ettevõtetest kasutab digitehnoloogiat vähemalt baastasemel võrreldes teiste riikidega?",
+      "allikas": "Eurostat",
+      "andmestik": "isoc_e_dii",
+      "filtrid": {
+        "freq": "A",
+        "indic_is": "E_DI4_GELO",
+        "unit": "PC_ENT",
+        "size_emp": "10-249",
+        "nace_r2": "C10-S951_X_K"
+      },
+      "filtrid_kontrollitud": true,
+      "filtrid_kontrollitud_kuupaev": "2026-11-03",
+      "uhik": "% 10–249 hõivatuga ettevõtetest",
+      "uuendussagedus_kuudes": 24,
+      "mida_see_tahendab": "Digiintensiivsus loeb kokku, mitut digitehnoloogia kasutamise tunnust 12-st ettevõte täidab. Vähemalt baastasemel on ettevõte, mis täidab neist vähemalt neli. Tehisaru kasutus on üks tunnustest, nii et see näitaja näitab, kas ettevõtetel on üldse digitaalne alus, millele tehisaru ehitada.",
+      "piirangud": [
+        "Arvestab ainult väikesi ja keskmisi ettevõtteid (10–249 hõivatut), sest ELi siht on nende kohta.",
+        "Eurostat arvutab indeksit eri aastatel eri versioonis. Versioon 4 on olemas 2022. ja 2024. aasta kohta, versioon 3 paaritute aastate kohta. Versioonid ei ole võrreldavad, seega näitab seire ainult versiooni 4.",
+        "Versiooni 3 järgi oli Eestis 2025. aastal vähemalt baastasemel 72,1% VKEdest, aga Eurostat märgib selle numbri „määratlus erineb“ (d). Seepärast seda siin ei kasutata.",
+        "Mõõdab, mitut tehnoloogiat ettevõte kasutab, mitte seda, kui hästi.",
+        "Põhineb ettevõtete enda vastustel küsitluses."
+      ],
+      "teised_allikad": [],
+      "sihid": [
+        {
+          "riik": "EU27_2020",
+          "aasta": 2030,
+          "vaartus": 90,
+          "allikas": "ELi digikümnendi poliitikaprogramm 2030, otsus (EL) 2022/2481, artikkel 4",
+          "url": "https://eur-lex.europa.eu/eli/dec/2022/2481/oj",
+          "markus": "Siht on, et üle 90% ELi VKEdest oleks vähemalt baastasemel. Siht on ELi kui terviku kohta.",
+          "kontrollitud": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "ta-kulud",
+      "nimi": "Teadus- ja arendustegevuse kulud",
+      "kusimus": "Kui palju kulutab Eesti teadus- ja arendustegevusele protsendina SKPst võrreldes teiste riikidega?",
+      "allikas": "Eurostat",
+      "andmestik": "rd_e_gerdtot",
+      "filtrid": {
+        "freq": "A",
+        "sectperf": "TOTAL",
+        "unit": "PC_GDP"
+      },
+      "alates": 2012,
+      "filtrid_kontrollitud": true,
+      "filtrid_kontrollitud_kuupaev": "2026-11-03",
+      "uhik": "% SKPst",
+      "uuendussagedus_kuudes": 12,
+      "mida_see_tahendab": "Näitab, kui palju ettevõtted, riik ja ülikoolid kokku kulutavad uute teadmiste ja tehnoloogia loomisele. Tehisaru arendamine ja kasutuselevõtt toetuvad sellele alusele.",
+      "piirangud": [
+        "Kõigi sektorite kulud kokku: ettevõtted, riik, kõrgharidus ja mittetulundussektor.",
+        "Viimase aasta numbrid on esialgsed (p) ja võivad muutuda.",
+        "Number on suhe SKPsse, nii et see muutub ka siis, kui muutub SKP, mitte ainult kulu.",
+        "Ei näita, kui suur osa kuludest läheb tehisarule."
+      ],
+      "teised_allikad": [],
+      "sihid": [
+        {
+          "riik": "EU27_2020",
+          "aasta": null,
+          "vaartus": 3,
+          "allikas": "Euroopa teadusruumi pakt, nõukogu soovitus (EL) 2021/2122",
+          "url": "https://eur-lex.europa.eu/eli/reco/2021/2122/oj",
+          "markus": "ELi ühine siht on investeerida teadus- ja arendustegevusse 3% SKPst. Kindlat aastat sellel pole.",
+          "kontrollitud": "2026-11-03"
+        }
+      ]
     }
   ]
 }

@@ -197,6 +197,9 @@ uis-ikt-lopetajad,IKT eriala lõpetajad,% kõrgkoolide lõpetajatest,NL,2020,3.4
 uis-ikt-lopetajad,IKT eriala lõpetajad,% kõrgkoolide lõpetajatest,NL,2021,3.7329,INT-UIS,FOSGP.5T8.F600,https://databrowser.uis.unesco.org/,alus
 uis-ikt-lopetajad,IKT eriala lõpetajad,% kõrgkoolide lõpetajatest,NL,2022,4.4296,INT-UIS,FOSGP.5T8.F600,https://databrowser.uis.unesco.org/,alus
 uis-ikt-lopetajad,IKT eriala lõpetajad,% kõrgkoolide lõpetajatest,NL,2023,4.6045,INT-UIS,FOSGP.5T8.F600,https://databrowser.uis.unesco.org/,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2012,2.1,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2013,1.7,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2014,1.41,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2015,1.44,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2016,1.22,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2017,1.25,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
@@ -207,6 +210,10 @@ eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2021,1.75,INT-E
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2022,1.76,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2023,1.84,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2024,1.98,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EE,2025,2.08,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2012,3.41,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2013,3.28,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2014,3.16,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2015,2.89,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2016,2.75,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2017,2.75,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
@@ -217,6 +224,10 @@ eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2021,3.01,INT-E
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2022,2.98,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2023,3.09,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2024,3.22,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,FI,2025,3.32,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2012,3.25,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2013,3.28,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2014,3.12,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2015,3.24,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2016,3.26,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2017,3.4,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
@@ -227,6 +238,10 @@ eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2021,3.45,INT-E
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2022,3.5,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2023,3.64,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2024,3.53,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,SE,2025,3.52,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2012,2.98,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2013,2.96,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2014,2.92,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2015,3.06,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2016,3.1,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2017,2.94,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
@@ -237,6 +252,10 @@ eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2021,2.76,INT-E
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2022,2.88,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2023,3.07,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2024,3.15,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DK,2025,3.12,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2012,1.57,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2013,1.6,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2014,1.66,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2015,1.86,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2016,1.97,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2017,2.01,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
@@ -247,6 +266,10 @@ eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2021,1.82,INT-E
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2022,1.5,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2023,1.78,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2024,1.75,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NO,2025,1.79,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2012,2.82,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2013,2.78,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2014,2.82,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2015,2.87,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2016,2.88,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2017,2.98,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
@@ -257,6 +280,10 @@ eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2021,3.05,INT-E
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2022,3.03,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2023,3.1,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2024,3.12,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,DE,2025,3.07,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2012,1.9,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2013,2.14,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2014,2.15,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2015,2.12,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2016,2.12,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2017,2.14,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
@@ -267,6 +294,10 @@ eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2021,2.22,INT-E
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2022,2.18,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2023,2.3,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2024,2.37,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,NL,2025,2.4,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EU27_2020,2012,2.06,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EU27_2020,2013,2.08,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
+eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EU27_2020,2014,2.09,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EU27_2020,2015,2.1,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EU27_2020,2016,2.1,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus
 eurostat-rd-e-gerdtot,Teadus- ja arendustegevuse kulu,% SKPst,EU27_2020,2017,2.14,INT-EUROSTAT,rd_e_gerdtot,https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table,alus

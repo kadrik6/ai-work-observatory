@@ -79,10 +79,16 @@ def tapsus(K, mid, riik, aasta):
 
 
 def yhine_aasta(s):
-    """Viimane aasta, kus on Eesti ja vähemalt viis teist võrdlusriiki."""
+    """Viimane aasta, kus on Eesti ja vähemalt viis teist võrdlusriiki.
+
+    Kui allikas annab ELi keskmise, peab see samuti olemas olema (nt T&A kulu 2025: riigid on, EL veel mitte).
+    Eesti uuem aasta jääb siis välja „uuem“ alla.
+    """
     aastad = sorted({a for g in RIIGID7 for a in s.get(g, {})}, reverse=True)
+    el_olemas = bool(s.get(EL))
     for a in aastad:
-        if a in s.get("EE", {}) and sum(1 for g in RIIGID7[1:] if a in s.get(g, {})) >= 5:
+        if (a in s.get("EE", {}) and sum(1 for g in RIIGID7[1:] if a in s.get(g, {})) >= 5
+                and (a in s.get(EL, {}) or not el_olemas)):
             return a
     return None
 

@@ -20,6 +20,10 @@ Lehed tekivad kausta `raportid/html/`. Avalehe päisefoto on kaustas `raportid/f
 - Lehtede ülesehitus (27.10.2026) on kolmetasandiline:
   1. `index.html` Ülevaade: vastus, iga näitaja kaart (uusim Eesti number, ELi võrdlus, kolm usaldusmärki), meelespea ja uudised.
   2. `<näitaja id>.html`: number, „nii on õige öelda“, riikide võrdlus, uuemad riiklikud numbrid, aegrida ja viis usaldusrida (värskus, allikate kooskõla, meetodi muutused, piirangud, avalikud väited), mis avanevad klõpsuga.
-  3. `teemad.html` (kataloog teemade kaupa) ja `kuidas.html` (allikad, märkide tähendus, seire riskid, logi, failide kooskõla).
+  3. `teemad.html` (kataloog teemade kaupa) ja `kuidas.html` (allikad, uuenduste kalender, sarnased mõisted, kellele mis number vastab, märkide tähendus, seire riskid, logi, failide kooskõla).
+  4. `kaart.html` (3.11.2026): ELi kaart, iga näitaja viimane aasta kõigi 27 riigi kohta.
+- Sihid: `../naitajad.json` väli `sihid` (riik, aasta, väärtus, allikas, url, märkus, kontrollitud). Siht on näitaja lehel faktina, riikide joonisel katkendjoonega tulbana ja aegreal katkendjoonena. Siht näitab ametlikku eesmärki, mitte prognoosi.
+- ELi kaart: andmed `../andmed/el27.csv` (teeb `run.py`), riigipiirid `euroopa.json` (teeb `tee_euroopa_kaart.py` npm-paketi world-atlas@2.0.2 failist countries-50m.json; Natural Earth, avalik omand). Kaardi värvid jagavad riigid viide võrdsesse vahemikku.
+- Käsitsi peetavad tabelid lehel Kuidas see töötab: `sarnased.csv` (mõisted, mis kõlavad sarnaselt, aga mõõdavad eri asja) ja `lugejad.csv` (kellele mis number vastab). Neis numbreid pole.
 - `riskid.csv` veerud `naitaja` (mis näitaja lehel kirje on) ja `reegel` (lühike meelespea ülevaatesse).
 - Kataloog ja allikate võrdlus tulevad kaustast `../kataloog/` mooduli `seire/kataloog.py` kaudu. Vt `../kataloog/README.md`.

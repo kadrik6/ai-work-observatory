@@ -2,17 +2,18 @@
  "kuupaev": "2026-10-27",
  "failid": {
   "analuus-andmed.csv": "ada0daa8e28de08587b2386aec73fa9906ca0a5553a0db657cd0422ea3e36a7b",
-  "analuus.html": "dc1392296dadd4362354a677c16849218b54c6d27d8c59e37f34248e5aabd075",
-  "ettevotete-tehisaru-kasutus.html": "e6e9950ab70686c28162826013e6658e65f2eadaa92329381220ccc10f93094a",
+  "analuus.html": "d024c2ca712731681a6b13b748b58cda70455d80b820f65bc1bfdab7c224356f",
+  "ettevotete-tehisaru-kasutus.html": "094d1c6cb4c7a679dbc4e2cd2f981731b773811d5a7e840981af004d2fcece97",
   "fotod/pano-siluett-lai-1200.jpg": "ca9d84e3a489a517083347d89db3e47beb22e257d12156a11390d10cd2b7ab79",
   "fotod/pano-siluett-lai.jpg": "1c91888f8276e1650a7bfa5fedef357d624dcf91bf285e85dc9bea84a5cfca40",
-  "index.html": "9fbf7bdc06bdea6e192e6e30b2e1ecbe837770100286b1668b30224ec0525d06",
-  "inimeste-digioskused.html": "e42077af65aa9e689665d14f886c400a3dea415f1a6da65c437809d1aadb583c",
-  "inimeste-tehisaru-kasutus.html": "f2b113e796691f94ea37fb756f61b1f98fa71f998f0dd1d1fd0d58c37c9be78b",
-  "kuidas.html": "d7b2a00278ebad0e94ae893e4e4a8ad4c9d8a3fdcc6a7919274ef88f17259613",
-  "stiil.css": "be69860b567b49ee0895d84c917f48a0949768c661a8b59106e9ca2b7bce657e",
-  "teemad.html": "e52c3dc1bd1a7f7188afae72608e2dfb572dc8da21f670dbc5e13d9339847c4f",
-  "tehisaru-oskuse-puudus.html": "c0f0e4f4e6600d792811857f53d40b438843e02d62d593dfa5aca01297c57783",
-  "tooalane-tehisaru-kasutus.html": "04b41d597e78eba8d79b66d46907f900c90111059de1159cc53aeb30fb1ca2ed"
+  "index.html": "05b8eb4104b038247a154fd8f20c9ce07aa378275070c0c44a2b2a9b780efb6e",
+  "inimeste-digioskused.html": "19f9aa975f961195f72aec51115fa5537c52f30ac4c77c37402396616b293d16",
+  "inimeste-tehisaru-kasutus.html": "980173d359d473dc79984956b958618fe180dc1d5aec9be24da3c8e8dcb2883d",
+  "kaart.html": "746d2a598905afa279d08fcf1fb9036f3e52c0d417a645c81e83757f9da3b10c",
+  "kuidas.html": "0e0ef64a53f43f4d33dd3172717a02c968b91159d980bfb9379f4981a65c910d",
+  "stiil.css": "c97b419e0fde415196899d4ad506a3953d9c7dbbb5784167040a01443dcaea43",
+  "teemad.html": "abc0f3468bb39f5d7fcd0d63b72cfa398ccc2859542686a142a83a6e16d60b23",
+  "tehisaru-oskuse-puudus.html": "6f8d85fde0f6112dd9a82eca9771a50e00b1fb9d227290b7b548ea91ef84046c",
+  "tooalane-tehisaru-kasutus.html": "a7c3274903ea3260153076f7246aaab89b31abee38ba96e1a1c32a254e1274a6"
  }
 }
