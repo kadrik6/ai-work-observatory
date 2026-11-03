@@ -178,6 +178,15 @@ def uis(naitaja, teema, riigid, kohti=2):
     return lae
 
 
+def eurostat_gerd():
+    filtrid = {"freq": "A", "sectperf": "TOTAL", "unit": "PC_GDP"}
+    vastus = eurostat.lae("rd_e_gerdtot", filtrid, FOOKUS)
+    read = [{"riik": r["geo"], "aasta": int(r["time"]), "vaartus": r["vaartus"], "margend": r["margend"],
+             "avaldatud": vastus["updated"][:10]}
+            for r in eurostat.json_stat_ridadeks(vastus) if r["vaartus"] is not None and int(r["time"]) >= 2015]
+    return read, eurostat.koosta_url("rd_e_gerdtot", filtrid, FOOKUS), "Eurostati API"
+
+
 MOODIKUD = {
     "oecd-g14b-el": oecd(*OECD_ETTEVOTTED, FOOKUS),
     "oecd-g14b-muud": oecd(*OECD_ETTEVOTTED, VALJASPOOL_EL),
@@ -205,6 +214,7 @@ MOODIKUD = {
     "cbs-ict": cbs,
     "statcan-csbc": statcan,
     "ons-bics": bics,
+    "eurostat-rd-e-gerdtot": eurostat_gerd,
     "uis-gerd": uis("EXPGDP.TOT", "SCIENCE_TECHNOLOGY_INNOVATION", FOOKUS),
     "uis-gerd-muud": uis("EXPGDP.TOT", "SCIENCE_TECHNOLOGY_INNOVATION", VALJASPOOL_EL),
     "uis-teadlased": uis("RESDEN.INHAB.TFTE", "SCIENCE_TECHNOLOGY_INNOVATION", FOOKUS + VALJASPOOL_EL, 0),

@@ -87,3 +87,11 @@ def test_igal_sihil_on_allikas_link_ja_kontrollikuupaev():
     for s in sihid:
         assert s["allikas"] and s["url"].startswith("https://") and s["kontrollitud"]
         assert s["riik"] in reg["riigid"]
+
+
+def test_t_ja_a_kulu_jaab_valisele_lehele_aga_kataloogis_pole_topelt():
+    """Tehisaru 2027 leht loeb T&A kulu failist vaatlused-valis.csv. Seire loeb sama numbri oma andmefailist."""
+    from seire import kataloog
+    rida = (JUUR / "kataloog" / "vaatlused-valis.csv").read_text(encoding="utf-8")
+    assert "eurostat-rd-e-gerdtot" in rida
+    assert kataloog.kontrolli(kataloog.lae()) == []

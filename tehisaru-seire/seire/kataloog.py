@@ -87,8 +87,11 @@ def lae(juur=JUUR):
     allikad = {r["id"]: r for r in _loe_csv(juur / "allikad" / "allikad.csv")}
 
     vaatlused = []
+    # Kui mõõdik on seire põhinäitaja ja selle andmefail on olemas, loetakse numbrid ainult sealt. Kataloogi
+    # failides võib sama mõõdik alles olla (nt T&A kulu failis vaatlused-valis.csv), sest seda loeb väline leht.
+    seires = {m["id"] for m in moodikud.values() if m["naitaja"] and (juur / "andmed" / f"{m['naitaja']}.csv").exists()}
     for p in sorted(k.glob("vaatlused-*.csv")):  # api (lae.py), valis (lae_valis.py), muud (käsitsi)
-        vaatlused += [_vaatlus(r, fail=f"kataloog/{p.name}") for r in _loe_csv(p) if r["vaartus"]]
+        vaatlused += [_vaatlus(r, fail=f"kataloog/{p.name}") for r in _loe_csv(p) if r["vaartus"] and r["moodik"] not in seires]
     # Seire põhinäitajad: numbrid tulevad otse seire andmefailist, mitte koopiast.
     for m in moodikud.values():
         if not m["naitaja"]:

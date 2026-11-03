@@ -45,6 +45,8 @@ def test_teema_paring_on_kitsendus():
     assert "publication_year%3A2016-2026" in osad["aastad"][0]
     assert 'NOT ("job shop" OR scheduling)' in analyys.PARING
     assert "authorships.countries%3AEE" in osad["eesti_autorid_aastad"][0] and "language%3Aet" in osad["eesti_keeles"][0]
+    assert "group_by=primary_topic.field.id" in osad["valdkonnad"][0] and "publication_year%3A2026%2C" in osad["valdkonnad"][0]
+    assert "publication_year%3A2025%2C" in osad["valdkonnad_eelmine"][0]
 
 
 def test_kaivitus_logib_vea_ja_jatkab(tmp_path, monkeypatch):

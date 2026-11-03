@@ -166,7 +166,11 @@ def osad(tana):
         "eesti_keeles_aastad": (url(f"title_and_abstract.search:{PARING_ET},language:et",
                                     group_by="publication_year"), grupid),
         "eesti_keeles": (url(f"title_and_abstract.search:{PARING_ET},language:et",
-                             sort="publication_date:desc", select=valik, **{"per-page": 50}), tood),
+                             sort="publication_date:desc", select=valik, **{"per-page": 50}), tood),        # Teadusvaldkond OpenAlexi peamise teema järgi (Kadri 31.10: jaotus valdkonniti), see ja eelmine aasta.
+        "valdkonnad": (url(f"title.search:{PARING},publication_year:{aasta},{LIIGID}",
+                           group_by="primary_topic.field.id"), grupid),
+        "valdkonnad_eelmine": (url(f"title.search:{PARING},publication_year:{aasta - 1},{LIIGID}",
+                                   group_by="primary_topic.field.id"), grupid),
     })
     return tulem
 

@@ -34,3 +34,52 @@ def test_kiiruse_graafikus_on_ainult_katsed():
 def test_puuduv_mojuhinnang_ei_ole_null():
     tehisaru_yksi = [r for r in LEIUD["eesti_tootlikkus"]["read"] if r["nimi"] == "Tehisaru üksi"][0]
     assert tehisaru_yksi["toostus"] is None and tehisaru_yksi["teenused"] is None
+
+
+def test_tuleviku_vaade_viitab_olemasolevatele_uuringutele():
+    t = LEIUD["tulevik"]
+    viited = [t["ametid"]["uuring"], t["eesti_ametid"]["uuring"], t["tootus_ee"]["uuring"]] + t["kaotus"]
+    assert set(viited) <= set(UURINGUD)
+
+
+def test_tuleviku_arvud_on_margitud_prognoosiks():
+    # Ametite ja töötuse graafikud näitavad prognoose. Neid ei tohi esitada mõõdetud tulemusena.
+    t = LEIUD["tulevik"]
+    for osa in ("ametid", "eesti_ametid", "tootus_ee"):
+        assert UURINGUD[t[osa]["uuring"]]["meetod"] == "prognoos", osa
+    read = t["tootus_ee"]["read"]
+    assert [r["aasta"] for r in read] == sorted(r["aasta"] for r in read)
+    # Tegelik arv on ainult esimene aasta, ülejäänud on prognoos.
+    assert [r["tegelik"] for r in read] == [True] + [False] * (len(read) - 1)
+
+
+def test_koondamise_pohjused_ei_yleta_kogusummat():
+    # Jääk "muud põhjused" arvutatakse lehel; loetletud põhjused ei tohi kokku ületada kõiki teateid.
+    k = LEIUD["tulevik"]["koondamise_pohjused"]
+    assert k["uuring"] in UURINGUD
+    assert 0 < sum(r["teateid"] for r in k["read"]) <= k["kokku"]
+
+
+def test_tookorralduse_vaade():
+    t = LEIUD["tookorraldus"]
+    assert t["uuring"] in UURINGUD
+    for r in t["koos"]:
+        # Kui mõju üksi ei olnud oluline, on väärtus tühi, mitte null.
+        assert r["uksi"] is None or r["uksi"] > 0, r["nimi"]
+        assert r["koos"] > (r["uksi"] or 0), r["nimi"]
+    for r in t["jarjepidevus"]:
+        assert r["regulaarne"] > r["uks_kord"] > 0, r["nimi"]
+
+
+def test_tookorralduse_moodmise_astmed():
+    t = LEIUD["tookorraldus"]
+    for r in t["valismaa"]:
+        assert r["uuring"] in UURINGUD and r["lause"], r
+    m = t["moodmine"]
+    assert len(m["astmed"]) >= 3
+    for a in m["astmed"]:
+        for v in ("kusimus", "kuidas", "naide", "eesti", "eesti_tekst"):
+            assert a[v], (a, v)
+        assert a["eesti"] in {"jah", "osaliselt", "ei"}, a["kusimus"]
+    assert all(i in UURINGUD for i in m["allikad"])
+    assert m["mooduli_allikas"].startswith("https://")
