@@ -44,6 +44,20 @@ FOOKUS = "EE"
 LEIUD = JUUR.parent / "tooelu-seire" / "leiud.json"
 TOOELU_LEHT = "tehisaru-ja-too.html"  # ühise saidi teine osa, avaldatakse samas artefaktis
 UURINGUID_KUNI = 3
+# Avalike lausete kontroll (osa „Mida väidetakse“, 3.11.2026). Näitajaga seotud väited on raportid/riskid.csv-s,
+# uuringute ja aruannete kohta käivad väited ühises kihis kataloog/vaited.csv.
+VAITED = JUUR / "kataloog" / "vaited.csv"
+VAITED_LEHT = "vaited.html"
+# Hinnang -> (raskus, märgi klass, mida see tähendab). Raskus järjestab lehe: eespool laused, mis eksitavad.
+HINNANGUD = {
+    "Vale tõlgendus": (0, "risk", "Lause ütleb allikast midagi muud, kui allikas ütles."),
+    "Nimetaja vale": (0, "risk", "Protsent on arvutatud teisest rühmast, kui lause ütleb."),
+    "Sõnastus liialdab": (0, "risk", "Lause ütleb rohkem, kui allikas ütles, näiteks „kaob“, kui allikas ütles „puudutab“."),
+    "Suurus ebakindel": (1, "warn", "Suund on tõenäoliselt õige, täpne suurus mitte."),
+    "Täpsustus puudu": (1, "warn", "Number vastab allikale, aga lausest puudub, keda või mida see kirjeldab."),
+    "Vastab allikale": (2, "ok", "Lause ütleb sama, mida allikas."),
+}
+RASKUS = {0: ("Ütleb muud kui allikas", "risk"), 1: ("Vajab täpsustust", "warn"), 2: ("Vastab allikale", "ok")}
 TOEND = {"tugev": "Tugev tõend", "keskmine": "Keskmine tõend", "nork": "Nõrk tõend", "prognoos": "Prognoos"}
 MEETOD = {"katse": "juhuslik katse", "loomulik_katse": "loomulik katse", "registriandmed": "registri- või platvormiandmed",
           "kirjeldav": "kirjeldav analüüs", "kusitlus": "küsitlus", "hinnang": "hinnang ülesannete kohta",
@@ -136,6 +150,7 @@ def lae():
                 print(f"Hoiatus: riiklikud.csv {r['riik']} {r['aasta']} = {r['v']}, seire laadis {uuem['vaartus']}.", file=sys.stderr)
         naitajad.append({"n": n, "meta": meta, "seeria": seeria, "aastad": aastad, "viimane": viimane, "uuem": uuem,
                          "riiklikud": riiklikud})
+    L = lae_leiud()
     return {
         "riigid": reg["riigid"],
         "naitajad": naitajad,
@@ -146,22 +161,56 @@ def lae():
         "el27": loe_csv(JUUR / "andmed" / "el27.csv"),
         "sarnased": loe_csv(SIIN / "sarnased.csv"),
         "lugejad": loe_csv(SIIN / "lugejad.csv"),
-        "uuringud": lae_uuringud(),
+        "uuringud": lae_uuringud(L),
+        "leiud": {u["id"]: u for u in (L or {}).get("uuringud", [])},
+        "vaited": lae_vaited(loe_csv(SIIN / "riskid.csv")),
     }
 
 
-def lae_uuringud():
-    """Küsimuse id -> uuringud (leiud.json kirje + veerg seos), faili kataloog/uuringud.csv järjekorras."""
-    seosed = JUUR / "kataloog" / "uuringud.csv"
-    if not LEIUD.exists() or not seosed.exists():
-        return {}
+def lae_leiud():
+    """Suuna „Tehisaru ja töö“ leiud.json või None, kui faili pole või see ei ole loetav."""
+    if not LEIUD.exists():
+        return None
     try:
         L = loe_json(LEIUD)
-        U = {u["id"]: u for u in L["uuringud"]}
+        if not all(isinstance(u, dict) and "id" in u for u in L["uuringud"]):
+            raise ValueError("uuringul puudub id")
+        return L
     except (ValueError, KeyError, TypeError) as viga:
         # Teise osa vigane fail ei tohi peatada ametliku statistika lehti: kast jääb lihtsalt ära.
-        print(f"Hoiatus: {LEIUD} ei ole loetav ({viga}), uuringute kaste ei tehta.", file=sys.stderr)
+        print(f"Hoiatus: {LEIUD} ei ole loetav ({viga}), uuringuid ei näidata.", file=sys.stderr)
+        return None
+
+
+def lae_vaited(riskid):
+    """Kõik kontrollitud avalikud laused ühes loendis: enne eksitavad, siis uuemad."""
+    tulem, mitu = [], {}
+    for r in (x for x in riskid if x["liik"] == "vaide"):
+        mitu[r["naitaja"]] = mitu.get(r["naitaja"], 0) + 1  # id on näitaja piires järjekorranumber
+        tulem.append({"id": f'{r["naitaja"]}-{mitu[r["naitaja"]]}', "vaide": r["pealkiri"], "kes": r["allikas"], "kus": "",
+                      "kuupaev": r["kuupaev"], "url": r["url"], "algallikas": "", "algallika_url": "",
+                      "algallikas_utleb": "", "hinnang": r["hinnang"], "selgitus": r["selgitus"], "oige_lause": "",
+                      "mida_teha": r["mida_teha"], "naitaja": r["naitaja"], "uuringud": []})
+    if VAITED.exists():
+        for r in loe_csv(VAITED):
+            tulem.append({**r, "mida_teha": "", "naitaja": "", "uuringud": r["uuringud"].split()})
+    for v in tulem:
+        if v["hinnang"] not in HINNANGUD:
+            print(f"Hoiatus: väite {v['id']} hinnang „{v['hinnang']}“ pole lubatud loendis.", file=sys.stderr)
+    tulem.sort(key=lambda v: v["kuupaev"], reverse=True)
+    tulem.sort(key=lambda v: HINNANGUD.get(v["hinnang"], (1,))[0])
+    return tulem
+
+
+def lae_uuringud(L=False):
+    """Küsimuse id -> uuringud (leiud.json kirje + veerg seos), faili kataloog/uuringud.csv järjekorras.
+    L on juba laaditud leiud.json (või None); vaikimisi laaditakse see siin."""
+    seosed = JUUR / "kataloog" / "uuringud.csv"
+    if L is False:
+        L = lae_leiud()
+    if L is None or not seosed.exists():
         return {}
+    U = {u["id"]: u for u in L["uuringud"]}
     tugevus = {m: k for k, ms in L.get("kindlus", {}).items() for m in ms}
     tulem = {}
     for r in loe_csv(seosed):
@@ -253,7 +302,8 @@ IKOON_KUU = ('<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"
 # Ühise saidi kaks osa (Kadri otsus 3.11.2026). Sama riba on lehel „Tehisaru ja töö“ (tooelu-seire/leht/mall.html).
 KOHAL = ' aria-current="page"'
 OSAD = [("mootmine", "index.html", "Mida mõõdetakse", "ametlik statistika"),
-        ("uuringud", TOOELU_LEHT, "Mida uuritakse", "uuringud ja raportid")]
+        ("uuringud", TOOELU_LEHT, "Mida uuritakse", "uuringud ja raportid"),
+        ("vaited", VAITED_LEHT, "Mida väidetakse", "avalike lausete kontroll")]
 
 
 def osade_riba(praegu):
@@ -266,7 +316,7 @@ def osade_riba(praegu):
     return f'<nav class="osad" aria-label="Saidi osad"><div class="wrap">{lingid}</div></nav>'
 
 
-def leht(fail, pealkiri, sisu, uuendatud, ylal=""):
+def leht(fail, pealkiri, sisu, uuendatud, ylal="", osa="mootmine"):
     praegune = ' aria-current="page"'
     nav = "".join(
         f'<li><a href="{f}"{praegune if f == fail else ""}>{e(nimi)}</a></li>'
@@ -284,7 +334,7 @@ def leht(fail, pealkiri, sisu, uuendatud, ylal=""):
     )
     keha = (
         '<a class="skip" href="#sisu">Liigu sisu juurde</a>'
-        + osade_riba("mootmine")
+        + osade_riba(osa)
         + '<header class="top"><div class="wrap">'
         '<a class="mark" href="index.html">Tehisaru seire</a>'
         f'<nav aria-label="Raporti lehed"><ul class="nav">{nav}</ul></nav>'
@@ -983,6 +1033,11 @@ def avaleht(D, K, tana):
     ]
     if D["uuringud"]:
         edasi.insert(0, (TOOELU_LEHT, "Mida uuritakse", "Mida uuringud leiavad tehisaru mõjust tööle ja kui kindlad need leiud on."))
+    if D["vaited"]:
+        nv = len(D["vaited"])
+        edasi.insert(1 if D["uuringud"] else 0,
+                     (VAITED_LEHT, "Mida väidetakse",
+                      f'{nv} {"avalik lause" if nv == 1 else "avalikku lauset"}, kontrollitud algallika vastu.'))
     edasi_html = '<ul class="edasi">' + "".join(
         f'<li><a href="{f}"><b>{e(t)} <span aria-hidden="true">→</span></b><span>{e(d)}</span></a></li>' for f, t, d in edasi) + "</ul>"
     sisu = (
@@ -1377,6 +1432,81 @@ KUUD = ["jaanuaris", "veebruaris", "märtsis", "aprillis", "mais", "juunis", "ju
         "oktoobris", "novembris", "detsembris"]
 
 
+def vaite_kirje(v, D):
+    raskus, klass, _ = HINNANGUD.get(v["hinnang"], (1, "", ""))
+    kes = linkita(v["kes"], v.get("url"))
+    kus = f', {e(v["kus"])}' if v.get("kus") else ""
+    aeg = f', {kuupaev(v["kuupaev"])}' if v.get("kuupaev") else ""
+    if v["naitaja"]:
+        alus = f'<p class="small"><b>Ametlik number:</b> {naitaja_link(D, v["naitaja"])}</p>'
+    else:
+        alus = (f'<p class="claim-src"><b>Allikas ütleb:</b> {e(v["algallikas_utleb"])}</p>'
+                f'<p class="small">{linkita(v["algallikas"], v.get("algallika_url"))}</p>')
+    if v["oige_lause"]:
+        teha = f'<p class="todo"><b>Täpsem oleks:</b> {e(v["oige_lause"])}</p>'
+    elif v["mida_teha"]:
+        teha = f'<p class="todo"><b>Mida teha:</b> {e(v["mida_teha"])}</p>'
+    else:
+        teha = ""
+    uu = [D["leiud"][u] for u in v["uuringud"] if u in D["leiud"]]
+    lisa = ""
+    if uu:
+        lisa = ('<p class="small">Sama teema uuringud: '
+                + ", ".join(f'{e(u.get("autorid", u["id"]).split(",")[0])} {e(str(u.get("aasta", "")))}' for u in uu)
+                + f'. <a href="{TOOELU_LEHT}">Vaata lehel „Tehisaru ja töö“</a></p>')
+    return (f'<li class="claim" data-hinnang="{e(v["hinnang"])}"><div class="row"><blockquote>{e(v["vaide"])}</blockquote>'
+            f'<span class="tag {klass}">{e(v["hinnang"])}</span></div>'
+            f'<p class="small">Ütles: {kes}{kus}{aeg}</p>{alus}{teha}'
+            + avatav("Miks see hinnang", f'<p>{e(v["selgitus"])}</p>{lisa}') + "</li>")
+
+
+def vaidete_riba(V):
+    """Üks tulp kuni kolme osaga: mitu lauset ütleb muud kui allikas, vajab täpsustust või vastab allikale."""
+    loend = {k: 0 for k in RASKUS}
+    for v in V:
+        loend[HINNANGUD.get(v["hinnang"], (1,))[0]] += 1
+    osad = "".join(
+        f'<span class="vb-seg vb-{RASKUS[k][1]}" style="flex-grow:{n}"><b>{n}</b> {e(RASKUS[k][0].lower())}</span>'
+        for k, n in loend.items() if n)
+    if not V:
+        return "", loend
+    return f'<div class="vbar" role="img" aria-label="{e(vaidete_lause(V, loend))}">{osad}</div>', loend
+
+
+def vaidete_lause(V, loend):
+    if not V:
+        return "Kontrollitud lauseid veel pole."
+    osad = [f"{n} {RASKUS[k][0].lower()}" for k, n in loend.items() if n]
+    jada = osad[0] if len(osad) == 1 else ", ".join(osad[:-1]) + " ja " + osad[-1]
+    return f"{len(V)} kontrollitud lausest {jada}."
+
+
+def vaited_leht(D, tana):
+    V = D["vaited"]
+    riba, loend = vaidete_riba(V)
+    kokku = (f'<div class="vsum">{riba}<p>{e(vaidete_lause(V, loend))}</p></div>')
+    legend = "".join(
+        f'<tr><th scope="row"><span class="tag {k}">{e(h)}</span></th><td>{e(t)}</td></tr>'
+        for h, (_, k, t) in HINNANGUD.items())
+    kuidas = ('<ol class="steps"><li>Leiame lause algallika: raporti, tabeli või uuringu, millele lause toetub.</li>'
+              '<li>Võrdleme sõnastust: kas allikas ütles sama, kas see oli mõõtmine, ootus või hinnang.</li>'
+              '<li>Kontrollime, kelle kohta number on: kõik ettevõtted või suurettevõtted, Eesti või maailm, inimesed või oskused.</li>'
+              '<li>Kirjutame lause, mis ütleb sama numbriga täpselt seda, mida allikas ütles.</li></ol>'
+              '<p class="small">Hinnang on lause kohta, mitte inimese kohta. Uudise pealkirja teeb sageli toimetus, '
+              'mitte artikli autor. Kontrollime ainult avalikke lauseid ja ainult algallika järgi.</p>'
+              f'<div class="table-wrap"><table><thead><tr><th scope="col">Hinnang</th><th scope="col">Mida see tähendab</th></tr>'
+              f'</thead><tbody>{legend}</tbody></table></div>')
+    sisu = (pais("Mida väidetakse", "Kas avalik lause vastab allikale?",
+                 "Avalikud laused tehisaru, töö ja oskuste kohta, kontrollitud algallika vastu.")
+            + kokku
+            + sektsioon("Kontrollitud laused",
+                        f'<ul class="items claims">{"".join(vaite_kirje(v, D) for v in V)}</ul>' if V
+                        else '<p>Siia tulevad avalikud laused, kui need on algallika vastu kontrollitud.</p>',
+                        "Laused", "laused")
+            + sektsioon("Kuidas me kontrollime", kuidas, "Meetod", "meetod"))
+    return leht(VAITED_LEHT, "Mida väidetakse · Tehisaru seire", sisu, tana, osa="vaited")
+
+
 def naitaja_link(D, nid):
     x = next((x for x in D["naitajad"] if x["n"]["id"] == nid), None)
     return f'<a href="{fail_naitajale(x)}">{e(x["n"]["nimi"])}</a>' if x else e(nid)
@@ -1576,6 +1706,7 @@ def main():
              "kuidas.html": kuidas_leht(D, K, tana)}
     for x in D["naitajad"]:
         lehed[fail_naitajale(x)] = naitaja_leht(x, D, K, tana)
+    lehed[VAITED_LEHT] = vaited_leht(D, tana)  # osade riba viitab sellele igalt lehelt, ka siis, kui väiteid pole
     lehed.update(analuus.analuusi_leht(sys.modules[__name__], D, K, tana))
     for nimi, sisu in lehed.items():
         (VALJA / nimi).write_text(sisu, encoding="utf-8")

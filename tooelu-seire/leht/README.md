@@ -38,4 +38,4 @@ Avaldatud lehe sisu muudetakse ainult Kadri loal.
 
 ## Ühine sait (Kadri otsus 3.11.2026)
 
-Seire („Mida mõõdetakse“) ja see leht („Mida uuritakse“) on üks sait. Ühises artefaktis on seire lehed ja see leht kõrvuti; `tehisaru-ja-too-uhine.html` avaldatakse seal nimega `tehisaru-ja-too.html`. Ühises versioonis on lehe kohal osade riba ja uuringu juures link „Eesti number: …“, kui sama küsimuse kohta on seire näitaja (seos: `tehisaru-seire/kataloog/uuringud.csv`). Üksikus versioonis neid pole, sest seire lehti seal ei ole. Numbrid ja uuringud ei ole kunagi samal joonisel.
+Seire („Mida mõõdetakse“) ja see leht („Mida uuritakse“) on üks sait. Ühises artefaktis on seire lehed ja see leht kõrvuti; `tehisaru-ja-too-uhine.html` avaldatakse seal nimega `tehisaru-ja-too.html`. Ühises versioonis on lehe kohal osade riba (kolm osa: mõõdetakse, uuritakse, väidetakse) ja uuringu juures link „Eesti number: …“, kui sama küsimuse kohta on seire näitaja (seos: `tehisaru-seire/kataloog/uuringud.csv`). Üksikus versioonis neid pole, sest seire lehti seal ei ole. Numbrid ja uuringud ei ole kunagi samal joonisel.

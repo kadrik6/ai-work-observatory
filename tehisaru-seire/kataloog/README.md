@@ -23,6 +23,12 @@ Seire põhinäitaja (Eurostat `isoc_eb_ai`) numbreid kataloogi ei kopeerita. Nee
 
 Teemad: tehisaru kasutus, andmed ja digitaristu, oskused, tööturg, haridus ja teadus, investeeringud.
 
+## Avalike lausete kontroll
+
+Fail `vaited.csv` (3.11.2026) hoiab avalikke lauseid tehisaru, töö ja oskuste kohta, mis on kontrollitud algallika vastu. Leht on `raportid/html/vaited.html` („Mida väidetakse“, saidi kolmas osa). Lehel on ka `raportid/riskid.csv` read liigiga `vaide`: need käivad ühe seire näitaja kohta ja on näha ka selle näitaja lehel.
+
+Iga rida vajab ütleja linki (`url`), algallika linki (`algallika_url`) ja algallika täpset sõnastust (`algallikas_utleb`). Ilma algallikata hinnangut ei tehta. `hinnang` peab olema loendis `HINNANGUD` failis `raportid/koosta.py`; seal on ka iga hinnangu tähendus. Veerus `uuringud` on tühikuga eraldatud uuringute id-d failist `tooelu-seire/leiud.json`. Veerus `kusimus` on kataloogi küsimuse id, kui lause käib selle küsimuse kohta. Hinnang on lause kohta, mitte inimese kohta. Testid: `tests/test_vaited.py`.
+
 ## Võrreldavuse klassid
 
 Iga küsimuse juures on üks **võrdlusalus** (tavaliselt Eurostat, sest see on kõigi ELi riikide kohta sama meetodiga). Iga teine mõõdik on selle suhtes ühes klassis:
