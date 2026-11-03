@@ -107,3 +107,10 @@ def test_uuringult_viide_seire_naitajale_ja_osade_riba(tmp_path):
     viited = re.findall(r'href="([a-z-]+)\.html#uuringud">Eesti number: ', s)
     assert viited and set(viited) <= naitajad
     assert '<nav class="osad"' in s and re.search(r'href="index.html"[^>]*><b>Mida mõõdetakse</b>', s)
+
+
+def test_eraldi_leht_suunab_uhisele_saidile():
+    # Kadri otsus 3.11.2026: vana eraldi leht KJZJV6… viitab ühisele saidile MKUSmw6…
+    kood = (LEHT / "ehita.py").read_text(encoding="utf-8")
+    assert "claude.ai/artifact/MKUSmw6WrrQFoidzARqsyd" in kood
+    assert "UUS + '<header class=\"ts-top\">'" in kood

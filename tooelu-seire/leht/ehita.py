@@ -114,9 +114,12 @@ s=s.replace("</style>","  .ts-tile-value, .ts-num, .ts-tw .ts-num, .ts-block-box
 out="<script>document.documentElement.lang=\"et\"</script>\n"+head+s
 # Üksik leht (oma artefakt) ei näe seire lehti: osade riba ja „Eesti number“ lingid ainult ühises versioonis.
 import re
+UUS = '<aside class="ts-uus" role="note" style="margin:8px 0 24px;padding:12px 16px;border-radius:12px;background:var(--signal-tint);color:var(--ink);font-size:15px;line-height:1.45"><strong>See leht on nüüd osa ühisest saidist „Tehisaru seire“.</strong> Seal on samad uuringud koos ametlike näitajate, avalike väidete kontrolli ja otsuste ajajoonega. <a href="https://claude.ai/artifact/MKUSmw6WrrQFoidzARqsyd" target="_top" style="font-weight:600">Ava ühine sait</a>.</aside>'
 def yksik(x):
     x = re.sub(r'\s*<nav class="osad".*?</nav>', '', x, count=1, flags=re.S)
-    return re.sub(r' · <a href="[a-z0-9-]+\.html#uuringud">Eesti number: [^<]*</a>', '', x)
+    x = re.sub(r' · <a href="[a-z0-9-]+\.html#uuringud">Eesti number: [^<]*</a>', '', x)
+    # Vana eraldi leht (KJZJV6…) suunab ühisele saidile (Kadri otsus 3.11.2026 22:08).
+    return x.replace('<header class="ts-top">', UUS + '<header class="ts-top">', 1)
 open(B+'tehisaru-ja-too.html','w').write(yksik(out))
 # Ühise saidi versioon (seire artefaktis kõrvalfail): täisdokument, sest ainult avaleht saab raami avaldamisel.
 open(B+'tehisaru-ja-too-uhine.html','w').write('<!doctype html>\n<html lang="et">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'+head+'</head>\n<body>\n'+s+'</body>\n</html>\n')
