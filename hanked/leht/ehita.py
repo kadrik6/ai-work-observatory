@@ -29,6 +29,7 @@ REEGLI_NIMI = {
 OECD = "https://doi.org/10.1787/c2c09a06-en"
 REGISTER = "https://riigihanked.riik.ee/rhr-web/#/opendata"
 SIHT = 2.0
+ALGUS_AASTA = 2017  # registri avaandmed algavad 09/2017
 
 
 def e(x):
@@ -49,9 +50,9 @@ def protsent(x, k=1):
 
 # ---------------------------------------------------------------- graafikud (SVG)
 
-def tulbad_aastad(aastad, fookus_aasta, osaline_aasta):
+def tulbad_aastad(aastad, fookus_aasta, osalised):
     """Vertikaalsed tulbad: AI- ja andmehangete arv aastas. Üks fookustulp, teised hallid."""
-    w, h, vasak, all, ules = 560, 260, 8, 34, 26
+    w, h, vasak, all, ules = 560, 220, 8, 34, 26
     n = len(aastad)
     samm = (w - vasak * 2) / max(n, 1)
     tl = samm * 0.62
@@ -66,7 +67,7 @@ def tulbad_aastad(aastad, fookus_aasta, osaline_aasta):
         tekst_klass = "t-fookus" if a["aasta"] == fookus_aasta else "t-silt"
         osad.append(f'<text x="{x + tl / 2:.1f}" y="{y - 7:.1f}" text-anchor="middle" class="{tekst_klass}">'
                     f'{arv(a["ai_andmed"])}</text>')
-        silt = f'{a["aasta"]}*' if a["aasta"] == osaline_aasta else str(a["aasta"])
+        silt = f'{a["aasta"]}*' if a["aasta"] in osalised else str(a["aasta"])
         osad.append(f'<text x="{x + tl / 2:.1f}" y="{h - 12}" text-anchor="middle" class="t-telg">{silt}</text>')
     osad.append(f'<line x1="{vasak}" x2="{w - vasak}" y1="{h - all}" y2="{h - all}" class="telg"/>')
     osad.append("</svg>")
@@ -75,7 +76,7 @@ def tulbad_aastad(aastad, fookus_aasta, osaline_aasta):
 
 def tulbad_innovatsioon(read):
     """Innovatsioonimärkega hangete osakaal eVormide aastatel ja 2% siht katkendjoonena."""
-    w, h, vasak, all, ules, parem = 560, 260, 8, 34, 30, 104
+    w, h, vasak, all, ules, parem = 560, 220, 8, 34, 30, 104
     mx = max([r["innovatsioonimark_osakaal"] or 0 for r in read] + [SIHT]) * 1.15
     n = len(read)
     samm = (w - vasak - parem) / max(n, 1)
@@ -212,7 +213,7 @@ def ehita(d, seis):
 
     # andmetabel graafiku alla
     tabel_aastad = "".join(
-        f'<tr><th scope="row">{a["aasta"]}{"*" if a["aasta"] == osaline else ""}</th><td>{arv(a["hankeid"])}</td>'
+        f'<tr><th scope="row">{a["aasta"]}{"*" if a["aasta"] in (osaline, ALGUS_AASTA) else ""}</th><td>{arv(a["hankeid"])}</td>'
         f'<td>{arv(a["ai_andmed"])}</td><td>{protsent(a["ai_andmed_osakaal"], 2)}</td>'
         f'<td>{arv(a["ai_marksonaga"])}</td>'
         f'<td>{"–" if a.get("innovatsioonimark") is None else arv(a["innovatsioonimark"])}</td>'
@@ -235,16 +236,17 @@ def ehita(d, seis):
 
     return taida(MALL,
         seis=e(seis_kuva), vastus="".join(f"<li>{x}</li>" for x in vastus),
-        g1_pealkiri=g1_pealkiri, g1=tulbad_aastad(aastad, fookus["aasta"], osaline),
+        g1_pealkiri=g1_pealkiri, g1=tulbad_aastad(aastad, fookus["aasta"], {osaline, ALGUS_AASTA}),
         g1_alam=(f'Hangete arv aastas, mille põhiese on tehisintellekti- või andmelahendus. Tuvastus: '
                  f'{e(REEGLI_NIMI[valitud].lower())}. Hange on loetud esimese teate aasta järgi.'),
-        osaline_markus=(f'* {osaline} on pooleli (andmed {seis_kuva} seisuga). ' if osaline else "")
+        osaline_markus=(f'* {ALGUS_AASTA} algab septembrist. ' if aastad[0]["aasta"] == ALGUS_AASTA else "")
+        + (f'{osaline} on pooleli (andmed {seis_kuva} seisuga). ' if osaline else "")
         + (f'Kuni {min(ef_aastad)}. aasta augustini on teated vanas vormingus ja neis on vähem välju.'
            if ef_aastad else ""),
         g2_pealkiri=g2_pealkiri, g2=tulbad_innovatsioon(inn) if inn else "",
         tabel_aastad=tabel_aastad,
         g3_pealkiri=g3_pealkiri, vordlus=vordlus, periood=f"{p0}–{p1}",
-        n_ai=arv(ai["hankeid"]), n_koik=arv(muu["hankeid"]),
+        n_ai=arv(ai["hankeid"]), n_pakk_ai=arv(ai.get("pakkumusi_teada")), n_koik=arv(muu["hankeid"]),
         kval_mediaan_ai=arv(ai["kvaliteedi_kaal_mediaan"]) if ai["kvaliteedi_kaal_mediaan"] is not None else "–",
         g4_pealkiri=g4_pealkiri, hankijad=hankijate_ribad(d["hankijad_top"], ko["top10_protsenti_hankijaid"]),
         hankijaid=arv(ko["hankijaid"]), uks_hange=arv(ko["uks_hange_hankijaid"]),

@@ -1,4 +1,4 @@
-<title>AI-hanked Eestis</title>
+<title>KURSUS · AI-hanked Eestis</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="author" content="Kadri Kungla">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,7 +60,8 @@ button, .nupp { font: 400 14px/1 var(--f-text); color: var(--ink); background: v
 button:hover { border-color: var(--ink); }
 button[aria-pressed="true"] { background: var(--signal); border-color: var(--signal); color: var(--on-signal); }
 
-main { padding-block: 32px 64px; }
+main { padding-block: 24px 64px; }
+#v-ulevaade { gap: 40px; }
 section.vaade { display: grid; gap: var(--sektsioon); }
 section.vaade[hidden] { display: none; }
 .plokk { display: grid; gap: var(--plokk); min-width: 0; }
@@ -69,7 +70,8 @@ section.vaade[hidden] { display: none; }
 .allikas { color: var(--ink-2); font-size: 14px; line-height: 1.5; }
 .alam { display: block; color: var(--ink-2); font-size: 14px; font-weight: 400; }
 
-.vastus { background: var(--brand-soft); border-radius: var(--raadius); padding: 20px 24px; display: grid; gap: 12px; }
+.vastus { background: var(--brand-soft); border-radius: var(--raadius); padding: 16px 20px; display: grid; gap: 8px; }
+.vastus li { font-size: 16px; }
 .vastus h2 { font-size: 22px; }
 .vastus ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
 
@@ -92,7 +94,7 @@ section.vaade[hidden] { display: none; }
 .v-plokk { display: grid; gap: 4px; }
 .hankijad { display: grid; gap: 2px; }
 .v-rida { display: grid; grid-template-columns: 11rem 1fr 3.5rem; align-items: center; gap: 10px; font-size: 14px; }
-.v-rida-lai { grid-template-columns: minmax(0, 18rem) 1fr 2.5rem; }
+.v-rida-lai { grid-template-columns: minmax(0, 22rem) 1fr 2.5rem; }
 .v-nimi { color: var(--ink-2); min-width: 0; overflow-wrap: anywhere; }
 .v-rada { height: 14px; background: var(--grid); border-radius: 2px; overflow: hidden; }
 .riba-fookus, .riba-kontekst { display: block; height: 100%; }
@@ -134,7 +136,8 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
 
 .jalus { border-top: 1px solid var(--border); padding-block: 24px 40px; color: var(--ink-2); font-size: 14px; display: grid; gap: 8px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
-@media (max-width: 30rem) { body { font-size: 16px; } h2 { font-size: 22px; } h3 { font-size: 19px; } .paise-rida h1 { font-size: 21px; } }
+@media (max-width: 30rem) { .t-telg, .t-silt { font-size: 19px; } .t-fookus, .t-siht { font-size: 20px; }
+  body { font-size: 16px; } h2 { font-size: 22px; } h3 { font-size: 19px; } .paise-rida h1 { font-size: 21px; } }
 </style>
 
 <header class="paise">
@@ -226,7 +229,7 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
   <figure class="plokk" style="margin:0">
     <header>
       <h2 id="viis-p">%%g3_pealkiri%%</h2>
-      <p class="alapealkiri">Hangete osakaal ja mediaan, %%periood%%. AI- ja andmehankeid %%n_ai%%, kõiki hankeid %%n_koik%%. Puuduvad väärtused on nimetajast välja jäetud.</p>
+      <p class="alapealkiri">Hangete osakaal ja mediaan, %%periood%%. AI- ja andmehankeid %%n_ai%%, kõiki hankeid %%n_koik%%. Puuduvad väärtused on nimetajast välja jäetud: pakkumuste arv on teada %%n_pakk_ai%% AI- ja andmehankel.</p>
     </header>
     %%vordlus%%
     <p class="allikas">OECD järgi suurendab isegi väike kvaliteedikriteeriumi kaal uuendusliku pakkumise tõenäosust (<a href="%%oecd%%" target="_blank" rel="noopener">OECD 2026</a>, lk 42). Kvaliteedi kaal on kvaliteedikriteeriumide summaarne kaal hangetes, kus see on olemas. Allikas: riigihangete register.</p>
@@ -269,6 +272,7 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
       <li>%%margendeid%% hanget (%%positiivseid%% AI- või andmehanget) märgendas Claude. Inimene ei ole neid veel üle vaadanud. Valim tehti märksõnade järgi ja märgendaja nägi märksõnu, mis soosib märksõnaloendit.</li>
       <li>Hange on üks rida, ka siis, kui sellel on mitu osa. Raha ei liideta, sest eeldatav maksumus puudub paljudel hangetel.</li>
       <li>Hea hanke tunnused (kvaliteet, mitu pakkujat, ei katkenud) näitavad hanke ülesehitust, mitte seda, kas lahendus töötas.</li>
+      <li>2026. aasta tulemusteadetes ei ole registri avaandmetes pakkumuste arvu. Seetõttu põhineb „ainult üks pakkumus“ peamiselt 2024. ja 2025. aastal.</li>
       <li>Kuni 2023. aasta augustini on teated vanas vormingus. Innovatsioonimärget seal ei ole ja mõned väljad on hõredamad.</li>
     </ul>
   </div>
@@ -353,7 +357,7 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
       var skoor = 0; if (q.length) { Object.keys(qv).forEach(function (s) { skoor += (vektorid[i][s] || 0) * qv[s]; }); if (skoor <= 0) return; }
       tulem.push({ r: r, s: skoor });
     });
-    tulem.sort(function (a, b) { return q.length ? (b.s - a.s) || (b.r.hea - a.r.hea) : (b.r.hea - a.r.hea) || String(b.r.kp).localeCompare(String(a.r.kp)); });
+    tulem.sort(function (a, b) { return q.length ? (b.s - a.s) || (b.r.hea - a.r.hea) : (b.r.hea - a.r.hea) || ((b.r.p || 0) - (a.r.p || 0)); });
     return { tulem: tulem, q: q.length };
   }
 
@@ -374,7 +378,7 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
     var a = arvuta(), n = a.tulem.length, naha = naidata === 0 ? n : Math.min(naidata, n);
     list.innerHTML = n ? a.tulem.slice(0, naha).map(function (x) { return rida(x.r); }).join("") : "";
     if (!n) list.innerHTML = '<li class="tyhi">Ühtegi hanget ei leitud. Proovi lühemat sõna või eemalda filter.</li>';
-    kokku.textContent = (a.q ? "Sarnasuse järgi järjestatud. " : "Uuemad hea hanke tunnustega eespool. ") + "Leitud " + arv(n) + " hanget.";
+    kokku.textContent = (a.q ? "Sarnasuse järgi järjestatud. " : "Eespool hea hanke tunnustega ja kindlamalt tuvastatud hanked. ") + "Leitud " + arv(n) + " hanget.";
     var valikud = [12, 24, 48, 0];
     jalus.innerHTML = n > 12 ? "Näita: " + valikud.map(function (v) {
       return '<button type="button" data-n="' + v + '" aria-pressed="' + (naidata === v) + '">' + (v === 0 ? "kõik (" + arv(n) + ")" : v) + "</button>";

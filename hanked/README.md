@@ -37,4 +37,5 @@ cd hanked && python -m pytest -q -p no:cacheprovider
 - Alla 30 000 euro hankeid registris ei ole (OECD 2026, lisa 2.B).
 - Märgendus on Claude'i oma ja inimese poolt kontrollimata. Kontroll on kavas: vähemalt 100 rida pimesi, Coheni kappa ≥ 0,6.
 - Valim on kihistatud märksõnaloendi järgi ja märgendaja nägi märksõnu. See soosib märksõnaloendit hindamisel.
+- 2026. aasta tulemusteadetes ei ole avaandmetes pakkumuste arvu (LotResult ilma ReceivedSubmissionsStatistics-ita; logis `diagnostika_naide`).
 - Innovatsioonimärge on ainult eVormides. Meie näitaja loeb hankeid, millel on mõni neljast märkest. Rahandusministeerium ja OECD loendavad teisiti, seega pole numbrid üks-ühele võrreldavad.
