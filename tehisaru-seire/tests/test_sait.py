@@ -147,6 +147,6 @@ def test_kaardil_on_koik_27_riiki_oige_varviga(A, sait):
     for g, v in el.items():
         k = max(i for i, p in enumerate((0, 10, 20, 30, 40)) if v["vaartus"] >= p)
         nimi = komponendid.riik(g)
-        assert re.search(rf'<path class="k{k}( fookus)?" d="[^"]+"><title>{nimi} 2025: ', graafik), g
+        assert re.search(rf'<path class="k{k}( fookus)?" d="[^"]+" data-n="{nimi}" data-v="{komponendid.pr(v["vaartus"])}%"', graafik), g
     assert 'class="k2 fookus"' in graafik and "Eesti 23,4%" in tekst(graafik)
     assert "EL keskmine 20,0%" in tekst(graafik)

@@ -270,10 +270,11 @@ def kaart(vaatlused, piirid, fookus="EE", viide=None, viite_nimi="", uhik="%", k
     for g, tee in sorted(kuju["el"].items()):
         v = vv.get(g)
         if v is None:
-            osad.append(f'<path class="na" d="{tee}"><title>{e(riik(g))}: andmeid pole</title></path>')
+            osad.append(f'<path class="na" d="{tee}" data-n="{e(riik(g))}" data-v="andmeid pole" data-a=""/>')
             continue
-        pealkiri = f'{riik(g)} {v["aasta"]}: {pr(v["vaartus"])}{uhik} ({v["allikas"]})'
-        tk = f'<path class="k{klass(v["vaartus"])}{" fookus" if g == fookus else ""}" d="{tee}"><title>{e(pealkiri)}</title></path>'
+        # Hõljuksilt (sait.js): riik ja number suurelt, aasta ja allikas väikselt. Ilma JS-ita on number tabelis.
+        tk = (f'<path class="k{klass(v["vaartus"])}{" fookus" if g == fookus else ""}" d="{tee}" data-n="{e(riik(g))}" '
+              f'data-v="{pr(v["vaartus"])}{e(uhik)}" data-a="{v["aasta"]} · {e(v["allikas"])}"/>')
         if g == fookus:
             viimane = tk  # Eesti viimasena, et piirjoon jääks peale
         else:
@@ -303,5 +304,5 @@ def kaart(vaatlused, piirid, fookus="EE", viide=None, viite_nimi="", uhik="%", k
         noolid += f'<em class="viit fookus {pool}" style="left:{pos(ee):.2f}%"><span>{e(riik(fookus))}</span></em>'
     legend = (f'<div class="kaart-legend" aria-hidden="true"><div class="riba">{lahtrid}{noolid}</div>'
               f'<div class="margid">{margid}</div></div>')
-    return (f'<div class="kaart-ala"><div class="kaart"><svg viewBox="{kuju["viewBox"]}" aria-hidden="true" focusable="false">'
+    return (f'<div class="kaart-ala"><div class="kaart"><div class="kaart-vihje" hidden></div><svg viewBox="{kuju["viewBox"]}" aria-hidden="true" focusable="false">'
             f'{"".join(osad)}</svg>{silt}</div>{legend}</div>')

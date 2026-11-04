@@ -28,6 +28,54 @@
         uuendaNupp(nupp);
       });
     }
+    // Kaart: hõljudes riik ette, teised tuhmiks, silt hiire juurde. Puutel sama koputusega.
+    document.querySelectorAll('.kaart').forEach(function (k) {
+      var vihje = k.querySelector('.kaart-vihje');
+      var svg = k.querySelector('svg');
+      var fookus = svg && svg.querySelector('path.fookus');
+      var praegu = null;
+      function peida() {
+        if (praegu) praegu.classList.remove('on');
+        praegu = null;
+        k.classList.remove('hoiab');
+        if (vihje) vihje.hidden = true;
+        if (fookus) svg.appendChild(fookus); // Eesti piirjoon jääb jälle pealmiseks
+      }
+      function naita(p, x, y) {
+        if (praegu !== p) {
+          if (praegu) praegu.classList.remove('on');
+          praegu = p;
+          p.classList.add('on');
+          svg.appendChild(p);
+          k.classList.add('hoiab');
+          vihje.innerHTML = '';
+          var b = document.createElement('b');
+          b.textContent = p.getAttribute('data-n');
+          var v = document.createElement('span');
+          v.textContent = p.getAttribute('data-v');
+          b.appendChild(v);
+          vihje.appendChild(b);
+          if (p.getAttribute('data-a')) {
+            var a = document.createElement('small');
+            a.textContent = p.getAttribute('data-a');
+            vihje.appendChild(a);
+          }
+          vihje.hidden = false;
+        }
+        var r = k.getBoundingClientRect();
+        var lx = x - r.left + 14, ly = y - r.top + 14;
+        if (lx + vihje.offsetWidth > r.width) lx = x - r.left - vihje.offsetWidth - 14;
+        if (ly + vihje.offsetHeight > r.height) ly = y - r.top - vihje.offsetHeight - 14;
+        vihje.style.left = Math.max(0, lx) + 'px';
+        vihje.style.top = Math.max(0, ly) + 'px';
+      }
+      if (!svg || !vihje) return;
+      svg.addEventListener('pointermove', function (ev) {
+        var p = ev.target.closest && ev.target.closest('path[data-n]');
+        if (p) naita(p, ev.clientX, ev.clientY); else peida();
+      });
+      svg.addEventListener('pointerleave', peida);
+    });
     // Pikk tabel: vaikimisi 12 rida.
     document.querySelectorAll('table[data-piir]').forEach(function (tabel) {
       var read = Array.prototype.slice.call(tabel.tBodies[0].rows);

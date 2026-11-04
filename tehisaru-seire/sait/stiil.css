@@ -242,8 +242,19 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
 .kaart path.na { fill: var(--k-na); stroke: var(--context); }
 .kaart .k0 { fill: var(--k0); } .kaart .k1 { fill: var(--k1); } .kaart .k2 { fill: var(--k2); }
 .kaart .k3 { fill: var(--k3); } .kaart .k4 { fill: var(--k4); }
-.kaart path.fookus { stroke: var(--ink); stroke-width: 2; }
-.kaart path[class^="k"]:hover { stroke: var(--ink); stroke-width: 1.5; }
+/* Hõljumine: valitud riik tõuseb pealmiseks ja saab ühtlase tumeda piirjoone, teised tuhmuvad (sait.js) */
+.kaart path[data-n] { transition: opacity 120ms ease; cursor: default; }
+.kaart.hoiab path[data-n]:not(.on) { opacity: 0.45; }
+.kaart.hoiab path.bg { opacity: 0.7; }
+.kaart path.fookus { stroke: var(--ink); stroke-width: 1.5; }
+.kaart path.on { stroke: var(--ink); stroke-width: 2; paint-order: stroke; }
+@media (prefers-reduced-motion: reduce) { .kaart path[data-n] { transition: none; } }
+.kaart-vihje { position: absolute; z-index: 2; pointer-events: none; background: var(--surface); color: var(--ink);
+  border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 2px 8px rgb(0 0 0 / 0.12); padding: 6px 10px;
+  font-size: 13px; line-height: 1.35; white-space: nowrap; }
+.kaart-vihje b { display: block; font-size: 15px; }
+.kaart-vihje b span { color: var(--signal); margin-left: 6px; }
+.kaart-vihje small { color: var(--ink-3); font-size: 12px; }
 .kaart-silt { position: absolute; transform: translate(10px, -50%); font-size: 14px; line-height: 1.2; white-space: nowrap;
   background: var(--surface); color: var(--signal); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); pointer-events: none; }
 .kaart-silt::before { content: ""; position: absolute; left: -10px; top: 50%; width: 10px; border-top: 1px solid var(--ink-2); }
