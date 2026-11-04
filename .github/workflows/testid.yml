@@ -35,3 +35,6 @@ jobs:
       - name: Tööelu seire kogujate testid (ilma võrguta)
         working-directory: tooelu-seire
         run: python -m pytest -q -p no:cacheprovider
+      - name: Hangete tuvastuse testid (ilma võrguta)
+        working-directory: hanked
+        run: pip install -r requirements.txt && python -m pytest -q -p no:cacheprovider

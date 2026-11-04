@@ -26,5 +26,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Avastus
-        run: python hanked/avasta.py
+      - uses: actions/cache@v4
+        with:
+          path: valjund/toores
+          key: hanked-toores-v1-${{ github.run_id }}
+          restore-keys: hanked-toores-v1-
+      - run: pip install -r hanked/requirements.txt
+      - name: Laadimine ja põhitabel
+        run: python hanked/lae.py --valjund valjund
+      - name: Kirjeldus ja märgendamise valim
+        run: python hanked/kirjelda.py --valjund valjund
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hanked
+          path: |
+            valjund/*.jsonl*
+          retention-days: 30
+          if-no-files-found: warn
