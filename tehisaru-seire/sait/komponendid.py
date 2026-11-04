@@ -201,44 +201,82 @@ def _ala(pts):
     return abs(sum(x0 * y1 - x1 * y0 for (x0, y0), (x1, y1) in zip(pts, pts[1:] + pts[:1]))) / 2
 
 
-def lihtsusta(tee, tol=1.6, min_ala=6.0):
-    """Lihtsam piir (Kadri kommentaar 4.11.2026: kaart minimalistlikum). Väikesed saared kaovad, aga iga riigi
-    suurim osa jääb alles, nii et ka Malta ja Luksemburg on kaardil. Koordinaadid täisarvudeni."""
-    osad = []
-    for alam in re.findall(r"M[^M]*", tee):
-        n = [float(x) for x in re.findall(r"-?\d+(?:\.\d+)?", alam)]
-        pts = list(zip(n[0::2], n[1::2]))
-        if len(pts) >= 3:
-            osad.append(pts)
-    if not osad:
-        return ""
-    suurim = max(osad, key=_ala)
+def _rongad(tee):
+    """Tee rõngasteks; punktid jäävad algse tekstina, et naabrite ühised punktid oleksid täpselt võrdsed."""
     out = []
-    for pts in osad:
-        if pts is not suurim and _ala(pts) < min_ala:
+    for alam in re.findall(r"M[^M]*", tee):
+        pts = re.findall(r"(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)", alam)
+        if len(pts) > 1 and pts[0] == pts[-1]:
+            pts = pts[:-1]
+        if len(pts) >= 3:
+            out.append(pts)
+    return out
+
+
+def _f(pts):
+    return [(float(x), float(y)) for x, y in pts]
+
+
+def lihtsusta_koik(teed, tol=1.8, min_ala=6.0):
+    """Kõik riigid korraga, nii et naabrite ühine piir lihtsustub mõlemal pool ühtemoodi (Kadri 4.11.2026:
+    piirjooned ühtlase laiusega). Rõngas lõigatakse kohtades, kus punkti omanike hulk muutub; iga lõik
+    lihtsustatakse üks kord ja sama lõik naabril saab sama tulemuse. Väikesed saared kaovad, aga iga riigi
+    suurim osa jääb alles (Malta, Luksemburg)."""
+    from collections import defaultdict
+    rongad = {g: _rongad(t) for g, t in teed.items()}
+    omanik = defaultdict(set)
+    for g, rr in rongad.items():
+        for pts in rr:
+            for q in pts:
+                omanik[q].add(g)
+    vahemalu = {}
+
+    def loik(seg):
+        votme = tuple(seg) if seg[0] <= seg[-1] else tuple(reversed(seg))
+        if votme not in vahemalu:
+            vahemalu[votme] = [q for q in _dp(_f(votme), tol)]
+        tul = vahemalu[votme]
+        return tul if votme == tuple(seg) else list(reversed(tul))
+
+    out = {}
+    for g, rr in rongad.items():
+        if not rr:
+            out[g] = ""
             continue
-        # rõngas kaheks pooleks, et Douglas–Peucker ei ahendaks seda üheks jooneks
-        k = len(pts) // 2
-        lihtne = _dp(pts[:k + 1], tol)[:-1] + _dp(pts[k:] + pts[:1], tol)[:-1]
-        if len(lihtne) < 3:
-            lihtne = pts if len(pts) <= 8 else pts[::max(1, len(pts) // 6)]
-        ymar = []
-        for x, y in lihtne:
-            p = (round(x), round(y)) if pts is not suurim or _ala(pts) > 40 else (round(x, 1), round(y, 1))
-            if not ymar or ymar[-1] != p:
-                ymar.append(p)
-        if len(ymar) >= 3:
-            out.append("M" + "L".join(f"{x:g},{y:g}" for x, y in ymar) + "Z")
-    return "".join(out)
+        suurim = max(rr, key=lambda pts: _ala(_f(pts)))
+        osad = []
+        for pts in rr:
+            if pts is not suurim and _ala(_f(pts)) < min_ala:
+                continue
+            n = len(pts)
+            soled = [i for i in range(n) if omanik[pts[i]] != omanik[pts[i - 1]] or omanik[pts[i]] != omanik[pts[(i + 1) % n]]]
+            if len(soled) < 2:
+                soled = [0, n // 2]
+            lihtne = []
+            for j, i0 in enumerate(soled):
+                i1 = soled[(j + 1) % len(soled)]
+                seg = pts[i0:i1 + 1] if i1 > i0 else pts[i0:] + pts[:i1 + 1]
+                lihtne += loik(seg)[:-1]
+            if len(lihtne) < 3:  # väike saar (Malta): DP ahendaks selle jooneks, jäta algsed punktid
+                lihtne = _f(pts)
+            ymar = []
+            for x, y in lihtne:
+                q = (round(x, 1), round(y, 1))
+                if not ymar or ymar[-1] != q:
+                    ymar.append(q)
+            if len(ymar) >= 3:
+                osad.append("M" + "L".join(f"{x:g},{y:g}" for x, y in ymar) + "Z")
+        out[g] = "".join(osad)
+    return out
 
 
-def lae_kuju(fail=KUJU, tol=1.6, tol_taust=2.5):
+def lae_kuju(fail=KUJU, tol=1.8):
     global _kuju
     if _kuju is None:
         d = json.loads(Path(fail).read_text(encoding="utf-8"))
-        _kuju = {"viewBox": d["viewBox"],
-                 "el": {g: lihtsusta(t, tol) for g, t in d["el"].items()},
-                 "taust": {g: lihtsusta(t, tol_taust, 20.0) for g, t in d["taust"].items()}}
+        koik = lihtsusta_koik({**d["el"], **{"bg-" + g: t for g, t in d["taust"].items()}}, tol)
+        _kuju = {"viewBox": d["viewBox"], "el": {g: koik[g] for g in d["el"]},
+                 "taust": {g: koik["bg-" + g] for g in d["taust"]}}
     return _kuju
 
 
