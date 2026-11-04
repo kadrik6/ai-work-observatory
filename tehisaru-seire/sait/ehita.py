@@ -1,0 +1,111 @@
+"""Tehisaru seire sait: üks generaator kogu saidile (ehitatud nullist 4.11.2026).
+
+Kes loeb: kodanik, ajakirjanik, ministeeriumi analüütik, ettevõtja; esimene lugeja on Kadri.
+Mis küsimusele sait vastab: kui palju tehisaru kasutatakse, kas see mõjutab tööd ja kas numbrit võib usaldada.
+Mida lugeja pärast teab: Eesti uusima numbri, koha ELis, allika ja selle, mida number ei näita.
+Põhiline: pealkirja number ja võrdlus. Toetav: graafik ja piirangud. Valikuline: andmetabel ja määratlused.
+
+Sisu: sisuloogika hinnang (doc VZ3PrrjkCpDpvc4PXocAG6, Kadri kinnitas 4.11.2026).
+Arhitektuur: doc 9U9shhAfRvuJb2Uvbz7SSy. Graafikud: seire-uus-versioon/GRAAFIKUD.md.
+
+Moodulid: andmekiht.py (arhitektuuris andmed.py; nimi muudetud, sest kaust andmed/ varjaks seda), pealkiri.py (h1 mallid), komponendid.py, kest.py, lehed.py (vaadete sisu).
+Käivitus (kaustast tehisaru-seire):  python3 sait/ehita.py [VÄLJUND]   (vaikimisi valjund/sait/)
+Ainult Pythoni standardteek. Ehitus kukub, kui number, link või pealkiri ei ole korras.
+"""
+import json
+import re
+import shutil
+import sys
+from html.parser import HTMLParser
+from pathlib import Path
+
+SIIN = Path(__file__).resolve().parent
+sys.path.insert(0, str(SIIN))
+
+import andmekiht as andmed  # noqa: E402
+import kest  # noqa: E402
+import lehed  # noqa: E402
+from pealkiri import taida  # noqa: E402
+
+VALJUND = SIIN.parent / "valjund" / "sait"
+
+
+class EhitusViga(Exception):
+    pass
+
+
+def lae_vaated():
+    v = json.loads((SIIN / "vaated.json").read_text(encoding="utf-8"))["vaated"]
+    failid = [x["fail"] for x in v]
+    if len(set(failid)) != len(failid):
+        raise EhitusViga("vaated.json: kaks vaadet sama failinimega")
+    return v
+
+
+class _Pealkirjad(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.tasemed, self.lingid, self.ankrud = [], [], set()
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if re.fullmatch(r"h[1-6]", tag):
+            self.tasemed.append(int(tag[1]))
+        if tag == "a" and a.get("href"):
+            self.lingid.append(a["href"])
+        if a.get("id"):
+            self.ankrud.add(a["id"])
+
+
+def kontrolli(failinimi, html_tekst, olemas):
+    """Üks h1, tasemed ei hüppa, sisemised lingid viivad olemasolevale lehele või ankrule."""
+    p = _Pealkirjad()
+    p.feed(html_tekst)
+    if p.tasemed.count(1) != 1:
+        raise EhitusViga(f"{failinimi}: h1 on {p.tasemed.count(1)} korda, peab olema 1")
+    for eelmine, jargmine in zip(p.tasemed, p.tasemed[1:]):
+        if jargmine > eelmine + 1:
+            raise EhitusViga(f"{failinimi}: pealkirja tase hüppab h{eelmine} → h{jargmine}")
+    for href in p.lingid:
+        if href.startswith(("http://", "https://", "mailto:")):
+            continue
+        leht, _, ankur = href.partition("#")
+        if leht and leht not in olemas:
+            raise EhitusViga(f"{failinimi}: link viib olematule lehele {href}")
+        if not leht and ankur and ankur not in p.ankrud:
+            raise EhitusViga(f"{failinimi}: ankur #{ankur} puudub")
+    if "{" in re.sub(r"<(script|style)[^>]*>.*?</\1>", "", html_tekst, flags=re.S):
+        raise EhitusViga(f"{failinimi}: lehel on täitmata mall")
+
+
+def ehita(valjund=VALJUND, A=None):
+    A = A or andmed.lae()
+    vaated = lae_vaated()
+    for v in vaated:
+        taida(v["h1"], A)  # iga h1 mall peab olema täidetav, ka ehitamata vaatel
+    valjund = Path(valjund)
+    valjund.mkdir(parents=True, exist_ok=True)
+    valmis = [v for v in vaated if v["olek"] == "valmis"]
+    olemas = {v["fail"] for v in valmis}
+    kirjutatud = {}
+    for v in valmis:
+        if v["id"] == "saidikaart":
+            sisu = lehed.saidikaart(A, v, vaated)
+        elif v["id"] in lehed.EHITAJAD:
+            sisu = lehed.EHITAJAD[v["id"]](A, v)
+        else:
+            raise EhitusViga(f"Vaade {v['id']} on „valmis“, aga sellel pole ehitajat (lehed.EHITAJAD)")
+        nimi = (v["menuu"] or "Saidikaart")
+        kirjutatud[v["fail"]] = kest.leht(A, vaated, v, sisu, f"{nimi} · Tehisaru seire")
+    for f, t in kirjutatud.items():
+        kontrolli(f, t, olemas)
+        (valjund / f).write_text(t, encoding="utf-8")
+    for nimi in ("stiil.css", "sait.js"):
+        shutil.copyfile(SIIN / nimi, valjund / nimi)
+    return sorted(kirjutatud)
+
+
+if __name__ == "__main__":
+    siht = Path(sys.argv[1]) if len(sys.argv) > 1 else VALJUND
+    for f in ehita(siht):
+        print(siht / f)
