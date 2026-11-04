@@ -16,6 +16,10 @@ tehisaru-seire/*
 tooelu-seire/*
 !tooelu-seire/*__pycache__*
 
+# AI- ja andmehangete tuvastus (KURSUS, 4.11.2026)
+hanked/*
+!hanked/*__pycache__*
+
 # Turvakontroll ise, ilma privaatsete loenditeta (keelatud-*.txt, KLASSID.md)
 turvakontroll/README.md
 turvakontroll/lubatud.txt

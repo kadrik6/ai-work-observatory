@@ -1,0 +1,30 @@
+name: hanked
+
+# AI- ja andmehangete tuvastus (KURSUS, haru hanked/*). Laeb avalikud hankeandmed (TED, riigihangete
+# register, OpenTender), koostab põhitabeli, märgendab ja hindab. Ainult lugemisõigus: repo ei muutu.
+# Tulemus on logis (read "HANKED ...") ja artefaktis 30 päeva.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["hanked/**"]
+    paths: ["hanked/**", ".github/workflows/hanked.yml"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hanked-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  hanked:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Avastus
+        run: python hanked/avasta.py
