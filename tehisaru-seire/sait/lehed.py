@@ -75,7 +75,7 @@ def _kasutus(A):
   <header>
     <h2 id="h-kasutus">ELi skaalal on Eesti {len(el)} riigi seas <b>{koht}. kohal</b>: {pr(ee["vaartus"])}% ettevõtetest, EL {pr(eu["vaartus"])}%, Soome, Rootsi ja Taani {pr(min(pm), 0)}–{pr(max(pm), 0)}% ({y})</h2>
   </header>
-  <div class="kaks">
+  <div class="ruut3">
     <figure aria-labelledby="g-kasutus">
       <figcaption><span class="gt" id="g-kasutus">Tehisaru kasutavad ettevõtted ELi riikides, {y}, % ettevõtetest</span>
         <span class="gs">Mida tumedam, seda suurem osa ettevõtetest. Vähemalt 10 hõivatuga ettevõtted, ilma põllumajanduse, kaevandamise ja finantssektorita; ettevõtete enda vastused.</span></figcaption>
@@ -93,11 +93,13 @@ def _kasutus(A):
         </div>
         <p class="gs">Eesti kasvab suhtes kiiremini, aga punktides aeglasemalt kui Põhjamaad.</p>
       </div>
+      {usaldus}
+    </div>
+    <div class="kulg uued">
       <div class="plokk">
         <h3>{muud[0]["aasta"]}. aasta numbrid on olemas, aga ELi skaalale need ei sobi</h3>
         {uued_tbl}
       </div>
-      {usaldus}
     </div>
   </div>
   <details>

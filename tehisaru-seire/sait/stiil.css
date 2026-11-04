@@ -110,6 +110,12 @@ main { padding-bottom: 64px; }
 .alam { font-size: 15px; color: var(--ink-2); max-width: 80ch; }
 .kaks { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px 40px; align-items: start; }
 .kaks.vordne { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.ruut3 { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr) minmax(0, 1.15fr); gap: 32px 40px; align-items: start; }
+.ruut3 .kaart-ala { grid-template-columns: minmax(0, 1fr); }
+.ruut3 .faktid li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+.ruut3 .vahe .big { font-size: 22px; white-space: nowrap; }
+@media (max-width: 1180px) { .ruut3 { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); } .ruut3 .uued { grid-column: 1 / -1; } }
+@media (max-width: 680px) { .ruut3 { grid-template-columns: minmax(0, 1fr); } }
 .kulg { display: flex; flex-direction: column; gap: var(--gap-block); min-width: 0; }
 
 /* Graafik */
