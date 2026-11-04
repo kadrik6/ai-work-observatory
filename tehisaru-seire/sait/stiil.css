@@ -225,9 +225,11 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
   :root:not([data-theme="light"]) { --k0: #27347a; --k1: #3549b0; --k2: #5570ea; --k3: #8297f7; --k4: #c3cdfc; --k-bg: #262b3b; --k-na: #151926; }
 }
 :root[data-theme="dark"] { --k0: #27347a; --k1: #3549b0; --k2: #5570ea; --k3: #8297f7; --k4: #c3cdfc; --k-bg: #262b3b; --k-na: #151926; }
+.kaart-ala { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 24px; align-items: end; }
+@media (max-width: 680px) { .kaart-ala { grid-template-columns: minmax(0, 1fr); } }
 .kaart { position: relative; }
 .kaart svg { display: block; width: 100%; height: auto; }
-.kaart path { stroke: var(--surface); stroke-width: 0.7; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.kaart path { stroke: var(--surface); stroke-width: 0.8; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .kaart path.bg { fill: var(--k-bg); }
 .kaart path.na { fill: var(--k-na); stroke: var(--context); }
 .kaart .k0 { fill: var(--k0); } .kaart .k1 { fill: var(--k1); } .kaart .k2 { fill: var(--k2); }

@@ -183,23 +183,62 @@ KUJU = JUUR / "raportid" / "euroopa.json"  # Natural Earth (avalik omand), tehtu
 _kuju = None
 
 
-def _taisarvuks(tee):
-    """Taustariikide teed täisarvudeks ja korduvad punktid välja: leht jääb väiksemaks, ELi riigid täpseks."""
-    tee = re.sub(r"-?\d+\.\d+", lambda m: str(round(float(m.group()))), tee)
-    osad, eel = [], None
-    for k in re.findall(r"[MLZ][^MLZ]*", tee):
-        if k[0] == "L" and k == eel:
+def _dp(pts, tol):
+    """Douglas–Peucker: jätab alles punktid, mis muudavad kuju rohkem kui tol ühikut."""
+    if len(pts) < 3:
+        return pts
+    (x0, y0), (x1, y1) = pts[0], pts[-1]
+    dx, dy = x1 - x0, y1 - y0
+    pikk = (dx * dx + dy * dy) ** 0.5 or 1e-9
+    kaugus = [abs(dy * x - dx * y + x1 * y0 - y1 * x0) / pikk for x, y in pts[1:-1]]
+    i = max(range(len(kaugus)), key=kaugus.__getitem__)
+    if kaugus[i] <= tol:
+        return [pts[0], pts[-1]]
+    return _dp(pts[:i + 2], tol)[:-1] + _dp(pts[i + 1:], tol)
+
+
+def _ala(pts):
+    return abs(sum(x0 * y1 - x1 * y0 for (x0, y0), (x1, y1) in zip(pts, pts[1:] + pts[:1]))) / 2
+
+
+def lihtsusta(tee, tol=1.6, min_ala=6.0):
+    """Lihtsam piir (Kadri kommentaar 4.11.2026: kaart minimalistlikum). Väikesed saared kaovad, aga iga riigi
+    suurim osa jääb alles, nii et ka Malta ja Luksemburg on kaardil. Koordinaadid täisarvudeni."""
+    osad = []
+    for alam in re.findall(r"M[^M]*", tee):
+        n = [float(x) for x in re.findall(r"-?\d+(?:\.\d+)?", alam)]
+        pts = list(zip(n[0::2], n[1::2]))
+        if len(pts) >= 3:
+            osad.append(pts)
+    if not osad:
+        return ""
+    suurim = max(osad, key=_ala)
+    out = []
+    for pts in osad:
+        if pts is not suurim and _ala(pts) < min_ala:
             continue
-        osad.append(k)
-        eel = k
-    return "".join(osad)
+        # rõngas kaheks pooleks, et Douglas–Peucker ei ahendaks seda üheks jooneks
+        k = len(pts) // 2
+        lihtne = _dp(pts[:k + 1], tol)[:-1] + _dp(pts[k:] + pts[:1], tol)[:-1]
+        if len(lihtne) < 3:
+            lihtne = pts if len(pts) <= 8 else pts[::max(1, len(pts) // 6)]
+        ymar = []
+        for x, y in lihtne:
+            p = (round(x), round(y)) if pts is not suurim or _ala(pts) > 40 else (round(x, 1), round(y, 1))
+            if not ymar or ymar[-1] != p:
+                ymar.append(p)
+        if len(ymar) >= 3:
+            out.append("M" + "L".join(f"{x:g},{y:g}" for x, y in ymar) + "Z")
+    return "".join(out)
 
 
-def lae_kuju(fail=KUJU):
+def lae_kuju(fail=KUJU, tol=1.6, tol_taust=2.5):
     global _kuju
     if _kuju is None:
         d = json.loads(Path(fail).read_text(encoding="utf-8"))
-        _kuju = {"viewBox": d["viewBox"], "el": d["el"], "taust": {g: _taisarvuks(t) for g, t in d["taust"].items()}}
+        _kuju = {"viewBox": d["viewBox"],
+                 "el": {g: lihtsusta(t, tol) for g, t in d["el"].items()},
+                 "taust": {g: lihtsusta(t, tol_taust, 20.0) for g, t in d["taust"].items()}}
     return _kuju
 
 
@@ -264,5 +303,5 @@ def kaart(vaatlused, piirid, fookus="EE", viide=None, viite_nimi="", uhik="%", k
         noolid += f'<em class="viit fookus {pool}" style="left:{pos(ee):.2f}%"><span>{e(riik(fookus))}</span></em>'
     legend = (f'<div class="kaart-legend" aria-hidden="true"><div class="riba">{lahtrid}{noolid}</div>'
               f'<div class="margid">{margid}</div></div>')
-    return (f'<div class="kaart"><svg viewBox="{kuju["viewBox"]}" aria-hidden="true" focusable="false">{"".join(osad)}</svg>'
-            f'{silt}</div>{legend}')
+    return (f'<div class="kaart-ala"><div class="kaart"><svg viewBox="{kuju["viewBox"]}" aria-hidden="true" focusable="false">'
+            f'{"".join(osad)}</svg>{silt}</div>{legend}</div>')
