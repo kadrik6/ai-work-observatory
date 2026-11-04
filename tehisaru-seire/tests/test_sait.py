@@ -138,3 +138,15 @@ def test_kontroll_leiab_katkise_lingi():
         ehita.kontrolli("x.html", '<h1>a</h1><a href="puudub.html">x</a>', {"x.html"})
     with pytest.raises(ehita.EhitusViga):
         ehita.kontrolli("x.html", "<h1>a</h1><h3>b</h3>", {"x.html"})
+
+
+def test_kaardil_on_koik_27_riiki_oige_varviga(A, sait):
+    """Kaart tulpade asemel (4.11.2026): iga ELi riik on oma klassis, Eesti esile tõstetud."""
+    graafik = sait["ettevotted.html"].split('id="g-kasutus"')[1].split("</figure>")[0]
+    el = andmekiht.el27_aasta(A, EB, 2025)
+    for g, v in el.items():
+        k = max(i for i, p in enumerate((0, 10, 20, 30, 40)) if v["vaartus"] >= p)
+        nimi = komponendid.riik(g)
+        assert re.search(rf'<path class="k{k}( fookus)?" d="[^"]+"><title>{nimi} 2025: ', graafik), g
+    assert 'class="k2 fookus"' in graafik and "Eesti 23,4%" in tekst(graafik)
+    assert "EL keskmine 20,0%" in tekst(graafik)

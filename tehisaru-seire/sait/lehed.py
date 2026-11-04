@@ -5,8 +5,8 @@ mida see tähendab, siis üksikasjad ja allikad.
 """
 import andmekiht as andmed
 from andmekiht import EL
-from komponendid import (allikarida, e, ei_naita, faktid, hantlid, jaga_klassid, kp, leiu_ribad, margend, pr,
-                         ribad, riik, tabel, telg, vastavus)
+from komponendid import (allikarida, e, ei_naita, faktid, hantlid, jaga_klassid, kaart, kp, leiu_ribad, margend, pr,
+                         riik, tabel, telg, vastavus)
 from kest import sellel_lehel
 from pealkiri import taida
 
@@ -29,7 +29,8 @@ def _kasutus(A):
     ee23, eu23 = andmed.leia(A, EB, "EE", 2023)["vaartus"], andmed.leia(A, EB, EL, 2023)["vaartus"]
     vahe23, vahe = sum(pm23) / 3 - ee23, sum(pm) / 3 - ee["vaartus"]
 
-    graafik = ribad(list(el.values()), 50, viide=eu["vaartus"], viite_nimi=f"EL keskmine {pr(eu['vaartus'])}%")
+    # Kaart tulpade asemel (Kadri kommentaar eelvaatel 4.11.2026); täpne järjestus on andmetabelis
+    graafik = kaart(list(el.values()), (0, 10, 20, 30, 40), viide=eu["vaartus"], viite_nimi=f"EL keskmine {pr(eu['vaartus'])}%")
 
     # Kõik uusimad riiklikud numbrid; skaalal ainult võrdlusalus (Kadri otsus 4.11.2026)
     koik_uued = [v for v in A["vaatlused"] if v["naitaja"].startswith(EB) and v["aasta"] > y]
@@ -77,7 +78,7 @@ def _kasutus(A):
   <div class="kaks">
     <figure aria-labelledby="g-kasutus">
       <figcaption><span class="gt" id="g-kasutus">Tehisaru kasutavad ettevõtted ELi riikides, {y}, % ettevõtetest</span>
-        <span class="gs">Vähemalt 10 hõivatuga ettevõtted, ilma põllumajanduse, kaevandamise ja finantssektorita; ettevõtete enda vastused.</span></figcaption>
+        <span class="gs">Mida tumedam, seda suurem osa ettevõtetest. Vähemalt 10 hõivatuga ettevõtted, ilma põllumajanduse, kaevandamise ja finantssektorita; ettevõtete enda vastused.</span></figcaption>
       {graafik}
       <p class="peidus">Eesti on {koht}. kohal {pr(ee["vaartus"])}%-ga. Eespool on {", ".join(riik(v["geo"]) for v in jarjest[:koht - 1])}.</p>
       {allikarida([("Eurostat, isoc_eb_ai", "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "uuendatud " + kp(m["allikas_uuendas"]))])}

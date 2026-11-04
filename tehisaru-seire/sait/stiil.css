@@ -218,3 +218,38 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
   .kogus button { height: 36px; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+
+/* ELi kaart: üks toon, hele → tume (väike number → suur number). Tume teema algab pinna lähedalt. */
+:root { --k0: #dde3fb; --k1: #aebcf4; --k2: #7189ec; --k3: #3d5be4; --k4: #0030de; --k-bg: #e9e9ed; --k-na: #ffffff; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --k0: #27347a; --k1: #3549b0; --k2: #5570ea; --k3: #8297f7; --k4: #c3cdfc; --k-bg: #262b3b; --k-na: #151926; }
+}
+:root[data-theme="dark"] { --k0: #27347a; --k1: #3549b0; --k2: #5570ea; --k3: #8297f7; --k4: #c3cdfc; --k-bg: #262b3b; --k-na: #151926; }
+.kaart { position: relative; }
+.kaart svg { display: block; width: 100%; height: auto; }
+.kaart path { stroke: var(--surface); stroke-width: 0.7; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.kaart path.bg { fill: var(--k-bg); }
+.kaart path.na { fill: var(--k-na); stroke: var(--context); }
+.kaart .k0 { fill: var(--k0); } .kaart .k1 { fill: var(--k1); } .kaart .k2 { fill: var(--k2); }
+.kaart .k3 { fill: var(--k3); } .kaart .k4 { fill: var(--k4); }
+.kaart path.fookus { stroke: var(--ink); stroke-width: 2; }
+.kaart path[class^="k"]:hover { stroke: var(--ink); stroke-width: 1.5; }
+.kaart-silt { position: absolute; transform: translate(10px, -50%); font-size: 14px; line-height: 1.2; white-space: nowrap;
+  background: var(--surface); color: var(--signal); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); pointer-events: none; }
+.kaart-silt::before { content: ""; position: absolute; left: -10px; top: 50%; width: 10px; border-top: 1px solid var(--ink-2); }
+.kaart-legend { max-width: 420px; padding-top: 22px; font-size: 12.5px; color: var(--ink-3); }
+.kaart-legend .riba { position: relative; height: 12px; }
+.kaart-legend .riba i { position: absolute; top: 0; bottom: 0; border-right: 2px solid var(--surface); }
+.kaart-legend .riba i.k0 { background: var(--k0); } .kaart-legend .riba i.k1 { background: var(--k1); }
+.kaart-legend .riba i.k2 { background: var(--k2); } .kaart-legend .riba i.k3 { background: var(--k3); }
+.kaart-legend .riba i.k4 { background: var(--k4); border-right: 0; }
+.kaart-legend .viit { position: absolute; top: -4px; bottom: -4px; width: 0; border-left: 2px dashed var(--context-strong); font-style: normal; }
+.kaart-legend .viit.fookus { border-left: 2px solid var(--ink); }
+.kaart-legend .viit span { position: absolute; bottom: 100%; white-space: nowrap; color: var(--ink-2); padding: 0 4px; line-height: 1.4; }
+.kaart-legend .viit.fookus span { color: var(--signal); font-weight: 700; }
+.kaart-legend .viit.v span { right: 0; }
+.kaart-legend .viit.p span { left: -2px; }
+.kaart-legend .margid { position: relative; height: 18px; margin-top: 3px; }
+.kaart-legend .margid span { position: absolute; transform: translateX(-50%); }
+.kaart-legend .margid span:first-child { transform: none; }
+.kaart-legend .margid span.lopp { transform: translateX(-100%); }

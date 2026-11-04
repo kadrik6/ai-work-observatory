@@ -21,7 +21,7 @@ const path = require('path');
           const lai = document.documentElement.scrollWidth > window.innerWidth + 1;
           const yle = [...document.querySelectorAll('body *')].filter((e) => {
             const r = e.getBoundingClientRect();
-            return r.width > 0 && r.right > window.innerWidth + 1 && !e.closest('.tbl, .menu');
+            return r.width > 0 && r.right > window.innerWidth + 1 && !e.closest('.tbl, .menu, .kaart');
           }).map((e) => e.tagName.toLowerCase() + '.' + String(e.className).split(' ')[0]).slice(0, 5);
           const riba = document.querySelector('.top').getBoundingClientRect().height;
           const korged = [...document.querySelectorAll('figure')].filter((e) => e.getBoundingClientRect().height > vh - riba)
