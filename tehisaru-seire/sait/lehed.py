@@ -93,14 +93,12 @@ def _kasutus(A):
         </div>
         <p class="gs">Eesti kasvab suhtes kiiremini, aga punktides aeglasemalt kui Põhjamaad.</p>
       </div>
-      {usaldus}
-    </div>
-    <div class="kulg uued">
       <div class="plokk">
         <h3>{muud[0]["aasta"]}. aasta numbrid on olemas, aga ELi skaalale need ei sobi</h3>
         {uued_tbl}
       </div>
     </div>
+    <div class="usaldus3">{usaldus}</div>
   </div>
   <details>
     <summary>Näita andmetabelit ja määratlust</summary>
