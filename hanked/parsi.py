@@ -13,6 +13,12 @@ import xml.etree.ElementTree as ET
 
 # loendur diagnostikaks (lae.py logib): statistikakoodid ja TED-vormide nimed
 DIAG = collections.Counter()
+DIAG_NAITED = []  # mõni XML-i lõik, kui struktuur on ootamatu (pakkumuste arv puudub)
+
+
+def _naide(silt, el):
+    if sum(1 for n in DIAG_NAITED if n["silt"] == silt) < 2:
+        DIAG_NAITED.append({"silt": silt, "xml": ET.tostring(el, encoding="unicode")[:1800]})
 
 RHR_ID = re.compile(r"procurement/(\d+)/")
 
@@ -174,6 +180,8 @@ def eforms_tulemus(teade, kuu=None):
         for s in _koik(lr, "ReceivedSubmissionsStatistics"):
             kood = _tekst(s, "StatisticsCode")
             DIAG["statistika:" + str(kood)] += 1
+            if kood is None:
+                _naide("statistika_ilma_koodita", s)
             if kood == "tenders":
                 pakkumusi.append(_arv(_tekst(s, "StatisticsNumeric")))
     for tp in _koik(teade, "TenderingParty"):
@@ -186,6 +194,9 @@ def eforms_tulemus(teade, kuu=None):
             summa = _arv(el.text)
             break
     pakk = [p for p in pakkumusi if p is not None]
+    if not pakk and kuu and kuu >= "2026":
+        lr = _koik(teade, "LotResult")
+        _naide("2026_ilma_pakkumusteta", lr[0] if lr else teade)
     return {
         "allikas": "eforms",
         "teade": "CAN",

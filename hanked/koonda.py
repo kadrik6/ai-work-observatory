@@ -31,8 +31,7 @@ def loe(p):
         return [json.loads(x) for x in f]
 
 
-def voti(r):
-    return f"{r['allikas']}:{r.get('viitenumber') or r.get('rhr_id') or r.get('teate_id')}"
+voti = R.voti
 
 
 def katkes(r):

@@ -23,6 +23,7 @@ import csv
 import gzip
 import json
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -37,6 +38,7 @@ import reeglid as R  # noqa: E402
 SIIN = Path(__file__).resolve().parent
 POSITIIVNE = {"AI", "ANDMED"}
 LAVI = 0.5
+LIPP = re.compile(r"\bzzmark\w+")
 VAIKE_VAHE = 0.02  # F1 vahe, millest väiksema korral valitakse lihtsam reegel
 
 
@@ -58,9 +60,11 @@ class Mudel:
         self.lr = LogisticRegression(C=c, class_weight="balanced", max_iter=3000)
 
     def _x(self, tekstid, sobita=False):
+        # märksõnalipud (zzmark...) on ainult sõnatunnused; tähemärgi-n-grammid neid ei näe
+        ilma = [LIPP.sub(" ", t) for t in tekstid]
         if sobita:
-            return hstack([self.sonad.fit_transform(tekstid), self.margid.fit_transform(tekstid)]).tocsr()
-        return hstack([self.sonad.transform(tekstid), self.margid.transform(tekstid)]).tocsr()
+            return hstack([self.sonad.fit_transform(tekstid), self.margid.fit_transform(ilma)]).tocsr()
+        return hstack([self.sonad.transform(tekstid), self.margid.transform(ilma)]).tocsr()
 
     def sobita(self, tekstid, y, kaal=None, korpus=None):
         # sõnavara õpitakse kogu korpusest (märgendamata tekst on avalik ja mudel ei näe silte)
@@ -179,8 +183,7 @@ def kiht(r):
     return "muu"
 
 
-def vota(r):
-    return f"{r['allikas']}:{r.get('viitenumber') or r.get('rhr_id') or r.get('teate_id')}"
+vota = R.voti
 
 
 def main():

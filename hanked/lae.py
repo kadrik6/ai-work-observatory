@@ -23,7 +23,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from parsi import DIAG, parsi_fail  # noqa: E402
+from parsi import DIAG, DIAG_NAITED, parsi_fail  # noqa: E402
 
 BAAS = "https://riigihanked.riik.ee/rhr/api/public/v1/opendata"
 
@@ -70,10 +70,15 @@ def hanke_voti(r):
     return r.get("viitenumber") or r.get("rhr_id") or r.get("teate_id")
 
 
+def _versioon(v):
+    """eVormi VersionID ("01", "2", "10") arvuna, et "10" tuleks pärast "9"."""
+    return int(v) if v and str(v).isdigit() else 0
+
+
 def pohitabel(cn, can):
     """Üks rida hanke kohta: viimane hanketeade (kuupäev, versioon) + kõigi tulemusteadete kokkuvõte."""
     hanked = {}
-    for r in sorted(cn, key=lambda r: (r.get("kuupaev") or r.get("kuu") or "", r.get("versioon") or "")):
+    for r in sorted(cn, key=lambda r: (r.get("kuupaev") or r.get("kuu") or "", _versioon(r.get("versioon")))):
         v = (r["allikas"], hanke_voti(r))
         esimene = hanked.get(v, {}).get("esimene_kuupaev") or r.get("kuupaev") or r.get("kuu")
         teateid = hanked.get(v, {}).get("teateid", 0) + 1
@@ -139,6 +144,8 @@ def main():
         aastad.setdefault(r["aasta"], 0)
         aastad[r["aasta"]] += 1
     kirjuta("diagnostika", **dict(DIAG.most_common(40)))
+    for n in DIAG_NAITED:
+        kirjuta("diagnostika_naide", **n)
     pakk = {}
     for r in hanked:
         c = pakk.setdefault(r["aasta"], {"hankeid": 0, "tulemus": 0, "pakkumusi": 0})

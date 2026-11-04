@@ -111,3 +111,8 @@ def innovatsiooni_mark(r):
     s = set(r.get("strateegiline") or [])
     i = set(x for x in (r.get("innovatsioon") or []) if x and x != "none")
     return "inn-pur" in s or bool(i)
+
+
+def voti(r):
+    """Hanke võti, millega seotakse põhitabel, valim, märgendused ja mudeli tulemus. Ainult siin."""
+    return f"{r['allikas']}:{r.get('viitenumber') or r.get('rhr_id') or r.get('teate_id')}"

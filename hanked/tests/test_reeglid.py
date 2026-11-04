@@ -30,3 +30,8 @@ def test_pohitabel_viimane_versioon_ja_tulemus():
     h = pohitabel(cn, can)
     assert len(h) == 1 and h[0]["pealkiri"] == "uus" and h[0]["teateid"] == 2
     assert h[0]["esimene_kuupaev"] == "2024-01-02" and h[0]["aasta"] == 2024 and h[0]["pakkumusi"] == 2
+
+
+def test_voti():
+    assert R.voti({"allikas": "eforms", "viitenumber": "123", "rhr_id": "9"}) == "eforms:123"
+    assert R.voti({"allikas": "ted_esender", "teate_id": "u-1"}) == "ted_esender:u-1"

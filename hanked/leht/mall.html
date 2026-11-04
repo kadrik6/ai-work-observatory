@@ -1,0 +1,396 @@
+<title>AI-hanked Eestis</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="author" content="Kadri Kungla">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@400;700&display=swap">
+<style>
+/* Sinine Fookus (avalik sektor): valge pind, peaaegu must tekst, üks tugev sinine fookus vaate kohta.
+   Paigutus: päis (pealkiri, seis, teema, vahekaardid), üks veerg 860 px; laial ekraanil (≥64rem) kaks graafikut kõrvuti. */
+:root {
+  --surface: #ffffff; --surface-2: #f9f9f9; --brand-soft: #e6eafc;
+  --ink: #151926; --ink-2: #4b4e62; --ink-faded: #737482;
+  --signal: #0030de; --signal-strong: #0024a8; --on-signal: #ffffff;
+  --context: #d2d3d8; --context-strong: #34394c; --border: #e1e2e5; --grid: #f0f0f2; --control-border: #838494;
+  --f-title: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-text: Inter, "Segoe UI", system-ui, sans-serif;
+  --laius: 860px; --lai: 1180px; --plokk: 24px; --sektsioon: 48px; --raadius: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --surface: #151926; --surface-2: #262b3b; --brand-soft: #0a1f6e;
+  --ink: #ffffff; --ink-2: #f0f0f2; --ink-faded: #9293a4;
+  --signal: #8fa2ff; --signal-strong: #c7d1ff; --on-signal: #151926;
+  --context: #4b4e62; --context-strong: #d2d3d8; --border: #34394c; --grid: #262b3b; --control-border: #d2d3d8;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --surface: #151926; --surface-2: #262b3b; --brand-soft: #0a1f6e;
+  --ink: #ffffff; --ink-2: #f0f0f2; --ink-faded: #9293a4;
+  --signal: #8fa2ff; --signal-strong: #c7d1ff; --on-signal: #151926;
+  --context: #4b4e62; --context-strong: #d2d3d8; --border: #34394c; --grid: #262b3b; --control-border: #d2d3d8;
+  color-scheme: dark; }
+:root[data-theme="light"] { color-scheme: light; }
+
+* { box-sizing: border-box; }
+body { background: var(--surface); color: var(--ink); font: 400 17px/1.6 var(--f-text); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.raam { max-width: var(--lai); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.kitsas { max-width: var(--laius); }
+h1, h2, h3, h4 { font-family: var(--f-title); font-weight: 400; color: var(--ink); text-wrap: balance; margin: 0; }
+h1 { font-size: 32px; line-height: 1.25; }
+h2 { font-size: 26px; line-height: 1.3; }
+h3 { font-size: 22px; line-height: 1.35; }
+h4 { font-size: 16px; font-family: var(--f-text); font-weight: 600; }
+h1 b, h2 b, h3 b { font-weight: 700; color: var(--signal); }
+p { margin: 0; max-width: 72ch; }
+a { color: var(--signal); text-underline-offset: 2px; }
+a:hover { color: var(--signal-strong); }
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
+
+/* päis */
+header.paise { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--border); }
+.paise-rida { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; padding-block: 16px 8px; }
+.paise-rida h1 { font-size: 26px; font-weight: 700; }
+.seis { color: var(--ink-2); font-size: 14px; }
+.teema { margin-left: auto; }
+nav.sakid { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+nav.sakid a { flex: none; display: inline-flex; align-items: center; min-height: 33px; padding: 4px 12px; font-size: 15px; color: var(--ink-2); text-decoration: none; border-bottom: 3px solid transparent; }
+nav.sakid a[aria-current="page"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--signal); }
+nav.sakid a:hover { color: var(--ink); }
+
+button, .nupp { font: 400 14px/1 var(--f-text); color: var(--ink); background: var(--surface); border: 1px solid var(--control-border); border-radius: 6px; min-height: 30px; padding: 6px 12px; cursor: pointer; }
+button:hover { border-color: var(--ink); }
+button[aria-pressed="true"] { background: var(--signal); border-color: var(--signal); color: var(--on-signal); }
+
+main { padding-block: 32px 64px; }
+section.vaade { display: grid; gap: var(--sektsioon); }
+section.vaade[hidden] { display: none; }
+.plokk { display: grid; gap: var(--plokk); min-width: 0; }
+.plokk > header { display: grid; gap: 8px; }
+.alapealkiri { color: var(--ink-2); font-size: 16px; }
+.allikas { color: var(--ink-2); font-size: 14px; line-height: 1.5; }
+.alam { display: block; color: var(--ink-2); font-size: 14px; font-weight: 400; }
+
+.vastus { background: var(--brand-soft); border-radius: var(--raadius); padding: 20px 24px; display: grid; gap: 12px; }
+.vastus h2 { font-size: 22px; }
+.vastus ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+
+.kaks { display: grid; gap: var(--sektsioon); }
+@media (min-width: 64rem) { .kaks { grid-template-columns: 1fr 1fr; gap: 40px; } }
+
+/* graafikud */
+.graafik { width: 100%; max-width: 640px; height: auto; max-height: calc(100svh - 260px); display: block; overflow: visible; }
+.m-fookus { fill: var(--signal); }
+.m-kontekst { fill: var(--context); }
+.telg { stroke: var(--ink-faded); stroke-width: 1; }
+.siht { stroke: var(--context-strong); stroke-width: 2; stroke-dasharray: 6 5; }
+.t-telg { fill: var(--ink-2); font: 400 14px var(--f-text); }
+.t-silt { fill: var(--ink-2); font: 400 14px var(--f-text); font-variant-numeric: tabular-nums; }
+.t-fookus { fill: var(--signal); font: 700 15px var(--f-text); font-variant-numeric: tabular-nums; }
+.t-siht { fill: var(--context-strong); font: 600 15px var(--f-text); }
+
+.vordlus { display: grid; gap: 20px; }
+@media (min-width: 64rem) { .vordlus { grid-template-columns: 1fr 1fr; column-gap: 40px; } }
+.v-plokk { display: grid; gap: 4px; }
+.hankijad { display: grid; gap: 2px; }
+.v-rida { display: grid; grid-template-columns: 11rem 1fr 3.5rem; align-items: center; gap: 10px; font-size: 14px; }
+.v-rida-lai { grid-template-columns: minmax(0, 18rem) 1fr 2.5rem; }
+.v-nimi { color: var(--ink-2); min-width: 0; overflow-wrap: anywhere; }
+.v-rada { height: 14px; background: var(--grid); border-radius: 2px; overflow: hidden; }
+.riba-fookus, .riba-kontekst { display: block; height: 100%; }
+.riba-fookus { background: var(--signal); }
+.riba-kontekst { background: var(--context); }
+.v-arv { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.v-arv-fookus { color: var(--signal); font-weight: 700; }
+@media (max-width: 30rem) { .v-rida { grid-template-columns: 8rem 1fr 3rem; } .v-rida-lai { grid-template-columns: 10rem 1fr 2.5rem; } }
+
+details { border-top: 1px solid var(--border); padding-top: 12px; }
+summary { color: var(--signal); cursor: pointer; font-size: 15px; min-height: 30px; }
+details[open] summary { margin-bottom: 12px; }
+.tabel-kast { overflow-x: auto; }
+table { border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; min-width: 100%; }
+th, td { border: 1px solid var(--border); padding: 8px 12px; text-align: right; vertical-align: top; }
+th[scope="row"], thead th:first-child { text-align: left; }
+thead th { font-weight: 600; color: var(--ink-2); }
+tr.valitud th, tr.valitud td { background: var(--brand-soft); }
+.vahemik { color: var(--ink-2); font-size: 13px; white-space: nowrap; }
+.vahemik::before { content: "("; } .vahemik::after { content: ")"; }
+
+ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 72ch; }
+
+/* otsing */
+.otsing-rida { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.otsing-rida input[type="search"] { flex: 1 1 18rem; min-width: 0; font: 400 16px var(--f-text); color: var(--ink); background: var(--surface); border: 1px solid var(--control-border); border-radius: 6px; padding: 8px 12px; min-height: 40px; }
+.nupurida { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 14px; color: var(--ink-2); }
+.tulemused { list-style: none; margin: 0; padding: 0; display: grid; }
+.tulemused li { border-top: 1px solid var(--border); padding-block: 14px; display: grid; gap: 4px; min-width: 0; }
+.tulemused li:last-child { border-bottom: 1px solid var(--border); }
+.tulemused .t-pealkiri { font-weight: 600; font-size: 16px; overflow-wrap: anywhere; }
+.tulemused .t-meta { color: var(--ink-2); font-size: 14px; }
+.tulemused .t-kirjeldus { color: var(--ink-2); font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; max-width: 80ch; }
+.margid { display: flex; flex-wrap: wrap; gap: 6px; }
+.mark { font-size: 13px; border: 1px solid var(--border); border-radius: 4px; padding: 1px 8px; color: var(--ink-2); }
+.mark-hea { border-color: var(--signal); color: var(--signal); }
+.loendi-jalus { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 14px; color: var(--ink-2); }
+.tyhi { color: var(--ink-2); padding-block: 16px; }
+
+.jalus { border-top: 1px solid var(--border); padding-block: 24px 40px; color: var(--ink-2); font-size: 14px; display: grid; gap: 8px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+@media (max-width: 30rem) { body { font-size: 16px; } h2 { font-size: 22px; } h3 { font-size: 19px; } .paise-rida h1 { font-size: 21px; } }
+</style>
+
+<header class="paise">
+  <div class="raam">
+    <div class="paise-rida">
+      <h1>AI-hanked Eestis</h1>
+      <span class="seis">Seis %%seis%%</span>
+      <button class="teema" id="teema" type="button" aria-label="Vaheta teemat">Tume teema</button>
+    </div>
+    <nav class="sakid" aria-label="Lehe osad">
+      <a href="#ulevaade" data-vaade="ulevaade">Ülevaade</a>
+      <a href="#otsing" data-vaade="otsing">Leia hea näide</a>
+      <a href="#viis" data-vaade="viis">Kuidas hangitakse</a>
+      <a href="#tapsus" data-vaade="tapsus">Kui täpne see on</a>
+    </nav>
+  </div>
+</header>
+
+<main class="raam">
+
+<section class="vaade" id="v-ulevaade" aria-labelledby="ulevaade-p">
+  <div class="vastus kitsas">
+    <h2 id="ulevaade-p">Lühidalt</h2>
+    <ul>%%vastus%%</ul>
+  </div>
+
+  <div class="kaks">
+    <figure class="plokk" style="margin:0">
+      <header>
+        <h3 id="g1-p">%%g1_pealkiri%%</h3>
+        <p class="alapealkiri" id="g1-k">%%g1_alam%%</p>
+      </header>
+      %%g1%%
+      <p class="allikas">%%osaline_markus%% Allikas: <a href="%%register%%" target="_blank" rel="noopener">riigihangete registri avaandmed</a> (CC BY-SA 3.0 EE), tuvastus Kadri Kungla.</p>
+    </figure>
+
+    <figure class="plokk" style="margin:0">
+      <header>
+        <h3 id="g2-p">%%g2_pealkiri%%</h3>
+        <p class="alapealkiri" id="g2-k">Kõigi hangete osakaal, kus hankija märkis eVormil innovatsiooni (strateegiline hange või innovatsioonihanke liik). Arvult, mitte rahas.</p>
+      </header>
+      %%g2%%
+      <p class="allikas">Siht: <a href="%%oecd%%" target="_blank" rel="noopener">OECD 2026</a>, lk 41 ja 49 (2% arvult aastaks 2027). Valitsuse 2024. aasta memorandumis on sama siht aastaks 2025. * 2023 algab septembrist, kui tulid eVormid.</p>
+    </figure>
+  </div>
+
+  <details class="kitsas">
+    <summary>Näita andmetabelit</summary>
+    <div class="tabel-kast">
+      <table>
+        <thead><tr><th>Aasta</th><th>Hankeid kokku</th><th>AI- ja andmehankeid</th><th>Osakaal</th><th>neist AI-sõnaga</th><th>Innovatsioonimärge</th><th>Osakaal</th></tr></thead>
+        <tbody>%%tabel_aastad%%</tbody>
+      </table>
+    </div>
+    <p class="allikas" style="margin-top:12px">Innovatsioonimärget saab lugeda ainult eVormidest. Meie näitaja loeb hankeid, millel on mõni neljast märkest. Rahandusministeeriumi 2023. aasta hinnang oli 0,2% arvult; OECD loendas viimasel aastal 25 märgitud lepingut. Mõõtmisviis erineb, seega ei ole numbrid üks-ühele võrreldavad.</p>
+  </details>
+</section>
+
+<section class="vaade" id="v-otsing" aria-labelledby="otsing-p" hidden>
+  <div class="plokk kitsas">
+    <header>
+      <h2 id="otsing-p">Leia sarnane hange, mida eeskujuks võtta</h2>
+      <p class="alapealkiri">Kirjuta, mida tahad hankida. Otsing järjestab %%n_loend%% AI- ja andmehanget sõnade sarnasuse järgi. Hea hanke tunnused aitavad valida eeskuju: kvaliteeti hinnati, pakkumusi oli vähemalt kaks ja hange ei katkenud.</p>
+    </header>
+    <div class="otsing-rida">
+      <label for="paring" class="alam" style="flex-basis:100%">Mida hangid?</label>
+      <input type="search" id="paring" placeholder="nt kõnetuvastus, andmeladu, juturobot" autocomplete="off">
+    </div>
+    <div class="nupurida" id="naited" aria-label="Näidisotsingud">Proovi:
+      <button type="button" data-paring="kõnetuvastus">kõnetuvastus</button>
+      <button type="button" data-paring="masintõlge">masintõlge</button>
+      <button type="button" data-paring="andmeladu">andmeladu</button>
+      <button type="button" data-paring="juturobot">juturobot</button>
+      <button type="button" data-paring="andmeanalüüs">andmeanalüüs</button>
+    </div>
+    <div class="nupurida" aria-label="Filtrid">Näita ainult:
+      <button type="button" id="f-hea" aria-pressed="false">kõik kolm head tunnust</button>
+      <button type="button" id="f-ai" aria-pressed="false">AI-sõnaga</button>
+      <button type="button" id="f-inn" aria-pressed="false">innovatsioonimärkega</button>
+    </div>
+    <p class="allikas" id="otsingu-kokkuvote" aria-live="polite"></p>
+    <ul class="tulemused" id="tulemused"></ul>
+    <div class="loendi-jalus" id="loendi-jalus"></div>
+    <p class="allikas">Andmed: riigihangete register. Link viib hanke lehele registris, kus on dokumendid. Hea hanke tunnused on lihtsad märgid, mitte hinnang hanke tulemusele.</p>
+  </div>
+</section>
+
+<section class="vaade" id="v-viis" aria-labelledby="viis-p" hidden>
+  <figure class="plokk" style="margin:0">
+    <header>
+      <h2 id="viis-p">%%g3_pealkiri%%</h2>
+      <p class="alapealkiri">Hangete osakaal ja mediaan, %%periood%%. AI- ja andmehankeid %%n_ai%%, kõiki hankeid %%n_koik%%. Puuduvad väärtused on nimetajast välja jäetud.</p>
+    </header>
+    %%vordlus%%
+    <p class="allikas">OECD järgi suurendab isegi väike kvaliteedikriteeriumi kaal uuendusliku pakkumise tõenäosust (<a href="%%oecd%%" target="_blank" rel="noopener">OECD 2026</a>, lk 42). Kvaliteedi kaal on kvaliteedikriteeriumide summaarne kaal hangetes, kus see on olemas. Allikas: riigihangete register.</p>
+  </figure>
+
+  <figure class="plokk kitsas" style="margin:0">
+    <header>
+      <h3>%%g4_pealkiri%%</h3>
+      <p class="alapealkiri">AI- ja andmehangete arv hankija kaupa, 15 suurimat. Hankijaid on kokku %%hankijaid%%, neist %%uks_hange%% on teinud ühe sellise hanke.</p>
+    </header>
+    <div class="hankijad">%%hankijad%%</div>
+    <p class="allikas">OECD järgi teeb 10% organisatsioonidest 98,7% innovatsioonihangetest (<a href="%%oecd%%" target="_blank" rel="noopener">OECD 2026</a>, lk 41). Siin on sama mõõt AI- ja andmehangete kohta. Allikas: riigihangete register.</p>
+  </figure>
+</section>
+
+<section class="vaade" id="v-tapsus" aria-labelledby="tapsus-p" hidden>
+  <div class="plokk kitsas">
+    <header>
+      <h2 id="tapsus-p">%%tapsus_pealkiri%%</h2>
+      <p class="alapealkiri">Neli reeglit testiti %%test_alates%%. aasta ja hilisemate hangete peal (%%test%% märgendatud hanget, neist %%test_pos%% AI- või andmehanked). Mudel õppis varasematelt (%%treening%% hanget, %%treening_pos%% positiivset). Täpsus ja saagis on kaalutud nii, et need kehtivad kogu registri kohta.</p>
+    </header>
+    <div class="tabel-kast">
+      <table>
+        <thead><tr><th>Reegel</th><th>Täpsus: leitutest õiged (95%)</th><th>Saagis: õigetest leitud (95%)</th><th>F1</th><th>Õiged / valed / märkamata</th></tr></thead>
+        <tbody>%%hind_read%%</tbody>
+      </table>
+    </div>
+    <p class="allikas">Lehel on kasutusel reegel, millel on testil suurim F1. Kui märksõnaloend jääb parimast alla 0,02 võrra, eelistame märksõnaloendit, sest seda saab igaüks kontrollida.</p>
+  </div>
+
+  <div class="plokk kitsas">
+    <h3>Kui palju AI- ja andmehankeid tegelikult on</h3>
+    <p>Märgendatud valimi põhjal on eVormide perioodil umbes <strong>%%lev_hinnang%%</strong> AI- või andmehanget (95% vahemik %%lev_vahemik%%) %%lev_hankeid%% hankest. Kasutusel olev reegel leidis samal perioodil %%lev_leidis%%. Vahemiku ülemine piir on lai, sest 300 juhuslikust „muust“ hankest ei leitud ühtegi ja see ei tähenda, et neid seal pole.</p>
+  </div>
+
+  <div class="plokk kitsas">
+    <h3>Mida see ei näita</h3>
+    <ul class="piirid">
+      <li>Alla 30 000 euro hankeid registris ei ole (<a href="%%oecd%%" target="_blank" rel="noopener">OECD 2026</a>, lisa 2.B). Väikesed AI-katsetused jäävad välja.</li>
+      <li>%%margendeid%% hanget (%%positiivseid%% AI- või andmehanget) märgendas Claude. Inimene ei ole neid veel üle vaadanud. Valim tehti märksõnade järgi ja märgendaja nägi märksõnu, mis soosib märksõnaloendit.</li>
+      <li>Hange on üks rida, ka siis, kui sellel on mitu osa. Raha ei liideta, sest eeldatav maksumus puudub paljudel hangetel.</li>
+      <li>Hea hanke tunnused (kvaliteet, mitu pakkujat, ei katkenud) näitavad hanke ülesehitust, mitte seda, kas lahendus töötas.</li>
+      <li>Kuni 2023. aasta augustini on teated vanas vormingus. Innovatsioonimärget seal ei ole ja mõned väljad on hõredamad.</li>
+    </ul>
+  </div>
+
+  <details class="kitsas">
+    <summary>Järgmisena märgendamiseks: mudel peab neid tõenäoliseks, märksõna ei leia</summary>
+    <ul class="piirid">%%jargmised%%</ul>
+  </details>
+</section>
+
+</main>
+
+<footer class="raam">
+  <div class="jalus">
+    <p>Koostaja Kadri Kungla. Andmed: <a href="%%register%%" target="_blank" rel="noopener">riigihangete registri avaandmed</a> (CC BY-SA 3.0 EE). Innovatsioonihangete siht ja taust: <a href="%%oecd%%" target="_blank" rel="noopener">OECD (2026), Strengthening the Innovative Capacity of the Public Sector of Estonia</a>.</p>
+    <p>Tuvastus on tehtud TF-IDF ja logistilise regressiooniga ning märksõnaloendiga. Tulemused on kontrollimata kandidaadid, mitte ametlik statistika.</p>
+  </div>
+</footer>
+
+<script id="andmed" type="application/json">%%andmed%%</script>
+<script>
+(function () {
+  "use strict";
+  // ---------- teema
+  var juur = document.documentElement, teemaNupp = document.getElementById("teema");
+  function onTume() { var t = juur.getAttribute("data-theme"); return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; }
+  function naitaTeema() { teemaNupp.textContent = onTume() ? "Hele teema" : "Tume teema"; }
+  try { var salv = localStorage.getItem("ai-hanked-teema"); if (salv) juur.setAttribute("data-theme", salv); } catch (err) {}
+  teemaNupp.addEventListener("click", function () {
+    var uus = onTume() ? "light" : "dark"; juur.setAttribute("data-theme", uus);
+    try { localStorage.setItem("ai-hanked-teema", uus); } catch (err) {}
+    naitaTeema();
+  });
+  naitaTeema();
+
+  // ---------- vahekaardid
+  var vaated = ["ulevaade", "otsing", "viis", "tapsus"];
+  function naita() {
+    var h = (location.hash || "").slice(1); if (vaated.indexOf(h) < 0) h = "ulevaade";
+    vaated.forEach(function (v) { document.getElementById("v-" + v).hidden = v !== h; });
+    document.querySelectorAll("nav.sakid a").forEach(function (a) {
+      if (a.dataset.vaade === h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+  }
+  window.addEventListener("hashchange", function () { naita(); window.scrollTo(0, 0); });
+  naita();
+
+  // ---------- otsing: TF-IDF ja koosinussarnasus brauseris
+  var D = JSON.parse(document.getElementById("andmed").textContent).loend;
+  function tyvi(s) { return s.length > 6 ? s.slice(0, 6) : s; }  // lihtne tüvi eesti käänete jaoks
+  function sonad(t) {
+    return (t || "").toLowerCase().replace(/[^a-zõäöüšž0-9]+/g, " ").split(" ")
+      .filter(function (s) { return s.length > 2; }).map(tyvi);
+  }
+  var df = {}, vektorid = [];
+  D.forEach(function (r) {
+    var tf = {}; sonad(r.t + " " + r.t + " " + (r.k || "")).forEach(function (s) { tf[s] = (tf[s] || 0) + 1; });
+    Object.keys(tf).forEach(function (s) { df[s] = (df[s] || 0) + 1; }); vektorid.push(tf);
+  });
+  var N = D.length;
+  function idf(s) { return Math.log((N + 1) / ((df[s] || 0) + 1)) + 1; }
+  vektorid = vektorid.map(function (tf) {
+    var v = {}, n = 0; Object.keys(tf).forEach(function (s) { v[s] = (1 + Math.log(tf[s])) * idf(s); n += v[s] * v[s]; });
+    n = Math.sqrt(n) || 1; Object.keys(v).forEach(function (s) { v[s] /= n; }); return v;
+  });
+
+  var paring = document.getElementById("paring"), list = document.getElementById("tulemused");
+  var jalus = document.getElementById("loendi-jalus"), kokku = document.getElementById("otsingu-kokkuvote");
+  var filtrid = { hea: document.getElementById("f-hea"), ai: document.getElementById("f-ai"), inn: document.getElementById("f-inn") };
+  var naidata = 12;
+  function arv(x) { return String(x).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function kuupaev(k) { return k ? k.slice(8, 10) + "." + k.slice(5, 7) + "." + k.slice(0, 4) : ""; }
+
+  function arvuta() {
+    var q = sonad(paring.value), tulem = [];
+    var qv = {}; q.forEach(function (s) { qv[s] = (qv[s] || 0) + idf(s); });
+    D.forEach(function (r, i) {
+      if (filtrid.hea.getAttribute("aria-pressed") === "true" && r.hea < 3) return;
+      if (filtrid.ai.getAttribute("aria-pressed") === "true" && !r.ai) return;
+      if (filtrid.inn.getAttribute("aria-pressed") === "true" && !r.inn) return;
+      var skoor = 0; if (q.length) { Object.keys(qv).forEach(function (s) { skoor += (vektorid[i][s] || 0) * qv[s]; }); if (skoor <= 0) return; }
+      tulem.push({ r: r, s: skoor });
+    });
+    tulem.sort(function (a, b) { return q.length ? (b.s - a.s) || (b.r.hea - a.r.hea) : (b.r.hea - a.r.hea) || String(b.r.kp).localeCompare(String(a.r.kp)); });
+    return { tulem: tulem, q: q.length };
+  }
+
+  function rida(r) {
+    var m = [];
+    if (r.ah === false && r.kv != null) m.push('<span class="mark mark-hea">kvaliteedi kaal ' + arv(Math.round(r.kv)) + "%</span>");
+    else if (r.ah === false) m.push('<span class="mark mark-hea">kvaliteeti hinnati</span>');
+    else if (r.ah === true) m.push('<span class="mark">ainult hind</span>');
+    if (r.pk != null) m.push('<span class="mark' + (r.pk >= 2 ? " mark-hea" : "") + '">' + r.pk + (r.pk === 1 ? " pakkumus" : " pakkumust") + "</span>");
+    if (r.kat === true) m.push('<span class="mark">katkes</span>');
+    if (r.inn) m.push('<span class="mark mark-hea">innovatsioonimärge</span>');
+    var pealkiri = r.url ? '<a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.t) + "</a>" : esc(r.t);
+    return '<li><span class="t-pealkiri">' + pealkiri + '</span><span class="t-meta">' + esc(r.h) + " · " + kuupaev(r.kp) +
+      (r.vn ? " · viitenumber " + esc(r.vn) : "") + '</span><span class="t-kirjeldus">' + esc(r.k) + '</span><span class="margid">' + m.join("") + "</span></li>";
+  }
+
+  function joonista() {
+    var a = arvuta(), n = a.tulem.length, naha = naidata === 0 ? n : Math.min(naidata, n);
+    list.innerHTML = n ? a.tulem.slice(0, naha).map(function (x) { return rida(x.r); }).join("") : "";
+    if (!n) list.innerHTML = '<li class="tyhi">Ühtegi hanget ei leitud. Proovi lühemat sõna või eemalda filter.</li>';
+    kokku.textContent = (a.q ? "Sarnasuse järgi järjestatud. " : "Uuemad hea hanke tunnustega eespool. ") + "Leitud " + arv(n) + " hanget.";
+    var valikud = [12, 24, 48, 0];
+    jalus.innerHTML = n > 12 ? "Näita: " + valikud.map(function (v) {
+      return '<button type="button" data-n="' + v + '" aria-pressed="' + (naidata === v) + '">' + (v === 0 ? "kõik (" + arv(n) + ")" : v) + "</button>";
+    }).join("") : "";
+  }
+  var viivitus;
+  paring.addEventListener("input", function () { clearTimeout(viivitus); viivitus = setTimeout(function () { naidata = 12; joonista(); }, 120); });
+  document.getElementById("naited").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button"); if (!b) return; paring.value = b.dataset.paring; naidata = 12; joonista();
+  });
+  Object.keys(filtrid).forEach(function (k) {
+    filtrid[k].addEventListener("click", function () {
+      filtrid[k].setAttribute("aria-pressed", filtrid[k].getAttribute("aria-pressed") === "true" ? "false" : "true"); naidata = 12; joonista();
+    });
+  });
+  jalus.addEventListener("click", function (ev) { var b = ev.target.closest("button"); if (!b) return; naidata = +b.dataset.n; joonista(); });
+  joonista();
+})();
+</script>

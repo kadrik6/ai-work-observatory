@@ -92,7 +92,7 @@ def main():
         p = len(vali) / len(rid) if rid else 0
         for r in vali:
             valim.append({"kiht": k, "valiku_toenaosus": p, "kihi_suurus": len(rid), "allikas": r["allikas"],
-                          "voti": f"{r['allikas']}:{r.get('viitenumber') or r.get('rhr_id') or r.get('teate_id')}",
+                          "voti": R.voti(r),
                           "aasta": r["aasta"], "hankija": r.get("hankija"), "cpv": (r.get("cpv") or [])[:4],
                           "pealkiri": r.get("pealkiri"), "tekst": R.tekst(r, 700),
                           "marksonad": R.marksonad(R.tekst(r))})
