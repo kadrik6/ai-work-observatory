@@ -23,7 +23,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from parsi import parsi_fail  # noqa: E402
+from parsi import DIAG, parsi_fail  # noqa: E402
 
 BAAS = "https://riigihanked.riik.ee/rhr/api/public/v1/opendata"
 
@@ -138,6 +138,14 @@ def main():
     for r in hanked:
         aastad.setdefault(r["aasta"], 0)
         aastad[r["aasta"]] += 1
+    kirjuta("diagnostika", **dict(DIAG.most_common(40)))
+    pakk = {}
+    for r in hanked:
+        c = pakk.setdefault(r["aasta"], {"hankeid": 0, "tulemus": 0, "pakkumusi": 0})
+        c["hankeid"] += 1
+        c["tulemus"] += bool(r.get("tulemus_olemas"))
+        c["pakkumusi"] += r.get("pakkumusi") is not None
+    kirjuta("tulemuste_taitumus", **{str(k): v for k, v in sorted(pakk.items())})
     kirjuta("kokku", hanketeateid=len(cn), tulemusteateid=len(can), hankeid=len(hanked),
             aastad=dict(sorted(aastad.items())))
 

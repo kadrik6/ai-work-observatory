@@ -1,7 +1,7 @@
 name: hanked
 
 # AI- ja andmehangete tuvastus (KURSUS, haru hanked/*). Laeb avalikud hankeandmed (TED, riigihangete
-# register, OpenTender), koostab põhitabeli, märgendab ja hindab. Ainult lugemisõigus: repo ei muutu.
+# register), koostab põhitabeli, hindab tuvastusreegleid märgendatud valimil ja koondab lehe andmed. Ainult lugemisõigus: repo ei muutu.
 # Tulemus on logis (read "HANKED ...") ja artefaktis 30 päeva.
 
 on:
@@ -15,18 +15,18 @@ permissions:
 
 concurrency:
   group: hanked-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   hanked:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - uses: actions/cache@v4
+      - uses: actions/cache/restore@v4
         with:
           path: valjund/toores
           key: hanked-toores-v1-${{ github.run_id }}
@@ -34,13 +34,32 @@ jobs:
       - run: pip install -r hanked/requirements.txt
       - name: Laadimine ja põhitabel
         run: python hanked/lae.py --valjund valjund
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: valjund/toores
+          key: hanked-toores-v1-${{ github.run_id }}
       - name: Kirjeldus ja märgendamise valim
         run: python hanked/kirjelda.py --valjund valjund
+      - name: Mudel, hindamine ja kogu registri märgendamine
+        run: python hanked/mudel.py --valjund valjund
+      - name: Lehe andmed
+        run: |
+          python hanked/koonda.py --valjund valjund
+          # leht.json logisse (gzip + base64 tükkidena), sest artefakti allalaadimine pole igas keskkonnas lubatud
+          python - <<'PY'
+          import base64, gzip, pathlib
+          b = base64.b64encode(gzip.compress(pathlib.Path("valjund/leht.json").read_bytes())).decode()
+          tykid = [b[i:i + 8000] for i in range(0, len(b), 8000)]
+          for i, t in enumerate(tykid):
+              print(f"LEHT {i} {len(tykid)} {t}")
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: hanked
           path: |
             valjund/*.jsonl*
+            valjund/*.json
           retention-days: 30
           if-no-files-found: warn

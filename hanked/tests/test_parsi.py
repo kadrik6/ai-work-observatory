@@ -82,3 +82,10 @@ def test_ted_vana_vorming():
     assert cn[0]["kriteeriumid"] == [("quality", 30.0), ("price", 70.0)]
     assert cn[0]["liik"] == "services" and cn[0]["menetlus"] == "PT_OPEN"
     assert can[0]["pakkumusi"] == 3 and can[0]["voitjad"] == ["Näide OÜ"] and can[0]["lepingu_summa"] == 50000
+
+
+def test_ted_vorm_ei_ole_esimene_laps():
+    """Päris failides võib FORM_SECTION-i esimene laps olla muu element; vorm leitakse nime järgi."""
+    sisu = TED.replace("<FORM_SECTION><F02_2014>", "<FORM_SECTION><NOTICE_UUID>u-0</NOTICE_UUID><F02_2014>", 1)
+    cn, can, vahele = parsi_fail(sisu.encode(), "2019-05")
+    assert len(cn) == 1 and cn[0]["pealkiri"] == "Andmelao arendus"

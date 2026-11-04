@@ -41,6 +41,7 @@ def kirjuta(osa, **kw):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--valjund", default="valjund")
+    ap.add_argument("--valim-logisse", action="store_true", help="kirjuta valimi read logisse (VALIM ...)")
     a = ap.parse_args()
     v = Path(a.valjund)
     hanked = list(loe(v / "hanked.jsonl.gz"))
@@ -78,11 +79,11 @@ def main():
         m = R.marksonad(R.tekst(r))
         mk.update(m["ai"] + m["andmed"] + m["lai"])
     kirjuta("marksonad", top=mk.most_common(80))
-    # kihistatud valim märgendamiseks
+    # kihistatud valim märgendamiseks. Ainult eVormide hanked (alates 09/2023): see on hindamise populatsioon.
     rnd = random.Random(SEEME)
     kihiti = collections.defaultdict(list)
     for r in hanked:
-        if r.get("pealkiri"):
+        if r.get("pealkiri") and r["allikas"] == "eforms":
             kihiti[kiht(r)].append(r)
     valim = []
     for k, n in KIHID.items():
@@ -100,7 +101,7 @@ def main():
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
     kirjuta("valim", kihid={k: len(kihiti[k]) for k in KIHID}, valimis=len(valim))
     # valim ka logisse, et seda saaks lugeda ka siis, kui artefakti alla laadida ei saa
-    for r in valim:
+    for r in valim if a.valim_logisse else []:
         print("VALIM", json.dumps(r, ensure_ascii=False), flush=True)
 
 

@@ -7,8 +7,12 @@ Registri avaandmed on kuude kaupa kahes vormingus:
 Funktsioonid tagastavad sõnastikke, mitte DataFrame'e, et testid jookseksid ilma lisateekideta.
 Puuduv väärtus on None, mitte 0 ega tühi tekst (disaininõue 7: puuduv ≠ null).
 """
+import collections
 import re
 import xml.etree.ElementTree as ET
+
+# loendur diagnostikaks (lae.py logib): statistikakoodid ja TED-vormide nimed
+DIAG = collections.Counter()
 
 RHR_ID = re.compile(r"procurement/(\d+)/")
 
@@ -169,6 +173,7 @@ def eforms_tulemus(teade, kuu=None):
         tulemused.append(_tekst(lr, "TenderResultCode"))
         for s in _koik(lr, "ReceivedSubmissionsStatistics"):
             kood = _tekst(s, "StatisticsCode")
+            DIAG["statistika:" + str(kood)] += 1
             if kood == "tenders":
                 pakkumusi.append(_arv(_tekst(s, "StatisticsNumeric")))
     for tp in _koik(teade, "TenderingParty"):
@@ -207,17 +212,20 @@ def _p(el):
 
 
 def _vorm(teade):
+    """FORM_SECTION sisaldab vormi (F02_2014 jt). Esimene laps võib olla muu element, seega otsime nime järgi."""
     fs = _laps(teade, "FORM_SECTION")
     if fs is None:
-        return None, None
-    for k in fs:
-        return _l(k.tag), k
+        fs = teade
+    for k in fs.iter():
+        if re.match(r"F\d\d_\d{4}$", _l(k.tag)) or re.match(r"(MOVE|T0\d|F\d\d)$", _l(k.tag)):
+            return _l(k.tag), k
     return None, None
 
 
 def ted_teade(teade, kuu=None):
     """TED eSenderi teade → hanketeate (CN) või tulemuse (CAN) rida. Muud vormid → None."""
     vorm, f = _vorm(teade)
+    DIAG["ted_vorm:" + str(vorm)] += 1
     if f is None:
         return None
     oc = next((e for e in f.iter() if _l(e.tag) == "OBJECT_CONTRACT"), None)
