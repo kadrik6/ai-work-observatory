@@ -14,6 +14,7 @@
 !tehisaru-seire/**
 !turvakontroll/**
 !tooelu-seire/**
+!hanked/**
 
 # Lubatud kaustades uuesti välja: vahemälu, keskkond, võtmed, isiklikud fotod, privaatsed loendid
 __pycache__/
