@@ -232,11 +232,11 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
 
 /* ELi kaart: üks toon, hele → tume (väike number → suur number). Tume teema algab pinna lähedalt. */
-:root { --k0: #dde3fb; --k1: #aebcf4; --k2: #7189ec; --k3: #3d5be4; --k4: #0030de; --k-bg: #e9e9ed; --k-na: #ffffff; }
+:root { --k0: #a3b3f3; --k1: #7e96f0; --k2: #5879eb; --k3: #3159e5; --k4: #0030de; --k-bg: #e9e9ed; --k-na: #ffffff; --osa-b: #7189ec; --osa-c: #dde3fb; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --k0: #27347a; --k1: #3549b0; --k2: #5570ea; --k3: #8297f7; --k4: #c3cdfc; --k-bg: #262b3b; --k-na: #151926; }
+  :root:not([data-theme="light"]) { --k0: #3a50c4; --k1: #5a70d3; --k2: #7c8fe2; --k3: #9faeef; --k4: #c3cdfc; --k-bg: #262b3b; --k-na: #151926; --osa-b: #5570ea; --osa-c: #27347a; }
 }
-:root[data-theme="dark"] { --k0: #27347a; --k1: #3549b0; --k2: #5570ea; --k3: #8297f7; --k4: #c3cdfc; --k-bg: #262b3b; --k-na: #151926; }
+:root[data-theme="dark"] { --k0: #3a50c4; --k1: #5a70d3; --k2: #7c8fe2; --k3: #9faeef; --k4: #c3cdfc; --k-bg: #262b3b; --k-na: #151926; --osa-b: #5570ea; --osa-c: #27347a; }
 .kaart-ala { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 24px; align-items: end; }
 @media (max-width: 680px) { .kaart-ala { grid-template-columns: minmax(0, 1fr); } }
 .kaart { position: relative; }
@@ -320,8 +320,8 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
 .osad { display: flex; height: 36px; border-radius: 6px; overflow: hidden; gap: 2px; max-width: 760px; }
 .osad .osa { display: flex; align-items: center; padding-left: 10px; color: var(--on-signal); font-size: 15px; min-width: 32px; }
 .osa.k-a, .osa.risk { background: var(--mark-signal); }
-.osa.k-b, .osa.warn { background: var(--k2); color: var(--ink); }
-.osa.k-c, .osa.ok { background: var(--k0); color: var(--ink); }
+.osa.k-b, .osa.warn { background: var(--osa-b); color: var(--ink); }
+.osa.k-c, .osa.ok { background: var(--osa-c); color: var(--ink); }
 .osad-selgitus { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 28px; font-size: 15px; line-height: 1.5; }
 .osad-selgitus li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; align-items: start; }
 .osad-selgitus i { width: 14px; height: 14px; border-radius: 3px; margin-top: 5px; }
