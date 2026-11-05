@@ -612,3 +612,13 @@ h3.veerg { font-size: 12px; }
 .el-kaart .kaart-legend { padding-top: 6px; }
 @media (max-width: 1180px) { .el-rida { grid-template-columns: 330px minmax(0, 1fr); } }
 @media (max-width: 760px) { .el-rida { grid-template-columns: minmax(0, 1fr); } .el-kaart { max-width: 360px; } }
+/* Loendi kiri 1 px väiksem ja read madalamad, kaart sama kõrge kui loend (Kadri 5.11 22:43) */
+.jrj-r { height: 14px; font-size: 11px; }
+.jrj-r.pais { height: 15px; } .jrj-r.pais .viit-s { font-size: 10px; }
+.jrj-r.telg { height: 16px; font-size: 10px; }
+.jrj-r .tapp { width: 6px; height: 6px; margin: -3px 0 0 -3px; }
+.jrj-r.fookus .tapp { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; }
+.el-rida { align-items: start; }
+.el-rida { grid-template-columns: 369px minmax(0, 1fr); }
+@media (max-width: 1180px) { .el-rida { grid-template-columns: 320px minmax(0, 1fr); } }
+@media (max-width: 760px) { .el-rida { grid-template-columns: minmax(0, 1fr); } }
