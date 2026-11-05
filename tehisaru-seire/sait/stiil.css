@@ -274,3 +274,130 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
 .kaart-legend .margid span { position: absolute; transform: translateX(-50%); }
 .kaart-legend .margid span:first-child { transform: none; }
 .kaart-legend .margid span.lopp { transform: translateX(-100%); }
+
+/* ---- 5.11.2026: teiste vaadete komponendid ---- */
+.kolm { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 32px; align-items: start; }
+@media (max-width: 1023px) { .kolm { grid-template-columns: minmax(0, 1fr); } }
+.loend { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.5; }
+.kaks.tihe { gap: 8px 24px; }
+.kaks.tihe .gt { font-size: 14px; }
+
+/* Lihtsad tulbad (uuringute ja raporti numbrid) */
+.lihtne .rida, .lihtne .telg { grid-template-columns: 11em minmax(0, 1fr) 7em; }
+.lihtne .rida .rada { height: 16px; }
+
+/* Muutus nullist: miinus vasakule, pluss paremale, vahemik heledalt */
+.muutus .rida, .muutus .telg { grid-template-columns: 14em minmax(0, 1fr) 7.2em; }
+.muutus .rida { padding: 3px 0; }
+.muutus .rida .n { white-space: normal; line-height: 1.25; }
+.muutus .rida .n small { display: block; font-size: 12px; color: var(--ink-3); }
+.muutus .rida .rada { height: 16px; }
+.muutus .null { position: absolute; top: -5px; bottom: -5px; width: 0; border-left: 1px solid var(--context-strong); }
+.muutus .tulp { border-radius: 0; }
+.muutus .tulp.neg { border-radius: 4px 0 0 4px; }
+.muutus .tulp.pos { border-radius: 0 4px 4px 0; }
+.muutus .tulp.vahemik { background: repeating-linear-gradient(135deg, var(--mark-ctx) 0 3px, transparent 3px 6px); border: 1px solid var(--mark-ctx); border-radius: 4px; }
+.muutus .rida.fookus .tulp.vahemik { border-color: var(--mark-signal); }
+.muutus .nullmark { position: absolute; top: 2px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; border: 2px solid var(--mark-ctx); background: var(--surface); }
+.muutus .rida.fookus .nullmark { border-color: var(--mark-signal); }
+.muutus .telg .rada span:first-child { transform: none; }
+
+/* Aastate püsttulbad: prognoos hele ja katkendäärega */
+.aastatulbad { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 10px; height: 180px; align-items: end; max-width: 520px; border-bottom: 1px solid var(--context); }
+.aastatulbad .at { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 4px; position: relative; }
+.aastatulbad .tulp { width: 70%; background: var(--mark-signal); border-radius: 4px 4px 0 0; }
+.aastatulbad .prognoos .tulp { background: var(--brand-soft); border: 2px dashed var(--mark-signal); border-bottom: 0; }
+.aastatulbad .v { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+.aastatulbad .prognoos .v { font-weight: 400; color: var(--ink-2); }
+.aastatulbad .a { position: absolute; bottom: -22px; font-size: 12.5px; color: var(--ink-3); }
+.aastatulbad + .allikas { margin-top: 22px; }
+
+/* Osad: üks 100% riba */
+.osad { display: flex; height: 36px; border-radius: 6px; overflow: hidden; gap: 2px; max-width: 760px; }
+.osad .osa { display: flex; align-items: center; padding-left: 10px; color: var(--on-signal); font-size: 15px; min-width: 32px; }
+.osa.k-a, .osa.risk { background: var(--mark-signal); }
+.osa.k-b, .osa.warn { background: var(--k2); color: var(--ink); }
+.osa.k-c, .osa.ok { background: var(--k0); color: var(--ink); }
+.osad-selgitus { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 28px; font-size: 15px; line-height: 1.5; }
+.osad-selgitus li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; align-items: start; }
+.osad-selgitus i { width: 14px; height: 14px; border-radius: 3px; margin-top: 5px; }
+@media (max-width: 900px) { .osad-selgitus { grid-template-columns: minmax(0, 1fr); } }
+
+/* Eesti koht ELis */
+.kohad { display: flex; flex-direction: column; gap: 6px; }
+.koht-rida { display: grid; grid-template-columns: 15em minmax(0, 1fr) 4.4em; gap: 12px; align-items: center; font-size: 14.5px; }
+.koht-rida .n small { display: block; font-size: 12.5px; color: var(--ink-3); }
+.koht-rida .rada { position: relative; height: 22px; border-top: 1px solid var(--context); margin-top: 11px; }
+.koht-rida .kesk { position: absolute; top: -6px; height: 12px; border-left: 1px solid var(--context-strong); }
+.koht-rida .punkt { position: absolute; top: -8px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: var(--mark-signal); }
+.koht-rida .v { color: var(--ink-2); white-space: nowrap; }
+.koht-rida .v b { color: var(--signal); font-size: 16px; }
+.koht-rida.telg { font-size: 12.5px; color: var(--ink-3); }
+.koht-rida.telg .rada { border-top: 0; margin-top: 0; height: 16px; }
+.koht-rida.telg .rada span { position: absolute; transform: translateX(-50%); }
+.koht-rida.telg .rada span:first-child { transform: none; }
+.koht-rida.telg .rada span:last-child { transform: translateX(-100%); }
+
+/* Ajajoon */
+.ajajoon { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.ajajoon li { display: grid; grid-template-columns: 3.4em 7.6em minmax(0, 1fr); gap: 4px 14px; padding: 10px 0; border-top: 1px solid var(--border); position: relative; }
+.ajajoon .aasta { grid-column: 1; font: 700 16px/1.4 var(--font-display); color: var(--ink); }
+.ajajoon .kp { grid-column: 2; font-size: 14px; color: var(--ink-2); line-height: 1.5; font-variant-numeric: tabular-nums; }
+.ajajoon li > div { grid-column: 3; display: flex; flex-direction: column; gap: 2px; }
+.ajajoon h3 { font-size: 16px; }
+.ajajoon p { font-size: 14.5px; line-height: 1.45; color: var(--ink-2); }
+.ajajoon .kellele { font-size: 13px; color: var(--ink-3); }
+.ajajoon li.moodas h3 { font-weight: 600; color: var(--ink-2); }
+.ajajoon li.jargmine { background: var(--brand-soft); border-radius: 8px; padding-left: 8px; padding-right: 8px; border-top-color: transparent; }
+.ajajoon li.jargmine h3 { color: var(--signal); }
+.olek-moodas { color: var(--ink-2); font-weight: 600; }
+.olek-jargmine { color: var(--signal); font-weight: 700; }
+.olek-tulekul { color: var(--ink-2); font-weight: 600; }
+@media (max-width: 680px) { .ajajoon li { grid-template-columns: 7em minmax(0, 1fr); } .ajajoon .aasta { grid-column: 1 / -1; } .ajajoon .kp { grid-column: 1; } .ajajoon li > div { grid-column: 2; } }
+
+/* Sihi riba tabelis */
+.sihiriba { position: relative; display: block; height: 12px; min-width: 120px; background: var(--grid); border-radius: 0 4px 4px 0; margin: 4px 0 2px; }
+.sihiriba .tulp { position: absolute; left: 0; top: 0; bottom: 0; background: var(--mark-ctx, var(--ink-3)); border-radius: 0 4px 4px 0; }
+.sihiriba.fookus .tulp { background: var(--mark-signal); }
+.sihiriba .joon { top: -4px; bottom: -4px; }
+
+/* Väidete kaardid */
+.vaited { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.vaide { display: grid; grid-template-columns: 10em minmax(0, 1fr) minmax(0, 1fr); gap: 6px 28px; padding: 12px 0; border-top: 1px solid var(--border); }
+.vaide:last-child { border-bottom: 1px solid var(--border); }
+@media (max-width: 1023px) { .vaide { grid-template-columns: minmax(0, 1fr); } }
+.vaide .hinnang { display: flex; flex-direction: column; gap: 2px; }
+.vaide .hinnang .mark-l { font-size: 13px; }
+.vaide .hinnang small { font-size: 12.5px; color: var(--ink-3); }
+.vaide blockquote { margin: 0; font: 400 15.5px/1.45 var(--font-display); color: var(--ink); }
+.vaide .kes { font-size: 13.6px; color: var(--ink-3); margin-top: 4px; }
+.vaide .kes a { color: inherit; }
+.vaide .oige { font-size: 14.5px; line-height: 1.5; }
+.vaide .oige span, .vaide .alg span { font-weight: 700; color: var(--signal); }
+.vaide details { padding-top: 4px; }
+.vaide details > div { font-size: 14.5px; line-height: 1.5; padding-top: 8px; }
+
+/* Lahknevused */
+.lahk { display: flex; flex-direction: column; gap: 12px; border: 1px solid var(--border); border-radius: 8px; padding: 16px; align-self: start; }
+
+/* Avalehe teemad */
+.teemad { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 32px; }
+.teemad li { border-top: 2px solid var(--signal); padding-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.teemad h3 a { text-decoration: none; }
+.teemad h3 a::after { content: " →"; }
+.teemad p { font: 400 16px/1.45 var(--font-display); color: var(--ink-2); }
+.teemad p b { color: var(--signal); }
+@media (max-width: 1023px) { .teemad { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) {
+  .teemad { grid-template-columns: minmax(0, 1fr); }
+  .muutus .rida, .muutus .telg { grid-template-columns: 8.4em minmax(0, 1fr) 5.6em; }
+  .lihtne .rida, .lihtne .telg { grid-template-columns: 8em minmax(0, 1fr) 5.6em; }
+  .lihtne .rida .n { white-space: normal; line-height: 1.15; }
+  .koht-rida { grid-template-columns: 8.6em minmax(0, 1fr) 4em; font-size: 13.5px; }
+}
+
+h3.veerg { font-size: 14px; font-weight: 700; color: var(--ink-2); margin: 0 0 6px; }
+
+.pinu { display: flex; flex-direction: column; gap: 28px; }
+#muutused td:nth-child(-n+2) { white-space: nowrap; }
+.lahk details p { font-size: 14.5px; line-height: 1.5; padding-top: 8px; }

@@ -27,7 +27,8 @@ def sellel_lehel(lingid):
 def leht(A, vaated, vaade, sisu, title):
     avaleht = next(v for v in vaated if v["id"] == "avaleht")
     kodu = avaleht["fail"] if avaleht["olek"] == "valmis" else "saidikaart.html"
-    jalus_lingid = [f'<a href="{v["fail"]}">{e(v["menuu"] or v["id"].capitalize())}</a>'
+    nimed = {"kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}
+    jalus_lingid = [f'<a href="{v["fail"]}">{e(v["menuu"] or nimed.get(v["id"], v["id"]))}</a>'
                     for v in vaated if not v["menuu"] and v["id"] != "avaleht" and v["olek"] == "valmis"]
     kavas = [v for v in vaated if not v["menuu"] and v["olek"] != "valmis" and v["id"] != "avaleht"]
     jalus_lingid += [f'{e("Kuidas lugeda" if v["id"] == "kuidas" else v["id"])} (tulekul)' for v in kavas]

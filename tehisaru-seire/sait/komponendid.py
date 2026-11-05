@@ -9,7 +9,7 @@ import json
 import re
 from pathlib import Path
 
-from andmekiht import EL, JUUR, AndmeViga
+from andmekiht import EL, JUUR, VORRELDAVAD, AndmeViga
 
 RIIGID = {
     "EE": "Eesti", "FI": "Soome", "SE": "Rootsi", "DK": "Taani", "NO": "Norra", "DE": "Saksamaa", "NL": "Holland",
@@ -58,7 +58,8 @@ def margend(m):
 
 
 def uks_klass(vaatlused):
-    klassid = {v["klass"] for v in vaatlused}
+    """Ühel teljel tohib olla ainult üks klass; „alus“ ja „sama“ loetakse üheks (sama küsitlus ja määratlus)."""
+    klassid = {"alus/sama" if v["klass"] in VORRELDAVAD else v["klass"] for v in vaatlused}
     if len(klassid) > 1:
         raise VorreldavusViga(f"Ühel teljel on eri võrreldavusklassid: {sorted(klassid)} "
                               f"({sorted({(v['naitaja'], v['geo'], v['aasta']) for v in vaatlused})})")
@@ -83,7 +84,7 @@ def ribad(vaatlused, lopp, fookus="EE", viide=None, viite_nimi="", samm=10, uhik
     jarjest = sorted(vaatlused, key=lambda v: -v["vaartus"])
     out = ['<div class="ribad" aria-hidden="true">']
     for v in jarjest:
-        liik = "fookus" if v["geo"] == fookus else ""
+        liik = "fookus" if v["geo"] == fookus else ("ref" if v["geo"] == EL else "")
         joon = f'<i class="joon {viite_liik}" style="left:{viide / lopp * 100:.2f}%"></i>' if viide is not None else ""
         pealkiri = f'{riik(v["geo"])} {v["aasta"]}: {pr(v["vaartus"])}{uhik} ({v["allikas"]})'
         out.append(f'<div class="rida {liik}" title="{e(pealkiri)}"><span class="n">{e(riik(v["geo"]))}</span><span class="rada">'
@@ -136,6 +137,110 @@ def leiu_ribad(read, lopp, fookus_silt, samm=10, uhik="%"):
 
 def telg(alg, lopp, samm, uhik):
     return _telg(alg, lopp, samm, uhik)
+
+
+def lihtribad(read, lopp, samm=10, uhik="%", fookus=None, k=0):
+    """Uuringu või raporti numbrid (mitte aegrea vaatlused), tulbad nullist. read: [(silt, väärtus, tekst)]."""
+    out = ['<div class="ribad lihtne" aria-hidden="true">']
+    for i, (silt, v, tekst) in enumerate(read):
+        liik = "fookus" if fookus is not None and (i == fookus or silt == fookus) else ""
+        out.append(f'<div class="rida {liik}"><span class="n">{e(silt)}</span><span class="rada">'
+                   f'<span class="tulp" style="width:{min(v, lopp) / lopp * 100:.2f}%"></span></span>'
+                   f'<span class="v">{e(tekst if tekst is not None else pr(v, k) + uhik)}</span></div>')
+    out.append(_telg(0, lopp, samm, uhik))
+    out.append("</div>")
+    return "".join(out)
+
+
+def muutus(read, alg, lopp, samm, uhik="%", fookus=None):
+    """Muutus nullist mõlemale poole (uuringute leiud). read: [(silt, alamtekst, väärtus või (alg, lõpp), tekst)].
+    Vahemik (näiteks −20…50%) on hele riba, mitte üks number."""
+    pos = lambda x: (x - alg) / (lopp - alg) * 100  # noqa: E731
+    null = pos(0)
+    out = ['<div class="ribad muutus" aria-hidden="true">']
+    for i, (silt, alam, v, tekst) in enumerate(read):
+        liik = "fookus" if fookus is not None and i == fookus else ""
+        if isinstance(v, tuple):
+            a, b = sorted((pos(v[0]), pos(v[1])))
+            riba = f'<span class="tulp vahemik" style="left:{a:.2f}%;width:{b - a:.2f}%"></span>'
+        elif v == 0:
+            riba = f'<span class="nullmark" style="left:{null:.2f}%"></span>'
+        else:
+            a, b = sorted((null, pos(v)))
+            riba = f'<span class="tulp {"neg" if v < 0 else "pos"}" style="left:{a:.2f}%;width:{b - a:.2f}%"></span>'
+        alam_html = f"<small>{e(alam)}</small>" if alam else ""
+        out.append(f'<div class="rida {liik}"><span class="n">{e(silt)}{alam_html}</span><span class="rada">'
+                   f'<i class="null" style="left:{null:.2f}%"></i>{riba}</span><span class="v">{e(tekst)}</span></div>')
+    tick, x = [], alg
+    while x <= lopp + 1e-9:
+        tick.append(f'<span style="left:{pos(x):.2f}%">{"+" if x > 0 else ""}{pr(x, 0)}</span>')
+        x += samm
+    out.append(f'<div class="telg"><span></span><span class="rada">{"".join(tick)}</span><span>{e(uhik)}</span></div></div>')
+    return "".join(out)
+
+
+def aastatulbad(read, lopp, samm, uhik="%", k=1):
+    """Püsttulbad aastate kaupa. read: [(aasta, väärtus, tegelik)]; prognoos on hele ja katkendäärega."""
+    tulbad = []
+    for a, v, tegelik in read:
+        tulbad.append(f'<div class="at {"" if tegelik else "prognoos"}"><span class="v">{pr(v, k)}</span>'
+                      f'<span class="tulp" style="height:{v / lopp * 100:.2f}%"></span><span class="a">{a}</span></div>')
+    return f'<div class="aastatulbad" aria-hidden="true">{"".join(tulbad)}</div>'
+
+
+def osad(osad_, pealdis=""):
+    """Üks 100% riba osadest. osad_: [(nimi, arv, klass, kirjeldus)]. Arvud on tükid, mitte protsendid."""
+    kokku = sum(o[1] for o in osad_)
+    riba = "".join(f'<span class="osa {k}" style="width:{n / kokku * 100:.2f}%"><b>{n}</b></span>' for _, n, k, _ in osad_)
+    selgitus = "".join(f'<li><i class="osa {k}"></i><span><b>{e(nimi)}: {n}</b> {kirj}</span></li>' for nimi, n, k, kirj in osad_)
+    return (f'<div class="osad" aria-hidden="true">{riba}</div><ul class="osad-selgitus">{selgitus}</ul>'
+            + (f'<p class="peidus">{e(pealdis)}</p>' if pealdis else ""))
+
+
+def kohariba(read, n=27):
+    """Eesti koht mitmes näitajas, 1 = parim. read: [(nimi, koht, alamtekst, link)]."""
+    pos = lambda k: (k - 1) / (n - 1) * 100  # noqa: E731
+    out = ['<div class="kohad">']
+    for nimi, koht, alam, link in read:
+        nimi_html = f'<a href="{e(link)}">{e(nimi)}</a>' if link else e(nimi)
+        out.append(f'<div class="koht-rida"><span class="n">{nimi_html}<small>{e(alam)}</small></span>'
+                   f'<span class="rada" aria-hidden="true"><i class="kesk" style="left:{pos((n + 1) / 2):.2f}%"></i>'
+                   f'<span class="punkt" style="left:{pos(koht):.2f}%"></span></span>'
+                   f'<span class="v"><b>{koht}.</b> / {n}</span></div>')
+    margid = "".join(f'<span style="left:{pos(k):.2f}%">{k}.</span>' for k in (1, 7, 14, 20, 27))
+    out.append(f'<div class="koht-rida telg" aria-hidden="true"><span></span><span class="rada">{margid}</span><span></span></div></div>')
+    return "".join(out)
+
+
+def ajajoon(sundmused, tana):
+    """Tähtajad aja järjekorras. sundmused: [(kuupäev ISO, kuupäeva tekst, nimi, html, kellele)]. tana: ISO kuupäev."""
+    out, aasta = ['<ol class="ajajoon">'], None
+    jargmine = next((s[0] for s in sundmused if s[0] >= tana), None)
+    for iso, kp_tekst, nimi, sisu, kellele in sundmused:
+        a = iso[:4]
+        liik = "moodas" if iso < tana else ("jargmine" if iso == jargmine else "tulekul")
+        aasta_html = f'<span class="aasta">{a}</span>' if a != aasta else ""
+        aasta = a
+        olek = {"moodas": "kehtib", "jargmine": "järgmine", "tulekul": "tulekul"}[liik]
+        # Möödunud tähtaeg on üks rida; selgitus on all klõpsu taga. Ees olevatel on selgitus kohe näha.
+        kirjeldus = "" if liik == "moodas" else f"<p>{sisu}</p>"
+        out.append(f'<li class="{liik}">{aasta_html}<span class="kp">{e(kp_tekst)}</span><div><h3>{e(nimi)}</h3>'
+                   f'{kirjeldus}<p class="kellele"><span class="olek-{liik}">{olek}</span> · {e(kellele)}</p></div></li>')
+    out.append("</ol>")
+    moodas = [s for s in sundmused if s[0] < tana]
+    if moodas:
+        read = "".join(f"<tr><td>{e(s[1])}</td><td><b>{e(s[2])}</b><br>{s[3]}</td></tr>" for s in moodas)
+        out.append(f'<details class="lisa"><summary>Mida kehtima hakanud tähtajad tähendavad ({len(moodas)})</summary>'
+                   f'<div class="tbl"><table><thead><tr><th scope="col">Kuupäev</th><th scope="col">Mida tähendab</th></tr></thead>'
+                   f'<tbody>{read}</tbody></table></div></details>')
+    return "".join(out)
+
+
+def sihiriba(praegu, siht, lopp, uhik, k=1, fookus=False):
+    """Kui kaugel sihist: praegune tulp ja sihi joon ühel oma teljel (iga siht oma real, ei liideta).
+    Fookusvärv ainult vaate pealkirjas nimetatud sihil, teised on halli kontekstina."""
+    return (f'<span class="sihiriba{" fookus" if fookus else ""}" aria-hidden="true"><span class="tulp" style="width:{praegu / lopp * 100:.2f}%"></span>'
+            f'<i class="joon siht" style="left:{siht / lopp * 100:.2f}%"></i></span>')
 
 
 def tabel(pais, read, fookus_rida=None, piir=False, pealdis="", numbrid=None):

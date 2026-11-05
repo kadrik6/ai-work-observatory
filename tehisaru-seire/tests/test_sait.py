@@ -13,6 +13,9 @@ sys.path.insert(0, str(JUUR / "sait"))
 import andmekiht  # noqa: E402
 import komponendid  # noqa: E402
 import pealkiri  # noqa: E402
+import abi  # noqa: E402
+import lehed_teemad  # noqa: E402
+import lehed_usaldus  # noqa: E402
 
 # tests/kuld/ehita.py kannab sama moodulinime, seepärast laaditakse generaator failiteelt
 import importlib.util  # noqa: E402
@@ -113,10 +116,18 @@ def test_eurostati_skaalal_on_ainult_el_riigid(A, sait):
         assert riik not in graafik
 
 
-def test_uks_h1_ja_ehitamata_teema_pole_link(sait):
+def test_uks_h1_ja_iga_valmis_vaade_on_ehitatud(sait):
     for f, h in sait.items():
         assert h.count("<h1") == 1, f
-        assert 'href="inimesed.html"' not in h  # Inimesed on veel „kavas“
+    for v in ehita.lae_vaated():
+        if v["olek"] == "valmis":
+            assert v["fail"] in sait, v["id"]
+
+
+def test_ehitamata_teema_pole_link():
+    vaated = [{"id": "x", "fail": "x.html", "olek": "kavas"}, {"id": "y", "fail": "y.html", "olek": "valmis"}]
+    assert "href" not in abi.link(vaated, "x", "X")
+    assert 'href="y.html#a"' in abi.link(vaated, "y", "Y", "a")
 
 
 def test_mitteavalik_sisu_puudub(sait):
@@ -150,3 +161,66 @@ def test_kaardil_on_koik_27_riiki_oige_varviga(A, sait):
         assert re.search(rf'<path class="k{k}( fookus)?" d="[^"]+" data-n="{nimi}" data-v="{komponendid.pr(v["vaartus"])}%"', graafik), g
     assert 'class="k2 fookus"' in graafik and "Eesti 23,4%" in tekst(graafik)
     assert "EL keskmine 20,0%" in tekst(graafik)
+
+
+# ------------------------------------------------------------------ uued vaated (5.11.2026)
+
+def _vaade(vid):
+    return next(v for v in ehita.lae_vaated() if v["id"] == vid)
+
+
+def _muudetud(vid, vana, uus):
+    v = dict(_vaade(vid))
+    assert vana in v["h1"], v["h1"]
+    v["h1"] = v["h1"].replace(vana, uus)
+    return v
+
+
+def test_alus_ja_sama_tohivad_olla_uhel_teljel_osaliselt_mitte():
+    alus = {"klass": "alus", "naitaja": "n", "geo": "EE", "aasta": 2025}
+    komponendid.uks_klass([alus, dict(alus, klass="sama", geo="NO")])
+    with pytest.raises(komponendid.VorreldavusViga):
+        komponendid.uks_klass([alus, dict(alus, klass="osaliselt", geo="DK")])
+
+
+@pytest.mark.parametrize("vid, vana, uus, ehitaja", [
+    ("avalik-sektor", "62% rakendatakse", "60% rakendatakse", lehed_teemad.avalik_sektor),
+    ("kas-tosi", "neli ütleb muud", "kolm ütleb muud", lehed_usaldus.kas_tosi),
+    ("reeglid", "2.12.2027", "2.08.2027", lehed_teemad.reeglid),
+    ("kuidas", "21 allikast", "20 allikast", lehed_usaldus.kuidas),
+])
+def test_pealkiri_mida_mall_ei_kata_kontrollitakse_andmetest(A, vid, vana, uus, ehitaja):
+    with pytest.raises(andmekiht.AndmeViga):
+        ehitaja(A, _muudetud(vid, vana, uus), ehita.lae_vaated())
+
+
+def test_oecd_28_protsenti_on_48_170st(A):
+    gk = next(r for r in A["avalik"].values() if r["id"] == "genai-kesk")
+    assert (int(gk["lugeja"]), int(gk["nimetaja"])) == (48, 170)
+    assert round(48 / 170 * 100) == int(gk["vaartus"]) == 28
+
+
+def test_tahtajad_loetakse_tanasest_paevast(A):
+    v, vaated = _vaade("reeglid"), ehita.lae_vaated()
+    nyyd = tekst(lehed_teemad.reeglid(A, v, vaated, tana="2026-11-05"))
+    assert "viis on kehtima hakanud, kolm on veel ees" in nyyd
+    hiljem = tekst(lehed_teemad.reeglid(A, v, vaated, tana="2028-12-01"))
+    assert "kaheksa on kehtima hakanud, null on veel ees" in hiljem
+
+
+def test_vaited_kuuluvad_valjaandele_mitte_inimesele(sait):
+    h = tekst(sait["kas-see-on-tosi.html"])
+    assert "Hundimägi" not in h
+    assert "ERR, Vikerraadio päevakommentaar" in h
+
+
+def test_avalik_sektor_pohineb_avalikul_raportil(sait):
+    h = sait["avalik-sektor.html"]
+    assert "c2c09a06-en" in h or "strengthening-the-innovative-capacity" in h
+    for k in ("38/109", "Restricted", "webinar"):
+        assert k not in h
+
+
+def test_sihi_tulbad_uks_fookus(sait):
+    h = sait["reeglid-ja-sihid.html"]
+    assert h.count('class="sihiriba fookus"') == 1

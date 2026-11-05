@@ -242,7 +242,7 @@ def _digi_ja_ta(A):
 </div>"""
 
 
-def ettevotted(A, vaade):
+def ettevotted(A, vaade, vaated=None):
     ee = andmed.leia(A, EB, "EE", "uusim")
     ee_el = andmed.leia(A, EB, "EE", "uusim:alus")
     eu = andmed.leia(A, EB, EL, ee_el["aasta"])
@@ -289,7 +289,7 @@ def saidikaart(A, vaade, vaated):
 <div class="pea yks">
   <div class="pea-tekst">
     <h1>{taida(vaade["h1"], A)}</h1>
-    <p class="lead">Saidikaart tuleb sisuloogika hinnangust, mille Kadri kinnitas 4.11.2026. Selles eelvaates on valmis Ettevõtted; ülejäänud vaated ehitatakse pärast ülevaatust samade komponentidega.</p>
+    <p class="lead">Saidikaart tuleb sisuloogika hinnangust, mille Kadri kinnitas 4.11.2026. Valmis on {sum(v["olek"] == "valmis" for v in vaated)} vaadet {len(vaated)}-st; iga rea pealkiri on sama, mis vaate lehel.</p>
     <p class="meta">Iga vaate järjekord: vastus, peamine tõend koos võrdlusega, mida see ei näita, mida see tähendab, siis üksikasjad ja allikad. Pealkirjade numbrid tulevad andmefailidest.</p>
   </div>
 </div>
@@ -298,4 +298,8 @@ def saidikaart(A, vaade, vaated):
 </section>"""
 
 
-EHITAJAD = {"ettevotted": ettevotted}
+import lehed_teemad as _t  # noqa: E402
+import lehed_usaldus as _u  # noqa: E402
+
+EHITAJAD = {"avaleht": _u.avaleht, "inimesed": _t.inimesed, "ettevotted": ettevotted, "too": _t.too,
+            "avalik-sektor": _t.avalik_sektor, "reeglid": _t.reeglid, "kas-tosi": _u.kas_tosi, "kuidas": _u.kuidas}

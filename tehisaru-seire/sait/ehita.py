@@ -92,10 +92,10 @@ def ehita(valjund=VALJUND, A=None):
         if v["id"] == "saidikaart":
             sisu = lehed.saidikaart(A, v, vaated)
         elif v["id"] in lehed.EHITAJAD:
-            sisu = lehed.EHITAJAD[v["id"]](A, v)
+            sisu = lehed.EHITAJAD[v["id"]](A, v, vaated)
         else:
             raise EhitusViga(f"Vaade {v['id']} on „valmis“, aga sellel pole ehitajat (lehed.EHITAJAD)")
-        nimi = (v["menuu"] or "Saidikaart")
+        nimi = v["menuu"] or {"avaleht": "Avaleht", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}[v["id"]]
         kirjutatud[v["fail"]] = kest.leht(A, vaated, v, sisu, f"{nimi} · Tehisaru seire")
     for f, t in kirjutatud.items():
         kontrolli(f, t, olemas)
