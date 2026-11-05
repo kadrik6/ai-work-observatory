@@ -1,0 +1,25 @@
+{
+ "viimane_kontroll": "2026-11-05T17:10:00+02:00",
+ "allikad": [
+  {
+   "nimi": "ERR uudised (RSS)",
+   "ok": true
+  },
+  {
+   "nimi": "ERR News (RSS)",
+   "ok": true
+  },
+  {
+   "nimi": "Uudisteotsing (Eesti)",
+   "ok": true
+  },
+  {
+   "nimi": "Uudisteotsing (maailm)",
+   "ok": true
+  },
+  {
+   "nimi": "Challenger kuuaruanne",
+   "ok": true
+  }
+ ]
+}

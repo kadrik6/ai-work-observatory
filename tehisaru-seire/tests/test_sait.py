@@ -338,3 +338,68 @@ def test_iga_koondamise_kaart_on_seotud_tulbaga(A, sait):
     tulbad = re.findall(r'<div class="kr" data-k="([^"]+)"', h)
     assert sorted(kaardid) == sorted(tulbad) == sorted(r["id"] for r in A["koondamised"]["juhtumid"])
     assert 'class="kk-nav" hidden' in h  # ilma JS-ita on kõik kaardid näha
+
+
+# ---- Uudised, Hanked, Töö publikatsioonid (Kadri 5.11.2026 23:17) ----
+import lehed_uudised  # noqa: E402
+
+
+def test_uudised_eesti_ja_maailm_eraldi(A, sait):
+    h = sait["uudised.html"]
+    ee = h.split('id="eesti-uudised"')[1].split("</section>")[0]
+    mm = h.split('id="maailma-uudised"')[1].split("</section>")[0]
+    n_ee = sum(r["piirkond"] == "EE" for r in A["uudised"])
+    assert ee.count("<li ") == n_ee and mm.count("<li ") == len(A["uudised"]) - n_ee
+    assert f"<b>{n_ee} uudist</b>" in ee
+
+
+def test_iga_uudis_on_liigiga_ja_arvamus_on_margitud(A, sait):
+    h = sait["uudised.html"]
+    assert h.count('class="u-l') >= len(A["uudised"])
+    assert h.count('class="u-l arv">arvamus') == sum(r["liik"] == "arvamus" for r in A["uudised"])
+
+
+def test_tundmatu_uudise_liik_peatab_ehituse(A):
+    B = dict(A, uudised=[dict(A["uudised"][0], liik="kuulujutt")])
+    with pytest.raises(andmekiht.AndmeViga):
+        lehed_uudised.uudised(B, next(v for v in ehita.lae_vaated() if v["id"] == "uudised"))
+
+
+def test_uudised_ja_hanked_vajavad_andmeid(A):
+    vaated = {v["id"]: v for v in ehita.lae_vaated()}
+    with pytest.raises(andmekiht.AndmeViga):
+        lehed_uudised.uudised(dict(A, uudised=None), vaated["uudised"])
+    with pytest.raises(andmekiht.AndmeViga):
+        lehed_uudised.hanked(dict(A, hanked_leht=None), vaated["hanked"])
+    assert lehed_uudised.uuringud_too(dict(A, publikatsioonid=None)) == ""
+
+
+def test_hangete_loend_on_taielik_ja_head_naited_tulevad_andmetest(A, sait):
+    h = sait["hanked.html"]
+    L = A["hanked_leht"]["loend"]
+    tabel = h.split('class="h-tabel"')[1].split("</table>")[0]
+    assert tabel.count("<tr data-hea") == len(L)
+    assert tabel.count('data-hea="1"') == sum(r.get("hea") == 3 for r in L)
+    assert f'<b>{sum(r.get("hea") == 3 for r in L)} head näidet</b> {len(L)}-st' in h
+    assert tabel.count("viitenumber") == sum(1 for r in L if not r.get("url"))
+
+
+def test_hanked_on_katseline_ja_tapsus_tuleb_andmetest(A, sait):
+    h = sait["hanked.html"]
+    hm = A["hanked_leht"]["hindamine"]["hindamine"]
+    t = hm["tulemused"][hm["valitud"]]
+    assert h.count("katseline") >= 3 and "inimene pole neid veel kontrollinud" in h
+    assert f'<b>{komponendid.pr(t["saagis"] * 100, 0)}%</b>' in h.split('id="h-tapsus">')[1].split("</h2>")[0]
+
+
+def test_too_vaates_on_publikatsioonid(A, sait):
+    h = sait["too.html"]
+    P = A["publikatsioonid"]
+    assert 'id="uuritakse"' in h and 'id="publikatsioonid"' in h and 'id="eesti-allikad"' in h
+    a1 = [r for r in P["aastad"] if not r["poolik"]][-1]
+    assert f'{a1["aasta"]}. aastal <b>' in h.split('id="h-uuritakse">')[1].split("</h2>")[0]
+
+
+def test_ulevaade_ja_avalik_sektor_viitavad_uutele_vaadetele(sait):
+    assert 'href="uudised.html"' in sait["index.html"] and 'href="hanked.html"' in sait["index.html"]
+    assert 'href="hanked.html"' in sait["avalik-sektor.html"]

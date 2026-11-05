@@ -183,5 +183,60 @@
       tabel.parentNode.insertAdjacentElement('afterend', riba);
       naita(12);
     });
+    // Uudiste teemafilter
+    document.querySelectorAll('.pn .u-f[aria-label="Vali teema"]').forEach(function (f) {
+      var li = f.parentNode.querySelectorAll('.u-voog li');
+      f.querySelectorAll('button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var t = b.getAttribute('data-f');
+          f.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+          li.forEach(function (l) { l.hidden = !!t && l.getAttribute('data-teema') !== t; });
+        });
+      });
+    });
+    // Hangete otsing ja rühmafilter; otsingu ajal näidatakse kõik sobivad read
+    document.querySelectorAll('.h-otsing').forEach(function (o) {
+      var tabel = o.parentNode.querySelector('table.h-tabel');
+      var read = Array.prototype.slice.call(tabel.tBodies[0].rows);
+      var sisend = o.querySelector('input'), loe = o.querySelector('.h-loe'), ruhm = '';
+      function riba() { var r = tabel.parentNode.nextElementSibling; return r && r.classList.contains('kogus') ? r : null; }
+      function filtreeri() {
+        var q = sisend.value.trim().toLowerCase(), k = riba();
+        if (!q && !ruhm) {
+          if (k) { k.hidden = false; k.querySelector('button').click(); } else { read.forEach(function (r) { r.hidden = false; }); }
+          loe.textContent = '';
+          return;
+        }
+        if (k) k.hidden = true;
+        var n = 0;
+        read.forEach(function (r) {
+          var ok = (!q || r.getAttribute('data-otsi').indexOf(q) >= 0) &&
+            (!ruhm || (ruhm === 'hea' ? r.getAttribute('data-hea') === '1' : r.getAttribute('data-ruhm') === ruhm));
+          r.hidden = !ok; if (ok) n++;
+        });
+        loe.textContent = n + ' hanget';
+      }
+      sisend.addEventListener('input', filtreeri);
+      o.querySelectorAll('button[data-r]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          ruhm = b.getAttribute('data-r');
+          o.querySelectorAll('button[data-r]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+          filtreeri();
+        });
+      });
+    });
+    // Publikatsioonide sakid
+    document.querySelectorAll('.p-tabs').forEach(function (t) {
+      var nupud = t.querySelectorAll('[role="tab"]');
+      nupud.forEach(function (b) {
+        b.addEventListener('click', function () {
+          nupud.forEach(function (x) {
+            var on = x === b;
+            x.setAttribute('aria-selected', on ? 'true' : 'false');
+            document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+          });
+        });
+      });
+    });
   });
 })();

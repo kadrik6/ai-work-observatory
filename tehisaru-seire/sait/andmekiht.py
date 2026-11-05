@@ -122,6 +122,13 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
         A["uuringud"] = {u["id"]: u for u in A["tooelu"].get("uuringud", [])}
     koond_p = juur.parent / "tooelu-seire" / "koondamised_ee.json"
     A["koondamised"] = loe_json(koond_p) if koond_p.exists() else {}
+    # Kadri loal projekti kaustast toodud avalik hetkeseis (sait/vota_kaasa.py); puuduv fail = vaade pole valmis
+    uu = sisu / "uudised.jsonl"
+    A["uudised"] = ([json.loads(r) for r in uu.read_text(encoding="utf-8").splitlines() if r.strip()]
+                    if uu.exists() else None)
+    for voti, nimi in [("uudiste_vaited", "uudiste-vaited.json"), ("uudiste_olek", "uudiste-olek.json"),
+                       ("hanked_leht", "hanked-leht.json"), ("publikatsioonid", "publikatsioonid.json")]:
+        A[voti] = loe_json(sisu / nimi) if (sisu / nimi).exists() else None
     for r in A["avalik"].values():
         if not r["vaartus"] or not r["koht"]:
             raise AndmeViga(f"sisu/avalik-sektor.csv rida {r['id']}: väärtus või koht raportis puudub")

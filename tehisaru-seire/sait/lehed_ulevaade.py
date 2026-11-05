@@ -238,7 +238,7 @@ def avaleht(A, vaade, vaated):
   <div class="pn-h"><h2 id="h-muutus">Mis muutus: viimati <b>{kp(viimane)}</b></h2></div>
   <p class="ps">{ARVSONAD[VOO_RIDU].capitalize()} viimast muutust allikates ja väidetes; {VOO_PAEVI} päeva jooksul enne {kp(viimane)} lisandus {uued}.</p>
   <ul class="voog">{read}</ul>
-  <p class="allikas">Kogu loend: {menuu("kas-tosi", "Kas see on tõsi? › Mis muutus")}.</p>
+  <p class="allikas">Kogu loend: {menuu("kas-tosi", "Kas see on tõsi? › Mis muutus")}. Tehisaru ja töö uudised Eestist ja maailmast: {menuu("uudised", "Uudised")}.</p>
 </section>"""
 
     sihid = [(A["sihid"]["ee-ettevotted-75"], eeb, True)]
@@ -264,7 +264,7 @@ def avaleht(A, vaade, vaated):
   <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehangete osa on <b>alla 1%</b> kõigist hangetest</h2><span class="chip exp">katseline</span></div>
   <p class="ps">% kõigist riigihangetest aastas; {h_uus["aasta"]} = {h_uus["periood"]}</p>
   {aastatulbad([(r["aasta"], r["osa"], True) for r in H], 1, 0.25, k=2)}
-  <p class="allikas">Allikas: {a(HANKED_URL, "riigihangete register")} ja TED. Katseline klassifikaator: täpsus 71%, saagis 69% Claude'i märgendatud valimil, inimene pole kontrollinud.</p>
+  <p class="allikas">Allikas: {a(HANKED_URL, "riigihangete register")} ja TED. Katseline klassifikaator: täpsus 71%, saagis 69% Claude'i märgendatud valimil, inimene pole kontrollinud. Kõik hanked ja head näited: {menuu("hanked", "Hanked")}.</p>
 </section>"""
     if max(r["osa"] for r in H) >= 1:
         raise AndmeViga("Hangete pealkiri ütleb „alla 1%“, aga osa on 1% või rohkem")
@@ -397,7 +397,7 @@ def mida_riik_ostab(A):
 <div class="g12">
 <section class="pn sp12" id="hanked" aria-labelledby="h-hanked">
   <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehankeid oli {a1["aasta"]}. aastal <b>{a1["ai_ja_andmed"]}</b>, {a0["aasta"]}. aastaga võrreldes {pr(kord, 1)} korda rohkem, aga see on alla 1% kõigist hangetest</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">Riigihangete registri hanked, mille klassifikaator märkis tehisaru või andmetööks. {uus["aasta"]} = {uus["periood"]}. Tehisaru uuringute ja mõjuanalüüside hankeid eraldi veel ei loeta; see rühm on töös.</p>
+  <p class="ps">Riigihangete registri hanked, mille klassifikaator märkis tehisaru või andmetööks. {uus["aasta"]} = {uus["periood"]}. Tehisaru uuringute ja mõjuanalüüside hankeid eraldi veel ei loeta; see rühm on töös. Kuidas hangitakse ja head näited: <a href="hanked.html">Hanked</a>.</p>
   <div class="g3">
     <div><p class="gt">Tehisaru- ja andmehanked, arv</p>{aastatulbad([(r["aasta"], r["ai_ja_andmed"], r["periood"] == "aasta") for r in H], 70, 20, uhik="", k=0)}</div>
     <div><p class="gt">Neist pealkirjas tehisaru märksõna, arv</p>{aastatulbad(mark, 30, 10, uhik="", k=0)}</div>

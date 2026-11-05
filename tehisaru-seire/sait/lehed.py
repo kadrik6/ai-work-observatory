@@ -301,6 +301,8 @@ def saidikaart(A, vaade, vaated):
 import lehed_teemad as _t  # noqa: E402
 import lehed_usaldus as _u  # noqa: E402
 import lehed_ulevaade as _o  # noqa: E402
+import lehed_uudised as _n  # noqa: E402
 
 EHITAJAD = {"avaleht": _o.avaleht, "inimesed": _t.inimesed, "ettevotted": ettevotted, "too": _t.too,
-            "avalik-sektor": _t.avalik_sektor, "reeglid": _t.reeglid, "kas-tosi": _u.kas_tosi, "kuidas": _u.kuidas}
+            "avalik-sektor": _t.avalik_sektor, "reeglid": _t.reeglid, "kas-tosi": _u.kas_tosi, "kuidas": _u.kuidas,
+            "hanked": _n.hanked, "uudised": _n.uudised}
