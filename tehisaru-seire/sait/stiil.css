@@ -661,3 +661,23 @@ h3.veerg { font-size: 12px; }
 @media (max-width: 1180px) { #tootus-kuud, #koondamised-visuaal { grid-column: span 6; } #koondamised { grid-column: span 12; } }
 @media (max-width: 760px) { #tootus-kuud, #koondamised-visuaal, #koondamised { grid-column: span 12; } }
 @media (max-width: 760px) { .sp5 .kk-v { grid-template-columns: minmax(0, 1fr); } }
+/* Koondamised: üks kaart korraga + mininavigatsioon; valitud tulp esile (Kadri 5.11 23:12) */
+.kk-v.yks { grid-template-columns: minmax(0, 1fr) !important; }
+.kk-v.yks .kk { padding: 10px 12px; gap: 4px; }
+.kk-v.yks .kk p { -webkit-line-clamp: unset; display: block; font-size: 12px; }
+.kk-v.yks .kk-n { font-size: 18px; }
+.kk[hidden] { display: none; }
+.kk-nav { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--ink-3); }
+.kk-nav[hidden] { display: none; }
+.kk-nav button { font: inherit; cursor: pointer; background: none; color: var(--ink-2); border: 1px solid var(--border); border-radius: 4px; }
+.kk-e, .kk-j { width: 26px; height: 22px; font-size: 14px !important; line-height: 1; }
+.kk-tapid { display: inline-flex; gap: 5px; }
+.kk-tapp { width: 8px; height: 8px; padding: 0; border-radius: 50% !important; background: var(--context) !important; border: 0 !important; }
+.kk-tapp[aria-current="true"] { background: var(--mark-signal) !important; }
+.kk-loe { margin-left: auto; font-variant-numeric: tabular-nums; }
+.kr[role="button"] { cursor: pointer; border-radius: 3px; }
+.kr[role="button"]:hover .kr-n { color: var(--ink); }
+.kr.on { background: var(--surface-3); box-shadow: 0 0 0 3px var(--surface-3); }
+.kr.on .kr-n { color: var(--ink); font-weight: 700; }
+.kr:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+@media (pointer: coarse) { .kk-tapp { width: 12px; height: 12px; } .kk-e, .kk-j { width: 40px; height: 36px; } }

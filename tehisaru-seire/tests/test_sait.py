@@ -330,3 +330,11 @@ def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
     kokku = sum(arv(r) for r in j if arv(r))
     h2 = sait["too.html"].split('id="h-koondamised-v">')[1].split("</h2>")[0]
     assert f"<b>{pohjus} töökoha</b>" in h2 and f"{kokku}-st" in h2
+
+
+def test_iga_koondamise_kaart_on_seotud_tulbaga(A, sait):
+    h = sait["too.html"]
+    kaardid = re.findall(r'<li class="kk" data-k="([^"]+)"', h)
+    tulbad = re.findall(r'<div class="kr" data-k="([^"]+)"', h)
+    assert sorted(kaardid) == sorted(tulbad) == sorted(r["id"] for r in A["koondamised"]["juhtumid"])
+    assert 'class="kk-nav" hidden' in h  # ilma JS-ita on kõik kaardid näha

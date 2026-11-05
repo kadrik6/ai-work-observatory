@@ -338,7 +338,7 @@ def too_eesti(A):
     for r in juhtumid:
         arv = str(r["arv_eestis"]) if r.get("arv_eestis") is not None else (f'kuni {r["arv_ulem"]}' if r.get("arv_ulem") else "arv pole teada")
         klass = " s" if r["roll"] in ("otsene", "osaline") else ""
-        kaardid.append(f'<li class="kk"><div class="kk-r"><b>{e(r["ettevote"])}</b><span class="kk-n{'' if r.get('arv_eestis') is not None or r.get('arv_ulem') else ' t'}">{e(arv)}</span></div>'
+        kaardid.append(f'<li class="kk" data-k="{e(r["id"])}"><div class="kk-r"><b>{e(r["ettevote"])}</b><span class="kk-n{'' if r.get('arv_eestis') is not None or r.get('arv_ulem') else ' t'}">{e(arv)}</span></div>'
                        f'<div class="kk-r"><span class="roll{klass}">tehisaru: {e(ROLL_NIMI[r["roll"]])}</span><span class="kk-d">{kp(r["kuupaev"])} · {e(r["sektor"])}</span></div>'
                        f'<p title="{e(r["pohjus"])}">{e(r["pohjus"])}</p><a href="{e(r["url"])}">{e(r["allikas"])}</a></li>')
     arvsona = SEESTYTLEV.get(len(juhtumid), f"{len(juhtumid)}-st")
@@ -347,7 +347,8 @@ def too_eesti(A):
 <section class="pn sp5" id="koondamised" aria-labelledby="h-koondamised">
   <div class="pn-h"><h2 id="h-koondamised">{arvsona.capitalize()} Eesti koondamisest: tehisaru otsese põhjusena <b>{otse}</b>, ühe põhjusena {ARVSONAD.get(mainib, str(mainib))}</h2></div>
   <p class="ps">Koondamised, mille kohta uudis küsis, kas tehisaru oli põhjus. Roll on see, mida ettevõte ise ütles. See ei ole täielik nimekiri; kontrollitud {kp(K["kontrollitud"])}.</p>
-  <ul class="kk-v">{"".join(kaardid)}</ul>
+  <ul class="kk-v" aria-live="polite">{"".join(kaardid)}</ul>
+  <div class="kk-nav" hidden><button type="button" class="kk-e" aria-label="Eelmine ettevõte">‹</button><span class="kk-tapid"></span><button type="button" class="kk-j" aria-label="Järgmine ettevõte">›</button><span class="kk-loe"></span></div>
   <p class="ps">Number on Eesti töökohad, kui see teatati. Ettevõtte enda selgitus ei tõenda põhjust.</p>
 </section>"""
     # Keskel: töökohad ettevõtte kaupa, värv näitab, mida ettevõte tehisaru kohta ütles (Kadri 5.11 23:06)
@@ -363,17 +364,17 @@ def too_eesti(A):
     pohjus = sum(_arv(r) for r in teada if RYHM[r["roll"]][0] == "s")
     ulem = any(r.get("arv_eestis") is None for r in teada)
     ribad = "".join(
-        f'<div class="kr"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
+        f'<div class="kr" data-k="{e(r["id"])}" role="listitem"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
         f'<span class="kr-rada"><i class="kr-t {RYHM[r["roll"]][0]}{" ulem" if r.get("arv_eestis") is None else ""}" style="width:{_arv(r) / suurim * 100:.1f}%"></i></span>'
         f'<span class="kr-a">{"kuni " if r.get("arv_eestis") is None else ""}{_arv(r)}</span></div>' for r in teada)
-    ribad += "".join(f'<div class="kr"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
+    ribad += "".join(f'<div class="kr" data-k="{e(r["id"])}" role="listitem"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
                      f'<span class="kr-rada"><span class="kr-pole">arv pole teada</span></span><span class="kr-a"></span></div>' for r in pole)
     legend = "".join(f'<span><i class="kr-t {k}"></i>{e(t)}</span>' for k, t in [("s", "nimetas tehisaru põhjusena"), ("m", "mainis tehisaru muul moel"), ("t", "tehisaru ei mainitud")])
     sec_v = f"""
 <section class="pn sp4" id="koondamised-visuaal" aria-labelledby="h-koondamised-v">
   <div class="pn-h"><h2 id="h-koondamised-v">Tehisaru nimetati põhjusena <b>{pohjus} töökoha</b> juures {"kuni " if ulem else ""}{kokku}-st</h2></div>
-  <p class="ps">Teatatud töökohad Eestis ettevõtte kaupa. Värv näitab, mida ettevõte ise tehisaru kohta ütles.</p>
-  <div class="kr-ribad" role="img" aria-label="Koondatavad töökohad ettevõtte kaupa">{ribad}</div>
+  <p class="ps">Teatatud töökohad Eestis ettevõtte kaupa. Värv näitab, mida ettevõte ise tehisaru kohta ütles. Vali ettevõte, et näha selle kaarti.</p>
+  <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa; vali ettevõte, et näha selle kaarti">{ribad}</div>
   <p class="kr-leg">{legend}</p>
   <p class="allikas">Allikas: uudised, lingid kaartidel. Katkendäärega tulp on teatatud ülempiir.</p>
 </section>"""

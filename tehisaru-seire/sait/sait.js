@@ -81,6 +81,53 @@
       });
       svg.addEventListener('pointerleave', peida);
     });
+    // Koondamised: üks kaart korraga, all mininavigatsioon; tulbal klõps valib sama ettevõtte (Kadri 5.11 23:12).
+    var kk = document.querySelector('#koondamised .kk-v');
+    if (kk) {
+      var kaardid = [].slice.call(kk.querySelectorAll('.kk[data-k]'));
+      var nav = document.querySelector('#koondamised .kk-nav');
+      var tapid = nav.querySelector('.kk-tapid');
+      var loe = nav.querySelector('.kk-loe');
+      var ribad = [].slice.call(document.querySelectorAll('#koondamised-visuaal .kr[data-k]'));
+      // sama järjekord kui tulpadel, nii et nooled liiguvad tulbalt tulbale
+      var jrk = ribad.map(function (r) { return r.getAttribute('data-k'); });
+      kaardid.sort(function (a, b) { return jrk.indexOf(a.getAttribute('data-k')) - jrk.indexOf(b.getAttribute('data-k')); });
+      var i = 0;
+      kaardid.forEach(function (k, j) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'kk-tapp';
+        b.setAttribute('aria-label', k.querySelector('b').textContent);
+        b.addEventListener('click', function () { nayta(j); });
+        tapid.appendChild(b);
+      });
+      function nayta(j) {
+        i = (j + kaardid.length) % kaardid.length;
+        var kood = kaardid[i].getAttribute('data-k');
+        kaardid.forEach(function (k, n) { k.hidden = n !== i; });
+        [].forEach.call(tapid.children, function (b, n) { b.setAttribute('aria-current', n === i ? 'true' : 'false'); });
+        ribad.forEach(function (r) {
+          var on = r.getAttribute('data-k') === kood;
+          r.classList.toggle('on', on);
+          r.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        loe.textContent = (i + 1) + ' / ' + kaardid.length;
+      }
+      kk.classList.add('yks');
+      nav.hidden = false;
+      nav.querySelector('.kk-e').addEventListener('click', function () { nayta(i - 1); });
+      nav.querySelector('.kk-j').addEventListener('click', function () { nayta(i + 1); });
+      ribad.forEach(function (r) {
+        r.tabIndex = 0;
+        r.setAttribute('role', 'button');
+        function vali() {
+          var j = kaardid.findIndex(function (k) { return k.getAttribute('data-k') === r.getAttribute('data-k'); });
+          if (j >= 0) nayta(j);
+        }
+        r.addEventListener('click', vali);
+        r.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); vali(); } });
+      });
+      nayta(0);
+    }
     // Kaart ja järjestus: üks riik esile mõlemas (data-n on sama nimi).
     document.querySelectorAll('.el-rida').forEach(function (rida) {
       var read = rida.querySelectorAll('.jrj-r[data-n]');
