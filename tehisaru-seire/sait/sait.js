@@ -15,7 +15,10 @@
   function uuendaNupp(nupp) {
     var on = tume();
     nupp.setAttribute('aria-pressed', on ? 'true' : 'false');
-    nupp.textContent = on ? 'Hele teema' : 'Tume teema';
+    var silt = on ? 'Hele teema' : 'Tume teema';
+    nupp.setAttribute('aria-label', silt);
+    nupp.setAttribute('title', silt);
+    nupp.classList.toggle('on', on);
   }
   document.addEventListener('DOMContentLoaded', function () {
     var nupp = document.querySelector('.teema');

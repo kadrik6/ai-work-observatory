@@ -63,7 +63,11 @@ h3 { font-size: 18px; font-weight: 700; line-height: 1.3; }
 .top-1 { display: flex; align-items: center; gap: 8px 24px; padding-top: 10px; }
 .mark { font: 700 19px/1.2 var(--font-display); color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
 .seis { font-size: 14px; color: var(--ink-2); margin-left: auto; }
-.teema { font: 600 14px/1 var(--font-sans); height: 30px; padding: 0 12px; border-radius: 100px; border: 1px solid var(--control); background: var(--surface); color: var(--ink); cursor: pointer; }
+.teema { display: inline-grid; place-items: center; width: 32px; height: 32px; padding: 0; border-radius: 100px; border: 1px solid transparent; background: none; color: var(--ink-2); cursor: pointer; }
+.teema:hover { color: var(--ink); border-color: var(--border); }
+.teema svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.teema .paike, .teema.on .kuu { display: none; }
+.teema.on .paike { display: block; }
 .menu { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin: 6px 0 0; padding: 0; list-style: none; }
 .menu::-webkit-scrollbar { display: none; }
 .menu a, .menu span { display: inline-flex; align-items: center; height: 36px; padding: 0 12px; font-size: 15px; white-space: nowrap; color: var(--ink-2); text-decoration: none; border-bottom: 3px solid transparent; }
@@ -221,7 +225,7 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
   .rida, .telg { grid-template-columns: 5.6em minmax(0, 1fr) 3em; font-size: 13px; }
   .hantlid .rida, .hantlid .telg { grid-template-columns: 5.6em minmax(0, 1fr) 6.2em; }
   .seis { display: none; }
-  .teema { height: 44px; }
+  .teema { width: 44px; height: 44px; }
   .menu a, .menu span { height: 44px; }
   .kogus button { height: 36px; }
 }
