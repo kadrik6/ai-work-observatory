@@ -4,28 +4,30 @@
   var juur = document.documentElement;
   function loe() { try { return localStorage.getItem(VOTI); } catch (e) { return null; } }
   function kirjuta(v) { try { localStorage.setItem(VOTI, v); } catch (e) { /* privaatne aken */ } }
-  function tume() {
+  // Kolm teemat: Hele → Pehme → Tume → Hele (Kadri 5.11.2026). Ilma valikuta järgib süsteemi heledat või tumedat.
+  var JARG = ['light', 'soft', 'dark'];
+  var NIMI = { light: 'Hele', soft: 'Pehme', dark: 'Tume' };
+  function praegune() {
     var t = juur.getAttribute('data-theme');
-    if (t) return t === 'dark';
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (JARG.indexOf(t) >= 0) return t;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
   var salvestatud = loe();
-  if (salvestatud === 'dark' || salvestatud === 'light') juur.setAttribute('data-theme', salvestatud);
+  if (JARG.indexOf(salvestatud) >= 0) juur.setAttribute('data-theme', salvestatud);
 
   function uuendaNupp(nupp) {
-    var on = tume();
-    nupp.setAttribute('aria-pressed', on ? 'true' : 'false');
-    var silt = on ? 'Hele teema' : 'Tume teema';
+    var t = praegune(), j = JARG[(JARG.indexOf(t) + 1) % 3];
+    var silt = 'Teema: ' + NIMI[t] + '. Vaheta: ' + NIMI[j];
     nupp.setAttribute('aria-label', silt);
     nupp.setAttribute('title', silt);
-    nupp.classList.toggle('on', on);
+    nupp.setAttribute('data-t', t);
   }
   document.addEventListener('DOMContentLoaded', function () {
     var nupp = document.querySelector('.teema');
     if (nupp) {
       uuendaNupp(nupp);
       nupp.addEventListener('click', function () {
-        var uus = tume() ? 'light' : 'dark';
+        var uus = JARG[(JARG.indexOf(praegune()) + 1) % 3];
         juur.setAttribute('data-theme', uus);
         kirjuta(uus);
         uuendaNupp(nupp);

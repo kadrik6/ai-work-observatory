@@ -14,30 +14,41 @@
   --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
   --font-sans: Inter, "Segoe UI", system-ui, sans-serif;
   --gap-block: 24px; --gap-section: 48px; --pad: 20px; --radius: 10px;
-  --wrap: 1240px;
+  --wrap: 1240px; --panel: #ffffff; --page: #ffffff;
   color-scheme: light;
 }
+/* Kolm teemat (Kadri 5.11.2026 21:51): Hele = valge, Pehme = hele udusinine, Tume = grafiit. Andmevärv kõigis sinine. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --surface: #151926; --surface-2: #262b3b; --surface-3: #34394c; --brand-soft: #0a1f6e;
-    --ink: #ffffff; --ink-2: #f0f0f2; --ink-3: #9293a4;
-    --signal: #8fa2ff; --signal-strong: #c7d1ff; --on-signal: #151926;
-    --context: #4b4e62; --context-strong: #d2d3d8;
-    --border: #34394c; --grid: #262b3b; --control: #d2d3d8;
-    --accent: #e77400; --accent-text: #ffcc99;
-    --mark-ctx: #6f7284; --mark-signal: #7088f5; --target: #d86c00;
-    color-scheme: dark;
+  :root:not([data-theme]) {
+  --surface: #2b2b2f; --surface-2: #333338; --surface-3: #3d3d44; --brand-soft: #1f2a5c;
+  --ink: #f0f0f2; --ink-2: #cfcfd6; --ink-3: #abacb5;
+  --signal: #9db0ff; --signal-strong: #c7d1ff; --on-signal: #1d1d21;
+  --context: #5a5a63; --context-strong: #cfcfd6;
+  --border: #4a4a52; --grid: #3d3d44; --control: #cfcfd6;
+  --accent: #e77400; --accent-text: #ffd29e;
+  --mark-ctx: #8c8c96; --mark-signal: #8fa2ff; --target: #f5a04a;
+  --panel: #333338; --page: #2b2b2f;
+  color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --surface: #151926; --surface-2: #262b3b; --surface-3: #34394c; --brand-soft: #0a1f6e;
-  --ink: #ffffff; --ink-2: #f0f0f2; --ink-3: #9293a4;
-  --signal: #8fa2ff; --signal-strong: #c7d1ff; --on-signal: #151926;
-  --context: #4b4e62; --context-strong: #d2d3d8;
-  --border: #34394c; --grid: #262b3b; --control: #d2d3d8;
-  --accent: #e77400; --accent-text: #ffcc99;
-  --mark-ctx: #6f7284; --mark-signal: #7088f5; --target: #d86c00;
+  --surface: #2b2b2f; --surface-2: #333338; --surface-3: #3d3d44; --brand-soft: #1f2a5c;
+  --ink: #f0f0f2; --ink-2: #cfcfd6; --ink-3: #abacb5;
+  --signal: #9db0ff; --signal-strong: #c7d1ff; --on-signal: #1d1d21;
+  --context: #5a5a63; --context-strong: #cfcfd6;
+  --border: #4a4a52; --grid: #3d3d44; --control: #cfcfd6;
+  --accent: #e77400; --accent-text: #ffd29e;
+  --mark-ctx: #8c8c96; --mark-signal: #8fa2ff; --target: #f5a04a;
+  --panel: #333338; --page: #2b2b2f;
   color-scheme: dark;
+}
+:root[data-theme="soft"] {
+  --surface: #f6f8fc; --surface-2: #f0f3f9; --surface-3: #e3e7f0; --brand-soft: #dfe5fb;
+  --ink: #151926; --ink-2: #3d4460; --ink-3: #545b74;
+  --context: #b2b8c9; --context-strong: #34394c;
+  --border: #d3d9e7; --grid: #e3e7f0; --control: #7b8299;
+  --mark-ctx: #7b8299; --panel: #f6f8fc; --page: #ebeff7;
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -66,8 +77,8 @@ h3 { font-size: 18px; font-weight: 700; line-height: 1.3; }
 .teema { display: inline-grid; place-items: center; width: 32px; height: 32px; padding: 0; border-radius: 100px; border: 1px solid transparent; background: none; color: var(--ink-2); cursor: pointer; }
 .teema:hover { color: var(--ink); border-color: var(--border); }
 .teema svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.teema .paike, .teema.on .kuu { display: none; }
-.teema.on .paike { display: block; }
+.teema svg { display: none; }
+.teema[data-t="light"] .paike, .teema:not([data-t]) .paike, .teema[data-t="soft"] .pool, .teema[data-t="dark"] .kuu { display: block; }
 .menu { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin: 6px 0 0; padding: 0; list-style: none; }
 .menu::-webkit-scrollbar { display: none; }
 .menu a, .menu span { display: inline-flex; align-items: center; height: 36px; padding: 0 12px; font-size: 15px; white-space: nowrap; color: var(--ink-2); text-decoration: none; border-bottom: 3px solid transparent; }
@@ -234,9 +245,10 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
 /* ELi kaart: üks toon, hele → tume (väike number → suur number). Tume teema algab pinna lähedalt. */
 :root { --k0: #a3b3f3; --k1: #7e96f0; --k2: #5879eb; --k3: #3159e5; --k4: #0030de; --k-bg: #e9e9ed; --k-na: #ffffff; --osa-b: #7189ec; --osa-c: #dde3fb; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --k0: #3a50c4; --k1: #5a70d3; --k2: #7c8fe2; --k3: #9faeef; --k4: #c3cdfc; --k-bg: #262b3b; --k-na: #151926; --osa-b: #5570ea; --osa-c: #27347a; }
+  :root:not([data-theme]) { --k0: #46549a; --k1: #5c6dc0; --k2: #7688de; --k3: #98a8f2; --k4: #c0cbff; --k-bg: #404048; --k-na: #2b2b2f; --osa-b: #6b7fe0; --osa-c: #3a4680; }
 }
-:root[data-theme="dark"] { --k0: #3a50c4; --k1: #5a70d3; --k2: #7c8fe2; --k3: #9faeef; --k4: #c3cdfc; --k-bg: #262b3b; --k-na: #151926; --osa-b: #5570ea; --osa-c: #27347a; }
+:root[data-theme="dark"] { --k0: #46549a; --k1: #5c6dc0; --k2: #7688de; --k3: #98a8f2; --k4: #c0cbff; --k-bg: #404048; --k-na: #2b2b2f; --osa-b: #6b7fe0; --osa-c: #3a4680; }
+:root[data-theme="soft"] { --k-bg: #dbe0ec; --k-na: #f6f8fc; --osa-c: #d6defa; }
 .kaart-ala { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 24px; align-items: end; }
 @media (max-width: 680px) { .kaart-ala { grid-template-columns: minmax(0, 1fr); } }
 .kaart { position: relative; }
@@ -406,3 +418,75 @@ h3.tabeli-pealkiri { font-size: 16px; margin: 32px 0 8px; }
 .pinu { display: flex; flex-direction: column; gap: 28px; }
 #muutused td:nth-child(-n+2) { white-space: nowrap; }
 .lahk details p { font-size: 14.5px; line-height: 1.5; padding-top: 8px; }
+
+/* ---- Töölaud (Kadri 5.11.2026): analüütiline, tihe, väiksem kiri (13 px), jaotised paneelidena.
+   See plokk asendab selle saidi puhul varasemad suured vahed ja pealkirjade ruumi reeglid. ---- */
+:root { --wrap: 1640px; --gap-block: 10px; --gap-section: 12px; --pad: 12px; --radius: 6px; }
+html { scroll-padding-top: 96px; }
+body { font-size: 13px; line-height: 1.45; background: var(--page); }
+.top { background: var(--page); }
+body::before { background: var(--page); }
+.top-1 { padding-top: 6px; gap: 6px 16px; }
+.mark { font-size: 15px; }
+.seis { font-size: 11.5px; }
+.menu { margin-top: 2px; }
+.menu a, .menu span { height: 32px; padding: 0 10px; font-size: 12.5px; border-bottom-width: 2px; }
+h1 { font-size: 20px; max-width: 70ch; font-weight: 500; line-height: 1.25; }
+h2 { font-size: 14px; font-weight: 600; font-family: var(--font-sans); max-width: 90ch; line-height: 1.35; }
+h3 { font-size: 13px; }
+.pea { padding-top: 14px; gap: 10px 24px; }
+.pea-tekst { gap: 8px; }
+.lead { font-size: 13.5px; max-width: 90ch; }
+.meta, .alam, .gs { font-size: 12px; }
+.sellel { font-size: 12px; gap: 4px 6px; }
+.sellel a { display: inline-block; padding: 2px 9px; border: 1px solid var(--border); border-radius: 100px; background: var(--panel); text-decoration: none; color: var(--ink-2); }
+.sellel a:hover { color: var(--signal); border-color: var(--signal); }
+.vastus { padding: 10px 12px; gap: 8px; border-radius: var(--radius); }
+.vastus .big { font-size: 22px; }
+.vastus .big small { font-size: 12px; }
+.vastus p, .vastus .src { font-size: 12px; }
+main { padding-bottom: 32px; }
+.pea + .jaotis { padding-top: 12px; }
+.jaotis, .paar > .jaotis { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px 12px; margin-top: var(--gap-section); gap: 10px; }
+.jaotis + .jaotis, .jaotis + .paar, .paar + .jaotis { border-top: 1px solid var(--border); margin-top: var(--gap-section); }
+.paar .jaotis + .jaotis { border-top: 1px solid var(--border); margin-top: var(--gap-section); }
+.jaotis > header { gap: 4px; }
+.kaks, .kaks.vordne, .kolm { gap: 12px 20px; }
+figure { gap: 6px; }
+.gt { font-size: 13px; }
+.allikas { font-size: 11px; }
+.rida, .telg { font-size: 12px; }
+.faktid { font-size: 12.5px; gap: 6px; }
+.mark-l { font-size: 11px; }
+table { font-size: 12.5px; }
+th, td { padding: 4px 8px; }
+thead th { font-size: 11px; }
+td small { font-size: 11px; }
+summary { font-size: 12.5px; }
+details > div, .vaikne, details ul { font-size: 12.5px; }
+.loend { font-size: 12.5px; }
+.vahe div { padding: 8px 10px; border-radius: var(--radius); }
+.vahe .big { font-size: 20px; }
+.vahe p { font-size: 12px; }
+.teemad p { font-size: 13px; }
+.vaide { padding: 8px 0; gap: 4px 20px; }
+.vaide blockquote { font-size: 13px; }
+.vaide .oige, .vaide details > div { font-size: 12.5px; }
+.vaide .kes { font-size: 11.5px; }
+.ajajoon li { padding: 6px 0; }
+.ajajoon h3 { font-size: 13px; }
+.ajajoon p { font-size: 12.5px; }
+.ajajoon .kp { font-size: 12px; }
+.ajajoon .aasta { font-size: 13px; }
+.koht-rida { font-size: 12.5px; }
+.osad-selgitus { font-size: 12.5px; }
+.kaart-legend { font-size: 11px; }
+.kaart-silt { font-size: 12px; }
+.jalus { font-size: 12px; padding: 12px 0 24px; }
+.ruut3 { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 14px 24px; }
+@media (max-width: 680px) { body { font-size: 13px; } .jaotis { padding: 10px; } }
+.vastab { font-size: 13px; padding-left: 10px; }
+h3.tabeli-pealkiri { font-size: 13px; margin: 12px 0 4px; }
+h3.veerg { font-size: 12px; }
+.pinu { gap: 14px; }
+.ajajoon li > div { gap: 1px; }
