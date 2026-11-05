@@ -522,7 +522,7 @@ h3.veerg { font-size: 12px; }
 .pn .aastatulbad .v { font-size: 11px; }
 .pn .aastatulbad .a { font-size: 11px; bottom: -18px; }
 .pn .aastatulbad + * { margin-top: 20px; }
-.drift { font-size: 12px; color: var(--accent-text); background: color-mix(in srgb, var(--accent) 10%, var(--panel)); border-radius: 4px; padding: 6px 8px; }
+.drift { font-size: 11px; color: var(--accent-text); background: color-mix(in srgb, var(--accent) 10%, var(--panel)); border-radius: 4px; padding: 6px 8px; }
 /* Kaart ja järjestus omaette real (Kadri 5.11 22:05) */
 .el-rida { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; align-items: start; }
 .el-kaart .kaart-ala { grid-template-columns: minmax(0, 1fr); gap: 4px; }
