@@ -625,3 +625,5 @@ h3.veerg { font-size: 12px; }
 /* Tulpade aastasildid on tulba all (absolute); järgmine tekst algab vähemalt 24 px allpool (Kadri 5.11 22:46, reegel 31.10) */
 .pn .g2 { padding-bottom: 18px; margin-bottom: 14px; }
 .pn .g2 + .drift { margin-top: 10px; }
+/* Järjestus kitsam, et väärtused ei ulatuks paneeli servani (Kadri 5.11 22:52) */
+.el-rida .jrj { max-width: 760px; }
