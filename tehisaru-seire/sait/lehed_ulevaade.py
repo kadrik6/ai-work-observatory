@@ -187,10 +187,10 @@ def avaleht(A, vaade, vaated):
     idx = {k: i for i, (k, _) in enumerate(viimased)}
     kuujoon = joon([("Eesti", [(idx[k], v) for k, v in viimased], "fookus"),
                     ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
-                   0, 11, 10, 2, w=300, h=120, ml=4, mr=60, x_margid=[0, 11], lihtne=True,
+                   0, 11, 10, 2, w=340, h=90, ml=4, mr=60, x_margid=[0, 11], lihtne=True,
                    x_silt=lambda i: viimased[int(i)][0][5:] + "/" + viimased[int(i)][0][2:4], silt="Töötus viimased 12 kuud")
     sec_prog = f"""
-<section class="pn sp6" id="tootus" aria-labelledby="h-tootus">
+<section class="pn sp7" id="tootus" aria-labelledby="h-tootus">
   <div class="pn-h"><h2 id="h-tootus">Prognoos ootab {p_aasta}. aastaks <b>{pr(prog[p_aasta]['protsent'])}%</b> töötust, kuunumber oli {kuu_seesytlev(kuu)} {pr(t_ee)}%</h2></div>
   <div class="g2"><div><p class="gt">Aasta keskmine, tegelik ja prognoos</p>{aastatulbad([(r["aasta"], r["protsent"], r["tegelik"]) for r in prog.values()], 10, 2)}</div>
   <div><p class="gt">Kuu kaupa, sesoonselt tasandatud, {k0[5:]}/{k0[:4]}–{kuu[5:]}/{kuu[:4]}</p>{kuujoon}</div></div>
@@ -206,9 +206,9 @@ def avaleht(A, vaade, vaated):
     ee_pts = seeriad[0][1]
     kordaja = ee_pts[-1][1] / ee_pts[0][1]
     kontrolli_kordaja = int(kordaja)
-    trend = joon(seeriad, ee_pts[0][0], ee_pts[-1][0], 40, 10, x_margid=[p[0] for p in ee_pts], silt="Ettevõtete tehisaru kasutus")
+    trend = joon(seeriad, ee_pts[0][0], ee_pts[-1][0], 40, 10, h=140, x_margid=[p[0] for p in ee_pts], silt="Ettevõtete tehisaru kasutus")
     sec_trend = f"""
-<section class="pn sp6" id="trend" aria-labelledby="h-trend">
+<section class="pn sp5" id="trend" aria-labelledby="h-trend">
   <div class="pn-h"><h2 id="h-trend">Eesti ettevõtete tehisaru kasutus <b>kasvas {ee_pts[0][0]}–{ee_pts[-1][0]} üle {kontrolli_kordaja} korra</b></h2></div>
   <p class="ps">% ettevõtetest, vähemalt 10 hõivatut. 2022 küsimust ei olnud.</p>
   {trend}
