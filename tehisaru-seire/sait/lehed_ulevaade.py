@@ -319,13 +319,13 @@ def too_eesti(A):
     margid = [i for i, (k, _) in enumerate(T["EE"]) if k[5:7] in ("01",)] + [0, n]
     joonis = joon([("Eesti", [(idx[k], v) for k, v in T["EE"]], "fookus"),
                    ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
-                  0, n, 10, 2, w=620, h=180, ml=4, mr=60, x_margid=[0, n], lihtne=True,
+                  0, n, 10, 2, w=400, h=140, ml=4, mr=60, x_margid=[0, n], lihtne=True,
                   x_silt=lambda i: T["EE"][int(i)][0][5:] + "/" + T["EE"][int(i)][0][2:4], silt="Töötuse määr kuu kaupa")
     aasta_tagasi = dict(T["EE"]).get(f"{int(kuu[:4]) - 1}{kuu[4:]}")
     muutus = "" if aasta_tagasi is None else (
         f"Aasta varem {pr(aasta_tagasi)}%, muutus {'+' if t_ee >= aasta_tagasi else '−'}{pr(abs(t_ee - aasta_tagasi))} punkti. ")
     sec_t = f"""
-<section class="pn sp6" id="tootus-kuud" aria-labelledby="h-tootus-kuud">
+<section class="pn sp4" id="tootus-kuud" aria-labelledby="h-tootus-kuud">
   <div class="pn-h"><h2 id="h-tootus-kuud">Eesti töötus oli {kuu_seesytlev(kuu)} {kuu[:4]} <b>{pr(t_ee)}%</b>, ELis {pr(t_el)}%</h2></div>
   <p class="ps">Töötuse määr, %, sesoonselt tasandatud, {k0[5:]}/{k0[:4]}–{kuu[5:]}/{kuu[:4]}. {muutus}Kuunumber ei ütle, kas põhjus on tehisaru.</p>
   {joonis}
@@ -344,7 +344,7 @@ def too_eesti(A):
     arvsona = SEESTYTLEV.get(len(juhtumid), f"{len(juhtumid)}-st")
     otse = "mitte ükski" if otsene == 0 else ARVSONAD.get(otsene, str(otsene))
     sec_k = f"""
-<section class="pn sp6" id="koondamised" aria-labelledby="h-koondamised">
+<section class="pn sp8" id="koondamised" aria-labelledby="h-koondamised">
   <div class="pn-h"><h2 id="h-koondamised">{arvsona.capitalize()} Eesti koondamisest: tehisaru otsese põhjusena <b>{otse}</b>, ühe põhjusena {ARVSONAD.get(mainib, str(mainib))}</h2></div>
   <p class="ps">Koondamised, mille kohta uudis küsis, kas tehisaru oli põhjus. Roll on see, mida ettevõte ise ütles. See ei ole täielik nimekiri; kontrollitud {kp(K["kontrollitud"])}.</p>
   <ul class="kk-v">{"".join(kaardid)}</ul>

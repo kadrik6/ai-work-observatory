@@ -634,3 +634,8 @@ h3.veerg { font-size: 12px; }
 .el-rida { grid-template-columns: 340px minmax(0, 1fr); }
 @media (max-width: 1180px) { .el-rida { grid-template-columns: 300px minmax(0, 1fr); } }
 @media (max-width: 760px) { .el-rida { grid-template-columns: minmax(0, 1fr); } }
+/* Töö: töötuse joon kitsam (sp4), koondamised laiemad (sp8, kolm kaarti reas), Kadri 5.11 23:00 */
+.sp8 { grid-column: span 8; }
+.sp8 .kk-v { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1180px) { .sp8 { grid-column: span 12; } #tootus-kuud { grid-column: span 12; } }
+@media (max-width: 760px) { .sp8 .kk-v { grid-template-columns: minmax(0, 1fr); } }
