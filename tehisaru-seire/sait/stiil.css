@@ -629,3 +629,8 @@ h3.veerg { font-size: 12px; }
 .el-rida .jrj { max-width: 760px; }
 /* Järjestuse kiri veel 1 px väiksem: 10 px (Kadri 5.11 22:54); read jäävad 14 px, et kaart ja loend oleksid sama kõrged */
 .jrj-r { font-size: 10px; }
+/* Kaart ja loend koos väiksemaks, sama kõrged (Kadri 5.11 22:56): read 13 px, kaart 340 px */
+.jrj-r { height: 13px; } .jrj-r.pais { height: 14px; } .jrj-r.telg { height: 15px; }
+.el-rida { grid-template-columns: 340px minmax(0, 1fr); }
+@media (max-width: 1180px) { .el-rida { grid-template-columns: 300px minmax(0, 1fr); } }
+@media (max-width: 760px) { .el-rida { grid-template-columns: minmax(0, 1fr); } }
