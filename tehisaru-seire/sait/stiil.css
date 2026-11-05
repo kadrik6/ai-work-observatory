@@ -607,3 +607,8 @@ h3.veerg { font-size: 12px; }
 .g12 + .g12 { margin-top: 10px; }
 .jaotis + .g12 { margin-top: 10px; }
 @media (max-width: 900px) { .ruut3 { grid-template-columns: minmax(0, 1fr); } .ruut3 .el-kaart, .ruut3 > figure:first-child { max-width: 320px; } }
+/* Kaart on sama kõrge kui kõrvalolev 27 riigi loend (Kadri 5.11 22:41): kaart + legend = loendi kõrgus */
+.el-rida { grid-template-columns: 394px minmax(0, 1fr); align-items: stretch; }
+.el-kaart .kaart-legend { padding-top: 6px; }
+@media (max-width: 1180px) { .el-rida { grid-template-columns: 330px minmax(0, 1fr); } }
+@media (max-width: 760px) { .el-rida { grid-template-columns: minmax(0, 1fr); } .el-kaart { max-width: 360px; } }
