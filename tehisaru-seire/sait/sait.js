@@ -81,6 +81,36 @@
       });
       svg.addEventListener('pointerleave', peida);
     });
+    // Kaart ja järjestus: üks riik esile mõlemas (data-n on sama nimi).
+    document.querySelectorAll('.el-rida').forEach(function (rida) {
+      var read = rida.querySelectorAll('.jrj-r[data-n]');
+      var svg = rida.querySelector('.kaart svg');
+      function vali(n) {
+        read.forEach(function (r) { r.classList.toggle('on', r.getAttribute('data-n') === n); });
+      }
+      if (svg) {
+        svg.addEventListener('pointermove', function (ev) {
+          var p = ev.target.closest && ev.target.closest('path[data-n]');
+          vali(p ? p.getAttribute('data-n') : null);
+        });
+        svg.addEventListener('pointerleave', function () { vali(null); });
+      }
+      read.forEach(function (r) {
+        r.addEventListener('pointerenter', function () {
+          var n = r.getAttribute('data-n');
+          vali(n);
+          if (!svg) return;
+          svg.querySelectorAll('path[data-n]').forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-n') === n); });
+          svg.parentNode.classList.add('hoiab');
+        });
+        r.addEventListener('pointerleave', function () {
+          vali(null);
+          if (!svg) return;
+          svg.querySelectorAll('path.on').forEach(function (p) { p.classList.remove('on'); });
+          svg.parentNode.classList.remove('hoiab');
+        });
+      });
+    });
     // Pikk tabel: vaikimisi 12 rida.
     document.querySelectorAll('table[data-piir]').forEach(function (tabel) {
       var read = Array.prototype.slice.call(tabel.tBodies[0].rows);

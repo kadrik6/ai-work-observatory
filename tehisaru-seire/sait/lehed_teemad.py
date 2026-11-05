@@ -513,8 +513,9 @@ def too(A, vaade, vaated=None):
     ]
     lead = ("Uuringud ei näita veel töökohtade kadu kogu tööturul, aga noorte palkamine ja vabakutseliste tööd on mõnes ametis vähenenud. "
             "Eesti kohta selliseid mõõtmisi veel ei ole.")
-    return (pea(A, vaade, lead, [("maailm", "Mida maailmas leiti"), ("ulesanded", "Ülesanded"), ("eesti", "Eestis"), ("kokkupuude", "Ametid"), ("hoive", "Hõive muutus"), ("tulevik", "Mis ees ootab")], ree)
-            + sec_maailm + sec_kiirus + sec_eesti + sec_kokkupuude + sec_hoive + sec_tulevik)
+    from lehed_ulevaade import too_eesti
+    return (pea(A, vaade, lead, [("tootus-kuud", "Eesti praegu"), ("maailm", "Mida maailmas leiti"), ("ulesanded", "Ülesanded"), ("eesti", "Eestis"), ("kokkupuude", "Ametid"), ("hoive", "Hõive muutus"), ("tulevik", "Mis ees ootab")], ree)
+            + too_eesti(A) + sec_maailm + sec_kiirus + sec_eesti + sec_kokkupuude + sec_hoive + sec_tulevik)
 
 
 # ---------------------------------------------------------------- Avalik sektor
@@ -631,8 +632,9 @@ def avalik_sektor(A, vaade, vaated=None):
     ]
     lead = ("Avalikus sektoris tehakse uuendusi, aga paljud jäävad pidama enne hindamist ja laiendamist. "
             "Kõik numbrid on OECD avalikust raportist, mis põhineb 2025–2026 küsitlusel.")
-    return (pea(A, vaade, lead, [("lehter", "Rakendamine"), ("tehisaru", "Tehisaru"), ("kiirused", "Kolm rühma"), ("soovitused", "Soovitused")], ree)
-            + sec_lehter + sec_genai + sec_kiirus + sec_soov)
+    from lehed_ulevaade import mida_riik_ostab
+    return (pea(A, vaade, lead, [("lehter", "Rakendamine"), ("tehisaru", "Tehisaru"), ("kiirused", "Kolm rühma"), ("hanked", "Mida riik ostab"), ("soovitused", "Soovitused")], ree)
+            + sec_lehter + sec_genai + sec_kiirus + mida_riik_ostab(A) + sec_soov)
 
 
 # ---------------------------------------------------------------- Reeglid ja sihid

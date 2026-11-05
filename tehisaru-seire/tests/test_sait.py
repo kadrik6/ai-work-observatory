@@ -273,3 +273,51 @@ def test_hoive_muutuse_jaotis_on_kirjeldus_mitte_pohjus(A, sait):
     assert "kirjeldus, mitte põhjus" in jaotis
     g = A["kokkupuude"]["aeg"][("EE", "T")]
     assert g[2025]["avatud"] / g[2022]["avatud"] < g[2025]["muud"] / g[2022]["muud"]
+
+
+# ---- Töölaud (5.11.2026)
+
+import lehed_ulevaade  # noqa: E402
+
+
+def test_ulevaade_on_toolaud_kaardi_ja_jarjestusega_samal_real(A, sait):
+    h = sait["index.html"]
+    assert h.count('class="plaat') == 6
+    rida = h.split('class="el-rida"')[1].split("</section>")[0]
+    assert 'class="el-kaart"' in rida and 'class="jrj"' in rida
+    # järjestuses on kõik 27 riiki ja iga nimi on ka kaardil (hiire seos)
+    nimed = re.findall(r'class="jrj-r[^"]*" role="listitem" data-n="([^"]+)"', rida)
+    assert len(nimed) == len(A["el_riigid"])
+    for n in nimed:
+        assert f'data-n="{n}"' in rida.split('class="jrj"')[0]
+
+
+def test_ulevaate_tootuse_kuunumber_tuleb_failist(sait):
+    kuu, v = lehed_ulevaade.tootus()["EE"][-1]
+    assert f"töötus oli {lehed_ulevaade.kuu_seesytlev(kuu)} {komponendid.pr(v)}%" in sait["index.html"]
+
+
+def test_kuu_seesytlev_on_eesti_keeles():
+    assert [lehed_ulevaade.kuu_seesytlev(f"2026-{k:02d}") for k in (3, 5, 9)] == ["märtsis", "mais", "septembris"]
+
+
+def test_too_vaates_on_eesti_tooturg_praegu(A, sait):
+    h = sait["too.html"]
+    assert 'id="tootus-kuud"' in h and 'id="koondamised"' in h
+    juhtumid = A["koondamised"]["juhtumid"]
+    assert h.count('class="kk"') == len(juhtumid)
+    # pealkiri ütleb, mitu nimetas tehisaru otsese põhjusena; see tuleb andmetest
+    otsene = sum(r["roll"] == "otsene" for r in juhtumid)
+    assert ("mitte ükski" if otsene == 0 else abi.ARVSONAD[otsene]) in h.split('id="h-koondamised">')[1].split("</h2>")[0]
+    # koondamised on ainult Töö vaates
+    assert 'id="koondamised"' not in sait["index.html"]
+
+
+def test_avaliku_sektori_hanked_on_katseline(sait):
+    osa = sait["avalik-sektor.html"].split('id="hanked"')[1].split("</section>")[0]
+    assert "katseline" in osa and "inimene pole kontrollinud" in osa
+
+
+def test_igas_teemavaates_on_numbriplaadid(sait):
+    for f in ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "reeglid-ja-sihid.html"]:
+        assert 'class="vastus"' in sait[f], f

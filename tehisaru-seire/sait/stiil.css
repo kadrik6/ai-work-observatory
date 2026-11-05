@@ -490,3 +490,120 @@ h3.tabeli-pealkiri { font-size: 13px; margin: 12px 0 4px; }
 h3.veerg { font-size: 12px; }
 .pinu { gap: 14px; }
 .ajajoon li > div { gap: 1px; }
+
+/* ---- Ülevaade töölauana (5.11.2026) ---- */
+.pea-t { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px; padding-top: 14px; }
+.pea-t h1 { max-width: 75ch; }
+.seis-t { font-size: 11.5px; color: var(--ink-3); margin-left: auto; }
+.pea-t + nav .sellel { margin-top: 8px; }
+.plaadid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.plaat { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.plaat .lbl { font-size: 11.5px; color: var(--ink-2); line-height: 1.3; min-height: 2.6em; }
+.plaat .big { font: 700 24px/1.1 var(--font-display); color: var(--ink); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.plaat .big.s { color: var(--signal); }
+.plaat .big small { font: 400 11px var(--font-sans); color: var(--ink-3); margin-left: 4px; letter-spacing: 0; }
+.plaat .cmp { font-size: 11.5px; color: var(--ink-2); }
+.plaat .src { font-size: 11px; color: var(--ink-3); margin-top: auto; padding-top: 2px; }
+.plaat .src a { color: inherit; }
+.plaat .sihiriba { margin: 6px 0 4px; }
+.chip { display: inline-block; font-size: 10.5px; font-weight: 600; line-height: 17px; padding: 0 7px; border-radius: 100px; border: 1px solid currentColor; white-space: nowrap; }
+.chip.exp { color: var(--accent-text); }
+.g12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.sp3 { grid-column: span 3; } .sp4 { grid-column: span 4; } .sp5 { grid-column: span 5; } .sp6 { grid-column: span 6; } .sp12 { grid-column: span 12; }
+.pn { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; scroll-margin-top: 96px; }
+.pn-h { display: flex; align-items: baseline; gap: 6px 10px; flex-wrap: wrap; }
+.pn-h h2 { font-size: 13.5px; }
+.pn-h .chip { margin-left: auto; }
+.ps { font-size: 12px; color: var(--ink-2); }
+.pn .allikas { margin-top: auto; }
+.g2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: end; }
+.pn .gt { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+.pn .aastatulbad { height: 120px; gap: 6px; }
+.pn .aastatulbad .v { font-size: 11px; }
+.pn .aastatulbad .a { font-size: 11px; bottom: -18px; }
+.pn .aastatulbad + * { margin-top: 20px; }
+.drift { font-size: 12px; color: var(--accent-text); background: color-mix(in srgb, var(--accent) 10%, var(--panel)); border-radius: 4px; padding: 6px 8px; }
+/* Kaart ja järjestus omaette real (Kadri 5.11 22:05) */
+.el-rida { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; align-items: start; }
+.el-kaart .kaart-ala { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+.el-kaart .kaart-legend { padding-top: 16px; }
+.el-kaart .kaart-silt { font-size: 11px; padding: 1px 4px; }
+.jrj { display: flex; flex-direction: column; }
+.jrj-r { display: grid; grid-template-columns: 10em minmax(0, 1fr) 3em; gap: 8px; align-items: center; height: 15px; font-size: 12px; line-height: 1; }
+.jrj-r .n { text-align: right; color: var(--ink-2); white-space: nowrap; }
+.jrj-r .v { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.jrj-r .rada { position: relative; height: 100%; }
+.jrj-r .joon { position: absolute; left: 0; top: 50%; height: 1px; background: var(--grid); }
+.jrj-r .tapp { position: absolute; top: 50%; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%; background: var(--mark-ctx); }
+.jrj-r .kesk { position: absolute; top: 0; bottom: 0; border-left: 1px dashed var(--context-strong); opacity: .7; }
+.jrj-r.fookus .n, .jrj-r.fookus .v { color: var(--signal); font-weight: 700; }
+.jrj-r.fookus .joon { background: var(--mark-signal); height: 2px; }
+.jrj-r.fookus .tapp { background: var(--mark-signal); width: 10px; height: 10px; margin: -5px 0 0 -5px; }
+.jrj-r.on { background: var(--surface-3); }
+.jrj-r.on .tapp { box-shadow: 0 0 0 2px var(--ink); }
+.jrj-r.pais { height: 16px; }
+.jrj-r.pais .viit-s { position: absolute; bottom: 1px; transform: translateX(-50%); font-size: 11px; color: var(--ink-2); white-space: nowrap; }
+.jrj-r.telg { height: 18px; font-size: 11px; color: var(--ink-3); }
+.jrj-r.telg .rada { border-top: 1px solid var(--context); }
+.jrj-r.telg .rada span { position: absolute; top: 3px; transform: translateX(-50%); }
+.jrj-r.telg .rada span:first-child { transform: none; }
+/* Joondiagramm (SVG) */
+.joon-g { width: 100%; height: auto; display: block; overflow: visible; }
+.joon-g line.v { stroke: var(--grid); }
+.joon-g text { font: 11px var(--font-sans); fill: var(--ink-3); }
+.joon-g text.o { fill: var(--ink-2); }
+.joon-g text.o.fookus { fill: var(--signal); font-weight: 700; }
+.joon-g polyline.s { fill: none; stroke: var(--mark-ctx); stroke-width: 1.5; }
+.joon-g polyline.s.ref { stroke: var(--context-strong); }
+.joon-g polyline.s.fookus { stroke: var(--mark-signal); stroke-width: 2.5; }
+.joon-g circle.s { fill: var(--mark-ctx); } .joon-g circle.s.ref { fill: var(--context-strong); } .joon-g circle.s.fookus { fill: var(--mark-signal); }
+/* Voog */
+.voog { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.voog li { display: grid; grid-template-columns: 6.2em 5.8em minmax(0, 1fr); gap: 8px; padding: 5px 0; border-top: 1px solid var(--grid); font-size: 12.5px; line-height: 1.35; }
+.voog li:first-child { border-top: 0; }
+.voog .d { color: var(--ink-3); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.voog .t { font-size: 11px; font-weight: 600; color: var(--ink-2); }
+.voog .t.s { color: var(--signal); }
+.voog a { color: var(--ink); text-decoration-color: var(--border); }
+/* Sihid */
+.sihid { display: flex; flex-direction: column; gap: 8px; }
+.siht .r { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
+.siht .r b { color: var(--ink-2); white-space: nowrap; } .siht .r b small { font-weight: 400; color: var(--ink-3); font-size: 11px; }
+.siht.f .r b { color: var(--signal); }
+.verd { font-size: 11px; font-weight: 700; color: var(--accent-text); }
+.verd.risk { color: #a32020; }
+:root[data-theme="dark"] .verd.risk { color: #ffaaaa; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) .verd.risk { color: #ffaaaa; } }
+@media (max-width: 1180px) { .plaadid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .sp3, .sp4, .sp5, .sp6 { grid-column: span 6; } }
+@media (max-width: 760px) { .plaadid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g12 > * { grid-column: span 12; } .el-rida, .g2 { grid-template-columns: minmax(0, 1fr); } .el-kaart { max-width: 240px; } .jrj-r { grid-template-columns: 8em minmax(0, 1fr) 2.6em; } .voog li { grid-template-columns: 5.6em minmax(0, 1fr); } .voog .t { grid-column: 2; grid-row: 1; } .voog li > span:last-child { grid-column: 1 / -1; } }
+/* Kõik vaated töölauana: päise numbrid on plaatide rida (5.11.2026) */
+.pea { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.pea h1 { max-width: 90ch; }
+.vastus { background: none; padding: 0; border-radius: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.vastus > div { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px; gap: 3px; }
+.vastus > div + div { border-top: 1px solid var(--border); padding-top: 8px; }
+.vastus .big { font-size: 24px; color: var(--ink); }
+.vastus > div:first-child .big { color: var(--signal); }
+.vastus .big small { font-size: 11px; color: var(--ink-3); }
+.vastus p { font-size: 12px; color: var(--ink-2); }
+.vastus .src { font-size: 11px; color: var(--ink-3); margin-top: auto; }
+.vastus .src a { color: inherit; }
+.koond td small { display: block; color: var(--ink-3); font-size: 11px; }
+.koond td { vertical-align: top; }
+.roll { font-size: 11px; font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+.roll.s { color: var(--signal); }
+.g12 + .jaotis { margin-top: 10px; }
+.kk-v { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.kk { border: 1px solid var(--border); border-radius: 4px; padding: 6px 8px; display: flex; flex-direction: column; gap: 2px; font-size: 12px; min-width: 0; }
+.kk-r { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.kk-n { font: 700 15px/1 var(--font-display); white-space: nowrap; }
+.kk-d { font-size: 11px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kk p { color: var(--ink-2); font-size: 11.5px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.kk a { font-size: 11px; color: var(--ink-3); }
+@media (max-width: 760px) { .kk-v { grid-template-columns: minmax(0, 1fr); } }
+.g3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding-bottom: 20px; }
+@media (max-width: 760px) { .g3 { grid-template-columns: minmax(0, 1fr); } }
+.kk-n.t { font: 400 11px var(--font-sans); color: var(--ink-3); }
+.g12 + .g12 { margin-top: 10px; }
+.jaotis + .g12 { margin-top: 10px; }
+@media (max-width: 900px) { .ruut3 { grid-template-columns: minmax(0, 1fr); } .ruut3 .el-kaart, .ruut3 > figure:first-child { max-width: 320px; } }

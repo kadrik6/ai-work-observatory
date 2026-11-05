@@ -3,8 +3,8 @@
   "vaated": [
     {"id": "avaleht", "fail": "index.html", "menuu": null, "koht": "saidi nimi", "vanem": null, "kusimused": "K1, K4, K11", "olek": "valmis",
      "kusimus": "Mis on tehisaru kasutuse peamised numbrid praegu ja kas neid võib usaldada?",
-     "h1": "{inimeste-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest** ja {ettevotete-tehisaru-kasutus|EE|uusim|p0}% ettevõtetest, digioskused on aga 2023. aastast paigal.",
-     "osad": "Kolm peamist numbrit; Eesti koht ELis kuues näitajas; teemad koos vastusega; mida sait ei näita"},
+     "h1": "{inimeste-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest** ja {ettevotete-tehisaru-kasutus|EE|uusim|p0}% ettevõtetest; töötus oli septembris 8,0%",
+     "osad": "Töölaud (Kadri 5.11.2026): kuus numbriplaati; ELi kaart ja järjestus omaette real; töötuse prognoos ja kuunumber; ettevõtete trend; Mis muutus; sihid; hanked (katseline); väited"},
     {"id": "inimesed", "fail": "inimesed.html", "menuu": "Inimesed", "koht": "menüü", "vanem": "avaleht", "kusimused": "K1–K3", "olek": "valmis",
      "kusimus": "Kui paljud Eesti inimesed tehisaru kasutavad ja kas neil on oskusi?",
      "h1": "Tehisaru kasutab **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest**, aastaga 18 punkti rohkem, digioskused on aga {inimeste-digioskused|EE|uusim|p1}% juures paigal.",

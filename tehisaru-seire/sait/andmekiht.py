@@ -120,6 +120,8 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
     if leiud_p.exists():
         A["tooelu"] = loe_json(leiud_p)
         A["uuringud"] = {u["id"]: u for u in A["tooelu"].get("uuringud", [])}
+    koond_p = juur.parent / "tooelu-seire" / "koondamised_ee.json"
+    A["koondamised"] = loe_json(koond_p) if koond_p.exists() else {}
     for r in A["avalik"].values():
         if not r["vaartus"] or not r["koht"]:
             raise AndmeViga(f"sisu/avalik-sektor.csv rida {r['id']}: väärtus või koht raportis puudub")
