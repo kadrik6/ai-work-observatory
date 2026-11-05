@@ -9,7 +9,8 @@ import json
 from seire import kataloog
 
 MOODIKU_VALJAD = ["id", "moiste", "nimi", "allikas", "andmestik", "filtrid", "populatsioon", "uhik", "periood",
-                  "maaratlus", "klassifikaator", "vorreldavus", "erinevused", "naitaja", "registri_naitaja", "olek", "url"]
+                  "maaratlus", "klassifikaator", "vorreldavus", "erinevused", "naitaja", "registri_naitaja", "olek", "url",
+                  "koopia"]
 VAATLUSE_VALJAD = ["moodik", "riik", "aasta", "vaartus", "avaldatud", "kontrollitud", "kuidas", "url", "markus"]
 
 
@@ -99,6 +100,30 @@ def test_vordle_hoiab_eri_klasside_numbrid_eri_veergudes(tmp_path):
     # Soome osaliselt võrreldav number pole uuem kui võrdlusalus, nii et seda uuemana ei näidata.
     assert V["riigid"]["FI"]["uuem"] is None
     assert V["riigid"]["UK"]["alus"] is None
+
+
+def test_kriitiline_lahter_ja_koopia_on_eraldi(tmp_path):
+    """C5 juhtum: üldine määr võib olla hea, aga Eesti viimase aasta lahter ei klapi. Koopia ei loe kinnituseks."""
+    K = naidiskataloog(tmp_path, moodikud=[
+        moodik("alus", "alus", "seires", allikas="INT-EUROSTAT", naitaja="testnaitaja"),
+        moodik("sama", "sama"),
+        moodik("koopia", "sama", koopia="jah"),
+    ], vaatlused=[
+        {"moodik": "sama", "riik": "EE", "aasta": "2024", "vaartus": "10.0"},
+        {"moodik": "sama", "riik": "EE", "aasta": "2025", "vaartus": "21.0"},
+        {"moodik": "sama", "riik": "FI", "aasta": "2025", "vaartus": "40.0"},
+        {"moodik": "koopia", "riik": "EE", "aasta": "2025", "vaartus": "20.0"},
+        {"moodik": "koopia", "riik": "FI", "aasta": "2025", "vaartus": "40.0"},
+    ])
+    V = kataloog.vordle(K, "m1")
+    kriitilised = {(p["moodik"], p["riik"], p["aasta"]) for p in V["paarid"] if p["kriitiline"]}
+    # Soome pole kriitiline riik, Eesti 2024 pole viimane aasta.
+    assert kriitilised == {("sama", "EE", 2025), ("koopia", "EE", 2025)}
+    kl = kataloog.klappimine(V["paarid"])
+    assert (kl["kriitilised"]["klapib"], kl["kriitilised"]["kokku"]) == (0, 1)
+    assert [(p["riik"], p["aasta"]) for p in kl["kriitilised"]["lahknevused"]] == [("EE", 2025)]
+    assert (kl["koik"]["klapib"], kl["koik"]["kokku"]) == (2, 3)
+    assert kl["koopiaid"] == 2
 
 
 def test_moodikud_on_jarjestatud_vorreldavuse_jargi(tmp_path):

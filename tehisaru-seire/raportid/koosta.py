@@ -638,18 +638,25 @@ def kontrollid(x, D, K, c):
     tulem.append({"id": "varskus", "nimi": "Kui värske see on", "luhi": "Värskus", "silt": st,
                   "klass": "ok" if st == "ajakohane" else "risk", "lause": lause, "detail": varskuse_detail(x, K, c)})
 
-    # 2. Allikate kooskõla
-    sama = [p for p in V["paarid"] if p["klass"] == "sama"] if V else []
-    ok = sum(1 for p in sama if p["staatus"] == "kooskolas")
-    lahk = [p for p in sama if p["staatus"] == "lahknevus"]
-    vaike = [p for p in sama if p["staatus"] == "vaike_vahe"]
+    # 2. Allikate kooskõla. Kriitilised lahtrid (Eesti ja EL viimane aasta) eraldi, koopiaid kinnituseks ei loeta.
+    kl = kataloog.klappimine(V["paarid"]) if V else {"koik": {"kokku": 0}, "kriitilised": {"kokku": 0}, "koopiaid": 0}
+    koik, kriit = kl["koik"], kl["kriitilised"]
     olekud = {(l["naitaja"], int(l["aasta"])): l for l in D["lahknevused"]}
-    if not sama:
+    koopiad = (f' {kl["koopiaid"]} korral kordab allikas lihtsalt võrdlusaluse numbrit (näiteks OECD võtab ELi riikide '
+               "numbri Eurostatist), neid kinnituseks ei loeta.") if kl["koopiaid"] else ""
+    if not koik["kokku"]:
         silt, klass = "kontrollimata", ""
-        lause = "Teist sama mõõdikuga allikat pole, nii et numbrit ei saa veel teise allikaga kontrollida."
+        lause = "Teist sõltumatut sama mõõdikuga allikat pole, nii et numbrit ei saa veel teise allikaga kontrollida." + koopiad
     else:
-        silt, klass = (f"{len(lahk)} vahe", "risk") if lahk else ("väike vahe", "") if vaike else ("klapivad", "ok")
-        lause = f"Teiste sama mõõdikuga allikatega võrreldi {len(sama)} numbrit, {ok} klapivad ümardamise täpsusega."
+        lahk, vaike = koik["lahknevused"], koik["vaikesed"]
+        if kriit["lahknevused"]:
+            silt, klass = "kriitiline vahe", "risk"
+        else:
+            silt, klass = (f"{len(lahk)} vahe", "risk") if lahk else ("väike vahe", "") if vaike else ("klapivad", "ok")
+        lause = (f'Kõige olulisemates lahtrites (Eesti ja ELi viimane aasta) klapib {numbrit(kriit["klapib"])} {kriit["kokku"]}-st. '
+                 if kriit["kokku"] else "")
+        lause += (f'Kõigist sõltumatutest võrdlustest klapib ümardamise täpsusega {numbrit(koik["klapib"])} {koik["kokku"]}-st.'
+                  + koopiad)
         for p in lahk:
             ol = olekud.get((n["id"], p["aasta"]), {})
             lause += (f' {riik(p["riik"])} {p["aasta"]}: Eurostat {arv(p["alus"], 1)}%, {K["moodikud"][p["moodik"]]["nimi"]} '
@@ -933,6 +940,27 @@ def ajas_plokk(x, c, K):
     return sektsioon("Muutus ajas", f'<div class="note"><p>{e(tekst)}</p></div>', "Aegrida", "ajas")
 
 
+def numbrit(n):
+    return f"{n} number" if n == 1 else f"{n} numbrit"
+
+
+def kriitilise_hoiatus(x, D, K, c):
+    """Hoiatus lehe esimeses vaates, kui allikad lähevad lahku kriitilises lahtris (Eesti või EL viimane aasta)."""
+    if not c["V"]:
+        return ""
+    olekud = {(l["naitaja"], int(l["aasta"])): l for l in D["lahknevused"]}
+    osad = []
+    for p in kataloog.klappimine(c["V"]["paarid"])["kriitilised"]["lahknevused"]:
+        ol = olekud.get((x["n"]["id"], p["aasta"]), {})
+        osad.append(f'{riik(p["riik"])} {p["aasta"]}: Eurostat {arv(p["alus"], 1)}%, '
+                    f'{e(K["moodikud"][p["moodik"]]["nimi"])} {arv(p["teine"], 1)}%. '
+                    f'Põhjus on {e(ol.get("staatus", "selgitamata"))}.')
+    if not osad:
+        return ""
+    return ('<div class="note"><p><b>Allikad annavad kõige olulisema numbri kohta eri vastuse.</b> '
+            + " ".join(osad) + ' <a href="#usaldus-kooskola">Vaata põhjendust</a></p></div>')
+
+
 def naitaja_leht(x, D, K, tana):
     n, meta, a, s, c = x["n"], x["meta"], x["viimane"], x["seeria"], x["k"]
     ee, tekst = leid(x)
@@ -955,6 +983,7 @@ def naitaja_leht(x, D, K, tana):
                       f'{"arvutab teisiti, vt usaldus" if c["ee_uus_lahk"] else "sama mõõdik" if u["m"]["vorreldavus"] == "sama" else "pole päris võrreldav"}'
                       '</small></dd></div>')
     reeglid = "".join(f"<li>{e(r['reegel'])}</li>" for r in c["reeglid"])
+    kriitiline = kriitilise_hoiatus(x, D, K, c)
     oige = ('<div class="note"><p><b>Nii on õige öelda</b></p>'
             f'<p class="quote">{e(oige_lause(x, K, c))}</p>'
             + (f'<ul class="plain">{reeglid}</ul>' if reeglid else "") + "</div>")
@@ -988,7 +1017,7 @@ def naitaja_leht(x, D, K, tana):
              + (avatav("Teised riigid teiste küsitlustega", muud) if muud else "")
              + avatav("Määratlus ja päring", definitsioon))
     sisu = (teekond + pais(f'Näitaja · {c["ala"]["nimi"] if c["ala"] else ""}', h1, e(n["mida_see_tahendab"]))
-            + f'<dl class="facts">{"".join(faktid)}</dl>' + oige
+            + f'<dl class="facts">{"".join(faktid)}</dl>' + kriitiline + oige
             + sektsioon("Võrdlus riikidega", riigid, "Riigid", "riigid")
             + uuemad_plokk(x, c) + ajas_plokk(x, c, K) + usaldus
             + sektsioon("Andmed ja määratlus", lisad, "Detailid", "detailid"))
