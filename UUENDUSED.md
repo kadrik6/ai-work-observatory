@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 05.11.2026 | Töö vaate real „Eesti praegu“ on keskel uus visuaal koondamistest (Kadri kommentaar 5.11 23:06): teatatud töökohad ettevõtte kaupa, värv näitab, mida ettevõte ise tehisaru kohta ütles (põhjusena, muul moel, ei mainitud). Ülempiir („kuni 50“) on katkendäärega tulp, teadmata arv on eraldi real. Pealkiri arvutatakse andmetest („Tehisaru nimetati põhjusena 100 töökoha juures kuni 551-st“). Rida on nüüd 3 + 4 + 5 veergu. Uus test `tests/test_sait.py`-s. |
 | 05.11.2026 | Töö vaate real „Eesti praegu“ on töötuse joon kitsam (4/12 laiusest, enne 6/12) ja koondamised laiemad (8/12, kolm kaarti reas), Kadri kommentaar 5.11 23:00. |
 | 05.11.2026 | Ülevaate ELi kaart on väiksem, 340 px (enne 369 px), ja järjestuse read on 13 px, nii et kaart ja loend on endiselt sama kõrged, 384 px (Kadri kommentaar 5.11 22:56). |
 | 05.11.2026 | Ülevaate riikide järjestuse kiri on 10 px (enne 11 px), Kadri kommentaar 5.11 22:54. Read jäid 14 px kõrgeks, nii et kaart ja loend on endiselt sama kõrged. |

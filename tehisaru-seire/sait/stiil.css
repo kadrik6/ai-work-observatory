@@ -639,3 +639,25 @@ h3.veerg { font-size: 12px; }
 .sp8 .kk-v { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 1180px) { .sp8 { grid-column: span 12; } #tootus-kuud { grid-column: span 12; } }
 @media (max-width: 760px) { .sp8 .kk-v { grid-template-columns: minmax(0, 1fr); } }
+/* Koondamiste tulbad (Töö, Kadri 5.11 23:06): rida = 3 + 4 + 5 veergu */
+.sp5 .kk-v { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.kr-ribad { display: flex; flex-direction: column; gap: 6px; }
+.kr { display: grid; grid-template-columns: 8.5em minmax(0, 1fr) 4.6em; gap: 8px; align-items: center; font-size: 11.5px; }
+.kr-n { text-align: right; color: var(--ink-2); line-height: 1.15; }
+.kr-n small { display: block; font-size: 10px; color: var(--ink-3); }
+.kr-rada { position: relative; height: 14px; }
+.kr-t { display: inline-block; height: 14px; border-radius: 2px; vertical-align: middle; }
+.kr-rada .kr-t { position: absolute; left: 0; top: 0; }
+.kr-t.s { background: var(--mark-signal); }
+.kr-t.m { background: var(--mark-ctx); }
+.kr-t.t { background: var(--context); }
+.kr-t.ulem { background: transparent; border: 1.5px dashed var(--mark-ctx); box-sizing: border-box; }
+.kr-t.ulem.t { border-color: var(--context-strong); }
+.kr-a { font: 700 12px var(--font-display); color: var(--ink); white-space: nowrap; }
+.kr-pole { font-size: 10.5px; color: var(--ink-3); line-height: 14px; }
+.kr-leg { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; color: var(--ink-2); }
+.kr-leg span { display: inline-flex; align-items: center; gap: 5px; }
+.kr-leg .kr-t { width: 10px; height: 10px; }
+@media (max-width: 1180px) { #tootus-kuud, #koondamised-visuaal { grid-column: span 6; } #koondamised { grid-column: span 12; } }
+@media (max-width: 760px) { #tootus-kuud, #koondamised-visuaal, #koondamised { grid-column: span 12; } }
+@media (max-width: 760px) { .sp5 .kk-v { grid-template-columns: minmax(0, 1fr); } }

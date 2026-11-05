@@ -319,13 +319,13 @@ def too_eesti(A):
     margid = [i for i, (k, _) in enumerate(T["EE"]) if k[5:7] in ("01",)] + [0, n]
     joonis = joon([("Eesti", [(idx[k], v) for k, v in T["EE"]], "fookus"),
                    ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
-                  0, n, 10, 2, w=400, h=140, ml=4, mr=60, x_margid=[0, n], lihtne=True,
+                  0, n, 10, 2, w=300, h=130, ml=4, mr=60, x_margid=[0, n], lihtne=True,
                   x_silt=lambda i: T["EE"][int(i)][0][5:] + "/" + T["EE"][int(i)][0][2:4], silt="Töötuse määr kuu kaupa")
     aasta_tagasi = dict(T["EE"]).get(f"{int(kuu[:4]) - 1}{kuu[4:]}")
     muutus = "" if aasta_tagasi is None else (
         f"Aasta varem {pr(aasta_tagasi)}%, muutus {'+' if t_ee >= aasta_tagasi else '−'}{pr(abs(t_ee - aasta_tagasi))} punkti. ")
     sec_t = f"""
-<section class="pn sp4" id="tootus-kuud" aria-labelledby="h-tootus-kuud">
+<section class="pn sp3" id="tootus-kuud" aria-labelledby="h-tootus-kuud">
   <div class="pn-h"><h2 id="h-tootus-kuud">Eesti töötus oli {kuu_seesytlev(kuu)} {kuu[:4]} <b>{pr(t_ee)}%</b>, ELis {pr(t_el)}%</h2></div>
   <p class="ps">Töötuse määr, %, sesoonselt tasandatud, {k0[5:]}/{k0[:4]}–{kuu[5:]}/{kuu[:4]}. {muutus}Kuunumber ei ütle, kas põhjus on tehisaru.</p>
   {joonis}
@@ -344,13 +344,40 @@ def too_eesti(A):
     arvsona = SEESTYTLEV.get(len(juhtumid), f"{len(juhtumid)}-st")
     otse = "mitte ükski" if otsene == 0 else ARVSONAD.get(otsene, str(otsene))
     sec_k = f"""
-<section class="pn sp8" id="koondamised" aria-labelledby="h-koondamised">
+<section class="pn sp5" id="koondamised" aria-labelledby="h-koondamised">
   <div class="pn-h"><h2 id="h-koondamised">{arvsona.capitalize()} Eesti koondamisest: tehisaru otsese põhjusena <b>{otse}</b>, ühe põhjusena {ARVSONAD.get(mainib, str(mainib))}</h2></div>
   <p class="ps">Koondamised, mille kohta uudis küsis, kas tehisaru oli põhjus. Roll on see, mida ettevõte ise ütles. See ei ole täielik nimekiri; kontrollitud {kp(K["kontrollitud"])}.</p>
   <ul class="kk-v">{"".join(kaardid)}</ul>
   <p class="ps">Number on Eesti töökohad, kui see teatati. Ettevõtte enda selgitus ei tõenda põhjust.</p>
 </section>"""
-    return f'<div class="g12">{sec_t}{sec_k}</div>'
+    # Keskel: töökohad ettevõtte kaupa, värv näitab, mida ettevõte tehisaru kohta ütles (Kadri 5.11 23:06)
+    RYHM = {"otsene": ("s", "nimetas tehisaru põhjusena"), "osaline": ("s", "nimetas tehisaru põhjusena"),
+            "kaudne": ("m", "mainis tehisaru muul moel"), "tulevikus": ("m", "mainis tehisaru muul moel"),
+            "ei_mainita": ("t", "tehisaru ei mainitud")}
+    def _arv(r):
+        return r["arv_eestis"] if r.get("arv_eestis") is not None else r.get("arv_ulem")
+    teada = sorted((r for r in juhtumid if _arv(r)), key=_arv, reverse=True)
+    pole = [r for r in juhtumid if not _arv(r)]
+    suurim = max(_arv(r) for r in teada)
+    kokku = sum(_arv(r) for r in teada)
+    pohjus = sum(_arv(r) for r in teada if RYHM[r["roll"]][0] == "s")
+    ulem = any(r.get("arv_eestis") is None for r in teada)
+    ribad = "".join(
+        f'<div class="kr"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
+        f'<span class="kr-rada"><i class="kr-t {RYHM[r["roll"]][0]}{" ulem" if r.get("arv_eestis") is None else ""}" style="width:{_arv(r) / suurim * 100:.1f}%"></i></span>'
+        f'<span class="kr-a">{"kuni " if r.get("arv_eestis") is None else ""}{_arv(r)}</span></div>' for r in teada)
+    ribad += "".join(f'<div class="kr"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
+                     f'<span class="kr-rada"><span class="kr-pole">arv pole teada</span></span><span class="kr-a"></span></div>' for r in pole)
+    legend = "".join(f'<span><i class="kr-t {k}"></i>{e(t)}</span>' for k, t in [("s", "nimetas tehisaru põhjusena"), ("m", "mainis tehisaru muul moel"), ("t", "tehisaru ei mainitud")])
+    sec_v = f"""
+<section class="pn sp4" id="koondamised-visuaal" aria-labelledby="h-koondamised-v">
+  <div class="pn-h"><h2 id="h-koondamised-v">Tehisaru nimetati põhjusena <b>{pohjus} töökoha</b> juures {"kuni " if ulem else ""}{kokku}-st</h2></div>
+  <p class="ps">Teatatud töökohad Eestis ettevõtte kaupa. Värv näitab, mida ettevõte ise tehisaru kohta ütles.</p>
+  <div class="kr-ribad" role="img" aria-label="Koondatavad töökohad ettevõtte kaupa">{ribad}</div>
+  <p class="kr-leg">{legend}</p>
+  <p class="allikas">Allikas: uudised, lingid kaartidel. Katkendäärega tulp on teatatud ülempiir.</p>
+</section>"""
+    return f'<div class="g12">{sec_t}{sec_v}{sec_k}</div>'
 
 
 # ---------------------------------------------------------------- Avaliku sektori hanked

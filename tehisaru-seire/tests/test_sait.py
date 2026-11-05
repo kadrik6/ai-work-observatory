@@ -321,3 +321,12 @@ def test_avaliku_sektori_hanked_on_katseline(sait):
 def test_igas_teemavaates_on_numbriplaadid(sait):
     for f in ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "reeglid-ja-sihid.html"]:
         assert 'class="vastus"' in sait[f], f
+
+
+def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
+    j = A["koondamised"]["juhtumid"]
+    arv = lambda r: r["arv_eestis"] if r.get("arv_eestis") is not None else r.get("arv_ulem")  # noqa: E731
+    pohjus = sum(arv(r) for r in j if arv(r) and r["roll"] in ("otsene", "osaline"))
+    kokku = sum(arv(r) for r in j if arv(r))
+    h2 = sait["too.html"].split('id="h-koondamised-v">')[1].split("</h2>")[0]
+    assert f"<b>{pohjus} töökoha</b>" in h2 and f"{kokku}-st" in h2
