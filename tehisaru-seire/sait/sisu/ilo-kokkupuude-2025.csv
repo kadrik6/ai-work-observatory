@@ -1,0 +1,428 @@
+isco4,aste,keskmine,sd,nimi_en
+1111,ei,0.31,0.04,Legislators
+1112,minimaalne,0.38,0.08,Senior Government Officials
+1113,ei,0.23,0.1,Traditional Chiefs and Heads of Villages
+1114,minimaalne,0.37,0.06,Senior Officials of Special-interest Organizations
+1120,minimaalne,0.38,0.06,Managing Directors and Chief Executives
+1211,minimaalne,0.37,0.04,Finance Managers
+1212,minimaalne,0.36,0.05,Human Resource Managers
+1213,ei,0.36,0.04,Policy and Planning Managers
+1219,2,0.42,0.1,Business Services and Administration Managers Not Elsewhere Classified
+1221,2,0.41,0.09,Sales and Marketing Managers
+1222,minimaalne,0.39,0.05,Advertising and Public Relations Managers
+1223,minimaalne,0.4,0.06,Research and Development Managers
+1311,minimaalne,0.27,0.13,Agricultural and Forestry Production Managers
+1312,ei,0.22,0.08,Aquaculture and Fisheries Production Managers
+1321,minimaalne,0.38,0.11,Manufacturing Managers
+1322,minimaalne,0.35,0.11,Mining Managers
+1323,minimaalne,0.34,0.06,Construction Managers
+1324,minimaalne,0.38,0.05,"Supply, Distribution and Related Managers"
+1330,2,0.44,0.07,Information and Communications Technology Service Managers
+1341,minimaalne,0.3,0.15,Child Care Service Managers
+1342,minimaalne,0.36,0.05,Health Service Managers
+1343,minimaalne,0.34,0.09,Aged Care Service Managers
+1344,minimaalne,0.37,0.07,Social Welfare Managers
+1345,minimaalne,0.36,0.1,Education Managers
+1346,2,0.47,0.12,Financial and Insurance Services Branch managers
+1349,minimaalne,0.38,0.07,Professional Services Managers Not Elsewhere Classified
+1411,1,0.37,0.13,Hotel Managers
+1412,minimaalne,0.36,0.12,Restaurant Managers
+1420,2,0.44,0.15,Retail and Wholesale Trade Managers
+1431,minimaalne,0.32,0.1,"Sports, Recreation and Cultural Centre Managers"
+2111,1,0.38,0.14,Physicists and Astronomers
+2112,3,0.54,0.13,Meteorologists
+2113,minimaalne,0.39,0.1,Chemists
+2114,minimaalne,0.36,0.1,Geologists and geophysicists
+2120,3,0.56,0.09,"Mathematicians, Actuaries and Statisticians"
+2131,2,0.4,0.1,"Biologists, Botanists, Zoologists and Related Professionals"
+2132,ei,0.29,0.1,"Farming, Forestry and Fisheries Advisers"
+2133,minimaalne,0.38,0.04,Environmental Protection Professionals
+2141,minimaalne,0.37,0.07,Industrial and Production Engineers
+2142,ei,0.3,0.06,Civil Engineers
+2143,minimaalne,0.38,0.07,Environmental Engineers
+2144,ei,0.32,0.07,Mechanical Engineers
+2145,minimaalne,0.35,0.12,Chemical Engineers
+2146,ei,0.29,0.05,"Mining Engineers, Metallurgists and Related Professionals"
+2149,ei,0.3,0.08,Engineering Professionals Not Elsewhere Classified
+2151,ei,0.31,0.08,Electrical Engineers
+2152,2,0.42,0.13,Electronics Engineers
+2153,2,0.48,0.12,Telecommunications Engineers
+2161,minimaalne,0.37,0.08,Building Architects
+2162,minimaalne,0.37,0.08,Landscape Architects
+2163,minimaalne,0.35,0.09,Product and Garment Designers
+2164,minimaalne,0.41,0.06,Town and Traffic Planners
+2165,2,0.44,0.12,Cartographers and Surveyors
+2166,2,0.49,0.09,Graphic and Multimedia Designers
+2211,ei,0.29,0.1,Generalist Medical Practitioners
+2212,ei,0.27,0.12,Specialist Medical Practitioners
+2221,ei,0.25,0.13,Nursing Professionals
+2222,minimaalne,0.3,0.15,Midwifery Professionals
+2230,minimaalne,0.32,0.11,Traditional and Complementary Medicine Professionals
+2240,ei,0.23,0.13,Paramedical Practitioners
+2250,ei,0.14,0.05,Veterinarians
+2261,ei,0.15,0.06,Dentists
+2262,minimaalne,0.33,0.09,Pharmacists
+2263,ei,0.28,0.05,Environmental and Occupational Health and Hygiene Professionals
+2264,minimaalne,0.28,0.14,Physiotherapists
+2265,minimaalne,0.41,0.07,Dieticians and Nutritionists
+2266,ei,0.24,0.04,Audiologists and Speech Therapists
+2267,ei,0.24,0.07,Optometrists and Ophthalmic Opticians
+2269,ei,0.2,0.08,Health Professionals Not Elsewhere Classified
+2310,minimaalne,0.37,0.12,University and Higher Education Teachers
+2320,minimaalne,0.35,0.12,Vocational Education Teachers
+2330,ei,0.3,0.07,Secondary Education Teachers
+2341,ei,0.26,0.09,Primary School Teachers
+2342,ei,0.21,0.05,Early Childhood Educators
+2351,1,0.39,0.11,Education Methods Specialists
+2352,ei,0.28,0.1,Special Needs Teachers
+2353,minimaalne,0.34,0.11,Other Language Teachers
+2354,minimaalne,0.35,0.09,Other Music Teachers
+2355,minimaalne,0.35,0.1,Other Arts Teachers
+2356,2,0.47,0.1,Information Technology Trainers
+2359,minimaalne,0.33,0.1,Teaching Professionals Not Elsewhere Classified
+2411,3,0.51,0.08,Accountants
+2412,3,0.57,0.11,Financial and Investment Advisers
+2413,4,0.62,0.06,Financial Analysts
+2421,2,0.46,0.1,Management and Organization Analysts
+2422,minimaalne,0.42,0.06,Policy Administration Professionals
+2423,2,0.45,0.07,Personnel and Careers Professionals
+2424,2,0.41,0.09,Training and Staff Development Professionals
+2431,3,0.55,0.09,Advertising and Marketing Professionals
+2432,2,0.43,0.09,Public Relations Professionals
+2433,3,0.5,0.1,Technical and Medical Sales Professionals (excluding ICT)
+2434,3,0.51,0.09,Information and Communications Technology Sales Professionals
+2511,2,0.49,0.05,Systems Analysts
+2512,3,0.53,0.07,Software Developers
+2513,4,0.6,0.08,Web and Multimedia Developers
+2514,3,0.57,0.08,Applications Programmers
+2519,3,0.55,0.16,Software and Applications Developers and Analysts Not Elsewhere Classified
+2521,3,0.57,0.08,Database Designers and Administrators
+2522,3,0.57,0.05,Systems Aministrators
+2523,3,0.52,0.06,Computer Network Professionals
+2529,2,0.49,0.06,Database and Network Professionals Not Elsewhere Classified
+2611,minimaalne,0.36,0.09,Lawyers
+2612,ei,0.31,0.08,Judges
+2619,minimaalne,0.37,0.09,Legal Professionals Not Elsewhere Classified
+2621,2,0.47,0.11,Archivists and Curators
+2622,3,0.55,0.04,Librarians and Related Information Professionals
+2631,3,0.55,0.08,Economists
+2632,2,0.48,0.12,"Sociologists, Anthropologists and Related Professionals"
+2633,2,0.47,0.06,"Philosophers, Historians and Political Scientists"
+2634,1,0.39,0.14,Psychologists
+2635,ei,0.28,0.1,Social Work and Counselling Professionals
+2636,ei,0.17,0.12,Religious Professionals
+2641,3,0.55,0.09,Authors and Related Writers
+2642,3,0.54,0.1,Journalists
+2643,3,0.59,0.11,"Translators, Interpreters and Other Linguists"
+2651,ei,0.21,0.04,Visual Artists
+2652,ei,0.28,0.09,"Musicians, Singers and Composers"
+2653,ei,0.19,0.1,Dancers and Choreographers
+2654,minimaalne,0.37,0.07,"Film, Stage and Related Directors and Producers"
+2655,minimaalne,0.31,0.15,Actors
+2656,2,0.47,0.12,"Announcers on Radio, Television and Other Media"
+2659,ei,0.13,0.06,Creative and Performing Artists Not Elsewhere Classified
+3111,ei,0.26,0.09,Chemical and Physical Science Technicians
+3112,ei,0.28,0.07,Civil Engineering Technicians
+3113,ei,0.27,0.05,Electrical Engineering Technicians
+3114,minimaalne,0.38,0.11,Electronics Engineering Technicians
+3115,ei,0.26,0.08,Mechanical Engineering Technicians
+3116,ei,0.32,0.02,Chemical Engineering Technicians
+3117,ei,0.28,0.06,Mining and metallurgical technicians
+3118,minimaalne,0.35,0.11,Draughtspersons
+3119,ei,0.26,0.05,Physical and Engineering Science Technicians Not Elsewhere Classified
+3121,ei,0.29,0.08,Mining Supervisors
+3122,minimaalne,0.35,0.13,Manufacturing Supervisors
+3123,ei,0.28,0.06,Construction Supervisors
+3131,ei,0.28,0.11,Power Production Plant Operators
+3132,ei,0.27,0.09,Incinerator and Water Treatment Plant Operators
+3133,ei,0.29,0.1,Chemical Processing Plant Controllers
+3134,ei,0.29,0.11,Petroleum and Natural Gas Refining Plant Operators
+3135,minimaalne,0.31,0.13,Metal Production Process Controllers
+3141,1,0.38,0.18,Life Science Technicians (excluding Medical)
+3142,ei,0.26,0.09,Agricultural Technicians
+3143,ei,0.21,0.07,Forestry Technicians
+3151,ei,0.23,0.05,Ships' Engineers
+3152,ei,0.29,0.11,Ships' Deck Officers and Pilots
+3153,ei,0.27,0.05,Aircraft Pilots and Related Associate Professionals
+3154,minimaalne,0.31,0.09,Air Traffic Controllers
+3155,minimaalne,0.34,0.1,Air Traffic Safety Electronics Technicians
+3211,ei,0.22,0.03,Medical Imaging and Therapeutic Equipment Technicians
+3212,minimaalne,0.31,0.16,Medical and Pathology Laboratory Technicians
+3213,minimaalne,0.3,0.12,Pharmaceutical Technicians and Assistants
+3214,ei,0.18,0.05,Medical and Dental Prosthetic Technicians
+3221,minimaalne,0.22,0.21,Nursing Associate Professionals
+3222,ei,0.2,0.07,Midwifery Associate Professionals
+3230,ei,0.19,0.11,Traditional and Complementary Medicine Associate Professionals
+3240,ei,0.14,0.02,Veterinary Technicians and Assistants
+3251,ei,0.16,0.1,Dental Assistants and Therapists
+3252,3,0.52,0.1,Medical Records and Health Information Technicians
+3253,ei,0.22,0.08,Community Health Workers
+3254,ei,0.24,0.07,Dispensing Opticians
+3255,ei,0.17,0.07,Physiotherapy Technicians and Assistants
+3256,1,0.35,0.23,Medical Assistants
+3257,ei,0.24,0.04,Environmental and Occupational Health Inspectors and Associates
+3258,ei,0.22,0.17,Ambulance Workers
+3259,minimaalne,0.3,0.15,Health Associate Professionals Not Elsewhere Classified
+3311,4,0.63,0.04,Securities and Finance Dealers and Brokers
+3312,4,0.6,0.04,Credit and Loans Officers
+3313,2,0.49,0.13,Accounting Associate Professionals
+3314,3,0.57,0.1,"Statistical, Mathematical and Related Associate Professionals"
+3315,2,0.45,0.19,Valuers and Loss Assessors
+3321,3,0.53,0.12,Insurance Representatives
+3322,2,0.49,0.08,Commercial Sales Representatives
+3323,minimaalne,0.39,0.08,Buyers
+3324,2,0.44,0.1,Trade Brokers
+3331,3,0.57,0.09,Clearing and Forwarding Aents
+3332,2,0.48,0.14,Conference and Event Planners
+3333,minimaalne,0.39,0.09,Employment agents and contractors
+3334,minimaalne,0.35,0.09,Real Estate Agents and Property Managers
+3339,2,0.44,0.12,Business Services Agents Not Elsewhere Classified
+3341,2,0.43,0.11,Office Supervisors
+3342,3,0.55,0.13,Legal Secretaries
+3343,3,0.54,0.14,Administrative and Executive Secretaries
+3344,3,0.53,0.11,Medical Secretaries
+3351,minimaalne,0.32,0.14,Customs and Border Inspectors
+3352,2,0.49,0.12,Government Tax and Excise Officials
+3353,2,0.45,0.07,Government Social Benefits Officials
+3354,2,0.43,0.07,Government Licensing Officials
+3355,ei,0.23,0.07,Police Inspectors and Detectives
+3359,minimaalne,0.36,0.1,Government Regulatory AssociatePprofessionals Not Elsewhere Classified
+3411,1,0.39,0.14,Legal and Related Associate Professionals
+3412,minimaalne,0.33,0.13,Social Work Associate Professionals
+3413,ei,0.12,0.07,Religious Associate Professionals
+3421,ei,0.23,0.11,Athletes and Sports Players
+3422,minimaalne,0.37,0.12,"Sports Coaches, Instructors and Officials"
+3423,ei,0.25,0.07,Fitness and Recreation Instructors and Programme Leaders
+3431,1,0.39,0.12,Photographers
+3432,minimaalne,0.37,0.08,Interior Designers and Decorators
+3433,1,0.37,0.2,"Gallery, Museum and Library Technicians"
+3434,ei,0.25,0.06,Chefs
+3511,2,0.43,0.13,Information and Communications Technology Operations Technicians
+3512,2,0.47,0.19,Information and Communications Technology User Support Technicians
+3513,2,0.43,0.08,Computer Network and Systems Technicians
+3514,3,0.53,0.12,Web Technicians
+3521,minimaalne,0.35,0.11,Broadcasting and Audio-visual Technicians
+3522,minimaalne,0.45,0.04,Telecommunications Engineering Technicians
+4110,4,0.6,0.1,General Office Clerks
+4120,3,0.58,0.1,Secretaries (general)
+4131,4,0.65,0.05,Typists and Word Processing Operators
+4132,4,0.7,0.03,Data Entry Clerks
+4211,3,0.58,0.09,Bank Tellers and Related Clerks
+4212,2,0.45,0.19,"Bookmakers, Croupiers and Related Gaming Workers"
+4213,2,0.48,0.06,Pawnbrokers and Money-lenders
+4214,2,0.43,0.07,Debt Collectors and Related Workers
+4221,3,0.56,0.07,Travel Consultants and Clerks
+4222,3,0.58,0.06,Contact Centre Information Clerks
+4223,3,0.54,0.15,Telephone Switchboard Operators
+4224,3,0.51,0.07,Hotel Receptionists
+4225,3,0.57,0.09,Inquiry Clerks
+4226,3,0.57,0.17,Receptionists (general)
+4227,3,0.55,0.16,Survey and Market Research Interviewers
+4229,2,0.42,0.13,Client Information Workers Not Elsewhere Classified
+4311,4,0.64,0.07,Accounting and Bookkeeping Clerks
+4312,4,0.64,0.02,"Statistical, Finance and Insurance Clerks"
+4313,4,0.61,0.08,Payroll Clerks
+4321,minimaalne,0.37,0.06,Stock Clerks
+4322,2,0.44,0.06,Production Clerks
+4323,3,0.5,0.1,Transport Clerks
+4411,2,0.46,0.18,Library Clerks
+4412,2,0.41,0.15,Mail Carriers and Sorting Clerks
+4413,3,0.51,0.2,"Coding, Proofreading and Related Clerks"
+4414,3,0.58,0.08,Scribes and Related Workers
+4415,1,0.37,0.17,Filing and Copying Clerks
+4416,4,0.6,0.09,Personnel Clerks
+4419,4,0.63,0.03,Clerical Support Workers Not Elsewhere Classified
+5111,ei,0.22,0.1,Travel Attendants and Travel Stewards
+5112,minimaalne,0.25,0.17,Transport Conductors
+5113,minimaalne,0.32,0.11,Travel Guides
+5120,ei,0.18,0.06,Cooks
+5131,minimaalne,0.28,0.16,Waiters
+5132,ei,0.26,0.12,Bartenders
+5141,ei,0.17,0.18,Hairdressers
+5142,ei,0.18,0.19,Beauticians and Related Workers
+5151,ei,0.22,0.1,"Cleaning and Housekeeping Supervisors in Offices, Hotels and Other Establishments"
+5152,ei,0.2,0.1,Domestic Housekeepers
+5153,minimaalne,0.27,0.16,Building Caretakers
+5161,minimaalne,0.3,0.16,"Astrologers, Fortune-tellers and Related Workers"
+5162,ei,0.22,0.05,Companions and Valets
+5163,ei,0.17,0.17,Undertakers and Embalmers
+5164,ei,0.14,0.06,Pet Groomers and Animal Care Workers
+5165,ei,0.2,0.03,Driving Instructors
+5169,ei,0.21,0.07,Personal Services Workers Not Elsewhere Classified
+5211,1,0.35,0.17,Stall and Market Salespersons
+5212,ei,0.22,0.11,Street Food Salespersons
+5221,2,0.43,0.1,Shopkeepers
+5222,minimaalne,0.36,0.12,Shop Supervisors
+5223,1,0.38,0.16,Shop Sales Assistants
+5230,1,0.39,0.14,Cashiers and Ticket Clerks
+5241,ei,0.25,0.06,Fashion and Other Models
+5242,2,0.42,0.11,Sales Demonstrators
+5243,2,0.46,0.18,Door-to-door Salespersons
+5244,4,0.61,0.1,Contact Centre Salespersons
+5245,minimaalne,0.24,0.16,Service Station Attendants
+5246,ei,0.24,0.13,Food Service Counter Attendants
+5311,ei,0.19,0.09,Child Care Workers
+5312,ei,0.24,0.14,Teachers' Aides
+5321,ei,0.14,0.06,Health Care Assistants
+5322,minimaalne,0.25,0.18,Home-based Personal Care Workers
+5329,ei,0.15,0.03,Personal Care Workers in Health Services Not Elsewhere Classified
+5411,ei,0.18,0.1,Fire Fighters
+5412,ei,0.14,0.03,Police Officers
+5413,ei,0.14,0.04,Prison Guards
+5414,ei,0.2,0.09,Security Guards
+5419,ei,0.2,0.05,Protective Services Workers Not Elsewhere Classified
+6111,ei,0.18,0.12,Field Crop and Vegetable Growers
+6112,ei,0.17,0.11,Tree and Shrub Crop Growers
+6113,ei,0.18,0.11,"Gardeners, Horticultural and Nursery Growers"
+6114,ei,0.17,0.12,Mixed Crop Growers
+6121,ei,0.17,0.1,Livestock and Dairy Producers
+6122,ei,0.19,0.1,Poultry Producers
+6123,ei,0.22,0.11,Apiarists and Sericulturists
+6129,ei,0.2,0.14,Animal Producers Not Elsewhere Classified
+6130,ei,0.19,0.11,Mixed Crop and Animal Producers
+6210,ei,0.12,0.05,Forestry and Related Workers
+6221,ei,0.22,0.15,Aquaculture Workers
+6222,ei,0.17,0.1,Inland and Coastal Waters Fishery Workers
+6223,ei,0.18,0.07,Deep-sea Fishery Workers
+6224,ei,0.09,0.03,Hunters and Trappers
+6310,ei,0.13,0.05,Subsistence Crop Farmers
+6320,ei,0.13,0.04,Subsistence Livestock Farmers
+6330,ei,0.12,0.05,Subsistence Mixed Crop and Livestock Farmers
+6340,ei,0.12,0.05,"Subsistence Fishers, Hunters, Trappers and Gatherers"
+7111,ei,0.14,0.07,House Builders
+7112,ei,0.09,0.01,Bricklayers and Related Workers
+7113,ei,0.11,0.02,"Stonemasons, Stone Cutters, Splitters and Carvers"
+7114,ei,0.1,0.03,"Concrete Placers, Concrete Finishers and Related Workers"
+7115,ei,0.13,0.02,Carpenters and Joiners
+7119,ei,0.09,0.01,Building Frame and Related Trades Workers Not Elsewhere Classified
+7121,ei,0.13,0.08,Roofers
+7122,ei,0.1,0.02,Floor Layers and Tile Setters
+7123,ei,0.11,0.01,Plasterers
+7124,ei,0.13,0.02,Insulation Workers
+7125,ei,0.14,0,Glaziers
+7126,ei,0.18,0.1,Plumbers and Pipe Fitters
+7127,ei,0.21,0.11,Air Conditioning and Refrigeration Mechanics
+7131,ei,0.13,0.04,Painters and Related Workers
+7132,ei,0.12,0,Spray Painters and Varnishers
+7133,ei,0.09,0.01,Building Structure Cleaners
+7211,ei,0.13,0.01,Metal Moulders and Coremakers
+7212,ei,0.13,0.05,Welders and Flame Cutters
+7213,ei,0.21,0.09,Sheet Metal Workers
+7214,ei,0.11,0.02,Structural Metal Preparers and Erectors
+7215,ei,0.13,0.03,Riggers and Cable Splicers
+7221,ei,0.17,0.05,"Blacksmiths, Hammersmiths and Forging Press Workers"
+7222,ei,0.2,0.1,Toolmakers and Related Workers
+7223,ei,0.18,0.05,Metal Working Machine Tool Setters and Operators
+7224,ei,0.17,0.05,"Metal Polishers, Wheel Grinders and Tool Sharpeners"
+7231,ei,0.18,0.04,Motor Vehicle Mechanics and Repairers
+7232,ei,0.19,0.07,Aircraft Engine Mechanics and Repairers
+7233,ei,0.17,0.04,Agricultural and Industrial Machinery Mechanics and Repairers
+7234,ei,0.13,0.02,Bicycle and Related Repairers
+7311,ei,0.21,0.08,Precision-instrument Makers and Repairers
+7312,ei,0.14,0.02,Musical Instrument Makers and Tuners
+7313,ei,0.18,0.05,Jewellery and Precious Metal Workers
+7314,ei,0.18,0.07,Potters and Related Workers
+7315,ei,0.19,0.06,"Glass Makers, Cutters, Grinders and Finishers"
+7316,ei,0.18,0.08,"Sign Writers, Decorative Painters, Engravers and Etchers"
+7317,ei,0.14,0.01,"Handicraft Workers in Wood, Basketry and Related Materials"
+7318,ei,0.13,0.03,"Handicraft Workers in Textile, Leather and Related Materials"
+7321,1,0.38,0.22,Pre-press Technicians
+7322,ei,0.25,0.11,Printers
+7323,ei,0.22,0.09,Print Finishing and Binding Workers
+7411,ei,0.19,0.06,Building and Related Electricians
+7412,ei,0.17,0.05,Electrical Mechanics and Fitters
+7413,ei,0.15,0.08,Electrical Line Installers and Repairers
+7421,ei,0.25,0.13,Electronics Mechanics and Servicers
+7422,ei,0.24,0.14,Information and Communications Technology Installers and Servicers
+7511,ei,0.13,0.03,"Butchers, Fishmongers and Related Food Preparers"
+7512,ei,0.17,0.08,"Bakers, Pastry-cooks and Confectionery Makers"
+7513,ei,0.22,0.17,Dairy Products Makers
+7514,ei,0.15,0.04,"Fruit, Vegetable and Related Preservers"
+7515,minimaalne,0.31,0.16,Food and Beverage Tasters and Graders
+7516,ei,0.14,0.06,Tobacco Preparers and Tobacco Products Makers
+7521,ei,0.22,0.15,Wood Treaters
+7522,ei,0.16,0.06,Cabinet-makers and Related Workers
+7523,ei,0.22,0.16,Woodworking Machine Tool Setters and Operators
+7531,ei,0.15,0.05,"Tailors, Dressmakers, Furriers and Hatters"
+7532,ei,0.17,0.04,Garment and Related Patternmakers and Cutters
+7533,ei,0.12,0.02,"Sewing, Embroidery and Related Workers"
+7534,ei,0.18,0.09,Upholsterers and Related Workers
+7535,ei,0.11,0.03,"Pelt Dressers, Tanners and Fellmongers"
+7536,ei,0.17,0.06,Shoemakers and Related Workers
+7541,ei,0.16,0.09,Underwater Divers
+7542,ei,0.12,0.05,Shotfirers and Blasters
+7543,minimaalne,0.31,0.11,Product Graders and Testers (except Foods and Beverages)
+7544,ei,0.13,0.04,Fumigators and Other Pest and Weed Controllers
+7549,ei,0.14,0.01,Craft and Related Workers not Elsewhere Classified
+8111,ei,0.17,0.11,Miners and Quarriers
+8112,ei,0.21,0.1,Mineral and Stone Processing Plant Operators
+8113,ei,0.19,0.12,Well Drillers and Borers and Related Workers
+8114,ei,0.23,0.11,"Cement, Stone and Other Mineral Products Machine Operators"
+8121,ei,0.26,0.1,Metal Processing Plant Operators
+8122,ei,0.2,0.04,"Metal Finishing, Plating and Coating Machine Operators"
+8131,ei,0.24,0.07,Chemical Products Plant and Machine Operators
+8132,ei,0.27,0.06,Photographic Products Machine Operators
+8141,ei,0.18,0.05,Rubber Products Machine Operators
+8142,ei,0.17,0.05,Plastic Products Machine Operators
+8143,ei,0.18,0.02,Paper Products Machine Operators
+8151,ei,0.15,0.02,"Fibre Preparing, Spinning and Winding Machine Operators"
+8152,ei,0.16,0.03,Weaving and Knitting Machine Operators
+8153,ei,0.15,0.03,Sewing Machine Operators
+8154,ei,0.21,0.15,"Bleaching, Dyeing and Fabric Cleaning Machine Operators"
+8155,ei,0.15,0.02,Fur and Leather Preparing Machine Operators
+8156,ei,0.16,0.02,Shoemaking and Related Machine Operators
+8157,ei,0.16,0.03,Laundry Machine Operators
+8159,ei,0.16,0.01,"Textile, Fur and Leather Products Machine Operators Not Elsewhere Classified"
+8160,ei,0.15,0.03,Food and Related Products Machine Operators
+8171,minimaalne,0.28,0.14,Pulp and Papermaking Plant Operators
+8172,ei,0.14,0.05,Wood Processing Plant Operators
+8181,ei,0.17,0.06,Glass and Ceramics Plant Operators
+8182,ei,0.2,0.04,Steam Engine and Boiler Operators
+8183,ei,0.22,0.01,"Packing, Bottling and Labelling Machine Operators"
+8211,minimaalne,0.27,0.17,Mechanical Machinery Assemblers
+8212,minimaalne,0.28,0.19,Electrical and Electronic Equipment Assemblers
+8219,minimaalne,0.32,0.17,Assemblers Not Elsewhere Classified
+8311,ei,0.2,0.08,Locomotive Engine Drivers
+8312,ei,0.17,0.04,"Railway Brake, Signal and Switch Operators"
+8321,minimaalne,0.25,0.17,Motorcycle Drivers
+8322,1,0.28,0.23,"Car, Taxi and Van Drivers"
+8331,ei,0.18,0.06,Bus and Tram Drivers
+8332,minimaalne,0.24,0.22,Heavy Truck and Lorry Drivers
+8341,ei,0.12,0.03,Mobile Farm and Forestry Plant Operators
+8342,ei,0.13,0.02,Earthmoving and Related Plant Operators
+8343,ei,0.18,0.03,"Crane, hoist and related plant operators"
+8344,ei,0.2,0.1,Lifting Truck Operators
+8350,ei,0.14,0.02,Ships' Deck Crews and Related Workers
+9111,ei,0.14,0.08,Domestic Cleaners and Helpers
+9112,ei,0.12,0.02,"Cleaners and Helpers in Offices, Hotels and Other Establishments"
+9121,ei,0.14,0.03,Hand Launderers and Pressers
+9122,ei,0.09,0.01,Vehicle Cleaners
+9123,ei,0.11,0.03,Window Cleaners
+9129,ei,0.1,0.01,Other Cleaning Workers
+9211,ei,0.09,0.02,Crop Farm Labourers
+9212,ei,0.12,0.03,Livestock Farm Labourers
+9213,ei,0.11,0.03,Mixed Crop and Livestock Farm Labourers
+9214,ei,0.12,0.02,Garden and Horticultural Labourers
+9215,ei,0.09,0.02,Forestry Labourers
+9216,ei,0.11,0.03,Fishery and Aquaculture Labourers
+9311,ei,0.11,0.02,Mining and Quarrying Labourers
+9312,ei,0.09,0.02,Civil Engineering Labourers
+9313,ei,0.09,0.02,Building Construction Labourers
+9321,ei,0.2,0.05,Hand Packers
+9329,ei,0.12,0.02,Manufacturing Labourers Not Elsewhere Classified
+9331,ei,0.21,0.08,Hand and Pedal Vehicle Drivers
+9332,ei,0.13,0.08,Drivers of Animal-drawn Vehicles and Machinery
+9333,ei,0.14,0.03,Freight Handlers
+9334,ei,0.2,0.1,Shelf Fillers
+9411,ei,0.18,0.05,Fast Food Preparers
+9412,ei,0.13,0.02,Kitchen Helpers
+9510,ei,0.18,0.09,Street and Related Service Workers
+9520,ei,0.2,0.1,Street Vendors (excluding Food)
+9611,ei,0.09,0.02,Garbage and Recycling Collectors
+9612,ei,0.18,0.11,Refuse Sorters
+9613,ei,0.09,0.03,Sweepers and Related Labourers
+9621,1,0.37,0.19,"Messengers, Package Deliverers and Luggage Porters"
+9622,ei,0.11,0.03,Odd Job Persons
+9623,1,0.38,0.21,Meter Readers and Vending-machine Collectors
+9624,ei,0.09,0.03,Water and Firewood Collectors
+9629,minimaalne,0.29,0.14,Elementary Workers Not Elsewhere Classified

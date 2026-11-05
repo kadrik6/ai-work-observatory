@@ -114,6 +114,7 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
         "avalik": {r["id"]: r for r in loe_csv(sisu / "avalik-sektor.csv")},
         "oecd_soovitused": loe_csv(sisu / "oecd-soovitused.csv"),
         "tooelu": {},
+        "kokkupuude": arvuta_kokkupuude(sisu),
     }
     leiud_p = juur.parent / "tooelu-seire" / "leiud.json"
     if leiud_p.exists():
@@ -131,6 +132,78 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
     kuup = [v["avaldatud"] for v in vaatlused if v["avaldatud"]]
     A["uuendatud"] = max(kuup)
     return A
+
+
+ASTMED = ("4", "3", "2", "1", "minimaalne", "ei")
+PA633_URL = "https://andmed.stat.ee/et/stat/majandus__palk-ja-toojeukulu__tootasu/PA633"
+ILO_SKOORID_URL = "https://pgmyrek.github.io/2025_GenAI_scores_ISCO08/"
+
+
+def arvuta_kokkupuude(sisu):
+    """ILO 2025 generatiivse tehisaru kokkupuute astmed Eesti töötajate ametite järgi.
+    Eesti: Statistikaamet PA633, 2022 oktoober, töötajad täistööajale taandatult, 4-kohaline amet.
+    EL võrdlus: Eurostat lfsa_egai2d 2025, 2-kohaline amet; rühm jagatakse astmete vahel selle
+    4-kohaliste ametite arvu järgi (kaalumata). See on ligikaudne ja eraldi arvutus."""
+    sisu = Path(sisu)
+    ilo = loe_csv(sisu / "ilo-kokkupuude-2025.csv")
+    aste = {}
+    for r in ilo:
+        if r["isco4"] in aste:
+            raise AndmeViga(f"ILO amet {r['isco4']} on kaks korda")
+        if r["aste"] not in ASTMED:
+            raise AndmeViga(f"ILO amet {r['isco4']}: tundmatu aste {r['aste']!r}")
+        aste[r["isco4"]] = r["aste"]
+    ee = loe_csv(sisu / "ee-tootajad-ametid-2022.csv")
+    koodid = [r["kood"] for r in ee]
+    if len(set(koodid)) != len(koodid):
+        raise AndmeViga("ee-tootajad-ametid-2022.csv: ametikood on kaks korda")
+    ryhm = {r["kood"]: int(r["tootajad_fte"]) for r in ee if len(r["kood"]) == 1}
+    neli = [r for r in ee if len(r["kood"]) == 4]
+    for g, kokku in ryhm.items():
+        alla = sum(int(r["tootajad_fte"]) for r in neli if r["kood"][0] == g)
+        if not 0.9 * kokku <= alla <= kokku:
+            raise AndmeViga(f"PA633 rühm {g}: ametite summa {alla} ei sobi rühma kogusummaga {kokku}")
+    kokku = sum(int(r["tootajad_fte"]) for r in neli)
+    osa = {a: 0 for a in ASTMED}
+    liigitamata, ametid = 0, []
+    for r in neli:
+        n = int(r["tootajad_fte"])
+        a = aste.get(r["kood"])
+        if a is None:
+            liigitamata += n
+            continue
+        osa[a] += n
+        if a in ("3", "4"):
+            if not r["nimi_et"]:
+                raise AndmeViga(f"Kõige avatumal ametil {r['kood']} puudub eestikeelne nimi")
+            ametid.append({"kood": r["kood"], "nimi": r["nimi_et"], "fte": n, "aste": a})
+    ametid.sort(key=lambda x: -x["fte"])
+    pr_ = {a: n / kokku * 100 for a, n in osa.items()}
+    # EL võrdlus samal ligikaudsel viisil
+    from collections import Counter
+    rühmad = {}
+    for k, a in aste.items():
+        rühmad.setdefault(k[:2], Counter())[a] += 1
+    el = {}
+    for r in loe_csv(sisu / "eurostat-hoive-ametid-2025.csv"):
+        if r["isco"] == "TOTAL" or not r["tuhat"]:
+            continue
+        c = rühmad.get(r["isco"][2:4])
+        if not c:
+            continue  # kaitseväe ametid: ILO indeksis teise koodiga
+        g = el.setdefault(r["geo"], {"kokku": 0.0, **{a: 0.0 for a in ASTMED}})
+        v, m = float(r["tuhat"]), sum(c.values())
+        g["kokku"] += v
+        for a, k in c.items():
+            g[a] += v * k / m
+    el_pr = {geo: {"avatud": sum(g[a] for a in ("1", "2", "3", "4")) / g["kokku"] * 100,
+                   "korge": (g["3"] + g["4"]) / g["kokku"] * 100} for geo, g in el.items()}
+    return {
+        "kokku": kokku, "osa": pr_, "liigitamata": liigitamata / kokku * 100,
+        "avatud": sum(pr_[a] for a in ("1", "2", "3", "4")), "korge": pr_["3"] + pr_["4"],
+        "ametid": ametid, "el": el_pr, "ilo_ameteid": len(aste),
+        "ilo_avatud_ameteid": sum(1 for a in aste.values() if a in ("1", "2", "3", "4")),
+    }
 
 
 def koonda_vaited(riskid, vaited):

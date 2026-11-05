@@ -224,3 +224,32 @@ def test_avalik_sektor_pohineb_avalikul_raportil(sait):
 def test_sihi_tulbad_uks_fookus(sait):
     h = sait["reeglid-ja-sihid.html"]
     assert h.count('class="sihiriba fookus"') == 1
+
+
+def test_kokkupuute_osad_summeeruvad_ja_pealkiri_tuleb_andmetest(A, sait):
+    K = A["kokkupuude"]
+    assert abs(sum(K["osa"].values()) + K["liigitamata"] - 100) < 0.01
+    assert K["ilo_ameteid"] == 427 and K["ilo_avatud_ameteid"] == 112  # ILO WP140 tabel A1
+    h2 = re.search(r'<h2 id="h-kokkupuude">(.*?)</h2>', sait["too.html"], re.S).group(1)
+    assert f'{komponendid.pr(K["avatud"], 0)}%' in h2
+    assert f'<b>{komponendid.pr(K["korge"], 0)}% kõige avatumates</b>' in h2
+
+
+def test_kokkupuude_ei_ole_moju_ja_el_vordlus_on_eraldi(sait):
+    s = sait["too.html"]
+    jaotis = s[s.index('id="kokkupuude"'):s.index('id="tulevik"')]
+    assert "Kokkupuude ei ole mõju" in jaotis
+    # ELi ligikaudne võrdlus on tekstis, mitte Eesti 4-kohalise numbriga samal graafikul
+    graafik = jaotis[jaotis.index("<figure"):jaotis.index("</figure>")]
+    assert "ELile" not in graafik and "EL " not in graafik
+
+
+def test_kokkupuute_andmed_kukuvad_valjult(tmp_path):
+    import shutil
+    sisu = JUUR / "sait" / "sisu"
+    for f in ("ilo-kokkupuude-2025.csv", "ee-tootajad-ametid-2022.csv", "eurostat-hoive-ametid-2025.csv"):
+        shutil.copy(sisu / f, tmp_path / f)
+    p = tmp_path / "ilo-kokkupuude-2025.csv"
+    p.write_text(p.read_text(encoding="utf-8").replace("1111,ei,", "1111,kõrge,", 1), encoding="utf-8")
+    with pytest.raises(andmekiht.AndmeViga):
+        andmekiht.arvuta_kokkupuude(tmp_path)

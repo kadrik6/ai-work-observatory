@@ -375,7 +375,50 @@ def too(A, vaade, vaated=None):
   {tabel(["Uuring", "Mida leiti"], e_read, numbrid=[], pealdis="Eesti uuringud tehisaru ja töö kohta")}
 </section>"""
 
-    # 4. Mis ees ootab
+    # 4. Kokkupuude ametite kaupa: kui paljude Eesti töötajate ülesandeid tehisaru puudutab (mitte mõju)
+    K = A["kokkupuude"]
+    ilo = U["ilo2025"]
+    ilo_korge = next(r["protsent"] for r in T["avatus"]["riigid"] if r["nimi"] == "Kõrge sissetulekuga riigid")
+    k_read = [("Aste 3–4", K["korge"], None),
+              ("Aste 1–2", K["osa"]["1"] + K["osa"]["2"], None),
+              ("Minimaalne", K["osa"]["minimaalne"], None),
+              ("Ei puutu kokku", K["osa"]["ei"], None)]
+    k_tabel = [[e(r["nimi"]), _tuh(r["fte"]), r["aste"]] for r in K["ametid"]]
+    ee_el, el_el = K["el"]["EE"], K["el"][EL]
+    can_m = can["muutus"]
+    sec_kokkupuude = f"""
+<section class="jaotis" id="kokkupuude" aria-labelledby="h-kokkupuude">
+  <header>
+    <h2 id="h-kokkupuude">Eesti töötajatest {pr(K["avatud"], 0)}% on ametites, kus generatiivne tehisaru puudutab osa ülesandeid; <b>{pr(K["korge"], 0)}% kõige avatumates</b></h2>
+  </header>
+  <div class="kaks">
+    <figure aria-labelledby="g-kokkupuude">
+      <figcaption><span class="gt" id="g-kokkupuude">Eesti töötajad ameti kokkupuute astme järgi, % (2022)</span>
+        <span class="gs">Kokkupuude ei ole mõju: aste näitab, kui suur osa ameti ülesannetest on generatiivsele tehisarule avatud; 4 on kõige avatum. Töötajad on taandatud täistööajale; {pr(K["liigitamata"])}% on ametites, mida ILO indeksis pole.</span></figcaption>
+      {lihtribad(k_read, 50, 10, "%", fookus=0)}
+      {allikarida([(f"ILO {ilo['aasta']}, kokkupuute indeks", ilo["url"], ""), ("Statistikaamet, tabel PA633", andmed.PA633_URL, "oktoober 2022")])}
+      <h3 class="tabeli-pealkiri">Kõige avatumad ametid Eestis</h3>
+      {tabel(["Amet", "Töötajaid", "Aste"], k_tabel, piir=True, pealdis="Kõige avatumad ametid Eestis, töötajad täistööajale taandatult, 2022")}
+    </figure>
+    <div class="kulg">
+      {vastavus("osaliselt", "Kokkupuude ei ole mõju. Indeks näitab, kui suur osa ameti ülesannetest on tehisarule avatud, mitte seda, kas töö kaob, muutub või jääb samaks.")}
+      {faktid([
+          ("Mida uuringud näitavad", "", f'USA-s on 22–25-aastaste hõive avatud ametites {e(can_m)} võrreldes vähem avatud ametitega ({a(U["canaries2026"]["url"], "Brynjolfsson jt " + str(U["canaries2026"]["aasta"]))}). Taanis ei muutunud kogu tööturul tulu ega töötunnid ({a(hum["url"], "Humlum ja Vestergaard " + str(hum["aasta"]))}). Eesti kohta sellist uuringut pole.'),
+          ("ELi võrdlus", "", f'Sama ligikaudne arvutus Eurostati 2025. aasta ametirühmade järgi annab Eestile {pr(ee_el["avatud"], 0)}% ja ELile {pr(el_el["avatud"], 0)}%. See on teine andmestik ja jämedam jaotus kui graafikul, seepärast eraldi. ILO enda hinnang kõrge sissetulekuga riikidele on {pr(ilo_korge, 0)}%.'),
+          ("Tõlgendus", "s", f'Kõige avatumad on kontori-, raamatupidamise ja klienditeeninduse ametid ning tarkvaraarendus. ILO hinnangul on tõenäolisem, et töö muutub, kui et see kaob ({a(ilo["url"], "ILO " + str(ilo["aasta"]))}).'),
+      ])}
+    </div>
+  </div>
+  <details>
+    <summary>Kuidas astmed on arvutatud ja mida number ei kata</summary>
+    <div>
+      <p>ILO hindas iga ameti ülesanded skaalal 0–1: kui suure osa ülesandest saab generatiivne tehisaru ära teha. Ameti aste tuleb ülesannete keskmisest ja hajuvusest: astmes 4 on keskmine vähemalt 0,6 ja ka madalamad hinnangud on kõrged. {K["ilo_avatud_ameteid"]} ametit {K["ilo_ameteid"]}-st on astmetes 1–4. Ülesanded on kirjeldatud Poola ametiklassifikaatori järgi; Eesti ametite sisu võib erineda (<a href="{andmed.ILO_SKOORID_URL}">ILO ametite skoorid</a>, CC BY 4.0).</p>
+      <p>Eesti number on {_tuh(K["kokku"])} töötaja kohta, kes on taandatud täistööajale (Statistikaameti palgastruktuuri uuring, oktoober 2022). Ettevõtjad ja FIE-d ei ole sees. Väikeste ametite numbrid on osaliselt avaldamata, seepärast on ametite summa rühmade summast kuni 5% väiksem.</p>
+    </div>
+  </details>
+</section>"""
+
+    # 5. Mis ees ootab
     oska = U[tulevik["eesti_ametid"]["uuring"]]
     ced = U["cedefop2026"]
     bls = tulevik["ametid"]
@@ -431,8 +474,8 @@ def too(A, vaade, vaated=None):
     ]
     lead = ("Uuringud ei näita veel töökohtade kadu kogu tööturul, aga noorte palkamine ja vabakutseliste tööd on mõnes ametis vähenenud. "
             "Eesti kohta selliseid mõõtmisi veel ei ole.")
-    return (pea(A, vaade, lead, [("maailm", "Mida maailmas leiti"), ("ulesanded", "Ülesanded"), ("eesti", "Eestis"), ("tulevik", "Mis ees ootab")], ree)
-            + sec_maailm + sec_kiirus + sec_eesti + sec_tulevik)
+    return (pea(A, vaade, lead, [("maailm", "Mida maailmas leiti"), ("ulesanded", "Ülesanded"), ("eesti", "Eestis"), ("kokkupuude", "Ametid"), ("tulevik", "Mis ees ootab")], ree)
+            + sec_maailm + sec_kiirus + sec_eesti + sec_kokkupuude + sec_tulevik)
 
 
 # ---------------------------------------------------------------- Avalik sektor
