@@ -32,16 +32,18 @@ ANDMED = {
                   "levimus": {"valimi_pohjal": {"hinnang": 190, "vahemik_95": [150, 480]}, "hankeid": 30000,
                               "valitud_leidis": 180},
                   "margendid": {"leitud_registrist": 782, "positiivseid": 141}},
-    "loend": [{"t": "Kõnetuvastus </script>", "k": "x", "h": "Asutus <A>", "kp": "2026-01-02", "hea": 3},
+    "loend": [{"t": "Kõnetuvastus </script>", "k": "x", "h": "Asutus <A>", "kp": "2026-01-02", "hea": 3, "a": 2026, "ai": True,
+               "ah": False, "kv": 40, "pk": 2, "kat": False},
               {"t": "Eesti.ai koolitajate tellimine (Riigikantselei)", "k": "", "h": "Riigi Tugiteenuste Keskus",
-               "kp": "2026-02-01", "hea": 1}],
+               "kp": "2026-02-01", "hea": 1, "a": 2026, "ai": False,
+               "ah": True, "kv": None, "pk": 1, "kat": None}],
 }
 
 
 def test_leht_ehitub_ja_pealkiri_utleb_leiu():
     h = ehita.ehita(ANDMED, "2026-11-04")
     assert "%%" not in h
-    assert "2025. aastal <b>150</b>" in h  # fookus on viimane täisaasta, mitte pooleli olev 2026
+    assert "2025. aastal tehti <b>75 AI-hanget</b> ja 75 andmehanget" in h  # fookus on viimane täisaasta, mitte pooleli olev 2026
     assert "sihini 2% jääb 0,4 protsendipunkti" in h  # 2026: 110/7000 = 1,6%
     assert "Asutus &lt;A&gt;" in h  # hankija nimi on varjestatud
     assert "</script>\"" not in h and "<\\/script>" in h  # andmed ei saa skriptiplokki sulgeda
@@ -57,3 +59,10 @@ def test_korraldaja_ja_tellija():
     assert "<b>50%</b> AI- ja andmehangetest tehakse teise asutuse jaoks, kui lugeda pealkirja" in h
     assert "Kes korraldab" in h and "Kelle jaoks" in h
     assert '"kj":"Riigikantselei"' in h  # otsingu loendis on tellija
+
+
+def test_ai_ja_andmed_eraldi():
+    h = ehita.ehita(ANDMED, "2026-11-04")
+    assert "Kvaliteeti hinnatakse <b>100% AI-hangetest</b>, 0% andmehangetest" in h
+    assert 'data-ruhm="ai" hidden' in h and 'data-ruhm="andmed" hidden' in h
+    assert "AI-hanked (1)" in h and "andmehanked (1)" in h

@@ -18,6 +18,7 @@ import collections
 import datetime as dt
 import html
 import json
+import statistics
 import sys
 from pathlib import Path
 
@@ -54,25 +55,31 @@ def protsent(x, k=1):
 
 # ---------------------------------------------------------------- graafikud (SVG)
 
+def jaga(a):
+    """Aasta AI- ja andmehangete arv. AI = hankel on AI-sõna (reeglid.marksonad), andmed = ülejäänud tuvastatud."""
+    ai = a.get("ai_marksonaga") or 0
+    return ai, a["ai_andmed"] - ai
+
+
 def tulbad_aastad(aastad, fookus_aasta, osalised):
-    """Vertikaalsed tulbad: AI- ja andmehangete arv aastas. Üks fookustulp, teised hallid."""
+    """Paaristulbad aastas: AI-hanked (fookus, sinine) ja andmehanked (tume hall) kõrvuti, üks skaala."""
     w, h, vasak, all, ules = 560, 220, 8, 34, 26
     n = len(aastad)
     samm = (w - vasak * 2) / max(n, 1)
-    tl = samm * 0.62
-    mx = max([a["ai_andmed"] for a in aastad] + [1])
+    tl = samm * 0.36
+    mx = max([max(jaga(a)) for a in aastad] + [1])
     osad = [f'<svg viewBox="0 0 {w} {h}" role="img" aria-labelledby="g1-p g1-k" class="graafik">']
     for i, a in enumerate(aastad):
-        x = vasak + i * samm + (samm - tl) / 2
-        kh = (h - all - ules) * a["ai_andmed"] / mx
-        y = h - all - kh
-        klass = "m-fookus" if a["aasta"] == fookus_aasta else "m-kontekst"
-        osad.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{tl:.1f}" height="{kh:.1f}" class="{klass}"/>')
-        tekst_klass = "t-fookus" if a["aasta"] == fookus_aasta else "t-silt"
-        osad.append(f'<text x="{x + tl / 2:.1f}" y="{y - 7:.1f}" text-anchor="middle" class="{tekst_klass}">'
-                    f'{arv(a["ai_andmed"])}</text>')
+        x0 = vasak + i * samm + (samm - 2 * tl - 2) / 2
+        for j, (v, klass, tk) in enumerate(zip(jaga(a), ("m-fookus", "m-teine"), ("t-fookus-v", "t-silt"))):
+            x = x0 + j * (tl + 2)
+            kh = (h - all - ules) * v / mx
+            y = h - all - kh
+            osad.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{tl:.1f}" height="{kh:.1f}" class="{klass}"/>')
+            osad.append(f'<text x="{x + tl / 2:.1f}" y="{y - 6:.1f}" text-anchor="middle" class="{tk}">{arv(v)}</text>')
         silt = f'{a["aasta"]}*' if a["aasta"] in osalised else str(a["aasta"])
-        osad.append(f'<text x="{x + tl / 2:.1f}" y="{h - 12}" text-anchor="middle" class="t-telg">{silt}</text>')
+        osad.append(f'<text x="{vasak + i * samm + samm / 2:.1f}" y="{h - 12}" text-anchor="middle" '
+                    f'class="t-telg">{silt}</text>')
     osad.append(f'<line x1="{vasak}" x2="{w - vasak}" y1="{h - all}" y2="{h - all}" class="telg"/>')
     osad.append("</svg>")
     return "".join(osad)
@@ -107,19 +114,19 @@ def tulbad_innovatsioon(read):
 
 
 def vordlusribad(naitajad, grupid):
-    """Väikesed horisontaalsed ribad: iga näitaja kohta kolm rühma. AI ja andmed on fookuses."""
+    """Väikesed horisontaalsed ribad: iga näitaja kohta neli rühma. AI on fookuses, andmed tume hall."""
     plokid = []
     for nimi, vali, yhik, mx in naitajad:
         read = []
         for g_id, g_nimi in grupid:
             v = vali(g_id)
             laius = 0 if v is None else max(0.5, 100 * v / mx)
-            klass = "riba-fookus" if g_id == "ai_andmed" else "riba-kontekst"
+            klass = {"ai": "riba-fookus", "andmed": "riba-teine"}.get(g_id, "riba-kontekst")
             vaartus = "–" if v is None else (arv(v) if yhik == "" else protsent(v, 0) if yhik == "%" else arv(v) + yhik)
             read.append(
                 f'<div class="v-rida"><span class="v-nimi">{e(g_nimi)}</span>'
                 f'<span class="v-rada"><span class="{klass}" style="width:{laius:.1f}%"></span></span>'
-                f'<span class="v-arv{" v-arv-fookus" if g_id == "ai_andmed" else ""}">{vaartus}</span></div>')
+                f'<span class="v-arv{" v-arv-fookus" if g_id == "ai" else ""}">{vaartus}</span></div>')
         plokid.append(f'<div class="v-plokk"><h4>{e(nimi)}</h4>{"".join(read)}</div>')
     return f'<div class="vordlus">{"".join(plokid)}</div>'
 
@@ -136,6 +143,19 @@ def hankijate_ribad(top, fookus=lambda nimi: False, mx=None):
     return "".join(read)
 
 
+def viis_loendist(rid):
+    """Hankimise viis loendi ridadest, samade reeglitega nagu koonda.hankimise_viis."""
+    o = lambda a, b: round(100 * a / b, 1) if b else None  # noqa: E731
+    kr = [r for r in rid if r.get("ah") is not None]
+    kaalud = [r["kv"] for r in kr if r.get("kv") is not None and not r["ah"]]
+    pakk = [r["pk"] for r in rid if r.get("pk") is not None]
+    tul = [r for r in rid if r.get("kat") is not None]
+    return {"hankeid": len(rid), "ainult_hind_osakaal": o(sum(r["ah"] for r in kr), len(kr)),
+            "kvaliteedi_kaal_mediaan": statistics.median(kaalud) if kaalud else None,
+            "pakkumusi_teada": len(pakk), "uks_pakkuja_osakaal": o(sum(p == 1 for p in pakk), len(pakk)),
+            "katkes_osakaal": o(sum(bool(r["kat"]) for r in tul), len(tul))}
+
+
 def tellijad(loend):
     """Lisab loendi ridadele tellija (kj) ja selle allika (kja) ning loendab korraldajad ja tellijad."""
     nimed = T.asutused(r.get("h") for r in loend)
@@ -148,10 +168,29 @@ def tellijad(loend):
     kesksete = sum(r.get("h") in T.KESKSED for r in loend)
     jarjest = tell.most_common()
     top10 = max(1, round(len(jarjest) * 0.1))
+    kj = korr.most_common()
+    k10 = max(1, round(len(kj) * 0.1))
     return {"korraldajad": korr.most_common(), "tellijad": jarjest, "teise_jaoks": teise_jaoks,
             "kesksete": kesksete, "pealkirjast": sum(r["kja"] == "pealkiri" for r in loend),
             "tellijaid": len(jarjest), "top10_tellijaid": top10,
-            "top10_osakaal": round(100 * sum(n for _, n in jarjest[:top10]) / max(len(loend), 1), 1)}
+            "top10_osakaal": round(100 * sum(n for _, n in jarjest[:top10]) / max(len(loend), 1), 1),
+            "n": len(loend), "top10_korraldajaid": k10,
+            "top10_korr_osakaal": round(100 * sum(n for _, n in kj[:k10]) / max(len(loend), 1), 1)}
+
+
+def kaks_tulpa(t, ruhm, peidus):
+    """Korraldaja ja tellija ribad kõrvuti ühe hangete rühma kohta (koik, ai või andmed)."""
+    mx = max([n for _, n in t["korraldajad"][:12] + t["tellijad"][:12]] + [1])
+    tellija_read = [(n.replace(" (pealkirjast ei selgu)", "*"), x) for n, x in t["tellijad"][:12]]
+    return (f'<div class="kaks-tulpa" data-ruhm="{ruhm}"{" hidden" if peidus else ""}>'
+            f'<div class="v-plokk"><h4>Kes korraldab</h4><div class="hankijad">'
+            f'{hankijate_ribad(t["korraldajad"][:12], lambda n: n in T.KESKSED, mx)}</div>'
+            f'<p class="markus">{arv(t["top10_korraldajaid"])} korraldajat ehk 10% korraldab '
+            f'{protsent(t["top10_korr_osakaal"], 0)} hangetest. Teise asutuse jaoks: '
+            f'{protsent(100 * t["teise_jaoks"] / max(t["n"], 1), 0)} ({arv(t["teise_jaoks"])} / {arv(t["n"])}).</p></div>'
+            f'<div class="v-plokk"><h4>Kelle jaoks</h4><div class="hankijad">{hankijate_ribad(tellija_read, mx=mx)}</div>'
+            f'<p class="markus">{arv(t["top10_tellijaid"])} tellijat ehk 10% tellib {protsent(t["top10_osakaal"], 0)} '
+            f'hangetest. * Keskne hankija, pealkiri tellijat ei nimeta.</p></div></div>')
 
 
 # ---------------------------------------------------------------- leht
@@ -177,15 +216,20 @@ def ehita(d, seis):
         r["_osaline"] = (i == 0) or r["aasta"] == osaline
     inn_viimane = inn[-1] if inn else None
 
+    p0, p1 = viis.get("periood") or [None, None]
+    perioodis = [r for r in d["loend"] if p0 is not None and p0 <= (r.get("a") or 0) <= p1]
+    viis = dict(viis)
+    viis["ai"] = viis_loendist([r for r in perioodis if r.get("ai")])
+    viis["andmed"] = viis_loendist([r for r in perioodis if not r.get("ai")])
     ai = viis["ai_andmed"]
     muu = viis["koik"]
     kval_ai = None if ai["ainult_hind_osakaal"] is None else 100 - ai["ainult_hind_osakaal"]
     kval_koik = None if muu["ainult_hind_osakaal"] is None else 100 - muu["ainult_hind_osakaal"]
-    p0, p1 = viis.get("periood") or [None, None]
 
     # pealkirjad ütlevad leiu
-    g1_pealkiri = (f'AI- ja andmehankeid tehti {fookus["aasta"]}. aastal <b>{arv(fookus["ai_andmed"])}</b>, '
-                   f'see on {protsent(fookus["ai_andmed_osakaal"])} kõigist hangetest')
+    f_ai, f_an = jaga(fookus)
+    g1_pealkiri = (f'{fookus["aasta"]}. aastal tehti <b>{arv(f_ai)} AI-hanget</b> ja {arv(f_an)} andmehanget, '
+                   f'kokku {protsent(fookus["ai_andmed_osakaal"])} kõigist hangetest')
     if inn_viimane:
         vahe = SIHT - (inn_viimane["innovatsioonimark_osakaal"] or 0)
         g2_pealkiri = (f'Innovatsioonihankeks märgiti {inn_viimane["aasta"]}. aastal '
@@ -194,21 +238,23 @@ def ehita(d, seis):
     else:
         g2_pealkiri = "Innovatsioonimärget saab lugeda alles eVormidest"
     if kval_ai is not None and kval_koik is not None:
-        sonad = "sagedamini" if kval_ai > kval_koik + 3 else ("harvemini" if kval_ai < kval_koik - 3 else "sama sageli")
-        g3_pealkiri = (f'AI- ja andmehangetes on kvaliteedikriteerium <b>{protsent(kval_ai, 0)}</b> hangetest, '
-                       f'{sonad} kui hangetes keskmiselt ({protsent(kval_koik, 0)})')
+        kv_ = lambda g: None if viis[g]["ainult_hind_osakaal"] is None else 100 - viis[g]["ainult_hind_osakaal"]  # noqa: E731
+        g3_pealkiri = (f'Kvaliteeti hinnatakse <b>{protsent(kv_("ai"), 0)} AI-hangetest</b>, '
+                       f'{protsent(kv_("andmed"), 0)} andmehangetest ja {protsent(kval_koik, 0)} kõigist hangetest')
     else:
         g3_pealkiri = "Kuidas AI- ja andmehankeid hinnatakse"
     tl = tellijad(d["loend"])
+    tl_ai = tellijad([r for r in d["loend"] if r.get("ai")])
+    tl_an = tellijad([r for r in d["loend"] if not r.get("ai")])
     n_loend_kokku = max(len(d["loend"]), 1)
     g4_pealkiri = (f'<b>{protsent(100 * tl["teise_jaoks"] / n_loend_kokku, 0)}</b> AI- ja andmehangetest '
                    f'tehakse teise asutuse jaoks, kui lugeda pealkirja')
-    mx4 = max([n for _, n in tl["korraldajad"][:12] + tl["tellijad"][:12]] + [1])
 
     vastus = [
         f'Riigihangete registris on {arv(sum(a["ai_andmed"] for a in aastad))} AI- või andmehanget '
         f'({aastad[0]["aasta"]}–{aastad[-1]["aasta"]}). {fookus["aasta"]}. aastal oli neid '
-        f'{arv(fookus["ai_andmed"])}, ehk {protsent(fookus["ai_andmed_osakaal"])} kõigist hangetest.',
+        f'{arv(fookus["ai_andmed"])}, ehk {protsent(fookus["ai_andmed_osakaal"])} kõigist hangetest: '
+        f'{arv(f_ai)} AI-hanget ja {arv(f_an)} andmehanget.',
     ]
     if inn_viimane:
         vastus.append(f'Innovatsioonihankeks märgitakse {protsent(inn_viimane["innovatsioonimark_osakaal"])} '
@@ -245,7 +291,7 @@ def ehita(d, seis):
         f'<td>{"–" if a.get("innovatsioonimark") is None else arv(a["innovatsioonimark"])}</td>'
         f'<td>{protsent(a.get("innovatsioonimark_osakaal"), 2)}</td></tr>' for a in aastad)
 
-    grupid = [("ai_andmed", "AI- ja andmehanked"), ("it_muud", "Muud IT-hanked"), ("koik", "Kõik hanked")]
+    grupid = [("ai", "AI-hanked"), ("andmed", "Andmehanked"), ("it_muud", "Muud IT-hanked"), ("koik", "Kõik hanked")]
     g = lambda gid, k: viis[gid][k]  # noqa: E731
     vordlus = vordlusribad([
         ("Kvaliteet on hindamiskriteeriumide hulgas",
@@ -263,7 +309,8 @@ def ehita(d, seis):
     return taida(MALL,
         seis=e(seis_kuva), vastus="".join(f"<li>{x}</li>" for x in vastus),
         g1_pealkiri=g1_pealkiri, g1=tulbad_aastad(aastad, fookus["aasta"], {osaline, ALGUS_AASTA}),
-        g1_alam=(f'Hangete arv aastas, mille põhiese on tehisintellekti- või andmelahendus. Tuvastus: '
+        g1_alam=(f'<span class="legend-ai">AI-hanked</span> (pealkirjas või kirjelduses on AI-sõna) ja '
+                 f'<span class="legend-an">andmehanked</span> aastas. Tuvastus: '
                  f'{e(REEGLI_NIMI[valitud].lower())}. Hange on loetud esimese teate aasta järgi.'),
         osaline_markus=(f'* {ALGUS_AASTA} algab septembrist. ' if aastad[0]["aasta"] == ALGUS_AASTA else "")
         + (f'{osaline} on pooleli (andmed {seis_kuva} seisuga). ' if osaline else "")
@@ -272,16 +319,14 @@ def ehita(d, seis):
         g2_pealkiri=g2_pealkiri, g2=tulbad_innovatsioon(inn) if inn else "",
         tabel_aastad=tabel_aastad,
         g3_pealkiri=g3_pealkiri, vordlus=vordlus, periood=f"{p0}–{p1}",
-        n_ai=arv(ai["hankeid"]), n_pakk_ai=arv(ai.get("pakkumusi_teada")), n_koik=arv(muu["hankeid"]),
+        n_ai=arv(ai["hankeid"]), n_ai_ai=arv(viis["ai"]["hankeid"]), n_ai_an=arv(viis["andmed"]["hankeid"]), n_pakk_ai=arv(ai.get("pakkumusi_teada")), n_koik=arv(muu["hankeid"]),
         kval_mediaan_ai=arv(ai["kvaliteedi_kaal_mediaan"]) if ai["kvaliteedi_kaal_mediaan"] is not None else "–",
         g4_pealkiri=g4_pealkiri,
-        korraldajad=hankijate_ribad(tl["korraldajad"][:12], lambda n: n in T.KESKSED, mx4),
-        tellijad=hankijate_ribad([(n.replace(" (pealkirjast ei selgu)", "*"), x) for n, x in tl["tellijad"][:12]], mx=mx4),
+        korraldaja_vaated=kaks_tulpa(tl, "koik", False) + kaks_tulpa(tl_ai, "ai", True) + kaks_tulpa(tl_an, "andmed", True),
+        n_ai_loend=arv(tl_ai["n"]), n_an_loend=arv(tl_an["n"]),
         n_teise=arv(tl["teise_jaoks"]), n_pealkirjast=arv(tl["pealkirjast"]),
         n_kesksed=arv(tl["kesksete"]), n_kokku4=arv(len(d["loend"])),
-        hankijaid=arv(ko["hankijaid"]), top10_h=arv(ko["top10_protsenti_hankijaid"]),
-        top10_h_osa=protsent(ko["nende_osakaal"], 0),
-        tellijaid=arv(tl["tellijaid"]), top10_t=arv(tl["top10_tellijaid"]), top10_t_osa=protsent(tl["top10_osakaal"], 0),
+
         tapsus_pealkiri=tapsus_pealkiri, hind_read="".join(hind_read),
         test_alates=hm.get("testi_alates", "–"), treening=arv(hm.get("treening")), test=arv(hm.get("test")),
         test_pos=arv(hm.get("test_pos")), treening_pos=arv(hm.get("treening_pos")),

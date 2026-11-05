@@ -113,6 +113,12 @@ figure.plokk { margin: 0; border: 1px solid var(--border); border-radius: var(--
 .riba-fookus, .riba-kontekst { display: block; height: 100%; }
 .riba-fookus { background: var(--signal); }
 .riba-kontekst { background: var(--context); }
+.riba-teine { display: block; height: 100%; background: var(--context-strong); }
+.m-teine { fill: var(--context-strong); }
+.t-fookus-v { fill: var(--signal); font: 700 13px var(--font-sans); font-variant-numeric: tabular-nums; }
+.tyyp-ai { color: var(--signal); }
+.legend-ai { color: var(--signal); font-weight: 600; }
+.legend-an { color: var(--context-strong); font-weight: 600; }
 .v-arv { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-secondary); }
 .v-arv-fookus { color: var(--signal); font-weight: 700; }
 @media (max-width: 30rem) { .v-rida { grid-template-columns: 8rem 1fr 3rem; } .v-rida-lai { grid-template-columns: 10rem 1fr 2.5rem; } }
@@ -149,7 +155,7 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
 
 .jalus { border-top: 1px solid var(--border); padding-block: 16px 40px; color: var(--ink-faded); font-size: 14px; line-height: 1.45; display: grid; gap: 6px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
-@media (max-width: 30rem) { .t-telg, .t-silt { font-size: 19px; } .t-fookus, .t-siht { font-size: 20px; }
+@media (max-width: 30rem) { .t-telg, .t-silt { font-size: 19px; } .t-fookus, .t-siht { font-size: 20px; } .t-fookus-v { font-size: 19px; }
   body { font-size: 16px; } h2 { font-size: 22px; } h3 { font-size: 19px; } .paise-rida h1 { font-size: 21px; } }
 </style>
 
@@ -228,7 +234,8 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
     </div>
     <div class="nupurida" aria-label="Filtrid">Näita ainult:
       <button type="button" id="f-hea" aria-pressed="false">kõik kolm head tunnust</button>
-      <button type="button" id="f-ai" aria-pressed="false">AI-sõnaga</button>
+      <button type="button" id="f-ai" aria-pressed="false">AI-hanked</button>
+      <button type="button" id="f-andmed" aria-pressed="false">andmehanked</button>
       <button type="button" id="f-inn" aria-pressed="false">innovatsioonimärkega</button>
     </div>
     <p class="allikas" id="otsingu-kokkuvote" aria-live="polite"></p>
@@ -242,7 +249,7 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
   <figure class="plokk" style="margin:0">
     <header>
       <h2 id="viis-p">%%g3_pealkiri%%</h2>
-      <p class="alapealkiri">Hangete osakaal ja mediaan, %%periood%%. AI- ja andmehankeid %%n_ai%%, kõiki hankeid %%n_koik%%. Puuduvad väärtused on nimetajast välja jäetud: pakkumuste arv on teada %%n_pakk_ai%% AI- ja andmehankel.</p>
+      <p class="alapealkiri">Hangete osakaal ja mediaan, %%periood%%. AI-hankeid %%n_ai_ai%%, andmehankeid %%n_ai_an%%, kõiki hankeid %%n_koik%%. Puuduvad väärtused on nimetajast välja jäetud: pakkumuste arv on teada %%n_pakk_ai%% AI- ja andmehankel kokku, seega on üksikute rühmade protsendid väikese arvu põhjal.</p>
     </header>
     %%vordlus%%
     <p class="allikas">OECD järgi suurendab isegi väike kvaliteedikriteeriumi kaal uuendusliku pakkumise tõenäosust (<a href="%%oecd%%" target="_blank" rel="noopener">OECD 2026</a>, lk 42). Kvaliteedi kaal on kvaliteedikriteeriumide summaarne kaal hangetes, kus see on olemas. Allikas: riigihangete register.</p>
@@ -251,14 +258,14 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
   <figure class="plokk" style="margin:0">
     <header class="kitsas">
       <h3>%%g4_pealkiri%%</h3>
-      <p class="alapealkiri">AI- ja andmehangete arv: vasakul korraldaja ehk registri hankija, paremal see, kelle jaoks hange tehti. 12 suurimat kummaski. Kokku %%n_kokku4%% hanget. Sinisega on keskne hankija, kes hangib teiste jaoks: neid hankeid on %%n_kesksed%%.</p>
+      <p class="alapealkiri">Hangete arv: vasakul korraldaja ehk registri hankija, paremal see, kelle jaoks hange tehti. 12 suurimat kummaski. Sinisega on keskne hankija, kes hangib teiste jaoks (kokku %%n_kesksed%% hanget). Pealkiri on kõigi hangete kohta.</p>
     </header>
-    <div class="kaks-tulpa">
-      <div class="v-plokk"><h4>Kes korraldab</h4><div class="hankijad">%%korraldajad%%</div>
-        <p class="markus">%%top10_h%% hankijat ehk 10% korraldab %%top10_h_osa%% hangetest.</p></div>
-      <div class="v-plokk"><h4>Kelle jaoks</h4><div class="hankijad">%%tellijad%%</div>
-        <p class="markus">%%top10_t%% tellijat ehk 10% tellib %%top10_t_osa%% hangetest. * Keskne hankija, pealkiri tellijat ei nimeta.</p></div>
+    <div class="nupurida" role="group" aria-label="Hangete rühm">Näita:
+      <button type="button" data-ruhm="koik" aria-pressed="true">kõik (%%n_kokku4%%)</button>
+      <button type="button" data-ruhm="ai" aria-pressed="false">AI-hanked (%%n_ai_loend%%)</button>
+      <button type="button" data-ruhm="andmed" aria-pressed="false">andmehanked (%%n_an_loend%%)</button>
     </div>
+    %%korraldaja_vaated%%
     <p class="allikas kitsas">Tellija on leitud pealkirjast (%%n_pealkirjast%% hanget), nt „(Riigikantselei)“ või „… Sotsiaalkindlustusametile“. Kui keskse hankija (RTK, SMIT, RMIT, KeMIT, TEHIK, RIK, RKAS, RKIK, eGA) hanke pealkiri tellijat ei nimeta, on näidatud valitsemisala. Registri avaandmetes on ainult üks hankija, seega on tellija tuletus, mitte registri väli. OECD järgi teeb 10% organisatsioonidest 98,7% innovatsioonihangetest (<a href="%%oecd%%" target="_blank" rel="noopener">OECD 2026</a>, lk 41). Allikas: riigihangete register.</p>
   </figure>
 </section>
@@ -268,6 +275,7 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
     <header>
       <h2 id="tapsus-p">%%tapsus_pealkiri%%</h2>
       <p class="alapealkiri">Neli reeglit testiti %%test_alates%%. aasta ja hilisemate hangete peal (%%test%% märgendatud hanget, neist %%test_pos%% AI- või andmehanked). Mudel õppis varasematelt (%%treening%% hanget, %%treening_pos%% positiivset). Täpsus ja saagis on kaalutud nii, et need kehtivad kogu registri kohta.</p>
+      <p class="allikas">AI- ja andmehanked on lehel lahutatud AI-sõnade järgi (nt tehisintellekt, masinõpe, LLM, kõnetuvastus). Märgendatud valimis langes see 141 AI- või andmehankest 137 korral kokku märgendaja sildiga AI või ANDMED (märgendaja: Claude, inimene pole veel üle kontrollinud).</p>
     </header>
     <div class="tabel-kast">
       <table>
@@ -359,7 +367,7 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
 
   var paring = document.getElementById("paring"), list = document.getElementById("tulemused");
   var jalus = document.getElementById("loendi-jalus"), kokku = document.getElementById("otsingu-kokkuvote");
-  var filtrid = { hea: document.getElementById("f-hea"), ai: document.getElementById("f-ai"), inn: document.getElementById("f-inn") };
+  var filtrid = { hea: document.getElementById("f-hea"), ai: document.getElementById("f-ai"), andmed: document.getElementById("f-andmed"), inn: document.getElementById("f-inn") };
   var naidata = 12;
   function arv(x) { return String(x).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
@@ -371,6 +379,7 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
     D.forEach(function (r, i) {
       if (filtrid.hea.getAttribute("aria-pressed") === "true" && r.hea < 3) return;
       if (filtrid.ai.getAttribute("aria-pressed") === "true" && !r.ai) return;
+      if (filtrid.andmed.getAttribute("aria-pressed") === "true" && r.ai) return;
       if (filtrid.inn.getAttribute("aria-pressed") === "true" && !r.inn) return;
       var skoor = 0; if (q.length) { Object.keys(qv).forEach(function (s) { skoor += (vektorid[i][s] || 0) * qv[s]; }); if (skoor <= 0) return; }
       tulem.push({ r: r, s: skoor });
@@ -388,7 +397,7 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
     if (r.kat === true) m.push('<span class="mark">katkes</span>');
     if (r.inn) m.push('<span class="mark mark-hea">innovatsioonimärge</span>');
     var pealkiri = r.url ? '<a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.t) + "</a>" : esc(r.t);
-    return '<li><span class="t-pealkiri">' + pealkiri + '</span><span class="t-meta">' + esc(r.h) + (r.kja && r.kja !== "sama" ? " → " + esc(r.kj) : "") + " · " + kuupaev(r.kp) +
+    return '<li><span class="t-pealkiri">' + pealkiri + '</span><span class="t-meta">' + (r.ai ? '<b class="tyyp-ai">AI</b> · ' : 'Andmed · ') + esc(r.h) + (r.kja && r.kja !== "sama" ? " → " + esc(r.kj) : "") + " · " + kuupaev(r.kp) +
       (r.vn ? " · viitenumber " + esc(r.vn) : "") + '</span><span class="t-kirjeldus">' + esc(r.k) + '</span><span class="margid">' + m.join("") + "</span></li>";
   }
 
@@ -409,10 +418,20 @@ ul.piirid { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 7
   });
   Object.keys(filtrid).forEach(function (k) {
     filtrid[k].addEventListener("click", function () {
-      filtrid[k].setAttribute("aria-pressed", filtrid[k].getAttribute("aria-pressed") === "true" ? "false" : "true"); naidata = 12; joonista();
+      var uus = filtrid[k].getAttribute("aria-pressed") === "true" ? "false" : "true";
+      filtrid[k].setAttribute("aria-pressed", uus);
+      if (uus === "true" && (k === "ai" || k === "andmed")) filtrid[k === "ai" ? "andmed" : "ai"].setAttribute("aria-pressed", "false");
+      naidata = 12; joonista();
     });
   });
   jalus.addEventListener("click", function (ev) { var b = ev.target.closest("button"); if (!b) return; naidata = +b.dataset.n; joonista(); });
   joonista();
 })();
+
+document.querySelectorAll('[data-ruhm][aria-pressed]').forEach(function (b) {
+  b.addEventListener("click", function () {
+    document.querySelectorAll('[data-ruhm][aria-pressed]').forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+    document.querySelectorAll('.kaks-tulpa[data-ruhm]').forEach(function (v) { v.hidden = v.dataset.ruhm !== b.dataset.ruhm; });
+  });
+});
 </script>
