@@ -22,6 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import reeglid as R  # noqa: E402
+import tellija as T  # noqa: E402
 
 RHR_LEHT = "https://riigihanked.riik.ee/rhr-web/#/procurement/{}/general-info"
 
@@ -137,15 +138,44 @@ def main():
             "url": RHR_LEHT.format(r["rhr_id"]) if r.get("rhr_id") else None, "vn": r.get("viitenumber"),
             "hea": sum(bool(x) for x in h.values()),
         })
+    # tehisaru uuringud ja mõjuanalüüsid (katseline, Kadri 5.11.2026)
+    moju = []
+    for r in hanked:
+        m = R.moju_uuring(r)
+        if m:
+            moju.append((r, m))
+    nimed = T.asutused(r.get("hankija") for r, _ in moju)
+    moju_loend = []
+    for r, m in sorted(moju, key=lambda x: (x[0].get("esimene_kuupaev") or x[0].get("kuu") or ""), reverse=True):
+        kj, kja = T.kelle_jaoks(r.get("pealkiri"), r.get("hankija"), nimed)
+        moju_loend.append({
+            "id": voti(r), "a": r["aasta"], "kp": r.get("esimene_kuupaev"), "t": r.get("pealkiri"),
+            "korraldaja": r.get("hankija"), "kelle_jaoks": kj, "kelle_allikas": kja,
+            "cpv": (r.get("cpv") or [])[:3], "v": r.get("eeldatav_maksumus"),
+            "url": RHR_LEHT.format(r["rhr_id"]) if r.get("rhr_id") else None,
+            "tyyp": m["tyyp"], "cpv_73_79": m["cpv_73_79"], "uuring_pealkirjas": m["uuring_pealkirjas"],
+            "sonad": m["sonad"], "ai_tuvastuses": bool(r["_silt"]),
+        })
+    moju_aastad = []
+    for aasta in sorted({x["a"] for x in moju_loend}):
+        rid = [x for x in moju_loend if x["a"] == aasta]
+        moju_aastad.append({"aasta": aasta, "kokku": len(rid),
+                            "tehisaru": sum(x["tyyp"] == "tehisaru" for x in rid),
+                            "digi_automatiseerimine": sum(x["tyyp"] != "tehisaru" for x in rid),
+                            "ai_tuvastuses": sum(x["ai_tuvastuses"] for x in rid),
+                            "eeldatav_maksumus": round(sum(x["v"] or 0 for x in rid))})
+    moju_koond = {"silt": "katseline", "aastad": moju_aastad, "loend": moju_loend}
+
     leht = {"aastad": aastad, "eforms_aastad": eforms_aastad, "hankimise_viis": viis,
             "kontsentratsioon": kontsentratsioon, "hankijad_top": jarjest[:15], "hindamine": hindamine,
-            "loend": loend}
+            "loend": loend, "moju": moju_koond}
     (v / "leht.json").write_text(json.dumps(leht, ensure_ascii=False), encoding="utf-8")
     kirjuta = lambda osa, **kw: print("HANKED", osa, json.dumps(kw, ensure_ascii=False), flush=True)  # noqa: E731
     kirjuta("koond-aastad", read=aastad)
     kirjuta("koond-viis", **viis)
     kirjuta("koond-kontsentratsioon", **kontsentratsioon, top=jarjest[:15])
     kirjuta("koond-loend", n=len(loend))
+    kirjuta("moju-aastad", silt="katseline", read=moju_aastad)
 
 
 if __name__ == "__main__":
