@@ -184,24 +184,42 @@ def arvuta_kokkupuude(sisu):
     rühmad = {}
     for k, a in aste.items():
         rühmad.setdefault(k[:2], Counter())[a] += 1
+
+    def jaota(read):
+        """read: [(isco 'OCxx', tuhat)] → hõive astmete kaupa (tuhat). Avaldamata lahtrid jäävad välja."""
+        g = {"kokku": 0.0, **{a: 0.0 for a in ASTMED}}
+        for isco, v in read:
+            c = rühmad.get(isco[2:4])
+            if not c or v is None:
+                continue  # kaitseväe ametid on ILO indeksis teise koodiga
+            m = sum(c.values())
+            g["kokku"] += v
+            for a, k in c.items():
+                g[a] += v * k / m
+        g["avatud"] = sum(g[a] for a in ("1", "2", "3", "4"))
+        g["korge"] = g["3"] + g["4"]
+        g["muud"] = g["kokku"] - g["avatud"]
+        return g
+
     el = {}
     for r in loe_csv(sisu / "eurostat-hoive-ametid-2025.csv"):
-        if r["isco"] == "TOTAL" or not r["tuhat"]:
-            continue
-        c = rühmad.get(r["isco"][2:4])
-        if not c:
-            continue  # kaitseväe ametid: ILO indeksis teise koodiga
-        g = el.setdefault(r["geo"], {"kokku": 0.0, **{a: 0.0 for a in ASTMED}})
-        v, m = float(r["tuhat"]), sum(c.values())
-        g["kokku"] += v
-        for a, k in c.items():
-            g[a] += v * k / m
-    el_pr = {geo: {"avatud": sum(g[a] for a in ("1", "2", "3", "4")) / g["kokku"] * 100,
-                   "korge": (g["3"] + g["4"]) / g["kokku"] * 100} for geo, g in el.items()}
+        if r["isco"] != "TOTAL":
+            el.setdefault(r["geo"], []).append((r["isco"], float(r["tuhat"]) if r["tuhat"] else None))
+    el_pr = {}
+    for geo, read in el.items():
+        g = jaota(read)
+        el_pr[geo] = {"avatud": g["avatud"] / g["kokku"] * 100, "korge": g["korge"] / g["kokku"] * 100}
+    # Aegrida 2021–2025 (tööjõu-uuringu uus metoodika algab 2021): kas avatud ametite hõive muutub teisiti
+    aeg_read = loe_csv(sisu / "eurostat-hoive-ametid-2021-2025.csv")
+    aastad = [k for k in aeg_read[0] if k.isdigit()]
+    aeg = {}
+    for geo, sugu in {(r["geo"], r["sugu"]) for r in aeg_read}:
+        osa_ = [r for r in aeg_read if r["geo"] == geo and r["sugu"] == sugu and r["isco"] != "TOTAL"]
+        aeg[(geo, sugu)] = {int(y): jaota([(r["isco"], float(r[y]) if r[y] else None) for r in osa_]) for y in aastad}
     return {
         "kokku": kokku, "osa": pr_, "liigitamata": liigitamata / kokku * 100,
         "avatud": sum(pr_[a] for a in ("1", "2", "3", "4")), "korge": pr_["3"] + pr_["4"],
-        "ametid": ametid, "el": el_pr, "ilo_ameteid": len(aste),
+        "ametid": ametid, "el": el_pr, "aeg": aeg, "ilo_ameteid": len(aste),
         "ilo_avatud_ameteid": sum(1 for a in aste.values() if a in ("1", "2", "3", "4")),
     }
 

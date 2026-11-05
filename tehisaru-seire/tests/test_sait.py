@@ -253,3 +253,23 @@ def test_kokkupuute_andmed_kukuvad_valjult(tmp_path):
     p.write_text(p.read_text(encoding="utf-8").replace("1111,ei,", "1111,kõrge,", 1), encoding="utf-8")
     with pytest.raises(andmekiht.AndmeViga):
         andmekiht.arvuta_kokkupuude(tmp_path)
+
+
+def test_hoive_aegrida_naised_ja_mehed_annavad_kokku(tmp_path):
+    read = list(csv.DictReader(open(JUUR / "sait" / "sisu" / "eurostat-hoive-ametid-2021-2025.csv", encoding="utf-8")))
+    ee = {(r["sugu"], r["isco"]): r for r in read if r["geo"] == "EE"}
+    for (sugu, isco), r in ee.items():
+        if sugu != "T" or ("F", isco) not in ee:
+            continue
+        for y in ("2021", "2022", "2023", "2024", "2025"):
+            f, m, t = ee[("F", isco)][y], ee[("M", isco)][y], r[y]
+            if f and m and t:
+                assert abs(float(f) + float(m) - float(t)) <= 0.15, (isco, y)
+
+
+def test_hoive_muutuse_jaotis_on_kirjeldus_mitte_pohjus(A, sait):
+    s = sait["too.html"]
+    jaotis = s[s.index('id="hoive"'):s.index('id="tulevik"')]
+    assert "kirjeldus, mitte põhjus" in jaotis
+    g = A["kokkupuude"]["aeg"][("EE", "T")]
+    assert g[2025]["avatud"] / g[2022]["avatud"] < g[2025]["muud"] / g[2022]["muud"]

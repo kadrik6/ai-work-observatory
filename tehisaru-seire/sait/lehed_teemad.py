@@ -418,7 +418,46 @@ def too(A, vaade, vaated=None):
   </details>
 </section>"""
 
-    # 5. Mis ees ootab
+    # 5. Kas avatud ametites on hõive muutunud teisiti? Kirjeldus, mitte põhjus
+    aeg = K["aeg"]
+    A0, A1 = 2022, max(aeg[("EE", "T")])
+    def mu(geo, sugu, osa_):
+        g = aeg[(geo, sugu)]
+        return (g[A1][osa_] / g[A0][osa_] - 1) * 100
+    def mt(x):
+        return f'{"+" if x >= 0 else "−"}{pr(abs(x))}%'
+    ee_av, ee_mu, el_av, el_mu = mu("EE", "T", "avatud"), mu("EE", "T", "muud"), mu(EL, "T", "avatud"), mu(EL, "T", "muud")
+    if not ee_av < ee_mu:
+        raise AndmeViga("Pealkiri ütleb, et Eestis kasvas hõive avatud ametites vähem kui teistes; andmed seda enam ei näita")
+    m_read = [("Eesti, avatud ametid", "aste 1–4", ee_av, mt(ee_av)), ("Eesti, teised ametid", "minimaalne või ei puutu", ee_mu, mt(ee_mu)),
+              ("EL, avatud ametid", "aste 1–4", el_av, mt(el_av)), ("EL, teised ametid", "minimaalne või ei puutu", el_mu, mt(el_mu))]
+    def osa_pr(sugu, y, osa_="avatud"):
+        g = aeg[("EE", sugu)][y]
+        return g[osa_] / g["kokku"] * 100
+    n_k0, m_k0 = mu("EE", "F", "korge"), mu("EE", "M", "korge")
+    sec_hoive = f"""
+<section class="jaotis" id="hoive" aria-labelledby="h-hoive">
+  <header>
+    <h2 id="h-hoive">Aastatel {A0}–{A1} kasvas Eestis hõive tehisarule avatud ametites <b>vähem kui teistes ametites</b>; ELis oli vastupidi</h2>
+  </header>
+  <div class="kaks">
+    <figure aria-labelledby="g-hoive">
+      <figcaption><span class="gt" id="g-hoive">Hõivatute arvu muutus {A0}–{A1}, %</span>
+        <span class="gs">ChatGPT tuli {A0}. aasta lõpus. Ametirühm on jagatud ILO astmete vahel; 15–74-aastased hõivatud, ka ettevõtjad.</span></figcaption>
+      {muutus(m_read, -5, 10, 5, "%", fookus=0)}
+      {allikarida([("Eurostat, lfsa_egai2d", EUROSTAT.format("lfsa_egai2d"), "uuendatud 30.10.2026"), (f"ILO {ilo['aasta']}", ilo["url"], "")])}
+    </figure>
+    <div class="kulg">
+      {vastavus("osaliselt", "See on kirjeldus, mitte põhjus. Eesti majandus oli 2023–2024 langusel ja see mõjutas harusid eri moodi. Eesti tööjõu-uuringu valim on väike: mõne tuhande inimese muutus võib olla juhuslik.")}
+      {faktid([
+          ("Naised ja mehed", "", f'{A1}. aastal töötas Eestis avatud ametites {pr(osa_pr("F", A1), 0)}% naistest ja {pr(osa_pr("M", A1), 0)}% meestest. Kõige avatumates ametites (aste 3–4) vähenes naiste hõive {A0}–{A1} {pr(abs(n_k0), 0)}% ja meeste oma kasvas {pr(m_k0, 0)}%.' if n_k0 < 0 < m_k0 else f'{A1}. aastal töötas Eestis avatud ametites {pr(osa_pr("F", A1), 0)}% naistest ja {pr(osa_pr("M", A1), 0)}% meestest.'),
+          ("Mida jälgida", "s", "Kui see erinevus püsib ka 2026. ja 2027. aastal ning on suurem noorte seas, on see märk, mida tasub uurida registriandmetega, nagu Taanis ja USA-s tehti."),
+      ])}
+    </div>
+  </div>
+</section>"""
+
+    # 6. Mis ees ootab
     oska = U[tulevik["eesti_ametid"]["uuring"]]
     ced = U["cedefop2026"]
     bls = tulevik["ametid"]
@@ -474,8 +513,8 @@ def too(A, vaade, vaated=None):
     ]
     lead = ("Uuringud ei näita veel töökohtade kadu kogu tööturul, aga noorte palkamine ja vabakutseliste tööd on mõnes ametis vähenenud. "
             "Eesti kohta selliseid mõõtmisi veel ei ole.")
-    return (pea(A, vaade, lead, [("maailm", "Mida maailmas leiti"), ("ulesanded", "Ülesanded"), ("eesti", "Eestis"), ("kokkupuude", "Ametid"), ("tulevik", "Mis ees ootab")], ree)
-            + sec_maailm + sec_kiirus + sec_eesti + sec_kokkupuude + sec_tulevik)
+    return (pea(A, vaade, lead, [("maailm", "Mida maailmas leiti"), ("ulesanded", "Ülesanded"), ("eesti", "Eestis"), ("kokkupuude", "Ametid"), ("hoive", "Hõive muutus"), ("tulevik", "Mis ees ootab")], ree)
+            + sec_maailm + sec_kiirus + sec_eesti + sec_kokkupuude + sec_hoive + sec_tulevik)
 
 
 # ---------------------------------------------------------------- Avalik sektor
