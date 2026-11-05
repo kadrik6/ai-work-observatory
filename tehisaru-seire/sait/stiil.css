@@ -627,3 +627,5 @@ h3.veerg { font-size: 12px; }
 .pn .g2 + .drift { margin-top: 10px; }
 /* Järjestus kitsam, et väärtused ei ulatuks paneeli servani (Kadri 5.11 22:52) */
 .el-rida .jrj { max-width: 760px; }
+/* Järjestuse kiri veel 1 px väiksem: 10 px (Kadri 5.11 22:54); read jäävad 14 px, et kaart ja loend oleksid sama kõrged */
+.jrj-r { font-size: 10px; }

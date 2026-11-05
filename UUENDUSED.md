@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 05.11.2026 | Ülevaate riikide järjestuse kiri on 10 px (enne 11 px), Kadri kommentaar 5.11 22:54. Read jäid 14 px kõrgeks, nii et kaart ja loend on endiselt sama kõrged. |
 | 05.11.2026 | Ülevaate riikide järjestus on kitsam (kuni 760 px), et väärtused ei ulatuks paneeli paremasse serva (Kadri kommentaar 5.11 22:52). |
 | 05.11.2026 | Töötuse kuujoon on lihtsam (Kadri kommentaar 5.11 22:49 „proovi lihtsustada, minimalistlikumaks teha“): ruudustikku ega y-telge pole, ainult Eesti ja ELi joon, lõppväärtused ning esimene ja viimane kuu. Kuna telge pole, algab vahemik andmete miinimumi lähedalt. Sama joon on Ülevaates ja Töö vaate reas „Eesti praegu“. |
 | 05.11.2026 | Ülevaate töötuse paneelis ei kattu oranž märkus enam tulpade aastasiltidega (Kadri kommentaar 5.11 22:46): märkus algab siltidest vähemalt 24 px allpool (arvutis 33 px, telefonis 50 px). |
