@@ -14,11 +14,15 @@ Lehe neli rida (andmesaidi-ulesehitus):
 - Põhiline: aastanäitaja ja 2% siht. Toetav: hankimise viis, otsing. Valikuline: hindamine ja meetod.
 """
 import argparse
+import collections
 import datetime as dt
 import html
 import json
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import tellija as T  # noqa: E402
 
 REEGLI_NIMI = {
     "mudel": "Mudel (masinõpe)",
@@ -120,15 +124,34 @@ def vordlusribad(naitajad, grupid):
     return f'<div class="vordlus">{"".join(plokid)}</div>'
 
 
-def hankijate_ribad(top, top_n):
-    mx = max([n for _, n in top] + [1])
+def hankijate_ribad(top, fookus=lambda nimi: False, mx=None):
+    """Horisontaalsed ribad. Fookusvärv ainult ridadel, mille kohta fookus(nimi) on tõene."""
+    mx = mx or max([n for _, n in top] + [1])
     read = []
-    for i, (nimi, n) in enumerate(top):
-        klass = "riba-fookus" if i < top_n else "riba-kontekst"
+    for nimi, n in top:
+        klass = "riba-fookus" if fookus(nimi) else "riba-kontekst"
         read.append(f'<div class="v-rida v-rida-lai"><span class="v-nimi">{e(nimi)}</span>'
                     f'<span class="v-rada"><span class="{klass}" style="width:{100 * n / mx:.1f}%"></span></span>'
                     f'<span class="v-arv">{arv(n)}</span></div>')
     return "".join(read)
+
+
+def tellijad(loend):
+    """Lisab loendi ridadele tellija (kj) ja selle allika (kja) ning loendab korraldajad ja tellijad."""
+    nimed = T.asutused(r.get("h") for r in loend)
+    korr, tell = collections.Counter(), collections.Counter()
+    for r in loend:
+        r["kj"], r["kja"] = T.kelle_jaoks(r.get("t"), r.get("h"), nimed)
+        korr[r.get("h") or "?"] += 1
+        tell[r["kj"].split("; ")[0]] += 1
+    teise_jaoks = sum(r["kja"] != "sama" for r in loend)
+    kesksete = sum(r.get("h") in T.KESKSED for r in loend)
+    jarjest = tell.most_common()
+    top10 = max(1, round(len(jarjest) * 0.1))
+    return {"korraldajad": korr.most_common(), "tellijad": jarjest, "teise_jaoks": teise_jaoks,
+            "kesksete": kesksete, "pealkirjast": sum(r["kja"] == "pealkiri" for r in loend),
+            "tellijaid": len(jarjest), "top10_tellijaid": top10,
+            "top10_osakaal": round(100 * sum(n for _, n in jarjest[:top10]) / max(len(loend), 1), 1)}
 
 
 # ---------------------------------------------------------------- leht
@@ -176,8 +199,11 @@ def ehita(d, seis):
                        f'{sonad} kui hangetes keskmiselt ({protsent(kval_koik, 0)})')
     else:
         g3_pealkiri = "Kuidas AI- ja andmehankeid hinnatakse"
-    g4_pealkiri = (f'{arv(ko["top10_protsenti_hankijaid"])} hankijat ehk 10% teeb '
-                   f'<b>{protsent(ko["nende_osakaal"], 0)}</b> AI- ja andmehangetest')
+    tl = tellijad(d["loend"])
+    n_loend_kokku = max(len(d["loend"]), 1)
+    g4_pealkiri = (f'<b>{protsent(100 * tl["teise_jaoks"] / n_loend_kokku, 0)}</b> AI- ja andmehangetest '
+                   f'tehakse teise asutuse jaoks, kui lugeda pealkirja')
+    mx4 = max([n for _, n in tl["korraldajad"][:12] + tl["tellijad"][:12]] + [1])
 
     vastus = [
         f'Riigihangete registris on {arv(sum(a["ai_andmed"] for a in aastad))} AI- või andmehanget '
@@ -248,8 +274,14 @@ def ehita(d, seis):
         g3_pealkiri=g3_pealkiri, vordlus=vordlus, periood=f"{p0}–{p1}",
         n_ai=arv(ai["hankeid"]), n_pakk_ai=arv(ai.get("pakkumusi_teada")), n_koik=arv(muu["hankeid"]),
         kval_mediaan_ai=arv(ai["kvaliteedi_kaal_mediaan"]) if ai["kvaliteedi_kaal_mediaan"] is not None else "–",
-        g4_pealkiri=g4_pealkiri, hankijad=hankijate_ribad(d["hankijad_top"], ko["top10_protsenti_hankijaid"]),
-        hankijaid=arv(ko["hankijaid"]), uks_hange=arv(ko["uks_hange_hankijaid"]),
+        g4_pealkiri=g4_pealkiri,
+        korraldajad=hankijate_ribad(tl["korraldajad"][:12], lambda n: n in T.KESKSED, mx4),
+        tellijad=hankijate_ribad([(n.replace(" (pealkirjast ei selgu)", "*"), x) for n, x in tl["tellijad"][:12]], mx=mx4),
+        n_teise=arv(tl["teise_jaoks"]), n_pealkirjast=arv(tl["pealkirjast"]),
+        n_kesksed=arv(tl["kesksete"]), n_kokku4=arv(len(d["loend"])),
+        hankijaid=arv(ko["hankijaid"]), top10_h=arv(ko["top10_protsenti_hankijaid"]),
+        top10_h_osa=protsent(ko["nende_osakaal"], 0),
+        tellijaid=arv(tl["tellijaid"]), top10_t=arv(tl["top10_tellijaid"]), top10_t_osa=protsent(tl["top10_osakaal"], 0),
         tapsus_pealkiri=tapsus_pealkiri, hind_read="".join(hind_read),
         test_alates=hm.get("testi_alates", "–"), treening=arv(hm.get("treening")), test=arv(hm.get("test")),
         test_pos=arv(hm.get("test_pos")), treening_pos=arv(hm.get("treening_pos")),

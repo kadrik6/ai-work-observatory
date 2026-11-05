@@ -32,7 +32,9 @@ ANDMED = {
                   "levimus": {"valimi_pohjal": {"hinnang": 190, "vahemik_95": [150, 480]}, "hankeid": 30000,
                               "valitud_leidis": 180},
                   "margendid": {"leitud_registrist": 782, "positiivseid": 141}},
-    "loend": [{"t": "Kõnetuvastus </script>", "k": "x", "h": "A", "kp": "2026-01-02", "hea": 3}],
+    "loend": [{"t": "Kõnetuvastus </script>", "k": "x", "h": "Asutus <A>", "kp": "2026-01-02", "hea": 3},
+              {"t": "Eesti.ai koolitajate tellimine (Riigikantselei)", "k": "", "h": "Riigi Tugiteenuste Keskus",
+               "kp": "2026-02-01", "hea": 1}],
 }
 
 
@@ -48,3 +50,10 @@ def test_leht_ehitub_ja_pealkiri_utleb_leiu():
 def test_arvu_kirjaviis():
     assert ehita.arv(12345.6, 1) == "12 345,6"
     assert ehita.protsent(None) == "–"
+
+
+def test_korraldaja_ja_tellija():
+    h = ehita.ehita(ANDMED, "2026-11-04")
+    assert "<b>50%</b> AI- ja andmehangetest tehakse teise asutuse jaoks, kui lugeda pealkirja" in h
+    assert "Kes korraldab" in h and "Kelle jaoks" in h
+    assert '"kj":"Riigikantselei"' in h  # otsingu loendis on tellija
