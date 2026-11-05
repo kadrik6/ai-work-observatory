@@ -83,18 +83,27 @@ def _svg_tekst(x, y, t, kl="", ankur="start"):
     return f'<text x="{x:.1f}" y="{y:.1f}" class="{kl}" text-anchor="{ankur}">{e(t)}</text>'
 
 
-def joon(seeriad, x0, x1, y1, samm, w=440, h=170, ml=26, mr=86, mt=10, mb=22, x_margid=None, x_silt=str, silt=""):
-    """Joondiagramm SVG-na. seeriad: [(nimi, [(x, y)], liik)], liik ∈ {"fookus", "ref", ""}. Otsasildid paremal."""
+def joon(seeriad, x0, x1, y1, samm, w=440, h=170, ml=26, mr=86, mt=10, mb=22, x_margid=None, x_silt=str, silt="",
+         lihtne=False):
+    """Joondiagramm SVG-na. seeriad: [(nimi, [(x, y)], liik)], liik ∈ {"fookus", "ref", ""}. Otsasildid paremal.
+
+    lihtne=True: ruudustikku ega y-telge pole, ainult jooned, lõppväärtused ja esimene ning viimane kuu (Kadri 5.11 22:49).
+    Siis algab y vahemik andmete miinimumi lähedalt, sest telge ega tulpa, mille pikkust lugeda, pole."""
+    import math
+    y0 = 0
+    if lihtne:
+        koik = [py for _, pts, _ in seeriad for _, py in pts]
+        y0, y1 = max(0, math.floor(min(koik)) - 1), math.ceil(max(koik)) + 1
     X = lambda x: ml + (x - x0) / (x1 - x0) * (w - ml - mr)  # noqa: E731
-    Y = lambda y: mt + (1 - y / y1) * (h - mt - mb)  # noqa: E731
+    Y = lambda y: mt + (1 - (y - y0) / (y1 - y0)) * (h - mt - mb)  # noqa: E731
     osad = []
     y = 0
-    while y <= y1 + 1e-9:
+    while not lihtne and y <= y1 + 1e-9:
         osad.append(f'<line class="v" x1="{ml}" x2="{w - mr}" y1="{Y(y):.1f}" y2="{Y(y):.1f}"/>')
         osad.append(_svg_tekst(ml - 6, Y(y) + 4, pr(y, 0), "t", "end"))
         y += samm
     for x in (x_margid or [x0, x1]):
-        osad.append(_svg_tekst(X(x), h - 6, x_silt(x), "t", "middle"))
+        osad.append(_svg_tekst(X(x), h - 6, x_silt(x), "t", "start" if lihtne and x == x0 else "end" if lihtne and x == x1 else "middle"))
     otsad = []
     for nimi, pts, liik in sorted(seeriad, key=lambda s: {"": 0, "ref": 1, "fookus": 2}[s[2]]):
         d = " ".join(f"{X(px):.1f},{Y(py):.1f}" for px, py in pts)
@@ -178,7 +187,7 @@ def avaleht(A, vaade, vaated):
     idx = {k: i for i, (k, _) in enumerate(viimased)}
     kuujoon = joon([("Eesti", [(idx[k], v) for k, v in viimased], "fookus"),
                     ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
-                   0, 11, 10, 2, w=300, h=150, mr=60, x_margid=[0, 11],
+                   0, 11, 10, 2, w=300, h=120, ml=4, mr=60, x_margid=[0, 11], lihtne=True,
                    x_silt=lambda i: viimased[int(i)][0][5:] + "/" + viimased[int(i)][0][2:4], silt="Töötus viimased 12 kuud")
     sec_prog = f"""
 <section class="pn sp6" id="tootus" aria-labelledby="h-tootus">
@@ -310,7 +319,7 @@ def too_eesti(A):
     margid = [i for i, (k, _) in enumerate(T["EE"]) if k[5:7] in ("01",)] + [0, n]
     joonis = joon([("Eesti", [(idx[k], v) for k, v in T["EE"]], "fookus"),
                    ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
-                  0, n, 10, 2, w=620, h=230, mr=60, x_margid=sorted(set(margid)),
+                  0, n, 10, 2, w=620, h=180, ml=4, mr=60, x_margid=[0, n], lihtne=True,
                   x_silt=lambda i: T["EE"][int(i)][0][5:] + "/" + T["EE"][int(i)][0][2:4], silt="Töötuse määr kuu kaupa")
     aasta_tagasi = dict(T["EE"]).get(f"{int(kuu[:4]) - 1}{kuu[4:]}")
     muutus = "" if aasta_tagasi is None else (
