@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-06 | SEIRE sait: teema valitakse iga lehe päises (inline), stiili ja skripti lingil on sisu räsi (?v=), et alamlehel ei tuleks vahemälust vana sait.js ja Hele teema (Kadri 6.11 20:38). |
 | 2026-11-06 | SEIRE sait: teemavaliku salvestuse võti vahetatud, et varem salvestatud „Hele“ ei kataks vaikimisi Pehmet (Kadri 6.11 20:32). |
 | 2026-11-06 | SEIRE sait: Töö, Inimesed ja Uudised on jagatud alamlehtedeks (Kadri valik 6.11 20:19): too.html, too-uuringud.html, too-ametid.html; inimesed.html, inimesed-oskused.html; uudised.html, uudised-vaited.html. Päises on teine rida teema alamlehtedega. Ehitus kontrollib nüüd ka teise lehe ankruid. Väidete juurest eemaldati sulgudes nimed (väide kuulub väljaandele). |
 | 2026-11-06 | SEIRE sait: vaiketeema on Pehme (Kadri 6.11 20:12); süsteemi tumeda teema korral Tume. |

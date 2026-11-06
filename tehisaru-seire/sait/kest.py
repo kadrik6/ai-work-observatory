@@ -2,9 +2,25 @@
 
 Igal lehel on sama päis ja üks teemalüliti. Ehitamata teema on menüüs tekstina „tulekul“, mitte katkise lingina.
 """
+import hashlib
 import re
+from pathlib import Path
 
 from komponendid import e, kp
+
+_SIIN = Path(__file__).resolve().parent
+
+
+def _v(nimi):
+    """Faili sisu räsi lingi lõppu: muudetud stiil või skript ei tule brauseri vahemälust vanana."""
+    return hashlib.sha1((_SIIN / nimi).read_bytes()).hexdigest()[:8]
+
+
+# Teema valitakse lehe sees enne joonistamist, mitte ainult sait.js-is (Kadri 6.11.2026: alamlehel tuli Hele,
+# sest brauser võttis vahemälust vana sait.js). Vaikimisi Pehme; süsteemi tumeda korral Tume; salvestatud valik ees.
+TEEMA_JS = ("<script>(function(){var t=null;try{t=localStorage.getItem('seire-teema-2')}catch(e){}"
+            "if(['light','soft','dark'].indexOf(t)<0)t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?null:'soft';"
+            "if(t)document.documentElement.setAttribute('data-theme',t)})()</script>")
 
 
 def menuu(vaated, praegune):
@@ -61,8 +77,9 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&amp;family=Inter:wght@400;600;700&amp;display=swap">
-<link rel="stylesheet" href="stiil.css">
-<script src="sait.js"></script>
+{TEEMA_JS}
+<link rel="stylesheet" href="stiil.css?v={_v("stiil.css")}">
+<script src="sait.js?v={_v("sait.js")}"></script>
 </head>
 <body>
 <a class="skip" href="#sisu">Mine sisu juurde</a>
