@@ -314,5 +314,44 @@ def kuidas(A, vaade, vaated=None):
         (f'{len(U)} <small>uuringut</small>', 'tehisaru ja töö kohta, igaühel tõendi tugevus.', "Uuringute kogu"),
     ]
     lead = "Siin on kõik allikad, märgid ja reeglid, mille järgi seire numbreid näitab ja võrdleb."
-    return (pea(A, vaade, lead, [("allikad", "Allikad"), ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], ree)
-            + sec_a + sec_m + sec_v + sec_u)
+    sec_uu = _uuenemine(A)
+    lingid = [("uuendused", "Mis uueneb ise")] if sec_uu else []
+    return (pea(A, vaade, lead, lingid + [("allikad", "Allikad"), ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], ree)
+            + sec_uu + sec_a + sec_m + sec_v + sec_u)
+
+
+def _uuenemine(A):
+    """Mis saidil uueneb ise ja mis käsitsi, koos viimase kuupäevaga (Kadri 6.11.2026 20:03)."""
+    O, H, P, F = A.get("uudiste_olek"), A.get("hanked_leht"), A.get("publikatsioonid"), (A.get("koondajad") or {}).get("firmad")
+    K = A.get("koondamised") or {}
+    T = A.get("tooelu") or {}
+
+    def d(x):
+        return kp(x[:10]) if x else "—"
+    otsib = min((f["otsib"]["kontrollitud"] for f in (F or {}).values() if f["otsib"].get("kontrollitud")), default="")
+    kandidaate = sum(1 for j in K.get("juhtumid", []) if j.get("kandidaat"))
+    read = [
+        ("Uudised Eestist ja maailmast", "ise, iga päev kell 7.23; kell 12.53 ja 17.53 ainult suured uudised", d(O["viimane_kontroll"]) if O else "—",
+         "Mitte midagi. Uudise liigi ja leviku märgib kogumine ise."),
+        ("Eesti koondamised (Töö)", "uudistest ise, märkega „uudisest, kontrollimata“", d(K.get("kontrollitud", "")),
+         f"Kinnitamine käsitsi peetud nimekirja (tooelu-seire/koondamised_ee.json). Praegu on kinnitamata {kandidaate}."),
+        ("Keda koondajad otsivad", "ise, esmaspäeviti ja uue koondaja lisandumisel", d(otsib), "Mitte midagi."),
+        ("Ametlikud numbrid (Eurostat, Statistikaamet)", "ise, iga päev", d(A.get("uuendatud", "")),
+         "Kui number muutub, peatub ehitus ja pealkiri tuleb üle vaadata. Riikide 2026. aasta numbrid kantakse käsitsi."),
+        ("Hanked", "ise, iga päev (GitHub Actions)", d((H or {}).get("seis", {}).get("kuupaev", "")),
+         "Klassifikaatori märgendeid pole inimene kontrollinud."),
+        ("Publikatsioonid (Töö)", "ise, esmaspäeviti (OpenAlex)", d((P or {}).get("meta", {}).get("aeg", "")), "Mitte midagi."),
+        ("Uuringute leiud ja kokkuvõtted (Töö)", "käsitsi", d(T.get("kontrollitud", "")), "Uue uuringu lisamine ja kontroll."),
+        ("Väited ja lahknevused (Kas see on tõsi?)", "käsitsi", "—", "Uue väite kontroll algallika vastu."),
+        ("OECD avaliku sektori raport", "käsitsi, ühekordne", kp("2026-11-03"), "Uue raporti korral numbrite ülekandmine."),
+    ]
+    t = "".join(f'<tr><td><b>{e(n)}</b></td><td>{e(k)}</td><td class="n">{v}</td><td>{e(m)}</td></tr>' for n, k, v, m in read)
+    ise = sum(1 for r in read if r[1].startswith("ise") or r[1].startswith("uudistest"))
+    return f"""
+<section class="jaotis" id="uuendused" aria-labelledby="h-uuendused">
+  <header>
+    <h2 id="h-uuendused">Saidi {len(read)} osast uueneb ise <b>{ise}</b>, ülejäänud käsitsi</h2>
+    <p class="alam">Sait ehitatakse uuesti kaks korda päevas (7.23 ja 17.53) ja avaldatakse ainult siis, kui kõik testid läbivad. Kuupäev on viimane kontroll või andmete seis.</p>
+  </header>
+  <div class="tbl"><table><thead><tr><th scope="col">Osa</th><th scope="col">Kuidas uueneb</th><th scope="col">Viimati</th><th scope="col">Mida on vaja käsitsi</th></tr></thead><tbody>{t}</tbody></table></div>
+</section>"""

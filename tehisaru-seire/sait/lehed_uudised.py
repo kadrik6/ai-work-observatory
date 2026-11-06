@@ -55,6 +55,8 @@ def _uudis(r):
         sildid.append(f'<span class="u-t">{e(TEEMA[r["teema"]])}</span>')
     if r.get("teema") == "koondamine" and r.get("ai_roll") in ROLL:
         sildid.append(f'<span class="u-t{" s" if r["ai_roll"] in ("otsene", "osaline") else ""}">{e(ROLL[r["ai_roll"]])}</span>')
+    if r.get("_jatk"):
+        sildid.append(f'<span class="u-t s">jätkulugu</span>')
     if r.get("_uus"):
         sildid.insert(0, '<span class="u-l suur">uus</span>')
     if r.get("suur"):
@@ -107,6 +109,11 @@ def uudised(A, vaade, vaated=None):
     O = _vaja(A, "uudiste_olek", "uudiste-olek.json")
     kontrolli(vaade, "Eestist ja maailmast", "arvamus")
     U = sorted((dict(r, _uus=r.get("lisatud") == O["viimane_kontroll"][:10]) for r in U), key=lambda r: r["kuupaev"], reverse=True)
+    nahtud = set()
+    for r in reversed(U):  # vanimast uuemani: sama ettevõtte hilisem lugu on jätkulugu
+        if r.get("ettevote"):
+            r["_jatk"] = r["ettevote"] in nahtud
+            nahtud.add(r["ettevote"])
     ee = [r for r in U if r["piirkond"] == "EE"]
     m = [r for r in U if r["piirkond"] != "EE"]
     suured = [r for r in U if r.get("suur")]

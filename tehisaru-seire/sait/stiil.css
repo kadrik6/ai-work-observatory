@@ -765,3 +765,4 @@ h3.veerg { font-size: 12px; }
 .jrj-r.on .rada .v { background: var(--surface-3); }
 .el-rida .jrj { max-width: 480px; }
 .u-t.lv { border-color: var(--signal); color: var(--signal-strong); font-weight: 700; }
+a.seis { color: inherit; text-decoration: none; } a.seis:hover { text-decoration: underline; }
