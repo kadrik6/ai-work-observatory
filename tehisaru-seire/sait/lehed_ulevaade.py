@@ -133,7 +133,7 @@ def avaleht(A, vaade, vaated):
     t_el = dict(T[EL]).get(kuu)
     if t_el is None:
         raise AndmeViga(f"ELi töötus puudub kuul {kuu}")
-    kontrolli(vaade, f"{kuu_seesytlev(kuu)} {pr(t_ee)}%")
+    # h1 ei sisalda enam töötust (5.11 sisuloogika, Kadri kinnitas 6.11): kõrvutus kutsus põhjuslikule lugemisele
     rm = A["uuringud"]["rm2026"]
     prog = {r["aasta"]: r for r in A["tooelu"]["tulevik"]["tootus_ee"]["read"]}
     p_aasta = int(kuu[:4])
@@ -191,7 +191,7 @@ def avaleht(A, vaade, vaated):
                    x_silt=lambda i: viimased[int(i)][0][5:] + "/" + viimased[int(i)][0][2:4], silt="Töötus viimased 12 kuud")
     sec_prog = f"""
 <section class="pn sp7" id="tootus" aria-labelledby="h-tootus">
-  <div class="pn-h"><h2 id="h-tootus">Prognoos ootab {p_aasta}. aastaks <b>{pr(prog[p_aasta]['protsent'])}%</b> töötust, kuunumber oli {kuu_seesytlev(kuu)} {pr(t_ee)}%</h2></div>
+  <div class="pn-h"><h2 id="h-tootus">Eesti töötus oli {kuu_seesytlev(kuu)} <b>{pr(t_ee)}%</b>; {p_aasta}. aasta keskmise prognoos on {pr(prog[p_aasta]['protsent'])}%, see on teine mõõdik</h2></div>
   <div class="g2"><div><p class="gt">Aasta keskmine, tegelik ja prognoos</p>{aastatulbad([(r["aasta"], r["protsent"], r["tegelik"]) for r in prog.values()], 10, 2)}</div>
   <div><p class="gt">Kuu kaupa, sesoonselt tasandatud, {k0[5:]}/{k0[:4]}–{kuu[5:]}/{kuu[:4]}</p>{kuujoon}</div></div>
   <p class="drift">Eri mõõdikud: prognoos on aasta keskmine, kuunumber sesoonselt tasandatud. Prognoos ei arvesta tehisaru mõju eraldi. Aasta keskmine selgub {p_aasta + 1}. aasta alguses.</p>
@@ -375,7 +375,7 @@ def too_eesti(A):
     legend = "".join(f'<span><i class="kr-t {k}"></i>{e(t)}</span>' for k, t in [("s", "nimetas tehisaru põhjusena"), ("m", "mainis tehisaru muul moel"), ("t", "tehisaru ei mainitud")])
     sec_v = f"""
 <section class="pn sp4" id="koondamised-visuaal" aria-labelledby="h-koondamised-v">
-  <div class="pn-h"><h2 id="h-koondamised-v">Tehisaru nimetati põhjusena <b>{pohjus} töökoha</b> juures {piir}{kokku}-st</h2></div>
+  <div class="pn-h"><h2 id="h-koondamised-v">Tehisaru nimetati üheks põhjuseks <b>{pohjus} töökoha</b> juures {piir}{kokku}-st</h2></div>
   <p class="ps">Teatatud töökohad Eestis ettevõtte kaupa. Värv näitab, mida ettevõte ise tehisaru kohta ütles. Vali ettevõte, et näha selle kaarti.</p>
   <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa; vali ettevõte, et näha selle kaarti">{ribad}</div>
   <p class="kr-leg">{legend}</p>
@@ -394,12 +394,11 @@ def mida_riik_ostab(A):
     if max(r["osa"] for r in H) >= 1:
         raise AndmeViga("Hangete pealkiri ütleb „alla 1%“, aga osa on 1% või rohkem")
     a0, a1 = taisaastad[0], taisaastad[-1]
-    kord = a1["ai_ja_andmed"] / a0["ai_ja_andmed"]
     mark = [(r["aasta"], int(r["ai_marksonaga"]), r["periood"] == "aasta") for r in H]
     return f"""
 <div class="g12">
 <section class="pn sp12" id="hanked" aria-labelledby="h-hanked">
-  <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehankeid oli {a1["aasta"]}. aastal <b>{a1["ai_ja_andmed"]}</b>, {a0["aasta"]}. aastaga võrreldes {pr(kord, 1)} korda rohkem, aga see on alla 1% kõigist hangetest</h2><span class="chip exp">katseline</span></div>
+  <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehankeid oli {a1["aasta"]}. aastal <b>{a1["ai_ja_andmed"]}</b>, alla 1% kõigist hangetest</h2><span class="chip exp">katseline</span></div>
   <p class="ps">Riigihangete registri hanked, mille klassifikaator märkis tehisaru või andmetööks. {uus["aasta"]} = {uus["periood"]}. Tehisaru uuringute ja mõjuanalüüside hankeid eraldi veel ei loeta; see rühm on töös. Kuidas hangitakse ja head näited: <a href="hanked.html">Hanked</a>.</p>
   <div class="g3">
     <div><p class="gt">Tehisaru- ja andmehanked, arv</p>{aastatulbad([(r["aasta"], r["ai_ja_andmed"], r["periood"] == "aasta") for r in H], 70, 20, uhik="", k=0)}</div>

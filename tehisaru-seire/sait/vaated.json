@@ -3,7 +3,7 @@
   "vaated": [
     {"id": "avaleht", "fail": "index.html", "menuu": null, "koht": "saidi nimi", "vanem": null, "kusimused": "K1, K4, K11", "olek": "valmis",
      "kusimus": "Mis on tehisaru kasutuse peamised numbrid praegu ja kas neid võib usaldada?",
-     "h1": "{inimeste-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest** ja {ettevotete-tehisaru-kasutus|EE|uusim|p0}% ettevõtetest; töötus oli septembris 8,0%",
+     "h1": "{inimeste-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest** ja {ettevotete-tehisaru-kasutus|EE|uusim|p0}% ettevõtetest",
      "osad": "Töölaud (Kadri 5.11.2026): kuus numbriplaati; ELi kaart ja järjestus omaette real; töötuse prognoos ja kuunumber; ettevõtete trend; Mis muutus; sihid; hanked (katseline); väited"},
     {"id": "inimesed", "fail": "inimesed.html", "menuu": "Inimesed", "koht": "menüü", "vanem": "avaleht", "kusimused": "K1–K3", "olek": "valmis",
      "kusimus": "Kui paljud Eesti inimesed tehisaru kasutavad ja kas neil on oskusi?",
@@ -18,7 +18,7 @@
      "osad": "Kasutus; tootlikkus; digiintensiivsus; teadus- ja arendustegevus"},
     {"id": "too", "fail": "too.html", "menuu": "Töö", "koht": "menüü", "vanem": "avaleht", "kusimused": "K6, K7", "olek": "valmis",
      "kusimus": "Milliseid töid tehisaru mõjutab ja mida tõendid tegelikult ütlevad?",
-     "h1": "Töökohti tehisaru tõttu kokkuvõttes veel ei kao, aga USA-s on tehisarule avatud ametites **noori vähem tööl**.",
+     "h1": "Töökohtade kadu tehisaru tõttu ei ole kogu tööturul veel näha, aga USA-s on tehisarule avatud ametites **noori vähem tööl**.",
      "osad": "Mida maailmas leiti; ülesannete kiirus katsetes; mida Eestis leiti; mis ees ootab (prognoos ei arvesta tehisaru mõju eraldi)",
      "alamlehed": [
        {"fail": "too.html", "nimi": "Ülevaade", "jaotised": ["eesti-praegu", "palkamine", "tulevik"]},
@@ -43,10 +43,7 @@
     {"id": "uudised", "fail": "uudised.html", "menuu": "Uudised", "koht": "menüü", "vanem": "avaleht", "kusimused": "K11, K12", "olek": "valmis",
      "kusimus": "Mis on tehisaru, andmete ja töö kohta Eestis ja maailmas viimati teada antud ning kas see on tõend või arvamus?",
      "h1": "Tehisaru ja töö uudised Eestist ja maailmast: uudis, uuring ja **arvamus on eraldi märgitud**.",
-     "osad": "Kadri 5.11.2026: maailma ja Eesti uudised eraldi usaldusväärsetest allikatest. Eesti | Maailm; uudistes kontrollitud väited; allikad ja nende olek",
-     "alamlehed": [
-       {"fail": "uudised.html", "nimi": "Uudised", "jaotised": ["uudised"]},
-       {"fail": "uudised-vaited.html", "nimi": "Väited ja allikad", "h1": "Uudiste väited ja kust uudised tulevad", "lead": "Uudistes esitatud väited, mida kontrolliti esmase allika järgi, ja allikad, kust uudised kogutakse.", "jaotised": ["vaited", "allikad"]}]},
+     "osad": "Kadri 5.11.2026: maailma ja Eesti uudised eraldi usaldusväärsetest allikatest. Eesti | Maailm; allikad ja nende olek. Uudistes kontrollitud väited on 6.11 alates vaates Kas see on tõsi? (üks loend, üks skaala)"},
     {"id": "kuidas", "fail": "kuidas-lugeda.html", "menuu": null, "koht": "jalus", "vanem": "avaleht", "kusimused": "kõik", "olek": "valmis",
      "kusimus": "Kust numbrid tulevad, mis on võrreldav ja mis muutus viimati?",
      "h1": "Numbrid tulevad 21 allikast ja võrrelda saab ainult **sama küsimustikuga numbreid**.",

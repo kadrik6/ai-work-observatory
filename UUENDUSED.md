@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-06 | SEIRE sait: sisuloogika soovitused ellu (Kadri „vii soovitused ellu“ 6.11 21:28). Uudistes kontrollitud väited on nüüd samas loendis ja samal skaalal kui teised (kas-see-on-tosi.html; hinnangud „Vale“ ja „Osaliselt tõsi“ lisatud), uudised-vaited.html kadus. Selle lehe pealkirja arvud arvutatakse andmetest. Pealkirjad ei ütle enam rohkem kui andmed: Töö (noori vähem tööl ainult USA-s tehisarule avatud ametites), avaleht (töötus eemaldatud), prognoos on eraldi mõõdik, hangete aastate võrdlus ootab inimese kontrolli, tootlikkus ainult koos töökorralduse muutusega, koondamistes „üks põhjustest“. TOOELU: Challengeri oktoobri aruanne (jaanuar–oktoober 2026). |
 | 2026-11-06 | SEIRE sait: teema atribuut data-theme → data-seire-teema, sest artefakti kest kirjutab juure data-theme üle ja alamlehed läksid Heledaks (Kadri 6.11 20:41). |
 | 2026-11-06 | SEIRE sait: teema valitakse iga lehe päises (inline), stiili ja skripti lingil on sisu räsi (?v=), et alamlehel ei tuleks vahemälust vana sait.js ja Hele teema (Kadri 6.11 20:38). |
 | 2026-11-06 | SEIRE sait: teemavaliku salvestuse võti vahetatud, et varem salvestatud „Hele“ ei kataks vaikimisi Pehmet (Kadri 6.11 20:32). |

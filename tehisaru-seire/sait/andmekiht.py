@@ -158,6 +158,7 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
                        ("koondajad", "koondajad.json")]:
         A[voti] = loe_json(sisu / nimi) if (sisu / nimi).exists() else None
     lisa_uudiste_koondamised(A)
+    lisa_uudiste_vaited(A)
     for r in A["avalik"].values():
         if not r["vaartus"] or not r["koht"]:
             raise AndmeViga(f"sisu/avalik-sektor.csv rida {r['id']}: väärtus või koht raportis puudub")
@@ -279,6 +280,25 @@ def koonda_vaited(riskid, vaited):
                       # Väide kuulub väljaandele, mitte nimelisele töötajale (Kadri 3.11.2026)
                       "valjaanne": f'{r["kus"]}, {r["kes"].split(", ", 1)[1]}' if r["kus"] == "ERR" and ", " in r["kes"] else r["kes"]})
     return tulem
+
+
+UUDISE_HINNANG = {"vale": "Vale", "osaliselt": "Osaliselt tõsi", "tõsi": "Vastab allikale", "õige": "Vastab allikale"}
+
+
+def lisa_uudiste_vaited(A):
+    """Üks väidete loend, üks skaala (5.11 sisuloogika, Kadri kinnitas 6.11.2026): uudistes kontrollitud väited
+    (sisu/uudiste-vaited.json) lähevad samasse loendisse kui kataloog/vaited.csv. Tundmatu hinnang = ehitus kukub."""
+    for r in A.get("uudiste_vaited") or []:
+        if r["hinnang"] not in UUDISE_HINNANG:
+            raise AndmeViga(f"Uudise väitel {r['id']} on tundmatu hinnang {r['hinnang']!r}")
+        t = [x for x in r.get("toendid", []) if x.get("url")]
+        A["vaited"].append({
+            "id": "uudis-" + r["id"], "vaide": r["vaide"], "kes": r["kes"], "kuupaev": r["kuupaev"],
+            "url": r.get("kes_url", ""), "hinnang": UUDISE_HINNANG[r["hinnang"]],
+            "selgitus": r["kokkuvote"] + " " + " ".join(f'{x["nimi"]}: {x["naitab"]}.' for x in r.get("toendid", [])),
+            "oige_lause": "", "naitaja": "", "kontrollitud": r["kuupaev"],
+            "algallikas": t[0]["nimi"] if t else "", "algallika_url": t[0]["url"] if t else "",
+            "algallikas_utleb": t[0]["naitab"] if t else "", "valjaanne": r["kes"], "uudisest": True})
 
 
 # ---------------------------------------------------------------- päringud

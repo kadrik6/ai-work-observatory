@@ -153,7 +153,7 @@ def _tootlikkus(A):
     return f"""
 <section class="jaotis" id="tootlikkus" aria-labelledby="h-tootlikkus">
   <header>
-    <h2 id="h-tootlikkus">Tehisaru tõstis Eesti ettevõtete tootlikkust <b>ainult koos töökorralduse muutusega</b></h2>
+    <h2 id="h-tootlikkus">Tehisaru kasutus oli seotud suurema tootlikkusega <b>ainult koos töökorralduse muutusega</b></h2>
     {vastavus("osaliselt", "Uuring kasutab Eesti ettevõtete andmeid kuni 2023. aastani, enne generatiivse tehisaru laia levikut.")}
   </header>
   <div class="kaks">

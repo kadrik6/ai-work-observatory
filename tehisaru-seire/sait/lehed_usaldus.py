@@ -11,6 +11,8 @@ HINNANGUD = {
     "Nimetaja vale": (0, "Protsent on arvutatud teisest rühmast, kui lause ütleb."),
     "Sõnastus liialdab": (0, "Lause ütleb rohkem, kui allikas ütles, näiteks „kaob“, kui allikas ütles „puudutab“."),
     "Suurus ebakindel": (1, "Suund on tõenäoliselt õige, täpne suurus mitte."),
+    "Vale": (0, "Väide on algallikaga vastuolus, näiteks vale aasta number."),
+    "Osaliselt tõsi": (1, "Osa väitest vastab tõenditele, osa on mõõtmata või ütleb rohkem."),
     "Täpsustus puudu": (1, "Number vastab allikale, aga lausest puudub, keda või mida see kirjeldab."),
     "Vastab allikale": (2, "Lause ütleb sama, mida allikas."),
 }
@@ -33,6 +35,15 @@ def _raskus(v):
 
 
 # ---------------------------------------------------------------- Kas see on tõsi?
+
+def kas_tosi_h1(A):
+    """Pealkiri andmetest: väidete arv muutub iga päev, sest uudiste väited tulevad samasse loendisse."""
+    n = len(A["vaited"])
+    muud = sum(1 for v in A["vaited"] if _raskus(v) == 0)
+    lahti = sum(1 for l in A["lahknevused"] if l["staatus"] == "selgitamata")
+    return (f"{SEESTYTLEV[n].capitalize()} kontrollitud avalikust väitest **{ARVSONAD[muud]} ütleb muud kui allikas** "
+            f"ja {ARVSONAD[lahti]} allikate lahknevust on selgitamata.")
+
 
 def kas_tosi(A, vaade, vaated=None):
     V = sorted(A["vaited"], key=lambda v: (_raskus(v), v["kuupaev"]))
@@ -116,7 +127,7 @@ def kas_tosi(A, vaade, vaated=None):
     sec_varskus = f"""
 <section class="jaotis" id="varskus" aria-labelledby="h-varskus">
   <header>
-    <h2 id="h-varskus">{SEESTYTLEV[len(v_read)].capitalize()} näitajast {"<b>kõik on ajakohased</b>" if koik_ajakohased else "<b>mõni on vananenud</b>"}; {ARVSONAD[uuem]} puhul on riiklikul statistikaametil juba uuem number</h2>
+    <h2 id="h-varskus">{SEESTYTLEV[len(v_read)].capitalize()} näitajast {"<b>kõik on Eurostatis ajakohased</b>" if koik_ajakohased else "<b>mõni on vananenud</b>"}; {ARVSONAD[uuem]} puhul on riiklikul statistikaametil juba uuem number</h2>
     <p class="alam">Ajakohane tähendab, et allikas pole avaldanud uuemat aastat, kui seire näitab. Uuem riiklik number on lehel eraldi märgitud.</p>
   </header>
   {tabel(["Näitaja", "Allikas uuendas", "Järgmine oodatav", "Seis", "Uuem number"], v_read, numbrid=[], pealdis="Näitajate värskus")}

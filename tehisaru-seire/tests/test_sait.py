@@ -294,7 +294,9 @@ def test_ulevaade_on_toolaud_kaardi_ja_jarjestusega_samal_real(A, sait):
 
 def test_ulevaate_tootuse_kuunumber_tuleb_failist(sait):
     kuu, v = lehed_ulevaade.tootus()["EE"][-1]
-    assert f"töötus oli {lehed_ulevaade.kuu_seesytlev(kuu)} {komponendid.pr(v)}%" in sait["index.html"]
+    assert f"töötus oli {lehed_ulevaade.kuu_seesytlev(kuu)} {komponendid.pr(v)}%" in tekst(sait["index.html"])
+    # 5.11 sisuloogika: töötus ei ole avalehe h1-s tehisaru kasutuse kõrval
+    assert "töötus" not in re.search(r"<h1>(.*?)</h1>", sait["index.html"], re.S).group(1)
 
 
 def test_kuu_seesytlev_on_eesti_keeles():
@@ -469,4 +471,4 @@ def test_vaite_juures_ei_ole_inimeste_nimesid(sait):
     import vota_kaasa
     assert vota_kaasa.ilma_nimedeta("ERR News 3.11.2026 (Sinisalu, Hiiemaa, Töötukassa)") == "ERR News 3.11.2026"
     assert "(sarnaselt ERR News 3.11)" in vota_kaasa.ilma_nimedeta("ERR 5.11.2026 (sarnaselt ERR News 3.11)")
-    assert "Sinisalu" not in sait["uudised-vaited.html"]
+    assert "Sinisalu" not in sait["kas-see-on-tosi.html"]

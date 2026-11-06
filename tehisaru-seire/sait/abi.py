@@ -9,9 +9,11 @@ from kest import sellel_lehel
 from pealkiri import taida
 
 ARVSONAD = {0: "null", 1: "üks", 2: "kaks", 3: "kolm", 4: "neli", 5: "viis", 6: "kuus", 7: "seitse", 8: "kaheksa",
-            9: "üheksa", 10: "kümme"}
+            9: "üheksa", 10: "kümme", 11: "üksteist", 12: "kaksteist", 13: "kolmteist",
+            14: "neliteist", 15: "viisteist"}
 SEESTYTLEV = {2: "kahest", 3: "kolmest", 4: "neljast", 5: "viiest", 6: "kuuest", 7: "seitsmest", 8: "kaheksast",
-              9: "üheksast", 10: "kümnest"}
+              9: "üheksast", 10: "kümnest", 11: "üheteistkümnest", 12: "kaheteistkümnest",
+              13: "kolmeteistkümnest", 14: "neljateistkümnest", 15: "viieteistkümnest"}
 
 
 def kontrolli(vaade, *jupid):

@@ -302,15 +302,15 @@
    "id": "challenger2026",
    "autorid": "Challenger, Gray & Christmas",
    "aasta": 2026,
-   "pealkiri": "Challenger Report: Layoffs Fall, Hiring Picks Up, AI Leads for Fifth Straight Month",
+   "pealkiri": "October Layoffs at Three-Year Low; Seasonal Hiring Plans Up 26%",
    "kanal": "ettevõtte kuuaruanne",
    "retsenseeritud": false,
-   "url": "https://www.challengergray.com/blog/challenger-report-layoffs-fall-hiring-picks-up-ai-leads-for-fifth-straight-month/",
-   "avaldatud": "2026-08-06",
+   "url": "https://www.challengergray.com/blog/october-layoffs-at-three-year-low-seasonal-hiring-plans-up-26/",
+   "avaldatud": "2026-11-05",
    "meetod": "kirjeldav",
    "kus": "USA",
    "valim": "ettevõtete avalikud koondamisteated",
-   "leid": "Jaanuarist juulini 2026 teatati 477 033 koondamisest. Neist 112 713 (umbes 24%) puhul nimetati põhjuseks tehisaru, juulis 33%. Need on teated, mitte tegelikud koondamised. Aruanne ise märgib, et tehisaru põhjuseks märkimine on ebamäärane."
+   "leid": "Jaanuarist oktoobrini 2026 teatati 617 189 koondamisest, 44% vähem kui aasta varem. Tehisaru nimetati põhjuseks 121 401 teate puhul (umbes 20%); turu- ja majandusolud (130 531) möödusid sellest aasta peamise põhjusena. Oktoobris nimetati tehisaru 1265 korral, aasta väikseim kuu. Need on teated, mitte tegelikud koondamised."
   },
   {
    "id": "goldman2025",
@@ -736,31 +736,31 @@
   ],
   "koondamise_pohjused": {
    "uuring": "challenger2026",
-   "periood": "jaanuar–juuli 2026",
-   "kokku": 477033,
+   "periood": "jaanuar–oktoober 2026",
+   "kokku": 617189,
    "read": [
     {
-     "nimi": "Tehisaru",
-     "teateid": 112713
+     "nimi": "Turu- ja majandusolud",
+     "teateid": 130531
     },
     {
-     "nimi": "Turu- ja majandusolud",
-     "teateid": 90075
+     "nimi": "Tehisaru",
+     "teateid": 121401
     },
     {
      "nimi": "Tegevuse lõpetamine",
-     "teateid": 84630
+     "teateid": 109342
     },
     {
      "nimi": "Ümberkorraldamine",
-     "teateid": 57476
+     "teateid": 85391
     },
     {
-     "nimi": "Lepingu kaotus",
-     "teateid": 40758
+     "nimi": "Nõudluse langus",
+     "teateid": 21347
     }
    ],
-   "markus": "Muud põhjused on jääk: aruanne neid üksikult ei loetle. Koondamisteateid oli 41% vähem kui aasta varem, värbamisplaane 25% rohkem."
+   "markus": "Muud põhjused on jääk: aruanne neid üksikult ei loetle. Koondamisteateid oli 44% vähem kui aasta varem, värbamisplaane 34% rohkem (72% neist hooajatööd)."
   }
  },
  "tookorraldus": {

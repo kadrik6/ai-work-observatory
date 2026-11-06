@@ -95,6 +95,9 @@ def ehita(valjund=VALJUND, A=None):
     A = A or andmed.lae()
     vaated = lae_vaated()
     for v in vaated:
+        if v["id"] == "kas-tosi":  # väidete arv muutub iga päev (uudiste väited): pealkiri arvutatakse andmetest
+            from lehed_usaldus import kas_tosi_h1
+            v["h1"] = kas_tosi_h1(A)
         taida(v["h1"], A)  # iga h1 mall peab olema täidetav, ka ehitamata vaatel
     valjund = Path(valjund)
     valjund.mkdir(parents=True, exist_ok=True)

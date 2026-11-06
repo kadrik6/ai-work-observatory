@@ -142,23 +142,6 @@ def uudised(A, vaade, vaated=None):
     lead = ("Tehisaru, andmete ja tööturu uudised usaldusväärsetest allikatest. Iga uudis on märgitud liigiga: "
             "uudis, aruanne, uuring, arvamus või eksitav. Arvamus ei ole tõend. Hoiame pealkirja, linki ja oma sõnadega kokkuvõtet.")
 
-    v_read = []
-    for v in sorted(V, key=lambda x: x["kuupaev"], reverse=True):
-        h, kl = HINNANG.get(v["hinnang"], (v["hinnang"], "warn"))
-        toend = "".join(f'<li>{a(t["url"], t["nimi"]) if t.get("url") else e(t["nimi"])}: {e(t["naitab"])} <small>({e(t["tugevus"])})</small></li>' for t in v["toendid"])
-        v_read.append(f'<tr><td>„{e(v["vaide"])}“<small>{a(v["kes_url"], v["kes"])}</small></td>'
-                      f'<td><span class="verd {kl}">{e(h)}</span></td><td>{e(v["kokkuvote"])}<ul class="u-toend">{toend}</ul></td></tr>')
-    n_v = len(V)
-    vale = sum(v["hinnang"] in ("vale", "eksitav") for v in V)
-    sec_v = f"""
-<div class="g12">
-<section class="pn sp12" id="uudiste-vaited" aria-labelledby="h-uudiste-vaited">
-  <div class="pn-h"><h2 id="h-uudiste-vaited">Uudistes kontrollitud väited: {ARVSONAD.get(n_v, n_v)}, neist <b>{ARVSONAD.get(vale, vale)} vale või eksitav</b></h2></div>
-  <p class="ps">Väide kuulub väljaandele. Hinnang tuleb esmasest allikast. Kõik kontrollitud väited: {link(vaated, "kas-tosi", "Kas see on tõsi?")}.</p>
-  <div class="tbl"><table class="u-vaited"><thead><tr><th scope="col">Väide ja väljaanne</th><th scope="col">Hinnang</th><th scope="col">Mida allikas ütleb</th></tr></thead>
-  <tbody>{"".join(v_read)}</tbody></table></div>
-</section>
-</div>"""
     allikad = "".join(f'<li><span class="{"ok" if s["ok"] else "risk"}">{"vastas" if s["ok"] else "ei vastanud"}</span> {e(s["nimi"])}</li>' for s in O["allikad"])
     sec_k = f"""
 <div class="g12">
@@ -166,7 +149,7 @@ def uudised(A, vaade, vaated=None):
   <div class="pn-h"><h2 id="h-uudiste-allikad">Kust uudised tulevad</h2></div>
   <div class="g2 u-kuidas">
     <ul class="u-allikad">{allikad}</ul>
-    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „N väljaannet“ näitab, mitu eri väljaannet sama lugu kajastas. See asendab populaarsust, sest klikke väljaanded avalikult ei jaga. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang. Kinnitatud Eesti koondamised on vaates {link(vaated, "too", "Töö", "koondamised")}.</p>
+    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „N väljaannet“ näitab, mitu eri väljaannet sama lugu kajastas. See asendab populaarsust, sest klikke väljaanded avalikult ei jaga. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang. Kinnitatud Eesti koondamised on vaates {link(vaated, "too", "Töö", "koondamised")}. Uudistes kontrollitud {len(V)} väidet on koos teistega vaates {link(vaated, "kas-tosi", "Kas see on tõsi?")}.</p>
   </div>
 </section>
 </div>"""
@@ -176,7 +159,7 @@ def uudised(A, vaade, vaated=None):
              + "</div>")
     return jaga(A, vaade, lead, ree, [
         ("uudised", [("eesti-uudised", "Eesti"), ("maailma-uudised", "Maailm")], sec_u),
-        ("vaited", [("uudiste-vaited", "Väited")], sec_v), ("allikad", [("uudiste-allikad", "Allikad")], sec_k),
+        ("allikad", [("uudiste-allikad", "Allikad")], sec_k),
     ])
 
 
@@ -243,7 +226,8 @@ def hanked(A, vaade, vaated=None):
     ai_v = {r["aasta"]: r["ai_marksonaga"] for r in aastad}
     eelmised = [v for k, v in ai_v.items() if k < viimane_t]
     if ai_v[viimane_t] > max(eelmised):
-        h_aastad = f'Tehisaruhankeid oli {viimane_t}. aastal juba <b>{ai_v[viimane_t]}</b>, rohkem kui ühelgi varasemal aastal'
+        # 5.11 sisuloogika (Kadri kinnitas 6.11): aastate võrdlus ootab inimese kontrolli, klassifikaator on katseline
+        h_aastad = f'Klassifikaator leidis {viimane_t}. aastal <b>{ai_v[viimane_t]} tehisaruhanget</b>; aastate võrdlus ootab inimese kontrolli'
     else:
         h_aastad = f'Tehisaru- ja andmehankeid oli {a_t["aasta"]}. aastal <b>{a_t["ai_andmed"]}</b>'
     sec_aastad = f"""
@@ -262,8 +246,8 @@ def hanked(A, vaade, vaated=None):
         f'<span class="vr-v">{pr(r["innovatsioonimark_osakaal"])}%</span></div>' for r in inn)
     sec_inn = f"""
 <section class="pn sp5" id="innovatsioon" aria-labelledby="h-innovatsioon">
-  <div class="pn-h"><h2 id="h-innovatsioon">Innovatsioonimärgiga hankeid oli {inn[-1]["aasta"]}. aastal <b>{pr(inn[-1]["innovatsioonimark_osakaal"])}%</b>, siht on 2%</h2></div>
-  <p class="ps">Osa kõigist eForms-vormil hangetest, millele hankija märkis innovatsiooni. eForms algas 09/2023, seega {inn[0]["aasta"]} on osaline aasta; * = osaline aasta. Siht 2% aastaks 2027 on {a(OECD_URL, "OECD 2026 raportis")}.</p>
+  <div class="pn-h"><h2 id="h-innovatsioon">Innovatsioonimärgiga hankeid oli {inn[-1]["aasta"]}. aastal <b>{pr(inn[-1]["innovatsioonimark_osakaal"])}%</b>, siht on 2%; märgi määratlus on kontrollimata</h2></div>
+  <p class="ps">Osa kõigist eForms-vormil hangetest, millele hankija märkis innovatsiooni. eForms algas 09/2023, seega {inn[0]["aasta"]} on osaline aasta; * = osaline aasta. Siht 2% aastaks 2027 on {a(OECD_URL, "OECD 2026 raportis")}. Rahandusministeeriumi kiri 11.03.2025 andis 2023. aastaks 0,2% hangete arvust; kas see on sama määratlus kui eForms-i innovatsioonimärk, ei ole kontrollitud.</p>
   <div class="viis">{inn_read}</div>
   <p class="kr-leg"><span><i class="kr-t siht"></i>siht 2%</span></p>
 </section>"""
