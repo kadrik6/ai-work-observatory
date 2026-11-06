@@ -4,7 +4,7 @@
   var juur = document.documentElement;
   function loe() { try { return localStorage.getItem(VOTI); } catch (e) { return null; } }
   function kirjuta(v) { try { localStorage.setItem(VOTI, v); } catch (e) { /* privaatne aken */ } }
-  // Kolm teemat: Hele → Pehme → Tume → Hele (Kadri 5.11.2026). Ilma valikuta järgib süsteemi heledat või tumedat.
+  // Kolm teemat: Hele → Pehme → Tume → Hele (Kadri 5.11.2026). Ilma valikuta Pehme, süsteemi tumeda korral Tume.
   var JARG = ['light', 'soft', 'dark'];
   var NIMI = { light: 'Hele', soft: 'Pehme', dark: 'Tume' };
   function praegune() {
@@ -13,7 +13,9 @@
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
   var salvestatud = loe();
+  // Vaikimisi Pehme (Kadri 6.11.2026); süsteemi tumeda teema korral jääb Tume.
   if (JARG.indexOf(salvestatud) >= 0) juur.setAttribute('data-theme', salvestatud);
+  else if (!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) juur.setAttribute('data-theme', 'soft');
 
   function uuendaNupp(nupp) {
     var t = praegune(), j = JARG[(JARG.indexOf(t) + 1) % 3];
