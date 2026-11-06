@@ -74,6 +74,16 @@ def _o(a, b):
     return round(100 * a / b, 1) if b else None
 
 
+def kasitsi_lisatud(fail):
+    """Loeb käsitsi lisatud hanked: {võti: põhjus}. Read veergudega voti, silt (AI või ANDMED), pohjus."""
+    import csv
+    if not fail.exists():
+        return {}
+    with open(fail, encoding="utf-8") as f:
+        return {r["voti"]: f'{r["silt"]}: {r["pohjus"]}' for r in csv.DictReader(
+            (rida for rida in f if not rida.startswith("#")))}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--valjund", default="valjund")
@@ -85,6 +95,11 @@ def main():
     for r in hanked:
         t = tul.get(voti(r), {})
         r["_p"], r["_silt"], r["_marksona"] = t.get("p"), t.get("silt", 0), t.get("marksona", 0)
+    # käsitsi lisatud hanked: inimene on kinnitanud, et see on AI- või andmehange, aga reeglid seda ei leia
+    kasitsi = kasitsi_lisatud(Path(__file__).with_name("kasitsi.csv"))
+    for r in hanked:
+        if voti(r) in kasitsi:
+            r["_silt"], r["_kasitsi"] = 1, kasitsi[voti(r)]
 
     eforms_aastad = sorted({r["aasta"] for r in hanked if r["allikas"] == "eforms"})
     aastad = []
@@ -137,6 +152,7 @@ def main():
             "ai": bool(m["ai"]), "inn": R.innovatsiooni_mark(r),
             "url": RHR_LEHT.format(r["rhr_id"]) if r.get("rhr_id") else None, "vn": r.get("viitenumber"),
             "hea": sum(bool(x) for x in h.values()),
+            "ks": r.get("_kasitsi"),
         })
     # tehisaru uuringud ja mõjuanalüüsid (katseline, Kadri 5.11.2026)
     moju = []

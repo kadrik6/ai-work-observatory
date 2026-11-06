@@ -51,3 +51,11 @@ def test_moju_uuring():
                           "cpv": ["72000000"]}) is None
     assert R.moju_uuring({"pealkiri": "Andmehalduse mõjuanalüüs (Justiits- ja Digiministeerium)",
                           "cpv": ["79000000"]}) is None
+
+
+def test_kasitsi_lisatud(tmp_path):
+    import koonda
+    f = tmp_path / "k.csv"
+    f.write_text("# kommentaar\nvoti,silt,pohjus\neforms:1-0000,AI,test\n", encoding="utf-8")
+    assert koonda.kasitsi_lisatud(f) == {"eforms:1-0000": "AI: test"}
+    assert koonda.kasitsi_lisatud(tmp_path / "puudub.csv") == {}
