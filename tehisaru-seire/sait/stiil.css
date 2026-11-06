@@ -19,7 +19,7 @@
 }
 /* Kolm teemat (Kadri 5.11.2026 21:51): Hele = valge, Pehme = hele udusinine, Tume = pehme tume (#1f2023). Andmevärv kõigis sinine. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
+  :root:not([data-seire-teema]) {
   --surface: #27282c; --surface-2: #2c2d31; --surface-3: #313237; --brand-soft: #2d3142;
   --ink: #dedfe3; --ink-2: #c2c3c8; --ink-3: #a0a1a8;
   --signal: #9fb0f5; --signal-strong: #c7d1ff; --on-signal: #1f2023;
@@ -31,7 +31,7 @@
   color-scheme: dark;
   }
 }
-:root[data-theme="dark"] {
+:root[data-seire-teema="dark"] {
   --surface: #27282c; --surface-2: #2c2d31; --surface-3: #313237; --brand-soft: #2d3142;
   --ink: #dedfe3; --ink-2: #c2c3c8; --ink-3: #a0a1a8;
   --signal: #9fb0f5; --signal-strong: #c7d1ff; --on-signal: #1f2023;
@@ -42,7 +42,7 @@
   --panel: #27282c; --page: #1f2023;
   color-scheme: dark;
 }
-:root[data-theme="soft"] {
+:root[data-seire-teema="soft"] {
   --surface: #f6f8fc; --surface-2: #f0f3f9; --surface-3: #e3e7f0; --brand-soft: #dfe5fb;
   --ink: #151926; --ink-2: #3d4460; --ink-3: #545b74;
   --context: #b2b8c9; --context-strong: #34394c;
@@ -245,10 +245,10 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
 /* ELi kaart: üks toon, hele → tume (väike number → suur number). Tume teema algab pinna lähedalt. */
 :root { --k0: #a3b3f3; --k1: #7e96f0; --k2: #5879eb; --k3: #3159e5; --k4: #0030de; --k-bg: #e9e9ed; --k-na: #ffffff; --osa-b: #7189ec; --osa-c: #dde3fb; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) { --k0: #46549a; --k1: #5c6dc0; --k2: #7688de; --k3: #98a8f2; --k4: #c0cbff; --k-bg: #38393e; --k-na: #1f2023; --osa-b: #6b7fe0; --osa-c: #3a4680; }
+  :root:not([data-seire-teema]) { --k0: #46549a; --k1: #5c6dc0; --k2: #7688de; --k3: #98a8f2; --k4: #c0cbff; --k-bg: #38393e; --k-na: #1f2023; --osa-b: #6b7fe0; --osa-c: #3a4680; }
 }
-:root[data-theme="dark"] { --k0: #46549a; --k1: #5c6dc0; --k2: #7688de; --k3: #98a8f2; --k4: #c0cbff; --k-bg: #38393e; --k-na: #1f2023; --osa-b: #6b7fe0; --osa-c: #3a4680; }
-:root[data-theme="soft"] { --k-bg: #dbe0ec; --k-na: #f6f8fc; --osa-c: #d6defa; }
+:root[data-seire-teema="dark"] { --k0: #46549a; --k1: #5c6dc0; --k2: #7688de; --k3: #98a8f2; --k4: #c0cbff; --k-bg: #38393e; --k-na: #1f2023; --osa-b: #6b7fe0; --osa-c: #3a4680; }
+:root[data-seire-teema="soft"] { --k-bg: #dbe0ec; --k-na: #f6f8fc; --osa-c: #d6defa; }
 .kaart-ala { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 24px; align-items: end; }
 @media (max-width: 680px) { .kaart-ala { grid-template-columns: minmax(0, 1fr); } }
 .kaart { position: relative; }
@@ -572,8 +572,8 @@ h3.veerg { font-size: 12px; }
 .siht.f .r b { color: var(--signal); }
 .verd { font-size: 11px; font-weight: 700; color: var(--accent-text); }
 .verd.risk { color: #a32020; }
-:root[data-theme="dark"] .verd.risk { color: #ffaaaa; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme]) .verd.risk { color: #ffaaaa; } }
+:root[data-seire-teema="dark"] .verd.risk { color: #ffaaaa; }
+@media (prefers-color-scheme: dark) { :root:not([data-seire-teema]) .verd.risk { color: #ffaaaa; } }
 @media (max-width: 1180px) { .plaadid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .sp3, .sp4, .sp5, .sp6 { grid-column: span 6; } }
 @media (max-width: 760px) { .plaadid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g12 > * { grid-column: span 12; } .el-rida, .g2 { grid-template-columns: minmax(0, 1fr); } .el-kaart { max-width: 240px; } .jrj-r { grid-template-columns: 8em minmax(0, 1fr) 2.6em; } .voog li { grid-template-columns: 5.6em minmax(0, 1fr); } .voog .t { grid-column: 2; grid-row: 1; } .voog li > span:last-child { grid-column: 1 / -1; } }
 /* Kõik vaated töölauana: päise numbrid on plaatide rida (5.11.2026) */

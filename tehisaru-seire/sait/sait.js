@@ -4,18 +4,18 @@
   var juur = document.documentElement;
   function loe() { try { return localStorage.getItem(VOTI); } catch (e) { return null; } }
   function kirjuta(v) { try { localStorage.setItem(VOTI, v); } catch (e) { /* privaatne aken */ } }
-  // Kolm teemat: Hele → Pehme → Tume → Hele (Kadri 5.11.2026). Ilma valikuta Pehme, süsteemi tumeda korral Tume.
+  // Kolm teemat: Hele → Pehme → Tume → Hele (Kadri 5.11.2026). Oma atribuut data-seire-teema, sest claude.ai artefakti kest kirjutab juure data-theme üle (alamlehel tuli Hele, 6.11.2026). Ilma valikuta Pehme, süsteemi tumeda korral Tume.
   var JARG = ['light', 'soft', 'dark'];
   var NIMI = { light: 'Hele', soft: 'Pehme', dark: 'Tume' };
   function praegune() {
-    var t = juur.getAttribute('data-theme');
+    var t = juur.getAttribute('data-seire-teema');
     if (JARG.indexOf(t) >= 0) return t;
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
   var salvestatud = loe();
   // Vaikimisi Pehme (Kadri 6.11.2026); süsteemi tumeda teema korral jääb Tume.
-  if (JARG.indexOf(salvestatud) >= 0) juur.setAttribute('data-theme', salvestatud);
-  else if (!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) juur.setAttribute('data-theme', 'soft');
+  if (JARG.indexOf(salvestatud) >= 0) juur.setAttribute('data-seire-teema', salvestatud);
+  else if (!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) juur.setAttribute('data-seire-teema', 'soft');
 
   function uuendaNupp(nupp) {
     var t = praegune(), j = JARG[(JARG.indexOf(t) + 1) % 3];
@@ -30,7 +30,7 @@
       uuendaNupp(nupp);
       nupp.addEventListener('click', function () {
         var uus = JARG[(JARG.indexOf(praegune()) + 1) % 3];
-        juur.setAttribute('data-theme', uus);
+        juur.setAttribute('data-seire-teema', uus);
         kirjuta(uus);
         uuendaNupp(nupp);
       });

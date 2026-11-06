@@ -20,7 +20,7 @@ def _v(nimi):
 # sest brauser võttis vahemälust vana sait.js). Vaikimisi Pehme; süsteemi tumeda korral Tume; salvestatud valik ees.
 TEEMA_JS = ("<script>(function(){var t=null;try{t=localStorage.getItem('seire-teema-2')}catch(e){}"
             "if(['light','soft','dark'].indexOf(t)<0)t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?null:'soft';"
-            "if(t)document.documentElement.setAttribute('data-theme',t)})()</script>")
+            "if(t)document.documentElement.setAttribute('data-seire-teema',t)})()</script>")
 
 
 def menuu(vaated, praegune):
