@@ -6,7 +6,7 @@ Iga pealkirja number tuleb andmetest; pealkirjad, mida mall ei kata, kontrollita
 """
 import datetime
 
-from abi import ARVSONAD, a, kontrolli, link, pea
+from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, pea
 from andmekiht import AndmeViga
 from komponendid import e, kp, pr
 
@@ -385,3 +385,52 @@ def uuringud_too(A):
 </section>
 </div>"""
     return '<div class="g12">' + sec_a + sec_t + "</div>" + sec_e
+
+
+# ---------------------------------------------------------------- Töö: keda koondajad otsivad
+
+def palkamine(A):
+    """Keda samad ettevõtted, kes koondavad, praegu tööle otsivad (Kadri 6.11.2026). Tühi, kui andmeid pole toodud."""
+    F = (A.get("koondajad") or {}).get("firmad")
+    K = (A.get("koondamised") or {}).get("juhtumid") or []
+    if not F or not K:
+        return ""
+    jarjestus, read = [], []
+    for j in sorted(K, key=lambda r: r["kuupaev"], reverse=True):
+        if j["ettevote"] in F and j["ettevote"] not in jarjestus:
+            jarjestus.append(j["ettevote"])
+    puudu = [j["ettevote"] for j in K if j["ettevote"] not in F]
+    kontrollitud = [f for f in jarjestus if F[f]["otsib"].get("kontrollitud")]
+    otsivad = [f for f in kontrollitud if F[f]["otsib"]["ametid"]]
+    kuulutusi = sum(len(F[f]["otsib"]["ametid"]) for f in kontrollitud)
+    sama = [f for f in otsivad if set(F[f]["kaotatud"]) & {a["liik"] for a in F[f]["otsib"]["ametid"]} - {"teadmata", "muu"}]
+    kp_min = min(F[f]["otsib"]["kontrollitud"] for f in kontrollitud)
+    for f in jarjestus:
+        x = F[f]
+        o = x["otsib"]
+        kaot = set(x["kaotatud"])
+        kaotatud = "".join(f'<span class="u-t">{e(k)}</span>' for k in x["kaotatud"])
+        if not o.get("kontrollitud"):
+            otsib = f'<span class="kr-pole">{e(o["tekst"])}</span>'
+        elif not o["ametid"]:
+            otsib = f'<b>0</b> <span class="kr-pole">{e(o["tekst"])}</span>'
+        else:
+            otsib = f'<b>{len(o["ametid"])}</b> ' + "".join(
+                f'<span class="pk-a">{e(a["nimi"])} <span class="u-t{" s" if a["liik"] in kaot and a["liik"] not in ("teadmata", "muu") else ""}">{e(a["liik"])}</span></span>'
+                for a in o["ametid"])
+        link_ = f' · {a(o["url"], "tööpakkumised")}' if o.get("url") else ""
+        read.append(f'<tr><td><b>{e(f)}</b><small>{e(x["sektor"])} · {e(x["omand"])}</small></td>'
+                    f'<td>{kaotatud}<small>{e(x["kaotatud_tekst"])}</small></td><td>{otsib}</td>'
+                    f'<td class="n">{kp(o["kontrollitud"]) if o.get("kontrollitud") else "—"}<small>{link_.lstrip(" · ")}</small></td></tr>')
+    n_k = len(kontrollitud)
+    h2 = f'{SEESTYTLEV.get(n_k, str(n_k) + "-st").capitalize()} kontrollitud koondajast'
+    sama_t = (f"; {ARVSONAD.get(len(sama), len(sama))} otsib sama ametiliiki, mida koondab" if sama else "; mitte ükski ei otsi sama ametiliiki, mida koondab")
+    return f"""
+<div class="g12">
+<section class="pn sp12" id="palkamine" aria-labelledby="h-palkamine">
+  <div class="pn-h"><h2 id="h-palkamine">{h2} otsib praegu Eestis töötajaid <b>{ARVSONAD.get(len(otsivad), len(otsivad))}</b> (kokku {kuulutusi} kuulutust){sama_t}</h2></div>
+  <p class="ps">Samad ettevõtted, kes koondavad: mida nad koondamisuudise järgi kaotavad ja keda nende enda tööpakkumiste leht praegu Eestis otsib (kontrollitud {kp(kp_min)}). Sinise äärega ametiliik = sama liik, mida koondatakse. Leht ei näita sisemisi ümberpaigutusi ega ainult LinkedInis avaldatud kuulutusi.{" Taustata: " + ", ".join(e(p) for p in puudu) + "." if puudu else ""}</p>
+  <div class="tbl"><table class="pk"><thead><tr><th scope="col">Ettevõte</th><th scope="col">Koondab (ametiliigid)</th><th scope="col">Otsib praegu Eestis</th><th scope="col">Kontrollitud</th></tr></thead>
+  <tbody>{"".join(read)}</tbody></table></div>
+</section>
+</div>"""

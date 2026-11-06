@@ -514,13 +514,14 @@ def too(A, vaade, vaated=None):
     lead = ("Uuringud ei näita veel töökohtade kadu kogu tööturul, aga noorte palkamine ja vabakutseliste tööd on mõnes ametis vähenenud. "
             "Eesti kohta selliseid mõõtmisi veel ei ole.")
     from lehed_ulevaade import too_eesti
-    from lehed_uudised import uuringud_too
+    from lehed_uudised import palkamine, uuringud_too
     sec_uuritakse = uuringud_too(A)
-    lingid = [("tootus-kuud", "Eesti praegu"), ("maailm", "Mida maailmas leiti"), ("ulesanded", "Ülesanded"), ("eesti", "Eestis"), ("kokkupuude", "Ametid"), ("hoive", "Hõive muutus"), ("tulevik", "Mis ees ootab")]
+    sec_palk = palkamine(A)
+    lingid = [("tootus-kuud", "Eesti praegu")] + ([("palkamine", "Keda koondajad otsivad")] if sec_palk else []) + [("maailm", "Mida maailmas leiti"), ("ulesanded", "Ülesanded"), ("eesti", "Eestis"), ("kokkupuude", "Ametid"), ("hoive", "Hõive muutus"), ("tulevik", "Mis ees ootab")]
     if sec_uuritakse:
         lingid.append(("uuritakse", "Mida uuritakse"))
     return (pea(A, vaade, lead, lingid, ree)
-            + too_eesti(A) + sec_maailm + sec_kiirus + sec_eesti + sec_kokkupuude + sec_hoive + sec_tulevik + sec_uuritakse)
+            + too_eesti(A) + sec_palk + sec_maailm + sec_kiirus + sec_eesti + sec_kokkupuude + sec_hoive + sec_tulevik + sec_uuritakse)
 
 
 # ---------------------------------------------------------------- Avalik sektor

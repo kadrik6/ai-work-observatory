@@ -749,3 +749,10 @@ h3.veerg { font-size: 12px; }
 @media (max-width: 760px) { .hk .vr { grid-template-columns: 9em minmax(0, 1fr) 2em; } .h-otsing input { min-width: 0; width: 100%; } }
 .viis.teemad .vr { grid-template-columns: 15em minmax(0, 1fr) 3.4em; }
 @media (max-width: 760px) { .viis.teemad .vr { grid-template-columns: 10em minmax(0, 1fr) 3.4em; } .viis.teemad .vr-n { white-space: normal; } }
+/* Keda koondajad otsivad (Kadri 6.11.2026) */
+.pk td { vertical-align: top; font-size: 12px; }
+.pk td small { display: block; font-size: 11px; color: var(--ink-3); margin-top: 3px; }
+.pk td:nth-child(2) .u-t { margin: 0 3px 3px 0; display: inline-block; }
+.pk .pk-a { display: block; margin-top: 2px; }
+.pk td:nth-child(1) { width: 16%; } .pk td:nth-child(2) { width: 34%; } .pk td:nth-child(4) { width: 11%; }
+.kk .u-t { margin-left: 6px; }

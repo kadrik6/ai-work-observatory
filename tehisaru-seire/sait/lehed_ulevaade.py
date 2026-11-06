@@ -336,11 +336,12 @@ def too_eesti(A):
     mainib = sum(r["roll"] in ("otsene", "osaline") for r in juhtumid)
     kaardid = []
     for r in juhtumid:
-        arv = str(r["arv_eestis"]) if r.get("arv_eestis") is not None else (f'kuni {r["arv_ulem"]}' if r.get("arv_ulem") else "arv pole teada")
+        arv = (("vähemalt " if r.get("arv_vahemalt") else "") + str(r["arv_eestis"])) if r.get("arv_eestis") is not None else (f'kuni {r["arv_ulem"]}' if r.get("arv_ulem") else "arv pole teada")
+        kand = '<span class="u-t">uudisest, kontrollimata</span>' if r.get("kandidaat") else ""
         klass = " s" if r["roll"] in ("otsene", "osaline") else ""
         kaardid.append(f'<li class="kk" data-k="{e(r["id"])}"><div class="kk-r"><b>{e(r["ettevote"])}</b><span class="kk-n{'' if r.get('arv_eestis') is not None or r.get('arv_ulem') else ' t'}">{e(arv)}</span></div>'
                        f'<div class="kk-r"><span class="roll{klass}">tehisaru: {e(ROLL_NIMI[r["roll"]])}</span><span class="kk-d">{kp(r["kuupaev"])} · {e(r["sektor"])}</span></div>'
-                       f'<p title="{e(r["pohjus"])}">{e(r["pohjus"])}</p><a href="{e(r["url"])}">{e(r["allikas"])}</a></li>')
+                       f'<p title="{e(r["pohjus"])}">{e(r["pohjus"])}</p><a href="{e(r["url"])}">{e(r["allikas"])}</a>{kand}</li>')
     arvsona = SEESTYTLEV.get(len(juhtumid), f"{len(juhtumid)}-st")
     otse = "mitte ükski" if otsene == 0 else ARVSONAD.get(otsene, str(otsene))
     sec_k = f"""
@@ -363,20 +364,22 @@ def too_eesti(A):
     kokku = sum(_arv(r) for r in teada)
     pohjus = sum(_arv(r) for r in teada if RYHM[r["roll"]][0] == "s")
     ulem = any(r.get("arv_eestis") is None for r in teada)
+    alam = any(r.get("arv_vahemalt") for r in teada)
+    piir = "kuni " if ulem and not alam else ("vähemalt " if alam and not ulem else "umbes ")
     ribad = "".join(
         f'<div class="kr" data-k="{e(r["id"])}" role="listitem"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
         f'<span class="kr-rada"><i class="kr-t {RYHM[r["roll"]][0]}{" ulem" if r.get("arv_eestis") is None else ""}" style="width:{_arv(r) / suurim * 100:.1f}%"></i></span>'
-        f'<span class="kr-a">{"kuni " if r.get("arv_eestis") is None else ""}{_arv(r)}</span></div>' for r in teada)
+        f'<span class="kr-a">{"kuni " if r.get("arv_eestis") is None else ""}{_arv(r)}{"+" if r.get("arv_vahemalt") else ""}</span></div>' for r in teada)
     ribad += "".join(f'<div class="kr" data-k="{e(r["id"])}" role="listitem"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
                      f'<span class="kr-rada"><span class="kr-pole">arv pole teada</span></span><span class="kr-a"></span></div>' for r in pole)
     legend = "".join(f'<span><i class="kr-t {k}"></i>{e(t)}</span>' for k, t in [("s", "nimetas tehisaru põhjusena"), ("m", "mainis tehisaru muul moel"), ("t", "tehisaru ei mainitud")])
     sec_v = f"""
 <section class="pn sp4" id="koondamised-visuaal" aria-labelledby="h-koondamised-v">
-  <div class="pn-h"><h2 id="h-koondamised-v">Tehisaru nimetati põhjusena <b>{pohjus} töökoha</b> juures {"kuni " if ulem else ""}{kokku}-st</h2></div>
+  <div class="pn-h"><h2 id="h-koondamised-v">Tehisaru nimetati põhjusena <b>{pohjus} töökoha</b> juures {piir}{kokku}-st</h2></div>
   <p class="ps">Teatatud töökohad Eestis ettevõtte kaupa. Värv näitab, mida ettevõte ise tehisaru kohta ütles. Vali ettevõte, et näha selle kaarti.</p>
   <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa; vali ettevõte, et näha selle kaarti">{ribad}</div>
   <p class="kr-leg">{legend}</p>
-  <p class="allikas">Allikas: uudised, lingid kaartidel. Katkendäärega tulp on teatatud ülempiir.</p>
+  <p class="allikas">Allikas: uudised, lingid kaartidel. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
 </section>"""
     return f'<div class="g12">{sec_t}{sec_v}{sec_k}</div>'
 

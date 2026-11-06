@@ -403,3 +403,31 @@ def test_too_vaates_on_publikatsioonid(A, sait):
 def test_ulevaade_ja_avalik_sektor_viitavad_uutele_vaadetele(sait):
     assert 'href="uudised.html"' in sait["index.html"] and 'href="hanked.html"' in sait["index.html"]
     assert 'href="hanked.html"' in sait["avalik-sektor.html"]
+
+
+def test_eesti_energia_koondamine_on_too_vaates(sait):
+    # Kadri 6.11.2026: Eesti Energia koondamine oli uudistes, aga mitte Töö vaate koondamistes
+    h = sait["too.html"]
+    assert 'data-k="eesti-energia-2026-11"' in h and "vähemalt 390" in h
+
+
+def test_uudise_koondamine_lisandub_kandidaadina(A):
+    import copy
+    B = copy.deepcopy(A)
+    B["uudised"].append({"kuupaev": "2026-11-06", "piirkond": "EE", "teema": "koondamine", "ettevote": "Näidis AS",
+                         "ai_roll": "osaline", "pealkiri": "Näidis AS koondab", "url": "https://naide.ee/x", "allikas": "ERR",
+                         "pohjus": "Kulud.", "liik": "uudis"})
+    n = len(B["koondamised"]["juhtumid"])
+    andmekiht.lisa_uudiste_koondamised(B)
+    uus = [j for j in B["koondamised"]["juhtumid"] if j["ettevote"] == "Näidis AS"]
+    assert len(B["koondamised"]["juhtumid"]) == n + 1 and uus[0]["kandidaat"] and uus[0]["arv_eestis"] is None
+    andmekiht.lisa_uudiste_koondamised(B)  # sama ettevõtet teist korda ei lisata
+    assert len(B["koondamised"]["juhtumid"]) == n + 1
+
+
+def test_palkamise_pealkiri_tuleb_andmetest(A, sait):
+    F = A["koondajad"]["firmad"]
+    k = [f for f in F.values() if f["otsib"].get("kontrollitud")]
+    kuulutusi = sum(len(f["otsib"]["ametid"]) for f in k)
+    h2 = sait["too.html"].split('id="h-palkamine">')[1].split("</h2>")[0]
+    assert f"(kokku {kuulutusi} kuulutust)" in h2

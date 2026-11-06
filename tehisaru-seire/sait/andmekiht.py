@@ -18,6 +18,33 @@ VORRELDAVAD = ("alus", "sama")
 EL = "EU27_2020"
 
 
+def lisa_uudiste_koondamised(A):
+    """Igapäevaste uudiste Eesti koondamised, mida käsitsi kontrollitud nimekirjas veel pole, lähevad Töö vaatesse
+    kandidaadina (Kadri 6.11.2026: Eesti Energia puudus, sest nimekiri uuenes ainult käsitsi). Ettevõte loetakse samaks
+    nime järgi 45 päeva piires. Arvu võetakse ainult arvuväljast, mitte tekstist."""
+    K = A.get("koondamised") or {}
+    if not K or not A.get("uudised"):
+        return
+    import datetime as _dt
+    olemas = [(j["ettevote"].lower(), _dt.date.fromisoformat(j["kuupaev"])) for j in K["juhtumid"]]
+    for r in A["uudised"]:
+        if r.get("piirkond") != "EE" or r.get("teema") != "koondamine" or not r.get("ettevote"):
+            continue
+        if r.get("ai_roll") not in K["rollid"]:
+            raise AndmeViga(f"uudised.jsonl: koondamisel {r['ettevote']} on tundmatu ai_roll {r.get('ai_roll')!r}")
+        kp_ = _dt.date.fromisoformat(r["kuupaev"])
+        if any(n == r["ettevote"].lower() and abs((kp_ - k).days) <= 45 for n, k in olemas):
+            continue
+        arv = r.get("arv_eestis") if isinstance(r.get("arv_eestis"), int) else None
+        K["juhtumid"].append({
+            "id": "uudis-" + "".join(c if c.isalnum() else "-" for c in r["ettevote"].lower()) + "-" + r["kuupaev"],
+            "kuupaev": r["kuupaev"], "ettevote": r["ettevote"], "sektor": r.get("sektor") or "sektor teadmata",
+            "arv_eestis": arv, "arv_tekst": r.get("arv_tekst") or "", "roll": r["ai_roll"], "pohjus": r.get("pohjus", "")[:300],
+            "pealkiri": r["pealkiri"], "url": r["url"], "allikas": r["allikas"], "kandidaat": True})
+        olemas.append((r["ettevote"].lower(), kp_))
+    K["juhtumid"].sort(key=lambda j: j["kuupaev"], reverse=True)
+
+
 class AndmeViga(Exception):
     """Andmed on puudu või vastuolus. Ehitus peatub."""
 
@@ -127,8 +154,10 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
     A["uudised"] = ([json.loads(r) for r in uu.read_text(encoding="utf-8").splitlines() if r.strip()]
                     if uu.exists() else None)
     for voti, nimi in [("uudiste_vaited", "uudiste-vaited.json"), ("uudiste_olek", "uudiste-olek.json"),
-                       ("hanked_leht", "hanked-leht.json"), ("publikatsioonid", "publikatsioonid.json")]:
+                       ("hanked_leht", "hanked-leht.json"), ("publikatsioonid", "publikatsioonid.json"),
+                       ("koondajad", "koondajad.json")]:
         A[voti] = loe_json(sisu / nimi) if (sisu / nimi).exists() else None
+    lisa_uudiste_koondamised(A)
     for r in A["avalik"].values():
         if not r["vaartus"] or not r["koht"]:
             raise AndmeViga(f"sisu/avalik-sektor.csv rida {r['id']}: väärtus või koht raportis puudub")

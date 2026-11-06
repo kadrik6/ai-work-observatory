@@ -1,5 +1,5 @@
 {
- "viimane_kontroll": "2026-11-05T17:10:00+02:00",
+ "viimane_kontroll": "2026-11-06T07:45:00+02:00",
  "allikad": [
   {
    "nimi": "ERR uudised (RSS)",
@@ -19,7 +19,8 @@
   },
   {
    "nimi": "Challenger kuuaruanne",
-   "ok": true
+   "ok": true,
+   "markus": "kuuaruanne; järgmine detsembri alguses"
   }
  ]
 }

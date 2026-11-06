@@ -44,5 +44,34 @@
     "url": "https://www.challengergray.com/blog/october-layoffs-at-three-year-low-seasonal-hiring-plans-up-26/"
    }
   ]
+ },
+ {
+  "id": "ai-noorte-esimene-too",
+  "kuupaev": "2026-11-06",
+  "vaide": "Tehisaru tõttu on noortel raskem esimest tööd leida",
+  "kes": "ERR News 3.11.2026 (Sinisalu, Hiiemaa, Töötukassa)",
+  "kes_url": "https://news.err.ee/1610184274/ai-makes-it-harder-for-young-people-to-land-their-first-job",
+  "hinnang": "osaliselt",
+  "kokkuvote": "Noorte värbamine on tõesti langenud. Kanadas langes see aga ka ametites, mida tehisaru vähe puudutab, seega on peamine põhjus tõenäoliselt majandus ja pandeemiajärgne kohanemine. USA palgaandmetes on langus tehisarule avatud ametites suurem. Eestis seda ei mõõdeta.",
+  "toendid": [
+   {
+    "nimi": "Statistics Canada 28.10.2026",
+    "naitab": "Laialdast tõendit pole; noorte värbamine langes kõigis ametites (vähe avatud 4,0→3,3%, avatud 3,2→3,0%)",
+    "tugevus": "tugev: ametlik tööjõu-uuring 2006–2026, varased tulemused",
+    "url": "https://www150.statcan.gc.ca/n1/pub/36-28-0001/2026010/article/00003-eng.htm"
+   },
+   {
+    "nimi": "Stanford „Canaries“, aug 2026",
+    "naitab": "USA 22–25-aastaste hõive tehisarule avatud ametites 19% madalam kui vähem avatud ametites",
+    "tugevus": "keskmine: suured palgaandmed, kirjeldav",
+    "url": "https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/"
+   },
+   {
+    "nimi": "Eesti",
+    "naitab": "Mõõtmist ei ole (noorte värbamist ameti tehisarule avatuse järgi ei avaldata)",
+    "tugevus": "puudub",
+    "url": ""
+   }
+  ]
  }
 ]

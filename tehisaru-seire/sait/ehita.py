@@ -96,7 +96,8 @@ def ehita(valjund=VALJUND, A=None):
         else:
             raise EhitusViga(f"Vaade {v['id']} on „valmis“, aga sellel pole ehitajat (lehed.EHITAJAD)")
         nimi = v["menuu"] or {"avaleht": "Avaleht", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}[v["id"]]
-        kirjutatud[v["fail"]] = kest.leht(A, vaated, v, sisu, f"{nimi} · Tehisaru seire")
+        pealkiri_ = "SEIRE · Tehisaru seire" if v["id"] == "avaleht" else f"{nimi} · Tehisaru seire"  # artefakti nimi „ID · Nimi“
+        kirjutatud[v["fail"]] = kest.leht(A, vaated, v, sisu, pealkiri_)
     for f, t in kirjutatud.items():
         kontrolli(f, t, olemas)
         (valjund / f).write_text(t, encoding="utf-8")

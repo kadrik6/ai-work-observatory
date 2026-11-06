@@ -35,6 +35,7 @@ def vota(proj):
     (SISU / "uudised.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in read), encoding="utf-8")
     shutil.copyfile(uu / "vaited.json", SISU / "uudiste-vaited.json")
     shutil.copyfile(uu / "olek.json", SISU / "uudiste-olek.json")
+    shutil.copyfile(uu / "koondajad.json", SISU / "koondajad.json")  # keda koondajad ise tööle otsivad
 
     h = _loe(proj / "seire-uuendus" / "hanked" / "leht.json")
     for r in h["loend"]:
