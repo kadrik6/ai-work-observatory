@@ -853,3 +853,77 @@ summary { padding-block: 3px; }
 /* Telefonis alamlehtede rida murdub, mitte ei keri külili (Töö: neli alamlehte, 6.11.2026) */
 @media (max-width: 600px) { nav.alam { max-width: 100%; } .alamlehed { flex-wrap: wrap; overflow-x: visible; } }
 .kk-e, .kk-j { min-width: 24px; min-height: 24px; }
+
+/* ---- Navigatsioon B (Kadri 6.11.2026 22:51): päises teemad ja „Kõik teemad“, teema alamlehed sakkidena pealkirja all,
+   „Sellel lehel“ laial ekraanil paremal. Telefonis „Menüü“ ainult teemade linkidega (Kadri 22:52: ilma „+“ märgita). ---- */
+.mega { position: static; border-top: 0; padding-top: 0; }
+.mega a[aria-current="true"] { text-decoration: underline; text-underline-offset: 4px; }
+.mega > summary { list-style: none; display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 3px 10px;
+  border: 1px solid var(--border); border-radius: 6px; background: var(--panel); font-size: 12.5px; font-weight: 600; color: var(--ink); cursor: pointer; }
+.mega > summary::-webkit-details-marker { display: none; }
+.mega > summary::after { content: ""; width: 6px; height: 6px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: translateY(-2px) rotate(45deg); }
+.mega[open] > summary { background: var(--signal); border-color: var(--signal); color: var(--surface); }
+.mega[open] > summary::after { transform: translateY(1px) rotate(-135deg); }
+.mega-tel { display: none; }
+.mega-paneel { position: absolute; left: 0; right: 0; top: 100%; z-index: 6; background: var(--panel); border-bottom: 1px solid var(--border);
+  box-shadow: 0 10px 24px rgba(21, 25, 38, .12); max-height: calc(100svh - var(--top-h, 90px)); overflow: auto; }
+.mega-ruut { max-width: var(--wrap); margin: 0 auto; padding: 16px max(16px, env(safe-area-inset-left, 0px)) 8px;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 32px; }
+.mega-t { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.mega-nimi { font: 700 14px/1.3 var(--font-display); color: var(--signal); text-decoration: none; }
+.mega-nimi:hover { text-decoration: underline; }
+.mega-t ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.mega-t li::before { content: none; }
+.mega-t li a { display: inline-block; padding: 3px 0; font-size: 12.5px; color: var(--ink-2); text-decoration: none; }
+.mega-t li a:hover { color: var(--signal); text-decoration: underline; }
+.mega-t p { margin: 2px 0 0; font-size: 12px; color: var(--ink-3); max-width: 46ch; }
+.mega a[aria-current="page"] { color: var(--signal); font-weight: 600; }
+.mega-lisa { max-width: var(--wrap); margin: 0 auto; padding: 10px max(16px, env(safe-area-inset-left, 0px)) 14px; font-size: 12.5px;
+  border-top: 1px solid var(--border); color: var(--ink-3); }
+.mega-lisa a { display: inline-block; padding: 3px 0; }
+@media (max-width: 1100px) { .mega-ruut { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Rada ja sakid */
+.rada p { margin: 0 0 6px; font-size: 12px; color: var(--ink-3); }
+.rada a { color: var(--ink-2); }
+.pea-tekst nav.alam { margin-top: 4px; }
+.alamlehed { background: none; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; padding: 0; gap: 0; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+.alamlehed::-webkit-scrollbar { display: none; }
+.alamlehed a { padding: 7px 14px; min-height: 32px; border-radius: 0; font-size: 13px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.alamlehed a:hover { background: none; color: var(--ink); }
+.alamlehed a[aria-current="page"] { background: none; box-shadow: none; color: var(--signal); border-bottom-color: var(--signal); }
+.lehel-rida { margin-top: 2px; }
+
+/* „Sellel lehel“ paremal (≥1200 px); kitsamal ekraanil rida sakkide all */
+.lehel-parem { display: none; }
+@media (min-width: 1200px) {
+  main.raamiga { display: grid; grid-template-columns: minmax(0, 1fr) 176px; gap: 0 24px; align-items: start; }
+  .raam-sisu { min-width: 0; }
+  .lehel-parem { display: block; position: sticky; top: calc(var(--top-h, 90px) + 14px); padding-top: 14px; max-height: calc(100svh - var(--top-h, 90px) - 28px); overflow: auto; }
+  .lehel-rida { display: none; }
+  .lehel-parem .kt { margin: 0 0 6px; font-size: 11px; font-weight: 600; color: var(--ink-3); }
+  .lehel-parem .sellel { display: flex; flex-direction: column; gap: 0; flex-wrap: nowrap; }
+  .lehel-parem .sellel a { display: block; min-height: 0; padding: 4px 0 4px 10px; border: 0; border-left: 2px solid var(--border); border-radius: 0; background: none; color: var(--ink-2); font-size: 12px; }
+  .lehel-parem .sellel a:hover { color: var(--signal); border-left-color: var(--signal); }
+  .lehel-parem .sellel a[aria-current="true"] { color: var(--signal); border-left-color: var(--signal); font-weight: 600; }
+}
+.lehel-rida .sellel a[aria-current="true"] { color: var(--signal); border-color: var(--signal); background: var(--surface); font-weight: 600; }
+@media (max-width: 700px) { .lehel-rida .sellel { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; } .lehel-rida .sellel li { flex: none; } }
+
+/* Telefon: teemade rida peidus, „Menüü“ avab teemade loendi (teema avab esimese lehe; edasi sakid) */
+@media (max-width: 680px) {
+  .top .paisteemad { display: none; }
+  .top-1 { padding-bottom: 6px; }
+  .mega { order: 3; }
+  .top-1 .teema { order: 2; margin-left: auto; }
+  .mega > summary { min-height: 44px; padding: 0 14px; }
+  .mega-arvuti { display: none; }
+  .mega-tel { display: inline; }
+  .mega-ruut { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 6px; }
+  .mega-t { border-bottom: 1px solid var(--border); }
+  .mega-t ul, .mega-t p { display: none; }
+  .mega-nimi { display: flex; align-items: center; min-height: 48px; font-size: 16px; }
+  .mega-lisa a { padding: 10px 0; }
+  .alamlehed { flex-wrap: wrap; overflow-x: visible; }
+  .alamlehed a { min-height: 40px; display: inline-flex; align-items: center; padding: 0 12px; }
+}

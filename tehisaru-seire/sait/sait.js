@@ -252,19 +252,19 @@
   document.addEventListener('DOMContentLoaded', function () {
     korgus();
     window.addEventListener('resize', korgus);
-    var lingid = Array.prototype.slice.call(document.querySelectorAll('.top .sellel a[href^="#"]'));
+    // „Sellel lehel“ on kaks koopiat (laial ekraanil parem veerg, kitsal rida sakkide all); märge käib mõlemas.
+    var lingid = Array.prototype.slice.call(document.querySelectorAll('.lehel .sellel a[href^="#"]'));
     if (!lingid.length) return;
-    var sihid = lingid.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    var hrefid = [];
+    lingid.forEach(function (a) { var h = a.getAttribute('href'); if (hrefid.indexOf(h) < 0) hrefid.push(h); });
+    var sihid = hrefid.map(function (h) { return document.getElementById(h.slice(1)); });
     function margi() {
       var piir = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--top-h'), 10) || 110) + 24;
       var k = -1;
       sihid.forEach(function (t, i) { if (t && t.getBoundingClientRect().top <= piir) k = i; });
-      lingid.forEach(function (a, i) { if (i === k) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
-      var akt = lingid[k];
-      if (akt && akt.parentNode.parentNode.scrollWidth > akt.parentNode.parentNode.clientWidth) {
-        var ul = akt.parentNode.parentNode, l = akt.parentNode;
-        if (l.offsetLeft < ul.scrollLeft || l.offsetLeft + l.offsetWidth > ul.scrollLeft + ul.clientWidth) ul.scrollLeft = l.offsetLeft - 16;
-      }
+      lingid.forEach(function (a) {
+        if (k >= 0 && a.getAttribute('href') === hrefid[k]) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      });
     }
     window.addEventListener('scroll', margi, { passive: true });
     margi();
@@ -301,5 +301,19 @@
       var v = q.get('otsi');
       if (v) { i.value = v; i.dispatchEvent(new Event('input')); }
     });
+  });
+})();
+
+// „Kõik teemad“ / telefonis „Menüü“ (navigatsioon B, Kadri 6.11.2026): sulgub Esc-iga, klõpsuga mujale ja lingi valimisel.
+(function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    var m = document.querySelector('details.mega');
+    if (!m) return;
+    var s = m.querySelector('summary');
+    function uuenda() { s.setAttribute('aria-expanded', m.open ? 'true' : 'false'); }
+    m.addEventListener('toggle', uuenda); uuenda();
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && m.open) { m.open = false; s.focus(); } });
+    document.addEventListener('click', function (ev) { if (m.open && !m.contains(ev.target)) m.open = false; });
+    m.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { m.open = false; }); });
   });
 })();

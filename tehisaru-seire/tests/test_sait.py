@@ -577,3 +577,25 @@ def test_koondamised_on_uks_plokk(sait):
     # Kadri 6.11.2026 22:27, ettepanek 6: graafik ja kaardid ühes plokis
     osa = _jaotis(sait["too.html"], "koondamised")
     assert 'id="koondamised-visuaal"' in osa and 'class="kk-v"' in osa
+
+
+def test_navigatsioon_b_koik_teemad_sakid_ja_sellel_lehel(sait):
+    # Kadri 6.11.2026 22:51 valis navigatsiooni B: „Kõik teemad“ paneel päises, alamlehed sakkidena pealkirja all
+    # (mitte päises), „Sellel lehel“ paremal veerus; telefonis „Menüü“ ainult teemade linkidega (22:52).
+    vaated = ehita.lae_vaated()
+    teemad = [v for v in vaated if v["menuu"] and not v.get("teema") and v["olek"] == "valmis"]
+    for f, h in sait.items():
+        if not f.endswith(".html"):
+            continue
+        paneel = re.search(r'<nav class="mega-paneel".*?</nav>', h, re.S).group(0)
+        assert all(f'href="{v["fail"]}"' in paneel for v in teemad), f
+        pais = re.search(r'<header class="top">.*?</header>', h, re.S).group(0)
+        assert 'class="alamlehed"' not in pais, f  # sakid on sisus, mitte päises
+    for v in vaated:
+        for s in v.get("alamlehed", []):
+            h = sait[s["fail"]]
+            main = re.search(r"<main.*?</main>", h, re.S).group(0)
+            assert main.index('class="alamlehed"') > main.index("</h1>"), s["fail"]  # sakid pealkirja all
+            assert '<nav class="rada"' in main
+    assert 'class="lehel lehel-parem"' in sait["too.html"] and 'class="lehel lehel-rida"' in sait["too.html"]
+    assert '<nav class="rada"' not in sait["index.html"]

@@ -21,7 +21,18 @@ const U = [
       await p.goto(D + 'index.html');
       let ok = true, klikke = 0; const puudu = [];
       for (const k of u.klikid) {
-        const l = k.startsWith('css:') ? p.locator(k.slice(4)).first() : p.locator(`header a:text-is("${k}"), nav a:text-is("${k}")`).first();
+        // Päise link enne lehe sisu linke (avalehe „Sellel lehel“ reas on samanimelised ankrud). Telefonis on teemad
+        // „Menüü“ taga (navigatsioon B, 6.11.2026): kui teema on menüüs, ava menüü ja klõpsa seal.
+        let l;
+        if (k.startsWith('css:')) l = p.locator(k.slice(4)).first();
+        else {
+          l = p.locator(`header a:text-is("${k}"):visible`).first();
+          if (!(await l.count()) && await p.locator(`.mega-paneel a.mega-nimi:text-is("${k}")`).count() && await p.locator('details.mega > summary').isVisible()) {
+            await p.click('details.mega > summary'); klikke++; await p.waitForTimeout(150);
+            l = p.locator(`header a:text-is("${k}"):visible`).first();
+          }
+          if (!(await l.count())) l = p.locator(`nav a:text-is("${k}"):visible`).first();
+        }
         if (!(await l.count()) || !(await l.isVisible())) { puudu.push(k); continue; }
         await l.click().catch(() => { ok = false; });
         klikke++; await p.waitForTimeout(250);
@@ -36,10 +47,12 @@ const U = [
       const ylevool = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       console.log(`${w}px | ${u.nimi} | klikke ${klikke} | ${ok && y !== null ? 'leitud, ekraane siht ' + ekraan : 'EI LEIDNUD'} ${puudu.length ? ' (nuppu pole nähtaval: ' + puudu.join(', ') + ', tuleb kerida)' : ''} | horisontaalne üle ${ylevool}px | ${p.url().split('/').pop()}`);
     }
-    // menüü telefonis: kas kõik 6 teemat nähtaval
+    // menüü: kas kõik teemad on nähtaval (telefonis pärast „Menüü“ avamist)
     await p.goto(D + 'index.html');
-    const menu = await p.$$eval('ul.menu a', as => as.map(a => { const r = a.getBoundingClientRect(); return [a.textContent, Math.round(r.right), r.width > 0]; }));
-    const peidus = menu.filter(m => m[1] > w).map(m => m[0]);
+    if (!(await p.locator('ul.menu').isVisible())) await p.click('details.mega > summary');
+    const sel = (await p.locator('ul.menu').isVisible()) ? 'ul.menu a' : '.mega-paneel a.mega-nimi';
+    const menu = await p.$$eval(sel, as => as.map(a => { const r = a.getBoundingClientRect(); return [a.textContent, Math.round(r.right), r.width > 0 && r.bottom <= innerHeight]; }));
+    const peidus = menu.filter(m => m[1] > w || !m[2]).map(m => m[0]);
     console.log(`${w}px | menüü: ${peidus.length ? 'ekraanilt väljas ' + peidus.join(', ') : 'kõik teemad nähtaval'}`);
 
     // Kasutusloogika (oskus kasutusloogika 6.11.2026): väikesed sihtmärgid ja tagasi-nupp
@@ -57,7 +70,8 @@ const U = [
     await p.goto(D + 'index.html'); await p.evaluate(() => window.scrollTo(0, 1200)); await p.waitForTimeout(150);
     const y0 = await p.evaluate(() => scrollY);
     // hiireklõps koordinaadile: locator.click() kerib enne klõpsu ja rikuks tagasi-nupu mõõtmise
-    const bx = await p.locator('ul.menu a:text-is("Töö")').boundingBox();
+    if (!(await p.locator('ul.menu').isVisible())) { const sb = await p.locator('details.mega > summary').boundingBox(); await p.mouse.click(sb.x + 5, sb.y + 5); await p.waitForTimeout(150); }
+    const bx = await p.locator('ul.menu a:text-is("Töö"):visible, .mega-paneel a:text-is("Töö"):visible').first().boundingBox();
     await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.waitForTimeout(250);
     await p.goBack(); await p.waitForTimeout(300);
     console.log(`${w}px | tagasi-nupp: avalehelt (kerimine ${y0}) Töö lehele ja tagasi → ${p.url().split('/').pop()}, kerimine ${await p.evaluate(() => scrollY)}`);
