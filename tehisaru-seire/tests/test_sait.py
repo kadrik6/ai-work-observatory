@@ -528,3 +528,14 @@ def test_avaleht_viib_lahknevusteni_ja_plaadid_on_lingid(sait):
     assert re.findall(r'<span class="lbl"><a href="', h).__len__() == 6
     assert 'href="kas-see-on-tosi.html#lahknevused"' in sait["ettevotted.html"]
     assert ">Allikas</a>" not in sait["kuidas-lugeda.html"]
+
+
+def test_kasutusloogika_kontroll_leiab_puuduva_oleku():
+    # Oskus kasutusloogika (6.11.2026): igal tasandil üks aktiivne märge, nupurühmas üks valitud, igal nupul nimi
+    import struktuur
+    leht = ('<title>t</title><ul class="menu"><a aria-current="page">x</a></ul><main><h1>t</h1><a href="index.html">i</a>'
+            '<ul class="alamlehed"><a href="a.html">a</a></ul><div class="u-f" role="group"><button type="button">k</button></div>'
+            '<button type="button"></button></main>')
+    M = struktuur.moodik({"index.html": leht.replace("<title>t", "<title>i") + '<a href="a.html">a</a>', "a.html": leht})
+    v = " ".join(struktuur.vead(M))
+    assert "aktiivne märge" in v and "valitud nupp" in v and "ilma nimeta" in v

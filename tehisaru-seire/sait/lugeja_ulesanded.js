@@ -41,6 +41,24 @@ const U = [
     const menu = await p.$$eval('ul.menu a', as => as.map(a => { const r = a.getBoundingClientRect(); return [a.textContent, Math.round(r.right), r.width > 0]; }));
     const peidus = menu.filter(m => m[1] > w).map(m => m[0]);
     console.log(`${w}px | menüü: ${peidus.length ? 'ekraanilt väljas ' + peidus.join(', ') : 'kõik teemad nähtaval'}`);
+
+    // Kasutusloogika (oskus kasutusloogika 6.11.2026): väikesed sihtmärgid ja tagasi-nupp
+    const vaiksed = {};
+    for (const f of ['index.html', 'too.html', 'hanked.html', 'uudised.html', 'ettevotted-voimekus.html']) {
+      await p.goto(D + f);
+      const v = await p.evaluate(() => [...document.querySelectorAll('a[href], button, summary')]
+        .filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; })
+        .filter(e => !(getComputedStyle(e).display === 'inline' && e.closest('p,li,td,small,.allikas,.src')))
+        .map(e => { const r = e.getBoundingClientRect(); return [e.tagName + (e.className ? '.' + String(e.className).split(' ')[0] : ''), Math.round(Math.min(r.width, r.height))]; })
+        .filter(x => x[1] < 24));
+      v.forEach(([k, m]) => { vaiksed[k] = Math.min(vaiksed[k] ?? 99, m); });
+    }
+    console.log(`${w}px | alla 24 px sihtmärgid: ${Object.keys(vaiksed).length ? Object.entries(vaiksed).map(([k, m]) => k + ' ' + m + 'px').join(', ') : 'pole'}`);
+    await p.goto(D + 'index.html'); await p.evaluate(() => window.scrollTo(0, 1200)); await p.waitForTimeout(150);
+    const y0 = await p.evaluate(() => scrollY);
+    await p.locator('ul.menu a:text-is("Töö")').click(); await p.waitForTimeout(150);
+    await p.goBack(); await p.waitForTimeout(300);
+    console.log(`${w}px | tagasi-nupp: avalehelt (kerimine ${y0}) Töö lehele ja tagasi → ${p.url().split('/').pop()}, kerimine ${await p.evaluate(() => scrollY)}`);
     if (PILDID) await p.screenshot({path: path.join(PILDID, `index-${w}.png`)});
     await p.close();
   }

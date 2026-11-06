@@ -38,6 +38,12 @@ def moodik(failid):
             "tabelid": len(re.findall(r"<table", m)), "graafikud": len(re.findall(r'<figure|role="img"|<svg', m)),
             "valja": sorted(lingid - {f}), "valja_sisust": sorted(lingid_sisu - {f}),
             "menuu_marge": bool(re.search(r'<ul class="menu">.*?aria-current="page".*?</ul>', s, re.S)),
+            # Kasutusloogika (oskus kasutusloogika, 6.11.2026): igal tasandil täpselt üks aktiivne märge, iga nupurühm
+            # näitab valitud olekut, igal nupul on nimi
+            "alam_margid": [len(re.findall(r'aria-current="page"', u)) for u in re.findall(r'<ul class="alamlehed">(.*?)</ul>', s, re.S)],
+            "ruhmad_valitud": [len(re.findall(r'aria-pressed="true"', g)) for g in re.findall(r'<div class="u-f" role="group"[^>]*>(.*?)</div>', s, re.S)],
+            "nimeta_nupud": len([b for b in re.findall(r'<button\b([^>]*)>(.*?)</button>', keha, re.S)
+                                 if not re.sub(r"<[^>]+>", "", b[1]).strip() and "aria-label" not in b[0]]),
         }
     for f in out:
         out[f]["sisse"] = sorted(g for g in out if f in out[g]["valja"] and g != f)
@@ -57,6 +63,12 @@ def vead(M, avaleht="index.html", jalus=("kuidas-lugeda.html", "saidikaart.html"
             v.append(f"{f}: menüüs pole praegust teemat märgitud")
         if not m["h1"]:
             v.append(f"{f}: h1 puudub")
+        if any(n != 1 for n in m["alam_margid"]):
+            v.append(f"{f}: alamlehtede real ei ole täpselt üks aktiivne märge {m['alam_margid']}")
+        if any(n != 1 for n in m["ruhmad_valitud"]):
+            v.append(f"{f}: nupurühmas ei ole täpselt üks valitud nupp {m['ruhmad_valitud']}")
+        if m["nimeta_nupud"]:
+            v.append(f"{f}: {m['nimeta_nupud']} nuppu ilma nimeta (tekst või aria-label)")
     nimed = {}
     for f, m in M.items():
         nimed.setdefault(m["title"], []).append(f)
