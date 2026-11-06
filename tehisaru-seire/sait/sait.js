@@ -1,6 +1,6 @@
 // Tehisaru seire: teemalüliti ja pikkade tabelite valik „12 / 24 / 48 / kõik“. Ilma selleta töötab leht samuti.
 (function () {
-  var VOTI = 'seire-teema';
+  var VOTI = 'seire-teema-2'; // uus võti 6.11.2026: varem salvestatud „Hele“ ei kata enam vaikimisi Pehmet
   var juur = document.documentElement;
   function loe() { try { return localStorage.getItem(VOTI); } catch (e) { return null; } }
   function kirjuta(v) { try { localStorage.setItem(VOTI, v); } catch (e) { /* privaatne aken */ } }
