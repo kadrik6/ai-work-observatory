@@ -72,8 +72,8 @@ def jarjestus(vaatlused, lopp, viide, viite_nimi, fookus="EE", uhik="%"):
         f = " fookus" if v["geo"] == fookus else ""
         out.append(f'<div class="jrj-r{f}" role="listitem" data-n="{e(riik(v["geo"]))}"><span class="n">{i}. {e(riik(v["geo"]))}</span>'
                    f'<span class="rada"><i class="kesk" style="left:{pos(viide):.2f}%"></i><i class="joon" style="width:{pos(v["vaartus"]):.2f}%"></i>'
-                   f'<i class="tapp" style="left:{pos(v["vaartus"]):.2f}%"></i></span>'
-                   f'<span class="v">{pr(v["vaartus"])}</span></div>')
+                   f'<i class="tapp" style="left:{pos(v["vaartus"]):.2f}%"></i>'
+                   f'<span class="v" style="left:{pos(v["vaartus"]):.2f}%">{pr(v["vaartus"])}</span></span><span></span></div>')  # number punkti kõrval (Kadri 6.11)
     margid = "".join(f'<span style="left:{pos(x):.2f}%">{x}{uhik if x == 0 else ""}</span>' for x in range(0, int(lopp) + 1, 10))
     out.append(f'<div class="jrj-r telg" aria-hidden="true"><span></span><span class="rada">{margid}</span><span></span></div></div>')
     return "".join(out)

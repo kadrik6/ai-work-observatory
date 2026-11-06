@@ -756,3 +756,11 @@ h3.veerg { font-size: 12px; }
 .pk .pk-a { display: block; margin-top: 2px; }
 .pk td:nth-child(1) { width: 16%; } .pk td:nth-child(2) { width: 34%; } .pk td:nth-child(4) { width: 11%; }
 .kk .u-t { margin-left: 6px; }
+/* Järjestus kitsamaks, numbrid riigi lähedale (Kadri kommentaar 6.11 10:39) */
+.el-rida .jrj { max-width: 520px; }
+.jrj-r .rada .v { position: absolute; top: 50%; transform: translateY(-50%); margin-left: 8px; font-size: 10px; white-space: nowrap; }
+.jrj-r.fookus .rada .v { margin-left: 10px; }
+.el-rida .jrj-r { grid-template-columns: 10em minmax(0, 1fr) 2.6em; }
+.jrj-r .rada .v { background: var(--panel); padding: 0 2px; margin-left: 6px; z-index: 1; }
+.jrj-r.on .rada .v { background: var(--surface-3); }
+.el-rida .jrj { max-width: 480px; }
