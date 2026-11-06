@@ -26,13 +26,24 @@ def sellel_lehel(lingid):
     return f'<nav aria-label="Sellel lehel"><ul class="sellel">{li}</ul></nav>'
 
 
-def leht(A, vaated, vaade, sisu, title):
+def alamlehed(vaade, fail):
+    """Teema alamlehtede rida (Kadri 6.11.2026): teine tase teema sees."""
+    li = "".join(f'<li><a href="{s["fail"]}"{" aria-current=\"page\"" if s["fail"] == fail else ""}>{e(s["nimi"])}</a></li>'
+                 for s in vaade["alamlehed"])
+    return f'<nav class="alam" aria-label="{e(vaade["menuu"])}: alamlehed"><ul class="alamlehed">{li}</ul></nav>'
+
+
+def leht(A, vaated, vaade, sisu, title, fail=None):
     # „Sellel lehel“ tõstetakse kleepuvasse päisesse teemade menüü alla (Kadri 6.11.2026): alamnavigatsioon
     # jääb kerimisel nähtavaks ja ankurlink viib jaotise pealkirja päise alla, mitte suvalisse kohta.
     alam = ""
     m = re.search(r'<nav aria-label="Sellel lehel">.*?</nav>', sisu, re.S)
     if m:
         alam, sisu = m.group(0).replace('<nav ', '<nav class="lehel" ', 1), sisu[:m.start()] + sisu[m.end():]
+    if vaade.get("alamlehed"):
+        rida2 = f'<div class="rida2">{alamlehed(vaade, fail or vaade["fail"])}{alam}</div>'
+    else:
+        rida2 = alam
     avaleht = next(v for v in vaated if v["id"] == "avaleht")
     kodu = avaleht["fail"] if avaleht["olek"] == "valmis" else "saidikaart.html"
     nimed = {"kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}
@@ -63,7 +74,7 @@ def leht(A, vaated, vaade, sisu, title):
       <button class="teema" type="button" aria-label="Teema" title="Teema"><svg class="pool" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></svg><svg class="kuu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg><svg class="paike" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg></button>
     </div>
     <nav aria-label="Teemad"><ul class="menu">{menuu(vaated, vaade["id"])}</ul></nav>
-    {alam}
+    {rida2}
   </div>
 </header>
 <main id="sisu" class="wrap">

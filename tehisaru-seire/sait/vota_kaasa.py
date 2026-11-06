@@ -10,6 +10,7 @@ Uudistest jäetakse välja, kes ütles (väide kuulub väljaandele, mitte inimes
 """
 import json
 import os
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -26,6 +27,12 @@ def _kirjuta(nimi, andmed):
     (SISU / nimi).write_text(json.dumps(andmed, ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
 
 
+def ilma_nimedeta(kes):
+    """„ERR News 3.11.2026 (Sinisalu, Hiiemaa, Töötukassa)“ → „ERR News 3.11.2026“. Sulud, kus on number
+    (nt „sarnaselt ERR News 3.11“), jäävad alles."""
+    return re.sub(r"\s*\([^()\d]*\)", "", kes).strip()
+
+
 def vota(proj):
     proj = Path(proj)
     uu = proj / "tooelu-uudised"
@@ -33,7 +40,10 @@ def vota(proj):
     for r in read:
         r.pop("kes_utles", None)
     (SISU / "uudised.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in read), encoding="utf-8")
-    shutil.copyfile(uu / "vaited.json", SISU / "uudiste-vaited.json")
+    vaited = _loe(uu / "vaited.json")
+    for r in vaited:  # väide kuulub väljaandele: sulgudes nimed (ilma kuupäevata) jäävad välja
+        r["kes"] = ilma_nimedeta(r.get("kes", ""))
+    (SISU / "uudiste-vaited.json").write_text(json.dumps(vaited, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     shutil.copyfile(uu / "olek.json", SISU / "uudiste-olek.json")
     shutil.copyfile(uu / "koondajad.json", SISU / "koondajad.json")  # keda koondajad ise tööle otsivad
 

@@ -6,7 +6,7 @@ mida see tähendab, siis üksikasjad ja allikad. Mõõdetud number ja uuring koh
 import datetime
 
 import andmekiht as andmed
-from abi import SEESTYTLEV, ARVSONAD, a, kontrolli, link, pea
+from abi import SEESTYTLEV, ARVSONAD, a, kontrolli, link, jaga, pea
 from andmekiht import EL, AndmeViga
 from komponendid import (aastatulbad, ajajoon, allikarida, e, ei_naita, faktid, hantlid, kaart, kp, lihtribad,
                          margend, muutus, osad, pr, riik, ribad, sihiriba, tabel, vastavus)
@@ -246,8 +246,10 @@ def inimesed(A, vaade, vaated=None):
     ]
     lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem, aga digioskuste tase ei ole 2023. aastast muutunud. "
             "Oskuse puudusel jätab tehisaru kasutamata vähem inimesi kui ELis keskmiselt.")
-    return (pea(A, vaade, lead, [("kasutus", "Kasutus"), ("tool", "Tööl"), ("digi", "Digioskused"), ("ei-oska", "„Ei oska“")], ree)
-            + sec_kasutus + sec_too + sec_digi + sec_os)
+    return jaga(A, vaade, lead, ree, [
+        ("kasutus", [("kasutus", "Kasutus")], sec_kasutus), ("tool", [("tool", "Tööl")], sec_too),
+        ("digi", [("digi", "Digioskused")], sec_digi), ("ei-oska", [("ei-oska", "„Ei oska“")], sec_os),
+    ])
 
 
 # ---------------------------------------------------------------- Töö
@@ -517,11 +519,17 @@ def too(A, vaade, vaated=None):
     from lehed_uudised import palkamine, uuringud_too
     sec_uuritakse = uuringud_too(A)
     sec_palk = palkamine(A)
-    lingid = [("tootus-kuud", "Eesti praegu")] + ([("palkamine", "Keda koondajad otsivad")] if sec_palk else []) + [("maailm", "Mida maailmas leiti"), ("ulesanded", "Ülesanded"), ("eesti", "Eestis"), ("kokkupuude", "Ametid"), ("hoive", "Hõive muutus"), ("tulevik", "Mis ees ootab")]
-    if sec_uuritakse:
-        lingid.append(("uuritakse", "Mida uuritakse"))
-    return (pea(A, vaade, lead, lingid, ree)
-            + too_eesti(A) + sec_palk + sec_maailm + sec_kiirus + sec_eesti + sec_kokkupuude + sec_hoive + sec_tulevik + sec_uuritakse)
+    return jaga(A, vaade, lead, ree, [
+        ("eesti-praegu", [("tootus-kuud", "Eesti praegu")], too_eesti(A)),
+        ("palkamine", [("palkamine", "Keda koondajad otsivad")], sec_palk),
+        ("tulevik", [("tulevik", "Mis ees ootab")], sec_tulevik),
+        ("maailm", [("maailm", "Mida maailmas leiti")], sec_maailm),
+        ("ulesanded", [("ulesanded", "Ülesanded")], sec_kiirus),
+        ("eesti", [("eesti", "Eestis")], sec_eesti),
+        ("uuritakse", [("uuritakse", "Mida uuritakse")], sec_uuritakse),
+        ("kokkupuude", [("kokkupuude", "Ametid")], sec_kokkupuude),
+        ("hoive", [("hoive", "Hõive muutus")], sec_hoive),
+    ])
 
 
 # ---------------------------------------------------------------- Avalik sektor

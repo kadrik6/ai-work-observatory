@@ -51,3 +51,50 @@ def a(url, tekst):
     if not url:
         raise AndmeViga(f"Lingil „{tekst}“ puudub aadress")
     return f'<a href="{e(url)}">{e(tekst)}</a>'
+
+
+class Jagatud(str):
+    """Vaade, mis on jagatud alamlehtedeks (Kadri 6.11.2026: pikad teemad eraldi lehtedeks).
+
+    Sõnena on see kõigi alamlehtede sisu kokku (testid saavad otsida nagu varem); .lehed = {fail: sisu}.
+    """
+    lehed: dict
+
+    def __new__(cls, lehed):
+        s = super().__new__(cls, "".join(lehed.values()))
+        s.lehed = lehed
+        return s
+
+
+def jaga(A, vaade, lead, ree, plokid):
+    """plokid: [(võti, [(ankur, lühike nimi)], html)]. vaade["alamlehed"]: [{fail, nimi, h1?, lead?, jaotised:[võti]}].
+
+    Esimene alamleht saab vaate pealkirja ja numbrikastid. Tühi html (nt andmeid pole) jäetakse välja.
+    Ehitus kukub, kui mõni plokk jääb alamlehest välja või on kahes kohas.
+    """
+    plokid = [p for p in plokid if p[2].strip()]
+    alamad = vaade.get("alamlehed")
+    if not alamad:
+        return pea(A, vaade, lead, [l for _, ll, _ in plokid for l in ll], ree) + "".join(h for *_, h in plokid)
+    voti = {p[0]: p for p in plokid}
+    kasutatud = [k for s in alamad for k in s["jaotised"] if k in voti]
+    if sorted(kasutatud) != sorted(voti) or len(set(kasutatud)) != len(kasutatud):
+        raise AndmeViga(f"Vaate {vaade['id']} alamlehed ei jaga plokke täpselt: {sorted(voti)} vs {kasutatud}")
+    lehed = {}
+    for i, s in enumerate(alamad):
+        oma = [voti[k] for k in s["jaotised"] if k in voti]
+        lingid = [l for _, ll, _ in oma for l in ll]
+        lingid = lingid if len(lingid) > 1 else []
+        if i == 0:
+            algus = pea(A, vaade, lead, lingid, ree)
+        else:
+            algus = f"""
+<div class="pea yks alam-pea">
+  <div class="pea-tekst">
+    <h1>{e(s["h1"])}</h1>
+    <p class="lead">{s["lead"]}</p>
+    {sellel_lehel(lingid) if lingid else ""}
+  </div>
+</div>"""
+        lehed[s["fail"]] = algus + "".join(h for *_, h in oma)
+    return Jagatud(lehed)

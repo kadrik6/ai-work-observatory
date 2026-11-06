@@ -281,6 +281,8 @@ def saidikaart(A, vaade, vaated):
     for v in vaated:
         nimi = v["menuu"] or {"avaleht": "Avaleht", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}[v["id"]]
         link = f'<a href="{v["fail"]}">{e(nimi)}</a>' if v["olek"] == "valmis" else e(nimi)
+        if v.get("alamlehed") and v["olek"] == "valmis":
+            link += "<small>alamlehed: " + ", ".join(f'<a href="{s["fail"]}">{e(s["nimi"])}</a>' for s in v["alamlehed"]) + "</small>"
         read.append(f'<tr><td>{link}<small>{e(v["koht"])} · {e(v["kusimused"])}</small></td><td>{e(v["kusimus"])}</td>'
                     f'<td class="h1">{taida(v["h1"], A)}</td><td>{e(v["osad"])}</td>'
                     f'<td><span class="olek {v["olek"]}">{v["olek"]}</span></td></tr>')

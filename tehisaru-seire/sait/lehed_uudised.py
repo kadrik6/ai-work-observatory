@@ -6,7 +6,7 @@ Iga pealkirja number tuleb andmetest; pealkirjad, mida mall ei kata, kontrollita
 """
 import datetime
 
-from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, pea
+from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, jaga, pea
 from andmekiht import AndmeViga
 from komponendid import e, kp, pr
 
@@ -170,11 +170,14 @@ def uudised(A, vaade, vaated=None):
   </div>
 </section>
 </div>"""
-    return (pea(A, vaade, lead, [("eesti-uudised", "Eesti"), ("maailma-uudised", "Maailm"), ("uudiste-vaited", "Väited"), ("uudiste-allikad", "Allikad")], ree)
-            + '<div class="g12">'
-            + _uudiste_paneel("eesti-uudised", f"Eesti: <b>{len(ee)} uudist</b>, neist {sum(r['liik'] == 'arvamus' for r in ee)} arvamust", ee, "sp6", viimane)
-            + _uudiste_paneel("maailma-uudised", f"Maailm: <b>{len(m)} uudist</b>, aruannet ja uuringut", m, "sp6", viimane)
-            + "</div>" + sec_v + sec_k)
+    sec_u = ('<div class="g12">'
+             + _uudiste_paneel("eesti-uudised", f"Eesti: <b>{len(ee)} uudist</b>, neist {sum(r['liik'] == 'arvamus' for r in ee)} arvamust", ee, "sp6", viimane)
+             + _uudiste_paneel("maailma-uudised", f"Maailm: <b>{len(m)} uudist</b>, aruannet ja uuringut", m, "sp6", viimane)
+             + "</div>")
+    return jaga(A, vaade, lead, ree, [
+        ("uudised", [("eesti-uudised", "Eesti"), ("maailma-uudised", "Maailm")], sec_u),
+        ("vaited", [("uudiste-vaited", "Väited")], sec_v), ("allikad", [("uudiste-allikad", "Allikad")], sec_k),
+    ])
 
 
 # ---------------------------------------------------------------- Hanked

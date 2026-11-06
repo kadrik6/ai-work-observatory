@@ -78,6 +78,19 @@ def kontrolli(failinimi, html_tekst, olemas):
         raise EhitusViga(f"{failinimi}: lehel on täitmata mall")
 
 
+def kontrolli_ankrud(lehed):
+    """Link teise lehe ankrule (leht.html#x) peab leidma sellel lehel id="x"; muidu viib link lehe algusesse."""
+    ankrud = {}
+    for f, t in lehed.items():
+        p = _Pealkirjad()
+        p.feed(t)
+        ankrud[f] = p.ankrud
+    for f, t in lehed.items():
+        for leht, ankur in re.findall(r'href="([a-z0-9-]+\.html)#([^"]+)"', t):
+            if leht in ankrud and ankur not in ankrud[leht]:
+                raise EhitusViga(f"{f}: link {leht}#{ankur} viib olematule ankrule")
+
+
 def ehita(valjund=VALJUND, A=None):
     A = A or andmed.lae()
     vaated = lae_vaated()
@@ -86,7 +99,7 @@ def ehita(valjund=VALJUND, A=None):
     valjund = Path(valjund)
     valjund.mkdir(parents=True, exist_ok=True)
     valmis = [v for v in vaated if v["olek"] == "valmis"]
-    olemas = {v["fail"] for v in valmis}
+    olemas = {v["fail"] for v in valmis} | {s["fail"] for v in valmis for s in v.get("alamlehed", [])}
     kirjutatud = {}
     for v in valmis:
         if v["id"] == "saidikaart":
@@ -97,9 +110,17 @@ def ehita(valjund=VALJUND, A=None):
             raise EhitusViga(f"Vaade {v['id']} on „valmis“, aga sellel pole ehitajat (lehed.EHITAJAD)")
         nimi = v["menuu"] or {"avaleht": "Avaleht", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}[v["id"]]
         pealkiri_ = "SEIRE · Tehisaru seire" if v["id"] == "avaleht" else f"{nimi} · Tehisaru seire"  # artefakti nimi „ID · Nimi“
-        kirjutatud[v["fail"]] = kest.leht(A, vaated, v, sisu, pealkiri_)
+        if getattr(sisu, "lehed", None):  # teema on jagatud alamlehtedeks
+            nimed = {s["fail"]: s["nimi"] for s in v["alamlehed"]}
+            for f, osa in sisu.lehed.items():
+                t = pealkiri_ if f == v["fail"] else f"{nimi} · {nimed[f]} · Tehisaru seire"
+                kirjutatud[f] = kest.leht(A, vaated, v, osa, t, fail=f)
+        else:
+            kirjutatud[v["fail"]] = kest.leht(A, vaated, v, sisu, pealkiri_)
     for f, t in kirjutatud.items():
         kontrolli(f, t, olemas)
+    kontrolli_ankrud(kirjutatud)
+    for f, t in kirjutatud.items():
         (valjund / f).write_text(t, encoding="utf-8")
     for nimi in ("stiil.css", "sait.js"):
         shutil.copyfile(SIIN / nimi, valjund / nimi)

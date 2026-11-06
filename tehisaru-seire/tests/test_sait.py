@@ -230,14 +230,14 @@ def test_kokkupuute_osad_summeeruvad_ja_pealkiri_tuleb_andmetest(A, sait):
     K = A["kokkupuude"]
     assert abs(sum(K["osa"].values()) + K["liigitamata"] - 100) < 0.01
     assert K["ilo_ameteid"] == 427 and K["ilo_avatud_ameteid"] == 112  # ILO WP140 tabel A1
-    h2 = re.search(r'<h2 id="h-kokkupuude">(.*?)</h2>', sait["too.html"], re.S).group(1)
+    h2 = re.search(r'<h2 id="h-kokkupuude">(.*?)</h2>', sait["too-ametid.html"], re.S).group(1)
     assert f'{komponendid.pr(K["avatud"], 0)}%' in h2
     assert f'<b>{komponendid.pr(K["korge"], 0)}% kõige avatumates</b>' in h2
 
 
 def test_kokkupuude_ei_ole_moju_ja_el_vordlus_on_eraldi(sait):
-    s = sait["too.html"]
-    jaotis = s[s.index('id="kokkupuude"'):s.index('id="tulevik"')]
+    s = sait["too-ametid.html"]
+    jaotis = s[s.index('id="kokkupuude"'):s.index('id="hoive"')]
     assert "Kokkupuude ei ole mõju" in jaotis
     # ELi ligikaudne võrdlus on tekstis, mitte Eesti 4-kohalise numbriga samal graafikul
     graafik = jaotis[jaotis.index("<figure"):jaotis.index("</figure>")]
@@ -268,8 +268,8 @@ def test_hoive_aegrida_naised_ja_mehed_annavad_kokku(tmp_path):
 
 
 def test_hoive_muutuse_jaotis_on_kirjeldus_mitte_pohjus(A, sait):
-    s = sait["too.html"]
-    jaotis = s[s.index('id="hoive"'):s.index('id="tulevik"')]
+    s = sait["too-ametid.html"]
+    jaotis = s[s.index('id="hoive"'):s.index('</main>')]
     assert "kirjeldus, mitte põhjus" in jaotis
     g = A["kokkupuude"]["aeg"][("EE", "T")]
     assert g[2025]["avatud"] / g[2022]["avatud"] < g[2025]["muud"] / g[2022]["muud"]
@@ -393,7 +393,7 @@ def test_hanked_on_katseline_ja_tapsus_tuleb_andmetest(A, sait):
 
 
 def test_too_vaates_on_publikatsioonid(A, sait):
-    h = sait["too.html"]
+    h = sait["too-uuringud.html"]
     P = A["publikatsioonid"]
     assert 'id="uuritakse"' in h and 'id="publikatsioonid"' in h and 'id="eesti-allikad"' in h
     a1 = [r for r in P["aastad"] if not r["poolik"]][-1]
@@ -447,3 +447,26 @@ def test_uudiste_paneel_ytleb_kas_viimasel_kontrollil_lisandus(A, sait):
     uued = sum(r.get("lisatud") == paev for r in A["uudised"])
     assert h.count('class="ps u-seis"') == 2
     assert h.count('<span class="u-l suur">uus</span>') == uued
+
+
+def test_pikad_teemad_on_alamlehtedeks_jagatud(sait):
+    # Kadri 6.11.2026: Töö, Inimesed ja Uudised eraldi alamlehtedeks; alamlehtede rida igal alamlehel
+    for v in ehita.lae_vaated():
+        for s in v.get("alamlehed", []):
+            h = sait[s["fail"]]
+            assert f'<a href="{s["fail"]}" aria-current="page">' in h, s["fail"]
+            assert all(f'href="{t["fail"]}"' in h for t in v["alamlehed"])
+            assert f'<a href="{v["fail"]}" aria-current="page">{v["menuu"]}</a>' in h  # teema jääb menüüs valituks
+    assert 'id="hoive"' in sait["too-ametid.html"] and 'id="hoive"' not in sait["too.html"]
+
+
+def test_ankurlink_teisele_lehele_peab_olemas_olema():
+    with pytest.raises(ehita.EhitusViga):
+        ehita.kontrolli_ankrud({"a.html": '<a href="b.html#x">x</a>', "b.html": '<p id="y"></p>'})
+
+
+def test_vaite_juures_ei_ole_inimeste_nimesid(sait):
+    import vota_kaasa
+    assert vota_kaasa.ilma_nimedeta("ERR News 3.11.2026 (Sinisalu, Hiiemaa, Töötukassa)") == "ERR News 3.11.2026"
+    assert "(sarnaselt ERR News 3.11)" in vota_kaasa.ilma_nimedeta("ERR 5.11.2026 (sarnaselt ERR News 3.11)")
+    assert "Sinisalu" not in sait["uudised-vaited.html"]
