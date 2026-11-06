@@ -1,0 +1,2 @@
+# Diagnostika (koonda.py): sõnad, mida otsida kogu registrist. Tulemus logis real "HANKED otsing".
+mõttepeeg

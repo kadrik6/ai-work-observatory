@@ -22,6 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import reeglid as R  # noqa: E402
+import tellija as T  # noqa: E402
 
 RHR_LEHT = "https://riigihanked.riik.ee/rhr-web/#/procurement/{}/general-info"
 
@@ -73,6 +74,21 @@ def _o(a, b):
     return round(100 * a / b, 1) if b else None
 
 
+def on_ai(r):
+    """AI-hange (mitte andmehange): tekstis on AI-sõna või inimene lisas selle käsitsi sildiga AI."""
+    return bool(R.marksonad(R.tekst(r))["ai"]) or str(r.get("_kasitsi") or "").startswith("AI:")
+
+
+def kasitsi_lisatud(fail):
+    """Loeb käsitsi lisatud hanked: {võti: põhjus}. Read veergudega voti, silt (AI või ANDMED), pohjus."""
+    import csv
+    if not fail.exists():
+        return {}
+    with open(fail, encoding="utf-8") as f:
+        return {r["voti"]: f'{r["silt"]}: {r["pohjus"]}' for r in csv.DictReader(
+            (rida for rida in f if not rida.startswith("#")))}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--valjund", default="valjund")
@@ -84,6 +100,11 @@ def main():
     for r in hanked:
         t = tul.get(voti(r), {})
         r["_p"], r["_silt"], r["_marksona"] = t.get("p"), t.get("silt", 0), t.get("marksona", 0)
+    # käsitsi lisatud hanked: inimene on kinnitanud, et see on AI- või andmehange, aga reeglid seda ei leia
+    kasitsi = kasitsi_lisatud(Path(__file__).with_name("kasitsi.csv"))
+    for r in hanked:
+        if voti(r) in kasitsi:
+            r["_silt"], r["_kasitsi"] = 1, kasitsi[voti(r)]
 
     eforms_aastad = sorted({r["aasta"] for r in hanked if r["allikas"] == "eforms"})
     aastad = []
@@ -98,7 +119,7 @@ def main():
             "ai_andmed": len(ai),
             "ai_andmed_osakaal": _o(len(ai), len(rid)),
             "marksonaloend": sum(r["_marksona"] for r in rid),
-            "ai_marksonaga": sum(bool(R.marksonad(R.tekst(r))["ai"]) for r in ai),
+            "ai_marksonaga": sum(on_ai(r) for r in ai),
             "eeldatav_maksumus_ai": round(sum(r.get("eeldatav_maksumus") or 0 for r in ai)),
             "eeldatav_maksumus_teada_ai": sum(r.get("eeldatav_maksumus") is not None for r in ai),
             "innovatsioonimark": sum(R.innovatsiooni_mark(r) for r in ef) if ef else None,
@@ -133,19 +154,60 @@ def main():
             "h": r.get("hankija"), "cpv": (r.get("cpv") or [])[:3], "v": r.get("eeldatav_maksumus"),
             "pk": r.get("pakkumusi"), "kv": k["kvaliteedi_kaal"], "ah": k["ainult_hind"],
             "kat": katkes(r) if r.get("tulemus_olemas") else None, "p": r["_p"],
-            "ai": bool(m["ai"]), "inn": R.innovatsiooni_mark(r),
+            "ai": on_ai(r), "inn": R.innovatsiooni_mark(r),
             "url": RHR_LEHT.format(r["rhr_id"]) if r.get("rhr_id") else None, "vn": r.get("viitenumber"),
             "hea": sum(bool(x) for x in h.values()),
+            "ks": r.get("_kasitsi"),
         })
+    # tehisaru uuringud ja mõjuanalüüsid (katseline, Kadri 5.11.2026)
+    moju = []
+    for r in hanked:
+        m = R.moju_uuring(r)
+        if m:
+            moju.append((r, m))
+    nimed = T.asutused(r.get("hankija") for r, _ in moju)
+    moju_loend = []
+    for r, m in sorted(moju, key=lambda x: (x[0].get("esimene_kuupaev") or x[0].get("kuu") or ""), reverse=True):
+        kj, kja = T.kelle_jaoks(r.get("pealkiri"), r.get("hankija"), nimed)
+        moju_loend.append({
+            "id": voti(r), "a": r["aasta"], "kp": r.get("esimene_kuupaev"), "t": r.get("pealkiri"),
+            "korraldaja": r.get("hankija"), "kelle_jaoks": kj, "kelle_allikas": kja,
+            "cpv": (r.get("cpv") or [])[:3], "v": r.get("eeldatav_maksumus"),
+            "url": RHR_LEHT.format(r["rhr_id"]) if r.get("rhr_id") else None,
+            "tyyp": m["tyyp"], "cpv_73_79": m["cpv_73_79"], "uuring_pealkirjas": m["uuring_pealkirjas"],
+            "sonad": m["sonad"], "ai_tuvastuses": bool(r["_silt"]),
+        })
+    moju_aastad = []
+    for aasta in sorted({x["a"] for x in moju_loend}):
+        rid = [x for x in moju_loend if x["a"] == aasta]
+        moju_aastad.append({"aasta": aasta, "kokku": len(rid),
+                            "tehisaru": sum(x["tyyp"] == "tehisaru" for x in rid),
+                            "digi_automatiseerimine": sum(x["tyyp"] != "tehisaru" for x in rid),
+                            "ai_tuvastuses": sum(x["ai_tuvastuses"] for x in rid),
+                            "eeldatav_maksumus": round(sum(x["v"] or 0 for x in rid))})
+    moju_koond = {"silt": "katseline", "aastad": moju_aastad, "loend": moju_loend}
+
     leht = {"aastad": aastad, "eforms_aastad": eforms_aastad, "hankimise_viis": viis,
             "kontsentratsioon": kontsentratsioon, "hankijad_top": jarjest[:15], "hindamine": hindamine,
-            "loend": loend}
+            "loend": loend, "moju": moju_koond}
     (v / "leht.json").write_text(json.dumps(leht, ensure_ascii=False), encoding="utf-8")
     kirjuta = lambda osa, **kw: print("HANKED", osa, json.dumps(kw, ensure_ascii=False), flush=True)  # noqa: E731
     kirjuta("koond-aastad", read=aastad)
     kirjuta("koond-viis", **viis)
     kirjuta("koond-kontsentratsioon", **kontsentratsioon, top=jarjest[:15])
     kirjuta("koond-loend", n=len(loend))
+    kirjuta("moju-aastad", silt="katseline", read=moju_aastad)
+    # diagnostika: otsi registrist sõnu failist otsi.txt (üks sõna real), et näha, miks hange tuvastusest välja jäi
+    otsi_fail = Path(__file__).with_name("otsi.txt")
+    sonad = [s.strip().lower() for s in otsi_fail.read_text(encoding="utf-8").splitlines()
+             if s.strip() and not s.startswith("#")] if otsi_fail.exists() else []
+    for r in hanked:
+        t = R.normaliseeri(R.tekst(r)) + " " + (r.get("viitenumber") or "").lower()
+        leitud = [s for s in sonad if s in t]
+        if leitud:
+            kirjuta("otsing", sonad=leitud, id=voti(r), aasta=r["aasta"], hankija=r.get("hankija"),
+                    pealkiri=r.get("pealkiri"), cpv=r.get("cpv"), vn=r.get("viitenumber"), allikas=r.get("allikas"),
+                    p=r.get("_p"), silt=r.get("_silt"), marksonad=R.marksonad(R.tekst(r)), moju=R.moju_uuring(r))
 
 
 if __name__ == "__main__":

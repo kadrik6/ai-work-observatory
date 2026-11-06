@@ -35,3 +35,34 @@ def test_pohitabel_viimane_versioon_ja_tulemus():
 def test_voti():
     assert R.voti({"allikas": "eforms", "viitenumber": "123", "rhr_id": "9"}) == "eforms:123"
     assert R.voti({"allikas": "ted_esender", "teate_id": "u-1"}) == "ted_esender:u-1"
+
+
+def test_moju_uuring():
+    r = {"pealkiri": "Tehisaru kasutamise mõju analüüs avalikus sektoris", "kirjeldus": "", "cpv": ["73110000"]}
+    m = R.moju_uuring(r)
+    assert m and m["tyyp"] == "tehisaru" and m["cpv_73_79"] and m["uuring_pealkirjas"]
+    r = {"pealkiri": "Digipöörde mõjuhinnang", "kirjeldus": "", "cpv": ["72000000"]}
+    assert R.moju_uuring(r)["tyyp"] == "digi või automatiseerimine"
+    # süsteemianalüüs ei ole uuring (sõna keskel), ja ilma tehnoloogiasõnata ei loeta
+    assert R.moju_uuring({"pealkiri": "Infosüsteemi süsteemianalüüs ja digilahendus", "cpv": ["72000000"]}) is None
+    assert R.moju_uuring({"pealkiri": "Tööturu mõjuanalüüs", "cpv": ["73110000"]}) is None
+    # uuringusõna ainult kirjelduses ja CPV väljaspool 73/79: ei loeta
+    assert R.moju_uuring({"pealkiri": "Tarkvara arendus", "kirjeldus": "AI lahenduse mõju analüüs",
+                          "cpv": ["72000000"]}) is None
+    assert R.moju_uuring({"pealkiri": "Andmehalduse mõjuanalüüs (Justiits- ja Digiministeerium)",
+                          "cpv": ["79000000"]}) is None
+
+
+def test_kasitsi_lisatud(tmp_path):
+    import koonda
+    f = tmp_path / "k.csv"
+    f.write_text("# kommentaar\nvoti,silt,pohjus\neforms:1-0000,AI,test\n", encoding="utf-8")
+    assert koonda.kasitsi_lisatud(f) == {"eforms:1-0000": "AI: test"}
+    assert koonda.kasitsi_lisatud(tmp_path / "puudub.csv") == {}
+
+
+def test_kasitsi_ai_loeb_ai_hankeks():
+    import koonda
+    assert koonda.on_ai({"pealkiri": "Mõttepeegel", "_kasitsi": "AI: Kadri"})
+    assert not koonda.on_ai({"pealkiri": "Andmeladu", "_kasitsi": "ANDMED: x"})
+    assert koonda.on_ai({"pealkiri": "Kõnetuvastus ehk AI"})

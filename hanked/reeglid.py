@@ -36,6 +36,17 @@ CPV_IT = ("72", "48")  # IT-teenused ja tarkvara
 CPV_UURING = ("7331", "7320", "7931", "7341", "7342")  # teadus- ja arendustöö, uuringud, statistika, nõustamine
 
 
+# Tehisaru uuringud ja mõjuanalüüsid (Kadri 5.11.2026, katseline). Paljud neist jäävad AI-tuvastusest välja, sest
+# pealkirjas pole AI-sõna ja CPV on uuringute (73…) või nõustamise (79…) koodides. Leiame need kahe sõnarühma
+# kooskõlast: uuringu- või mõjusõna JA tehisaru-, automatiseerimise- või digisõna.
+UURING_TYVED = ["mõju", "analüüs", "uuring", "uurimus", "hindami", "hinnang", "impact", "assessment", "evaluation",
+                "study", "analysis", "research"]
+TEHNO_AI_TYVED = ["tehisintellekt", "tehisaru", "masinõp", "masinõpp", "artificial intelligence", "machine learning"]
+TEHNO_AI_SONAD = ["ai", "genai", "llm", "kratt", "krati", "krattide"]
+TEHNO_MUU_TYVED = ["automatiseeri", "automaatotsus", "digi", "automation", "digital"]
+CPV_MOJU = ("73", "79")  # teadus- ja arendustöö, uuringud; äri-, õigus- ja nõustamisteenused
+
+
 def normaliseeri(t):
     t = unicodedata.normalize("NFC", t or "").lower()
     return re.sub(r"\s+", " ", t)
@@ -48,6 +59,9 @@ def _muster(tyved, sonad):
 
 
 AI_RE = _muster(AI_TYVED, AI_SONAD)
+UURING_RE = _muster(UURING_TYVED, [])
+TEHNO_AI_RE = _muster(TEHNO_AI_TYVED, TEHNO_AI_SONAD)
+TEHNO_MUU_RE = _muster(TEHNO_MUU_TYVED, [])
 ANDMED_RE = _muster(ANDMED_TYVED, ANDMED_SONAD)
 LAI_RE = _muster(LAI_TYVED, [])
 
@@ -72,6 +86,27 @@ def marksonad(t):
         "andmed": sorted(set(m.group(0).strip() for m in ANDMED_RE.finditer(n))),
         "lai": sorted(set(m.group(0).strip() for m in LAI_RE.finditer(n))),
     }
+
+
+def moju_uuring(r):
+    """Kas hange on tehisaru (või digi/automatiseerimise) uuring või mõjuanalüüs. Katseline reegel.
+
+    Tingimus: tekstis (pealkiri ja kirjeldus) on uuringu- või mõjusõna ja tehnoloogiasõna, ning lisaks kas CPV on
+    73… või 79… või on uuringusõna pealkirjas. Tagastab None või tunnused, et inimene saaks nimekirja üle vaadata.
+    """
+    t = normaliseeri(tekst(r)).replace("digiministeerium", "")  # asutuse nimi ei ole digisõna
+    uuring = sorted(set(m.group(0) for m in UURING_RE.finditer(t)))
+    ai = sorted(set(m.group(0).strip() for m in TEHNO_AI_RE.finditer(t)))
+    muu = sorted(set(m.group(0) for m in TEHNO_MUU_RE.finditer(t)))
+    if not uuring or not (ai or muu):
+        return None
+    cpv = [c for c in (r.get("cpv") or []) if c]
+    cpv_sobib = any(c.startswith(CPV_MOJU) for c in cpv)
+    pealkirjas = bool(UURING_RE.search(normaliseeri(r.get("pealkiri"))))
+    if not (cpv_sobib or pealkirjas):
+        return None
+    return {"tyyp": "tehisaru" if ai else "digi või automatiseerimine", "cpv_73_79": cpv_sobib,
+            "uuring_pealkirjas": pealkirjas, "sonad": uuring + ai + muu}
 
 
 def cpv_ruhm(cpv):
