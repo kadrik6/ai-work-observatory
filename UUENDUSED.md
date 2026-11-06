@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 06.11.2026 | Uudiste vaate Eesti ja maailma paneelis on rida „Viimane kontroll …: lisandus N“ või „uusi uudiseid ei lisandunud“, ja viimasel kontrollil lisandunud uudistel on silt „uus“ (Kadri 6.11 20:02: tühi päev paistis nagu uuendus ei töötaks). |
 | 06.11.2026 | Avalehe „Mis muutus“ sama kuupäevaga kirjed on nüüd kindlas järjekorras (liik, siis tekst), nii et iga ehitus ei paista sisumuutusena. |
 | 06.11.2026 | Uudiste loendis on nüüd populaarsuse asemel „N väljaannet“, mis tähendab, mitu eri väljaannet sama lugu kajastas (uudised.jsonl väli levik). Klikke väljaanded avalikult ei jaga. Põhjus: Kadri kommentaar 6.11 10:49. Andmed lisab igapäevane uudiste kogumine. |
 | 06.11.2026 | Saidi päises on „Uuendatud“ asemel nüüd kaks kuupäeva: „Numbrid“ on ametlike numbrite uusim avaldamise kuupäev ja „uudised“ uudiste viimane kontroll. Põhjus: Kadri kommentaar 6.11 10:45, sest vana kuupäev (3.11) ei näidanud 5.11 uuendusi. |

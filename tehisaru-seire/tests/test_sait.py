@@ -439,3 +439,11 @@ def test_uudise_levik_on_valjaannete_arv(A):
     B["uudised"][0]["levik"] = {"arv": 9, "allikad": ["ERR", "Delfi"], "kontrollitud": "2026-11-06"}
     h = lehed_uudised.uudised(B, next(v for v in ehita.lae_vaated() if v["id"] == "uudised"))
     assert "9 väljaannet</span>" in h and "Kajastasid: ERR, Delfi" in h
+
+
+def test_uudiste_paneel_ytleb_kas_viimasel_kontrollil_lisandus(A, sait):
+    h = sait["uudised.html"]
+    paev = A["uudiste_olek"]["viimane_kontroll"][:10]
+    uued = sum(r.get("lisatud") == paev for r in A["uudised"])
+    assert h.count('class="ps u-seis"') == 2
+    assert h.count('<span class="u-l suur">uus</span>') == uued

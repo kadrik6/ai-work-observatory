@@ -55,6 +55,8 @@ def _uudis(r):
         sildid.append(f'<span class="u-t">{e(TEEMA[r["teema"]])}</span>')
     if r.get("teema") == "koondamine" and r.get("ai_roll") in ROLL:
         sildid.append(f'<span class="u-t{" s" if r["ai_roll"] in ("otsene", "osaline") else ""}">{e(ROLL[r["ai_roll"]])}</span>')
+    if r.get("_uus"):
+        sildid.insert(0, '<span class="u-l suur">uus</span>')
     if r.get("suur"):
         sildid.append('<span class="u-l suur">suur uudis</span>')
     lv = r.get("levik")
@@ -72,7 +74,18 @@ def _uudis(r):
             f'<p class="u-m">{"".join(sildid)}<span class="u-a">{e(r["allikas"])}</span></p></div></li>')
 
 
-def _uudiste_paneel(rid, pealkiri, read, sp):
+def _seis(read, kontroll):
+    """Kas viimasel kontrollil lisandus selle piirkonna uudiseid (Kadri 6.11: tühi päev ei tohi paista nagu katkine leht)."""
+    if not kontroll:
+        return ""
+    paev = kontroll[:10]
+    uued = sum(1 for r in read if r.get("lisatud") == paev)
+    if uued:
+        return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} {kontroll[11:16]}: lisandus <b>{uued}</b>, märgitud „uus“.</p>'
+    return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} {kontroll[11:16]}: uusi uudiseid ei lisandunud.</p>'
+
+
+def _uudiste_paneel(rid, pealkiri, read, sp, kontroll=None):
     teemad = []
     for r in read:
         t = r.get("teema")
@@ -82,6 +95,7 @@ def _uudiste_paneel(rid, pealkiri, read, sp):
     return f"""
 <section class="pn {sp}" id="{rid}" aria-labelledby="h-{rid}">
   <div class="pn-h"><h2 id="h-{rid}">{pealkiri}</h2></div>
+  {_seis(read, kontroll)}
   <div class="u-f" role="group" aria-label="Vali teema"><button type="button" data-f="" aria-pressed="true">kõik ({len(read)})</button>{filter_}</div>
   <ul class="u-voog" data-piir-li="12">{"".join(_uudis(r) for r in read)}</ul>
 </section>"""
@@ -92,7 +106,7 @@ def uudised(A, vaade, vaated=None):
     V = _vaja(A, "uudiste_vaited", "uudiste-vaited.json")
     O = _vaja(A, "uudiste_olek", "uudiste-olek.json")
     kontrolli(vaade, "Eestist ja maailmast", "arvamus")
-    U = sorted(U, key=lambda r: r["kuupaev"], reverse=True)
+    U = sorted((dict(r, _uus=r.get("lisatud") == O["viimane_kontroll"][:10]) for r in U), key=lambda r: r["kuupaev"], reverse=True)
     ee = [r for r in U if r["piirkond"] == "EE"]
     m = [r for r in U if r["piirkond"] != "EE"]
     suured = [r for r in U if r.get("suur")]
@@ -149,8 +163,8 @@ def uudised(A, vaade, vaated=None):
 </div>"""
     return (pea(A, vaade, lead, [("eesti-uudised", "Eesti"), ("maailma-uudised", "Maailm"), ("uudiste-vaited", "Väited"), ("uudiste-allikad", "Allikad")], ree)
             + '<div class="g12">'
-            + _uudiste_paneel("eesti-uudised", f"Eesti: <b>{len(ee)} uudist</b>, neist {sum(r['liik'] == 'arvamus' for r in ee)} arvamust", ee, "sp6")
-            + _uudiste_paneel("maailma-uudised", f"Maailm: <b>{len(m)} uudist</b>, aruannet ja uuringut", m, "sp6")
+            + _uudiste_paneel("eesti-uudised", f"Eesti: <b>{len(ee)} uudist</b>, neist {sum(r['liik'] == 'arvamus' for r in ee)} arvamust", ee, "sp6", viimane)
+            + _uudiste_paneel("maailma-uudised", f"Maailm: <b>{len(m)} uudist</b>, aruannet ja uuringut", m, "sp6", viimane)
             + "</div>" + sec_v + sec_k)
 
 
