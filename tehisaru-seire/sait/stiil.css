@@ -766,3 +766,14 @@ h3.veerg { font-size: 12px; }
 .el-rida .jrj { max-width: 480px; }
 .u-t.lv { border-color: var(--signal); color: var(--signal-strong); font-weight: 700; }
 a.seis { color: inherit; text-decoration: none; } a.seis:hover { text-decoration: underline; }
+
+/* ---- Navigeerimine (Kadri 6.11.2026): „Sellel lehel“ on päises teemade menüü all ja jääb kerimisel nähtavaks.
+   Ankurlink viib jaotise ülaserva päise alla; vahe arvutab sait.js päise kõrgusest (--top-h). ---- */
+html { scroll-padding-top: calc(var(--top-h, 110px) + 8px); }
+.jaotis, .pn { scroll-margin-top: 0; }
+.top nav.lehel { padding: 6px 0 8px; border-top: 1px solid var(--border); }
+.top .sellel a[aria-current="true"] { color: var(--signal); border-color: var(--signal); background: var(--surface); font-weight: 600; }
+@media (max-width: 700px) {
+  .top .sellel { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .top .sellel li { flex: none; }
+}

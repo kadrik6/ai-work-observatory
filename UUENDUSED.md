@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-06 | SEIRE sait: „Sellel lehel“ alammenüü on nüüd kleepuvas päises, ankurlingid viivad jaotise ülaservani ja aktiivne jaotis on märgitud (Kadri 6.11 20:09). Jaluse „Eelvaade, ei ole avaldatud“ eemaldatud. |
 | 06.11.2026 | „Kuidas lugeda“ sai jaotise „Mis uueneb ise“: iga saidi osa juures on kirjas, kuidas see uueneb, millal viimati ja mida on vaja käsitsi teha. Päise kuupäevad viivad sinna. Uudistes on sama ettevõtte hilisemal lool silt „jätkulugu“ (Kadri 6.11 20:03). |
 | 06.11.2026 | Uudiste vaate Eesti ja maailma paneelis on rida „Viimane kontroll …: lisandus N“ või „uusi uudiseid ei lisandunud“, ja viimasel kontrollil lisandunud uudistel on silt „uus“ (Kadri 6.11 20:02: tühi päev paistis nagu uuendus ei töötaks). |
 | 06.11.2026 | Avalehe „Mis muutus“ sama kuupäevaga kirjed on nüüd kindlas järjekorras (liik, siis tekst), nii et iga ehitus ei paista sisumuutusena. |

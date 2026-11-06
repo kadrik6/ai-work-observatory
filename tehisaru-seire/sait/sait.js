@@ -240,3 +240,31 @@
     });
   });
 })();
+
+// Päise kõrgus ankurlinkide jaoks ja „Sellel lehel“ praeguse jaotise märge (Kadri 6.11.2026).
+(function () {
+  function korgus() {
+    var p = document.querySelector('header.top');
+    if (p) document.documentElement.style.setProperty('--top-h', p.offsetHeight + 'px');
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    korgus();
+    window.addEventListener('resize', korgus);
+    var lingid = Array.prototype.slice.call(document.querySelectorAll('.top .sellel a[href^="#"]'));
+    if (!lingid.length) return;
+    var sihid = lingid.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    function margi() {
+      var piir = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--top-h'), 10) || 110) + 24;
+      var k = -1;
+      sihid.forEach(function (t, i) { if (t && t.getBoundingClientRect().top <= piir) k = i; });
+      lingid.forEach(function (a, i) { if (i === k) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+      var akt = lingid[k];
+      if (akt && akt.parentNode.parentNode.scrollWidth > akt.parentNode.parentNode.clientWidth) {
+        var ul = akt.parentNode.parentNode, l = akt.parentNode;
+        if (l.offsetLeft < ul.scrollLeft || l.offsetLeft + l.offsetWidth > ul.scrollLeft + ul.clientWidth) ul.scrollLeft = l.offsetLeft - 16;
+      }
+    }
+    window.addEventListener('scroll', margi, { passive: true });
+    margi();
+  });
+})();
