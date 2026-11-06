@@ -60,6 +60,9 @@ Kogujad seda faili ei muuda. Leht „Tehisaru ja töö“ (vahekaart „Mida lei
 pealkirja, linki, kuupäeva ja oma sõnadega lühikest põhjust. Uued juhtumid tulevad ERR-i varajase hoiatuse kandidaatidest
 (märksõna „koonda“), inimene kontrollib need ja lisab siia. Testid: `tests/test_koondamised_ee.py`.
 
+## Igapäevane uuendus
+Lehtede igapäevane uuendus (logid, leiud, seire sait, osa „Mis toimub“, uudised) on kaustas `uuendus/`, vt `uuendus/README.md`.
+
 ## Väljund
 
 `olek.json`, `koik.jsonl`, `nahtud.jsonl` (kõik seni nähtud), `kirjed.jsonl` (uued), `versioonid.jsonl`, `duplikaadid.jsonl`, `vead.jsonl`,

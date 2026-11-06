@@ -1,0 +1,258 @@
+<title>Tehisaru ja töö uudised</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap">
+<style>
+/* Paigutus: üks veerg kuni 64rem, päis + vahekaardid, sisu loendina. Sinine Fookus. */
+:root {
+  --surface: #ffffff; --surface-2: #f9f9f9; --surface-3: #f0f0f2; --brand-soft: #e6eafc;
+  --ink: #151926; --ink-2: #4b4e62; --ink-3: #6b6c7a;
+  --signal: #0030de; --signal-strong: #0024a8; --on-signal: #ffffff;
+  --context: #c9cad1; --border: #e1e2e5;
+  --warn-bg: #fff1e3; --warn-line: #e77400; --warn-text: #8a4500;
+  --f-head: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --surface: #151926; --surface-2: #1d2131; --surface-3: #262b3b; --brand-soft: #14266e;
+  --ink: #ffffff; --ink-2: #e2e3ea; --ink-3: #a5a6b6;
+  --signal: #8fa2ff; --signal-strong: #c7d1ff; --on-signal: #151926;
+  --context: #4b4e62; --border: #34394c;
+  --warn-bg: #3a2410; --warn-line: #e77400; --warn-text: #ffcc99; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --surface: #151926; --surface-2: #1d2131; --surface-3: #262b3b; --brand-soft: #14266e;
+  --ink: #ffffff; --ink-2: #e2e3ea; --ink-3: #a5a6b6;
+  --signal: #8fa2ff; --signal-strong: #c7d1ff; --on-signal: #151926;
+  --context: #4b4e62; --border: #34394c;
+  --warn-bg: #3a2410; --warn-line: #e77400; --warn-text: #ffcc99; color-scheme: dark }
+body { background: var(--surface); color: var(--ink); font: 400 16px/1.6 var(--f-body); }
+.wrap { max-width: 64rem; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 900px) { .wrap { padding-left: max(48px, env(safe-area-inset-left, 0px)); padding-right: max(48px, env(safe-area-inset-right, 0px)); } }
+h1, h2, h3 { font-family: var(--f-head); color: var(--signal); text-wrap: balance; margin: 0; }
+h1 { font-size: 28px; line-height: 1.2; }
+h2 { font-size: 22px; line-height: 1.3; }
+h3 { font-size: 18px; line-height: 1.35; }
+a { color: var(--signal); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.seis { color: var(--ink-2); font-size: 14px; margin: 6px 0 0; }
+.seis .hilja { color: var(--warn-text); font-weight: 600; }
+.teema { width: 36px; height: 36px; border: 1px solid var(--border); background: var(--surface); color: var(--ink-2);
+  border-radius: 8px; cursor: pointer; display: grid; place-items: center; flex: none; }
+.teema svg { width: 18px; height: 18px; }
+.suur { margin: 20px 0 0; background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 8px; padding: 12px 16px; }
+.suur strong { color: var(--warn-text); }
+.suur ul { margin: 4px 0 0; padding-left: 18px; }
+.suur li { margin: 2px 0; }
+nav.tabs { display: flex; gap: 4px; margin: 24px 0 0; border-bottom: 1px solid var(--border); overflow-x: auto; }
+nav.tabs a { padding: 6px 12px; font-size: 14px; font-weight: 500; color: var(--ink-2); text-decoration: none; white-space: nowrap;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; }
+nav.tabs a[aria-current="page"] { color: var(--signal); border-bottom-color: var(--signal); font-weight: 600; }
+nav.tabs .n { color: var(--ink-3); font-weight: 400; margin-left: 4px; font-variant-numeric: tabular-nums; }
+section.vaade { padding-top: 24px; }
+.sissejuhatus { color: var(--ink-2); margin: 6px 0 0; max-width: 68ch; }
+.filtrid { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; }
+.filtrid button, .rohkem button { font: 500 14px/1 var(--f-body); padding: 7px 12px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--ink-2); }
+.filtrid button[aria-pressed="true"], .rohkem button[aria-pressed="true"] { background: var(--signal); border-color: var(--signal); color: var(--on-signal); }
+.paev { margin: 24px 0 0; font: 600 14px/1.4 var(--f-body); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+ol.loend { list-style: none; margin: 8px 0 0; padding: 0; }
+ol.loend li { padding: 12px 0; border-top: 1px solid var(--border); }
+ol.loend li:first-child { border-top: 0; }
+.pk { font-weight: 600; font-size: 16px; line-height: 1.45; }
+.pk a { color: var(--ink); text-decoration: none; }
+.pk a:hover { color: var(--signal); text-decoration: underline; }
+.kokku { color: var(--ink-2); font-size: 15px; margin: 2px 0 0; max-width: 72ch; }
+.meta { font-size: 13.6px; color: var(--ink-3); margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+.meta > span:not(.silt) + span:not(.silt)::before { content: "· "; }
+.silt { border: 1px solid var(--border); border-radius: 4px; padding: 0 6px; font-size: 12.8px; color: var(--ink-2); }
+.silt.hoiatus { border-color: var(--warn-line); color: var(--warn-text); }
+.rohkem { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 16px 0 0; font-size: 14px; color: var(--ink-3); }
+.tyhi { color: var(--ink-3); margin: 16px 0 0; }
+/* koondamised */
+.leid { margin: 0; }
+.leid b { color: var(--signal); }
+.tulbad { margin: 24px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 12px; align-items: center; max-width: 40rem; font-size: 14px; }
+.tulbad .nimi { color: var(--ink-2); }
+@media (max-width: 600px) { .tulbad { grid-template-columns: 1fr; gap: 2px; } .tulbad .rida { margin-bottom: 8px; } }
+.tulbad .rida { display: flex; align-items: center; gap: 8px; }
+.tulbad .t { height: 16px; border-radius: 2px; background: var(--context); min-width: 2px; }
+.tulbad .t.f { background: var(--signal); }
+.tulbad .arv { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+.allikarida { font-size: 13.6px; color: var(--ink-3); margin: 12px 0 0; max-width: 72ch; }
+.tabel { overflow-x: auto; margin: 24px 0 0; }
+table { border-collapse: collapse; font-size: 14px; width: 100%; min-width: 760px; }
+th, td { border: 1px solid var(--border); padding: 9px 12px; text-align: left; vertical-align: top; }
+th { background: var(--surface-2); font-weight: 600; color: var(--ink-2); }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+td .alam { color: var(--ink-3); font-size: 13px; }
+td b { color: var(--ink); }
+.roll { white-space: nowrap; font-weight: 600; }
+.roll.ai { color: var(--signal); }
+/* väited */
+.vaide { padding: 20px 0; border-top: 1px solid var(--border); }
+.vaide:first-of-type { border-top: 0; }
+.otsus { display: inline-block; margin: 8px 0 0; font-weight: 600; font-size: 14px; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border); }
+.otsus.vale { border-color: var(--warn-line); color: var(--warn-text); background: var(--warn-bg); }
+.otsus.osaliselt { border-color: var(--signal); color: var(--signal); background: var(--brand-soft); }
+.vaide table { min-width: 560px; }
+/* kuidas */
+.kuidas p, .kuidas li { max-width: 68ch; }
+.kuidas ul { padding-left: 20px; }
+.ok { color: var(--signal); font-weight: 600; }
+.viga { color: var(--warn-text); font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="top">
+      <div>
+        <h1>Tehisaru ja töö uudised</h1>
+        <p class="seis" id="seis"></p>
+      </div>
+      <button class="teema" id="teema" type="button" aria-label="Vaheta heledat ja tumedat teemat"></button>
+    </div>
+    <div id="suur"></div>
+    <nav class="tabs" id="tabs" aria-label="Vaated"></nav>
+  </header>
+  <main id="sisu"></main>
+</div>
+
+<script>
+const D = /*ANDMED*/null;
+const ROLLID = {
+  otsene: ["Tehisaru teeb tööd inimeste asemel", true],
+  osaline: ["Tehisaru üks põhjustest", true],
+  kaudne: ["Tehisaru muutis turgu, inimesi ei asenda", true],
+  tulevikus: ["Tehisaru võib tulevikus koondamisi tuua", true],
+  ei_mainita: ["Tehisaru ei mainita", false]
+};
+const TEEMAD = { koondamine: "Koondamised", ai_too: "Tehisaru ja töö", ai_uldine: "Muu tehisaru", andmed: "Andmed", uuring: "Uuringud", eksitav: "Eksitav" };
+const LIIK = { arvamus: "Arvamus", aruanne: "Aruanne", uuring: "Uuring", eksitav: "Eksitav" };
+const VAATED = [
+  ["eesti", "Eesti"], ["maailm", "Maailm"], ["koondamised", "Eesti koondamised"], ["vaited", "Väited"], ["kuidas", "Kuidas see töötab"]
+];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const kp = iso => { const [y, m, d] = iso.slice(0, 10).split("-"); return `${+d}.${+m}.${y}`; };
+const mal = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } };
+
+/* teema */
+const PAIKE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+const KUU = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+function onTume() { const t = document.documentElement.dataset.theme; return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; }
+function teemaNupp() { document.getElementById("teema").innerHTML = onTume() ? PAIKE : KUU; }
+const salv = mal("uudised-teema"); if (salv) document.documentElement.dataset.theme = salv;
+document.getElementById("teema").onclick = () => { const uus = onTume() ? "light" : "dark"; document.documentElement.dataset.theme = uus; mal("uudised-teema", uus); teemaNupp(); };
+teemaNupp();
+
+/* seis ja suured uudised */
+(function () {
+  const v = new Date(D.olek.viimane_kontroll);
+  const tunde = (Date.now() - v.getTime()) / 36e5;
+  const kell = v.toLocaleTimeString("et-EE", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Tallinn" }).replace(":", ".");
+  let t = `Seis ${kp(D.olek.viimane_kontroll)} kell ${kell} · uueneb iga päev kell 7.23, suuri uudiseid kontrollitakse ka kell 12.53 ja 17.53`;
+  if (tunde > 30) t += ` · <span class="hilja">Uuendus on ${Math.round(tunde)} tundi hiljaks jäänud</span>`;
+  document.getElementById("seis").innerHTML = t;
+  const piir = new Date(Date.now() - 3 * 864e5).toISOString().slice(0, 10);
+  const suured = D.uudised.filter(u => u.suur && u.kuupaev >= piir);
+  if (suured.length) document.getElementById("suur").innerHTML = `<div class="suur" role="status"><strong>Suur uudis viimase 3 päeva jooksul</strong><ul>${suured.map(u => `<li><a href="${esc(u.url)}" target="_blank" rel="noopener">${esc(u.pealkiri)}</a> <span class="meta" style="display:inline">${kp(u.kuupaev)} · ${esc(u.allikas)}</span></li>`).join("")}</ul></div>`;
+})();
+
+/* uudiste loend */
+const olek = { eesti: { teema: "koik", n: 12 }, maailm: { teema: "koik", n: 12 } };
+function uudisRida(u) {
+  const sildid = [];
+  if (LIIK[u.liik]) sildid.push(`<span class="silt${u.liik === "eksitav" ? " hoiatus" : ""}">${LIIK[u.liik]}</span>`);
+  if (u.teema === "koondamine" && u.ai_roll && ROLLID[u.ai_roll]) sildid.push(`<span class="silt">${ROLLID[u.ai_roll][0]}</span>`);
+  if (u.kontrollitud === false) sildid.push(`<span class="silt">Artiklit ei avatud</span>`);
+  return `<li><div class="pk"><a href="${esc(u.url)}" target="_blank" rel="noopener">${esc(u.pealkiri)}</a></div>
+    ${u.pohjus ? `<p class="kokku">${esc(u.pohjus)}</p>` : ""}
+    <div class="meta"><span>${esc(u.allikas)}</span>${u.kes_utles ? `<span>${esc(u.kes_utles)}</span>` : ""}${sildid.join("")}</div></li>`;
+}
+function loendiVaade(piirkond, id) {
+  const o = olek[id];
+  const koik = D.uudised.filter(u => u.piirkond === piirkond);
+  const teemad = [...new Set(koik.map(u => u.teema))].filter(t => TEEMAD[t]);
+  const valik = o.teema === "koik" ? koik : koik.filter(u => u.teema === o.teema);
+  const naha = o.n === 0 ? valik : valik.slice(0, o.n);
+  let html = "", eel = "";
+  for (const u of naha) { if (u.kuupaev !== eel) { if (eel) html += "</ol>"; html += `<h3 class="paev">${kp(u.kuupaev)}</h3><ol class="loend">`; eel = u.kuupaev; } html += uudisRida(u); }
+  if (eel) html += "</ol>";
+  const pealkiri = piirkond === "EE" ? "Eesti uudised tehisarust, andmetest ja tööst" : "Maailma uudised tehisarust, andmetest ja tööst";
+  const sis = piirkond === "EE" ? "ERR, Postimees, Delfi ja Äripäev. Arvamuslood on märgitud, arvamus ei ole tõend." : "Primaarallikad eespool: statistikaametid, uuringud, koondamiste aruanded. Vananenud või valed arvud on märgitud sildiga Eksitav.";
+  return `<h2>${pealkiri}</h2><p class="sissejuhatus">${sis}</p>
+    <div class="filtrid" role="group" aria-label="Teema">${[["koik", "Kõik"], ...teemad.map(t => [t, TEEMAD[t]])].map(([k, n]) => `<button type="button" data-teema="${k}" aria-pressed="${o.teema === k}">${n}</button>`).join("")}</div>
+    ${html || '<p class="tyhi">Selle teema kohta uudiseid veel ei ole.</p>'}
+    ${valik.length > 12 ? `<div class="rohkem" role="group" aria-label="Mitu näidata">Näita ${[12, 24, 48, 0].filter(n => n === 0 || n < valik.length + 12).map(n => `<button type="button" data-n="${n}" aria-pressed="${o.n === n}">${n || `kõik (${valik.length})`}</button>`).join("")}</div>` : ""}`;
+}
+
+/* koondamised */
+function koondVaade() {
+  const k = D.koond;
+  const loe = r => k.filter(x => x.ai_roll === r).length;
+  const ai = k.filter(x => ROLLID[x.ai_roll] && ROLLID[x.ai_roll][1]).length;
+  const otsene = loe("otsene");
+  const max = Math.max(1, ...Object.keys(ROLLID).map(loe));
+  const leid = `${k.length} kogutud Eesti koondamisest <b>${ai} nimetasid tehisaru</b>${otsene === 0 ? ", aga ükski ettevõte ei öelnud, et tehisaru teeb tööd inimeste asemel" : `, neist ${otsene} ütles, et tehisaru teeb tööd inimeste asemel`}`;
+  const tulbad = Object.entries(ROLLID).map(([r, [nimi, onAi]]) => `<span class="nimi">${nimi}</span><span class="rida"><span class="t${onAi ? " f" : ""}" style="width:${loe(r) / max * 100}%"></span><span class="arv">${loe(r)}</span></span>`).join("");
+  const read = k.map(x => `<tr><td class="num">${kp(x.kuupaev)}</td><td><b>${esc(x.ettevote)}</b><div class="alam">${esc(x.sektor)}</div></td><td>${esc(x.arv_tekst)}</td>
+    <td><span class="roll${ROLLID[x.ai_roll] && ROLLID[x.ai_roll][1] ? " ai" : ""}">${ROLLID[x.ai_roll] ? ROLLID[x.ai_roll][0] : esc(x.ai_roll)}</span><div class="alam">${esc(x.kes_utles)}</div></td>
+    <td>${esc(x.pohjus)}</td><td><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.allikas)}</a></td></tr>`).join("");
+  return `<h2 class="leid">${leid}</h2>
+    <p class="sissejuhatus">Arvestatud on seda, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnangut.</p>
+    <div class="tulbad" role="img" aria-label="Koondamised selle järgi, mida ettevõte tehisaru kohta ütles">${tulbad}</div>
+    <p class="allikarida">Allikas: ERR, Personaliuudised ja ettevõtete teated, kogutud alates 31.10.2026, varasemad juhtumid tagantjärele. Nimekiri ei ole täielik: väikesed koondamised jõuavad uudistesse harva. Ametlik kollektiivsete koondamiste statistika on Töötukassal.</p>
+    <div class="tabel"><table><thead><tr><th>Kuupäev</th><th>Ettevõte</th><th>Mitu</th><th>Mida tehisaru kohta öeldi</th><th>Nimetatud põhjus</th><th>Allikas</th></tr></thead><tbody>${read}</tbody></table></div>`;
+}
+
+/* väited */
+function vaitedVaade() {
+  const SILT = { osaliselt: "Osaliselt tõsi", vale: "Vale", tosi: "Tõsi", kontrollimata: "Kontrollimata" };
+  return `<h2>Mida tehisaru ja töö kohta väidetakse ja kas see peab paika</h2>
+    <p class="sissejuhatus">Iga väite juures on, kes seda ütles, ja tõendid koos tugevusega. Väide on omistatud väljaandele või saatele.</p>
+    ${D.vaited.map(v => `<article class="vaide"><h3>„${esc(v.vaide)}“</h3>
+      <span class="otsus ${esc(v.hinnang)}">${SILT[v.hinnang] || esc(v.hinnang)}</span>
+      <p class="meta">Kus öeldi: ${v.kes_url ? `<a href="${esc(v.kes_url)}" target="_blank" rel="noopener">${esc(v.kes)}</a>` : esc(v.kes)} · kontrollitud ${kp(v.kuupaev)}</p>
+      <p class="kokku" style="margin-top:8px">${esc(v.kokkuvote)}</p>
+      <div class="tabel" style="margin-top:12px"><table><thead><tr><th>Tõend</th><th>Mida näitab</th><th>Tugevus</th></tr></thead><tbody>
+      ${v.toendid.map(t => `<tr><td>${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.nimi)}</a>` : `<b>${esc(t.nimi)}</b>`}</td><td>${esc(t.naitab)}</td><td>${esc(t.tugevus)}</td></tr>`).join("")}
+      </tbody></table></div></article>`).join("")}`;
+}
+
+/* kuidas */
+function kuidasVaade() {
+  const o = D.olek;
+  return `<div class="kuidas"><h2>Leht uueneb iga päev ise ja ütleb, kui uuendus jääb hiljaks</h2>
+    <p>Viimane kontroll: <b>${kp(o.viimane_kontroll)}</b>. Kui kontroll jääb üle 30 tunni hiljaks, näitab päis hoiatust.</p>
+    <ul>${o.allikad.map(a => `<li>${esc(a.nimi)}: <span class="${a.ok ? "ok" : "viga"}">${a.ok ? "töötas" : "ei vastanud"}</span>${a.markus ? " · " + esc(a.markus) : ""}</li>`).join("")}</ul>
+    <h3 style="margin-top:24px">Ajakava</h3>
+    <ul><li>Kell 7.23 (Tallinna aeg): kõik uued uudised Eestist ja maailmast, kokkuvõte projekti lõimes.</li>
+      <li>Kell 12.53 ja 17.53: ainult suurte uudiste kontroll. Kui midagi suurt juhtus, tuleb kohe teade.</li>
+      <li>Iga kuu esimesel neljapäeval: Challengeri USA koondamiste aruanne.</li></ul>
+    <h3 style="margin-top:24px">Mis on suur uudis</h3>
+    <ul><li>Eesti koondamine vähemalt 50 inimesega või koondamine, kus ettevõte nimetab tehisaru.</li>
+      <li>Eesti riigi otsus või seadus tehisaru, andmete või tööturu kohta.</li>
+      <li>Uus ametlik statistika tehisaru kasutuse või tööturu kohta (Statistikaamet, Eurostat, OECD).</li>
+      <li>Maailmas: vähemalt 1000 inimese koondamine tehisaru tõttu, ELi tehisarumääruse muudatus või suur uuring tehisaru mõjust tööle.</li></ul>
+    <h3 style="margin-top:24px">Reeglid</h3>
+    <ul><li>Ainult avalik info. Lehel on pealkiri, link, kuupäev ja lühike kokkuvõte oma sõnadega, mitte artikli tekst.</li>
+      <li>Arvamus on märgitud ega ole tõend. Kui artiklit ei saanud avada, on see märgitud.</li>
+      <li>Koondamise juures on see, mida ettevõte tehisaru kohta ütles, mitte meie hinnang.</li></ul></div>`;
+}
+
+/* marsruut */
+const SISU = document.getElementById("sisu");
+function joonista() {
+  const id = (location.hash || "#eesti").slice(1);
+  const vaade = VAATED.some(v => v[0] === id) ? id : "eesti";
+  const n = { eesti: D.uudised.filter(u => u.piirkond === "EE").length, maailm: D.uudised.filter(u => u.piirkond === "maailm").length, koondamised: D.koond.length, vaited: D.vaited.length };
+  document.getElementById("tabs").innerHTML = VAATED.map(([k, nimi]) => `<a href="#${k}"${k === vaade ? ' aria-current="page"' : ""}>${nimi}${n[k] !== undefined ? `<span class="n">${n[k]}</span>` : ""}</a>`).join("");
+  SISU.innerHTML = `<section class="vaade">${vaade === "eesti" ? loendiVaade("EE", "eesti") : vaade === "maailm" ? loendiVaade("maailm", "maailm") : vaade === "koondamised" ? koondVaade() : vaade === "vaited" ? vaitedVaade() : kuidasVaade()}</section>`;
+  SISU.querySelectorAll("[data-teema]").forEach(b => b.onclick = () => { olek[vaade].teema = b.dataset.teema; olek[vaade].n = 12; joonista(); });
+  SISU.querySelectorAll("[data-n]").forEach(b => b.onclick = () => { olek[vaade].n = +b.dataset.n; joonista(); });
+}
+addEventListener("hashchange", joonista);
+joonista();
+</script>
