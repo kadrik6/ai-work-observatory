@@ -176,6 +176,17 @@ def main():
     kirjuta("koond-kontsentratsioon", **kontsentratsioon, top=jarjest[:15])
     kirjuta("koond-loend", n=len(loend))
     kirjuta("moju-aastad", silt="katseline", read=moju_aastad)
+    # diagnostika: otsi registrist sõnu failist otsi.txt (üks sõna real), et näha, miks hange tuvastusest välja jäi
+    otsi_fail = Path(__file__).with_name("otsi.txt")
+    sonad = [s.strip().lower() for s in otsi_fail.read_text(encoding="utf-8").splitlines()
+             if s.strip() and not s.startswith("#")] if otsi_fail.exists() else []
+    for r in hanked:
+        t = R.normaliseeri(R.tekst(r)) + " " + (r.get("viitenumber") or "").lower()
+        leitud = [s for s in sonad if s in t]
+        if leitud:
+            kirjuta("otsing", sonad=leitud, id=voti(r), aasta=r["aasta"], hankija=r.get("hankija"),
+                    pealkiri=r.get("pealkiri"), cpv=r.get("cpv"), vn=r.get("viitenumber"), allikas=r.get("allikas"),
+                    p=r.get("_p"), silt=r.get("_silt"), marksonad=R.marksonad(R.tekst(r)), moju=R.moju_uuring(r))
 
 
 if __name__ == "__main__":
