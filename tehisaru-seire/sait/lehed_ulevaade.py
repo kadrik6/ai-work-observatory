@@ -226,7 +226,7 @@ def avaleht(A, vaade, vaated):
     voog.append((UNE_UUENDATUD, "uus number", "s", f"Eesti töötus {kuu_seesytlev(kuu)} {pr(t_ee)}% (Eurostat)", UNE_URL))
     voog.append((ein["avaldatud"], "uus number", "s", f"Inimeste tehisaru kasutus {pr(ein['vaartus'])}% (Statistikaamet)", ein["url"]))
     voog.append((eeb["avaldatud"], "uus number", "s", f"Ettevõtete tehisaru kasutus {pr(eeb['vaartus'])}% (Statistikaamet)", eeb["url"]))
-    voog = sorted(set(voog), key=lambda r: r[0], reverse=True)
+    voog = sorted(sorted(set(voog), key=lambda r: (r[1], r[3])), key=lambda r: r[0], reverse=True)  # kindel järjekord
     viimane = voog[0][0]
     from datetime import date
     d = lambda iso: date.fromisoformat(iso[:10])  # noqa: E731
