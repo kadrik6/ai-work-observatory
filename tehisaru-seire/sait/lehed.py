@@ -139,6 +139,12 @@ def _tootlikkus(A):
          f'digitehnoloogiaid (<a href="{e(calvino.get("url", ""))}">Calvino ja Fontanelli 2023</a>). Arvutiajastul leiti '
          f'sama: kasu tuleb, kui IT, töökorraldus ja oskused muutuvad koos (<a href="{e(bbh.get("url", ""))}">Bresnahan jt 2002</a>).'),
     ]
+    kim = U.get("kim2026")
+    if kim:  # sisuloogika 6.11.2026: ainus juhuslik katse, mis testib „töökorraldus enne tööriista“
+        fk.append(("Katse", "s",
+                   f'{e(kim["valim"].capitalize())} said samad tehisaru tööriistad. Need, kellele näidati, kuidas töövoogu '
+                   f'ümber korraldada, leidsid 44% rohkem kasutusviise ja teenisid 1,9 korda rohkem tulu '
+                   f'(<a href="{e(kim["url"])}">Kim jt {kim["aasta"]}, INSEAD</a>; töödokument, retsenseerimata).'))
     if pwc:
         fk.append(("Väide", "risk",
                    f'PwC pressiteade ütles, et tehisaruga enim kokkupuutuvates ettevõtetes on tootlikkuse kasv 40% kõrgem. '
@@ -153,6 +159,7 @@ def _tootlikkus(A):
 <section class="jaotis" id="tootlikkus" aria-labelledby="h-tootlikkus">
   <header>
     <h2 id="h-tootlikkus">Tehisaru kasutus oli seotud suurema tootlikkusega <b>ainult koos töökorralduse muutusega</b></h2>
+    {f'<p class="alam">Tõend: {e(vahter["silt"])}. Ettevõtete registriandmed on ulatuslikud, aga tulemus on nõrga statistilise olulisusega ja retsenseerimata.</p>' if vahter.get("silt") else ""}
     {vastavus("osaliselt", "Uuring kasutab Eesti ettevõtete andmeid kuni 2023. aastani, enne generatiivse tehisaru laia levikut.")}
   </header>
   <div class="kaks">

@@ -280,7 +280,7 @@ def avaleht(A, vaade, vaated):
         for v in V_jrj[:4])
     sec_vaited = f"""
 <section class="pn sp12" id="vaited" aria-labelledby="h-vaited">
-  <div class="pn-h"><h2 id="h-vaited">{ARVSONAD[len(V)].capitalize() if len(V) in ARVSONAD else len(V)} kontrollitud väidet: <b>{ARVSONAD.get(len(v_muud), len(v_muud))} ütleb muud kui allikas</b></h2></div>
+  <div class="pn-h"><h2 id="h-vaited">IMF-i ja Goldman Sachsi <b>„puudutab“ on pealkirjades muutunud sõnaks „kaob“</b></h2></div>
   <div class="tbl"><table><thead><tr><th scope="col" style="width:38%">Väide ja väljaanne</th><th scope="col" style="width:13%">Hinnang</th><th scope="col">Mida allikas tegelikult ütleb</th></tr></thead><tbody>{v_read}</tbody></table></div>
   <p class="allikas">Väide kuulub väljaandele. Siin {min(4, len(V))} väidet {len(V)}-st; kõik: {menuu("kas-tosi", "Väited")}.</p>
 </section>"""
@@ -347,6 +347,11 @@ def too_eesti(A):
                        f'<p title="{e(r["pohjus"])}">{e(r["pohjus"])}</p><a href="{e(r["url"])}">{e(r["allikas"])}</a>{kand}</li>')
     arvsona = SEESTYTLEV.get(len(juhtumid), f"{len(juhtumid)}-st")
     otse = "mitte ükski" if otsene == 0 else ARVSONAD.get(otsene, str(otsene))
+    # USA statistikaameti firmauuring: otsene mõõt firmadelt (sisuloogika 6.11.2026)
+    bon = (A.get("uuringud") or {}).get("bonney2026")
+    bonney_rida = (f'<p class="ps">Võrdluseks USA: ametlikus ettevõtete uuringus teatas tehisaruga seotud töötajate vähendamisest '
+                   f'<b>2% firmadest</b>, tehisaru kasutas 18% (<a href="{e(bon["url"])}">USA statistikaamet, Bonney jt {bon["aasta"]}</a>).</p>'
+                   if bon and "2% firmadest" in bon["leid"] and "18% firmadest" in bon["leid"] else "")
     sec_k = f"""
 <section class="pn sp5" id="koondamised" aria-labelledby="h-koondamised">
   <div class="pn-h"><h2 id="h-koondamised">{arvsona.capitalize()} Eesti koondamisest: tehisaru otsese põhjusena <b>{otse}</b>, ühe põhjusena {ARVSONAD.get(mainib, str(mainib))}</h2></div>
@@ -354,6 +359,7 @@ def too_eesti(A):
   <ul class="kk-v" aria-live="polite">{"".join(kaardid)}</ul>
   <div class="kk-nav" hidden><button type="button" class="kk-e" aria-label="Eelmine ettevõte">‹</button><span class="kk-tapid"></span><button type="button" class="kk-j" aria-label="Järgmine ettevõte">›</button><span class="kk-loe"></span></div>
   <p class="ps">Number on Eesti töökohad, kui see teatati. Ettevõtte enda selgitus ei tõenda põhjust.</p>
+  {bonney_rida}
 </section>"""
     # Keskel: töökohad ettevõtte kaupa, värv näitab, mida ettevõte tehisaru kohta ütles (Kadri 5.11 23:06)
     RYHM = {"otsene": ("s", "nimetas tehisaru põhjusena"), "osaline": ("s", "nimetas tehisaru põhjusena"),

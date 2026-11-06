@@ -822,3 +822,9 @@ summary { padding-block: 3px; }
   .top .sellel a, .alamlehed a { min-height: 32px; }
   .kk-e, .kk-j { width: 44px; height: 40px; }
 }
+
+/* Hangete hoiatus: masina märgendid, inimene pole kontrollinud (Kadri 6.11.2026) */
+.hoiatus { margin: 0 0 16px; padding: 10px 14px; border: 1px solid var(--hoiatus-joon, #c98a00); border-left-width: 4px;
+  border-radius: 6px; background: var(--hoiatus-taust, #fff8e6); }
+.hoiatus p { margin: 0; max-width: 90ch; }
+[data-seire-teema="tume"] .hoiatus { --hoiatus-joon: #d9a640; --hoiatus-taust: #2e2a20; }

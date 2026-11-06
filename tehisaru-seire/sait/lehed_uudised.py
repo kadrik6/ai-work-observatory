@@ -324,7 +324,11 @@ def hanked(A, vaade, vaated=None):
   <tbody>{"".join(t_rows)}</tbody></table></div>
 </section>
 </div>"""
-    return (pea(A, vaade, lead, [("aastad", "Viimane aasta"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], ree)
+    # Kadri otsus 6.11.2026 22:11: Hanked jääb menüüsse, aga selge hoiatussildiga, kuni 100 hanget on käsitsi kontrollitud
+    hoiatus = ('<div class="hoiatus" role="note"><p><b>Kontrollimata masinmärgistus.</b> Selle lehe hanked märkis tehisaru- '
+               'või andmehangeteks keelemudel, mitte inimene. Ka täpsus on mõõdetud masina märgendite vastu. Numbrid on suunaandvad, '
+               'mitte statistika: aastate võrdlus ja kindlad järeldused tulevad pärast seda, kui 100 hanget on käsitsi üle vaadatud.</p></div>')
+    return (pea(A, vaade, lead, [("aastad", "Viimane aasta"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], ree) + hoiatus
             + '<div class="g12">' + sec_aastad + sec_inn + "</div>"
             + '<div class="g12">' + sec_viis + sec_hankijad + "</div>"
             + sec_loend + sec_tapsus)

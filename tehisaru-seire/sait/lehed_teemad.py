@@ -275,9 +275,14 @@ def _toend(T, meetod):
     raise AndmeViga(f"Meetodil {meetod} pole tõendi tugevust (tooelu-seire/leiud.json, kindlus)")
 
 
+def toendi_silt(T, u):
+    """Uuringu tõendi silt; uuringu enda silt (nt „tugev andmestik, nõrk tulemus“) läheb meetodist ette."""
+    return u.get("silt") or _toend(T, u["meetod"])
+
+
 def _alam(T, U, uid):
     u = U[uid]
-    return f'{u["kus"]} · {u["aasta"]} · {_toend(T, u["meetod"])}'
+    return f'{u["kus"]} · {u["aasta"]} · {toendi_silt(T, u)}'
 
 
 def too(A, vaade, vaated=None):
@@ -294,7 +299,7 @@ def too(A, vaade, vaated=None):
     rm = U[tulevik["tootus_ee"]["uuring"]]
     if "Tehisaru mõju ei ole töötuse prognoosis" not in rm["leid"]:
         raise AndmeViga("Töötuse prognoosi juures puudub märge, et tehisaru mõju ei ole eraldi arvestatud")
-    kontrolli(vaade, "USA-s", "noori vähem tööl")
+    kontrolli(vaade, "USA-s", "vähem noori")
     if _muutus_arv(can["muutus"]) >= 0:
         raise AndmeViga("Noorte hõive langus ei ole enam andmetes")
 
@@ -367,7 +372,7 @@ def too(A, vaade, vaated=None):
     # 3. Mida Eestis leiti
     ee_u = [u for u in U.values() if u["kus"] == "Eesti" and u["meetod"] != "prognoos"]
     ee_u.sort(key=lambda u: -u["aasta"])
-    e_read = [[f'{a(u["url"], u["autorid"].split(" (")[0])}<small>{u["aasta"]} · {e(_toend(T, u["meetod"]))}</small>', e(u["leid"])] for u in ee_u]
+    e_read = [[f'{a(u["url"], u["autorid"].split(" (")[0])}<small>{u["aasta"]} · {e(toendi_silt(T, u))}</small>', e(u["leid"])] for u in ee_u]
     sec_eesti = f"""
 <section class="jaotis" id="eesti" aria-labelledby="h-eesti">
   <header>
@@ -425,7 +430,7 @@ def too(A, vaade, vaated=None):
     aeg = K["aeg"]
     A0, A1 = 2022, max(aeg[("EE", "T")])
     def mu(geo, sugu, osa_):
-        g = aeg[(geo, sugu)]
+        g = K["aeg_uhtlane"][(geo, sugu)]
         return (g[A1][osa_] / g[A0][osa_] - 1) * 100
     def mt(x):
         return f'{"+" if x >= 0 else "−"}{pr(abs(x))}%'
@@ -438,6 +443,7 @@ def too(A, vaade, vaated=None):
         g = aeg[("EE", sugu)][y]
         return g[osa_] / g["kokku"] * 100
     n_k0, m_k0 = mu("EE", "F", "korge"), mu("EE", "M", "korge")
+    sugu_lause = f'{A1}. aastal töötas Eestis avatud ametites {pr(osa_pr("F", A1), 0)}% naistest ja {pr(osa_pr("M", A1), 0)}% meestest. Kõige avatumates ametites (aste 3–4) vähenes naiste hõive {A0}–{A1} {pr(abs(n_k0), 0)}% ja meeste oma kasvas {pr(m_k0, 0)}%.' if n_k0 < 0 < m_k0 else f'{A1}. aastal töötas Eestis avatud ametites {pr(osa_pr("F", A1), 0)}% naistest ja {pr(osa_pr("M", A1), 0)}% meestest.'
     sec_hoive = f"""
 <section class="jaotis" id="hoive" aria-labelledby="h-hoive">
   <header>
@@ -453,11 +459,17 @@ def too(A, vaade, vaated=None):
     <div class="kulg">
       {vastavus("osaliselt", "See on kirjeldus, mitte põhjus. Eesti majandus oli 2023–2024 langusel ja see mõjutas harusid eri moodi. Eesti tööjõu-uuringu valim on väike: mõne tuhande inimese muutus võib olla juhuslik.")}
       {faktid([
-          ("Naised ja mehed", "", f'{A1}. aastal töötas Eestis avatud ametites {pr(osa_pr("F", A1), 0)}% naistest ja {pr(osa_pr("M", A1), 0)}% meestest. Kõige avatumates ametites (aste 3–4) vähenes naiste hõive {A0}–{A1} {pr(abs(n_k0), 0)}% ja meeste oma kasvas {pr(m_k0, 0)}%.' if n_k0 < 0 < m_k0 else f'{A1}. aastal töötas Eestis avatud ametites {pr(osa_pr("F", A1), 0)}% naistest ja {pr(osa_pr("M", A1), 0)}% meestest.'),
           ("Mida jälgida", "s", "Kui see erinevus püsib ka 2026. ja 2027. aastal ning on suurem noorte seas, on see märk, mida tasub uurida registriandmetega, nagu Taanis ja USA-s tehti."),
       ])}
     </div>
   </div>
+  <details>
+    <summary>Naised ja mehed (lisa)</summary>
+    <div>
+      <p>{sugu_lause}</p>
+      <p>Muutus on arvutatud ainult ametirühmadest, mille arv on avaldatud mõlemal aastal. Soo kaupa on avaldamata rühmi rohkem, seepärast on see number ebakindlam kui kogu hõive oma.</p>
+    </div>
+  </details>
 </section>"""
 
     # 6. Mis ees ootab
@@ -545,7 +557,10 @@ def _o(A, i):
 
 def avalik_sektor(A, vaade, vaated=None):
     v = lambda i: float(_o(A, i)["vaartus"])  # noqa: E731
-    kontrolli(vaade, f'{pr(v("rakendati"), 0)}% rakendatakse', f'{pr(v("laiendati"), 0)}% laiendatakse')
+    # h1 (Kadri otsus 6.11.2026): „iga neljas“ = 25–30% innovaatoritest, „kolmandik“ = 30–36% laiendatakse
+    kontrolli(vaade, "Iga neljas", "generatiivset tehisaru", "kolmandik")
+    if not all(25 <= v(k) <= 30 for k in ("genai-kesk", "genai-kov")) or not 30 <= v("laiendati") <= 36:
+        raise AndmeViga("Avaliku sektori h1 („iga neljas“, „kolmandik“) ei klapi enam OECD numbritega")
     src = lambda i: f'{OECD_NIMI.split(",")[0]}, {_o(A, i)["koht"]}'  # noqa: E731
     gk, gl = _o(A, "genai-kesk"), _o(A, "genai-kov")
     if round(int(gk["lugeja"]) / int(gk["nimetaja"]) * 100) != int(gk["vaartus"]):

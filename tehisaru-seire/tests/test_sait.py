@@ -184,14 +184,30 @@ def test_alus_ja_sama_tohivad_olla_uhel_teljel_osaliselt_mitte():
 
 
 @pytest.mark.parametrize("vid, vana, uus, ehitaja", [
-    ("avalik-sektor", "62% rakendatakse", "60% rakendatakse", lehed_teemad.avalik_sektor),
-    ("kas-tosi", "neli ütleb muud", "kolm ütleb muud", lehed_usaldus.kas_tosi),
+    ("avalik-sektor", "Iga neljas", "Iga kolmas", lehed_teemad.avalik_sektor),
+    ("kas-tosi", "kaks Eurostati", "kolm Eurostati", lehed_usaldus.kas_tosi),
     ("reeglid", "2.12.2027", "2.08.2027", lehed_teemad.reeglid),
     ("kuidas", "21 allikast", "20 allikast", lehed_usaldus.kuidas),
 ])
 def test_pealkiri_mida_mall_ei_kata_kontrollitakse_andmetest(A, vid, vana, uus, ehitaja):
     with pytest.raises(andmekiht.AndmeViga):
         ehitaja(A, _muudetud(vid, vana, uus), ehita.lae_vaated())
+
+
+def test_avaliku_sektori_h1_kukub_kui_numbrid_muutuvad(A):
+    A2 = dict(A, avalik={k: (dict(r, vaartus="40") if r["id"] == "genai-kesk" else r) for k, r in A["avalik"].items()})
+    with pytest.raises(andmekiht.AndmeViga):
+        lehed_teemad.avalik_sektor(A2, _vaade("avalik-sektor"), ehita.lae_vaated())
+
+
+def test_hoive_muutus_ainult_molemal_aastal_avaldatud_lahtritest(A):
+    g = A["kokkupuude"]["aeg_uhtlane"][("EE", "T")]
+    assert round((g[max(g)]["muud"] / g[2022]["muud"] - 1) * 100, 1) == 3.7
+
+
+def test_vahter_silt_ja_wef_ilma_nimeta(A):
+    assert A["uuringud"]["vahter2026"]["silt"] == "tugev andmestik, nõrk tulemus"
+    assert not any("Hundimägi" in (v["kes"] + v["valjaanne"] + v["selgitus"]) for v in A["vaited"])
 
 
 def test_oecd_28_protsenti_on_48_170st(A):

@@ -37,13 +37,18 @@ def _raskus(v):
 
 # ---------------------------------------------------------------- Kas see on tõsi?
 
+PEAMINE_LEID = ("worthynews-2024-imf-40", "247wallst-2025-goldman-300m")
+
+
 def kas_tosi_h1(A):
-    """Pealkiri andmetest: väidete arv muutub iga päev, sest uudiste väited tulevad samasse loendisse."""
-    n = len(A["vaited"])
-    muud = sum(1 for v in A["vaited"] if _raskus(v) == 0)
+    """Pealkiri on konkreetne leid, mitte suhe (Kadri otsus 6.11.2026): väited valis seire ise,
+    suhe „neli kaheksast“ kutsuks üldistama, et pool avalikest väidetest on vale."""
+    ids = {v["id"] for v in A["vaited"]}
+    if not all(i in ids for i in PEAMINE_LEID):
+        raise AndmeViga("Väidete pealkiri räägib IMF-i ja Goldman Sachsi pealkirjadest, aga neid väiteid pole enam loendis")
     lahti = sum(1 for l in A["lahknevused"] if l["staatus"] == "selgitamata")
-    return (f"{SEESTYTLEV[n].capitalize()} kontrollitud avalikust väitest **{ARVSONAD[muud]} ütleb muud kui allikas** "
-            f"ja {ARVSONAD[lahti]} allikate lahknevust on selgitamata.")
+    return (f"IMF-i ja Goldman Sachsi **„puudutab“ on pealkirjades muutunud sõnaks „kaob“**; "
+            f"{ARVSONAD[lahti]} Eurostati ja Statistikaameti lahknevust on selgitamata.")
 
 
 def kas_tosi(A, vaade, vaated=None):
@@ -52,7 +57,7 @@ def kas_tosi(A, vaade, vaated=None):
     loend = {k: sum(1 for v in V if _raskus(v) == k) for k in RASKUS}
     L = A["lahknevused"]
     lahti = [l for l in L if l["staatus"] == "selgitamata"]
-    kontrolli(vaade, f"{SEESTYTLEV[n]} kontrollitud", f"{ARVSONAD[loend[0]]} ütleb muud", f"{ARVSONAD[len(lahti)]} allikate lahknevust")
+    kontrolli(vaade, "IMF-i ja Goldman Sachsi", f"{ARVSONAD[len(lahti)]} Eurostati ja Statistikaameti lahknevust")
 
     o_read = [(RASKUS[k][0], loend[k], RASKUS[k][1], e({0: "Lause ütleb midagi muud või rohkem, kui allikas ütles.",
                                                        1: "Number on õige, aga lausest puudub, keda see kirjeldab, või suurus on ebakindel.",
@@ -324,7 +329,7 @@ def kuidas(A, vaade, vaated=None):
     jrk = {"Tugev tõend": 0, "Keskmine tõend": 1, "Nõrk tõend": 2}
     U = sorted(A["uuringud"].values(), key=lambda u: (jrk.get(tug(u["meetod"]), 3), -u["aasta"], u["autorid"]))
     u_read = [[f'{a(u["url"], u["autorid"])}<small>{u["aasta"]} · {e(u["kanal"])}{" · eelretsenseeritud" if u.get("retsenseeritud") else ""}</small>',
-               f'{e(tug(u["meetod"]))}<small>{e(u["meetod"].replace("_", " "))}</small>', e(u["kus"]), e(u["leid"])] for u in U]
+               f'{e(u["silt"].capitalize() if u.get("silt") else tug(u["meetod"]))}<small>{e(u["meetod"].replace("_", " "))}</small>', e(u["kus"]), e(u["leid"])] for u in U]
     n_tugev = sum(1 for u in U if tug(u["meetod"]) == "Tugev tõend")
     sec_u = f"""
 <section class="jaotis" id="uuringud" aria-labelledby="h-uuringud">

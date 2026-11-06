@@ -18,6 +18,9 @@ VORRELDAVAD = ("alus", "sama")
 EL = "EU27_2020"
 
 
+TOENDI_SILT = {"vahter2026": "tugev andmestik, nõrk tulemus"}
+
+
 def lisa_uudiste_koondamised(A):
     """Igapäevaste uudiste Eesti koondamised, mida käsitsi kontrollitud nimekirjas veel pole, lähevad Töö vaatesse
     kandidaadina (Kadri 6.11.2026: Eesti Energia puudus, sest nimekiri uuenes ainult käsitsi). Ettevõte loetakse samaks
@@ -147,6 +150,10 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
     if leiud_p.exists():
         A["tooelu"] = loe_json(leiud_p)
         A["uuringud"] = {u["id"]: u for u in A["tooelu"].get("uuringud", [])}
+        # Kadri otsus 6.11.2026 (sisuloogika teine hinnang): andmestik on tugev, tulemus nõrga olulisusega
+        for uid, silt in TOENDI_SILT.items():
+            if uid in A["uuringud"]:
+                A["uuringud"][uid]["silt"] = silt
     koond_p = juur.parent / "tooelu-seire" / "koondamised_ee.json"
     A["koondamised"] = loe_json(koond_p) if koond_p.exists() else {}
     # Kadri loal projekti kaustast toodud avalik hetkeseis (sait/vota_kaasa.py); puuduv fail = vaade pole valmis
@@ -255,10 +262,18 @@ def arvuta_kokkupuude(sisu):
     for geo, sugu in {(r["geo"], r["sugu"]) for r in aeg_read}:
         osa_ = [r for r in aeg_read if r["geo"] == geo and r["sugu"] == sugu and r["isco"] != "TOTAL"]
         aeg[(geo, sugu)] = {int(y): jaota([(r["isco"], float(r[y]) if r[y] else None) for r in osa_]) for y in aastad}
+    # Muutus 2022 → uusim ainult lahtritest, mis on avaldatud mõlemal aastal (Kadri otsus 6.11.2026):
+    # avaldamata lahtrid jäävad aastati erinevalt välja ja muudaksid muidu summat
+    y0, y1 = 2022, max(int(y) for y in aastad)
+    aeg_uhtlane = {}
+    for geo, sugu in {(r["geo"], r["sugu"]) for r in aeg_read}:
+        osa_ = [r for r in aeg_read if r["geo"] == geo and r["sugu"] == sugu and r["isco"] != "TOTAL"
+                and r[str(y0)] and r[str(y1)]]
+        aeg_uhtlane[(geo, sugu)] = {y: jaota([(r["isco"], float(r[str(y)])) for r in osa_]) for y in (y0, y1)}
     return {
         "kokku": kokku, "osa": pr_, "liigitamata": liigitamata / kokku * 100,
         "avatud": sum(pr_[a] for a in ("1", "2", "3", "4")), "korge": pr_["3"] + pr_["4"],
-        "ametid": ametid, "el": el_pr, "aeg": aeg, "ilo_ameteid": len(aste),
+        "ametid": ametid, "el": el_pr, "aeg": aeg, "aeg_uhtlane": aeg_uhtlane, "ilo_ameteid": len(aste),
         "ilo_avatud_ameteid": sum(1 for a in aste.values() if a in ("1", "2", "3", "4")),
     }
 
