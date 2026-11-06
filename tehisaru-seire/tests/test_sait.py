@@ -498,3 +498,19 @@ def test_vaite_juures_ei_ole_inimeste_nimesid(sait):
     assert vota_kaasa.ilma_nimedeta("ERR News 3.11.2026 (Sinisalu, Hiiemaa, Töötukassa)") == "ERR News 3.11.2026"
     assert "(sarnaselt ERR News 3.11)" in vota_kaasa.ilma_nimedeta("ERR 5.11.2026 (sarnaselt ERR News 3.11)")
     assert "Sinisalu" not in sait["kas-see-on-tosi.html"]
+
+
+def test_saidi_ulesehitus_orbude_tupikute_ja_menuu_kontroll(sait):
+    # Oskus andmesaidi-ulesehitus (Kadri 6.11.2026: „pidevad kontrollid on olulised“): iga ehitus kontrollib struktuuri
+    import struktuur
+    M = struktuur.moodik(sait)
+    assert struktuur.vead(M) == []
+    assert not [h for h in struktuur.hoiatused(M) if "tükeldamise piir ületatud" in h]
+
+
+def test_struktuuri_kontroll_leiab_orvu_ja_tupiku():
+    import struktuur
+    leht = lambda keha: f'<title>{keha}</title><ul class="menu"><a aria-current="page">x</a></ul><main><h1>{keha}</h1>{keha}</main>'  # noqa: E731
+    M = struktuur.moodik({"index.html": leht('<a href="a.html">a</a>'), "a.html": leht("tupik"), "b.html": leht('<a href="index.html">i</a>')})
+    v = struktuur.vead(M)
+    assert "a.html: tupik, siit ei pääse edasi" in v and "b.html: orb, ükski leht ei vii siia" in v
