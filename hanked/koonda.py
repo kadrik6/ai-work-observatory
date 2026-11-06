@@ -74,6 +74,11 @@ def _o(a, b):
     return round(100 * a / b, 1) if b else None
 
 
+def on_ai(r):
+    """AI-hange (mitte andmehange): tekstis on AI-sõna või inimene lisas selle käsitsi sildiga AI."""
+    return bool(R.marksonad(R.tekst(r))["ai"]) or str(r.get("_kasitsi") or "").startswith("AI:")
+
+
 def kasitsi_lisatud(fail):
     """Loeb käsitsi lisatud hanked: {võti: põhjus}. Read veergudega voti, silt (AI või ANDMED), pohjus."""
     import csv
@@ -114,7 +119,7 @@ def main():
             "ai_andmed": len(ai),
             "ai_andmed_osakaal": _o(len(ai), len(rid)),
             "marksonaloend": sum(r["_marksona"] for r in rid),
-            "ai_marksonaga": sum(bool(R.marksonad(R.tekst(r))["ai"]) for r in ai),
+            "ai_marksonaga": sum(on_ai(r) for r in ai),
             "eeldatav_maksumus_ai": round(sum(r.get("eeldatav_maksumus") or 0 for r in ai)),
             "eeldatav_maksumus_teada_ai": sum(r.get("eeldatav_maksumus") is not None for r in ai),
             "innovatsioonimark": sum(R.innovatsiooni_mark(r) for r in ef) if ef else None,
@@ -149,7 +154,7 @@ def main():
             "h": r.get("hankija"), "cpv": (r.get("cpv") or [])[:3], "v": r.get("eeldatav_maksumus"),
             "pk": r.get("pakkumusi"), "kv": k["kvaliteedi_kaal"], "ah": k["ainult_hind"],
             "kat": katkes(r) if r.get("tulemus_olemas") else None, "p": r["_p"],
-            "ai": bool(m["ai"]), "inn": R.innovatsiooni_mark(r),
+            "ai": on_ai(r), "inn": R.innovatsiooni_mark(r),
             "url": RHR_LEHT.format(r["rhr_id"]) if r.get("rhr_id") else None, "vn": r.get("viitenumber"),
             "hea": sum(bool(x) for x in h.values()),
             "ks": r.get("_kasitsi"),

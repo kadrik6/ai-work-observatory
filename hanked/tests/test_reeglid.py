@@ -59,3 +59,10 @@ def test_kasitsi_lisatud(tmp_path):
     f.write_text("# kommentaar\nvoti,silt,pohjus\neforms:1-0000,AI,test\n", encoding="utf-8")
     assert koonda.kasitsi_lisatud(f) == {"eforms:1-0000": "AI: test"}
     assert koonda.kasitsi_lisatud(tmp_path / "puudub.csv") == {}
+
+
+def test_kasitsi_ai_loeb_ai_hankeks():
+    import koonda
+    assert koonda.on_ai({"pealkiri": "Mõttepeegel", "_kasitsi": "AI: Kadri"})
+    assert not koonda.on_ai({"pealkiri": "Andmeladu", "_kasitsi": "ANDMED: x"})
+    assert koonda.on_ai({"pealkiri": "Kõnetuvastus ehk AI"})
