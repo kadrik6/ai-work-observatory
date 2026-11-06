@@ -83,8 +83,8 @@ def _seis(read, kontroll):
     paev = kontroll[:10]
     uued = sum(1 for r in read if r.get("lisatud") == paev)
     if uued:
-        return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} {kontroll[11:16]}: lisandus <b>{uued}</b>, märgitud „uus“.</p>'
-    return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} {kontroll[11:16]}: uusi uudiseid ei lisandunud.</p>'
+        return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval lisandus <b>{uued}</b>, märgitud „uus“.</p>'
+    return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval uusi uudiseid ei lisandunud.</p>'
 
 
 def _uudiste_paneel(rid, pealkiri, read, sp, kontroll=None):
@@ -109,11 +109,13 @@ def uudised(A, vaade, vaated=None):
     O = _vaja(A, "uudiste_olek", "uudiste-olek.json")
     kontrolli(vaade, "Eestist ja maailmast", "arvamus")
     U = sorted((dict(r, _uus=r.get("lisatud") == O["viimane_kontroll"][:10]) for r in U), key=lambda r: r["kuupaev"], reverse=True)
-    nahtud = set()
-    for r in reversed(U):  # vanimast uuemani: sama ettevõtte hilisem lugu on jätkulugu
+    esimene = {}
+    for r in U:  # jätkulugu: kogumine märkis nii või sama ettevõtte lugu on varasema kuupäevaga olemas
         if r.get("ettevote"):
-            r["_jatk"] = r["ettevote"] in nahtud
-            nahtud.add(r["ettevote"])
+            esimene[r["ettevote"]] = min(esimene.get(r["ettevote"], r["kuupaev"]), r["kuupaev"])
+    for r in U:
+        if r.get("ettevote"):
+            r["_jatk"] = (r.get("arv_tekst") or "").lower().startswith("jätkulugu") or r["kuupaev"] > esimene[r["ettevote"]]
     ee = [r for r in U if r["piirkond"] == "EE"]
     m = [r for r in U if r["piirkond"] != "EE"]
     suured = [r for r in U if r.get("suur")]

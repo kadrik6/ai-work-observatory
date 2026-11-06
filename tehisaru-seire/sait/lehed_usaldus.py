@@ -331,7 +331,7 @@ def _uuenemine(A):
     otsib = min((f["otsib"]["kontrollitud"] for f in (F or {}).values() if f["otsib"].get("kontrollitud")), default="")
     kandidaate = sum(1 for j in K.get("juhtumid", []) if j.get("kandidaat"))
     read = [
-        ("Uudised Eestist ja maailmast", "ise, iga päev kell 7.23; kell 12.53 ja 17.53 ainult suured uudised", d(O["viimane_kontroll"]) if O else "—",
+        ("Uudised Eestist ja maailmast", "ise, kaks korda päevas (7.23 ja 17.53), sh jätkulood; kell 12.53 suured uudised", d(O["viimane_kontroll"]) if O else "—",
          "Mitte midagi. Uudise liigi ja leviku märgib kogumine ise."),
         ("Eesti koondamised (Töö)", "uudistest ise, märkega „uudisest, kontrollimata“", d(K.get("kontrollitud", "")),
          f"Kinnitamine käsitsi peetud nimekirja (tooelu-seire/koondamised_ee.json). Praegu on kinnitamata {kandidaate}."),

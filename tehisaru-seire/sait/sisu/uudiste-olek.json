@@ -1,26 +1,26 @@
 {
- "viimane_kontroll": "2026-11-06T07:45:00+02:00",
- "allikad": [
-  {
-   "nimi": "ERR uudised (RSS)",
-   "ok": true
-  },
-  {
-   "nimi": "ERR News (RSS)",
-   "ok": true
-  },
-  {
-   "nimi": "Uudisteotsing (Eesti)",
-   "ok": true
-  },
-  {
-   "nimi": "Uudisteotsing (maailm)",
-   "ok": true
-  },
-  {
-   "nimi": "Challenger kuuaruanne",
-   "ok": true,
-   "markus": "kuuaruanne; järgmine detsembri alguses"
-  }
- ]
+  "viimane_kontroll": "2026-11-06T22:15:00+02:00",
+  "allikad": [
+    {
+      "nimi": "ERR uudised (RSS)",
+      "ok": true
+    },
+    {
+      "nimi": "ERR News (RSS)",
+      "ok": true
+    },
+    {
+      "nimi": "Uudisteotsing (Eesti)",
+      "ok": true
+    },
+    {
+      "nimi": "Uudisteotsing (maailm)",
+      "ok": true
+    },
+    {
+      "nimi": "Challenger kuuaruanne",
+      "ok": true,
+      "markus": "kuuaruanne; järgmine detsembri alguses"
+    }
+  ]
 }
