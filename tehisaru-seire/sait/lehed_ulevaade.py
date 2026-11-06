@@ -56,8 +56,10 @@ def hanked():
 
 # ---------------------------------------------------------------- komponendid
 
-def plaat(lbl, big, small="", cmp="", src="", fookus=False, lisa=""):
-    return (f'<div class="plaat"><span class="lbl">{e(lbl)}</span>'
+def plaat(lbl, big, small="", cmp="", src="", fookus=False, lisa="", href=""):
+    """href: plaadi nimi on link oma jaotisele (sisuloogika 6.11.2026 osa 4, struktuuri kontroll leid 7)."""
+    nimi = f'<a href="{e(href)}">{e(lbl)}</a>' if href else e(lbl)
+    return (f'<div class="plaat"><span class="lbl">{nimi}</span>'
             f'<span class="big{" s" if fookus else ""}">{big}{f"<small>{small}</small>" if small else ""}</span>'
             f'{lisa}{f"<span class=cmp>{cmp}</span>" if cmp else ""}<span class="src">{src}</span></div>')
 
@@ -144,27 +146,29 @@ def avaleht(A, vaade, vaated):
     h_uus = H[-1]
     V = A["vaited"]
     v_muud = [v for v in V if _raskus(v) == 0]
+    lahti = sum(1 for l in A["lahknevused"] if l["staatus"] == "selgitamata")  # Kadri 6.11 21:38: lahknevused nähtavale
     menuu = lambda vid, t, ank="": link(vaated, vid, t, ank)  # noqa: E731
 
     # 1. Numbriplaadid
     plaadid = "".join([
         plaat("Inimesed, kes kasutasid tehisaru (16–74)", f"{pr(ein['vaartus'])}%", str(ein["aasta"]),
               f"EL {ein_el['aasta']}: {pr(ein_el['vaartus'])}% (Eurostat, teine skaala)",
-              f"{a(ein['url'], ein['allikas'])}, {kp(ein['avaldatud'])}", fookus=True),
+              f"{a(ein['url'], ein['allikas'])}, {kp(ein['avaldatud'])}", fookus=True, href="inimesed.html#kasutus"),
         plaat("Ettevõtted, kes kasutavad tehisaru, ja riigi siht", f"{pr(eeb['vaartus'])}%",
               f"{eeb['aasta']} · siht {pr(float(siht['siht']), 0)}%",
               "", f"{a(eeb['url'], eeb['allikas'])}; siht: {a(siht['url'], 'DYAK 2035')}",
-              lisa=sihiriba(eeb["vaartus"], float(siht["siht"]), 100, "%", fookus=True)),
+              lisa=sihiriba(eeb["vaartus"], float(siht["siht"]), 100, "%", fookus=True), href="ettevotted.html#kasutus"),
         plaat("Vähemalt baastaseme digioskused", f"{pr(ds['vaartus'])}%", str(ds["aasta"]),
-              f"{ds23['aasta']}: {pr(ds23['vaartus'])}% · EL {pr(ds_el['vaartus'])}%", e(ds["allikas"])),
+              f"{ds23['aasta']}: {pr(ds23['vaartus'])}% · EL {pr(ds_el['vaartus'])}%", e(ds["allikas"]), href="inimesed.html#digi"),
         plaat("Töötuse määr, sesoonselt tasandatud", f"{pr(t_ee)}%", f"{KUUD[int(kuu[5:]) - 1]} {kuu[:4]}",
               f"EL {pr(t_el)}% · prognoos {p_aasta}: {pr(prog[p_aasta]['protsent'])}%",
-              f"{a(UNE_URL, 'Eurostat une_rt_m')}, {kp(UNE_UUENDATUD)}"),
+              f"{a(UNE_URL, 'Eurostat une_rt_m')}, {kp(UNE_UUENDATUD)}", href="too.html#tootus-kuud"),
         plaat("Tehisaru- ja andmehanked", str(h_uus["ai_ja_andmed"]), f"{h_uus['periood']} {h_uus['aasta']}",
               f"{pr(h_uus['osa'])}% kõigist hangetest",
-              f"Riigihangete register <span class=\"chip exp\">katseline</span>"),
+              f"Riigihangete register <span class=\"chip exp\">katseline</span>", href="hanked.html#aastad"),
         plaat("Kontrollitud väited tehisaru kohta", str(len(V)), "",
-              f"{len(v_muud)} ütleb muud kui allikas", menuu("kas-tosi", "Väited")),
+              f'{len(v_muud)} ütleb muud kui allikas · {menuu("kas-tosi", f"{lahti} allikate lahknevust selgitamata", "lahknevused")}',
+              menuu("kas-tosi", "Väited"), href="kas-see-on-tosi.html#vaited"),
     ])
 
     # 2. ELi kaart ja järjestus omaette real

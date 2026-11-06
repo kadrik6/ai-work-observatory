@@ -1,4 +1,5 @@
 """Usalduse vaated ja sisenemine: Kas see on tõsi?, Avaleht, Kuidas lugeda (5.11.2026)."""
+import re
 import andmekiht as andmed
 from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, pea
 from andmekiht import EL, AndmeViga
@@ -125,6 +126,16 @@ def kas_tosi(A, vaade, vaated=None):
             + sec_v + sec_l)
 
 
+ALLIKA_NIMED = {"ec.europa.eu": "Eurostat", "stat.ee": "Statistikaamet", "scb.se": "SCB (Rootsi)", "statistikbanken.dk": "Danmarks Statistik",
+                "dst.dk": "Danmarks Statistik", "ssb.no": "SSB (Norra)", "stat.fi": "Statistikaamet Soome", "oecd.org": "OECD", "ilo.org": "ILO"}
+
+
+def _allika_nimi(url):
+    """Lingi tekst ütleb, kuhu see viib (oskus andmesaidi-ulesehitus): „Allikas“ asemel allika nimi."""
+    host = re.sub(r"^https?://([^/]+).*", r"\1", url)
+    return next((n for d, n in ALLIKA_NIMED.items() if host == d or host.endswith("." + d)), host.removeprefix("www."))
+
+
 def varskus_ja_muutused(A, vaated):
     """Näitajate värskus ja allikate muutuste logi (6.11.2026 Kas see on tõsi? lehelt Kuidas lugeda lehele: metoodika)."""
     v_read, uuem = [], 0
@@ -147,7 +158,7 @@ def varskus_ja_muutused(A, vaated):
 
     S = sorted([s for s in A["sundmused"] if s["liik"] in ("allikas", "lahknevus")], key=lambda s: s["kuupaev"], reverse=True)
     s_read = [[kp(s["kuupaev"]), e({"allikas": "uus number", "lahknevus": "lahknevus"}[s["liik"]]),
-               e(s["tekst"]) + (f' {a(s["url"], "Allikas")}.' if s["url"].startswith("http") else "")] for s in S]
+               e(s["tekst"]) + (f' {a(s["url"], _allika_nimi(s["url"]))}.' if s["url"].startswith("http") else "")] for s in S]
     sec_muut = f"""
 <section class="jaotis" id="muutused" aria-labelledby="h-muutused">
   <header>

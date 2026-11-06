@@ -117,6 +117,16 @@ def kontrolli_ankrud(lehed):
                 raise EhitusViga(f"{f}: link {leht}#{ankur} viib olematule ankrule")
 
 
+# Vana aadress jääb tööle ja viitab uuele (oskus andmesaidi-ulesehitus, samm 5; struktuuri kontroll 6.11.2026)
+VANAD_AADRESSID = {"reeglid-ja-sihid.html": "tehisaru-maarus.html", "uudised-vaited.html": "kas-see-on-tosi.html"}
+
+
+def suunaja(uus):
+    return (f'<!doctype html>\n<html lang="et"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+            f'<meta http-equiv="refresh" content="0; url={uus}"><title>Leht on kolinud · Tehisaru seire</title></head>'
+            f'<body style="font-family:system-ui,sans-serif;margin:2rem;background:#fff;color:#222"><p>Leht on kolinud: <a href="{uus}">{uus}</a>.</p></body></html>\n')
+
+
 def ehita(valjund=VALJUND, A=None):
     A = A or andmed.lae()
     vaated = lae_vaated()
@@ -152,6 +162,10 @@ def ehita(valjund=VALJUND, A=None):
     kontrolli_ankrud(kirjutatud)
     for f, t in kirjutatud.items():
         (valjund / f).write_text(t, encoding="utf-8")
+    for vana, uus in VANAD_AADRESSID.items():
+        if uus not in kirjutatud:
+            raise EhitusViga(f"Vana aadress {vana} suunab olematule lehele {uus}")
+        (valjund / vana).write_text(suunaja(uus), encoding="utf-8")
     for nimi in ("stiil.css", "sait.js"):
         shutil.copyfile(SIIN / nimi, valjund / nimi)
     return sorted(kirjutatud)

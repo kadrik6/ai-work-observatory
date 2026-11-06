@@ -49,7 +49,7 @@ def _kasutus(A):
     usaldus = faktid([
         ("Lahknevus C5", "risk",
          f'Sama {y}. aasta küsitluse kohta annab Statistikaamet {pr(sa25["vaartus"])}% '
-         f'(<a href="{e(sa25["url"])}">IT149</a>) ja Eurostat {pr(ee["vaartus"])}%. Põhjus on {e(lahk["staatus"])}.'),
+         f'(<a href="{e(sa25["url"])}">IT149</a>) ja Eurostat {pr(ee["vaartus"])}%. Põhjus on {e(lahk["staatus"])}. <a href="kas-see-on-tosi.html#lahknevused">Kõik lahknevused</a>.'),
         ("Piirang", "",
          f'Osa 2024–2025 kasvust tuleb sellest, et küsimustikku lisandus piltide, video ja heli genereerimine '
          f'(<a href="{e(piirang["url"])}">Eurostat, {e(kp(piirang["kuupaev"]))}</a>).'),
@@ -286,7 +286,7 @@ def saidikaart(A, vaade, vaated):
 <div class="pea yks">
   <div class="pea-tekst">
     <h1>{taida(vaade["h1"], A)}</h1>
-    <p class="lead">Saidikaart tuleb sisuloogika hinnangust, mille Kadri kinnitas 4.11.2026. Valmis on {sum(v["olek"] == "valmis" for v in vaated)} vaadet {len(vaated)}-st; iga rea pealkiri on sama, mis vaate lehel.</p>
+    <p class="lead">Saidikaart tuleb sisuloogika hinnangust, mille Kadri kinnitas 4.11.2026; ülesehitus on 6.11.2026 seisuga (kuus teemat, hanked ja väited alamlehtedena). Valmis on {sum(v["olek"] == "valmis" for v in vaated)} vaadet {len(vaated)}-st; iga rea pealkiri on sama, mis vaate lehel.</p>
     <p class="meta">Iga vaate järjekord: vastus, peamine tõend koos võrdlusega, mida see ei näita, mida see tähendab, siis üksikasjad ja allikad. Pealkirjade numbrid tulevad andmefailidest.</p>
   </div>
 </div>

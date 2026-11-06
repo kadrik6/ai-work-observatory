@@ -514,3 +514,17 @@ def test_struktuuri_kontroll_leiab_orvu_ja_tupiku():
     M = struktuur.moodik({"index.html": leht('<a href="a.html">a</a>'), "a.html": leht("tupik"), "b.html": leht('<a href="index.html">i</a>')})
     v = struktuur.vead(M)
     assert "a.html: tupik, siit ei pääse edasi" in v and "b.html: orb, ükski leht ei vii siia" in v
+
+
+def test_vana_aadress_suunab_uuele(tmp_path, A):
+    ehita.ehita(tmp_path, A)
+    for vana, uus in ehita.VANAD_AADRESSID.items():
+        assert f'url={uus}"' in (tmp_path / vana).read_text(encoding="utf-8")
+
+
+def test_avaleht_viib_lahknevusteni_ja_plaadid_on_lingid(sait):
+    h = sait["index.html"]
+    assert 'href="kas-see-on-tosi.html#lahknevused"' in h
+    assert re.findall(r'<span class="lbl"><a href="', h).__len__() == 6
+    assert 'href="kas-see-on-tosi.html#lahknevused"' in sait["ettevotted.html"]
+    assert ">Allikas</a>" not in sait["kuidas-lugeda.html"]

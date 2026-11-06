@@ -8,10 +8,10 @@ const PILDID = process.argv[3] || null;
 const U = [
   {nimi: 'Ajakirjanik: Eesti inimeste tehisaru kasutus ja allikas', klikid: [], siht: '.plaat, .vastus div', tekst: /65/},
   {nimi: 'Kodanik: kas tehisaru võtab töökohti', klikid: ['Töö'], siht: 'h1'},
-  {nimi: 'Analüütik: kas Eurostat ja Statistikaamet lahknevad', klikid: ['Uudised ja väited', 'Väited', 'Lahknevused'], siht: '#lahknevused'},
+  {nimi: 'Analüütik: kas Eurostat ja Statistikaamet lahknevad', klikid: ['css:main a:has-text("lahknevust")'], siht: '#lahknevused'},
   {nimi: 'Hankija: hea näide tehisaruhankest', klikid: ['Avalik sektor', 'Hanked (katseline)', 'Leia hea näide'], siht: '#loend'},
   {nimi: 'Otsustaja: ettevõtete siht ja kaugus', klikid: ['Ettevõtted', 'Siht'], siht: '#siht-ettevotted'},
-  {nimi: 'Kadri: mis täna muutus', klikid: [], siht: '#muutus'},
+  {nimi: 'Kadri: mis täna muutus', klikid: ['Mis muutus'], siht: '#muutus'},
 ];
 (async () => {
   const b = await chromium.launch();
@@ -19,12 +19,11 @@ const U = [
     const p = await b.newPage({viewport: {width: w, height: w > 500 ? 800 : 844}});
     for (const u of U) {
       await p.goto(D + 'index.html');
-      let ok = true, klikke = 0;
+      let ok = true, klikke = 0; const puudu = [];
       for (const k of u.klikid) {
-        const l = p.locator(`header a:text-is("${k}"), nav a:text-is("${k}")`).first();
-        if (!(await l.count())) { ok = false; break; }
-        const vis = await l.isVisible();
-        await l.click({force: !vis}).catch(() => { ok = false; });
+        const l = k.startsWith('css:') ? p.locator(k.slice(4)).first() : p.locator(`header a:text-is("${k}"), nav a:text-is("${k}")`).first();
+        if (!(await l.count()) || !(await l.isVisible())) { puudu.push(k); continue; }
+        await l.click().catch(() => { ok = false; });
         klikke++; await p.waitForTimeout(250);
       }
       const el = p.locator(u.siht).first();
@@ -35,7 +34,7 @@ const U = [
         y = r; var ekraan = ((r - sy) / (w > 500 ? 800 : 844)).toFixed(1);
       }
       const ylevool = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-      console.log(`${w}px | ${u.nimi} | klikke ${klikke} | ${ok && y !== null ? 'leitud, ekraane siht ' + ekraan : 'EI LEIDNUD'} | horisontaalne üle ${ylevool}px | ${p.url().split('/').pop()}`);
+      console.log(`${w}px | ${u.nimi} | klikke ${klikke} | ${ok && y !== null ? 'leitud, ekraane siht ' + ekraan : 'EI LEIDNUD'} ${puudu.length ? ' (nuppu pole nähtaval: ' + puudu.join(', ') + ', tuleb kerida)' : ''} | horisontaalne üle ${ylevool}px | ${p.url().split('/').pop()}`);
     }
     // menüü telefonis: kas kõik 6 teemat nähtaval
     await p.goto(D + 'index.html');

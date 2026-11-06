@@ -78,7 +78,8 @@ def hoiatused(M):
 
 
 def lae(kaust=VAIKIMISI):
-    return {p.name: p.read_text(encoding="utf-8") for p in sorted(Path(kaust).glob("*.html"))}
+    lehed = {p.name: p.read_text(encoding="utf-8") for p in sorted(Path(kaust).glob("*.html"))}
+    return {f: s for f, s in lehed.items() if 'http-equiv="refresh"' not in s}  # vanade aadresside suunajad
 
 
 if __name__ == "__main__":
