@@ -30,11 +30,8 @@
     {"id": "avalik-sektor", "fail": "avalik-sektor.html", "menuu": "Avalik sektor", "koht": "menüü", "vanem": "avaleht", "kusimused": "K8", "olek": "valmis",
      "kusimus": "Kuidas avalik sektor uuendusi ja tehisaru kasutab, avalike allikate järgi?",
      "h1": "Avaliku sektori uuendused jäävad toppama hindamise ja laiendamise ees: **62% rakendatakse, 33% laiendatakse**.",
-     "osad": "OECD avalik raport (doi 10.1787/c2c09a06-en): rakendamine ja laiendamine; tehisaru innovaatorite seas (48/170); kolm asutuste rühma; 8 soovitust. Hanked on alamleht (Kadri otsus 6.11.2026)",
-     "alamlehed": [
-       {"fail": "avalik-sektor.html", "nimi": "Uuendused ja tehisaru"},
-       {"fail": "hanked.html", "nimi": "Hanked (katseline)", "vaade": "hanked"}]},
-    {"id": "hanked", "fail": "hanked.html", "menuu": "Hanked", "koht": "Avalik sektor › alamleht", "teema": "avalik-sektor", "vanem": "avaleht", "kusimused": "K8", "olek": "valmis",
+     "osad": "OECD avalik raport (doi 10.1787/c2c09a06-en): rakendamine ja laiendamine; tehisaru innovaatorite seas (48/170); kolm asutuste rühma; 8 soovitust. Hanked on 6.11.2026 21:59 alates jälle oma menüüpunkt (Kadri: hangete osa oli menüüst kadunud)"},
+    {"id": "hanked", "fail": "hanked.html", "menuu": "Hanked", "koht": "menüü", "vanem": "avaleht", "kusimused": "K8", "olek": "valmis",
      "kusimus": "Mida riik tehisaru ja andmete kohta hangib ning kuidas, et leida häid näiteid?",
      "h1": "Tehisaru- ja andmehanked on **alla 1% riigihangetest**; kvaliteeti hinnatakse neis sagedamini kui teistes IT-hangetes.",
      "osad": "Kadri 5.11.2026: hanked omaette vaateks. Aastad; innovatsioonimärk vs 2% siht; kuidas hangitakse; hankijad; otsitav loend headest näidetest; klassifikaatori täpsus (katseline)"},

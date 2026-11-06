@@ -333,9 +333,10 @@ def test_hangete_aastaid_ei_vorrelda_enne_inimese_kontrolli(sait):
 def test_menuus_on_kuus_teemat_ja_alamvaade_jaab_teema_alla(sait):
     # Kadri otsus 2 (6.11.2026): Hanked Avaliku sektori all, Väited Uudistega koos
     menuu = re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1)
-    assert re.findall(r">([^<>]+)</a>", menuu) == ["Inimesed", "Ettevõtted", "Töö", "Avalik sektor", "Tehisaru määrus", "Uudised ja väited"]
-    assert '<a href="avalik-sektor.html" aria-current="page">Avalik sektor</a>' in sait["hanked.html"]
-    assert '<a href="hanked.html" aria-current="page">' in sait["hanked.html"]
+    # Kadri 6.11.2026 21:59: hanked olid menüüst kadunud, Hanked on jälle oma menüüpunkt
+    assert re.findall(r">([^<>]+)</a>", menuu) == ["Inimesed", "Ettevõtted", "Töö", "Avalik sektor", "Hanked", "Tehisaru määrus", "Uudised ja väited"]
+    assert '<a href="hanked.html" aria-current="page">Hanked</a>' in sait["hanked.html"]
+    assert '<ul class="sellel"></ul>' not in "".join(sait.values())
     assert '<a href="uudised.html" aria-current="page">Uudised ja väited</a>' in sait["kas-see-on-tosi.html"]
 
 

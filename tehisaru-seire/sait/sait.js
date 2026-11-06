@@ -270,3 +270,36 @@
     margi();
   });
 })();
+
+// Kasutusloogika 6.11.2026: filtri, rühma, saki ja otsingu valik jääb aadressi (?teema=…, ?ruhm=…, ?sakk=…, ?otsi=…),
+// et filtreeritud vaadet saaks saata ja värskendamisel valik ei kaoks. replaceState: tagasi-nupp viib eelmisele lehele,
+// mitte iga filtriklõpsu juurde tagasi.
+(function () {
+  function sea(k, v) {
+    try {
+      var u = new URL(location.href);
+      if (v) u.searchParams.set(k, v); else u.searchParams.delete(k);
+      history.replaceState(history.state, '', u.pathname + u.search + u.hash);
+    } catch (e) { /* nt sandbox ei luba: valik töötab ikka, ainult aadressi ei jää */ }
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    var q;
+    try { q = new URLSearchParams(location.search); } catch (e) { q = { get: function () { return null; } }; }
+    var paarid = [
+      ['teema', '.u-f[aria-label="Vali teema"] button[data-f]', 'data-f'],
+      ['ruhm', 'button[data-r]', 'data-r'],
+      ['sakk', '.p-tabs [role="tab"]', 'aria-controls'],
+    ];
+    paarid.forEach(function (p) {
+      var nupud = document.querySelectorAll(p[1]);
+      nupud.forEach(function (b) { b.addEventListener('click', function () { sea(p[0], b.getAttribute(p[2])); }); });
+      var v = q.get(p[0]);
+      if (v) nupud.forEach(function (b) { if (b.getAttribute(p[2]) === v) b.click(); });
+    });
+    document.querySelectorAll('.h-otsing input').forEach(function (i) {
+      i.addEventListener('input', function () { sea('otsi', i.value.trim()); });
+      var v = q.get('otsi');
+      if (v) { i.value = v; i.dispatchEvent(new Event('input')); }
+    });
+  });
+})();

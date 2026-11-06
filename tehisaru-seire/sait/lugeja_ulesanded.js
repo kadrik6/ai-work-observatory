@@ -9,7 +9,7 @@ const U = [
   {nimi: 'Ajakirjanik: Eesti inimeste tehisaru kasutus ja allikas', klikid: [], siht: '.plaat, .vastus div', tekst: /65/},
   {nimi: 'Kodanik: kas tehisaru võtab töökohti', klikid: ['Töö'], siht: 'h1'},
   {nimi: 'Analüütik: kas Eurostat ja Statistikaamet lahknevad', klikid: ['css:main a:has-text("lahknevust")'], siht: '#lahknevused'},
-  {nimi: 'Hankija: hea näide tehisaruhankest', klikid: ['Avalik sektor', 'Hanked (katseline)', 'Leia hea näide'], siht: '#loend'},
+  {nimi: 'Hankija: hea näide tehisaruhankest', klikid: ['Hanked', 'Leia hea näide'], siht: '#loend'},
   {nimi: 'Otsustaja: ettevõtete siht ja kaugus', klikid: ['Ettevõtted', 'Siht'], siht: '#siht-ettevotted'},
   {nimi: 'Kadri: mis täna muutus', klikid: ['Mis muutus'], siht: '#muutus'},
 ];
@@ -56,7 +56,9 @@ const U = [
     console.log(`${w}px | alla 24 px sihtmärgid: ${Object.keys(vaiksed).length ? Object.entries(vaiksed).map(([k, m]) => k + ' ' + m + 'px').join(', ') : 'pole'}`);
     await p.goto(D + 'index.html'); await p.evaluate(() => window.scrollTo(0, 1200)); await p.waitForTimeout(150);
     const y0 = await p.evaluate(() => scrollY);
-    await p.locator('ul.menu a:text-is("Töö")').click(); await p.waitForTimeout(150);
+    // hiireklõps koordinaadile: locator.click() kerib enne klõpsu ja rikuks tagasi-nupu mõõtmise
+    const bx = await p.locator('ul.menu a:text-is("Töö")').boundingBox();
+    await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.waitForTimeout(250);
     await p.goBack(); await p.waitForTimeout(300);
     console.log(`${w}px | tagasi-nupp: avalehelt (kerimine ${y0}) Töö lehele ja tagasi → ${p.url().split('/').pop()}, kerimine ${await p.evaluate(() => scrollY)}`);
     if (PILDID) await p.screenshot({path: path.join(PILDID, `index-${w}.png`)});

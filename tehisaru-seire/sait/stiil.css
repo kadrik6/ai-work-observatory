@@ -800,3 +800,25 @@ html { scroll-padding-top: calc(var(--top-h, 110px) + 8px); }
 @media (max-width: 600px) {
   .top .menu { flex-wrap: wrap; overflow-x: visible; row-gap: 0; }
 }
+
+/* Kasutusloogika 6.11.2026 (oskus kasutusloogika): vajutusala vähemalt 24×24 px (WCAG 2.2, 2.5.8),
+   telefonis filtrid, sakid ja „Näita“ 40 px; koondamiste punkt jääb väikeseks, vajutusala on 24 px. */
+.mark { display: inline-block; padding-block: 3px; }
+.mark[aria-current="page"] { color: var(--signal); }
+@media (min-width: 681px) { .seis { display: inline-flex; align-items: center; min-height: 24px; } }
+summary { padding-block: 3px; }
+.sellel a { display: inline-flex; align-items: center; min-height: 24px; }
+.u-f button, .p-tabs button, .kogus button { min-height: 24px; }
+.kk-e, .kk-j { height: 24px; }
+.kk-tapp { width: 24px !important; height: 24px !important; position: relative; background: transparent !important; }
+.kk-tapp::after { content: ""; position: absolute; inset: 8px; border-radius: 50%; background: var(--context); }
+.kk-tapp[aria-current="true"] { background: transparent !important; }
+.kk-tapp[aria-current="true"]::after { background: var(--mark-signal); }
+.kk a { display: inline-block; padding-block: 4px; }
+.plaat .lbl a { display: inline-block; padding-block: 5px; margin-block: -5px; }
+@media (max-width: 600px) {
+  .u-f button, .p-tabs button, .kogus button { min-height: 40px; padding-inline: 12px; }
+  summary { padding-block: 10px; }
+  .top .sellel a, .alamlehed a { min-height: 32px; }
+  .kk-e, .kk-j { width: 44px; height: 40px; }
+}
