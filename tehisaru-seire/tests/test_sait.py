@@ -221,9 +221,16 @@ def test_avalik_sektor_pohineb_avalikul_raportil(sait):
         assert k not in h
 
 
-def test_sihi_tulbad_uks_fookus(sait):
-    h = sait["reeglid-ja-sihid.html"]
-    assert h.count('class="sihiriba fookus"') == 1
+def _jaotis(h, ank):
+    return h.split(f'id="{ank}"')[1].split("</section>")[0]
+
+
+def test_sihid_on_oma_teema_juures_ja_eesti_siht_on_fookuses(sait):
+    # Sisuloogika 6.11.2026, Kadri otsus 4: sihid teemade juurde, määruse lehel ainult tähtajad
+    assert _jaotis(sait["ettevotted.html"], "siht-ettevotted").count('class="sihiriba fookus"') == 1
+    assert _jaotis(sait["ettevotted-voimekus.html"], "siht-voimekus").count('class="sihiriba fookus"') == 0
+    assert 'id="siht-inimesed"' in sait["inimesed-oskused.html"]
+    assert 'id="sihid"' not in sait["tehisaru-maarus.html"]
 
 
 def test_kokkupuute_osad_summeeruvad_ja_pealkiri_tuleb_andmetest(A, sait):
@@ -315,13 +322,32 @@ def test_too_vaates_on_eesti_tooturg_praegu(A, sait):
     assert 'id="koondamised"' not in sait["index.html"]
 
 
-def test_avaliku_sektori_hanked_on_katseline(sait):
-    osa = sait["avalik-sektor.html"].split('id="hanked"')[1].split("</section>")[0]
-    assert "katseline" in osa and "inimene pole kontrollinud" in osa
+def test_hangete_aastaid_ei_vorrelda_enne_inimese_kontrolli(sait):
+    # Kadri otsus 5 (6.11.2026): ainult viimase aasta arv sildiga „katseline“, kuni 100 hanget on pimesi märgistatud
+    osa = _jaotis(sait["hanked.html"], "aastad")
+    assert "katseline" in osa and "pimesi" in osa and "tulbad2" not in osa
+    assert "pimesi" in _jaotis(sait["index.html"], "hanked") and "aastatulbad" not in _jaotis(sait["index.html"], "hanked")
+    assert 'id="hanked"' not in sait["avalik-sektor.html"]
+
+
+def test_menuus_on_kuus_teemat_ja_alamvaade_jaab_teema_alla(sait):
+    # Kadri otsus 2 (6.11.2026): Hanked Avaliku sektori all, Väited Uudistega koos
+    menuu = re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1)
+    assert re.findall(r">([^<>]+)</a>", menuu) == ["Inimesed", "Ettevõtted", "Töö", "Avalik sektor", "Tehisaru määrus", "Uudised ja väited"]
+    assert '<a href="avalik-sektor.html" aria-current="page">Avalik sektor</a>' in sait["hanked.html"]
+    assert '<a href="hanked.html" aria-current="page">' in sait["hanked.html"]
+    assert '<a href="uudised.html" aria-current="page">Uudised ja väited</a>' in sait["kas-see-on-tosi.html"]
+
+
+def test_lahknevused_jaavad_vaidete_lehele_nahtavale(sait):
+    # Kadri 6.11.2026 21:38: Eurostati ja Statistikaameti võrdlus jääb nähtavale, kontrollib ministeerium
+    osa = _jaotis(sait["kas-see-on-tosi.html"], "lahknevused")
+    assert "selgitamata" in osa and "<details" not in osa.split("</header>")[0]
+    assert 'id="varskus"' in sait["kuidas-lugeda.html"] and 'id="muutused"' in sait["kuidas-lugeda.html"]
 
 
 def test_igas_teemavaates_on_numbriplaadid(sait):
-    for f in ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "reeglid-ja-sihid.html"]:
+    for f in ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
         assert 'class="vastus"' in sait[f], f
 
 

@@ -149,7 +149,7 @@ def uudised(A, vaade, vaated=None):
   <div class="pn-h"><h2 id="h-uudiste-allikad">Kust uudised tulevad</h2></div>
   <div class="g2 u-kuidas">
     <ul class="u-allikad">{allikad}</ul>
-    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „N väljaannet“ näitab, mitu eri väljaannet sama lugu kajastas. See asendab populaarsust, sest klikke väljaanded avalikult ei jaga. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang. Kinnitatud Eesti koondamised on vaates {link(vaated, "too", "Töö", "koondamised")}. Uudistes kontrollitud {len(V)} väidet on koos teistega vaates {link(vaated, "kas-tosi", "Kas see on tõsi?")}.</p>
+    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „N väljaannet“ näitab, mitu eri väljaannet sama lugu kajastas. See asendab populaarsust, sest klikke väljaanded avalikult ei jaga. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang. Kinnitatud Eesti koondamised on vaates {link(vaated, "too", "Töö", "koondamised")}. Uudistes kontrollitud {len(V)} väidet on koos teistega alamlehel {link(vaated, "kas-tosi", "Väited")}.</p>
   </div>
 </section>
 </div>"""
@@ -190,8 +190,6 @@ def hanked(A, vaade, vaated=None):
     seis = H.get("seis", {}).get("kuupaev", "")
     viimane_t = max(r["aasta"] for r in aastad)
     poolik = seis[:4] == str(viimane_t) and seis[5:] != "12-31"
-    tais = [r for r in aastad if not (poolik and r["aasta"] == viimane_t)]
-    a_t = tais[-1]
     if max(r["ai_andmed_osakaal"] for r in aastad) >= 1:
         raise AndmeViga("Hangete pealkiri ütleb „alla 1%“, aga osa on 1% või rohkem")
     V = H["hankimise_viis"]
@@ -207,7 +205,7 @@ def hanked(A, vaade, vaated=None):
     lev = hind["levimus"]
 
     ree = [
-        (f'{a_t["ai_andmed"]} <small>{a_t["aasta"]}</small>', f'tehisaru- ja andmehanget ehk {pr(a_t["ai_andmed_osakaal"])}% kõigist {_arv(a_t["hankeid"])} hankest.',
+        (f'{aastad[-1]["ai_andmed"]} <small>{aastad[-1]["aasta"]}{"*" if poolik else ""}</small>', f'tehisaru- ja andmehanget ehk {pr(aastad[-1]["ai_andmed_osakaal"])}% kõigist {_arv(aastad[-1]["hankeid"])} hankest{" (* aasta pole läbi)" if poolik else ""}. Katseline.',
          a(HANKED_URL, "riigihangete register")),
         (f'{pr(kv["ai_andmed"], 0)}%', f'neist hindas ka kvaliteeti ({p0}–{p1}); teistes IT-hangetes {pr(kv["it_muud"], 0)}%, kõigis {pr(kv["koik"], 0)}%.',
          "hindamiskriteeriumid registris"),
@@ -220,22 +218,14 @@ def hanked(A, vaade, vaated=None):
             "pealkirjas või kirjelduses on tehisaru märksõna; andmed = andmeladu, -haldus, -analüüs jms. "
             "Tehisaru uuringute ja mõjuanalüüside hankeid eraldi veel ei loeta.")
 
-    # 1. Aastad
-    rr = [(r["aasta"], r["ai_marksonaga"], r["ai_andmed"] - r["ai_marksonaga"], poolik and r["aasta"] == viimane_t) for r in aastad]
-    lopp = max(x[1] + x[2] for x in rr) * 1.15
-    ai_v = {r["aasta"]: r["ai_marksonaga"] for r in aastad}
-    eelmised = [v for k, v in ai_v.items() if k < viimane_t]
-    if ai_v[viimane_t] > max(eelmised):
-        # 5.11 sisuloogika (Kadri kinnitas 6.11): aastate võrdlus ootab inimese kontrolli, klassifikaator on katseline
-        h_aastad = f'Klassifikaator leidis {viimane_t}. aastal <b>{ai_v[viimane_t]} tehisaruhanget</b>; aastate võrdlus ootab inimese kontrolli'
-    else:
-        h_aastad = f'Tehisaru- ja andmehankeid oli {a_t["aasta"]}. aastal <b>{a_t["ai_andmed"]}</b>'
+    # 1. Ainult viimane aasta (sisuloogika 6.11.2026, Kadri otsus 5): aastate võrdlust ei näidata, kuni vähemalt
+    # 100 hanget on inimese pimesi märgistatud. Klassifikaator on katseline.
+    u = aastad[-1]
     sec_aastad = f"""
-<section class="pn sp7" id="aastad" aria-labelledby="h-aastad">
-  <div class="pn-h"><h2 id="h-aastad">{h_aastad}</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">Hangete arv aastas. Sinine = tehisaru märksõnaga, hall = andmehanked. {"* " + str(viimane_t) + " kuni " + kp(seis) + "." if poolik else ""}</p>
-  {_tulbad_kihiti(rr, lopp, "Tehisaru- ja andmehanked aastas")}
-  <p class="kr-leg"><span><i class="kr-t s"></i>tehisaru märksõnaga</span><span><i class="kr-t m"></i>andmehanked</span></p>
+<section class="pn sp5" id="aastad" aria-labelledby="h-aastad">
+  <div class="pn-h"><h2 id="h-aastad">Klassifikaator leidis {u["aasta"]}. aastal{" kuni " + kp(seis) if poolik else ""} <b>{u["ai_andmed"]} tehisaru- ja andmehanget</b>, {pr(u["ai_andmed_osakaal"])}% kõigist</h2><span class="chip exp">katseline</span></div>
+  <p class="ps">Neist {u["ai_marksonaga"]} on tehisaru märksõnaga ja {u["ai_andmed"] - u["ai_marksonaga"]} andmehanked, kokku {_arv(u["hankeid"])} riigihankest. Aastate võrdlust siin ei näidata, kuni vähemalt 100 hanget on inimese pimesi märgistatud: klassifikaatori täpsus on seni hinnatud ainult Claude'i märgendatud valimil (vt „Kui täpne“).</p>
+  {_viis_rida(f"Klassifikaatori leitud hanked {u['aasta']}, arv", [("tehisaru", u["ai_marksonaga"], True), ("andmed", u["ai_andmed"] - u["ai_marksonaga"], False)], uhik="", k=0)}
 </section>"""
 
     # 2. Innovatsioonimärk vs 2% siht
@@ -245,7 +235,7 @@ def hanked(A, vaade, vaated=None):
         f'<span class="vr-r"><i style="width:{r["innovatsioonimark_osakaal"] / 2.5 * 100:.1f}%"></i><b class="vr-siht" style="left:{2 / 2.5 * 100:.1f}%"></b></span>'
         f'<span class="vr-v">{pr(r["innovatsioonimark_osakaal"])}%</span></div>' for r in inn)
     sec_inn = f"""
-<section class="pn sp5" id="innovatsioon" aria-labelledby="h-innovatsioon">
+<section class="pn sp7" id="innovatsioon" aria-labelledby="h-innovatsioon">
   <div class="pn-h"><h2 id="h-innovatsioon">Innovatsioonimärgiga hankeid oli {inn[-1]["aasta"]}. aastal <b>{pr(inn[-1]["innovatsioonimark_osakaal"])}%</b>, siht on 2%; märgi määratlus on kontrollimata</h2></div>
   <p class="ps">Osa kõigist eForms-vormil hangetest, millele hankija märkis innovatsiooni. eForms algas 09/2023, seega {inn[0]["aasta"]} on osaline aasta; * = osaline aasta. Siht 2% aastaks 2027 on {a(OECD_URL, "OECD 2026 raportis")}. Rahandusministeeriumi kiri 11.03.2025 andis 2023. aastaks 0,2% hangete arvust; kas see on sama määratlus kui eForms-i innovatsioonimärk, ei ole kontrollitud.</p>
   <div class="viis">{inn_read}</div>
@@ -334,7 +324,7 @@ def hanked(A, vaade, vaated=None):
   <tbody>{"".join(t_rows)}</tbody></table></div>
 </section>
 </div>"""
-    return (pea(A, vaade, lead, [("aastad", "Aastad"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], ree)
+    return (pea(A, vaade, lead, [("aastad", "Viimane aasta"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], ree)
             + '<div class="g12">' + sec_aastad + sec_inn + "</div>"
             + '<div class="g12">' + sec_viis + sec_hankijad + "</div>"
             + sec_loend + sec_tapsus)

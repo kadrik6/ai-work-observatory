@@ -7,7 +7,6 @@ import andmekiht as andmed
 from andmekiht import EL
 from komponendid import (allikarida, e, ei_naita, faktid, hantlid, jaga_klassid, kaart, kp, leiu_ribad, margend, pr,
                          riik, tabel, telg, vastavus)
-from kest import sellel_lehel
 from pealkiri import taida
 
 POHJAMAAD = ["FI", "SE", "DK"]  # ELi Põhjamaad; Norra ei ole ELi skaalal
@@ -243,35 +242,31 @@ def _digi_ja_ta(A):
 
 
 def ettevotted(A, vaade, vaated=None):
+    """Kaks alamlehte (sisuloogika 6.11.2026, Kadri otsus 6): Kasutus | Tootlikkus ja võimekus."""
+    from abi import jaga
+    from lehed_teemad import sihid
     ee = andmed.leia(A, EB, "EE", "uusim")
     ee_el = andmed.leia(A, EB, "EE", "uusim:alus")
     eu = andmed.leia(A, EB, EL, ee_el["aasta"])
     koht = andmed.koht(A, EB, "EE", ee_el["aasta"])
     n_el = len(A["el_riigid"])
     siht = A["sihid"]["ee-ettevotted-75"]
-    return f"""
-<div class="pea">
-  <div class="pea-tekst">
-    <h1>{taida(vaade["h1"], A)}</h1>
-    <p class="lead">Kasutus kasvab kiiresti, aga vahe Põhjamaadega on punktides suurenenud. Tootlikkust tõstab tehisaru Eesti andmetel alles siis, kui muutub ka töökorraldus.</p>
-    {sellel_lehel([("kasutus", "Kasutus"), ("tootlikkus", "Tootlikkus"), ("digi", "Digiintensiivsus"), ("ta", "Teadus ja arendus")])}
-  </div>
-  <aside class="vastus" aria-label="Peamised numbrid">
-    <div><span class="big">{pr(ee["vaartus"])}%</span>
-      <p>Eesti ettevõtetest kasutas tehisaru {ee["aasta"]}. aastal (10+ hõivatut, uus klassifikaator).</p>
-      <p class="src"><a href="{e(ee["url"])}">{e(ee["allikas"])}</a>, {kp(ee["avaldatud"])}</p></div>
-    <div><span class="big">{koht}. <small>/ {n_el} ELi riigist</small></span>
-      <p>{ee_el["aasta"]}: Eesti {pr(ee_el["vaartus"])}%, EL {pr(eu["vaartus"])}%. Uusim aasta, mida saab ELiga võrrelda.</p>
-      <p class="src">{e(ee_el["allikas"])}</p></div>
-    <div><span class="big">{siht["siht"]}% <small>aastaks {siht["aasta"]}</small></span>
-      <p>Eesti siht. Mõõdetakse Statistikaameti numbriga; kumma klassifikaatori järgi, on kontrollimata.</p>
-      <p class="src"><a href="{e(siht["url"])}">{e(siht["allikas"])}</a></p></div>
-  </aside>
-</div>
-{_kasutus(A)}
-{_tootlikkus(A)}
-{_digi_ja_ta(A)}
-"""
+    ree = [
+        (f'{pr(ee["vaartus"])}%', f'Eesti ettevõtetest kasutas tehisaru {ee["aasta"]}. aastal (10+ hõivatut, uus klassifikaator).',
+         f'<a href="{e(ee["url"])}">{e(ee["allikas"])}</a>, {kp(ee["avaldatud"])}'),
+        (f'{koht}. <small>/ {n_el} ELi riigist</small>', f'{ee_el["aasta"]}: Eesti {pr(ee_el["vaartus"])}%, EL {pr(eu["vaartus"])}%. Uusim aasta, mida saab ELiga võrrelda.',
+         e(ee_el["allikas"])),
+        (f'{siht["siht"]}% <small>aastaks {siht["aasta"]}</small>', 'Eesti siht. Mõõdetakse Statistikaameti numbriga; kumma klassifikaatori järgi, on kontrollimata.',
+         f'<a href="{e(siht["url"])}">{e(siht["allikas"])}</a>'),
+    ]
+    lead = ("Kasutus kasvab kiiresti, aga vahe Põhjamaadega on punktides suurenenud. "
+            "Eesti andmetel on tehisaru seotud suurema tootlikkusega alles siis, kui muutub ka töökorraldus.")
+    return jaga(A, vaade, lead, ree, [
+        ("kasutus", [("kasutus", "Kasutus"), ("siht-ettevotted", "Siht")], _kasutus(A) + sihid(A, "ettevotted", "siht-ettevotted")),
+        ("tootlikkus", [("tootlikkus", "Tootlikkus")], _tootlikkus(A)),
+        ("voimekus", [("digi", "Digiintensiivsus"), ("ta", "Teadus ja arendus"), ("siht-voimekus", "Sihid")],
+         _digi_ja_ta(A) + sihid(A, "ettevotted-voimekus", "siht-voimekus")),
+    ])
 
 
 # ---------------------------------------------------------------- Saidikaart

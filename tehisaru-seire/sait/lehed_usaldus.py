@@ -114,7 +114,19 @@ def kas_tosi(A, vaade, vaated=None):
   <div class="kaks vordne">{"".join(l_kaardid)}</div>
 </section>"""
 
-    # Värskus
+    ree = [
+        (f'{loend[0]} <small>/ {n} väitest</small>', 'ütleb muud kui allikas: vale tõlgendus, vale nimetaja või liialdus.', "Seire väidete kontroll"),
+        (f'{len(lahti)} <small>lahknevust</small>', 'Eurostati ja Statistikaameti vahel on selgitamata (C5 ettevõtted, C6 „ei oska“).', "Seire allikate võrdlus"),
+        (f'{sum(1 for v in V if v.get("uudisest"))} <small>/ {n} väitest</small>', 'on pärit uudistest ja kontrollitud samal skaalal.', "Seire uudiste kontroll"),
+    ]
+    lead = ("Siin on avalikud väited, mida seire kontrollis algallika järgi, ka uudistest, ühel skaalal, ja allikate lahknevused. "
+            "Iga hinnangu juures on link algallikale. Kui värsked numbrid on, näitab " + link(vaated, "kuidas", "Kuidas lugeda", "varskus") + ".")
+    return (pea(A, vaade, lead, [("vaited", "Väited"), ("lahknevused", "Lahknevused")], ree)
+            + sec_v + sec_l)
+
+
+def varskus_ja_muutused(A, vaated):
+    """Näitajate värskus ja allikate muutuste logi (6.11.2026 Kas see on tõsi? lehelt Kuidas lugeda lehele: metoodika)."""
     v_read, uuem = [], 0
     for nid in A["naitajad"]:
         m = A["meta"][nid]
@@ -145,15 +157,8 @@ def kas_tosi(A, vaade, vaated=None):
   {tabel(["Kuupäev", "Liik", "Mis muutus"], s_read, numbrid=[], piir=True, pealdis="Muutuste logi")}
 </section>"""
 
-    ree = [
-        (f'{loend[0]} <small>/ {n} väitest</small>', 'ütleb muud kui allikas: vale tõlgendus, vale nimetaja või liialdus.', "Seire väidete kontroll"),
-        (f'{len(lahti)} <small>lahknevust</small>', 'Eurostati ja Statistikaameti vahel on selgitamata (C5 ettevõtted, C6 „ei oska“).', "Seire allikate võrdlus"),
-        (f'{uuem} <small>/ {len(v_read)} näitajast</small>', 'puhul on riiklik number uuem kui Eurostati oma.', "Seire värskuse kontroll"),
-    ]
-    lead = ("Siin on avalikud väited, mida seire kontrollis algallika järgi, allikate lahknevused ja see, kui värsked numbrid on. "
-            "Iga hinnangu juures on õige lause ja link algallikale.")
-    return (pea(A, vaade, lead, [("vaited", "Väited"), ("lahknevused", "Lahknevused"), ("varskus", "Värskus"), ("muutused", "Mis muutus")], ree)
-            + sec_v + sec_l + sec_varskus + sec_muut)
+    return sec_varskus + sec_muut
+
 
 
 # ---------------------------------------------------------------- Avaleht
@@ -327,8 +332,8 @@ def kuidas(A, vaade, vaated=None):
     lead = "Siin on kõik allikad, märgid ja reeglid, mille järgi seire numbreid näitab ja võrdleb."
     sec_uu = _uuenemine(A)
     lingid = [("uuendused", "Mis uueneb ise")] if sec_uu else []
-    return (pea(A, vaade, lead, lingid + [("allikad", "Allikad"), ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], ree)
-            + sec_uu + sec_a + sec_m + sec_v + sec_u)
+    return (pea(A, vaade, lead, lingid + [("varskus", "Värskus"), ("muutused", "Mis muutus"), ("allikad", "Allikad"), ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], ree)
+            + sec_uu + varskus_ja_muutused(A, vaated) + sec_a + sec_m + sec_v + sec_u)
 
 
 def _uuenemine(A):
@@ -353,7 +358,7 @@ def _uuenemine(A):
          "Klassifikaatori märgendeid pole inimene kontrollinud."),
         ("Publikatsioonid (Töö)", "ise, esmaspäeviti (OpenAlex)", d((P or {}).get("meta", {}).get("aeg", "")), "Mitte midagi."),
         ("Uuringute leiud ja kokkuvõtted (Töö)", "käsitsi", d(T.get("kontrollitud", "")), "Uue uuringu lisamine ja kontroll."),
-        ("Väited ja lahknevused (Kas see on tõsi?)", "käsitsi", "—", "Uue väite kontroll algallika vastu."),
+        ("Väited ja lahknevused (Uudised ja väited › Väited)", "käsitsi", "—", "Uue väite kontroll algallika vastu."),
         ("OECD avaliku sektori raport", "käsitsi, ühekordne", kp("2026-11-03"), "Uue raporti korral numbrite ülekandmine."),
     ]
     t = "".join(f'<tr><td><b>{e(n)}</b></td><td>{e(k)}</td><td class="n">{v}</td><td>{e(m)}</td></tr>' for n, k, v, m in read)

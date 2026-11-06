@@ -78,6 +78,32 @@ def kontrolli(failinimi, html_tekst, olemas):
         raise EhitusViga(f"{failinimi}: lehel on täitmata mall")
 
 
+def suuna_ankrud(lehed, vaated):
+    """Link vaate põhilehe ankrule (too.html#hoive) suunatakse teema alamlehele, kus see ankur tegelikult on
+    (too-ametid.html#hoive). Nii ei pea iga link teadma, millisele alamlehele jaotis jäi. Mitmeti mõistetav = viga."""
+    ankrud = {}
+    for f, t in lehed.items():
+        p = _Pealkirjad()
+        p.feed(t)
+        ankrud[f] = set(p.ankrud)
+    grupp = {}
+    for v in vaated:
+        failid = [v["fail"]] + [s["fail"] for s in v.get("alamlehed", [])]
+        for f in failid:
+            grupp.setdefault(f, set()).update(failid)
+
+    def asenda(m, f):
+        leht, ankur = m.group(1), m.group(2)
+        if leht not in ankrud or ankur in ankrud[leht]:
+            return m.group(0)
+        kus = [g for g in sorted(grupp.get(leht, ())) if g in ankrud and ankur in ankrud[g]]
+        if len(kus) > 1:
+            raise EhitusViga(f"{f}: ankur #{ankur} on mitmel teema lehel: {kus}")
+        return f'href="{kus[0]}#{ankur}"' if kus else m.group(0)
+
+    return {f: re.sub(r'href="([a-z0-9-]+\.html)#([^"]+)"', lambda m, f=f: asenda(m, f), t) for f, t in lehed.items()}
+
+
 def kontrolli_ankrud(lehed):
     """Link teise lehe ankrule (leht.html#x) peab leidma sellel lehel id="x"; muidu viib link lehe algusesse."""
     ankrud = {}
@@ -120,6 +146,7 @@ def ehita(valjund=VALJUND, A=None):
                 kirjutatud[f] = kest.leht(A, vaated, v, osa, t, fail=f)
         else:
             kirjutatud[v["fail"]] = kest.leht(A, vaated, v, sisu, pealkiri_)
+    kirjutatud = suuna_ankrud(kirjutatud, vaated)
     for f, t in kirjutatud.items():
         kontrolli(f, t, olemas)
     kontrolli_ankrud(kirjutatud)

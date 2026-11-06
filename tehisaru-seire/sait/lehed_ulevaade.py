@@ -144,7 +144,7 @@ def avaleht(A, vaade, vaated):
     h_uus = H[-1]
     V = A["vaited"]
     v_muud = [v for v in V if _raskus(v) == 0]
-    menuu = lambda vid, t: link(vaated, vid, t)  # noqa: E731
+    menuu = lambda vid, t, ank="": link(vaated, vid, t, ank)  # noqa: E731
 
     # 1. Numbriplaadid
     plaadid = "".join([
@@ -164,7 +164,7 @@ def avaleht(A, vaade, vaated):
               f"{pr(h_uus['osa'])}% kõigist hangetest",
               f"Riigihangete register <span class=\"chip exp\">katseline</span>"),
         plaat("Kontrollitud väited tehisaru kohta", str(len(V)), "",
-              f"{len(v_muud)} ütleb muud kui allikas", menuu("kas-tosi", "Kas see on tõsi?")),
+              f"{len(v_muud)} ütleb muud kui allikas", menuu("kas-tosi", "Väited")),
     ])
 
     # 2. ELi kaart ja järjestus omaette real
@@ -238,7 +238,7 @@ def avaleht(A, vaade, vaated):
   <div class="pn-h"><h2 id="h-muutus">Mis muutus: viimati <b>{kp(viimane)}</b></h2></div>
   <p class="ps">{ARVSONAD[VOO_RIDU].capitalize()} viimast muutust allikates ja väidetes; {VOO_PAEVI} päeva jooksul enne {kp(viimane)} lisandus {uued}.</p>
   <ul class="voog">{read}</ul>
-  <p class="allikas">Kogu loend: {menuu("kas-tosi", "Kas see on tõsi? › Mis muutus")}. Tehisaru ja töö uudised Eestist ja maailmast: {menuu("uudised", "Uudised")}.</p>
+  <p class="allikas">Kogu loend: {menuu("kuidas", "Kuidas lugeda › Mis muutus", "muutused")}. Tehisaru ja töö uudised Eestist ja maailmast: {menuu("uudised", "Uudised")}.</p>
 </section>"""
 
     sihid = [(A["sihid"]["ee-ettevotted-75"], eeb, True)]
@@ -256,14 +256,13 @@ def avaleht(A, vaade, vaated):
 <section class="pn sp3" id="sihid" aria-labelledby="h-sihid">
   <div class="pn-h"><h2 id="h-sihid">Kolmest sihist on <b>ettevõtete kasutus</b> kõige kaugemal</h2></div>
   <div class="sihid">{s_read}</div>
-  <p class="allikas">Iga siht oma allika ja skaalaga: Eesti siht on Statistikaameti numbril, ELi sihid ELi kui terviku kohta. {menuu("reeglid", "Reeglid ja sihid")}.</p>
+  <p class="allikas">Iga siht oma allika ja skaalaga: Eesti siht on Statistikaameti numbril, ELi sihid ELi kui terviku kohta. Iga siht on oma teema juures: {menuu("ettevotted", "Ettevõtted", "siht-ettevotted")}, {menuu("inimesed", "Inimesed", "siht-inimesed")}.</p>
 </section>"""
 
     sec_hanked = f"""
 <section class="pn sp4" id="hanked" aria-labelledby="h-hanked">
   <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehangete osa on <b>alla 1%</b> kõigist hangetest</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">% kõigist riigihangetest aastas; {h_uus["aasta"]} = {h_uus["periood"]}</p>
-  {aastatulbad([(r["aasta"], r["osa"], True) for r in H], 1, 0.25, k=2)}
+  <p class="ps">{h_uus["aasta"]} ({e(h_uus["periood"])}): <b>{h_uus["ai_ja_andmed"]}</b> hanget, {pr(h_uus["osa"])}% kõigist. Aastate võrdlust ei näidata, kuni vähemalt 100 hanget on inimese pimesi märgistatud.</p>
   <p class="allikas">Allikas: {a(HANKED_URL, "riigihangete register")} ja TED. Katseline klassifikaator: täpsus 71%, saagis 69% Claude'i märgendatud valimil, inimene pole kontrollinud. Kõik hanked ja head näited: {menuu("hanked", "Hanked")}.</p>
 </section>"""
     if max(r["osa"] for r in H) >= 1:
@@ -279,7 +278,7 @@ def avaleht(A, vaade, vaated):
 <section class="pn sp12" id="vaited" aria-labelledby="h-vaited">
   <div class="pn-h"><h2 id="h-vaited">{ARVSONAD[len(V)].capitalize() if len(V) in ARVSONAD else len(V)} kontrollitud väidet: <b>{ARVSONAD.get(len(v_muud), len(v_muud))} ütleb muud kui allikas</b></h2></div>
   <div class="tbl"><table><thead><tr><th scope="col" style="width:38%">Väide ja väljaanne</th><th scope="col" style="width:13%">Hinnang</th><th scope="col">Mida allikas tegelikult ütleb</th></tr></thead><tbody>{v_read}</tbody></table></div>
-  <p class="allikas">Väide kuulub väljaandele. Siin {min(4, len(V))} väidet {len(V)}-st; kõik: {menuu("kas-tosi", "Kas see on tõsi?")}.</p>
+  <p class="allikas">Väide kuulub väljaandele. Siin {min(4, len(V))} väidet {len(V)}-st; kõik: {menuu("kas-tosi", "Väited")}.</p>
 </section>"""
 
     pea = f"""
@@ -382,29 +381,3 @@ def too_eesti(A):
   <p class="allikas">Allikas: uudised, lingid kaartidel. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
 </section>"""
     return f'<div class="g12">{sec_t}{sec_v}{sec_k}</div>'
-
-
-# ---------------------------------------------------------------- Avaliku sektori hanked
-
-def mida_riik_ostab(A):
-    """Avalik sektor › „Mida riik ostab“: tehisaru- ja andmehanked aastas (katseline klassifikaator)."""
-    H = hanked()
-    uus = H[-1]
-    taisaastad = [r for r in H if r["periood"] == "aasta"]
-    if max(r["osa"] for r in H) >= 1:
-        raise AndmeViga("Hangete pealkiri ütleb „alla 1%“, aga osa on 1% või rohkem")
-    a0, a1 = taisaastad[0], taisaastad[-1]
-    mark = [(r["aasta"], int(r["ai_marksonaga"]), r["periood"] == "aasta") for r in H]
-    return f"""
-<div class="g12">
-<section class="pn sp12" id="hanked" aria-labelledby="h-hanked">
-  <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehankeid oli {a1["aasta"]}. aastal <b>{a1["ai_ja_andmed"]}</b>, alla 1% kõigist hangetest</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">Riigihangete registri hanked, mille klassifikaator märkis tehisaru või andmetööks. {uus["aasta"]} = {uus["periood"]}. Tehisaru uuringute ja mõjuanalüüside hankeid eraldi veel ei loeta; see rühm on töös. Kuidas hangitakse ja head näited: <a href="hanked.html">Hanked</a>.</p>
-  <div class="g3">
-    <div><p class="gt">Tehisaru- ja andmehanked, arv</p>{aastatulbad([(r["aasta"], r["ai_ja_andmed"], r["periood"] == "aasta") for r in H], 70, 20, uhik="", k=0)}</div>
-    <div><p class="gt">Neist pealkirjas tehisaru märksõna, arv</p>{aastatulbad(mark, 30, 10, uhik="", k=0)}</div>
-    <div><p class="gt">Osa kõigist hangetest, %</p>{aastatulbad([(r["aasta"], r["osa"], r["periood"] == "aasta") for r in H], 1, 0.25, k=2)}</div>
-  </div>
-  <p class="allikas">Allikas: {a(HANKED_URL, "riigihangete register")} ja TED. Katseline klassifikaator: täpsus 71%, saagis 69% Claude'i märgendatud valimil, inimene pole kontrollinud. Hele tulp = aasta pole veel läbi.</p>
-</section>
-</div>"""

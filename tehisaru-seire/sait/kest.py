@@ -26,7 +26,7 @@ TEEMA_JS = ("<script>(function(){var t=null;try{t=localStorage.getItem('seire-te
 def menuu(vaated, praegune):
     out = []
     for v in vaated:
-        if not v["menuu"]:
+        if not v["menuu"] or v.get("teema"):  # teema alamvaade (nt Hanked) on teema teisel real, mitte menüüs
             continue
         if v["olek"] == "valmis":
             cur = ' aria-current="page"' if v["id"] == praegune else ""
@@ -56,8 +56,10 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
     m = re.search(r'<nav aria-label="Sellel lehel">.*?</nav>', sisu, re.S)
     if m:
         alam, sisu = m.group(0).replace('<nav ', '<nav class="lehel" ', 1), sisu[:m.start()] + sisu[m.end():]
-    if vaade.get("alamlehed"):
-        rida2 = f'<div class="rida2">{alamlehed(vaade, fail or vaade["fail"])}{alam}</div>'
+    # Teema alamvaade (6.11.2026: Hanked Avaliku sektori all, Väited Uudiste all) saab teema alamlehtede rea
+    teema = next((v for v in vaated if v["id"] == vaade["teema"]), None) if vaade.get("teema") else vaade
+    if teema.get("alamlehed"):
+        rida2 = f'<div class="rida2">{alamlehed(teema, fail or vaade["fail"])}{alam}</div>'
     else:
         rida2 = alam
     avaleht = next(v for v in vaated if v["id"] == "avaleht")
@@ -90,7 +92,7 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
       <a class="seis" href="kuidas-lugeda.html#uuendused" title="Mis uueneb ise ja mis käsitsi">Numbrid {kp(A["uuendatud"])}{f" · uudised {kp(A['uudiste_olek']['viimane_kontroll'][:10])}" if A.get("uudiste_olek") else ""}</a>
       <button class="teema" type="button" aria-label="Teema" title="Teema"><svg class="pool" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></svg><svg class="kuu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg><svg class="paike" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg></button>
     </div>
-    <nav aria-label="Teemad"><ul class="menu">{menuu(vaated, vaade["id"])}</ul></nav>
+    <nav aria-label="Teemad"><ul class="menu">{menuu(vaated, vaade.get("teema") or vaade["id"])}</ul></nav>
     {rida2}
   </div>
 </header>

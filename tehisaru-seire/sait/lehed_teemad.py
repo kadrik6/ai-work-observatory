@@ -248,7 +248,8 @@ def inimesed(A, vaade, vaated=None):
             "Oskuse puudusel jätab tehisaru kasutamata vähem inimesi kui ELis keskmiselt.")
     return jaga(A, vaade, lead, ree, [
         ("kasutus", [("kasutus", "Kasutus")], sec_kasutus), ("tool", [("tool", "Tööl")], sec_too),
-        ("digi", [("digi", "Digioskused")], sec_digi), ("ei-oska", [("ei-oska", "„Ei oska“")], sec_os),
+        ("digi", [("digi", "Digioskused")], sec_digi), ("siht", [("siht-inimesed", "Siht")], sihid(A, "inimesed", "siht-inimesed")),
+        ("ei-oska", [("ei-oska", "„Ei oska“")], sec_os),
     ])
 
 
@@ -646,9 +647,9 @@ def avalik_sektor(A, vaade, vaated=None):
     ]
     lead = ("Avalikus sektoris tehakse uuendusi, aga paljud jäävad pidama enne hindamist ja laiendamist. "
             "Kõik numbrid on OECD avalikust raportist, mis põhineb 2025–2026 küsitlusel.")
-    from lehed_ulevaade import mida_riik_ostab
-    return (pea(A, vaade, lead, [("lehter", "Rakendamine"), ("tehisaru", "Tehisaru"), ("kiirused", "Kolm rühma"), ("hanked", "Mida riik ostab"), ("soovitused", "Soovitused")], ree)
-            + sec_lehter + sec_genai + sec_kiirus + mida_riik_ostab(A) + sec_soov)
+    # Hanked on 6.11.2026 alates selle teema alamleht (Kadri otsus 2), mitte jaotis siin
+    return (pea(A, vaade, lead, [("lehter", "Rakendamine"), ("tehisaru", "Tehisaru"), ("kiirused", "Kolm rühma"), ("soovitused", "Soovitused")], ree)
+            + sec_lehter + sec_genai + sec_kiirus + sec_soov)
 
 
 # ---------------------------------------------------------------- Reeglid ja sihid
@@ -690,9 +691,27 @@ def reeglid(A, vaade, vaated=None, tana=None):
   {allikarida([(O[0]["allikas"], O[0]["url"], "kontrollitud " + kp(kontroll))])}
 </section>"""
 
-    # Sihid: igal sihil oma rida ja oma telg; praegune number sama allika ja sama taseme järgi
+    ree = [
+        (kp(uld["kuupaev"]), e(uld["mida_tahendab"]), a(uld["url"], "Euroopa Komisjon")),
+        (kp(kr["kuupaev"]), "Kõrge riskiga kasutus, näiteks CV-de sorteerimine värbamisel ja hindamine koolis.", a(kr["url"], "Euroopa Komisjon")),
+        (f'{len(O)} <small>tähtaega</small>', "Määrus jõustub osade kaupa. Sihid on 6.11.2026 alates oma teema juures.", a(O[0]["url"], "Euroopa Komisjon")),
+    ]
+    j_tekst = f'Järgmine tähtaeg on {jargmine[1]}: {e(jargmine[2].lower())}.' if jargmine else ""
+    lead = (f"ELi tehisaru määrus jõustub osade kaupa 2024–2028. {j_tekst} Sihid on oma teema juures: "
+            f"{link(vaated, 'inimesed', 'digioskused', 'siht-inimesed')}, {link(vaated, 'ettevotted', 'ettevõtted', 'siht-ettevotted')} "
+            f"ja {link(vaated, 'hanked', 'innovatsioonihanked', 'innovatsioon')}.")
+    return pea(A, vaade, lead, [], ree) + sec_aeg
+
+
+SIHI_TEEMA = {"inimesed": ("el-digioskused-80",), "ettevotted": ("ee-ettevotted-75",),
+              "ettevotted-voimekus": ("el-digiintensiivsus-90", "el-ta-3")}
+
+
+def sihid(A, teema, ank):
+    """Sihid oma teema juures (sisuloogika 6.11.2026, Kadri otsus 4): igal sihil oma rida ja oma telg; praegune number
+    sama allika ja sama taseme järgi. Sihte omavahel ei võrrelda."""
     s_read = []
-    for sid in ("ee-ettevotted-75", "el-digioskused-80", "el-digiintensiivsus-90", "el-ta-3"):
+    for sid in SIHI_TEEMA[teema]:
         s = A["sihid"][sid]
         nid, siht = s["naitaja"], float(s["siht"])
         if s["tase"] == "EE":
@@ -708,26 +727,25 @@ def reeglid(A, vaade, vaated=None, tana=None):
             kaugus = f'{pr(siht - p["vaartus"], k)} punkti<small>ELil tervikuna</small>'
         lopp = 4 if nid == "ta-kulud" else 100
         s_read.append([f'{e(s["nimi"])}<small>{e(s["mida_mootakse"])}</small>', praegu,
-                       sihiriba(p["vaartus"], siht, lopp, "", fookus=(sid == "ee-ettevotted-75")) + f'<small>siht {pr(siht, 0)}{"% SKPst" if nid == "ta-kulud" else "%"}</small>',
+                       sihiriba(p["vaartus"], siht, lopp, "", fookus=(s["tase"] == "EE")) + f'<small>siht {pr(siht, 0)}{"% SKPst" if nid == "ta-kulud" else "%"}</small>',
                        e(s["aasta"] or "aasta pole seatud"), kaugus,
                        f'{a(s["url"], s["allikas"].split(",")[0])}'])
-    ee_s = A["sihid"]["ee-ettevotted-75"]
-    ee_p = andmed.leia(A, EB, "EE", "uusim")
-    sec_sihid = f"""
-<section class="jaotis" id="sihid" aria-labelledby="h-sihid">
+    ee_s = next((A["sihid"][sid] for sid in SIHI_TEEMA[teema] if A["sihid"][sid]["tase"] == "EE"), None)
+    if ee_s:
+        ee_p = andmed.leia(A, ee_s["naitaja"], "EE", "uusim")
+        h2 = f'Eesti siht on, et <b>{ee_s["siht"]}% ettevõtetest kasutab tehisaru</b> aastaks {ee_s["aasta"]}; praegu kasutab {pr(ee_p["vaartus"])}%'
+    elif len(s_read) == 1:
+        s0 = A["sihid"][SIHI_TEEMA[teema][0]]
+        p = andmed.leia(A, s0["naitaja"], EL, "uusim:alus")
+        h2 = f'ELi siht on <b>{pr(float(s0["siht"]), 0)}%</b> aastaks {e(s0["aasta"])}; EL tervikuna on {pr(p["vaartus"])}% juures ({p["aasta"]})'
+    else:
+        h2 = "ELi sihid: kui kaugel on <b>EL tervikuna</b>"
+    return f"""
+<section class="jaotis" id="{ank}" aria-labelledby="h-{ank}">
   <header>
-    <h2 id="h-sihid">Eesti siht on, et <b>{ee_s["siht"]}% ettevõtetest kasutab tehisaru</b> aastaks {ee_s["aasta"]}; praegu kasutab {pr(ee_p["vaartus"])}%</h2>
+    <h2 id="h-{ank}">{h2}</h2>
     <p class="alam">Iga siht on oma real ja oma teljel: sihte omavahel ei võrrelda. Praegune number on sama allika ja sama taseme järgi: ELi sihi juures ELi number, Eesti sihi juures Statistikaameti number.</p>
   </header>
-  {tabel(["Siht", "Praegu", "Kui kaugel", "Aasta", "Vahe sihini", "Kes seadis"], s_read, numbrid=[], pealdis="Sihid ja praegune seis")}
-  {faktid([("Kontrollimata", "risk", e(ee_s["markus"]))])}
+  {tabel(["Siht", "Praegu", "Kui kaugel", "Aasta", "Vahe sihini", "Kes seadis"], s_read, numbrid=[], pealdis="Siht ja praegune seis")}
+  {faktid([("Kontrollimata", "risk", e(ee_s["markus"]))]) if ee_s else ""}
 </section>"""
-
-    ree = [
-        (kp(uld["kuupaev"]), e(uld["mida_tahendab"]), a(uld["url"], "Euroopa Komisjon")),
-        (kp(kr["kuupaev"]), "Kõrge riskiga kasutus, näiteks CV-de sorteerimine värbamisel ja hindamine koolis.", a(kr["url"], "Euroopa Komisjon")),
-        (f'{ee_s["siht"]}% <small>aastaks {ee_s["aasta"]}</small>', "Eesti siht: nii suur osa ettevõtetest kasutab tehisaru.", a(ee_s["url"], ee_s["allikas"])),
-    ]
-    j_tekst = f'Järgmine tähtaeg on {jargmine[1]}: {e(jargmine[2].lower())}.' if jargmine else ""
-    lead = f"ELi tehisaru määrus jõustub osade kaupa 2024–2028. {j_tekst} Sihid on seatud 2030. aastaks."
-    return pea(A, vaade, lead, [("tahtajad", "Tähtajad"), ("sihid", "Sihid")], ree) + sec_aeg + sec_sihid

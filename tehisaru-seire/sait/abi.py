@@ -75,7 +75,7 @@ def jaga(A, vaade, lead, ree, plokid):
     Ehitus kukub, kui mõni plokk jääb alamlehest välja või on kahes kohas.
     """
     plokid = [p for p in plokid if p[2].strip()]
-    alamad = vaade.get("alamlehed")
+    alamad = [s for s in vaade.get("alamlehed", []) if "vaade" not in s]  # {"vaade": id} = teine vaade sama teema all
     if not alamad:
         return pea(A, vaade, lead, [l for _, ll, _ in plokid for l in ll], ree) + "".join(h for *_, h in plokid)
     voti = {p[0]: p for p in plokid}
