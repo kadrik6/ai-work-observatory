@@ -8,9 +8,9 @@ const PILDID = process.argv[3] || null;
 const U = [
   {nimi: 'Ajakirjanik: Eesti inimeste tehisaru kasutus ja allikas', klikid: [], siht: '.plaat, .vastus div', tekst: /65/},
   {nimi: 'Kodanik: kas tehisaru võtab töökohti', klikid: ['Töö'], siht: 'h1'},
-  {nimi: 'Analüütik: kas Eurostat ja Statistikaamet lahknevad', klikid: ['css:main a:has-text("lahknevust")'], siht: '#lahknevused'},
+  {nimi: 'Analüütik: kas Eurostat ja Statistikaamet lahknevad', klikid: ['Usaldus', 'Lahknevused'], siht: '#lahknevused'},
   {nimi: 'Hankija: hea näide tehisaruhankest', klikid: ['Hanked', 'Leia hea näide'], siht: '#loend'},
-  {nimi: 'Otsustaja: ettevõtete siht ja kaugus', klikid: ['Ettevõtted', 'Siht'], siht: '#siht-ettevotted'},
+  {nimi: 'Otsustaja: ettevõtete siht ja kaugus', klikid: ['Ettevõtted'], siht: '#kasutus .siht-rida'},
   {nimi: 'Kadri: mis täna muutus', klikid: ['Mis muutus'], siht: '#muutus'},
 ];
 (async () => {

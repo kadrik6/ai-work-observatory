@@ -251,7 +251,7 @@ def _digi_ja_ta(A):
 def ettevotted(A, vaade, vaated=None):
     """Kaks alamlehte (sisuloogika 6.11.2026, Kadri otsus 6): Kasutus | Tootlikkus ja võimekus."""
     from abi import jaga
-    from lehed_teemad import sihid
+    from lehed_teemad import lisa_sihid
     ee = andmed.leia(A, EB, "EE", "uusim")
     ee_el = andmed.leia(A, EB, "EE", "uusim:alus")
     eu = andmed.leia(A, EB, EL, ee_el["aasta"])
@@ -269,10 +269,10 @@ def ettevotted(A, vaade, vaated=None):
     lead = ("Kasutus kasvab kiiresti, aga vahe Põhjamaadega on punktides suurenenud. "
             "Eesti andmetel on tehisaru seotud suurema tootlikkusega alles siis, kui muutub ka töökorraldus.")
     return jaga(A, vaade, lead, ree, [
-        ("kasutus", [("kasutus", "Kasutus"), ("siht-ettevotted", "Siht")], _kasutus(A) + sihid(A, "ettevotted", "siht-ettevotted")),
+        ("kasutus", [("kasutus", "Kasutus")], lisa_sihid(A, _kasutus(A), "kasutus", "ee-ettevotted-75")),
         ("tootlikkus", [("tootlikkus", "Tootlikkus")], _tootlikkus(A)),
-        ("voimekus", [("digi", "Digiintensiivsus"), ("ta", "Teadus ja arendus"), ("siht-voimekus", "Sihid")],
-         _digi_ja_ta(A) + sihid(A, "ettevotted-voimekus", "siht-voimekus")),
+        ("voimekus", [("digi", "Digiintensiivsus"), ("ta", "Teadus ja arendus")],
+         lisa_sihid(A, lisa_sihid(A, _digi_ja_ta(A), "digi", "el-digiintensiivsus-90"), "ta", "el-ta-3")),
     ])
 
 

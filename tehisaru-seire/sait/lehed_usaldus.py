@@ -1,7 +1,7 @@
 """Usalduse vaated ja sisenemine: Kas see on tõsi?, Avaleht, Kuidas lugeda (5.11.2026)."""
 import re
 import andmekiht as andmed
-from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, pea
+from abi import ARVSONAD, SEESTYTLEV, a, jaga, kontrolli, link, pea
 from andmekiht import EL, AndmeViga
 from komponendid import (allikarida, e, faktid, kohariba, kp, lihtribad, osad, pr, riik, tabel, vastavus)
 from pealkiri import taida
@@ -126,9 +126,13 @@ def kas_tosi(A, vaade, vaated=None):
         (f'{sum(1 for v in V if v.get("uudisest"))} <small>/ {n} väitest</small>', 'on pärit uudistest ja kontrollitud samal skaalal.', "Seire uudiste kontroll"),
     ]
     lead = ("Siin on avalikud väited, mida seire kontrollis algallika järgi, ka uudistest, ühel skaalal, ja allikate lahknevused. "
-            "Iga hinnangu juures on link algallikale. Kui värsked numbrid on, näitab " + link(vaated, "kuidas", "Kuidas lugeda", "varskus") + ".")
-    return (pea(A, vaade, lead, [("vaited", "Väited"), ("lahknevused", "Lahknevused")], ree)
-            + sec_v + sec_l)
+            "Iga hinnangu juures on link algallikale. Allikate lahknevused ja numbrite värskus on selle teema teistel alamlehtedel.")
+    # Usaldus (Kadri 6.11.2026 22:27): väited, lahknevused ja värskus on üks teema kolmel alamlehel
+    return jaga(A, vaade, lead, ree, [
+        ("vaited", [("vaited", "Väited")], sec_v),
+        ("lahknevused", [("lahknevused", "Lahknevused")], sec_l),
+        ("varskus", [("varskus", "Värskus"), ("muutused", "Mis muutus")], varskus_ja_muutused(A, vaated)),
+    ])
 
 
 ALLIKA_NIMED = {"ec.europa.eu": "Eurostat", "stat.ee": "Statistikaamet", "scb.se": "SCB (Rootsi)", "statistikbanken.dk": "Danmarks Statistik",
@@ -142,7 +146,7 @@ def _allika_nimi(url):
 
 
 def varskus_ja_muutused(A, vaated):
-    """Näitajate värskus ja allikate muutuste logi (6.11.2026 Kas see on tõsi? lehelt Kuidas lugeda lehele: metoodika)."""
+    """Näitajate värskus ja allikate muutuste logi: Usaldus › Värskus (Kadri 6.11.2026 22:27)."""
     v_read, uuem = [], 0
     for nid in A["naitajad"]:
         m = A["meta"][nid]
@@ -348,8 +352,8 @@ def kuidas(A, vaade, vaated=None):
     lead = "Siin on kõik allikad, märgid ja reeglid, mille järgi seire numbreid näitab ja võrdleb."
     sec_uu = _uuenemine(A)
     lingid = [("uuendused", "Mis uueneb ise")] if sec_uu else []
-    return (pea(A, vaade, lead, lingid + [("varskus", "Värskus"), ("muutused", "Mis muutus"), ("allikad", "Allikad"), ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], ree)
-            + sec_uu + varskus_ja_muutused(A, vaated) + sec_a + sec_m + sec_v + sec_u)
+    return (pea(A, vaade, lead, lingid + [("allikad", "Allikad"), ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], ree)
+            + sec_uu + sec_a + sec_m + sec_v + sec_u)
 
 
 def _uuenemine(A):

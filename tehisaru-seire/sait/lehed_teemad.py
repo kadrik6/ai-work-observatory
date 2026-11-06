@@ -6,7 +6,7 @@ mida see tähendab, siis üksikasjad ja allikad. Mõõdetud number ja uuring koh
 import datetime
 
 import andmekiht as andmed
-from abi import SEESTYTLEV, ARVSONAD, a, kontrolli, link, jaga, pea
+from abi import SEESTYTLEV, ARVSONAD, a, kontrolli, link, jaga, pea, seotud
 from andmekiht import EL, AndmeViga
 from komponendid import (aastatulbad, ajajoon, allikarida, e, ei_naita, faktid, hantlid, kaart, kp, lihtribad,
                          margend, muutus, osad, pr, riik, ribad, sihiriba, tabel, vastavus)
@@ -50,7 +50,6 @@ def inimesed(A, vaade, vaated=None):
     ds, ds23 = andmed.leia(A, DS, "EE", "uusim:alus"), andmed.leia(A, DS, "EE", 2023)
     if abs(ds["vaartus"] - ds23["vaartus"]) >= 0.5:
         raise AndmeViga("Digioskused ei ole enam „paigal“: pealkiri tuleb üle vaadata")
-    kontrolli(vaade, f"aastaga {pr(kasv, 0)} punkti", "paigal")
 
     eu = andmed.leia(A, IN, EL, y)
     koht = andmed.koht(A, IN, "EE", y)
@@ -61,6 +60,8 @@ def inimesed(A, vaade, vaated=None):
     too_uued = [v for v in andmed.vali(A, TOO + "-uus", "EE") + andmed.vali(A, "inimeste-tehisaru-kasutus-too", "EE")
                 if v["klass"] in andmed.VORRELDAVAD and v["aasta"] > too25["aasta"]]
     too = max(too_uued, key=lambda v: v["aasta"]) if too_uued else too25
+    # Kasutuse lehe pealkiri räägib ainult sellest, mis sellel lehel on (Kadri 6.11.2026 22:27, ettepanek 5)
+    kontrolli(vaade, f"aastaga {pr(kasv, 0)} punkti", f"tööl kasutab {pr(too['vaartus'])}%")
 
     # Aasta jooksul: 2025 Eurostat → 2026 riiklik number, ainult kataloogi järgi sama mõõdikuga riigid
     paarid = []
@@ -244,11 +245,11 @@ def inimesed(A, vaade, vaated=None):
         (f'{pr(too["vaartus"])}% <small>tööl</small>', f'kasutas tehisaru tööalaselt ({too["aasta"]}), protsent kõigist 16–74-aastastest.',
          f'{a(too["url"], too["allikas"])}'),
     ]
-    lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem, aga digioskuste tase ei ole 2023. aastast muutunud. "
-            "Oskuse puudusel jätab tehisaru kasutamata vähem inimesi kui ELis keskmiselt.")
+    lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem. ELi võrdluses ja tööl kasutamine on allpool; "
+            "digioskused ja oskuse puudus on alamlehel Oskused.")
     return jaga(A, vaade, lead, ree, [
         ("kasutus", [("kasutus", "Kasutus")], sec_kasutus), ("tool", [("tool", "Tööl")], sec_too),
-        ("digi", [("digi", "Digioskused")], sec_digi), ("siht", [("siht-inimesed", "Siht")], sihid(A, "inimesed", "siht-inimesed")),
+        ("digi", [("digi", "Digioskused")], lisa_sihid(A, sec_digi, "digi", *SIHI_TEEMA["inimesed"])),
         ("ei-oska", [("ei-oska", "„Ei oska“")], sec_os),
     ])
 
@@ -533,13 +534,13 @@ def too(A, vaade, vaated=None):
     sec_uuritakse = uuringud_too(A)
     sec_palk = palkamine(A)
     return jaga(A, vaade, lead, ree, [
-        ("eesti-praegu", [("tootus-kuud", "Eesti praegu")], too_eesti(A)),
+        ("eesti-praegu", [("tootus-kuud", "Töötus"), ("koondamised", "Koondamised")], too_eesti(A)),
         ("palkamine", [("palkamine", "Keda koondajad otsivad")], sec_palk),
         ("tulevik", [("tulevik", "Mis ees ootab")], sec_tulevik),
         ("maailm", [("maailm", "Mida maailmas leiti")], sec_maailm),
         ("ulesanded", [("ulesanded", "Ülesanded")], sec_kiirus),
         ("eesti", [("eesti", "Eestis")], sec_eesti),
-        ("uuritakse", [("uuritakse", "Mida uuritakse")], sec_uuritakse),
+        ("uuritakse", [("uuritakse", "Mida uuritakse"), ("publikatsioonid", "Publikatsioonid"), ("eesti-allikad", "Eesti allikad")], sec_uuritakse),
         ("kokkupuude", [("kokkupuude", "Ametid")], sec_kokkupuude),
         ("hoive", [("hoive", "Hõive muutus")], sec_hoive),
     ])
@@ -662,9 +663,10 @@ def avalik_sektor(A, vaade, vaated=None):
     ]
     lead = ("Avalikus sektoris tehakse uuendusi, aga paljud jäävad pidama enne hindamist ja laiendamist. "
             "Kõik numbrid on OECD avalikust raportist, mis põhineb 2025–2026 küsitlusel.")
-    # Hanked on 6.11.2026 alates selle teema alamleht (Kadri otsus 2), mitte jaotis siin
+    # Hanked on oma menüükoht; lehtede vahel on rida „Seotud“ (Kadri 6.11.2026 22:27, ettepanek 8)
     return (pea(A, vaade, lead, [("lehter", "Rakendamine"), ("tehisaru", "Tehisaru"), ("kiirused", "Kolm rühma"), ("soovitused", "Soovitused")], ree)
-            + sec_lehter + sec_genai + sec_kiirus + sec_soov)
+            + sec_lehter + sec_genai + sec_kiirus + sec_soov
+            + seotud(vaated, [("hanked", "Hanked: mida riik tehisaru ja andmete kohta ostab"), ("reeglid", "Tehisaru määrus: tähtajad")]))
 
 
 # ---------------------------------------------------------------- Reeglid ja sihid
@@ -713,7 +715,7 @@ def reeglid(A, vaade, vaated=None, tana=None):
     ]
     j_tekst = f'Järgmine tähtaeg on {jargmine[1]}: {e(jargmine[2].lower())}.' if jargmine else ""
     lead = (f"ELi tehisaru määrus jõustub osade kaupa 2024–2028. {j_tekst} Sihid on oma teema juures: "
-            f"{link(vaated, 'inimesed', 'digioskused', 'siht-inimesed')}, {link(vaated, 'ettevotted', 'ettevõtted', 'siht-ettevotted')} "
+            f"{link(vaated, 'inimesed', 'digioskused', 'digi')}, {link(vaated, 'ettevotted', 'ettevõtted', 'kasutus')} "
             f"ja {link(vaated, 'hanked', 'innovatsioonihanked', 'innovatsioon')}.")
     return pea(A, vaade, lead, [], ree) + sec_aeg
 
@@ -722,45 +724,30 @@ SIHI_TEEMA = {"inimesed": ("el-digioskused-80",), "ettevotted": ("ee-ettevotted-
               "ettevotted-voimekus": ("el-digiintensiivsus-90", "el-ta-3")}
 
 
-def sihid(A, teema, ank):
-    """Sihid oma teema juures (sisuloogika 6.11.2026, Kadri otsus 4): igal sihil oma rida ja oma telg; praegune number
-    sama allika ja sama taseme järgi. Sihte omavahel ei võrrelda."""
-    s_read = []
-    for sid in SIHI_TEEMA[teema]:
-        s = A["sihid"][sid]
-        nid, siht = s["naitaja"], float(s["siht"])
-        if s["tase"] == "EE":
-            p = andmed.leia(A, nid, "EE", "uusim")
-            praegu = f'{pr(p["vaartus"])}% <small>Eesti {p["aasta"]}, {e(p["allikas"])}</small>'
-            kaugus = '<span class="vrd">kaugus kontrollimata</span><small>sihi klassifikaator on teadmata</small>'
-        else:
-            p = andmed.leia(A, nid, EL, "uusim:alus")
-            ee = andmed.leia(A, nid, "EE", p["aasta"])
-            u = "% SKPst" if nid == "ta-kulud" else "%"
-            k = 2 if nid == "ta-kulud" else 1
-            praegu = f'{pr(p["vaartus"], k)}{u} <small>EL {p["aasta"]}; Eesti {pr(ee["vaartus"], k)}{u}</small>'
-            kaugus = f'{pr(siht - p["vaartus"], k)} punkti<small>ELil tervikuna</small>'
-        lopp = 4 if nid == "ta-kulud" else 100
-        s_read.append([f'{e(s["nimi"])}<small>{e(s["mida_mootakse"])}</small>', praegu,
-                       sihiriba(p["vaartus"], siht, lopp, "", fookus=(s["tase"] == "EE")) + f'<small>siht {pr(siht, 0)}{"% SKPst" if nid == "ta-kulud" else "%"}</small>',
-                       e(s["aasta"] or "aasta pole seatud"), kaugus,
-                       f'{a(s["url"], s["allikas"].split(",")[0])}'])
-    ee_s = next((A["sihid"][sid] for sid in SIHI_TEEMA[teema] if A["sihid"][sid]["tase"] == "EE"), None)
-    if ee_s:
-        ee_p = andmed.leia(A, ee_s["naitaja"], "EE", "uusim")
-        h2 = f'Eesti siht on, et <b>{ee_s["siht"]}% ettevõtetest kasutab tehisaru</b> aastaks {ee_s["aasta"]}; praegu kasutab {pr(ee_p["vaartus"])}%'
-    elif len(s_read) == 1:
-        s0 = A["sihid"][SIHI_TEEMA[teema][0]]
-        p = andmed.leia(A, s0["naitaja"], EL, "uusim:alus")
-        h2 = f'ELi siht on <b>{pr(float(s0["siht"]), 0)}%</b> aastaks {e(s0["aasta"])}; EL tervikuna on {pr(p["vaartus"])}% juures ({p["aasta"]})'
+def siht_rida(A, sid):
+    """Üks siht ühe reana näitaja enda plokis (Kadri 6.11.2026 22:27, paigutuse ettepanek 4): oma telg, sihte ei võrrelda."""
+    s = A["sihid"][sid]
+    nid, siht = s["naitaja"], float(s["siht"])
+    ta = nid == "ta-kulud"
+    u, k, lopp = ("% SKPst", 2, 4) if ta else ("%", 1, 100)
+    kes = a(s["url"], s["allikas"].split(",")[0])
+    if s["tase"] == "EE":
+        p = andmed.leia(A, nid, "EE", "uusim")
+        tekst = (f'<b>Eesti siht {pr(siht, 0)}{u}</b> aastaks {e(s["aasta"])} ({kes}). Praegu {pr(p["vaartus"], k)}{u} '
+                 f'(Eesti {p["aasta"]}, {e(p["allikas"])}). Vahet ei arvuta: {e(s["markus"].split(". ")[0].rstrip("."))}.')
     else:
-        h2 = "ELi sihid: kui kaugel on <b>EL tervikuna</b>"
-    return f"""
-<section class="jaotis" id="{ank}" aria-labelledby="h-{ank}">
-  <header>
-    <h2 id="h-{ank}">{h2}</h2>
-    <p class="alam">Iga siht on oma real ja oma teljel: sihte omavahel ei võrrelda. Praegune number on sama allika ja sama taseme järgi: ELi sihi juures ELi number, Eesti sihi juures Statistikaameti number.</p>
-  </header>
-  {tabel(["Siht", "Praegu", "Kui kaugel", "Aasta", "Vahe sihini", "Kes seadis"], s_read, numbrid=[], pealdis="Siht ja praegune seis")}
-  {faktid([("Kontrollimata", "risk", e(ee_s["markus"]))]) if ee_s else ""}
-</section>"""
+        p = andmed.leia(A, nid, EL, "uusim:alus")
+        ee = andmed.leia(A, nid, "EE", p["aasta"])
+        tekst = (f'<b>ELi siht {pr(siht, 0 if not ta else 0)}{u}</b> aastaks {e(s["aasta"] or "–")} ({kes}). '
+                 f'EL tervikuna {pr(p["vaartus"], k)}{u}, Eesti {pr(ee["vaartus"], k)}{u} ({p["aasta"]}); ELil puudu {pr(siht - p["vaartus"], k)} punkti.')
+    return (f'<div class="siht-rida"><p><span class="siht-silt">Siht</span> {tekst}</p>'
+            f'{sihiriba(p["vaartus"], siht, lopp, "", fookus=(s["tase"] == "EE"))}</div>')
+
+
+def lisa_sihid(A, html, jaotis, *sid):
+    """Paneb sihi read jaotise lõppu (enne selle </section>)."""
+    i = html.index(f'id="{jaotis}"')
+    j = html.index("</section>", i)
+    return html[:j] + "".join(siht_rida(A, x) for x in sid) + html[j:]
+
+

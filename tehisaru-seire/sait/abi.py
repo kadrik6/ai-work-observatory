@@ -100,3 +100,9 @@ def jaga(A, vaade, lead, ree, plokid):
 </div>"""
         lehed[s["fail"]] = algus + "".join(h for *_, h in oma)
     return Jagatud(lehed)
+
+
+def seotud(vaated, lingid):
+    """Rida „Seotud“ lehe lõpus (Kadri 6.11.2026 22:27, ettepanek 8): lingid [(vaate id, tekst)] lähedastele teemadele."""
+    li = " · ".join(link(vaated, vid, tekst) for vid, tekst in lingid)
+    return f'<nav class="seotud" aria-label="Seotud teemad"><p><span>Seotud</span> {li}</p></nav>'

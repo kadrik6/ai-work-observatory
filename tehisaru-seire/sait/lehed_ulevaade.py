@@ -242,7 +242,7 @@ def avaleht(A, vaade, vaated):
   <div class="pn-h"><h2 id="h-muutus">Mis muutus: viimati <b>{kp(viimane)}</b></h2></div>
   <p class="ps">{ARVSONAD[VOO_RIDU].capitalize()} viimast muutust allikates ja väidetes; {VOO_PAEVI} päeva jooksul enne {kp(viimane)} lisandus {uued}.</p>
   <ul class="voog">{read}</ul>
-  <p class="allikas">Kogu loend: {menuu("kuidas", "Kuidas lugeda › Mis muutus", "muutused")}. Tehisaru ja töö uudised Eestist ja maailmast: {menuu("uudised", "Uudised")}.</p>
+  <p class="allikas">Kogu loend: {menuu("kas-tosi", "Usaldus › Värskus", "muutused")}. Tehisaru ja töö uudised Eestist ja maailmast: {menuu("uudised", "Uudised")}.</p>
 </section>"""
 
     sihid = [(A["sihid"]["ee-ettevotted-75"], eeb, True)]
@@ -260,7 +260,7 @@ def avaleht(A, vaade, vaated):
 <section class="pn sp3" id="sihid" aria-labelledby="h-sihid">
   <div class="pn-h"><h2 id="h-sihid">Kolmest sihist on <b>ettevõtete kasutus</b> kõige kaugemal</h2></div>
   <div class="sihid">{s_read}</div>
-  <p class="allikas">Iga siht oma allika ja skaalaga: Eesti siht on Statistikaameti numbril, ELi sihid ELi kui terviku kohta. Iga siht on oma teema juures: {menuu("ettevotted", "Ettevõtted", "siht-ettevotted")}, {menuu("inimesed", "Inimesed", "siht-inimesed")}.</p>
+  <p class="allikas">Iga siht oma allika ja skaalaga: Eesti siht on Statistikaameti numbril, ELi sihid ELi kui terviku kohta. Iga siht on oma teema juures: {menuu("ettevotted", "Ettevõtted", "kasutus")}, {menuu("inimesed", "Inimesed", "digi")}.</p>
 </section>"""
 
     sec_hanked = f"""
@@ -293,7 +293,8 @@ def avaleht(A, vaade, vaated):
 <nav aria-label="Sellel lehel"><ul class="sellel"><li><a href="#el">Eesti ELis</a></li><li><a href="#tootus">Töö ja töötus</a></li><li><a href="#trend">Ettevõtted</a></li><li><a href="#muutus">Mis muutus</a></li><li><a href="#sihid">Sihid</a></li><li><a href="#hanked">Hanked</a></li><li><a href="#vaited">Väited</a></li></ul></nav>
 <div class="plaadid" aria-label="Peamised numbrid">{plaadid}</div>"""
     return (pea + '<div class="g12">' + sec_el + "</div>"
-            + '<div class="g12">' + sec_prog + sec_trend + "</div>"
+            # ettevõtete trend ELi koha järel, siis töötus (Kadri 6.11.2026 22:27, ettepanek 9)
+            + '<div class="g12">' + sec_trend + sec_prog + "</div>"
             + '<div class="g12">' + sec_voog + sec_sihid + sec_hanked + "</div>"
             + '<div class="g12">' + sec_vaited + "</div>")
 
@@ -352,15 +353,15 @@ def too_eesti(A):
     bonney_rida = (f'<p class="ps">Võrdluseks USA: ametlikus ettevõtete uuringus teatas tehisaruga seotud töötajate vähendamisest '
                    f'<b>2% firmadest</b>, tehisaru kasutas 18% (<a href="{e(bon["url"])}">USA statistikaamet, Bonney jt {bon["aasta"]}</a>).</p>'
                    if bon and "2% firmadest" in bon["leid"] and "18% firmadest" in bon["leid"] else "")
+    k_pea = f'<div class="pn-h"><h2 id="h-koondamised">{arvsona.capitalize()} Eesti koondamisest: tehisaru otsese põhjusena <b>{otse}</b>, ühe põhjusena {ARVSONAD.get(mainib, str(mainib))}</h2></div>'
     sec_k = f"""
-<section class="pn sp5" id="koondamised" aria-labelledby="h-koondamised">
-  <div class="pn-h"><h2 id="h-koondamised">{arvsona.capitalize()} Eesti koondamisest: tehisaru otsese põhjusena <b>{otse}</b>, ühe põhjusena {ARVSONAD.get(mainib, str(mainib))}</h2></div>
+<div class="kk-kaardid">
   <p class="ps">Koondamised, mille kohta uudis küsis, kas tehisaru oli põhjus. Roll on see, mida ettevõte ise ütles. See ei ole täielik nimekiri; kontrollitud {kp(K["kontrollitud"])}.</p>
   <ul class="kk-v" aria-live="polite">{"".join(kaardid)}</ul>
   <div class="kk-nav" hidden><button type="button" class="kk-e" aria-label="Eelmine ettevõte">‹</button><span class="kk-tapid"></span><button type="button" class="kk-j" aria-label="Järgmine ettevõte">›</button><span class="kk-loe"></span></div>
   <p class="ps">Number on Eesti töökohad, kui see teatati. Ettevõtte enda selgitus ei tõenda põhjust.</p>
   {bonney_rida}
-</section>"""
+</div>"""
     # Keskel: töökohad ettevõtte kaupa, värv näitab, mida ettevõte tehisaru kohta ütles (Kadri 5.11 23:06)
     RYHM = {"otsene": ("s", "nimetas tehisaru põhjusena"), "osaline": ("s", "nimetas tehisaru põhjusena"),
             "kaudne": ("m", "mainis tehisaru muul moel"), "tulevikus": ("m", "mainis tehisaru muul moel"),
@@ -383,11 +384,17 @@ def too_eesti(A):
                      f'<span class="kr-rada"><span class="kr-pole">arv pole teada</span></span><span class="kr-a"></span></div>' for r in pole)
     legend = "".join(f'<span><i class="kr-t {k}"></i>{e(t)}</span>' for k, t in [("s", "nimetas tehisaru põhjusena"), ("m", "mainis tehisaru muul moel"), ("t", "tehisaru ei mainitud")])
     sec_v = f"""
-<section class="pn sp4" id="koondamised-visuaal" aria-labelledby="h-koondamised-v">
-  <div class="pn-h"><h2 id="h-koondamised-v">Tehisaru nimetati üheks põhjuseks <b>{pohjus} töökoha</b> juures {piir}{kokku}-st</h2></div>
+<div class="kk-vis" id="koondamised-visuaal">
+  <h3 class="kk-h3" id="h-koondamised-v">Tehisaru nimetati üheks põhjuseks <b>{pohjus} töökoha</b> juures {piir}{kokku}-st</h3>
   <p class="ps">Teatatud töökohad Eestis ettevõtte kaupa. Värv näitab, mida ettevõte ise tehisaru kohta ütles. Vali ettevõte, et näha selle kaarti.</p>
   <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa; vali ettevõte, et näha selle kaarti">{ribad}</div>
   <p class="kr-leg">{legend}</p>
   <p class="allikas">Allikas: uudised, lingid kaartidel. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
+</div>"""
+    # Graafik ja kaardid on üks plokk, sest vastavad samale küsimusele (Kadri 6.11.2026 22:27, ettepanek 6)
+    sec_kv = f"""
+<section class="pn sp9" id="koondamised" aria-labelledby="h-koondamised">
+  {k_pea}
+  <div class="kk-kaks">{sec_v}{sec_k}</div>
 </section>"""
-    return f'<div class="g12">{sec_t}{sec_v}{sec_k}</div>'
+    return f'<div class="g12">{sec_t}{sec_kv}</div>'

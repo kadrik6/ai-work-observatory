@@ -242,10 +242,13 @@ def _jaotis(h, ank):
 
 
 def test_sihid_on_oma_teema_juures_ja_eesti_siht_on_fookuses(sait):
-    # Sisuloogika 6.11.2026, Kadri otsus 4: sihid teemade juurde, määruse lehel ainult tähtajad
-    assert _jaotis(sait["ettevotted.html"], "siht-ettevotted").count('class="sihiriba fookus"') == 1
-    assert _jaotis(sait["ettevotted-voimekus.html"], "siht-voimekus").count('class="sihiriba fookus"') == 0
-    assert 'id="siht-inimesed"' in sait["inimesed-oskused.html"]
+    # Sisuloogika 6.11.2026, Kadri otsus 4: sihid teemade juurde, määruse lehel ainult tähtajad.
+    # Paigutus 6.11.2026 22:27 (ettepanek 4): siht on üks rida näitaja enda plokis, mitte eraldi plokk
+    assert _jaotis(sait["ettevotted.html"], "kasutus").count('class="sihiriba fookus"') == 1
+    assert _jaotis(sait["ettevotted-voimekus.html"], "digi").count('class="siht-rida"') == 1
+    assert _jaotis(sait["ettevotted-voimekus.html"], "ta").count('class="siht-rida"') == 1
+    assert _jaotis(sait["inimesed-oskused.html"], "digi").count('class="siht-rida"') == 1
+    assert not any('id="siht-' in h for h in sait.values())
     assert 'id="sihid"' not in sait["tehisaru-maarus.html"]
 
 
@@ -346,21 +349,23 @@ def test_hangete_aastaid_ei_vorrelda_enne_inimese_kontrolli(sait):
     assert 'id="hanked"' not in sait["avalik-sektor.html"]
 
 
-def test_menuus_on_kuus_teemat_ja_alamvaade_jaab_teema_alla(sait):
-    # Kadri otsus 2 (6.11.2026): Hanked Avaliku sektori all, Väited Uudistega koos
+def test_menuus_on_kaheksa_teemat_ja_usaldus_on_oma_teema(sait):
+    # Kadri 6.11.2026 21:59: Hanked on oma menüüpunkt. 22:27 (paigutuse ettepanekud 1–3, 10): Usaldus oma menüükoht
     menuu = re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1)
-    # Kadri 6.11.2026 21:59: hanked olid menüüst kadunud, Hanked on jälle oma menüüpunkt
-    assert re.findall(r">([^<>]+)</a>", menuu) == ["Inimesed", "Ettevõtted", "Töö", "Avalik sektor", "Hanked", "Tehisaru määrus", "Uudised ja väited"]
+    assert re.findall(r">([^<>]+)</a>", menuu) == ["Inimesed", "Ettevõtted", "Töö", "Avalik sektor", "Hanked", "Tehisaru määrus", "Uudised", "Usaldus"]
     assert '<a href="hanked.html" aria-current="page">Hanked</a>' in sait["hanked.html"]
     assert '<ul class="sellel"></ul>' not in "".join(sait.values())
-    assert '<a href="uudised.html" aria-current="page">Uudised ja väited</a>' in sait["kas-see-on-tosi.html"]
+    for f in ("kas-see-on-tosi.html", "lahknevused.html", "varskus.html"):
+        assert '<a href="kas-see-on-tosi.html" aria-current="page">Usaldus</a>' in sait[f], f
+    assert 'class="alamlehed"' not in sait["uudised.html"]
 
 
-def test_lahknevused_jaavad_vaidete_lehele_nahtavale(sait):
+def test_lahknevused_ja_varskus_on_usalduse_all_nahtaval(sait):
     # Kadri 6.11.2026 21:38: Eurostati ja Statistikaameti võrdlus jääb nähtavale, kontrollib ministeerium
-    osa = _jaotis(sait["kas-see-on-tosi.html"], "lahknevused")
+    osa = _jaotis(sait["lahknevused.html"], "lahknevused")
     assert "selgitamata" in osa and "<details" not in osa.split("</header>")[0]
-    assert 'id="varskus"' in sait["kuidas-lugeda.html"] and 'id="muutused"' in sait["kuidas-lugeda.html"]
+    assert 'id="varskus"' in sait["varskus.html"] and 'id="muutused"' in sait["varskus.html"]
+    assert 'id="varskus"' not in sait["kuidas-lugeda.html"]
 
 
 def test_igas_teemavaates_on_numbriplaadid(sait):
@@ -373,7 +378,7 @@ def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
     arv = lambda r: r["arv_eestis"] if r.get("arv_eestis") is not None else r.get("arv_ulem")  # noqa: E731
     pohjus = sum(arv(r) for r in j if arv(r) and r["roll"] in ("otsene", "osaline"))
     kokku = sum(arv(r) for r in j if arv(r))
-    h2 = sait["too.html"].split('id="h-koondamised-v">')[1].split("</h2>")[0]
+    h2 = sait["too.html"].split('id="h-koondamised-v">')[1].split("</h3>")[0]
     assert f"<b>{pohjus} töökoha</b>" in h2 and f"{kokku}-st" in h2
 
 
@@ -438,7 +443,7 @@ def test_hanked_on_katseline_ja_tapsus_tuleb_andmetest(A, sait):
 
 
 def test_too_vaates_on_publikatsioonid(A, sait):
-    h = sait["too-uuringud.html"]
+    h = sait["too-kirjandus.html"]  # Kirjandus on oma alamleht (Kadri 6.11.2026 22:27, ettepanek 7)
     P = A["publikatsioonid"]
     assert 'id="uuritakse"' in h and 'id="publikatsioonid"' in h and 'id="eesti-allikad"' in h
     a1 = [r for r in P["aastad"] if not r["poolik"]][-1]
@@ -541,9 +546,9 @@ def test_vana_aadress_suunab_uuele(tmp_path, A):
 
 def test_avaleht_viib_lahknevusteni_ja_plaadid_on_lingid(sait):
     h = sait["index.html"]
-    assert 'href="kas-see-on-tosi.html#lahknevused"' in h
+    assert 'href="lahknevused.html#lahknevused"' in h
     assert re.findall(r'<span class="lbl"><a href="', h).__len__() == 6
-    assert 'href="kas-see-on-tosi.html#lahknevused"' in sait["ettevotted.html"]
+    assert 'href="lahknevused.html#lahknevused"' in sait["ettevotted.html"]
     assert ">Allikas</a>" not in sait["kuidas-lugeda.html"]
 
 
@@ -556,3 +561,19 @@ def test_kasutusloogika_kontroll_leiab_puuduva_oleku():
     M = struktuur.moodik({"index.html": leht.replace("<title>t", "<title>i") + '<a href="a.html">a</a>', "a.html": leht})
     v = " ".join(struktuur.vead(M))
     assert "aktiivne märge" in v and "valitud nupp" in v and "ilma nimeta" in v
+
+
+def test_seotud_rida_avaliku_sektori_ja_hangete_vahel(sait):
+    # Kadri 6.11.2026 22:27, ettepanek 8
+    assert 'class="seotud"' in sait["avalik-sektor.html"] and 'href="hanked.html"' in _seotud(sait["avalik-sektor.html"])
+    assert 'href="avalik-sektor.html"' in _seotud(sait["hanked.html"])
+
+
+def _seotud(h):
+    return h.split('class="seotud"')[1].split("</nav>")[0]
+
+
+def test_koondamised_on_uks_plokk(sait):
+    # Kadri 6.11.2026 22:27, ettepanek 6: graafik ja kaardid ühes plokis
+    osa = _jaotis(sait["too.html"], "koondamised")
+    assert 'id="koondamised-visuaal"' in osa and 'class="kk-v"' in osa

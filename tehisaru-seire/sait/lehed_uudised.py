@@ -6,7 +6,7 @@ Iga pealkirja number tuleb andmetest; pealkirjad, mida mall ei kata, kontrollita
 """
 import datetime
 
-from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, jaga, pea
+from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, jaga, pea, seotud
 from andmekiht import AndmeViga
 from komponendid import e, kp, pr
 
@@ -149,7 +149,7 @@ def uudised(A, vaade, vaated=None):
   <div class="pn-h"><h2 id="h-uudiste-allikad">Kust uudised tulevad</h2></div>
   <div class="g2 u-kuidas">
     <ul class="u-allikad">{allikad}</ul>
-    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „N väljaannet“ näitab, mitu eri väljaannet sama lugu kajastas. See asendab populaarsust, sest klikke väljaanded avalikult ei jaga. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang. Kinnitatud Eesti koondamised on vaates {link(vaated, "too", "Töö", "koondamised")}. Uudistes kontrollitud {len(V)} väidet on koos teistega alamlehel {link(vaated, "kas-tosi", "Väited")}.</p>
+    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „N väljaannet“ näitab, mitu eri väljaannet sama lugu kajastas. See asendab populaarsust, sest klikke väljaanded avalikult ei jaga. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang. Kinnitatud Eesti koondamised on vaates {link(vaated, "too", "Töö", "koondamised")}. Uudistes kontrollitud {len(V)} väidet on koos teistega lehel {link(vaated, "kas-tosi", "Usaldus › Väited")}.</p>
   </div>
 </section>
 </div>"""
@@ -331,7 +331,8 @@ def hanked(A, vaade, vaated=None):
     return (pea(A, vaade, lead, [("aastad", "Viimane aasta"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], ree) + hoiatus
             + '<div class="g12">' + sec_aastad + sec_inn + "</div>"
             + '<div class="g12">' + sec_viis + sec_hankijad + "</div>"
-            + sec_loend + sec_tapsus)
+            + sec_loend + sec_tapsus
+            + seotud(vaated, [("avalik-sektor", "Avalik sektor: kas uuendused jõuavad laiendamiseni"), ("reeglid", "Tehisaru määrus: tähtajad")]))
 
 
 # ---------------------------------------------------------------- Töö: mida uuritakse

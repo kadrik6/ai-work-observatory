@@ -828,3 +828,28 @@ summary { padding-block: 3px; }
   border-radius: 6px; background: var(--hoiatus-taust, #fff8e6); }
 .hoiatus p { margin: 0; max-width: 90ch; }
 [data-seire-teema="tume"] .hoiatus { --hoiatus-joon: #d9a640; --hoiatus-taust: #2e2a20; }
+
+/* Siht näitaja enda plokis (Kadri 6.11.2026 22:27) */
+.siht-rida { margin: 16px 0 0; padding: 10px 0 0; border-top: 1px solid var(--line, #e1e2e5); display: grid; grid-template-columns: minmax(0, 1fr) minmax(160px, 260px); gap: 8px 24px; align-items: center; }
+.siht-rida p { margin: 0; }
+.siht-silt { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-right: 6px; color: var(--ink-2, #3d4460); }
+@media (max-width: 600px) { .siht-rida { grid-template-columns: 1fr; } }
+
+/* Koondamised üks plokk: graafik vasakul, kaardid paremal (Kadri 6.11.2026 22:27) */
+.sp9 { grid-column: span 9; }
+.kk-kaks { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 5fr); gap: 16px 24px; align-items: start; }
+.kk-h3 { font-size: inherit; font-weight: 600; margin: 0 0 4px; }
+.kk-kaardid .kk-v { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1180px) { #tootus-kuud, #koondamised { grid-column: span 12; } }
+@media (max-width: 900px) { .kk-kaks { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) { .kk-kaardid .kk-v { grid-template-columns: minmax(0, 1fr); } }
+
+/* Rida „Seotud“ lehe lõpus (Kadri 6.11.2026 22:27) */
+.seotud { margin: 24px 0 8px; padding-top: 12px; border-top: 1px solid var(--line, #e1e2e5); }
+.seotud p { margin: 0; }
+.seotud span { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-right: 8px; }
+.seotud a { display: inline-block; padding: 4px 0; }
+
+/* Telefonis alamlehtede rida murdub, mitte ei keri külili (Töö: neli alamlehte, 6.11.2026) */
+@media (max-width: 600px) { nav.alam { max-width: 100%; } .alamlehed { flex-wrap: wrap; overflow-x: visible; } }
+.kk-e, .kk-j { min-width: 24px; min-height: 24px; }
