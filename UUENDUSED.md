@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 06.11.2026 | Uudiste loendis on nüüd populaarsuse asemel „N väljaannet“, mis tähendab, mitu eri väljaannet sama lugu kajastas (uudised.jsonl väli levik). Klikke väljaanded avalikult ei jaga. Põhjus: Kadri kommentaar 6.11 10:49. Andmed lisab igapäevane uudiste kogumine. |
 | 06.11.2026 | Saidi päises on „Uuendatud“ asemel nüüd kaks kuupäeva: „Numbrid“ on ametlike numbrite uusim avaldamise kuupäev ja „uudised“ uudiste viimane kontroll. Põhjus: Kadri kommentaar 6.11 10:45, sest vana kuupäev (3.11) ei näidanud 5.11 uuendusi. |
 | 06.11.2026 | ELi järjestuses on number nüüd punkti kõrval, mitte eraldi veerus paremal, ja järjestus on kitsam (480 px). Põhjus: Kadri kommentaar MKUS-il 6.11 10:39. |
 | 06.11.2026 | Eesti Energia koondamine (5.11, vähemalt 390 töökohta, tehisaru ei mainita) ja EKKM (2.11, 3) lisati faili `tooelu-seire/koondamised_ee.json` (Kadri 6.11: Eesti Energia puudus Töö vaatest). Põhjus: Töö vaate koondamised tulid ainult käsitsi peetud nimekirjast (viimati kontrollitud 31.10), igapäevased uudised sinna ei jõudnud. Nüüd lisanduvad uudiste Eesti koondamised Töö vaatesse ise, märkega „uudisest, kontrollimata“. Uus väli `arv_vahemalt` = teatatud arv on alampiir. Töö vaatesse lisandus „Keda koondajad otsivad“: samade ettevõtete koondatavad ametiliigid ja nende enda tööpakkumiste lehe avatud kuulutused (sait/sisu/koondajad.json). |

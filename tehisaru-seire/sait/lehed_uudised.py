@@ -57,6 +57,11 @@ def _uudis(r):
         sildid.append(f'<span class="u-t{" s" if r["ai_roll"] in ("otsene", "osaline") else ""}">{e(ROLL[r["ai_roll"]])}</span>')
     if r.get("suur"):
         sildid.append('<span class="u-l suur">suur uudis</span>')
+    lv = r.get("levik")
+    if lv and isinstance(lv.get("arv"), int) and lv["arv"] > 1:
+        # Populaarsus = mitu väljaannet sama lugu kajastas (klikke väljaanded ei avalda; Kadri 6.11.2026)
+        kellelt = ", ".join(lv.get("allikad") or [])
+        sildid.append(f'<span class="u-t lv" title="Kajastasid: {e(kellelt)} (kontrollitud {e(kp(lv.get("kontrollitud", "")) if lv.get("kontrollitud") else "")})">{lv["arv"]} väljaannet</span>')
     if not r.get("kontrollitud"):
         sildid.append('<span class="u-t">loetud ainult pealkiri</span>')
     arv = f' <b>{e(r["arv_tekst"])}.</b>' if r.get("arv_tekst") else ""
@@ -138,7 +143,7 @@ def uudised(A, vaade, vaated=None):
   <div class="pn-h"><h2 id="h-uudiste-allikad">Kust uudised tulevad</h2></div>
   <div class="g2 u-kuidas">
     <ul class="u-allikad">{allikad}</ul>
-    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang. Kinnitatud Eesti koondamised on vaates {link(vaated, "too", "Töö", "koondamised")}.</p>
+    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „N väljaannet“ näitab, mitu eri väljaannet sama lugu kajastas. See asendab populaarsust, sest klikke väljaanded avalikult ei jaga. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang. Kinnitatud Eesti koondamised on vaates {link(vaated, "too", "Töö", "koondamised")}.</p>
   </div>
 </section>
 </div>"""

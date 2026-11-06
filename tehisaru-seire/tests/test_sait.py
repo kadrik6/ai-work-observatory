@@ -431,3 +431,11 @@ def test_palkamise_pealkiri_tuleb_andmetest(A, sait):
     kuulutusi = sum(len(f["otsib"]["ametid"]) for f in k)
     h2 = sait["too.html"].split('id="h-palkamine">')[1].split("</h2>")[0]
     assert f"(kokku {kuulutusi} kuulutust)" in h2
+
+
+def test_uudise_levik_on_valjaannete_arv(A):
+    import copy
+    B = copy.deepcopy(A)
+    B["uudised"][0]["levik"] = {"arv": 9, "allikad": ["ERR", "Delfi"], "kontrollitud": "2026-11-06"}
+    h = lehed_uudised.uudised(B, next(v for v in ehita.lae_vaated() if v["id"] == "uudised"))
+    assert "9 väljaannet</span>" in h and "Kajastasid: ERR, Delfi" in h
