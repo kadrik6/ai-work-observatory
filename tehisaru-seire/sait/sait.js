@@ -138,6 +138,31 @@
       tabel.parentNode.insertAdjacentElement('afterend', riba);
       naita(12);
     });
+    // ELi riikide järjestus: vaikimisi esimesed 10, ülejäänud nupust (Kadri 7.11.2026). Fookusriik jääb alati näha.
+    document.querySelectorAll('.jrj[data-piir]').forEach(function (j) {
+      var piir = parseInt(j.getAttribute('data-piir'), 10) || 10;
+      var read = Array.prototype.slice.call(j.querySelectorAll('.jrj-r[data-n]'));
+      if (read.length <= piir) return;
+      var riba = document.createElement('div');
+      riba.className = 'kogus';
+      riba.appendChild(document.createTextNode('Näita'));
+      [piir, 0].forEach(function (n) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('data-n', String(n));
+        b.textContent = n ? 'esimesed ' + n : 'kõik (' + read.length + ')';
+        b.addEventListener('click', function () { naita(n); });
+        riba.appendChild(b);
+      });
+      function naita(n) {
+        read.forEach(function (r, i) { r.hidden = n !== 0 && i >= n && !r.classList.contains('fookus'); });
+        riba.querySelectorAll('button').forEach(function (b) {
+          b.setAttribute('aria-pressed', b.getAttribute('data-n') === String(n) ? 'true' : 'false');
+        });
+      }
+      j.insertAdjacentElement('afterend', riba);
+      naita(piir);
+    });
     // Uudiste teemafilter
     document.querySelectorAll('.pn .u-f[aria-label="Vali teema"]').forEach(function (f) {
       var li = f.parentNode.querySelectorAll('.u-voog li');
@@ -211,14 +236,32 @@
     var hrefid = [];
     lingid.forEach(function (a) { var h = a.getAttribute('href'); if (hrefid.indexOf(h) < 0) hrefid.push(h); });
     var sihid = hrefid.map(function (h) { return document.getElementById(h.slice(1)); });
-    function margi() {
-      var piir = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--top-h'), 10) || 110) + 24;
-      var k = -1;
-      sihid.forEach(function (t, i) { if (t && t.getBoundingClientRect().top <= piir) k = i; });
+    // Kõrvuti jaotistel (nt sp5 + sp7 ühes reas) on sama ülaserv. Seepärast: klõpsatud link jääb märgituks, kuni
+    // lugeja ise kerib (ratas, puude, klahv). Ilma klõpsuta võidab suurima ülaservaga jaotis; viigi korral see,
+    // mis on menüüs eespool (Kadri kommentaar 7.11.2026: „valikul värvub vale koht siniseks“).
+    var valitud = null;
+    function sea(h) {
       lingid.forEach(function (a) {
-        if (k >= 0 && a.getAttribute('href') === hrefid[k]) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+        if (h && a.getAttribute('href') === h) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
       });
     }
+    function margi() {
+      if (valitud) { sea(valitud); return; }
+      var piir = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--top-h'), 10) || 110) + 24;
+      var k = -1, parim = -Infinity;
+      sihid.forEach(function (t, i) {
+        if (!t) return;
+        var y = Math.round(t.getBoundingClientRect().top);
+        if (y <= piir && y > parim + 1) { parim = y; k = i; }
+      });
+      sea(k >= 0 ? hrefid[k] : null);
+    }
+    lingid.forEach(function (a) {
+      a.addEventListener('click', function () { valitud = a.getAttribute('href'); sea(valitud); });
+    });
+    function vabasta() { valitud = null; }
+    ['wheel', 'touchstart', 'keydown'].forEach(function (e) { window.addEventListener(e, vabasta, { passive: true }); });
+    if (location.hash && hrefid.indexOf(location.hash) >= 0) valitud = location.hash;
     window.addEventListener('scroll', margi, { passive: true });
     margi();
   });

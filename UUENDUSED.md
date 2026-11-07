@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 7.11.2026 | Seire sait (Kadri MKUS-i kommentaarid õhtul): „Sellel lehel“ märgib klõpsatud lingi ka kõrvuti plokkidel; ELi riikide järjestus näitab vaikimisi 10 riiki ja nupp „kõik (27)“; kaartide alt lause „Mida tumedam…“ maha. |
 | 07.11.2026 | GitHub Actionsi testid kukkusid Python 3.10 peal, sest `sait/kest.py` ja `sait/lehed_ulevaade.py` kasutasid f-stringi avaldises kaldkriipsu. Python 3.12 lubab seda, 3.10 ja 3.11 ei luba. Tekstid on nüüd konstandid (`AKTIIVNE`, `MEGA_NIMI`, `NBSP`) või arvutatakse enne f-stringi. Lehtede sisu ei muutunud: kuldfailitest läbib. Kontrollitud Python 3.11 ja 3.12 peal. |
 | 2026-11-07 | Seire sait, Töö › Tööturg praegu: uus jaotis „Tööportaalid“ (#toopakkumised). CV.ee, CV Keskuse ja Töötukassa kuulutuste arv (iga portaal eraldi, ei liideta) ning portaali enda jaotused ametivaldkonna, linna/maakonna ja suurimate tööandjate järgi; andmed tooelu-uudised/toopakkumised.json (igapäevane kogumine 7:23), vota_kaasa.py ja andmekiht.py loevad selle. |
 | 2026-11-07 | Seire sait, Töö › Tööturg praegu (Kadri 7.11 09:38): uus jaotis „Kus ja mida palgatakse“. Statistikaameti vabad ametikohad tegevusala (PAV011) ja maakonna (PAV014) järgi, viimane kvartal ja aasta varem; laadija sait/lae_vabad.py kirjutab sait/sisu/vabad-ametikohad.csv. Tööportaalide (cv.ee, CV Keskus, Töötukassa) igapäevane kogumine on suunatud TOOELU igapäevasele lõimele. |

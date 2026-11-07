@@ -67,6 +67,20 @@ const U = [
       v.forEach(([k, m]) => { vaiksed[k] = Math.min(vaiksed[k] ?? 99, m); });
     }
     console.log(`${w}px | alla 24 px sihtmärgid: ${Object.keys(vaiksed).length ? Object.entries(vaiksed).map(([k, m]) => k + ' ' + m + 'px').join(', ') : 'pole'}`);
+    // „Sellel lehel“: klõpsatud link on pärast klõpsu märgitud (Kadri kommentaar 7.11.2026: kõrvuti plokkidel värvus vale link)
+    const valesti = [];
+    for (const f of ['index.html', 'too.html', 'ettevotted.html', 'inimesed.html']) {
+      await p.goto(D + f); await p.waitForTimeout(200);
+      const hrefid = await p.$$eval('.lehel .sellel a[href^="#"]', as => [...new Set(as.map(a => a.getAttribute('href')))]);
+      for (const h of hrefid) {
+        const l = p.locator(`.lehel .sellel a[href="${h}"]:visible`).first();
+        if (!(await l.count())) continue;
+        await l.click(); await p.waitForTimeout(400);
+        const cur = await p.$$eval('.lehel .sellel a[aria-current]', as => [...new Set(as.map(a => a.getAttribute('href')))]);
+        if (cur.length !== 1 || cur[0] !== h) valesti.push(`${f}${h}→${cur.join(',') || '-'}`);
+      }
+    }
+    console.log(`${w}px | „Sellel lehel“ märge pärast klõpsu: ${valesti.length ? 'VALE ' + valesti.join(', ') : 'õige'}`);
     await p.goto(D + 'index.html'); await p.evaluate(() => window.scrollTo(0, 1200)); await p.waitForTimeout(150);
     const y0 = await p.evaluate(() => scrollY);
     // hiireklõps koordinaadile: locator.click() kerib enne klõpsu ja rikuks tagasi-nupu mõõtmise

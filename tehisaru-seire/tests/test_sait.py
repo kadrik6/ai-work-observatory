@@ -654,3 +654,14 @@ def test_tooportaalid_iga_portaal_eraldi(A, sait):
     kokku = sum(p["kuulutusi_kokku"] for p in T["portaalid"])
     assert lehed_uudised._arvt(kokku) not in osa  # summat ei näidata
     assert "Sobib ka ukrainlastele" not in osa  # lisasildid ei ole ametivaldkonnad
+
+
+def test_eli_jarjestus_vaikimisi_kumme_ja_kaardil_pole_tumeda_lauset(sait):
+    # Kadri MKUS-i kommentaarid 7.11.2026 õhtul: „näita siin defaultina top kümmet“ ja „võta see lause maha“
+    osa = _jaotis(sait["index.html"], "el")
+    assert 'class="jrj" role="list" aria-label="ELi riigid järjestuses" data-piir="10"' in osa
+    assert osa.count('class="jrj-r') - osa.count("jrj-r pais") - osa.count("jrj-r telg") == 27  # kõik riigid on HTML-is
+    js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
+    assert ".jrj[data-piir]" in js and "'kõik ('" in js
+    for f, h in sait.items():
+        assert "Mida tumedam" not in h, f

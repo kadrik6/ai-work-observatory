@@ -65,11 +65,14 @@ def plaat(lbl, big, small="", cmp="", src="", fookus=False, lisa="", href=""):
             f'{lisa}{f"<span class=cmp>{cmp}</span>" if cmp else ""}<span class="src">{src}</span></div>')
 
 
-def jarjestus(vaatlused, lopp, viide, viite_nimi, fookus="EE", uhik="%"):
-    """Kõik ELi riigid järjestuses, punkt joonel. data-n seob rea kaardi riigiga (sait.js)."""
+def jarjestus(vaatlused, lopp, viide, viite_nimi, fookus="EE", uhik="%", piir=10):
+    """Kõik ELi riigid järjestuses, punkt joonel. data-n seob rea kaardi riigiga (sait.js).
+
+    piir: vaikimisi näidatakse esimesed piir riiki, ülejäänud nupust „kõik“ (Kadri kommentaar 7.11.2026:
+    „näita siin defaultina top kümmet“). Fookusriik jääb alati nähtavale. Peitmine käib sait.js-is."""
     jarjest = sorted(vaatlused, key=lambda v: -v["vaartus"])
     pos = lambda x: x / lopp * 100  # noqa: E731
-    out = [f'<div class="jrj" role="list" aria-label="ELi riigid järjestuses">'
+    out = [f'<div class="jrj" role="list" aria-label="ELi riigid järjestuses" data-piir="{piir}">'
            f'<div class="jrj-r pais" aria-hidden="true"><span></span><span class="rada"><span class="viit-s" style="left:{pos(viide):.2f}%">{e(viite_nimi)}</span></span><span></span></div>']
     for i, v in enumerate(jarjest, 1):
         f = " fookus" if v["geo"] == fookus else ""
@@ -79,7 +82,7 @@ def jarjestus(vaatlused, lopp, viide, viite_nimi, fookus="EE", uhik="%"):
                    f'<span class="v" style="left:{pos(v["vaartus"]):.2f}%">{pr(v["vaartus"])}</span></span><span></span></div>')  # number punkti kõrval (Kadri 6.11)
     margid = "".join(f'<span style="left:{pos(x):.2f}%">{x}{uhik if x == 0 else ""}</span>' for x in range(0, int(lopp) + 1, 10))
     out.append(f'<div class="jrj-r telg" aria-hidden="true"><span></span><span class="rada">{margid}</span><span></span></div></div>')
-    return "".join(out)
+    return '<div class="jrj-k">' + "".join(out) + "</div>"  # ümbris: nupurida „Näita“ tuleb järjestuse alla samasse veergu
 
 
 def _svg_tekst(x, y, t, kl="", ankur="start"):

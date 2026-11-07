@@ -93,7 +93,7 @@ def inimesed(A, vaade, vaated=None):
   <div class="ruut3">
     <figure aria-labelledby="g-kasutus">
       <figcaption><span class="gt" id="g-kasutus">Tehisaru kasutanud inimesed ELi riikides, {y}, % 16–74-aastastest</span>
-        <span class="gs">Mida tumedam, seda suurem osa inimestest. Generatiivse tehisaru tööriistad viimase 3 kuu jooksul, inimeste enda vastused.</span></figcaption>
+        <span class="gs">Generatiivse tehisaru tööriistad viimase 3 kuu jooksul, inimeste enda vastused.</span></figcaption>
       {kaart(list(el.values()), (0, 10, 20, 30, 40), viide=eu["vaartus"], viite_nimi=f"EL keskmine {pr(eu['vaartus'])}%")}
       <p class="peidus">Eesti on {koht}. kohal. Eespool on {", ".join(riik(v["geo"]) for v in jarjest[:koht - 1])}.</p>
       {allikarida([("Eurostat, isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), "uuendatud " + kp(m_in["allikas_uuendas"]))])}
