@@ -129,6 +129,13 @@ def joon(seeriad, x0, x1, y1, samm, w=440, h=170, ml=26, mr=86, mt=10, mb=22, x_
 
 # ---------------------------------------------------------------- vaade
 
+
+def _esimene_lause(t):
+    """Avalehe voos ainult esimene lause; kogu tekst on lehel Usaldus › Värskus (Kadri 7.11.2026: teksti on liiga palju)."""
+    import re
+    m = re.match(r"(.+?[.!?])\s+(?=[A-ZÕÄÖÜŠŽ])", t)
+    return m.group(1) if m else t
+
 def avaleht(A, vaade, vaated):
     ein, eeb = andmed.leia(A, IN, "EE", "uusim"), andmed.leia(A, EB, "EE", "uusim")
     ein_el = andmed.leia(A, IN, EL, "uusim:alus")
@@ -242,7 +249,7 @@ def avaleht(A, vaade, vaated):
     voog = []
     for s in A["sundmused"]:
         if s["liik"] == "allikas":
-            voog.append((s["kuupaev"], "uus number", "uus", e(s["tekst"]), s["url"]))
+            voog.append((s["kuupaev"], "uus number", "uus", e(_esimene_lause(s["tekst"])), s["url"]))
     for v in V:
         if v["kuupaev"]:
             voog.append((v["kuupaev"], "väide", "", f'{e(v["valjaanne"])}: {e(RASKUS[_raskus(v)][0].lower())}', ""))

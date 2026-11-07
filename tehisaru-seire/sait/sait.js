@@ -336,3 +336,24 @@
     m.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { m.open = false; }); });
   });
 })();
+
+// Uudise kokkuvõte on kaks rida; klõps või Enter näitab kogu teksti (Kadri 7.11.2026: teksti on liiga palju).
+(function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('p.u-k').forEach(function (p) {
+      p.classList.add('kinni');
+      if (p.scrollHeight <= p.clientHeight + 2) { p.classList.remove('kinni'); return; }
+      p.classList.add('voib');
+      p.setAttribute('tabindex', '0');
+      p.setAttribute('role', 'button');
+      p.setAttribute('aria-expanded', 'false');
+      p.setAttribute('title', 'Näita kogu kokkuvõtet');
+      function vaheta() {
+        var kinni = p.classList.toggle('kinni');
+        p.setAttribute('aria-expanded', kinni ? 'false' : 'true');
+      }
+      p.addEventListener('click', function (ev) { if (!ev.target.closest('a')) vaheta(); });
+      p.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); vaheta(); } });
+    });
+  });
+})();

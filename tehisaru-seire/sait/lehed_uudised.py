@@ -14,7 +14,7 @@ HANKED_URL = "https://riigihanked.riik.ee/"
 OPENALEX_URL = "https://openalex.org/"
 OECD_URL = "https://doi.org/10.1787/c2c09a06-en"
 
-LIIK = {"uudis": ("uudis", ""), "aruanne": ("aruanne", ""), "uuring": ("uuring", ""),
+LIIK = {"uudis": ("uudis", "vaikne"), "aruanne": ("aruanne", ""), "uuring": ("uuring", ""),
         "arvamus": ("arvamus", "arv"), "eksitav": ("eksitav", "risk")}
 TEEMA = {"koondamine": "koondamine", "ai_too": "tehisaru ja töö", "ai_uldine": "tehisaru", "andmed": "andmed",
          "uuring": "uuring", "eksitav": "eksitav"}
@@ -51,12 +51,18 @@ def _uudis(r):
     if not r.get("url"):
         raise AndmeViga(f"uudised.jsonl: uudisel puudub link ({r.get('pealkiri', '')[:40]})")
     sildid = [f'<span class="u-l {kl}">{e(liik)}</span>']
-    if r.get("teema") in TEEMA and r.get("teema") != r.get("liik"):
-        sildid.append(f'<span class="u-t">{e(TEEMA[r["teema"]])}</span>')
+    # Teema silti pole: teema on paneeli filtris (Kadri 7.11.2026: vähem märke ühel real)
     if r.get("teema") == "koondamine" and r.get("ai_roll") in ROLL:
         sildid.append(f'<span class="u-t{" s" if r["ai_roll"] in ("otsene", "osaline") else ""}">{e(ROLL[r["ai_roll"]])}</span>')
-    if r.get("_jatk"):
-        sildid.append(f'<span class="u-t s">jätkulugu</span>')
+    # „Jätkulugu:“ on märgina, mitte kaks korda tekstis (Kadri 7.11.2026: teksti on liiga palju)
+    import re as _re
+    eesliide = _re.compile(r"^\s*jätkulugu:\s*", _re.I)
+    arv_t, pohjus = r.get("arv_tekst") or "", r.get("pohjus", "")
+    jatk = bool(r.get("_jatk") or eesliide.match(arv_t) or eesliide.match(pohjus))
+    arv_t, pohjus = eesliide.sub("", arv_t), eesliide.sub("", pohjus)
+    arv_t, pohjus = arv_t[:1].upper() + arv_t[1:], pohjus[:1].upper() + pohjus[1:]
+    if jatk:
+        sildid.append('<span class="u-t">jätkulugu</span>')
     if r.get("_uus"):
         sildid.insert(0, '<span class="u-l uus">uus</span>')  # oranž (Kadri 7.11.2026)
     if r.get("suur"):
@@ -68,11 +74,11 @@ def _uudis(r):
         sildid.append(f'<span class="u-t lv" title="Kajastasid: {e(kellelt)} (kontrollitud {e(kp(lv.get("kontrollitud", "")) if lv.get("kontrollitud") else "")})">{lv["arv"]} väljaannet</span>')
     if not r.get("kontrollitud"):
         sildid.append('<span class="u-t">loetud ainult pealkiri</span>')
-    arv = f' <b>{e(r["arv_tekst"])}.</b>' if r.get("arv_tekst") else ""
+    arv = f'<b>{e(arv_t)}.</b> ' if arv_t else ""
     return (f'<li data-teema="{e(r.get("teema", ""))}" data-liik="{e(r["liik"])}">'
             f'<span class="d">{kp(r["kuupaev"])}</span>'
             f'<div><a href="{e(r["url"])}">{e(r["pealkiri"])}</a>'
-            f'<p>{e(r.get("pohjus", ""))}{arv}</p>'
+            f'<p class="u-k">{arv}{e(pohjus)}</p>'
             f'<p class="u-m">{"".join(sildid)}<span class="u-a">{e(r["allikas"])}</span></p></div></li>')
 
 
@@ -148,7 +154,8 @@ def uudised(A, vaade, vaated=None):
   <div class="pn-h"><h2 id="h-uudiste-allikad">Kust uudised tulevad</h2></div>
   <div class="g2 u-kuidas">
     <ul class="u-allikad">{allikad}</ul>
-    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „N väljaannet“ näitab, mitu eri väljaannet sama lugu kajastas. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang.</p>
+    <p class="ps">ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul on ainult pealkiri.</p>
+    <p class="ps">„N väljaannet“ on see, mitu väljaannet sama lugu kajastas. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on ettevõtte enda sõnad tehisaru kohta, mitte meie hinnang.</p>
   </div>
 </section>
 </div>"""
@@ -413,7 +420,7 @@ def uuringud_too(A):
                      f'<td class="ee-kpi">{_kpi(r)}</td><td>{e(nimi.get(r["allikas"], r["allikas"]))}</td></tr>' for r in ee if r.get("url"))
     n_kpi = len({id(t) for t in peamine.values()})
     kpi_t = (f' Põhinumbrid on {ARVSONAD.get(n_kpi, n_kpi)} töö kohta, igaüks kontrollitud allika lehelt '
-             f'({kp(P["eesti_kpi"]["kontrollitud"])}); need tööd on eespool. Ülejäänud ridadel (videod, üritused, viited, teated, arvamuslood) sisulisi numbreid ei ole.') if peamine else ""
+             f'({kp(P["eesti_kpi"]["kontrollitud"])}); need tööd on eespool.') if peamine else ""
     sec_e = f"""
 <div class="g12">
 <section class="pn sp12" id="eesti-allikad" aria-labelledby="h-eesti-allikad">
@@ -435,7 +442,7 @@ def palkamine(A):
     if not F or not K:
         return ""
     from lehed_ulevaade import ROLL_NIMI, koondamise_arv
-    jarjestus, read = [], []
+    jarjestus, read, selgitused = [], [], []
     K = sorted(K, key=lambda r: r["kuupaev"], reverse=True)
     for j in K:
         if j["ettevote"] not in jarjestus:
@@ -458,7 +465,7 @@ def palkamine(A):
         x = F.get(f)
         if x is None:
             read.append(f'<tr><td><b>{e(f)}</b><small>{e(js[0]["sektor"])}</small></td><td>{arvud}</td><td>{pohjused}</td>'
-                        f'<td><span class="kr-pole">taust puudub</span></td><td><span class="kr-pole">pole kontrollitud</span></td><td class="n">—</td></tr>')
+                        f'<td><span class="kr-pole">taust puudub</span></td><td><span class="kr-pole">pole kontrollitud</span></td></tr>')
             continue
         o = x["otsib"]
         kaot = set(x["kaotatud"])
@@ -471,10 +478,12 @@ def palkamine(A):
             otsib = f'<b>{len(o["ametid"])}</b> ' + "".join(
                 f'<span class="pk-a">{e(a["nimi"])} <span class="u-t{" s" if a["liik"] in kaot and a["liik"] not in ("teadmata", "muu") else ""}">{e(a["liik"])}</span></span>'
                 for a in o["ametid"])
-        link_ = f' · {a(o["url"], "tööpakkumised")}' if o.get("url") else ""
+        link_ = f'<small>{a(o["url"], "tööpakkumiste leht")}</small>' if o.get("url") else ""
+        # Viis veergu kuue asemel ja ametiliikide pikk selgitus tabeli all (Kadri 7.11.2026: liiga palju infot ühel taustal)
         read.append(f'<tr><td><b>{e(f)}</b><small>{e(x["sektor"])} · {e(x["omand"])}</small></td><td>{arvud}</td><td>{pohjused}</td>'
-                    f'<td>{kaotatud}<small>{e(x["kaotatud_tekst"])}</small></td><td>{otsib}</td>'
-                    f'<td class="n">{kp(o["kontrollitud"]) if o.get("kontrollitud") else "—"}<small>{link_.lstrip(" · ")}</small></td></tr>')
+                    f'<td>{kaotatud}</td><td>{otsib}{link_}</td></tr>')
+        if x.get("kaotatud_tekst"):
+            selgitused.append(f'<li><b>{e(f)}</b>: {e(x["kaotatud_tekst"])}</li>')
     n_k = len(kontrollitud)
     h2 = f'{SEESTYTLEV.get(n_k, str(n_k) + "-st").capitalize()} kontrollitud koondajast'
     sama_t = (f"; {ARVSONAD.get(len(sama), len(sama))} otsib sama ametiliiki, mida koondab" if sama else "; mitte ükski ei otsi sama ametiliiki, mida koondab")
@@ -482,9 +491,13 @@ def palkamine(A):
 <div class="g12">
 <section class="pn sp12" id="palkamine" aria-labelledby="h-palkamine">
   <div class="pn-h"><h2 id="h-palkamine">{h2} otsib praegu Eestis töötajaid <b>{ARVSONAD.get(len(otsivad), len(otsivad))}</b> (kokku {kuulutusi} kuulutust){sama_t}</h2></div>
-  <p class="ps">Mida koondaja uudise järgi kaotab ja keda tema tööpakkumiste leht praegu Eestis otsib (kontrollitud {kp(kp_min)}). Põhjus on ettevõtte enda selgitus. Sinise äärega ametiliik = sama liik, mida koondatakse. Leht ei näita sisemisi ümberpaigutusi ega ainult LinkedInis avaldatud kuulutusi.{" Taustata: " + ", ".join(e(p) for p in puudu) + "." if puudu else ""}</p>
-  <div class="tbl"><table class="pk"><thead><tr><th scope="col">Ettevõte</th><th scope="col">Koondab Eestis</th><th scope="col">Põhjus ettevõtte sõnul</th><th scope="col">Ametiliigid</th><th scope="col">Otsib praegu Eestis</th><th scope="col">Kontrollitud</th></tr></thead>
+  <p class="ps">Tööpakkumiste lehed on kontrollitud {kp(kp_min)}. Sinise äärega ametiliik on sama, mida koondatakse.</p>
+  <div class="tbl"><table class="pk"><thead><tr><th scope="col">Ettevõte</th><th scope="col">Koondab Eestis</th><th scope="col">Põhjus ettevõtte sõnul</th><th scope="col">Kaotab</th><th scope="col">Otsib praegu Eestis</th></tr></thead>
   <tbody>{"".join(read)}</tbody></table></div>
+  <details><summary>Täpsustused: ametiliigid ja mida tabel ei näita</summary><div>
+    <ul>{"".join(selgitused)}</ul>
+    <p>Tabel ei näita sisemisi ümberpaigutusi ega kuulutusi, mis on ainult LinkedInis.{" Taustata: " + ", ".join(e(p) for p in puudu) + "." if puudu else ""}</p>
+  </div></details>
 </section>
 </div>"""
 
@@ -558,9 +571,9 @@ def toopakkumised(A):
 <div class="g12">
 <section class="pn sp12" id="toopakkumised" aria-labelledby="h-toopakkumised">
   <div class="pn-h"><h2 id="h-toopakkumised">{h2}</h2></div>
-  <p class="ps">Portaalide avalikud koondarvud, loetud iga päev. Portaale ei liideta: sama kuulutus võib olla mitmes. Kategooriad on portaali omad; üks kuulutus võib olla mitmes kategoorias.{ilma_t}</p>
+  <p class="ps">Portaalide avalikud arvud, loetud iga päev. Portaale ei liideta, sest sama kuulutus võib olla mitmes.</p>
   <div class="p-tabs" role="tablist" aria-label="Tööportaal">{"".join(nupud)}</div>
   {"".join(osad)}
-  <details><summary>Kõik portaalid ja kuidas arv loeti</summary><div><div class="tbl"><table><thead><tr><th scope="col">Portaal</th><th scope="col" class="v">Kuulutusi</th><th scope="col">Loetud</th><th scope="col">Lehel oli</th></tr></thead><tbody>{pt}</tbody></table></div></div></details>
+  <details><summary>Kõik portaalid ja kuidas arv loeti</summary><div><p>Kategooriad on portaali omad; üks kuulutus võib olla mitmes kategoorias.{ilma_t}</p><div class="tbl"><table><thead><tr><th scope="col">Portaal</th><th scope="col" class="v">Kuulutusi</th><th scope="col">Loetud</th><th scope="col">Lehel oli</th></tr></thead><tbody>{pt}</tbody></table></div></div></details>
 </section>
 </div>"""

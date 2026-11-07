@@ -266,10 +266,25 @@ def allikarida(osad):
     return '<p class="allikas">Allikas: ' + "; ".join(jupid) + ".</p>"
 
 
-def faktid(read):
-    """read: [(märgis, klass, html)]; klass ∈ {"", "risk", "s"}."""
-    return '<ul class="faktid">' + "".join(
-        f'<li><span class="mark-l {k}">{e(m)}</span><span>{t}</span></li>' for m, k, t in read) + "</ul>"
+def faktid(read, koik_lahti=False):
+    """read: [(märgis, klass, html)]; klass ∈ {"", "risk", "s"}.
+
+    Hoiatused („risk“) ja tõlgendused („s“) jäävad nähtavale. Neutraalsed täpsustused (piirang, ümardus, kes vastas)
+    lähevad klõpsu taha, et paneelis oleks vähem teksti (Kadri 7.11.2026: „teksti on liiga palju“). Kui hoiatust ega
+    tõlgendust pole, jääb esimene rida nähtavale, et paneel ei jääks ilma selgituseta."""
+    li = lambda m, k, t: f'<li><span class="mark-l {k}">{e(m)}</span><span>{t}</span></li>'  # noqa: E731
+    if koik_lahti:
+        return '<ul class="faktid">' + "".join(li(*r) for r in read) + "</ul>"
+    naha = [r for r in read if r[1]]
+    peida = [r for r in read if not r[1]]
+    if not naha and peida:
+        naha, peida = peida[:1], peida[1:]
+    out = '<ul class="faktid">' + "".join(li(*r) for r in naha) + "</ul>" if naha else ""
+    if peida:
+        nimed = ", ".join(e(r[0][:1].lower() + r[0][1:]) for r in peida)
+        out += (f'<details class="faktid-lisa"><summary>Täpsustused: {nimed}</summary>'
+                f'<ul class="faktid">{"".join(li(*r) for r in peida)}</ul></details>')
+    return out
 
 
 def vastavus(hinnang, tekst):

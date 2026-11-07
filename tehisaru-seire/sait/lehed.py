@@ -37,9 +37,9 @@ def _kasutus(A):
     assert not skaalal, "Uuemat Eurostati aastat pole; kui tuleb, läheb see skaalale ja leht tuleb üle vaadata"
     muud.sort(key=lambda v: (v["geo"] != "EE", -v["vaartus"]))
     t_read = [[f'{e(riik(v["geo"]))}<small>{e(v["kogum"])}</small>', pr(v["vaartus"]),
-               f'<span class="vrd">ei ole otse võrreldav:</span> {e(v.get("miks", ""))}'
+               f'{e(v.get("miks", ""))}'
                f'<small><a href="{e(v["url"])}">{e(v["allikas"])}</a>, {e(kp(v["avaldatud"]))}</small>'] for v in muud]
-    uued_tbl = tabel(["Riik ja kogum", f"{muud[0]['aasta']}, %", "Miks mitte skaalal ja allikas"], t_read, fookus_rida=0, numbrid=[1],
+    uued_tbl = tabel(["Riik ja kogum", f"{muud[0]['aasta']}, %", "Miks ei ole otse võrreldav; allikas"], t_read, fookus_rida=0, numbrid=[1],
                      pealdis="Riikide uusimad numbrid, mis ei ole ELi skaalaga võrreldavad")
 
     lahk = next(l for l in A["lahknevused"] if l["kood"] == "C5")

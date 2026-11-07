@@ -706,3 +706,36 @@ def test_el_jarjestuse_viimane_koht_klapib_registriga(A):
     koht = andmekiht.koht(A, "ettevotete-tehisaru-kasutus", "EE", y)
     _, k, aastad, _, _ = lehed_ulevaade.el_jarjestus("ettevotete-tehisaru-kasutus", koht_praegu=koht, aasta_praegu=y)
     assert k[y] == koht and aastad[0] <= 2021
+
+
+# ---- Lihtsustamine (Kadri 7.11.2026: „liiga palju infot ühel valgel taustal … teksti on liiga palju“) ----
+
+def test_faktid_peidavad_neutraalsed_taepsustused():
+    h = komponendid.faktid([("Piirang", "", "p"), ("Kontrollimata", "risk", "k"), ("Ümardus", "", "u")])
+    nahtav, peidus = h.split("<details", 1)
+    assert "Kontrollimata" in nahtav and "Piirang" not in nahtav
+    assert "<summary>Täpsustused: piirang, ümardus</summary>" in peidus
+    ainult_neutraalne = komponendid.faktid([("EL", "", "x"), ("Siht", "", "y")])
+    assert ainult_neutraalne.startswith('<ul class="faktid"><li><span class="mark-l ">EL</span>')
+    assert "Täpsustused: siht" in ainult_neutraalne
+    assert "<details" not in komponendid.faktid([("Piirang", "", "p")], koik_lahti=True)
+
+
+def test_uudistel_pole_teema_silti_ega_topelt_jatkulugu(A, sait):
+    h = sait["uudised.html"]
+    assert "Jätkulugu:" not in h and "jätkulugu:" not in h
+    assert h.count('<p class="u-k">') == len(A["uudised"])
+    assert '<span class="u-t">tehisaru ja töö</span>' not in h
+    assert h.count('class="u-l vaikne">uudis<') == sum(r["liik"] == "uudis" for r in A["uudised"])
+
+
+def test_koondajate_tabel_on_viie_veeruga_ja_selgitus_klopsu_taga(sait):
+    t = _jaotis(sait["too.html"], "palkamine")
+    assert t.split("<thead>")[1].split("</thead>")[0].count("<th ") == 5
+    assert "<summary>Täpsustused: ametiliigid ja mida tabel ei näita</summary>" in t
+
+
+def test_avalehe_voos_on_ainult_esimene_lause():
+    import lehed_ulevaade
+    assert lehed_ulevaade._esimene_lause("Esimene lause on siin. Teine lause.") == "Esimene lause on siin."
+    assert lehed_ulevaade._esimene_lause("2026. aastal kasvas 5%.") == "2026. aastal kasvas 5%."
