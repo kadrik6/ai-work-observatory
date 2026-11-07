@@ -333,7 +333,7 @@ def test_too_vaates_on_eesti_tooturg_praegu(A, sait):
     h = sait["too.html"]
     assert 'id="tootus-kuud"' in h and 'id="koondamised"' in h
     juhtumid = A["koondamised"]["juhtumid"]
-    assert h.count('class="kk"') == len(juhtumid)
+    assert 'class="kk"' not in h  # kaardid võeti maha (Kadri 7.11.2026 08:48)
     # pealkiri ütleb, mitu nimetas tehisaru otsese põhjusena; see tuleb andmetest
     otsene = sum(r["roll"] == "otsene" for r in juhtumid)
     assert ("mitte ükski" if otsene == 0 else abi.ARVSONAD[otsene]) in h.split('id="h-koondamised">')[1].split("</h2>")[0]
@@ -382,12 +382,21 @@ def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
     assert f"<b>{pohjus} töökoha</b>" in h2 and f"{kokku}-st" in h2
 
 
-def test_iga_koondamise_kaart_on_seotud_tulbaga(A, sait):
+def test_iga_koondamine_on_tulbal_ja_tabelis_arvu_pohjuse_ja_lingiga(A, sait):
+    # Kadri MKUS-i kommentaar 7.11.2026 08:48: kaardid maha, koondatute arv, põhjus ja link alumisse tabelisse
+    from lehed_ulevaade import koondamise_arv
     h = sait["too.html"]
-    kaardid = re.findall(r'<li class="kk" data-k="([^"]+)"', h)
     tulbad = re.findall(r'<div class="kr" data-k="([^"]+)"', h)
-    assert sorted(kaardid) == sorted(tulbad) == sorted(r["id"] for r in A["koondamised"]["juhtumid"])
-    assert 'class="kk-nav" hidden' in h  # ilma JS-ita on kõik kaardid näha
+    tabel = _jaotis(h, "palkamine")
+    read = re.findall(r'<div class="pk-k" id="pk-([^"]+)"', tabel)
+    assert sorted(tulbad) == sorted(read) == sorted(r["id"] for r in A["koondamised"]["juhtumid"])
+    for r in A["koondamised"]["juhtumid"]:
+        rida = tabel.split(f'id="pk-{r["id"]}"')[1]
+        assert f"<b>{koondamise_arv(r)}</b>" in rida.split("</div>")[0]
+        osa = rida.split("</tr>")[0]
+        assert komponendid.e(r["pohjus"]) in osa and f'href="{komponendid.e(r["url"])}"' in osa, r["id"]
+    for k in ("<th scope=\"col\">Koondab Eestis</th>", "<th scope=\"col\">Põhjus ettevõtte sõnul</th>"):
+        assert k in tabel
 
 
 # ---- Uudised, Hanked, Töö publikatsioonid (Kadri 5.11.2026 23:17) ----
@@ -574,9 +583,9 @@ def _seotud(h):
 
 
 def test_koondamised_on_uks_plokk(sait):
-    # Kadri 6.11.2026 22:27, ettepanek 6: graafik ja kaardid ühes plokis
+    # Kadri 6.11.2026 22:27, ettepanek 6: graafik ühes plokis; 7.11 08:48 kaardid maha, link tabelisse
     osa = _jaotis(sait["too.html"], "koondamised")
-    assert 'id="koondamised-visuaal"' in osa and 'class="kk-v"' in osa
+    assert 'id="koondamised-visuaal"' in osa and 'class="kk-v"' not in osa and 'href="#palkamine"' in osa
 
 
 def test_navigatsioon_b_koik_teemad_sakid_ja_sellel_lehel(sait):
@@ -599,3 +608,12 @@ def test_navigatsioon_b_koik_teemad_sakid_ja_sellel_lehel(sait):
             assert '<nav class="rada"' in main
     assert 'class="lehel lehel-parem"' in sait["too.html"] and 'class="lehel lehel-rida"' in sait["too.html"]
     assert '<nav class="rada"' not in sait["index.html"]
+
+
+def test_publikatsiooni_tsiteeringud_on_pealkirja_korval(A, sait):
+    # Kadri MKUS-i kommentaar 7.11.2026 08:50: „tahaks näha kõrval arvu mitu korda on tsiteeritud“
+    osa = _jaotis(sait["too-kirjandus.html"], "publikatsioonid")
+    assert '<th scope="col" class="v">Tsiteeritud</th><th scope="col">Publikatsioon ja kanal</th>' in osa
+    koik = max((r for r in A["publikatsioonid"]["tood"] if r["grupp"] == "koik" and r.get("url")), key=lambda r: r["viiteid"])
+    rida = osa.split(f'<a href="{komponendid.e(koik["url"])}">')[0].rsplit("<tr>", 1)[1]
+    assert lehed_uudised._arv(koik["viiteid"]) in rida

@@ -305,6 +305,13 @@ ROLL_NIMI = {"otsene": "otsene põhjus", "osaline": "üks põhjus", "kaudne": "k
              "ei_mainita": "ei mainita"}
 
 
+def koondamise_arv(r):
+    """Koondatute arv Eestis tekstina: täpne, „vähemalt“, „kuni“ või „arv pole teada“."""
+    if r.get("arv_eestis") is not None:
+        return ("vähemalt " if r.get("arv_vahemalt") else "") + str(r["arv_eestis"])
+    return f'kuni {r["arv_ulem"]}' if r.get("arv_ulem") else "arv pole teada"
+
+
 def too_eesti(A):
     """Töö vaate esimene rida: Eesti töötus kuu kaupa ja Eesti koondamised, kus küsiti tehisaru rolli."""
     T = tootus()
@@ -338,14 +345,6 @@ def too_eesti(A):
 
     otsene = sum(r["roll"] == "otsene" for r in juhtumid)
     mainib = sum(r["roll"] in ("otsene", "osaline") for r in juhtumid)
-    kaardid = []
-    for r in juhtumid:
-        arv = (("vähemalt " if r.get("arv_vahemalt") else "") + str(r["arv_eestis"])) if r.get("arv_eestis") is not None else (f'kuni {r["arv_ulem"]}' if r.get("arv_ulem") else "arv pole teada")
-        kand = '<span class="u-t">uudisest, kontrollimata</span>' if r.get("kandidaat") else ""
-        klass = " s" if r["roll"] in ("otsene", "osaline") else ""
-        kaardid.append(f'<li class="kk" data-k="{e(r["id"])}"><div class="kk-r"><b>{e(r["ettevote"])}</b><span class="kk-n{'' if r.get('arv_eestis') is not None or r.get('arv_ulem') else ' t'}">{e(arv)}</span></div>'
-                       f'<div class="kk-r"><span class="roll{klass}">tehisaru: {e(ROLL_NIMI[r["roll"]])}</span><span class="kk-d">{kp(r["kuupaev"])} · {e(r["sektor"])}</span></div>'
-                       f'<p title="{e(r["pohjus"])}">{e(r["pohjus"])}</p><a href="{e(r["url"])}">{e(r["allikas"])}</a>{kand}</li>')
     arvsona = SEESTYTLEV.get(len(juhtumid), f"{len(juhtumid)}-st")
     otse = "mitte ükski" if otsene == 0 else ARVSONAD.get(otsene, str(otsene))
     # USA statistikaameti firmauuring: otsene mõõt firmadelt (sisuloogika 6.11.2026)
@@ -354,14 +353,6 @@ def too_eesti(A):
                    f'<b>2% firmadest</b>, tehisaru kasutas 18% (<a href="{e(bon["url"])}">USA statistikaamet, Bonney jt {bon["aasta"]}</a>).</p>'
                    if bon and "2% firmadest" in bon["leid"] and "18% firmadest" in bon["leid"] else "")
     k_pea = f'<div class="pn-h"><h2 id="h-koondamised">{arvsona.capitalize()} Eesti koondamisest: tehisaru otsese põhjusena <b>{otse}</b>, ühe põhjusena {ARVSONAD.get(mainib, str(mainib))}</h2></div>'
-    sec_k = f"""
-<div class="kk-kaardid">
-  <p class="ps">Koondamised, mille kohta uudis küsis, kas tehisaru oli põhjus. Roll on see, mida ettevõte ise ütles. See ei ole täielik nimekiri; kontrollitud {kp(K["kontrollitud"])}.</p>
-  <ul class="kk-v" aria-live="polite">{"".join(kaardid)}</ul>
-  <div class="kk-nav" hidden><button type="button" class="kk-e" aria-label="Eelmine ettevõte">‹</button><span class="kk-tapid"></span><button type="button" class="kk-j" aria-label="Järgmine ettevõte">›</button><span class="kk-loe"></span></div>
-  <p class="ps">Number on Eesti töökohad, kui see teatati. Ettevõtte enda selgitus ei tõenda põhjust.</p>
-  {bonney_rida}
-</div>"""
     # Keskel: töökohad ettevõtte kaupa, värv näitab, mida ettevõte tehisaru kohta ütles (Kadri 5.11 23:06)
     RYHM = {"otsene": ("s", "nimetas tehisaru põhjusena"), "osaline": ("s", "nimetas tehisaru põhjusena"),
             "kaudne": ("m", "mainis tehisaru muul moel"), "tulevikus": ("m", "mainis tehisaru muul moel"),
@@ -386,15 +377,16 @@ def too_eesti(A):
     sec_v = f"""
 <div class="kk-vis" id="koondamised-visuaal">
   <h3 class="kk-h3" id="h-koondamised-v">Tehisaru nimetati üheks põhjuseks <b>{pohjus} töökoha</b> juures {piir}{kokku}-st</h3>
-  <p class="ps">Teatatud töökohad Eestis ettevõtte kaupa. Värv näitab, mida ettevõte ise tehisaru kohta ütles. Vali ettevõte, et näha selle kaarti.</p>
-  <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa; vali ettevõte, et näha selle kaarti">{ribad}</div>
+  <p class="ps">Teatatud töökohad Eestis ettevõtte kaupa. Värv näitab, mida ettevõte ise tehisaru kohta ütles. Need on koondamised, mille kohta uudis küsis, kas tehisaru oli põhjus; see ei ole täielik nimekiri (kontrollitud {kp(K["kontrollitud"])}).</p>
+  <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa">{ribad}</div>
   <p class="kr-leg">{legend}</p>
-  <p class="allikas">Allikas: uudised, lingid kaartidel. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
+  <p class="allikas">Allikas: uudised. Arv, põhjus ja link igale uudisele on allpool tabelis <a href="#palkamine">Keda koondajad otsivad</a>. Ettevõtte enda selgitus ei tõenda põhjust. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
+  {bonney_rida}
 </div>"""
-    # Graafik ja kaardid on üks plokk, sest vastavad samale küsimusele (Kadri 6.11.2026 22:27, ettepanek 6)
+    # Kaardid võeti maha; arv, põhjus ja link on tabelis „Keda koondajad otsivad“ (Kadri MKUS-i kommentaar 7.11.2026 08:48)
     sec_kv = f"""
 <section class="pn sp9" id="koondamised" aria-labelledby="h-koondamised">
   {k_pea}
-  <div class="kk-kaks">{sec_v}{sec_k}</div>
+  {sec_v}
 </section>"""
     return f'<div class="g12">{sec_t}{sec_kv}</div>'
