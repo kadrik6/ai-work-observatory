@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-07 | Seire sait, Ettevõtted: 2026. aasta riiklike numbrite tabel oma paneelis (jaotis kasutus-uued), hoiatused kaardi kõrval, vahe numbrid ilma kastita (Kadri pilt ja „nagu siin nt“). Paneel 901 → 718 px. Test test_ettevotete_uued_riiklikud_numbrid_on_oma_paneelis. |
 | 2026-11-07 | Seire sait lihtsamaks (Kadri: „liiga palju infot ühel valgel taustal, teksti liiga palju“): neutraalsed täpsustused (piirang, ümardus jm) klõpsu taha, hoiatused jäävad nähtavale; uudise kokkuvõte kaks rida (klõps avab), teema silt ja topelt „jätkulugu:“ maha, tavaline uudis vaikse märgiga; koondajate tabel 6 → 5 veergu, ametiliikide selgitus klõpsu taha; avalehe voos esimene lause; sihtide ülevool parandatud; lühemad sissejuhatused. Nähtav sõnade arv 12 115 → ~11 500, märke 194 → 152, lehtede kõrgus −5%. 4 uut testi. |
 | 2026-11-07 | Seire sait: kõik „uus“ märgid on oranžid (uudised ja avalehe „Mis muutus“ „uus number“), tume tekst oranžil (5,4:1); „suur uudis“ jääb siniseks. Kadri kommentaar MKUS-il. Test test_uus_margid_on_oranzid. |
 | 7.11.2026 | Seire sait, Uudised (Kadri kommentaar): vananenud lause „Uueneb iga päev, kui sait ühendatakse…“ asendatud lausega „Uueneb iga päev kell 7.23 ja 17.53“. |

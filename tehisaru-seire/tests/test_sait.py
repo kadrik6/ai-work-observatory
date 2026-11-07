@@ -739,3 +739,11 @@ def test_avalehe_voos_on_ainult_esimene_lause():
     import lehed_ulevaade
     assert lehed_ulevaade._esimene_lause("Esimene lause on siin. Teine lause.") == "Esimene lause on siin."
     assert lehed_ulevaade._esimene_lause("2026. aastal kasvas 5%.") == "2026. aastal kasvas 5%."
+
+
+def test_ettevotete_uued_riiklikud_numbrid_on_oma_paneelis(sait):
+    # Kadri 7.11.2026 (pilt ettevõtete paneelist): liiga palju infot ühel taustal
+    h = sait["ettevotted.html"]
+    kasutus, uued = _jaotis(h, "kasutus"), _jaotis(h, "kasutus-uued")
+    assert "<table" in uued and "Taani" in uued and "Danmarks Statistik" not in kasutus
+    assert 'class="vrd">ei ole otse võrreldav' not in h and 'class="usaldus3"' not in kasutus

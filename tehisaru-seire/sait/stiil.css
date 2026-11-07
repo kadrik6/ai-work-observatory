@@ -1051,3 +1051,6 @@ th, td { padding: 6px 10px; }
 .u-k.kinni { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
 .u-k.voib { cursor: pointer; }
 .u-k.voib:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+/* Kast ei ole kasti sees: vahe numbrid ilma raamita (Kadri 7.11.2026: liiga palju ühel taustal) */
+.vahe div { border: 0; padding: 0; border-radius: 0; }

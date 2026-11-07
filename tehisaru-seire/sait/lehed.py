@@ -92,12 +92,8 @@ def _kasutus(A):
         </div>
         <p class="gs">Eesti kasvab suhtes kiiremini, aga punktides aeglasemalt kui Põhjamaad.</p>
       </div>
-      <div class="plokk">
-        <h3>{muud[0]["aasta"]}. aasta numbrid on olemas, aga ELi skaalale need ei sobi</h3>
-        {uued_tbl}
-      </div>
+      {usaldus}
     </div>
-    <div class="usaldus3">{usaldus}</div>
   </div>
   <details>
     <summary>Näita andmetabelit ja määratlust</summary>
@@ -112,6 +108,13 @@ def _kasutus(A):
       {allikarida([("Eurostat, isoc_eb_ai", m["url"].split("?")[0], "kontrollitud " + kp(m["kontrollitud"]))])}
     </div>
   </details>
+</section>
+<section class="jaotis" id="kasutus-uued" aria-labelledby="h-kasutus-uued">
+  <header>
+    <h2 id="h-kasutus-uued">{muud[0]["aasta"]}. aasta numbrid on olemas {len(muud)} riigil, aga <b>ELi skaalale need ei sobi</b></h2>
+    <p class="alam">Riikide statistikaametid avaldasid need enne Eurostati. Küsimustik või ettevõtete kogum erineb, seepärast ei ole need kaardil.</p>
+  </header>
+  {uued_tbl}
 </section>"""
 
 
