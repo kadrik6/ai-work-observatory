@@ -10,6 +10,10 @@ from komponendid import e, kp
 
 _SIIN = Path(__file__).resolve().parent
 
+# Python 3.10: f-stringi avaldises ei tohi olla kaldkriipsu, seepärast on jutumärkidega tekstid konstandid
+AKTIIVNE = ' aria-current="page"'
+MEGA_NIMI = ' class="mega-nimi"'
+
 
 def _v(nimi):
     """Faili sisu räsi lingi lõppu: muudetud stiil või skript ei tule brauseri vahemälust vanana."""
@@ -46,7 +50,7 @@ def sellel_lehel(lingid):
 
 def alamlehed(vaade, fail):
     """Teema alamlehed sakkidena pealkirja all (navigatsioon B, Kadri 6.11.2026 22:51)."""
-    li = "".join(f'<li><a href="{s["fail"]}"{" aria-current=\"page\"" if s["fail"] == fail else ""}>{e(s["nimi"])}</a></li>'
+    li = "".join(f'<li><a href="{s["fail"]}"{AKTIIVNE if s["fail"] == fail else ""}>{e(s["nimi"])}</a></li>'
                  for s in vaade["alamlehed"])
     return f'<nav class="alam" aria-label="{e(vaade["menuu"])}: alamlehed"><ul class="alamlehed">{li}</ul></nav>'
 
@@ -64,7 +68,7 @@ def mega(vaated, fail, kodu, teema_id=None):
             continue
         alam = v.get("alamlehed") or []
         ul = ("<ul>" + "".join(f'<li>{a(s["fail"], e(s["nimi"]))}</li>' for s in alam) + "</ul>") if len(alam) > 1 else ""
-        veerud.append(f'<div class="mega-t">{a(v["fail"], e(v["menuu"]), " class=\"mega-nimi\"", v["id"])}{ul}'
+        veerud.append(f'<div class="mega-t">{a(v["fail"], e(v["menuu"]), MEGA_NIMI, v["id"])}{ul}'
                       f'<p>{e(v.get("kusimus") or "")}</p></div>')
     lisa = [a(kodu, "Avaleht")] + [a(v["fail"], {"kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}.get(v["id"], e(v["id"])))
                                    for v in vaated if not v["menuu"] and v["id"] != "avaleht" and v["olek"] == "valmis"]

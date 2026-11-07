@@ -22,6 +22,7 @@ UNE_URL = "https://ec.europa.eu/eurostat/databrowser/view/une_rt_m/default/table
 UNE_UUENDATUD = "2026-10-30"
 HANKED_URL = "https://riigihanked.riik.ee/"
 VOO_PAEVI, VOO_RIDU = 14, 8
+NBSP = "\u00a0"
 
 
 def _loe(nimi):
@@ -455,11 +456,13 @@ def vabad_ametikohad():
     tbl = tabel(["Tegevusala", viimane, aasta_tagasi],
                 [[e(n), f"{v:,.0f}".replace(",", "\u00a0"), f"{arv.get((n, aasta_tagasi), 0):,.0f}".replace(",", "\u00a0")] for n, v in alad],
                 pealdis="Vabad ametikohad tegevusala järgi")
+    # Python 3.10: f-stringi avaldises ei tohi olla kaldkriipsu, seepärast arvutatakse lause enne
+    v_lause = f" Samas kvartalis võeti tööle {kokku_v:,.0f} inimest.".replace(",", NBSP) if kokku_v else ""
     return f"""
 <div class="g12">
 <section class="pn sp12" id="vabad-kohad" aria-labelledby="h-vabad-kohad">
   <div class="pn-h"><h2 id="h-vabad-kohad">{h2}</h2></div>
-  <p class="ps">Vaba ametikoht on koht, mille täitmiseks tööandja otsib aktiivselt töötajat väljastpoolt (Statistikaameti tööandjate uuring, kvartali keskmine).{f" Samas kvartalis võeti tööle {kokku_v:,.0f} inimest.".replace(",", "\u00a0") if kokku_v else ""} Ametite ja tööportaalide kaupa ametlikku statistikat ei ole; see tuleb tööportaalidest ja lisandub siia, kui igapäevane kogumine töötab.</p>
+  <p class="ps">Vaba ametikoht on koht, mille täitmiseks tööandja otsib aktiivselt töötajat väljastpoolt (Statistikaameti tööandjate uuring, kvartali keskmine).{v_lause} Ametite ja tööportaalide kaupa ametlikku statistikat ei ole; see tuleb tööportaalidest ja lisandub siia, kui igapäevane kogumine töötab.</p>
   <div class="uu-kaks">
     <div><p class="gt">Mis valdkonnas: vabad ametikohad tegevusala järgi, {viimane}</p><p class="ps">Sulgudes {aasta_tagasi}.</p>{g_a}</div>
     <div><p class="gt">Kus: osa kõigist vabadest ametikohtadest maakonna järgi, %, {kv14}</p><p class="ps">Harjumaa on jagatud Tallinnaks ja ülejäänud Harjumaaks.{f" {pr(teadmata)}% kohtadest asukohta ei määratud." if teadmata > 0.05 else ""}{" Statistikaamet ei avaldanud seda kvartalit: " + ", ".join(puudu) + "." if puudu else ""}</p>{g_m}</div>
