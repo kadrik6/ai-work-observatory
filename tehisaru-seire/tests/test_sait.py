@@ -629,3 +629,17 @@ def test_eesti_toode_pohinumbrid_on_tabelis(A, sait):
     # põhinumbritega tööd on tabeli alguses (vaikimisi on näha 12 rida)
     esimene = osa.split("<tbody>")[1].split("</tr>")[0]
     assert 'class="ee-k"' in esimene
+
+
+def test_vabad_ametikohad_tulevad_statistikaametist(sait):
+    # Kadri 7.11.2026: mida, kus ja mis valdkonnas palgatakse; ametlik osa on Statistikaameti PAV011 ja PAV014
+    import csv
+    R = list(csv.DictReader(open(ehita.SIIN / "sisu" / "vabad-ametikohad.csv", encoding="utf-8")))
+    kv = lambda p: (int(p.split()[0]), ["I", "II", "III", "IV"].index(p.split()[1]))  # noqa: E731
+    viimane = max((r["periood"] for r in R if r["tabel"] == "PAV011"), key=kv)
+    kokku = next(float(r["vaartus"]) for r in R if r["tabel"] == "PAV011" and r["periood"] == viimane
+                 and r["nimi"].startswith("Kokku") and r["naitaja"] == "Vabade ametikohtade arv")
+    osa = _jaotis(sait["too.html"], "vabad-kohad")
+    h2 = osa.split('id="h-vabad-kohad">')[1].split("</h2>")[0]
+    assert f"{kokku:,.0f}".replace(",", " ") + " vaba ametikohta" in h2
+    assert "PAV011" in osa and "PAV014" in osa and "Tallinn" in osa

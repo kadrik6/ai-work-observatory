@@ -936,10 +936,10 @@ summary { padding-block: 3px; }
 /* Publikatsioonid: tsiteeringute arv pealkirja kõrval (7.11.2026) */
 #publikatsioonid .pub-ts { width: 1%; white-space: nowrap; padding-right: 12px; font: 700 16px/1.3 var(--font-display); font-variant-numeric: tabular-nums; }
 #publikatsioonid .pub-ts.t { color: var(--ink-3); font-weight: 400; }
-#uuritakse .uu-kaks { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 48px; align-items: start; margin-top: 8px; }
-#uuritakse .uu-kaks .gt { margin-bottom: 10px; }
+#uuritakse .uu-kaks, #vabad-kohad .uu-kaks { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 48px; align-items: start; margin-top: 8px; }
+#uuritakse .uu-kaks .gt, #vabad-kohad .uu-kaks .gt { margin-bottom: 10px; }
 #uuritakse .aastatulbad { max-width: none; margin-bottom: 26px; }
-@media (max-width: 760px) { #uuritakse .uu-kaks { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) { #uuritakse .uu-kaks, #vabad-kohad .uu-kaks { grid-template-columns: minmax(0, 1fr); } }
 /* Eesti tööde põhinumbrid (7.11.2026) */
 .ee-tbl td { vertical-align: top; }
 .ee-tbl td.ee-kpi { width: 46%; font-size: 15px; }
@@ -980,3 +980,9 @@ th, td { padding: 6px 10px; }
 .kogus { border-bottom: 0; gap: 4px; }
 @media (pointer: coarse) { .u-f button, .p-tabs button, .kogus button { min-height: 44px; } }
 @media (max-width: 680px) { body { font-size: 15px; } .pn, .jaotis { padding: 14px; } .g12 { gap: 14px; } .u-f, .p-tabs { flex-wrap: nowrap; overflow-x: auto; } .u-f button, .p-tabs button { white-space: nowrap; } }
+#vabad-kohad .uu-kaks .ps { margin: -6px 0 8px; }
+#vabad-kohad .ribad .n { min-width: 0; }
+#vabad-kohad .lihtne .rida, #vabad-kohad .lihtne .telg { grid-template-columns: 15em minmax(0, 1fr) 7.5em; }
+#vabad-kohad .lihtne .rida .v { white-space: nowrap; }
+#vabad-kohad .lihtne .rida .n { white-space: normal; line-height: 1.15; }
+@media (max-width: 680px) { #vabad-kohad .lihtne .rida, #vabad-kohad .lihtne .telg { grid-template-columns: 8.5em minmax(0, 1fr) 7em; } }

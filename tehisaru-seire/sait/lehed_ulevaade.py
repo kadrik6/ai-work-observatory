@@ -390,3 +390,81 @@ def too_eesti(A):
   {sec_v}
 </section>"""
     return f'<div class="g12">{sec_t}{sec_kv}</div>'
+
+
+# ---------------------------------------------------------------- Töö: kus ja mis valdkonnas palgatakse
+
+PAV_URL = "https://andmed.stat.ee/et/stat/majandus__palk-ja-toojeukulu__vabad-ametikohad"
+LUHI = {"Hulgi- ja jaekaubandus; mootorsõidukite ja mootorrataste remont": "Kaubandus ja autoremont",
+        "Avalik haldus ja riigikaitse; kohustuslik sotsiaalkindlustus": "Avalik haldus ja riigikaitse",
+        "Elektrienergia, gaasi, auru ja konditsioneeritud õhuga varustamine": "Energeetika",
+        "Veevarustus; kanalisatsioon; jäätme- ja saastekäitlus": "Vesi ja jäätmed",
+        "Põllumajandus, metsamajandus ja kalapüük": "Põllu- ja metsamajandus",
+        "Kutse-, teadus- ja tehnikaalane tegevus": "Kutse-, teadus- ja tehnikaala",
+        "Tervishoid ja sotsiaalhoolekanne": "Tervishoid ja hoolekanne",
+        "Harju maakond, v.a Tallinn": "Harjumaa (v.a Tallinn)"}
+
+
+def _kv(p):
+    """„2026 II kvartal“ → (2026, 2)."""
+    a, k, _ = p.split()
+    return int(a), {"I": 1, "II": 2, "III": 3, "IV": 4}[k]
+
+
+def vabad_ametikohad():
+    """Statistikaameti vabad ametikohad tegevusala ja maakonna järgi (Kadri 7.11.2026: „mida ja kus palgatakse“).
+    Tühi, kui faili sisu/vabad-ametikohad.csv pole (python3 sait/lae_vabad.py)."""
+    if not (SISU / "vabad-ametikohad.csv").exists():
+        return ""
+    R = _loe("vabad-ametikohad.csv")
+    for r in R:
+        r["vaartus"] = float(r["vaartus"])
+    viimane = max((r["periood"] for r in R if r["tabel"] == "PAV011"), key=_kv)
+    a, k = _kv(viimane)
+    aasta_tagasi = f'{a - 1} {["I", "II", "III", "IV"][k - 1]} kvartal'
+    arv = {(r["nimi"], r["periood"]): r["vaartus"] for r in R if r["tabel"] == "PAV011" and r["naitaja"] == "Vabade ametikohtade arv"}
+    voetud = {(r["nimi"], r["periood"]): r["vaartus"] for r in R if r["tabel"] == "PAV011" and r["naitaja"] == "Tööle võetud töötajate arv"}
+    KOKKU = "Kokku – kõik tegevusalad"
+    kokku, kokku0 = arv[(KOKKU, viimane)], arv.get((KOKKU, aasta_tagasi))
+    alad = sorted(((n, v) for (n, p), v in arv.items() if p == viimane and n != KOKKU), key=lambda x: -x[1])
+    if not alad or kokku0 is None:
+        raise AndmeViga("vabad-ametikohad.csv: viimase kvartali või aasta varasema kvartali rida puudub")
+    muut = (kokku - kokku0) / kokku0 * 100
+    lopp_a = -(-alad[0][1] // 500) * 500
+    read_a = [(LUHI.get(n, n), v, f'{v:,.0f}'.replace(",", "\u00a0") + (f' ({arv[(n, aasta_tagasi)]:,.0f})'.replace(",", "\u00a0") if (n, aasta_tagasi) in arv else ""))
+              for n, v in alad]
+    from komponendid import lihtribad, tabel
+    g_a = lihtribad(read_a, lopp_a, samm=1000 if lopp_a > 1500 else 500, uhik="", fookus=0)
+    # maakonnad: osatähtsus kõigist vabadest ametikohtadest; Harju maakond on jagatud Tallinnaks ja ülejäänud Harjumaaks
+    kv14 = max((r["periood"] for r in R if r["tabel"] == "PAV014"), key=_kv)
+    osa = {r["nimi"]: r["vaartus"] for r in R if r["tabel"] == "PAV014" and r["periood"] == kv14 and r["naitaja"] == "Vabade ametikohtade osatähtsus, %"}
+    maak = sorted(((n, v) for n, v in osa.items() if n not in ("Eesti", "Harju maakond")), key=lambda x: -x[1])
+    read_m = [(LUHI.get(n, n), v, pr(v) + "%") for n, v in maak]
+    g_m = lihtribad(read_m, 80 if maak[0][1] <= 80 else 100, samm=20, uhik="%", fookus=0)
+    teadmata = 100 - osa.get("Eesti", 100)
+    koik_m = {r["nimi"] for r in R if r["tabel"] == "PAV014"} - {"Eesti", "Harju maakond"}
+    puudu = sorted(n.replace(" maakond", "") for n in koik_m - set(osa))
+    uuendatud = R[0]["uuendatud"]
+    kokku_v = voetud.get((KOKKU, viimane))
+    yks, kaks = alad[0], alad[1]
+    n_kokku = f"{kokku:,.0f}".replace(",", "\u00a0")
+    h2 = (f'{a}. aasta {viimane.split()[1]} kvartalis oli Eestis <b>{n_kokku} vaba ametikohta</b>, '
+          f'{abs(muut):.0f}% {"vähem" if muut < 0 else "rohkem"} kui aasta varem; enim hariduses ja avalikus halduses')
+    if (yks[0], kaks[0]) != ("Haridus", "Avalik haldus ja riigikaitse; kohustuslik sotsiaalkindlustus"):
+        h2 = h2.split("; enim")[0] + f"; enim: {LUHI.get(yks[0], yks[0]).lower()} ja {LUHI.get(kaks[0], kaks[0]).lower()}"
+    tbl = tabel(["Tegevusala", viimane, aasta_tagasi],
+                [[e(n), f"{v:,.0f}".replace(",", "\u00a0"), f"{arv.get((n, aasta_tagasi), 0):,.0f}".replace(",", "\u00a0")] for n, v in alad],
+                pealdis="Vabad ametikohad tegevusala järgi")
+    return f"""
+<div class="g12">
+<section class="pn sp12" id="vabad-kohad" aria-labelledby="h-vabad-kohad">
+  <div class="pn-h"><h2 id="h-vabad-kohad">{h2}</h2></div>
+  <p class="ps">Vaba ametikoht on koht, mille täitmiseks tööandja otsib aktiivselt töötajat väljastpoolt (Statistikaameti tööandjate uuring, kvartali keskmine).{f" Samas kvartalis võeti tööle {kokku_v:,.0f} inimest.".replace(",", "\u00a0") if kokku_v else ""} Ametite ja tööportaalide kaupa ametlikku statistikat ei ole; see tuleb tööportaalidest ja lisandub siia, kui igapäevane kogumine töötab.</p>
+  <div class="uu-kaks">
+    <div><p class="gt">Mis valdkonnas: vabad ametikohad tegevusala järgi, {viimane}</p><p class="ps">Sulgudes {aasta_tagasi}.</p>{g_a}</div>
+    <div><p class="gt">Kus: osa kõigist vabadest ametikohtadest maakonna järgi, %, {kv14}</p><p class="ps">Harjumaa on jagatud Tallinnaks ja ülejäänud Harjumaaks.{f" {pr(teadmata)}% kohtadest asukohta ei määratud." if teadmata > 0.05 else ""}{" Statistikaamet ei avaldanud seda kvartalit: " + ", ".join(puudu) + "." if puudu else ""}</p>{g_m}</div>
+  </div>
+  <details><summary>Näita andmetabelit</summary><div>{tbl}</div></details>
+  {allikarida([("Statistikaamet PAV011 ja PAV014", PAV_URL, f"avaldatud {kp(uuendatud)}")])}
+</section>
+</div>"""
