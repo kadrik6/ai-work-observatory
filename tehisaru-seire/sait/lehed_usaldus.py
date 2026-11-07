@@ -125,8 +125,7 @@ def kas_tosi(A, vaade, vaated=None):
         (f'{len(lahti)} <small>lahknevust</small>', 'Eurostati ja Statistikaameti vahel on selgitamata (C5 ettevõtted, C6 „ei oska“).', "Seire allikate võrdlus"),
         (f'{sum(1 for v in V if v.get("uudisest"))} <small>/ {n} väitest</small>', 'on pärit uudistest ja kontrollitud samal skaalal.', "Seire uudiste kontroll"),
     ]
-    lead = ("Siin on avalikud väited, mida seire kontrollis algallika järgi, ka uudistest, ühel skaalal, ja allikate lahknevused. "
-            "Iga hinnangu juures on link algallikale. Allikate lahknevused ja numbrite värskus on selle teema teistel alamlehtedel.")
+    lead = "Avalikud väited, ka uudistest, kontrollitud algallika järgi ühel skaalal."
     # Usaldus (Kadri 6.11.2026 22:27): väited, lahknevused ja värskus on üks teema kolmel alamlehel
     return jaga(A, vaade, lead, ree, [
         ("vaited", [("vaited", "Väited")], sec_v),
@@ -349,7 +348,7 @@ def kuidas(A, vaade, vaated=None):
         (f'{len(KLASSI_SELGITUS)} <small>klassi</small>', 'näitavad, kas kaks numbrit on võrreldavad. Ühel teljel võivad olla ainult „võrdlusalus“ ja „sama“.', "Seire kataloog"),
         (f'{len(U)} <small>uuringut</small>', 'tehisaru ja töö kohta, igaühel tõendi tugevus.', "Uuringute kogu"),
     ]
-    lead = "Siin on kõik allikad, märgid ja reeglid, mille järgi seire numbreid näitab ja võrdleb."
+    lead = ""
     sec_uu = _uuenemine(A)
     lingid = [("uuendused", "Mis uueneb ise")] if sec_uu else []
     return (pea(A, vaade, lead, lingid + [("allikad", "Allikad"), ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], ree)

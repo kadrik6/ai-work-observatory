@@ -102,7 +102,7 @@ def inimesed(A, vaade, vaated=None):
       {vastavus("osaliselt", f"Eurostati uusim aasta on {y}. Eesti, Norra ja Rootsi {y + 1}. aasta numbrid on riiklikest tabelitest, aga sama küsimustikuga; ELi keskmist {y + 1}. aasta kohta veel pole.")}
       <figure class="plokk" aria-labelledby="g-aasta">
         <figcaption><span class="gt" id="g-aasta">Kasv aastaga, {y} → {y + 1}, % 16–74-aastastest</span>
-          <span class="gs">Tühi ring {y} (Eurostat), täis ring {y + 1} (riiklik statistikaamet). Punkte juurde: {kasvud}.</span></figcaption>
+          <span class="gs">{y} Eurostat, {y + 1} riiklik statistikaamet. Punkte juurde: {kasvud}.</span></figcaption>
         {g_aasta}
         {allikarida([(sa_m["nimi"], sa_m["url"], kp(ee["avaldatud"]))] + [(v1["allikas"], v1["url"], "") for _, v1 in paarid if v1["geo"] != "EE"])}
       </figure>
@@ -134,8 +134,7 @@ def inimesed(A, vaade, vaated=None):
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-tool">
-      <figcaption><span class="gt" id="g-tool">Tehisaru tööalaselt kasutanud, {y}, % 16–74-aastastest</span>
-        <span class="gs">Eesti, Põhjamaad, Saksamaa ja Holland; tumehall on ELi keskmine.</span></figcaption>
+      <figcaption><span class="gt" id="g-tool">Tehisaru tööalaselt kasutanud, {y}, % 16–74-aastastest</span></figcaption>
       {_vordlus_ribad(A, TOO, y, 40)}
       {allikarida([("Eurostat, isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), "uuendatud " + kp(m_too["allikas_uuendas"]))])}
     </figure>
@@ -148,8 +147,7 @@ def inimesed(A, vaade, vaated=None):
           <div><span class="big">{pr(eu_too["vaartus"])}%</span><p>ELi keskmine, {y}</p></div>
         </div>
       </div>
-      {faktid([("Piirang", "", f'{e(p_too["selgitus"])} ({a(p_too["url"], "Eurostat")})'),
-               ("Mida see tähendab", "s", "Kas tehisaru muudab tööd või töökohti, on " + link(vaated, "too", "vaates Töö") + ". Statistika näitab kasutust, mitte mõju.")])}
+      {faktid([("Piirang", "", f'{e(p_too["selgitus"])} ({a(p_too["url"], "Eurostat")})')])}
     </div>
   </div>
   <details>
@@ -174,7 +172,7 @@ def inimesed(A, vaade, vaated=None):
   <div class="kaks">
     <figure aria-labelledby="g-digi">
       <figcaption><span class="gt" id="g-digi">Vähemalt baastaseme digioskused, 2023 → {ds["aasta"]}, % 16–74-aastastest</span>
-        <span class="gs">Tühi ring 2023, täis ring {ds["aasta"]}. Eesti on sinine, EL tumehall. Oranž joon on ELi siht kogu ELi kohta.</span></figcaption>
+        </figcaption>
       {hantlid(pd, 40, 90, 10, "%", viide=float(siht["siht"]), viite_nimi=f"ELi siht {siht['aasta']}: {siht['siht']}% (ELi kohta tervikuna)")}
       {allikarida([("Eurostat, isoc_sk_dskl_i21", EUROSTAT.format("isoc_sk_dskl_i21"), "uuendatud " + kp(m_ds["allikas_uuendas"])), ("ELi siht", siht["url"], siht["allikas"])])}
     </figure>
@@ -215,7 +213,7 @@ def inimesed(A, vaade, vaated=None):
   <div class="kaks">
     <figure aria-labelledby="g-ei-oska">
       <figcaption><span class="gt" id="g-ei-oska">Ei kasutanud tehisaru, sest ei osanud, {y}, % 16–74-aastastest</span>
-        <span class="gs">Iga mittekasutaja on ühe põhjuse all. Väiksem number on parem; tumehall on ELi keskmine.</span></figcaption>
+        <span class="gs">Iga mittekasutaja on ühe põhjuse all.</span></figcaption>
       {_vordlus_ribad(A, OS, y, 12, samm=2)}
       {allikarida([("Eurostat, isoc_ai_iaiuxr", EUROSTAT.format("isoc_ai_iaiuxr"), "uuendatud " + kp(m_os["allikas_uuendas"]))])}
     </figure>
@@ -242,11 +240,10 @@ def inimesed(A, vaade, vaated=None):
          f'{a(ee["url"], ee["allikas"])}, {kp(ee["avaldatud"])}'),
         (f'{koht}. <small>/ {len(el)} ELi riigist</small>', f'{y}: Eesti {pr(ee25["vaartus"])}%, EL {pr(eu["vaartus"])}%. Uusim aasta, mida saab ELiga võrrelda.',
          e(ee25["allikas"])),
-        (f'{pr(too["vaartus"])}% <small>tööl</small>', f'kasutas tehisaru tööalaselt ({too["aasta"]}), protsent kõigist 16–74-aastastest.',
+        (f'{pr(too["vaartus"])}% <small>tööl</small>', f'kasutas tehisaru tööalaselt ({too["aasta"]}), % kõigist 16–74-aastastest.',
          f'{a(too["url"], too["allikas"])}'),
     ]
-    lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem. ELi võrdluses ja tööl kasutamine on allpool; "
-            "digioskused ja oskuse puudus on alamlehel Oskused.")
+    lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem.")
     return jaga(A, vaade, lead, ree, [
         ("kasutus", [("kasutus", "Kasutus")], sec_kasutus), ("tool", [("tool", "Tööl")], sec_too),
         ("digi", [("digi", "Digioskused")], lisa_sihid(A, sec_digi, "digi", *SIHI_TEEMA["inimesed"])),
@@ -403,14 +400,14 @@ def too(A, vaade, vaated=None):
   <div class="kaks">
     <figure aria-labelledby="g-kokkupuude">
       <figcaption><span class="gt" id="g-kokkupuude">Eesti töötajad ameti kokkupuute astme järgi, % (2022)</span>
-        <span class="gs">Kokkupuude ei ole mõju: aste näitab, kui suur osa ameti ülesannetest on generatiivsele tehisarule avatud; 4 on kõige avatum. Töötajad on taandatud täistööajale; {pr(K["liigitamata"])}% on ametites, mida ILO indeksis pole.</span></figcaption>
+        <span class="gs">Aste näitab, kui suur osa ameti ülesannetest on generatiivsele tehisarule avatud; 4 on kõige avatum. Täistööajale taandatud; {pr(K["liigitamata"])}% on ametites, mida ILO indeksis pole.</span></figcaption>
       {lihtribad(k_read, 50, 10, "%", fookus=0)}
       {allikarida([(f"ILO {ilo['aasta']}, kokkupuute indeks", ilo["url"], ""), ("Statistikaamet, tabel PA633", andmed.PA633_URL, "oktoober 2022")])}
       <h3 class="tabeli-pealkiri">Kõige avatumad ametid Eestis</h3>
       {tabel(["Amet", "Töötajaid", "Aste"], k_tabel, piir=True, pealdis="Kõige avatumad ametid Eestis, töötajad täistööajale taandatult, 2022")}
     </figure>
     <div class="kulg">
-      {vastavus("osaliselt", "Kokkupuude ei ole mõju. Indeks näitab, kui suur osa ameti ülesannetest on tehisarule avatud, mitte seda, kas töö kaob, muutub või jääb samaks.")}
+      {vastavus("osaliselt", "Kokkupuude ei ole mõju: indeks ei ütle, kas töö kaob, muutub või jääb samaks.")}
       {faktid([
           ("Mida uuringud näitavad", "", f'USA-s on 22–25-aastaste hõive avatud ametites {e(can_m)} võrreldes vähem avatud ametitega ({a(U["canaries2026"]["url"], "Brynjolfsson jt " + str(U["canaries2026"]["aasta"]))}). Taanis ei muutunud kogu tööturul tulu ega töötunnid ({a(hum["url"], "Humlum ja Vestergaard " + str(hum["aasta"]))}). Eesti kohta sellist uuringut pole.'),
           ("ELi võrdlus", "", f'Sama ligikaudne arvutus Eurostati 2025. aasta ametirühmade järgi annab Eestile {pr(ee_el["avatud"], 0)}% ja ELile {pr(el_el["avatud"], 0)}%. See on teine andmestik ja jämedam jaotus kui graafikul, seepärast eraldi. ILO enda hinnang kõrge sissetulekuga riikidele on {pr(ilo_korge, 0)}%.'),
@@ -491,7 +488,7 @@ def too(A, vaade, vaated=None):
   <div class="kaks">
     <figure aria-labelledby="g-tulevik">
       <figcaption><span class="gt" id="g-tulevik">Töötuse määr Eestis, {t_tegelik["aasta"]}–2030, %</span>
-        <span class="gs">{t_tegelik["aasta"]} on tegelik, edasi prognoos (hele tulp). Prognoos on arvutatud eelduste põhjal, mitte mõõdetud.</span></figcaption>
+        <span class="gs">{t_tegelik["aasta"]} on tegelik, edasi prognoos (hele tulp).</span></figcaption>
       {aastatulbad([(r["aasta"], r["protsent"], r["tegelik"]) for r in tootus], 10, 2)}
       {allikarida([(rm["pealkiri"], rm["url"], kp(rm["avaldatud"]))])}
     </figure>
@@ -527,7 +524,7 @@ def too(A, vaade, vaated=None):
         (f'{pr(t2030["protsent"])}% <small>2030</small>', f'Eesti töötuse prognoos ({t_tegelik["aasta"]}: {pr(t_tegelik["protsent"])}%). Tehisaru mõju ei ole eraldi arvestatud.',
          a(rm["url"], f'Rahandusministeerium, {kp(rm["avaldatud"])}')),
     ]
-    lead = ("Uuringud ei näita veel töökohtade kadu kogu tööturul, aga noorte palkamine ja vabakutseliste tööd on mõnes ametis vähenenud. "
+    lead = ("Mõnes ametis on vähenenud ka vabakutseliste tööd. "
             "Eesti kohta selliseid mõõtmisi veel ei ole.")
     from lehed_ulevaade import too_eesti, vabad_ametikohad
     from lehed_uudised import palkamine, toopakkumised, uuringud_too
@@ -590,10 +587,10 @@ def avalik_sektor(A, vaade, vaated=None):
     </figure>
     <figure aria-labelledby="g-hindamine">
       <figcaption><span class="gt" id="g-hindamine">Mida hinnati, % hindamistest</span>
-        <span class="gs">Juhtide ja töötajate vastused eraldi. Arvutatud ainult hinnatud uuendustest, mitte kõigist.</span></figcaption>
+        <span class="gs">Ainult hinnatud uuendustest.</span></figcaption>
       {lihtribad([("Protsess, töötajad", v("hindamine-protsess-tootajad"), None), ("Protsess, juhid", v("hindamine-protsess-juhid"), None),
                   ("Raha väärtus, juhid", v("hindamine-vfm-juhid"), None), ("Raha väärtus, töötajad", v("hindamine-vfm-tootajad"), None)], 100, 25, "%")}
-      {allikarida([(OECD_NIMI, OECD_URL, _o(A, "hindamine-vfm-juhid")["koht"])])}
+      {allikarida([("OECD (2026)", OECD_URL, _o(A, "hindamine-vfm-juhid")["koht"])])}
     </figure>
     </div>
     <div class="kulg">
@@ -615,10 +612,10 @@ def avalik_sektor(A, vaade, vaated=None):
   <div class="kaks">
     <figure aria-labelledby="g-tehisaru">
       <figcaption><span class="gt" id="g-tehisaru">Innovaatorid, kelle uuendus kasutas generatiivset tehisaru, %</span>
-        <span class="gs">Küsiti ainult neilt, kes tegid 24 kuu jooksul uuenduse. Sulgudes vastajate arv.</span></figcaption>
+        <span class="gs">Sulgudes vastajate arv.</span></figcaption>
       {lihtribad([("Keskvalitsus", float(gk["vaartus"]), f'{gk["vaartus"]}% ({gk["lugeja"]}/{gk["nimetaja"]})'),
                   ("Omavalitsused", float(gl["vaartus"]), f'{gl["vaartus"]}% ({gl["lugeja"]}/{gl["nimetaja"]})')], 50, 10, "%", fookus=0)}
-      {allikarida([(OECD_NIMI, OECD_URL, gk["koht"])])}
+      {allikarida([("OECD (2026)", OECD_URL, gk["koht"])])}
     </figure>
     <div class="kulg">
       {vastavus("osaliselt", f"{e(gk['markus'])} Riiklikku tehisaru kasutuse näitajat avalikus sektoris avalikus statistikas veel ei ole.")}
@@ -643,7 +640,7 @@ def avalik_sektor(A, vaade, vaated=None):
   <figure aria-labelledby="g-kiirused">
     <figcaption><span class="gt" id="g-kiirused">Asutused OECD rühmade kaupa, asutuste arv</span></figcaption>
     {osad(o_read, f"{kokku} asutust")}
-    {allikarida([(OECD_NIMI, OECD_URL, kl[0]["koht"])])}
+    {allikarida([("OECD (2026)", OECD_URL, kl[0]["koht"])])}
   </figure>
 </section>"""
 
@@ -655,7 +652,7 @@ def avalik_sektor(A, vaade, vaated=None):
     <p class="alam">See on OECD soovitus, mitte seire hinnang. Kõik soovitused on raporti 7. peatükis.</p>
   </header>
   {tabel(["Nr", "OECD soovitus", "Kellele"], s_read, numbrid=[], pealdis="OECD tehisaru soovitused")}
-  {allikarida([(OECD_NIMI, OECD_URL, "7. peatükk")])}
+  {allikarida([("OECD (2026)", OECD_URL, "7. peatükk")])}
 </section>"""
 
     ree = [
@@ -663,8 +660,7 @@ def avalik_sektor(A, vaade, vaated=None):
         (f'{pr(v("rakendati"), 0)} → {pr(v("laiendati"), 0)}%', 'olulisimatest uuendustest jõudis rakendamiseni → laiendati.', e(src("rakendati"))),
         (f'{gk["vaartus"]}% <small>({gk["lugeja"]}/{gk["nimetaja"]})</small>', 'keskvalitsuse innovaatoritest kasutas oma uuenduses generatiivset tehisaru.', e(src("genai-kesk"))),
     ]
-    lead = ("Avalikus sektoris tehakse uuendusi, aga paljud jäävad pidama enne hindamist ja laiendamist. "
-            "Kõik numbrid on OECD avalikust raportist, mis põhineb 2025–2026 küsitlusel.")
+    lead = "Kõik numbrid: OECD avalik raport (2026), küsitlus 2025–2026."
     # Hanked on oma menüükoht; lehtede vahel on rida „Seotud“ (Kadri 6.11.2026 22:27, ettepanek 8)
     return (pea(A, vaade, lead, [("lehter", "Rakendamine"), ("tehisaru", "Tehisaru"), ("kiirused", "Kolm rühma"), ("soovitused", "Soovitused")], ree)
             + sec_lehter + sec_genai + sec_kiirus + sec_soov
@@ -713,12 +709,10 @@ def reeglid(A, vaade, vaated=None, tana=None):
     ree = [
         (kp(uld["kuupaev"]), e(uld["mida_tahendab"]), a(uld["url"], "Euroopa Komisjon")),
         (kp(kr["kuupaev"]), "Kõrge riskiga kasutus, näiteks CV-de sorteerimine värbamisel ja hindamine koolis.", a(kr["url"], "Euroopa Komisjon")),
-        (f'{len(O)} <small>tähtaega</small>', "Määrus jõustub osade kaupa. Sihid on 6.11.2026 alates oma teema juures.", a(O[0]["url"], "Euroopa Komisjon")),
+        (f'{len(O)} <small>tähtaega</small>', "Määrus jõustub osade kaupa 2024–2028.", a(O[0]["url"], "Euroopa Komisjon")),
     ]
     j_tekst = f'Järgmine tähtaeg on {jargmine[1]}: {e(jargmine[2].lower())}.' if jargmine else ""
-    lead = (f"ELi tehisaru määrus jõustub osade kaupa 2024–2028. {j_tekst} Sihid on oma teema juures: "
-            f"{link(vaated, 'inimesed', 'digioskused', 'digi')}, {link(vaated, 'ettevotted', 'ettevõtted', 'kasutus')} "
-            f"ja {link(vaated, 'hanked', 'innovatsioonihanked', 'innovatsioon')}.")
+    lead = j_tekst
     return pea(A, vaade, lead, [], ree) + sec_aeg
 
 
@@ -735,12 +729,13 @@ def siht_rida(A, sid):
     kes = a(s["url"], s["allikas"].split(",")[0])
     if s["tase"] == "EE":
         p = andmed.leia(A, nid, "EE", "uusim")
-        tekst = (f'<b>Eesti siht {pr(siht, 0)}{u}</b> aastaks {e(s["aasta"])} ({kes}). Praegu {pr(p["vaartus"], k)}{u} '
+        tekst = (f'<b>Eesti {pr(siht, 0)}{u}</b> aastaks {e(s["aasta"])} ({kes}). Praegu {pr(p["vaartus"], k)}{u} '
                  f'(Eesti {p["aasta"]}, {e(p["allikas"])}). Vahet ei arvuta: {e(s["markus"].split(". ")[0].rstrip("."))}.')
     else:
         p = andmed.leia(A, nid, EL, "uusim:alus")
         ee = andmed.leia(A, nid, "EE", p["aasta"])
-        tekst = (f'<b>ELi siht {pr(siht, 0 if not ta else 0)}{u}</b> aastaks {e(s["aasta"] or "–")} ({kes}). '
+        aastaks = f' aastaks {e(s["aasta"])}' if s["aasta"] else ""
+        tekst = (f'<b>EL {pr(siht, 0)}{u}</b>{aastaks} ({kes}). '
                  f'EL tervikuna {pr(p["vaartus"], k)}{u}, Eesti {pr(ee["vaartus"], k)}{u} ({p["aasta"]}); ELil puudu {pr(siht - p["vaartus"], k)} punkti.')
     return (f'<div class="siht-rida"><p><span class="siht-silt">Siht</span> {tekst}</p>'
             f'{sihiriba(p["vaartus"], siht, lopp, "", fookus=(s["tase"] == "EE"))}</div>')

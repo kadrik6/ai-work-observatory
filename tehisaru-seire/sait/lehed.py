@@ -77,7 +77,7 @@ def _kasutus(A):
   <div class="ruut3">
     <figure aria-labelledby="g-kasutus">
       <figcaption><span class="gt" id="g-kasutus">Tehisaru kasutavad ettevõtted ELi riikides, {y}, % ettevõtetest</span>
-        <span class="gs">Vähemalt 10 hõivatuga ettevõtted, ilma põllumajanduse, kaevandamise ja finantssektorita; ettevõtete enda vastused.</span></figcaption>
+        <span class="gs">Vähemalt 10 hõivatuga ettevõtted, ilma põllumajanduse, kaevandamise ja finantssektorita.</span></figcaption>
       {graafik}
       <p class="peidus">Eesti on {koht}. kohal {pr(ee["vaartus"])}%-ga. Eespool on {", ".join(riik(v["geo"]) for v in jarjest[:koht - 1])}.</p>
       {allikarida([("Eurostat, isoc_eb_ai", "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "uuendatud " + kp(m["allikas_uuendas"]))])}
@@ -165,7 +165,7 @@ def _tootlikkus(A):
   <div class="kaks">
     <figure aria-labelledby="g-tootlikkus">
       <figcaption><span class="gt" id="g-tootlikkus">Tootlikkuse muutus pärast tehnoloogia kasutuselevõttu, %</span>
-        <span class="gs">Eesti ettevõtted 2000–2023. Töökorralduse muutus tähendab uusi tööviise, juhtimispraktikaid ja otsustusprotsesse. Sinine on tehisaru koos töökorralduse muutusega; * nõrk statistiline olulisus.</span></figcaption>
+        <span class="gs">Eesti ettevõtted 2000–2023. Töökorralduse muutus = uued tööviisid, juhtimispraktikad ja otsustusprotsessid. * nõrk statistiline olulisus.</span></figcaption>
       {"".join(fig)}
       {allikarida([(L["allikas"], L["url"], kp(L["avaldatud"]) + ", " + L["koht"])])}
     </figure>
@@ -209,7 +209,7 @@ def _digi_ja_ta(A):
     g_t = hantlid(pt, 1, 4, 0.5, "% SKPst", k=2, viide=float(siht_t["siht"]),
                   viite_nimi=f"ELi ühine siht: {siht_t['siht']}% SKPst", lisa=lisa)
     uus_tekst = (f'Eesti {ee_t_uus["aasta"]}. aasta number {pr(ee_t_uus["vaartus"], 2)}% on '
-                 f'{e(ee_t_uus["margend"] and "esialgne" or "lõplik")} (katkendring). ELi {ee_t_uus["aasta"]}. aasta keskmist veel ei ole.'
+                 f'{e(ee_t_uus["margend"] and "esialgne" or "lõplik")} (katkendring).'
                  if lisa else "")
     return f"""
 <div class="kaks vordne paar">
@@ -220,7 +220,7 @@ def _digi_ja_ta(A):
   </header>
   <figure aria-labelledby="g-digi">
     <figcaption><span class="gt" id="g-digi">Vähemalt baastasemel VKEd, % ettevõtetest, 2022 → 2024</span>
-      <span class="gs">Tühi ring 2022, täis ring 2024. Eesti on sinine, EL tumehall.</span></figcaption>
+</figcaption>
     {g_d}
     {allikarida([("Eurostat, isoc_e_dii", "https://ec.europa.eu/eurostat/databrowser/view/isoc_e_dii/default/table", "uuendatud " + kp(md["allikas_uuendas"])), ("ELi siht", siht_d["url"], siht_d["allikas"])])}
   </figure>
@@ -236,7 +236,7 @@ def _digi_ja_ta(A):
   </header>
   <figure aria-labelledby="g-ta">
     <figcaption><span class="gt" id="g-ta">T&amp;A kulu, % SKPst, 2022 → 2024</span>
-      <span class="gs">Tühi ring 2022, täis ring 2024. {uus_tekst}</span></figcaption>
+      {f'<span class="gs">{uus_tekst}</span>' if uus_tekst else ""}</figcaption>
     {g_t}
     {allikarida([("Eurostat, rd_e_gerdtot", "https://ec.europa.eu/eurostat/databrowser/view/rd_e_gerdtot/default/table", "uuendatud " + kp(mt["allikas_uuendas"])), ("ELi siht", siht_t["url"], siht_t["allikas"])])}
   </figure>
@@ -263,7 +263,7 @@ def ettevotted(A, vaade, vaated=None):
          f'<a href="{e(ee["url"])}">{e(ee["allikas"])}</a>, {kp(ee["avaldatud"])}'),
         (f'{koht}. <small>/ {n_el} ELi riigist</small>', f'{ee_el["aasta"]}: Eesti {pr(ee_el["vaartus"])}%, EL {pr(eu["vaartus"])}%. Uusim aasta, mida saab ELiga võrrelda.',
          e(ee_el["allikas"])),
-        (f'{siht["siht"]}% <small>aastaks {siht["aasta"]}</small>', 'Eesti siht. Mõõdetakse Statistikaameti numbriga; kumma klassifikaatori järgi, on kontrollimata.',
+        (f'{siht["siht"]}% <small>aastaks {siht["aasta"]}</small>', 'Eesti siht Statistikaameti numbril; klassifikaator kontrollimata.',
          f'<a href="{e(siht["url"])}">{e(siht["allikas"])}</a>'),
     ]
     lead = ("Kasutus kasvab kiiresti, aga vahe Põhjamaadega on punktides suurenenud. "
@@ -293,7 +293,7 @@ def saidikaart(A, vaade, vaated):
 <div class="pea yks">
   <div class="pea-tekst">
     <h1>{taida(vaade["h1"], A)}</h1>
-    <p class="lead">Saidikaart tuleb sisuloogika hinnangust, mille Kadri kinnitas 4.11.2026; ülesehitus on 6.11.2026 seisuga (kuus teemat, hanked ja väited alamlehtedena). Valmis on {sum(v["olek"] == "valmis" for v in vaated)} vaadet {len(vaated)}-st; iga rea pealkiri on sama, mis vaate lehel.</p>
+    <p class="lead">Valmis on {sum(v["olek"] == "valmis" for v in vaated)} vaadet {len(vaated)}-st; iga rea pealkiri on sama, mis vaate lehel.</p>
     <p class="meta">Iga vaate järjekord: vastus, peamine tõend koos võrdlusega, mida see ei näita, mida see tähendab, siis üksikasjad ja allikad. Pealkirjade numbrid tulevad andmefailidest.</p>
   </div>
 </div>

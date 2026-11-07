@@ -273,9 +273,9 @@ def faktid(read):
 
 
 def vastavus(hinnang, tekst):
-    """„Kas andmed vastavad küsimusele?“ jah / osaliselt / ei, joon ja sõna."""
-    return (f'<p class="vastab {e(hinnang)}"><span>Kas andmed vastavad küsimusele?</span> '
-            f'<b>{e(hinnang.capitalize())}.</b> {tekst}</p>')
+    """Kas andmed vastavad küsimusele: jah / osaliselt / ei, joon ja lühike silt (Kadri 7.11.2026: vähem korduvat teksti)."""
+    silt = {"jah": "Vastab küsimusele.", "osaliselt": "Vastab osaliselt.", "ei": "Ei vasta küsimusele."}[hinnang]
+    return f'<p class="vastab {e(hinnang)}"><b>{silt}</b> {tekst}</p>'
 
 
 def ei_naita(piirangud, lisa=""):

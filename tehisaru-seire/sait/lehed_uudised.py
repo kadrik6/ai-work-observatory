@@ -139,8 +139,7 @@ def uudised(A, vaade, vaated=None):
         (f'{vk.day}.{vk.month:02d} {vk:%H:%M}', f'viimane kontroll; {korras} allikat {len(O["allikad"])}-st vastas.',
          "Uueneb iga päev, kui sait ühendatakse igapäevase kogumisega"),
     ]
-    lead = ("Tehisaru, andmete ja tööturu uudised usaldusväärsetest allikatest. Iga uudis on märgitud liigiga: "
-            "uudis, aruanne, uuring, arvamus või eksitav. Arvamus ei ole tõend. Hoiame pealkirja, linki ja oma sõnadega kokkuvõtet.")
+    lead = "Arvamus ei ole tõend."
 
     allikad = "".join(f'<li><span class="{"ok" if s["ok"] else "risk"}">{"vastas" if s["ok"] else "ei vastanud"}</span> {e(s["nimi"])}</li>' for s in O["allikad"])
     sec_k = f"""
@@ -149,7 +148,7 @@ def uudised(A, vaade, vaated=None):
   <div class="pn-h"><h2 id="h-uudiste-allikad">Kust uudised tulevad</h2></div>
   <div class="g2 u-kuidas">
     <ul class="u-allikad">{allikad}</ul>
-    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „N väljaannet“ näitab, mitu eri väljaannet sama lugu kajastas. See asendab populaarsust, sest klikke väljaanded avalikult ei jaga. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang. Kinnitatud Eesti koondamised on vaates {link(vaated, "too", "Töö", "koondamised")}. Uudistes kontrollitud {len(V)} väidet on koos teistega lehel {link(vaated, "kas-tosi", "Usaldus › Väited")}.</p>
+    <p class="ps">Allikad on ERR (eesti ja inglise keeles), uudisteotsing Eestis ja maailmas ning Challengeri kuuaruanne. Tasulise artikli puhul hoiame ainult pealkirja. „N väljaannet“ näitab, mitu eri väljaannet sama lugu kajastas. „Loetud ainult pealkiri“ tähendab, et artiklit ei avatud. Koondamise juures on see, mida ettevõte ise tehisaru kohta ütles, mitte meie hinnang.</p>
   </div>
 </section>
 </div>"""
@@ -205,7 +204,7 @@ def hanked(A, vaade, vaated=None):
     lev = hind["levimus"]
 
     ree = [
-        (f'{aastad[-1]["ai_andmed"]} <small>{aastad[-1]["aasta"]}{"*" if poolik else ""}</small>', f'tehisaru- ja andmehanget ehk {pr(aastad[-1]["ai_andmed_osakaal"])}% kõigist {_arv(aastad[-1]["hankeid"])} hankest{" (* aasta pole läbi)" if poolik else ""}. Katseline.',
+        (f'{aastad[-1]["ai_andmed"]} <small>{aastad[-1]["aasta"]}{"*" if poolik else ""}</small>', f'tehisaru- ja andmehanget ehk {pr(aastad[-1]["ai_andmed_osakaal"])}% kõigist {_arv(aastad[-1]["hankeid"])} hankest{" (* aasta pole läbi)" if poolik else ""}.',
          a(HANKED_URL, "riigihangete register")),
         (f'{pr(kv["ai_andmed"], 0)}%', f'neist hindas ka kvaliteeti ({p0}–{p1}); teistes IT-hangetes {pr(kv["it_muud"], 0)}%, kõigis {pr(kv["koik"], 0)}%.',
          "hindamiskriteeriumid registris"),
@@ -214,7 +213,7 @@ def hanked(A, vaade, vaated=None):
         (f'{pr(tul["tapsus"] * 100, 0)}%', f'leitud hangetest on päriselt tehisaru- või andmehanked (täpsus); leitakse {pr(tul["saagis"] * 100, 0)}% neist (saagis).',
          "katseline klassifikaator, märgendid pole inimese kontrollitud"),
     ]
-    lead = ("Riigihangete registri hanked, mille katseline klassifikaator märkis tehisaru- või andmetööks. Tehisaru = "
+    lead = ("Tehisaru = "
             "pealkirjas või kirjelduses on tehisaru märksõna; andmed = andmeladu, -haldus, -analüüs jms. "
             "Tehisaru uuringute ja mõjuanalüüside hankeid eraldi veel ei loeta.")
 
@@ -224,7 +223,7 @@ def hanked(A, vaade, vaated=None):
     sec_aastad = f"""
 <section class="pn sp5" id="aastad" aria-labelledby="h-aastad">
   <div class="pn-h"><h2 id="h-aastad">Klassifikaator leidis {u["aasta"]}. aastal{" kuni " + kp(seis) if poolik else ""} <b>{u["ai_andmed"]} tehisaru- ja andmehanget</b>, {pr(u["ai_andmed_osakaal"])}% kõigist</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">Neist {u["ai_marksonaga"]} on tehisaru märksõnaga ja {u["ai_andmed"] - u["ai_marksonaga"]} andmehanked, kokku {_arv(u["hankeid"])} riigihankest. Aastate võrdlust siin ei näidata, kuni vähemalt 100 hanget on inimese pimesi märgistatud: klassifikaatori täpsus on seni hinnatud ainult Claude'i märgendatud valimil (vt „Kui täpne“).</p>
+  <p class="ps">Neist {u["ai_marksonaga"]} on tehisaru märksõnaga ja {u["ai_andmed"] - u["ai_marksonaga"]} andmehanked. Aastate võrdlust ei näidata enne, kui 100 hanget on inimese pimesi märgistatud.</p>
   {_viis_rida(f"Klassifikaatori leitud hanked {u['aasta']}, arv", [("tehisaru", u["ai_marksonaga"], True), ("andmed", u["ai_andmed"] - u["ai_marksonaga"], False)], uhik="", k=0)}
 </section>"""
 
@@ -237,7 +236,7 @@ def hanked(A, vaade, vaated=None):
     sec_inn = f"""
 <section class="pn sp7" id="innovatsioon" aria-labelledby="h-innovatsioon">
   <div class="pn-h"><h2 id="h-innovatsioon">Innovatsioonimärgiga hankeid oli {inn[-1]["aasta"]}. aastal <b>{pr(inn[-1]["innovatsioonimark_osakaal"])}%</b>, siht on 2%; märgi määratlus on kontrollimata</h2></div>
-  <p class="ps">Osa kõigist eForms-vormil hangetest, millele hankija märkis innovatsiooni. eForms algas 09/2023, seega {inn[0]["aasta"]} on osaline aasta; * = osaline aasta. Siht 2% aastaks 2027 on {a(OECD_URL, "OECD 2026 raportis")}. Rahandusministeeriumi kiri 11.03.2025 andis 2023. aastaks 0,2% hangete arvust; kas see on sama määratlus kui eForms-i innovatsioonimärk, ei ole kontrollitud.</p>
+  <p class="ps">Osa eForms-hangetest, millele hankija märkis innovatsiooni; * osaline aasta (eForms algas 09/2023). Siht: {a(OECD_URL, "OECD 2026")}. Rahandusministeeriumi 0,2% (2023) võib olla teise määratlusega.</p>
   <div class="viis">{inn_read}</div>
   <p class="kr-leg"><span><i class="kr-t siht"></i>siht 2%</span></p>
 </section>"""
@@ -297,7 +296,7 @@ def hanked(A, vaade, vaated=None):
 <div class="g12">
 <section class="pn sp12" id="loend" aria-labelledby="h-loend">
   <div class="pn-h"><h2 id="h-loend">Leia sarnane hange, mida eeskujuks võtta: <b>{n_hea} head näidet</b> {len(loend)}-st</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">Hea näide: kvaliteeti hinnati, pakkumusi oli vähemalt kaks ja hange ei katkenud. Otsi sõna järgi pealkirjast, hankijast või kirjeldusest.</p>
+  <p class="ps">Hea näide: kvaliteeti hinnati, pakkumusi oli vähemalt kaks ja hange ei katkenud.</p>
   <div class="h-otsing"><input type="search" placeholder="nt andmeladu, kõnetuvastus, Tableau" aria-label="Otsi hangetest">
     <div class="u-f" role="group" aria-label="Rühm"><button type="button" data-r="" aria-pressed="true">kõik</button><button type="button" data-r="ai">tehisaru</button><button type="button" data-r="andmed">andmed</button><button type="button" data-r="hea">head näited</button></div>
     <span class="h-loe" aria-live="polite"></span></div>
@@ -382,7 +381,7 @@ def uuringud_too(A):
 <section class="pn sp12" id="publikatsioonid" aria-labelledby="h-publikatsioonid">
   <div class="pn-h"><h2 id="h-publikatsioonid">Mida maailmas ja Eestis uuritakse: uusimad ja enim tsiteeritud tööd</h2></div>
   <div class="p-tabs" role="tablist" aria-label="Publikatsioonide valik">{"".join(nupud)}</div>
-  <p class="ps">Tsiteeritud = mitu korda on teised tööd sellele viidanud ({a(OPENALEX_URL, "OpenAlex")}, seisuga {kp(P["meta"]["aeg"][:10])}). Uutel töödel on see arv loomulikult väike.</p>
+  <p class="ps">Tsiteeringud: {a(OPENALEX_URL, "OpenAlex")}, seisuga {kp(P["meta"]["aeg"][:10])}.</p>
   {"".join(osad)}
 </section>"""
     # Põhinumbrid (KPI) töö kaupa, kontrollitud allika lehelt (Kadri MKUS-i kommentaar 7.11.2026 08:53).
@@ -483,7 +482,7 @@ def palkamine(A):
 <div class="g12">
 <section class="pn sp12" id="palkamine" aria-labelledby="h-palkamine">
   <div class="pn-h"><h2 id="h-palkamine">{h2} otsib praegu Eestis töötajaid <b>{ARVSONAD.get(len(otsivad), len(otsivad))}</b> (kokku {kuulutusi} kuulutust){sama_t}</h2></div>
-  <p class="ps">Samad ettevõtted, kes koondavad: mida nad koondamisuudise järgi kaotavad ja keda nende enda tööpakkumiste leht praegu Eestis otsib (kontrollitud {kp(kp_min)}). Koondamise arv on Eesti töökohad, kui see teatati; põhjus on ettevõtte enda selgitus uudises ega tõenda põhjust. Sinise äärega ametiliik = sama liik, mida koondatakse. Leht ei näita sisemisi ümberpaigutusi ega ainult LinkedInis avaldatud kuulutusi.{" Taustata: " + ", ".join(e(p) for p in puudu) + "." if puudu else ""}</p>
+  <p class="ps">Mida koondaja uudise järgi kaotab ja keda tema tööpakkumiste leht praegu Eestis otsib (kontrollitud {kp(kp_min)}). Põhjus on ettevõtte enda selgitus. Sinise äärega ametiliik = sama liik, mida koondatakse. Leht ei näita sisemisi ümberpaigutusi ega ainult LinkedInis avaldatud kuulutusi.{" Taustata: " + ", ".join(e(p) for p in puudu) + "." if puudu else ""}</p>
   <div class="tbl"><table class="pk"><thead><tr><th scope="col">Ettevõte</th><th scope="col">Koondab Eestis</th><th scope="col">Põhjus ettevõtte sõnul</th><th scope="col">Ametiliigid</th><th scope="col">Otsib praegu Eestis</th><th scope="col">Kontrollitud</th></tr></thead>
   <tbody>{"".join(read)}</tbody></table></div>
 </section>
@@ -543,7 +542,7 @@ def toopakkumised(A):
             veerud.append(f'<div><p class="gt">Kes: enim kuulutusi avaldanud tööandjad</p><p class="ps">{a(p["top_tooandjad_url"], "portaali tööandjad")}, 12 suuremat</p>{ribad(top)}</div>')
         else:
             pohjus = p.get("top_tooandjad_pohjus") or p.get("puudub_pohjus") or ""
-            veerud.append(f'<div><p class="gt">Kes: tööandjad</p><p class="ps">Selle portaali tööandjate arve ei õnnestunud lugeda. {e(pohjus)}</p></div>')
+            veerud.append(f'<div><p class="gt">Kes: tööandjad</p><p class="ps">Tööandjate arve ei õnnestunud lugeda.</p></div>')
         mk_t = ""
         if mk:
             mk_t = ('<details><summary>Maakonnad</summary><div>' + "".join(f'<span class="tp-m">{e(r["nimi"])} <b>{_arvt(r["arv"])}</b></span>' for r in mk) + '</div></details>')
@@ -559,7 +558,7 @@ def toopakkumised(A):
 <div class="g12">
 <section class="pn sp12" id="toopakkumised" aria-labelledby="h-toopakkumised">
   <div class="pn-h"><h2 id="h-toopakkumised">{h2}</h2></div>
-  <p class="ps">Portaali enda avalikud koondarvud, loetud iga päev. Portaalide arve ei liideta, sest sama kuulutus võib olla mitmes portaalis. Ühel kuulutusel võib olla mitu valdkonda või asukohta, nii et jaotuste summa võib olla suurem kui kuulutuste arv. Kategooriad on portaali omad ja portaalide vahel erinevad.{ilma_t}</p>
+  <p class="ps">Portaalide avalikud koondarvud, loetud iga päev. Portaale ei liideta: sama kuulutus võib olla mitmes. Kategooriad on portaali omad; üks kuulutus võib olla mitmes kategoorias.{ilma_t}</p>
   <div class="p-tabs" role="tablist" aria-label="Tööportaal">{"".join(nupud)}</div>
   {"".join(osad)}
   <details><summary>Kõik portaalid ja kuidas arv loeti</summary><div><div class="tbl"><table><thead><tr><th scope="col">Portaal</th><th scope="col" class="v">Kuulutusi</th><th scope="col">Loetud</th><th scope="col">Lehel oli</th></tr></thead><tbody>{pt}</tbody></table></div></div></details>

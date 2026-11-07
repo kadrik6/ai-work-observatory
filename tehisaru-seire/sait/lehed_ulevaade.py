@@ -184,7 +184,7 @@ def avaleht(A, vaade, vaated):
     sec_el = f"""
 <section class="pn sp12" id="el" aria-labelledby="h-el">
   <div class="pn-h"><h2 id="h-el">Ettevõtete tehisaru kasutuses on Eesti ELis <b>{koht}. kohal</b>, ELi keskmisest ees ja Põhjamaadest taga ({y})</h2></div>
-  <p class="ps">Tehisaru kasutavate ettevõtete osakaal, %, vähemalt 10 hõivatuga ettevõtted, {y}. Vii hiir riigile kaardil või loendis.</p>
+  <p class="ps">Tehisaru kasutavate ettevõtete osakaal, %, vähemalt 10 hõivatuga ettevõtted, {y}.</p>
   <div class="el-rida"><div class="el-kaart">{kaart_html}</div>{jarjestus(el_v, 45, eu["vaartus"], f"EL {pr(eu['vaartus'])}")}</div>
   {allikarida([(eu["allikas"], eu["url"], f"uuendatud {kp(eu['avaldatud'])}")])}
 </section>"""
@@ -202,7 +202,7 @@ def avaleht(A, vaade, vaated):
   <div class="pn-h"><h2 id="h-tootus">Eesti töötus oli {kuu_seesytlev(kuu)} <b>{pr(t_ee)}%</b>; {p_aasta}. aasta keskmise prognoos on {pr(prog[p_aasta]['protsent'])}%, see on teine mõõdik</h2></div>
   <div class="g2"><div><p class="gt">Aasta keskmine, tegelik ja prognoos</p>{aastatulbad([(r["aasta"], r["protsent"], r["tegelik"]) for r in prog.values()], 10, 2)}</div>
   <div><p class="gt">Kuu kaupa, sesoonselt tasandatud, {k0[5:]}/{k0[:4]}–{kuu[5:]}/{kuu[:4]}</p>{kuujoon}</div></div>
-  <p class="drift">Eri mõõdikud: prognoos on aasta keskmine, kuunumber sesoonselt tasandatud. Prognoos ei arvesta tehisaru mõju eraldi. Aasta keskmine selgub {p_aasta + 1}. aasta alguses.</p>
+  <p class="drift">Prognoos on aasta keskmine, kuunumber sesoonselt tasandatud. Tehisaru mõju prognoos eraldi ei arvesta.</p>
   {allikarida([(rm["pealkiri"], rm["url"], kp(rm["avaldatud"])), ("Eurostat une_rt_m", UNE_URL, f"uuendatud {kp(UNE_UUENDATUD)}")])}
 </section>"""
 
@@ -244,7 +244,7 @@ def avaleht(A, vaade, vaated):
     sec_voog = f"""
 <section class="pn sp5" id="muutus" aria-labelledby="h-muutus">
   <div class="pn-h"><h2 id="h-muutus">Mis muutus: viimati <b>{kp(viimane)}</b></h2></div>
-  <p class="ps">{ARVSONAD[VOO_RIDU].capitalize()} viimast muutust allikates ja väidetes; {VOO_PAEVI} päeva jooksul enne {kp(viimane)} lisandus {uued}.</p>
+  <p class="ps">{VOO_PAEVI} päevaga lisandus {uued}.</p>
   <ul class="voog">{read}</ul>
   <p class="allikas">Kogu loend: {menuu("kas-tosi", "Usaldus › Värskus", "muutused")}. Tehisaru ja töö uudised Eestist ja maailmast: {menuu("uudised", "Uudised")}.</p>
 </section>"""
@@ -264,14 +264,14 @@ def avaleht(A, vaade, vaated):
 <section class="pn sp3" id="sihid" aria-labelledby="h-sihid">
   <div class="pn-h"><h2 id="h-sihid">Kolmest sihist on <b>ettevõtete kasutus</b> kõige kaugemal</h2></div>
   <div class="sihid">{s_read}</div>
-  <p class="allikas">Iga siht oma allika ja skaalaga: Eesti siht on Statistikaameti numbril, ELi sihid ELi kui terviku kohta. Iga siht on oma teema juures: {menuu("ettevotted", "Ettevõtted", "kasutus")}, {menuu("inimesed", "Inimesed", "digi")}.</p>
+  <p class="allikas">Iga siht oma allika ja skaalaga; ELi sihid on ELi kui terviku kohta. Üksikasjad: {menuu("ettevotted", "Ettevõtted", "kasutus")}, {menuu("inimesed", "Inimesed", "digi")}.</p>
 </section>"""
 
     sec_hanked = f"""
 <section class="pn sp4" id="hanked" aria-labelledby="h-hanked">
   <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehangete osa on <b>alla 1%</b> kõigist hangetest</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">{h_uus["aasta"]} ({e(h_uus["periood"])}): <b>{h_uus["ai_ja_andmed"]}</b> hanget, {pr(h_uus["osa"])}% kõigist. Aastate võrdlust ei näidata, kuni vähemalt 100 hanget on inimese pimesi märgistatud.</p>
-  <p class="allikas">Allikas: {a(HANKED_URL, "riigihangete register")} ja TED. Katseline klassifikaator: täpsus 71%, saagis 69% Claude'i märgendatud valimil, inimene pole kontrollinud. Kõik hanked ja head näited: {menuu("hanked", "Hanked")}.</p>
+  <p class="ps">{h_uus["aasta"]} ({e(h_uus["periood"])}): <b>{h_uus["ai_ja_andmed"]}</b> hanget, {pr(h_uus["osa"])}% kõigist. Aastaid ei võrrelda enne, kui 100 hanget on inimese pimesi märgistatud.</p>
+  <p class="allikas">Allikas: {a(HANKED_URL, "riigihangete register")} ja TED; masinmärgistus, inimene pole kontrollinud. Kõik hanked: {menuu("hanked", "Hanked")}.</p>
 </section>"""
     if max(r["osa"] for r in H) >= 1:
         raise AndmeViga("Hangete pealkiri ütleb „alla 1%“, aga osa on 1% või rohkem")
@@ -381,10 +381,10 @@ def too_eesti(A):
     sec_v = f"""
 <div class="kk-vis" id="koondamised-visuaal">
   <h3 class="kk-h3" id="h-koondamised-v">Tehisaru nimetati üheks põhjuseks <b>{pohjus} töökoha</b> juures {piir}{kokku}-st</h3>
-  <p class="ps">Teatatud töökohad Eestis ettevõtte kaupa. Värv näitab, mida ettevõte ise tehisaru kohta ütles. Need on koondamised, mille kohta uudis küsis, kas tehisaru oli põhjus; see ei ole täielik nimekiri (kontrollitud {kp(K["kontrollitud"])}).</p>
+  <p class="ps">Teatatud töökohad ettevõtte kaupa. Ainult koondamised, mille puhul uudis küsis tehisaru kohta; nimekiri pole täielik (kontrollitud {kp(K["kontrollitud"])}).</p>
   <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa">{ribad}</div>
   <p class="kr-leg">{legend}</p>
-  <p class="allikas">Allikas: uudised. Arv, põhjus ja link igale uudisele on allpool tabelis <a href="#palkamine">Keda koondajad otsivad</a>. Ettevõtte enda selgitus ei tõenda põhjust. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
+  <p class="allikas">Allikas: uudised, lingid tabelis <a href="#palkamine">Keda koondajad otsivad</a>. Ettevõtte enda selgitus ei tõenda põhjust. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
   {bonney_rida}
 </div>"""
     # Kaardid võeti maha; arv, põhjus ja link on tabelis „Keda koondajad otsivad“ (Kadri MKUS-i kommentaar 7.11.2026 08:48)
@@ -465,7 +465,7 @@ def vabad_ametikohad():
 <div class="g12">
 <section class="pn sp12" id="vabad-kohad" aria-labelledby="h-vabad-kohad">
   <div class="pn-h"><h2 id="h-vabad-kohad">{h2}</h2></div>
-  <p class="ps">Vaba ametikoht on koht, mille täitmiseks tööandja otsib aktiivselt töötajat väljastpoolt (Statistikaameti tööandjate uuring, kvartali keskmine).{v_lause} Ametite ja tööportaalide kaupa ametlikku statistikat ei ole; see tuleb tööportaalidest ja lisandub siia, kui igapäevane kogumine töötab.</p>
+  <p class="ps">Vaba ametikoht on koht, mille täitmiseks tööandja otsib aktiivselt töötajat väljastpoolt (Statistikaameti tööandjate uuring, kvartali keskmine).{v_lause}</p>
   <div class="uu-kaks">
     <div><p class="gt">Mis valdkonnas: vabad ametikohad tegevusala järgi, {viimane}</p><p class="ps">Sulgudes {aasta_tagasi}.</p>{g_a}</div>
     <div><p class="gt">Kus: osa kõigist vabadest ametikohtadest maakonna järgi, %, {kv14}</p><p class="ps">Harjumaa on jagatud Tallinnaks ja ülejäänud Harjumaaks.{f" {pr(teadmata)}% kohtadest asukohta ei määratud." if teadmata > 0.05 else ""}{" Statistikaamet ei avaldanud seda kvartalit: " + ", ".join(puudu) + "." if puudu else ""}</p>{g_m}</div>

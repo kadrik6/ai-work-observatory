@@ -34,7 +34,7 @@ def pea(A, vaade, lead, lingid, vastuse_read):
 <div class="pea">
   <div class="pea-tekst">
     <h1>{taida(vaade["h1"], A)}</h1>
-    <p class="lead">{lead}</p>
+    {f'<p class="lead">{lead}</p>' if lead else ""}
     {sellel_lehel(lingid)}
   </div>
   {vastus(vastuse_read)}
@@ -94,7 +94,7 @@ def jaga(A, vaade, lead, ree, plokid):
 <div class="pea yks alam-pea">
   <div class="pea-tekst">
     <h1>{e(s["h1"])}</h1>
-    <p class="lead">{s["lead"]}</p>
+    {f'<p class="lead">{s["lead"]}</p>' if s.get("lead") else ""}
     {sellel_lehel(lingid) if lingid else ""}
   </div>
 </div>"""

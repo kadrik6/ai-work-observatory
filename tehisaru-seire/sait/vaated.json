@@ -37,7 +37,6 @@
           "fail": "inimesed-oskused.html",
           "nimi": "Oskused",
           "h1": "Digioskused ja oskuse puudus",
-          "lead": "Kui paljudel Eesti inimestel on vähemalt baastaseme digioskused ja kui paljud jätavad tehisaru kasutamata, sest ei oska.",
           "jaotised": [
             "digi",
             "ei-oska"
@@ -68,7 +67,6 @@
           "fail": "ettevotted-voimekus.html",
           "nimi": "Tootlikkus ja võimekus",
           "h1": "Tootlikkus, digiintensiivsus ja teadus- ja arendustegevus",
-          "lead": "Kas tehisaru kasutus on seotud suurema tootlikkusega, kui digitaalsed on Eesti väikesed ja keskmised ettevõtted ning kui palju kulub teadus- ja arendustegevusele. ELi sihid on iga näitaja juures.",
           "jaotised": [
             "tootlikkus",
             "voimekus"
@@ -103,7 +101,6 @@
           "fail": "too-uuringud.html",
           "nimi": "Uuringud",
           "h1": "Mida uuringud tehisaru ja töö kohta leidsid",
-          "lead": "Maailma uuringud tööhõivest ja ülesannete kiirusest ning Eesti uuringud. Iga leid on oma allikaga; publikatsioonide loendid on alamlehel Kirjandus.",
           "jaotised": [
             "maailm",
             "ulesanded",
@@ -114,7 +111,6 @@
           "fail": "too-kirjandus.html",
           "nimi": "Kirjandus",
           "h1": "Mida maailmas ja Eestis tehisarust ja tööst kirjutatakse",
-          "lead": "Publikatsioonide arv aastate kaupa, uusimad ja enim tsiteeritud tööd ning Eesti uuringud ja raportid. Leiud on alamlehel Uuringud.",
           "jaotised": [
             "uuritakse"
           ]
@@ -123,7 +119,6 @@
           "fail": "too-ametid.html",
           "nimi": "Ametid ja hõive",
           "h1": "Millised Eesti ametid on tehisarule avatud",
-          "lead": "Kui suur osa Eesti töötajatest on ametites, mille ülesandeid generatiivne tehisaru puudutab, ja kuidas hõive neis ametites on muutunud.",
           "jaotised": [
             "kokkupuude",
             "hoive"
@@ -211,7 +206,6 @@
           "fail": "varskus.html",
           "nimi": "Värskus",
           "h1": "Kui värsked on seire numbrid ja mis allikates viimati muutus",
-          "lead": "Iga näitaja juures on kuupäev, millal allikas seda uuendas ja millal tuleb järgmine number, ning logi allikate uutest numbritest ja lahknevustest.",
           "jaotised": [
             "varskus"
           ]
