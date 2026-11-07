@@ -1000,3 +1000,36 @@ th, td { padding: 6px 10px; }
 .jrj-r[hidden] { display: none; }
 .jrj-k { min-width: 0; }
 .jrj-k .kogus { max-width: 480px; }
+
+/* Järjestuse muutus aastate kaupa (bump chart), vabad ametikohad tegevusala järgi (Kadri 7.11.2026) */
+.vk-bump { margin-top: 8px; }
+.vk-kus { margin-top: 32px; max-width: 640px; }
+.bump-k .kogus { margin: 4px 0 14px; }
+.bump { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--font-sans); }
+.bump.lai { max-width: 1040px; }
+.bs .bp.v { display: none; }
+.bs.f .bp.v, .bs.t .bp.v { display: inline; }
+.bump.kitsas .bl { font-size: 12.5px; }
+.bump.kitsas { display: none; }
+@media (max-width: 700px) { .bump.lai { display: none; } .bump.kitsas { display: block; } }
+.bump-a { font-size: 14px; font-weight: 700; fill: var(--ink); }
+.bump-all { font-size: 13px; fill: var(--ink-3); }
+.bump-p { stroke: var(--border); stroke-width: 1; }
+.bs { cursor: pointer; outline: none; }
+.bs .bj { fill: none; stroke: var(--context); stroke-width: 1.5; }
+.bs .bj.v { stroke-dasharray: 2 4; opacity: .7; }
+.bs .bp { fill: var(--mark-ctx); }
+.bs .bk, .bs .bkn { display: none; }
+.bs .bl { font-size: 13.5px; fill: var(--ink-2); }
+.bs:hover .bj, .bs:focus-visible .bj { stroke: var(--mark-ctx); stroke-width: 2; }
+.bs:hover .bl, .bs:focus-visible .bl { fill: var(--ink); }
+.bs.t .bj { stroke: var(--context-strong); stroke-width: 2.5; }
+.bs.t .bk { display: inline; fill: var(--context-strong); }
+.bs.t .bkn, .bs.f .bkn { display: inline; font-size: 11.5px; font-weight: 700; fill: var(--surface); }
+.bs.t .bl { fill: var(--context-strong); font-weight: 700; }
+.bs.f .bj { stroke: var(--mark-signal); stroke-width: 3; }
+.bs.f .bj.v { stroke-dasharray: 2 5; opacity: 1; }
+.bs.f .bk { display: inline; fill: var(--mark-signal); }
+.bs.f .bkn { fill: var(--on-signal); }
+.bs.f .bl { fill: var(--signal); font-weight: 700; }
+@media (prefers-reduced-motion: no-preference) { .bs .bj { transition: stroke .15s; } }

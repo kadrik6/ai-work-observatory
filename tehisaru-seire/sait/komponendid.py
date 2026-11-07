@@ -449,3 +449,69 @@ def kaart(vaatlused, piirid, fookus="EE", viide=None, viite_nimi="", uhik="%", k
               f'<div class="margid">{margid}</div></div>')
     return (f'<div class="kaart-ala"><div class="kaart"><div class="kaart-vihje" hidden></div><svg viewBox="{kuju["viewBox"]}" aria-hidden="true" focusable="false">'
             f'{"".join(osad)}</svg>{silt}</div>{legend}</div>')
+
+
+def jarjestuse_muutus(seeriad, aastad, fookus, teine=None, piirid=(5, 10), silt="Järjestus"):
+    """Järjestuse muutuse graafik (bump chart) aastate kaupa (Kadri 7.11.2026, näidise järgi).
+
+    seeriad: {nimi: {aasta: koht}}; koht puudub = Statistikaamet ei avaldanud (joon katkeb).
+    Iga Top N kohta (piirid + kõik) kaks SVG-d: lai (sildid mõlemal pool) ja kitsas (telefon, sildid paremal).
+    Top N-st välja kukkunud tegevusala läheb rida „allpool“ ja joon on punktiir. sait.js: nupud ja klõps esiletõstmiseks.
+    """
+    n_koik = max(k for s in seeriad.values() for k in s.values())
+    tasemed = [p for p in piirid if p < n_koik] + [n_koik]
+    idd = {n: f"s{i}" for i, n in enumerate(seeriad)}
+
+    def svg(N, lai):
+        aastad_v = aastad if lai else aastad[-6:]  # telefonis viimased 6 aastat, muidu jääb aastate vahe liiga kitsaks
+        W = 1040 if lai else 358
+        vasak, parem = (240, 260) if lai else (24, 200)
+        rida, ulal = (28, 40) if lai else (26, 34)
+        all_y = ulal + N * rida + 14
+        H = all_y + (34 if lai else 30)
+        samm = (W - vasak - parem) / (len(aastad_v) - 1)
+        X = lambda i: vasak + i * samm  # noqa: E731
+        Y = lambda k: ulal + (k - 0.5) * rida if k <= N else all_y  # noqa: E731
+        o = [f'<svg class="bump {"lai" if lai else "kitsas"}" viewBox="0 0 {W} {H}" role="img" aria-label="{e(silt)}, top {N}">']
+        for i, a in enumerate(aastad_v):
+            o.append(f'<text class="bump-a" x="{X(i):.1f}" y="{ulal - 18}" text-anchor="middle">{a if lai else "’" + str(a)[2:]}</text>')
+        o.append(f'<line class="bump-p" x1="{vasak - 8}" x2="{W - parem + 8}" y1="{all_y - 12}" y2="{all_y - 12}"/>')
+        o.append(f'<text class="bump-all" x="{vasak - 14}" y="{all_y + 4}" text-anchor="end">{"allpool top " + str(N) if lai else ""}</text>')
+        jrk = sorted(seeriad, key=lambda n: (n == fookus, n == teine))  # esiletõstetud joonistatakse viimasena (peal)
+        for n in jrk:
+            s = seeriad[n]
+            kl = "bs" + (" f" if n == fookus else "") + (" t" if n == teine else "")
+            g = [f'<g class="{kl}" data-s="{idd[n]}" tabindex="0" role="button" aria-label="{e(n)}">']
+            punktid = [(i, s[a]) for i, a in enumerate(aastad_v) if a in s]
+            if not punktid or not any(k <= N for _, k in punktid):
+                continue
+            for (i0, k0), (i1, k1) in zip(punktid, punktid[1:]):
+                if i1 != i0 + 1:
+                    continue  # aasta puudub: joon katkeb
+                x0, y0, x1, y1 = X(i0), Y(k0), X(i1), Y(k1)
+                m = (x0 + x1) / 2
+                valjas = " v" if k0 > N or k1 > N else ""
+                g.append(f'<path class="bj{valjas}" d="M{x0:.1f},{y0:.1f} C{m:.1f},{y0:.1f} {m:.1f},{y1:.1f} {x1:.1f},{y1:.1f}"/>')
+            for i, k in punktid:
+                y = Y(k)
+                g.append(f'<circle class="bp{" v" if k > N else ""}" cx="{X(i):.1f}" cy="{y:.1f}" r="3.5"/>')
+                g.append(f'<circle class="bk" cx="{X(i):.1f}" cy="{y:.1f}" r="10"/><text class="bkn" x="{X(i):.1f}" y="{y + 4:.1f}" text-anchor="middle">{k}</text>')
+            # sildid: vasakul esimese aasta koht, paremal viimase aasta koht
+            i0, k0 = punktid[0]
+            if lai and i0 == 0 and k0 <= N:
+                g.append(f'<text class="bl" x="{vasak - 14}" y="{Y(k0) + 4.5:.1f}" text-anchor="end">{e(n)} {k0}</text>')
+            elif not lai and i0 == 0 and k0 <= N:
+                g.append(f'<text class="bl" x="{vasak - 12}" y="{Y(k0) + 4.5:.1f}" text-anchor="end">{k0}</text>')
+            i1, k1 = punktid[-1]
+            if i1 == len(aastad_v) - 1 and k1 <= N:
+                g.append(f'<text class="bl" x="{W - parem + 14}" y="{Y(k1) + 4.5:.1f}">{k1} {e(n)}</text>')
+            g.append("</g>")
+            o.extend(g)
+        o.append("</svg>")
+        return "".join(o)
+
+    nupud = "".join(f'<button type="button" data-n="{N}" aria-pressed="{"true" if N == tasemed[min(1, len(tasemed) - 1)] else "false"}">'
+                    f'{"Top " + str(N) if N < n_koik else "kõik (" + str(N) + ")"}</button>' for N in tasemed)
+    vaated = "".join(f'<div class="bump-v" data-n="{N}"{"" if N == tasemed[min(1, len(tasemed) - 1)] else " hidden"}>{svg(N, True)}{svg(N, False)}</div>'
+                     for N in tasemed)
+    return f'<div class="bump-k"><div class="kogus bump-n" role="group" aria-label="Mitu rida näidata">Näita{nupud}</div>{vaated}</div>'

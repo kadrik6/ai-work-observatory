@@ -406,6 +406,7 @@ LUHI = {"Hulgi- ja jaekaubandus; mootorsõidukite ja mootorrataste remont": "Kau
         "Põllumajandus, metsamajandus ja kalapüük": "Põllu- ja metsamajandus",
         "Kutse-, teadus- ja tehnikaalane tegevus": "Kutse-, teadus- ja tehnikaala",
         "Tervishoid ja sotsiaalhoolekanne": "Tervishoid ja hoolekanne",
+        "Kunst, meelelahutus ja vaba aeg": "Kunst ja meelelahutus",
         "Harju maakond, v.a Tallinn": "Harjumaa (v.a Tallinn)"}
 
 
@@ -413,6 +414,44 @@ def _kv(p):
     """„2026 II kvartal“ → (2026, 2)."""
     a, k, _ = p.split()
     return int(a), {"I": 1, "II": 2, "III": 3, "IV": 4}[k]
+
+
+def _vabad_jarjestus():
+    """Tegevusalade koht vabade ametikohtade arvu järgi, sama kvartal igal aastal (sisu/vabad-jarjestus.csv).
+    Kadri 7.11.2026: tulpade asemel järjestuse muutus aastate kaupa, mitu aastat. Tagastab (graafik, pealkiri, tabel)."""
+    from komponendid import jarjestuse_muutus, tabel
+    if not (SISU / "vabad-jarjestus.csv").exists():
+        return "", "", ""
+    R = [r for r in _loe("vabad-jarjestus.csv") if not r["nimi"].startswith("Kokku")]
+    arv = {}
+    for r in R:
+        arv.setdefault(LUHI.get(r["nimi"], r["nimi"]), {})[int(r["periood"][:4])] = float(r["vaartus"])
+    aastad = sorted({a for v in arv.values() for a in v})
+    kv = R[0]["periood"].split(" ", 1)[1]
+    # alles jäävad tegevusalad, mille arv on avaldatud vähemalt pooltel aastatel; koht arvutatakse nende seas
+    arv = {n: v for n, v in arv.items() if len(v) * 2 >= len(aastad)}
+    koht = {n: {} for n in arv}
+    for a in aastad:
+        for i, n in enumerate(sorted((n for n in arv if a in arv[n]), key=lambda n: -arv[n][a]), 1):
+            koht[n][a] = i
+    a0, a1 = aastad[0], aastad[-1]
+    fookus = next(n for n in koht if koht[n].get(a1) == 1)
+    teine = next((n for n in koht if koht[n].get(a0) == 1 and n != fookus), None)
+    jarjest = sorted(koht, key=lambda n: koht[n].get(a1, 99))
+    g = jarjestuse_muutus({n: koht[n] for n in jarjest}, aastad, fookus, teine,
+                          silt=f"Tegevusalade koht vabade ametikohtade arvu järgi, {a0}–{a1}")
+    f0 = koht[fookus].get(a0)
+    lause = f"<b>{e(fookus)}</b> tõusis {a0}. aasta {f0}. kohalt 1. kohale" if f0 and f0 > 1 else f"<b>{e(fookus)}</b> on 1. kohal"
+    if teine and koht[teine].get(a1):
+        lause += f", {e(teine.lower())} langes 1. kohalt {koht[teine][a1]}. kohale"
+    gt = (f'<p class="gt">Mis valdkonnas on kõige rohkem vabu ametikohti: {lause}</p>'
+          f'<p class="ps">Tegevusala koht vabade ametikohtade arvu järgi, iga aasta {kv}. Klõpsa real, et see esile tõsta.'
+          f'{" Tühi koht: Statistikaamet ei avaldanud." if any(len(v) < len(aastad) for v in koht.values()) else ""}</p>')
+    nb = lambda v: f"{v:,.0f}".replace(",", NBSP)  # noqa: E731
+    tbl = tabel(["Tegevusala"] + [str(a) for a in aastad],
+                [[e(n)] + [f"{nb(arv[n][a])} ({koht[n][a]}.)" if a in arv[n] else "–" for a in aastad] for n in jarjest],
+                pealdis=f"Vabad ametikohad tegevusala järgi, iga aasta {kv} (sulgudes koht)")
+    return g, gt, tbl
 
 
 def vabad_ametikohad():
@@ -434,11 +473,8 @@ def vabad_ametikohad():
     if not alad or kokku0 is None:
         raise AndmeViga("vabad-ametikohad.csv: viimase kvartali või aasta varasema kvartali rida puudub")
     muut = (kokku - kokku0) / kokku0 * 100
-    lopp_a = -(-alad[0][1] // 500) * 500
-    read_a = [(LUHI.get(n, n), v, f'{v:,.0f}'.replace(",", "\u00a0") + (f' ({arv[(n, aasta_tagasi)]:,.0f})'.replace(",", "\u00a0") if (n, aasta_tagasi) in arv else ""))
-              for n, v in alad]
-    from komponendid import lihtribad, tabel
-    g_a = lihtribad(read_a, lopp_a, samm=1000 if lopp_a > 1500 else 500, uhik="", fookus=0)
+    from komponendid import jarjestuse_muutus, lihtribad, tabel
+    bump, bump_gt, bump_tbl = _vabad_jarjestus()
     # maakonnad: osatähtsus kõigist vabadest ametikohtadest; Harju maakond on jagatud Tallinnaks ja ülejäänud Harjumaaks
     kv14 = max((r["periood"] for r in R if r["tabel"] == "PAV014"), key=_kv)
     osa = {r["nimi"]: r["vaartus"] for r in R if r["tabel"] == "PAV014" and r["periood"] == kv14 and r["naitaja"] == "Vabade ametikohtade osatähtsus, %"}
@@ -456,7 +492,7 @@ def vabad_ametikohad():
           f'{abs(muut):.0f}% {"vähem" if muut < 0 else "rohkem"} kui aasta varem; enim hariduses ja avalikus halduses')
     if (yks[0], kaks[0]) != ("Haridus", "Avalik haldus ja riigikaitse; kohustuslik sotsiaalkindlustus"):
         h2 = h2.split("; enim")[0] + f"; enim: {LUHI.get(yks[0], yks[0]).lower()} ja {LUHI.get(kaks[0], kaks[0]).lower()}"
-    tbl = tabel(["Tegevusala", viimane, aasta_tagasi],
+    tbl = bump_tbl or tabel(["Tegevusala", viimane, aasta_tagasi],
                 [[e(n), f"{v:,.0f}".replace(",", "\u00a0"), f"{arv.get((n, aasta_tagasi), 0):,.0f}".replace(",", "\u00a0")] for n, v in alad],
                 pealdis="Vabad ametikohad tegevusala järgi")
     # Python 3.10: f-stringi avaldises ei tohi olla kaldkriipsu, seepärast arvutatakse lause enne
@@ -466,8 +502,8 @@ def vabad_ametikohad():
 <section class="pn sp12" id="vabad-kohad" aria-labelledby="h-vabad-kohad">
   <div class="pn-h"><h2 id="h-vabad-kohad">{h2}</h2></div>
   <p class="ps">Vaba ametikoht on koht, mille täitmiseks tööandja otsib aktiivselt töötajat väljastpoolt (Statistikaameti tööandjate uuring, kvartali keskmine).{v_lause}</p>
-  <div class="uu-kaks">
-    <div><p class="gt">Mis valdkonnas: vabad ametikohad tegevusala järgi, {viimane}</p><p class="ps">Sulgudes {aasta_tagasi}.</p>{g_a}</div>
+  <div class="vk-bump">{bump_gt}{bump}</div>
+  <div class="vk-kus">
     <div><p class="gt">Kus: osa kõigist vabadest ametikohtadest maakonna järgi, %, {kv14}</p><p class="ps">Harjumaa on jagatud Tallinnaks ja ülejäänud Harjumaaks.{f" {pr(teadmata)}% kohtadest asukohta ei määratud." if teadmata > 0.05 else ""}{" Statistikaamet ei avaldanud seda kvartalit: " + ", ".join(puudu) + "." if puudu else ""}</p>{g_m}</div>
   </div>
   <details><summary>Näita andmetabelit</summary><div>{tbl}</div></details>

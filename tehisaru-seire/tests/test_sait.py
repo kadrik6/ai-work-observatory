@@ -665,3 +665,16 @@ def test_eli_jarjestus_vaikimisi_kumme_ja_kaardil_pole_tumeda_lauset(sait):
     assert ".jrj[data-piir]" in js and "'kõik ('" in js
     for f, h in sait.items():
         assert "Mida tumedam" not in h, f
+
+
+def test_vabad_kohad_jarjestuse_muutus_aastate_kaupa(sait):
+    # Kadri 7.11.2026 20:41 ja 20:43: tulpade asemel järjestuse muutus aastates (näidise järgi), mitu aastat
+    osa = _jaotis(sait["too.html"], "vabad-kohad")
+    assert 'class="bump-k"' in osa and 'class="ribad lihtne"' not in osa.split('class="vk-kus"')[0]
+    aastad = re.findall(r'<text class="bump-a"[^>]*>(\d{4})</text>', osa)
+    assert len(set(aastad)) >= 8  # vähemalt 8 aastat, sama kvartal igal aastal
+    assert re.search(r'data-n="5"[^>]*>Top 5<', osa) and "kõik (" in osa
+    assert osa.count('class="bs f"') >= 1  # üks esiletõstetud tegevusala
+    vaikimisi = re.search(r'<div class="bump-v" data-n="(\d+)">', osa).group(1)
+    assert vaikimisi == "10"
+    assert "Haridus" in tekst(osa)

@@ -3,6 +3,9 @@
 Kirjutab sisu/vabad-ametikohad.csv: viimased 8 kvartalit
   PAV011 tegevusala järgi: vabade ametikohtade arv ja määr, tööle võetute arv;
   PAV014 maakonna järgi: vabade ametikohtade määr ja osatähtsus.
+Kirjutab sisu/vabad-jarjestus.csv: PAV011 vabade ametikohtade arv tegevusala järgi viimase kvartali kohta
+  (nt II kvartal) iga aasta kohta AASTAID aastat tagasi. Sama kvartal igal aastal, et hooaeg järjestust ei muudaks
+  (Kadri 7.11.2026: järjestuse muutus aastate kaupa).
 Käivita: python3 sait/lae_vabad.py   (andmed.stat.ee on lubatud võrgus)
 """
 import csv
@@ -18,6 +21,7 @@ TABELID = {
     "PAV014": ("Maakond", ["Vabade ametikohtade määr, %", "Vabade ametikohtade osatähtsus, %"]),
 }
 KVARTALEID = 8
+AASTAID = 10
 
 
 def _json(url, paring=None):
@@ -27,14 +31,18 @@ def _json(url, paring=None):
         return json.load(v)
 
 
-def lae(tabel):
-    ruhm, naitajad = TABELID[tabel]
+def lae(tabel, naitajad=None, sama_kvartal=False):
+    ruhm, koik_naitajad = TABELID[tabel]
+    naitajad = naitajad or koik_naitajad
     meta = _json(API + tabel)
     muut = {v["code"]: v for v in meta["variables"]}
     nv = muut["Näitaja"]
     per = muut["Vaatlusperiood"]
     kood = {t: c for c, t in zip(nv["values"], nv["valueTexts"])}
     perioodid = per["values"][-KVARTALEID:]
+    if sama_kvartal:
+        kv = per["valueTexts"][-1].split(" ", 1)[1]  # nt „II kvartal“
+        perioodid = [c for c, t in zip(per["values"], per["valueTexts"]) if t.endswith(" " + kv)][-AASTAID:]
     paring = {"query": [
         {"code": "Näitaja", "selection": {"filter": "item", "values": [kood[n] for n in naitajad]}},
         {"code": ruhm, "selection": {"filter": "all", "values": ["*"]}},
@@ -76,6 +84,13 @@ def main():
         for r in koik:
             w.writerow({**r, "uuendatud": uuendatud})
     print(f"{len(koik)} rida, uuendatud {uuendatud}")
+    jrj, u = lae("PAV011", ["Vabade ametikohtade arv"], sama_kvartal=True)
+    with open(SISU / "vabad-jarjestus.csv", "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, ["tabel", "ruhm", "nimi", "periood", "naitaja", "vaartus", "uuendatud"])
+        w.writeheader()
+        for r in jrj:
+            w.writerow({**r, "uuendatud": u})
+    print(f"järjestus: {len(jrj)} rida")
 
 
 if __name__ == "__main__":

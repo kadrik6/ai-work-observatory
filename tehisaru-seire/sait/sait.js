@@ -163,6 +163,29 @@
       j.insertAdjacentElement('afterend', riba);
       naita(piir);
     });
+    // Järjestuse muutus (bump): Top N nupud ja klõps tegevusalale tõstab selle esile kõigis vaadetes (Kadri 7.11.2026)
+    document.querySelectorAll('.bump-k').forEach(function (k) {
+      var nupud = k.querySelectorAll('.bump-n button'), vaated = k.querySelectorAll('.bump-v');
+      nupud.forEach(function (b) {
+        b.addEventListener('click', function () {
+          var n = b.getAttribute('data-n');
+          nupud.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+          vaated.forEach(function (v) { v.hidden = v.getAttribute('data-n') !== n; });
+        });
+      });
+      function vali(id) {
+        k.querySelectorAll('.bs').forEach(function (g) {
+          var on = g.getAttribute('data-s') === id;
+          g.classList.toggle('f', on);
+          if (on) g.classList.remove('t');
+          if (on && g.parentNode) g.parentNode.appendChild(g);  // esiletõstetud joon teiste peale
+        });
+      }
+      k.querySelectorAll('.bs').forEach(function (g) {
+        g.addEventListener('click', function () { vali(g.getAttribute('data-s')); });
+        g.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); vali(g.getAttribute('data-s')); } });
+      });
+    });
     // Uudiste teemafilter
     document.querySelectorAll('.pn .u-f[aria-label="Vali teema"]').forEach(function (f) {
       var li = f.parentNode.querySelectorAll('.u-voog li');
