@@ -137,7 +137,7 @@ def uudised(A, vaade, vaated=None):
         (f'{len(suured)}', 'suurt uudist (koondamine üle 50 inimese, riigi otsus, uus ametlik statistika).',
          f'{arvamusi} on arvamused, mitte tõendid'),
         (f'{vk.day}.{vk.month:02d} {vk:%H:%M}', f'viimane kontroll; {korras} allikat {len(O["allikad"])}-st vastas.',
-         "Uueneb iga päev, kui sait ühendatakse igapäevase kogumisega"),
+         "Uueneb iga päev kell 7.23 ja 17.53"),
     ]
     lead = "Arvamus ei ole tõend."
 
