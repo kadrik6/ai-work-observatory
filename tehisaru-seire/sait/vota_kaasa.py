@@ -63,6 +63,8 @@ def vota(proj):
         "teemad": _loe(an / "a_teemad.json"),
         "tood": _loe(an / "a_tood.json"),
         "eesti_allikad": _loe(an / "a_eesti_allikad.json"),
+        # Eesti tööde põhinumbrid, kontrollitud allika lehelt (Kadri MKUS-i kommentaar 7.11.2026 08:53)
+        "eesti_kpi": _loe(an / "a_eesti_kpi.json") if (an / "a_eesti_kpi.json").exists() else None,
     })
 
 

@@ -4645,5 +4645,226 @@
 "avaldatud": "2002",
 "teemas": false
 }
+],
+"eesti_kpi": {
+"kirjeldus": "Eesti uuringute põhinumbrid tabeli 'Eesti uuringud ja raportid' jaoks. Võti on a_eesti_allikad.json rea url. Iga number on kontrollitud allika lehelt (allikas_url). Ridadel, mida siin pole, sisulisi numbreid ei ole (video, üritus, viide, teade või arvamus).",
+"kontrollitud": "2026-11-07",
+"tood": [
+{
+"urlid": [
+"https://arenguseire.ee/raportid/tehnoloogilise-arenguga-seotud-trendid-eesti-ettevotluses/",
+"https://arenguseire.ee/uudised/raport-eestis-voib-tehisaru-kasutus-jaada-pinnapealseks-ega-too-oodatud-tootlikkuse-kasvu/",
+"https://arenguseire.ee/raportid/eesti-majanduse-olukord-ja-valjavaated-2026-konkurentsivoime-eksperdikogu-raport-riigikogule/"
+],
+"too": "Vahter jt (TÜ) 2026, Arenguseire lühiraport ja konkurentsivõime raport 2026 ptk 9",
+"kpi": [
+{
+"nimi": "Tehisaru üksi",
+"vaartus": "ei tõstnud",
+"selgitus": "Tootlikkuse kasv ei olnud statistiliselt oluline, kui töökorraldust ei muudetud (2000–2023)."
+},
+{
+"nimi": "Tehisaru + töökorralduse muutus",
+"vaartus": "+19% / +23%",
+"selgitus": "Tootlikkuse kasv töötlevas tööstuses / teadmusmahukates teenustes."
+},
+{
+"nimi": "Automatiseerimine üksi",
+"vaartus": "+6–9%",
+"selgitus": "Keskmine tootlikkuse kasv."
+},
+{
+"nimi": "Laiemate oskustega töötajad",
+"vaartus": "≈ +6% palka",
+"selgitus": "Sotsiaalsed, kognitiivsed ja tehnilised oskused koos."
+}
+],
+"allikas_url": "https://arenguseire.ee/uudised/raport-eestis-voib-tehisaru-kasutus-jaada-pinnapealseks-ega-too-oodatud-tootlikkuse-kasvu/"
+},
+{
+"urlid": [
+"https://arenguseire.ee/uudised/arenguseire-aastaraamat-tehisaru-suurendab-lohesid-eesti-majanduses/"
+],
+"too": "Arenguseire Keskuse aastaraamat 2024 (ilmus 2025)",
+"kpi": [
+{
+"nimi": "Ettevõtete digitaliseerituse koht ELis",
+"vaartus": "16. / 27",
+"selgitus": "Eesti koht EL 27 riigi seas."
+},
+{
+"nimi": "Tehisaru mõju tootlikkusele",
+"vaartus": "üle +7%",
+"selgitus": "Lühiajaline mõju, TÜ uuring 2021. aasta andmetel."
+},
+{
+"nimi": "Automatiseerimine (IMF, OECD)",
+"vaartus": "+20%, koos uuendustega ≈ +40%",
+"selgitus": "Rahvusvaheliste uuringute keskmine, mitte Eesti mõõtmine."
+}
+],
+"allikas_url": "https://arenguseire.ee/uudised/arenguseire-aastaraamat-tehisaru-suurendab-lohesid-eesti-majanduses/"
+},
+{
+"urlid": [
+"https://arenguseire.ee/uudised/konkurentsivoime-eksperdikogu-tutvustab-valminud-raportit/"
+],
+"too": "Konkurentsivõime eksperdikogu raport 2024 ptk 5.5 (Vahter jt)",
+"kpi": [
+{
+"nimi": "Tehisaru kasutajate kogutootlikkus",
+"vaartus": "+7,4%",
+"selgitus": "2021. aasta andmed, keskmine kõigi tehisaru kasutanud ettevõtete kohta, enne generatiivset tehisaru."
+}
+],
+"allikas_url": "https://arenguseire.ee/raportid/eesti-majanduse-olukord-ja-valjavaated-konkurentsivoime-eksperdikogu-raport-riigikogule/"
+},
+{
+"urlid": [
+"https://oska.kutsekoda.ee/tehisintellekti-teadlik-kasutamine-vajab-eesti-ettevotetes-veel-arendamist/",
+"https://oska.kutsekoda.ee/?reference=leemet-a-mets-u-2025-tehisintellekti-moju-toojou-oskuste-vajadusele-ettevotluses-rakendusuuring-tallinn-sa-kutsekoda-https-uuringud-oska-kutsekoda-ee",
+"https://oska.kutsekoda.ee/vaata-jarele-oska-infotundi-tehisintellekti-moju-toojou-oskuste-vajadusele-ettevotluses/",
+"https://oska.kutsekoda.ee/urve-mets-ja-anneli-leemet-oskuste-puudus-ei-lase-ti-st-kasu-saada/"
+],
+"too": "Leemet, Mets (OSKA) 2025, Tehisintellekti mõju tööjõu oskuste vajadusele ettevõtluses",
+"kpi": [
+{
+"nimi": "Tehisaru kasutavad ettevõtted",
+"vaartus": "14% → 22%",
+"selgitus": "2024 → 2025. aasta I pool."
+},
+{
+"nimi": "Enim kasutavad sektorid",
+"vaartus": "58% / 56%",
+"selgitus": "Finants ja kindlustus / info ja side."
+},
+{
+"nimi": "Vahe Taaniga",
+"vaartus": "2 korda",
+"selgitus": "Taanis kasutas tehisaru 2024. aastal kaks korda suurem osa ettevõtteid."
+}
+],
+"allikas_url": "https://oska.kutsekoda.ee/tehisintellekti-teadlik-kasutamine-vajab-eesti-ettevotetes-veel-arendamist/"
+},
+{
+"urlid": [
+"https://oska.kutsekoda.ee/oska-ettevotete-juhtide-digivoimekust-tuleb-tosta/"
+],
+"too": "OSKA IKT seirearuanne 2025",
+"kpi": [
+{
+"nimi": "IKT-spetsialiste Eestis",
+"vaartus": "26 900 → 34 500",
+"selgitus": "2020 → 2024."
+},
+{
+"nimi": "Prognoos 2027",
+"vaartus": "üle 40 000",
+"selgitus": "IKT ametites hõivatuid."
+}
+],
+"allikas_url": "https://oska.kutsekoda.ee/oska-ettevotete-juhtide-digivoimekust-tuleb-tosta/"
+},
+{
+"urlid": [
+"https://oska.kutsekoda.ee/oska-uuring-eesti-vajab-igal-aastal-juurde-2600-uut-ikt-spetsialisti/"
+],
+"too": "OSKA IKT valdkonna uuring 2021 (ilmus 2022)",
+"kpi": [
+{
+"nimi": "Uusi IKT-spetsialiste aastas",
+"vaartus": "2600",
+"selgitus": "Vajadus aastani 2027."
+},
+{
+"nimi": "IKT-spetsialiste 2027",
+"vaartus": "47 600",
+"selgitus": "Prognoos kogu majanduses. 2025. aasta seire hindab üle 40 000."
+},
+{
+"nimi": "Tasemeõppe lõpetajaid",
+"vaartus": "kuni 7350",
+"selgitus": "Seitsme aasta jooksul, alla poole vajadusest."
+}
+],
+"allikas_url": "https://oska.kutsekoda.ee/oska-uuring-eesti-vajab-igal-aastal-juurde-2600-uut-ikt-spetsialisti/"
+},
+{
+"urlid": [
+"https://oska.kutsekoda.ee/tehnoloogia-astub-trukitoostuses-inimtoojoule-kandadele/"
+],
+"too": "OSKA trükitööstuse uuring 2026",
+"kpi": [
+{
+"nimi": "Hõive põhikutsealadel",
+"vaartus": "1700 → 1500",
+"selgitus": "2025 → 2035 prognoos. Põhjus: digitrükk, automatiseerimine ja tehisaru."
+},
+{
+"nimi": "Uusi töötajaid 10 aastaga",
+"vaartus": "≈ 160",
+"selgitus": "Pensionile siirdujate asendamiseks."
+}
+],
+"allikas_url": "https://oska.kutsekoda.ee/tehnoloogia-astub-trukitoostuses-inimtoojoule-kandadele/"
+},
+{
+"urlid": [
+"https://oska.kutsekoda.ee/toostusrobotite-kasutuselevott-voib-tookohti-nii-vahendada-kui-juurde-tuua/"
+],
+"too": "OSKA ülevaade 2018, automatiseerimise risk",
+"kpi": [
+{
+"nimi": "Automatiseeritavad tööd Eestis",
+"vaartus": "48%",
+"selgitus": "Frey ja Osborne'i meetod, 2017. aasta hõive. Ülesandepõhised hinnangud on palju väiksemad (OECD 9–14%)."
+},
+{
+"nimi": "Robot 1000 töötaja kohta",
+"vaartus": "−0,16…−0,2 pp",
+"selgitus": "Hõive muutus, kuue Euroopa riigi analüüs."
+}
+],
+"allikas_url": "https://oska.kutsekoda.ee/toostusrobotite-kasutuselevott-voib-tookohti-nii-vahendada-kui-juurde-tuua/"
+},
+{
+"urlid": [
+"https://oska.kutsekoda.ee/aastaks-2030-suureneb-noudlus-eeskatt-tehnoloogiaga-seotud-oskuste-jarele/"
+],
+"too": "OSKA ülevaade 2018 McKinsey uuringust (FR, DE, IT, ES, UK, USA, mitte Eesti)",
+"kpi": [
+{
+"nimi": "Tehnoloogiaoskused tööajast",
+"vaartus": "11% → 17%",
+"selgitus": "2016 → 2030 prognoos."
+},
+{
+"nimi": "Füüsilised oskused tööajast",
+"vaartus": "31% → 25%",
+"selgitus": "2016 → 2030 prognoos."
+}
+],
+"allikas_url": "https://oska.kutsekoda.ee/aastaks-2030-suureneb-noudlus-eeskatt-tehnoloogiaga-seotud-oskuste-jarele/"
+},
+{
+"urlid": [
+"https://www.err.ee/1610187118/toovaidluste-plahvatuslik-kasv-uputab-tooinspektsiooni"
+],
+"too": "ERR uudis 5.11.2026, Tööinspektsiooni andmed",
+"kpi": [
+{
+"nimi": "Töövaidlusi 10 kuuga",
+"vaartus": "1516 → 2593",
+"selgitus": "2022 → 2026."
+},
+{
+"nimi": "Tehisaruga kirjutatud avaldused",
+"vaartus": "kuni üle 100 lk",
+"selgitus": "Tavaline avaldus on 1–2 lehekülge."
+}
+],
+"allikas_url": "https://www.err.ee/1610187118/toovaidluste-plahvatuslik-kasv-uputab-tooinspektsiooni"
+}
 ]
+}
 }

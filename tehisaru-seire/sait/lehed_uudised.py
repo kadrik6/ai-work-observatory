@@ -385,16 +385,42 @@ def uuringud_too(A):
   <p class="ps">Tsiteeritud = mitu korda on teised tööd sellele viidanud ({a(OPENALEX_URL, "OpenAlex")}, seisuga {kp(P["meta"]["aeg"][:10])}). Uutel töödel on see arv loomulikult väike.</p>
   {"".join(osad)}
 </section>"""
+    # Põhinumbrid (KPI) töö kaupa, kontrollitud allika lehelt (Kadri MKUS-i kommentaar 7.11.2026 08:53).
+    # Üks töö võib katta mitu rida; numbrid on selle töö allikalingi real, teised read viitavad sinna.
+    kpi = (P.get("eesti_kpi") or {}).get("tood") or []
     ee = sorted((r for r in P["eesti_allikad"] if r.get("teemas")), key=lambda r: r["avaldatud"] or "", reverse=True)
+    ee_url = [r["url"] for r in ee]
+    too_url, peamine = {}, {}
+    for t in kpi:
+        meie = [u for u in t["urlid"] if u in ee_url]
+        if not meie:
+            continue
+        p0 = t["allikas_url"] if t["allikas_url"] in meie else min(meie, key=ee_url.index)
+        peamine[p0] = t
+        for u in meie:
+            too_url[u] = t
+    ee.sort(key=lambda r: r["url"] not in peamine)  # põhinumbritega tööd eespool, muidu uusimad eespool
     nimi = {"arenguseire": "Arenguseire Keskus", "oska": "OSKA", "novaator": "Novaator", "err": "ERR", "etis": "ETIS"}
+
+    def _kpi(r):
+        t = peamine.get(r["url"])
+        if t:
+            return ("".join(f'<div class="ee-k"><span>{e(k["nimi"])}</span> <b>{e(k["vaartus"])}</b><small>{e(k["selgitus"])}</small></div>' for k in t["kpi"])
+                    + f'<small class="ee-t">{e(t["too"])}</small>')
+        if r["url"] in too_url:
+            return f'<span class="kr-pole">sama töö: {e(too_url[r["url"]]["too"])}, numbrid ülal</span>'
+        return '<span class="kr-pole">—</span>'
     e_read = "".join(f'<tr><td class="n">{kp(r["avaldatud"]) if r.get("avaldatud") else "—"}</td><td><a href="{e(r["url"])}">{e(r["pealkiri"])}</a></td>'
-                     f'<td>{e(nimi.get(r["allikas"], r["allikas"]))}</td></tr>' for r in ee if r.get("url"))
+                     f'<td class="ee-kpi">{_kpi(r)}</td><td>{e(nimi.get(r["allikas"], r["allikas"]))}</td></tr>' for r in ee if r.get("url"))
+    n_kpi = len({id(t) for t in peamine.values()})
+    kpi_t = (f' Põhinumbrid on {ARVSONAD.get(n_kpi, n_kpi)} töö kohta, igaüks kontrollitud allika lehelt '
+             f'({kp(P["eesti_kpi"]["kontrollitud"])}); need tööd on eespool. Ülejäänud ridadel (videod, üritused, viited, teated, arvamuslood) sisulisi numbreid ei ole.') if peamine else ""
     sec_e = f"""
 <div class="g12">
 <section class="pn sp12" id="eesti-allikad" aria-labelledby="h-eesti-allikad">
   <div class="pn-h"><h2 id="h-eesti-allikad">Eesti uuringud ja raportid tehisarust ja tööst: <b>{len(ee)}</b></h2></div>
-  <p class="ps">Arenguseire Keskuse, OSKA ja teiste Eesti allikate tööd, mis käsitlevad tehisaru, tootlikkust või oskusi. Uusimad eespool.</p>
-  <div class="tbl"><table data-piir><thead><tr><th scope="col">Avaldatud</th><th scope="col">Töö</th><th scope="col">Allikas</th></tr></thead><tbody>{e_read}</tbody></table></div>
+  <p class="ps">Arenguseire Keskuse, OSKA ja teiste Eesti allikate tööd, mis käsitlevad tehisaru, tootlikkust või oskusi.{kpi_t or " Uusimad eespool."}</p>
+  <div class="tbl"><table data-piir class="ee-tbl"><thead><tr><th scope="col">Avaldatud</th><th scope="col">Töö</th><th scope="col">Põhinumbrid</th><th scope="col">Allikas</th></tr></thead><tbody>{e_read}</tbody></table></div>
 </section>
 </div>"""
     # Kaks visuaali kõrvuti oma real, publikatsioonide tabel oma real (Kadri MKUS-i kommentaar 7.11.2026 08:52)

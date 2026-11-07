@@ -617,3 +617,15 @@ def test_publikatsiooni_tsiteeringud_on_pealkirja_korval(A, sait):
     koik = max((r for r in A["publikatsioonid"]["tood"] if r["grupp"] == "koik" and r.get("url")), key=lambda r: r["viiteid"])
     rida = osa.split(f'<a href="{komponendid.e(koik["url"])}">')[0].rsplit("<tr>", 1)[1]
     assert lehed_uudised._arv(koik["viiteid"]) in rida
+
+
+def test_eesti_toode_pohinumbrid_on_tabelis(A, sait):
+    # Kadri MKUS-i kommentaar 7.11.2026 08:53: „näita siin tabelis veel lisaks olulisemaid KPIsid nende tööde kohta“
+    osa = _jaotis(sait["too-kirjandus.html"], "eesti-allikad")
+    assert '<th scope="col">Põhinumbrid</th>' in osa
+    for t in A["publikatsioonid"]["eesti_kpi"]["tood"]:
+        for k in t["kpi"]:
+            assert f'<b>{komponendid.e(k["vaartus"])}</b>' in osa, t["too"]
+    # põhinumbritega tööd on tabeli alguses (vaikimisi on näha 12 rida)
+    esimene = osa.split("<tbody>")[1].split("</tr>")[0]
+    assert 'class="ee-k"' in esimene
