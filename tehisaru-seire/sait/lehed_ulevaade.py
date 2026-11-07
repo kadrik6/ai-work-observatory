@@ -181,11 +181,26 @@ def avaleht(A, vaade, vaated):
     eu = andmed.leia(A, EB, EL, y)
     koht = andmed.koht(A, EB, "EE", y)
     kaart_html = kaart(el_v, (0, 10, 20, 30, 40), viide=eu["vaartus"], viite_nimi=f"EL {pr(eu['vaartus'])}")
+    bump = el_jarjestus(EB, koht_praegu=koht, aasta_praegu=y)
+    if bump:
+        # Kadri 7.11.2026: järjestuse muutus ajas loendi asemel (kaart jääb vasakule)
+        b_g, b_k, b_a, b_tbl, _ = bump
+        k0 = b_k.get(b_a[0])
+        h2_el = (f"Ettevõtete tehisaru kasutuses tõusis Eesti ELis {b_a[0]}. aasta {k0}. kohalt <b>{koht}. kohale</b> ({y})"
+                 if k0 and k0 > koht else f"Ettevõtete tehisaru kasutuses on Eesti ELis <b>{koht}. kohal</b> ({y})")
+        ps_el = (f"Kaart: tehisaru kasutavate ettevõtete osakaal {y}, %. Paremal: koht ELis igal aastal"
+                 f"{' (' + ', '.join(str(a) for a in range(b_a[0], b_a[-1]) if a not in b_a) + ' ei mõõdetud)' if len(b_a) < b_a[-1] - b_a[0] + 1 else ''}."
+                 " Klõpsa real, et see esile tõsta.")
+        parem = f'<div class="el-bump">{b_g}<details><summary>Näita andmetabelit</summary><div>{b_tbl}</div></details></div>'
+    else:
+        h2_el = f"Ettevõtete tehisaru kasutuses on Eesti ELis <b>{koht}. kohal</b>, ELi keskmisest ees ja Põhjamaadest taga ({y})"
+        ps_el = f"Tehisaru kasutavate ettevõtete osakaal, %, vähemalt 10 hõivatuga ettevõtted, {y}."
+        parem = jarjestus(el_v, 45, eu["vaartus"], f"EL {pr(eu['vaartus'])}")
     sec_el = f"""
 <section class="pn sp12" id="el" aria-labelledby="h-el">
-  <div class="pn-h"><h2 id="h-el">Ettevõtete tehisaru kasutuses on Eesti ELis <b>{koht}. kohal</b>, ELi keskmisest ees ja Põhjamaadest taga ({y})</h2></div>
-  <p class="ps">Tehisaru kasutavate ettevõtete osakaal, %, vähemalt 10 hõivatuga ettevõtted, {y}.</p>
-  <div class="el-rida"><div class="el-kaart">{kaart_html}</div>{jarjestus(el_v, 45, eu["vaartus"], f"EL {pr(eu['vaartus'])}")}</div>
+  <div class="pn-h"><h2 id="h-el">{h2_el}</h2></div>
+  <p class="ps">{ps_el}</p>
+  <div class="el-rida"><div class="el-kaart">{kaart_html}</div>{parem}</div>
   {allikarida([(eu["allikas"], eu["url"], f"uuendatud {kp(eu['avaldatud'])}")])}
 </section>"""
 
@@ -414,6 +429,59 @@ def _kv(p):
     """„2026 II kvartal“ → (2026, 2)."""
     a, k, _ = p.split()
     return int(a), {"I": 1, "II": 2, "III": 3, "IV": 4}[k]
+
+
+def el_jarjestus(naitaja, fookus="EE", kahanevalt=True, koht_praegu=None, aasta_praegu=None, lai=(720, 130, 140)):
+    """ELi riikide koht aastate kaupa sisu/el-jarjestus.csv põhjal (lae_el_jarjestus.py, Eurostat).
+    Kadri 7.11.2026: järjestuse muutus ajas. koht_praegu: kui antud, peab viimase aasta koht registriga klappima.
+    Tagastab (graafik, koht {aasta: koht}, aastad, tabel, uuendatud) või None, kui faili pole."""
+    from komponendid import jarjestuse_muutus
+    if not (SISU / "el-jarjestus.csv").exists():
+        return None
+    R = [r for r in _loe("el-jarjestus.csv") if r["naitaja"] == naitaja]
+    if not R:
+        return None
+    v = {}
+    for r in R:
+        v.setdefault(r["geo"], {})[int(r["aasta"])] = float(r["vaartus"])
+    aastad = sorted({a for x in v.values() for a in x})
+    koht = {g: {} for g in v}
+    for a in aastad:
+        for i, g in enumerate(sorted((g for g in v if a in v[g]), key=lambda g: -v[g][a] if kahanevalt else v[g][a]), 1):
+            koht[g][a] = i
+    if koht_praegu is not None and koht[fookus].get(aasta_praegu) != koht_praegu:
+        raise AndmeViga(f"el-jarjestus.csv: {naitaja} {fookus} {aasta_praegu} koht {koht[fookus].get(aasta_praegu)}, "
+                        f"registris {koht_praegu}; käivita python3 sait/lae_el_jarjestus.py")
+    jarjest = sorted(koht, key=lambda g: koht[g].get(aastad[-1], 99))
+    nimed = {g: riik(g) for g in jarjest}
+    g = jarjestuse_muutus({nimed[x]: koht[x] for x in jarjest}, aastad, nimed[fookus], None, piirid=(5, 10, 15),
+                          silt=R[0]["kirjeldus"], lai=lai, kitsas=(358, 24, 130))
+    from komponendid import tabel
+    tbl = tabel(["Riik"] + [str(a) for a in aastad],
+                [[e(nimed[x])] + [f"{pr(v[x][a])} ({koht[x][a]}.)" if a in v[x] else "–" for a in aastad] for x in jarjest],
+                fookus_rida=jarjest.index(fookus), pealdis=R[0]["kirjeldus"] + " (sulgudes koht ELis)")
+    return g, koht[fookus], aastad, tbl, R[0]["uuendatud"]
+
+
+def tootus_el():
+    """Eesti koht ELi riikide töötuse määras aastate kaupa (Kadri 7.11.2026: järjestuse muutus ajas). 1 = kõrgeim töötus."""
+    b = el_jarjestus("tootuse-maar", lai=(1000, 150, 160))
+    if not b:
+        return ""
+    g, k, aastad, tbl, uuendatud = b
+    a0, a1 = aastad[0], aastad[-1]
+    h2 = (f"Eesti töötus on ELis <b>{k[a1]}. kõrgeim</b> ({a1}); {a0}. aastal oli Eesti {k[a0]}. kohal"
+          if k.get(a0) else f"Eesti töötus on ELis <b>{k[a1]}. kõrgeim</b> ({a1})")
+    return f"""
+<div class="g12">
+<section class="pn sp12" id="tootus-el" aria-labelledby="h-tootus-el">
+  <div class="pn-h"><h2 id="h-tootus-el">{h2}</h2></div>
+  <p class="ps">ELi riikide järjestus töötuse määra järgi, aasta keskmine, 15–74-aastased; 1. koht on kõrgeim töötus. Klõpsa real, et see esile tõsta. Järjestus ei ütle, kas põhjus on tehisaru.</p>
+  <div class="el-bump yksi">{g}</div>
+  <details><summary>Näita andmetabelit</summary><div>{tbl}</div></details>
+  {allikarida([("Eurostat une_rt_a", "https://ec.europa.eu/eurostat/databrowser/view/une_rt_a/default/table", f"uuendatud {kp(uuendatud)}")])}
+</section>
+</div>"""
 
 
 def _vabad_jarjestus():

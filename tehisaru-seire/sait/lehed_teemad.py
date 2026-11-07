@@ -526,12 +526,13 @@ def too(A, vaade, vaated=None):
     ]
     lead = ("Mõnes ametis on vähenenud ka vabakutseliste tööd. "
             "Eesti kohta selliseid mõõtmisi veel ei ole.")
-    from lehed_ulevaade import too_eesti, vabad_ametikohad
+    from lehed_ulevaade import too_eesti, tootus_el, vabad_ametikohad
     from lehed_uudised import palkamine, toopakkumised, uuringud_too
     sec_uuritakse = uuringud_too(A)
     sec_palk = palkamine(A)
     return jaga(A, vaade, lead, ree, [
         ("eesti-praegu", [("tootus-kuud", "Töötus"), ("koondamised", "Koondamised")], too_eesti(A)),
+        ("tootus-el", [("tootus-el", "Töötus ELis")], tootus_el()),
         ("palkamine", [("palkamine", "Keda koondajad otsivad")], sec_palk),
         ("vabad-kohad", [("vabad-kohad", "Kus ja mida palgatakse")], vabad_ametikohad()),
         ("toopakkumised", [("toopakkumised", "Tööportaalid")], toopakkumised(A)),

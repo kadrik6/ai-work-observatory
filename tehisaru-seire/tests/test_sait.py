@@ -310,12 +310,13 @@ def test_ulevaade_on_toolaud_kaardi_ja_jarjestusega_samal_real(A, sait):
     h = sait["index.html"]
     assert h.count('class="plaat') == 6
     rida = h.split('class="el-rida"')[1].split("</section>")[0]
-    assert 'class="el-kaart"' in rida and 'class="jrj"' in rida
-    # järjestuses on kõik 27 riiki ja iga nimi on ka kaardil (hiire seos)
-    nimed = re.findall(r'class="jrj-r[^"]*" role="listitem" data-n="([^"]+)"', rida)
+    # Kadri 7.11.2026: loendi asemel järjestuse muutus aastate kaupa; kaart jääb samale reale
+    assert 'class="el-kaart"' in rida and 'class="bump-k"' in rida
+    koik = re.search(r'<div class="bump-v" data-n="27".*?</div>', rida, re.S).group(0)
+    nimed = set(re.findall(r'<g class="bs[^"]*" data-s="[^"]+" tabindex="0" role="button" aria-label="([^"]+)"', koik))
     assert len(nimed) == len(A["el_riigid"])
     for n in nimed:
-        assert f'data-n="{n}"' in rida.split('class="jrj"')[0]
+        assert f'data-n="{n}"' in rida.split('class="el-bump"')[0]  # sama nimi ka kaardil
 
 
 def test_ulevaate_tootuse_kuunumber_tuleb_failist(sait):
@@ -657,10 +658,12 @@ def test_tooportaalid_iga_portaal_eraldi(A, sait):
 
 
 def test_eli_jarjestus_vaikimisi_kumme_ja_kaardil_pole_tumeda_lauset(sait):
-    # Kadri MKUS-i kommentaarid 7.11.2026 õhtul: „näita siin defaultina top kümmet“ ja „võta see lause maha“
+    # Kadri MKUS-i kommentaarid 7.11.2026 õhtul: „näita siin defaultina top kümmet“ ja „võta see lause maha“.
+    # Hiljem samal õhtul sai loendist järjestuse muutuse graafik: vaikimisi Top 10, Eesti esile tõstetud.
     osa = _jaotis(sait["index.html"], "el")
-    assert 'class="jrj" role="list" aria-label="ELi riigid järjestuses" data-piir="10"' in osa
-    assert osa.count('class="jrj-r') - osa.count("jrj-r pais") - osa.count("jrj-r telg") == 27  # kõik riigid on HTML-is
+    assert re.search(r'<button type="button" data-n="10" aria-pressed="true">Top 10<', osa)
+    assert '<div class="bump-v" data-n="10">' in osa and "kõik (27)" in osa
+    assert re.search(r'<g class="bs f" data-s="[^"]+" tabindex="0" role="button" aria-label="Eesti">', osa)
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
     assert ".jrj[data-piir]" in js and "'kõik ('" in js
     for f, h in sait.items():
@@ -678,3 +681,19 @@ def test_vabad_kohad_jarjestuse_muutus_aastate_kaupa(sait):
     vaikimisi = re.search(r'<div class="bump-v" data-n="(\d+)">', osa).group(1)
     assert vaikimisi == "10"
     assert "Haridus" in tekst(osa)
+
+
+def test_tootus_eli_jarjestus_aastate_kaupa(sait):
+    # Kadri 7.11.2026 20:53: järjestuse graafik ka teistele andmetele, mis näitavad muutust ajas
+    osa = _jaotis(sait["too.html"], "tootus-el")
+    aastad = set(re.findall(r'<text class="bump-a"[^>]*>(\d{4})</text>', osa))
+    assert len(aastad) >= 8 and 'class="bs f"' in osa and "kõik (27)" in osa
+    assert "kõrgeim" in tekst(osa) and "une_rt_a" in osa
+
+
+def test_el_jarjestuse_viimane_koht_klapib_registriga(A):
+    # graafiku 2025. aasta koht peab olema sama, mis pealkirjas registrist (muidu ehitus katkeb)
+    y = andmekiht.leia(A, "ettevotete-tehisaru-kasutus", "EE", "uusim:alus")["aasta"]
+    koht = andmekiht.koht(A, "ettevotete-tehisaru-kasutus", "EE", y)
+    _, k, aastad, _, _ = lehed_ulevaade.el_jarjestus("ettevotete-tehisaru-kasutus", koht_praegu=koht, aasta_praegu=y)
+    assert k[y] == koht and aastad[0] <= 2021
