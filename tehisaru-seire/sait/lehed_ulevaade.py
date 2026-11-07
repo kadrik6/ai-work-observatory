@@ -65,6 +65,48 @@ def plaat(lbl, big, small="", cmp="", src="", fookus=False, lisa="", href=""):
             f'{lisa}{f"<span class=cmp>{cmp}</span>" if cmp else ""}<span class="src">{src}</span></div>')
 
 
+# KPI-plaadid Kadri lukustatud valiku „ver1“ järgi (KPI-labor, 7.11.2026 21:46 „lukusta ver1“):
+# kast, kaks rida (3 + 3), number 24 px, silt numbri kohal, lühike allikas, fookus Inimesed;
+# iga plaadi kontekst on oma: muutus ja/või tekst ja/või võrdlusriba. Lugeja neid ei muuda.
+KPI_VER1 = {"inimesed": ("muutus", "riba"), "ettevotted": ("muutus", "riba"), "digi": ("muutus", "riba"),
+            "tootus": ("muutus",), "hanked": ("muutus",), "vaited": ("muutus",),
+            "uuendus": ("muutus", "riba"), "laiendus": ("tekst", "riba"), "genai": ("tekst", "riba")}
+
+
+def kpi_riba(v, lopp, siht=None, vrd=None, vrd_nimi="EL", fookus=False, siht_tekst=None):
+    """Võrdlusriba: tulp, oranž kriips = siht, tume kriips = võrdlus. Värv ei ole ainus tunnus: kriipsud on ka tekstis."""
+    p = lambda x: f"{x / lopp * 100:.1f}%"  # noqa: E731
+    o = (f'<span class="kriba{" f" if fookus else ""}" aria-hidden="true"><i style="width:{p(v)}"></i>'
+         + (f'<b style="left:{p(siht)}"></b>' if siht is not None else "")
+         + (f'<u style="left:{p(vrd)}"></u>' if vrd is not None else "") + "</span>")
+    if siht is not None:
+        o += f'<span class="marg">oranž kriips: {e(siht_tekst or "siht " + pr(siht, 0) + "%")}</span>'
+    if vrd is not None:
+        o += f'<span class="marg">tume kriips: {e(vrd_nimi)} {pr(vrd, 0 if float(vrd).is_integer() else 1)}%</span>'
+    return o
+
+
+def kpi_plaat(pid, lbl, big, per, kontekst, src, fookus=False, href=""):
+    """kontekst: {"muutus": (rasvane, hall), "tekst": html, "riba": html}; näidatakse ainult KPI_VER1 valitud osad."""
+    nimi = f'<a href="{e(href)}">{e(lbl)}</a>' if href else e(lbl)
+    osad = []
+    for k in KPI_VER1[pid]:
+        if k not in kontekst:
+            raise AndmeViga(f"KPI-plaadil {pid} puudub kontekst „{k}“ (lukustatud valik ver1)")
+        if k == "muutus":
+            m, hall = kontekst[k]
+            osad.append(f'<span class="muut">{m}</span>' + (f'<span class="marg">{hall}</span>' if hall else ""))
+        else:
+            osad.append(f'<span class="tekst">{kontekst[k]}</span>' if k == "tekst" else kontekst[k])
+    return (f'<div class="plaat kp" data-kpi="{pid}"><span class="lbl">{nimi}</span>'
+            f'<span class="big{" s" if fookus else ""}">{big}{f"<small>{per}</small>" if per else ""}</span>'
+            f'<span class="ctx">{"".join(osad)}</span><span class="src">{src}</span></div>')
+
+
+def _p(x):
+    return ("+" if x > 0 else "") + pr(x)
+
+
 def jarjestus(vaatlused, lopp, viide, viite_nimi, fookus="EE", uhik="%", piir=10):
     """Kõik ELi riigid järjestuses, punkt joonel. data-n seob rea kaardi riigiga (sait.js).
 
@@ -160,26 +202,38 @@ def avaleht(A, vaade, vaated):
     lahti = sum(1 for l in A["lahknevused"] if l["staatus"] == "selgitamata")  # Kadri 6.11 21:38: lahknevused nähtavale
     menuu = lambda vid, t, ank="": link(vaated, vid, t, ank)  # noqa: E731
 
-    # 1. Numbriplaadid
+    # 1. Numbriplaadid (lukustatud KPI valik ver1, Kadri 7.11.2026)
+    ein25 = andmed.leia(A, IN, "EE", "uusim:alus")
+    if ein25["aasta"] != ein["aasta"] - 1 or ein["klass"] not in andmed.VORRELDAVAD:
+        raise AndmeViga("Inimeste plaadi muutus eeldab kahte järjestikust võrreldavat aastat")
+    sa_eel = next(t for t in A["naitajad"][EB]["teised_allikad"] if t["allikas"].startswith("Statistikaamet, tabel IT149"))
+    t_aasta_eest = dict(T["EE"]).get(f"{int(kuu[:4]) - 1}{kuu[4:]}")
+    if t_aasta_eest is None:
+        raise AndmeViga(f"Töötuse plaadi muutus vajab kuud {int(kuu[:4]) - 1}{kuu[4:]}")
+    h_eel = H[-2]
     plaadid = "".join([
-        plaat("Inimesed, kes kasutasid tehisaru (16–74)", f"{pr(ein['vaartus'])}%", str(ein["aasta"]),
-              f"EL {ein_el['aasta']}: {pr(ein_el['vaartus'])}% (Eurostat, teine skaala)",
-              f"{a(ein['url'], ein['allikas'])}, {kp(ein['avaldatud'])}", fookus=True, href="inimesed.html#kasutus"),
-        plaat("Ettevõtted, kes kasutavad tehisaru, ja riigi siht", f"{pr(eeb['vaartus'])}%",
-              f"{eeb['aasta']} · siht {pr(float(siht['siht']), 0)}%",
-              "", f"{a(eeb['url'], eeb['allikas'])}; siht: {a(siht['url'], 'DYAK 2035')}",
-              lisa=sihiriba(eeb["vaartus"], float(siht["siht"]), 100, "%", fookus=True), href="ettevotted.html#kasutus"),
-        plaat("Vähemalt baastaseme digioskused", f"{pr(ds['vaartus'])}%", str(ds["aasta"]),
-              f"{ds23['aasta']}: {pr(ds23['vaartus'])}% · EL {pr(ds_el['vaartus'])}%", e(ds["allikas"]), href="inimesed.html#digi"),
-        plaat("Töötuse määr, sesoonselt tasandatud", f"{pr(t_ee)}%", f"{KUUD[int(kuu[5:]) - 1]} {kuu[:4]}",
-              f"EL {pr(t_el)}% · prognoos {p_aasta}: {pr(prog[p_aasta]['protsent'])}%",
-              f"{a(UNE_URL, 'Eurostat une_rt_m')}, {kp(UNE_UUENDATUD)}", href="too.html#tootus-kuud"),
-        plaat("Tehisaru- ja andmehanked", str(h_uus["ai_ja_andmed"]), f"{h_uus['periood']} {h_uus['aasta']}",
-              f"{pr(h_uus['osa'])}% kõigist hangetest",
-              f"Riigihangete register <span class=\"chip exp\">katseline</span>", href="hanked.html#aastad"),
-        plaat("Kontrollitud väited tehisaru kohta", str(len(V)), "",
-              f'{len(v_muud)} ütleb muud kui allikas · {menuu("kas-tosi", f"{lahti} allikate lahknevust selgitamata", "lahknevused")}',
-              menuu("kas-tosi", "Väited"), href="kas-see-on-tosi.html#vaited"),
+        kpi_plaat("inimesed", "Inimesed, kes kasutasid tehisaru (16–74)", f"{pr(ein['vaartus'])}%", str(ein["aasta"]),
+                  {"muutus": (f"{_p(ein['vaartus'] - ein25['vaartus'])} punkti aastaga", f"{ein25['aasta']}: {pr(ein25['vaartus'])}%"),
+                   "riba": kpi_riba(ein["vaartus"], 100, fookus=True)},
+                  a(ein["url"], "Statistikaamet " + ein["allikas"].split("tabel ")[-1]), fookus=True, href="inimesed.html#kasutus"),
+        kpi_plaat("ettevotted", "Ettevõtted, kes kasutavad tehisaru, ja riigi siht", f"{pr(eeb['vaartus'])}%",
+                  f"{eeb['aasta']} · siht {pr(float(siht['siht']), 0)}%",
+                  {"muutus": (f"{_p(eeb['vaartus'] - sa_eel['vaartus'])} punkti aastaga", f"{eeb['aasta'] - 1}: {pr(sa_eel['vaartus'])}% (teine tabel, kontrollimata)"),
+                   "riba": kpi_riba(eeb["vaartus"], 100, siht=float(siht["siht"]), siht_tekst=f"Eesti siht {pr(float(siht['siht']), 0)}% aastaks {siht['aasta']}")},
+                  a(eeb["url"], "Statistikaamet " + eeb["allikas"].split("tabel ")[-1]), href="ettevotted.html#kasutus"),
+        kpi_plaat("digi", "Vähemalt baastaseme digioskused", f"{pr(ds['vaartus'])}%", str(ds["aasta"]),
+                  {"muutus": (f"{_p(ds['vaartus'] - ds23['vaartus'])} punkti {ds23['aasta']}. aastast", f"EL {pr(ds_el['vaartus'])}%"),
+                   "riba": kpi_riba(ds["vaartus"], 100, siht=float(A["sihid"]["el-digioskused-80"]["siht"]), vrd=ds_el["vaartus"], siht_tekst=f"ELi siht {pr(float(A['sihid']['el-digioskused-80']['siht']), 0)}% ({A['sihid']['el-digioskused-80']['aasta']}, ELi kohta)")},
+                  "Eurostat", href="inimesed.html#digi"),
+        kpi_plaat("tootus", "Töötuse määr, sesoonselt tasandatud", f"{pr(t_ee)}%", f"{KUUD[int(kuu[5:]) - 1]} {kuu[:4]}",
+                  {"muutus": (f"{_p(t_ee - t_aasta_eest)} punkti aastaga", f"{KUUD[int(kuu[5:]) - 1]} {int(kuu[:4]) - 1}: {pr(t_aasta_eest)}% · EL {pr(t_el)}%")},
+                  a(UNE_URL, "Eurostat une_rt_m"), href="too.html#tootus-kuud"),
+        kpi_plaat("hanked", "Tehisaru- ja andmehanked", str(h_uus["ai_ja_andmed"]), f"{h_uus['periood']} {h_uus['aasta']}",
+                  {"muutus": (f"{h_eel['aasta']} kokku {h_eel['ai_ja_andmed']}", f"{pr(h_uus['osa'])}% kõigist hangetest")},
+                  f"Riigihangete register <span class=\"chip exp\">katseline</span>", href="hanked.html#aastad"),
+        kpi_plaat("vaited", "Kontrollitud väited tehisaru kohta", str(len(V)), "",
+                  {"muutus": (f"{len(v_muud)} ütleb muud kui allikas", menuu("kas-tosi", f"{lahti} allikate lahknevust selgitamata", "lahknevused"))},
+                  menuu("kas-tosi", "Väited"), href="kas-see-on-tosi.html#vaited"),
     ])
 
     # 2. ELi kaart ja järjestus omaette real
@@ -317,7 +371,7 @@ def avaleht(A, vaade, vaated):
   <p class="seis-t">Andmed: Statistikaamet {kp(ein["avaldatud"])} ja {kp(eeb["avaldatud"])}, Eurostat {kp(UNE_UUENDATUD)}</p>
 </div>
 <nav aria-label="Sellel lehel"><ul class="sellel"><li><a href="#el">Eesti ELis</a></li><li><a href="#tootus">Töö ja töötus</a></li><li><a href="#trend">Ettevõtted</a></li><li><a href="#muutus">Mis muutus</a></li><li><a href="#sihid">Sihid</a></li><li><a href="#hanked">Hanked</a></li><li><a href="#vaited">Väited</a></li></ul></nav>
-<div class="plaadid" aria-label="Peamised numbrid">{plaadid}</div>"""
+<div class="plaadid kaks" aria-label="Peamised numbrid">{plaadid}</div>"""
     return (pea + '<div class="g12">' + sec_el + "</div>"
             # ettevõtete trend ELi koha järel, siis töötus (Kadri 6.11.2026 22:27, ettepanek 9)
             + '<div class="g12">' + sec_trend + sec_prog + "</div>"

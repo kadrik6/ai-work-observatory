@@ -1054,3 +1054,19 @@ th, td { padding: 6px 10px; }
 
 /* Kast ei ole kasti sees: vahe numbrid ilma raamita (Kadri 7.11.2026: liiga palju ühel taustal) */
 .vahe div { border: 0; padding: 0; border-radius: 0; }
+
+/* KPI-plaadid, lukustatud valik ver1 (Kadri 7.11.2026 21:46): kast, 3 + 3, silt üleval, muutus ja võrdlusriba */
+.plaadid.kaks { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
+.plaadid.kaks > .plaat { align-self: stretch; }
+.plaat.kp .lbl { min-height: 0; }
+.plaat.kp .ctx { display: flex; flex-direction: column; gap: 2px; font-size: 13px; line-height: 1.4; color: var(--ink-2); margin-top: 2px; }
+.plaat.kp .muut { font-weight: 600; color: var(--ink); }
+.plaat.kp .marg { font-size: 12.5px; color: var(--ink-3); }
+.plaat.kp .marg a { color: inherit; }
+.kriba { position: relative; display: block; height: 10px; background: var(--grid); border-radius: 0 3px 3px 0; margin: 8px 0 4px; }
+.kriba i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--mark-ctx); border-radius: 0 3px 3px 0; }
+.kriba.f i { background: var(--mark-signal); }
+.kriba b { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--target); }
+.kriba u { position: absolute; top: -3px; bottom: -3px; border-left: 2px solid var(--ink-2); }
+@media (max-width: 760px) { .plaadid.kaks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .plaadid.kaks { grid-template-columns: minmax(0, 1fr); } }

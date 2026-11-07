@@ -662,8 +662,27 @@ def avalik_sektor(A, vaade, vaated=None):
         (f'{gk["vaartus"]}% <small>({gk["lugeja"]}/{gk["nimetaja"]})</small>', 'keskvalitsuse innovaatoritest kasutas oma uuenduses generatiivset tehisaru.', e(src("genai-kesk"))),
     ]
     lead = "Kõik numbrid: OECD avalik raport (2026), küsitlus 2025–2026."
+    # Päise numbrid lukustatud KPI valiku ver1 järgi (Kadri 7.11.2026 21:46): silt üleval, muutus/tekst ja võrdlusriba
+    import re
+    from lehed_ulevaade import kpi_plaat, kpi_riba
+    uu = _o(A, "uuendajad")
+    m = re.search(r"Juhtidest (\d+)%, haldustöötajatest (\d+)%", uu["markus"])
+    if not m:
+        raise AndmeViga("avalik-sektor.csv: uuendajate märkuses puudub juhtide ja haldustöötajate osa")
+    oecd = lambda i: a(OECD_URL, f'OECD 2026, {_o(A, i)["koht"].split(", ")[-1]}')  # noqa: E731
+    aside = ('<aside class="vastus kpi-pais" aria-label="Peamised numbrid">' + "".join([
+        kpi_plaat("uuendus", "vastanud avalikest teenistujatest tegi viimase 24 kuu jooksul uuenduse", f'{pr(v("uuendajad"), 0)}%', "2025–2026",
+                  {"muutus": (f"juhtidest {m.group(1)}%, haldustöötajatest {m.group(2)}%", ""), "riba": kpi_riba(v("uuendajad"), 100, fookus=True)},
+                  oecd("uuendajad"), fookus=True),
+        kpi_plaat("laiendus", "olulisimatest uuendustest jõudis rakendamiseni → laiendati", f'{pr(v("rakendati"), 0)} → {pr(v("laiendati"), 0)}%', "",
+                  {"tekst": "Kolmandik jõuab laiendamiseni", "riba": kpi_riba(v("laiendati"), 100, vrd=v("rakendati"), vrd_nimi="rakendati")},
+                  oecd("rakendati")),
+        kpi_plaat("genai", "keskvalitsuse innovaatoritest kasutas oma uuenduses generatiivset tehisaru", f'{gk["vaartus"]}%', f'{gk["lugeja"]}/{gk["nimetaja"]}',
+                  {"tekst": f'Omavalitsustes {gl["vaartus"]}% ({gl["lugeja"]}/{gl["nimetaja"]})', "riba": kpi_riba(v("genai-kesk"), 100, vrd=v("genai-kov"), vrd_nimi="omavalitsused")},
+                  oecd("genai-kesk")),
+    ]) + "</aside>")
     # Hanked on oma menüükoht; lehtede vahel on rida „Seotud“ (Kadri 6.11.2026 22:27, ettepanek 8)
-    return (pea(A, vaade, lead, [("lehter", "Rakendamine"), ("tehisaru", "Tehisaru"), ("kiirused", "Kolm rühma"), ("soovitused", "Soovitused")], ree)
+    return (pea(A, vaade, lead, [("lehter", "Rakendamine"), ("tehisaru", "Tehisaru"), ("kiirused", "Kolm rühma"), ("soovitused", "Soovitused")], ree, aside=aside)
             + sec_lehter + sec_genai + sec_kiirus + sec_soov
             + seotud(vaated, [("hanked", "Hanked: mida riik tehisaru ja andmete kohta ostab"), ("reeglid", "Tehisaru määrus: tähtajad")]))
 

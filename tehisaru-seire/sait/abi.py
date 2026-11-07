@@ -29,7 +29,8 @@ def vastus(read, silt="Peamised numbrid"):
     return f'<aside class="vastus" aria-label="{e(silt)}">{osad}</aside>'
 
 
-def pea(A, vaade, lead, lingid, vastuse_read):
+def pea(A, vaade, lead, lingid, vastuse_read, aside=None):
+    """aside: valmis numbriplaatide HTML (lukustatud KPI valik ver1); muidu vastus(vastuse_read)."""
     return f"""
 <div class="pea">
   <div class="pea-tekst">
@@ -37,7 +38,7 @@ def pea(A, vaade, lead, lingid, vastuse_read):
     {f'<p class="lead">{lead}</p>' if lead else ""}
     {sellel_lehel(lingid)}
   </div>
-  {vastus(vastuse_read)}
+  {aside or vastus(vastuse_read)}
 </div>"""
 
 

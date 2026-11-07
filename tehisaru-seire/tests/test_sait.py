@@ -371,7 +371,7 @@ def test_lahknevused_ja_varskus_on_usalduse_all_nahtaval(sait):
 
 def test_igas_teemavaates_on_numbriplaadid(sait):
     for f in ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
-        assert 'class="vastus"' in sait[f], f
+        assert 'class="vastus' in sait[f], f  # Avalik sektor: „vastus kpi-pais“ (KPI ver1)
 
 
 def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
@@ -747,3 +747,18 @@ def test_ettevotete_uued_riiklikud_numbrid_on_oma_paneelis(sait):
     kasutus, uued = _jaotis(h, "kasutus"), _jaotis(h, "kasutus-uued")
     assert "<table" in uued and "Taani" in uued and "Danmarks Statistik" not in kasutus
     assert 'class="vrd">ei ole otse võrreldav' not in h and 'class="usaldus3"' not in kasutus
+
+
+def test_kpi_plaadid_jargivad_lukustatud_valikut_ver1(sait):
+    # Kadri 7.11.2026 21:46 „lukusta ver1“ (KPI-labor): kontekst plaatide kaupa, lugeja seda ei muuda
+    import lehed_ulevaade
+    h = sait["index.html"]
+    assert '<div class="plaadid kaks"' in h and "data-kiht" not in h and "pl-lyl" not in h
+    for pid, osad in lehed_ulevaade.KPI_VER1.items():
+        leht = "avalik-sektor.html" if pid in ("uuendus", "laiendus", "genai") else "index.html"
+        pl = sait[leht].split(f'data-kpi="{pid}"')[1].split('<span class="src">')[0]
+        assert ('class="muut"' in pl) == ("muutus" in osad), pid
+        assert ('class="kriba' in pl) == ("riba" in osad), pid
+        assert ('class="tekst"' in pl) == ("tekst" in osad), pid
+    assert "oranž kriips: Eesti siht 75% aastaks 2030" in h and "ELi siht 80% (2030, ELi kohta)" in h
+    assert "tume kriips: omavalitsused 27%" in sait["avalik-sektor.html"]
