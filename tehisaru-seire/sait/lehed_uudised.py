@@ -58,7 +58,7 @@ def _uudis(r):
     if r.get("_jatk"):
         sildid.append(f'<span class="u-t s">jätkulugu</span>')
     if r.get("_uus"):
-        sildid.insert(0, '<span class="u-l suur">uus</span>')
+        sildid.insert(0, '<span class="u-l uus">uus</span>')  # oranž (Kadri 7.11.2026)
     if r.get("suur"):
         sildid.append('<span class="u-l suur">suur uudis</span>')
     lv = r.get("levik")

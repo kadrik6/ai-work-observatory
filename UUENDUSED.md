@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-07 | Seire sait: kõik „uus“ märgid on oranžid (uudised ja avalehe „Mis muutus“ „uus number“), tume tekst oranžil (5,4:1); „suur uudis“ jääb siniseks. Kadri kommentaar MKUS-il. Test test_uus_margid_on_oranzid. |
 | 7.11.2026 | Seire sait, Uudised (Kadri kommentaar): vananenud lause „Uueneb iga päev, kui sait ühendatakse…“ asendatud lausega „Uueneb iga päev kell 7.23 ja 17.53“. |
 | 7.11.2026 | Seire sait (Kadri 20:53): järjestuse muutuse graafik ka ELi võrdlustele. Avalehe #el: loendi asemel Eesti koht ettevõtete tehisaru kasutuses 2021–2025 (24. → 9.). Töö › Tööturg praegu: uus jaotis #tootus-el, Eesti koht ELi töötuses 2015–2025 (22. → 6.). Uus laadija sait/lae_el_jarjestus.py → sisu/el-jarjestus.csv (Eurostat isoc_eb_ai, une_rt_a); ehitus katkeb, kui viimase aasta koht ei klapi registriga. |
 | 7.11.2026 | Seire sait, Töö › Tööturg praegu (Kadri 20:41 ja 20:43): tegevusalade tulpade asemel järjestuse muutuse graafik 2017–2026 (iga aasta II kvartal, Statistikaamet PAV011), Top 5 / Top 10 / kõik, klõpsuga esiletõst. Uus andmefail sait/sisu/vabad-jarjestus.csv (lae_vabad.py). |
