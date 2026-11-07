@@ -488,3 +488,80 @@ def palkamine(A):
   <tbody>{"".join(read)}</tbody></table></div>
 </section>
 </div>"""
+
+
+# ---------------------------------------------------------------- Töö: tööportaalide kuulutused
+
+LISASILDID = {"Sobib ka ukrainlastele", "Hooaja-/ajutine töö", "Praktika", "Vabatahtlik töö"}
+KAUGTOO = {"Osaline kaugtöö", "Kodukontor", "Kaugtöö", "Töö välismaal", "Välismaa"}
+
+
+def _arvt(n):
+    return f"{n:,}".replace(",", " ")
+
+
+def toopakkumised(A):
+    """Tööportaalide kuulutuste arv ning portaali enda jaotused ameti, asukoha ja tööandja järgi (Kadri 7.11.2026 09:38).
+    Iga portaal eraldi; arve ei liideta, sest sama kuulutus võib olla mitmes portaalis. Tühi, kui andmeid pole."""
+    T = A.get("toopakkumised")
+    if not T or not T.get("portaalid"):
+        return ""
+    from komponendid import lihtribad
+    P = sorted(T["portaalid"], key=lambda p: -p["kuulutusi_kokku"])
+    kp_ = max(p["kontrollitud"] for p in P)
+    def kus(p):
+        return {"CV.ee": "CV.ee-s", "CV Keskus": "CV Keskuses", "Töötukassa": "Töötukassas"}.get(p["portaal"], p["portaal"] + ": ")
+    osad_ = [f'{kus(p)} {_arvt(p["kuulutusi_kokku"])}' for p in P]
+    loendid = ", ".join(osad_[:-1]) + " ja " + osad_[-1] if len(osad_) > 1 else osad_[0]
+
+    def valdkonnad(p):
+        v = p.get("ametivaldkond")
+        return [r for r in v if r["nimi"] not in LISASILDID] if isinstance(v, list) else []
+    suurim = [f'{valdkonnad(p)[0]["nimi"].lower()} ({e(p["portaal"])})' for p in P if valdkonnad(p)]
+    h2 = (f'{kp(kp_)} oli {loendid} <b>tööpakkumist</b>; suurim valdkond oli ' + " ja ".join(suurim))
+
+    def ribad(read, n=12):
+        read = read[:n]
+        lopp = max(r["arv"] for r in read)
+        samm = next(s for s in (50, 100, 200, 250, 500, 1000) if lopp / s <= 5)
+        lopp = -(-lopp // samm) * samm
+        return lihtribad([(r["nimi"], r["arv"], _arvt(r["arv"])) for r in read], lopp, samm=samm, uhik="", fookus=0)
+
+    nupud, osad = [], []
+    jaotusega = [p for p in P if valdkonnad(p)]
+    for i, p in enumerate(jaotusega):
+        pid = "tp-" + "".join(c for c in p["portaal"].lower() if c.isalnum())
+        mk = [r for r in p.get("asukoht_maakond") or [] if r["nimi"] not in KAUGTOO] if isinstance(p.get("asukoht_maakond"), list) else []
+        kaug = [r for r in p.get("asukoht_maakond") or [] if r["nimi"] in KAUGTOO] if isinstance(p.get("asukoht_maakond"), list) else []
+        linn = p.get("asukoht_linn") if isinstance(p.get("asukoht_linn"), list) else []
+        top = p.get("top_tooandjad") if isinstance(p.get("top_tooandjad"), list) else None
+        veerud = [f'<div><p class="gt">Mis ametivaldkonnas</p><p class="ps">{a(p["ametivaldkond_url"], "portaali kategooriad")}, 12 suuremat</p>{ribad(valdkonnad(p))}</div>']
+        if linn or mk:
+            kt = ("; " + ", ".join(f'{e(r["nimi"]).lower()} {_arvt(r["arv"])}' for r in kaug)) if kaug else ""
+            veerud.append(f'<div><p class="gt">Kus: linnad</p><p class="ps">{a(p["asukoht_url"], "portaali asukohad")}{kt}</p>{ribad(linn or mk, 10)}</div>')
+        if top:
+            veerud.append(f'<div><p class="gt">Kes: enim kuulutusi avaldanud tööandjad</p><p class="ps">{a(p["top_tooandjad_url"], "portaali tööandjad")}, 12 suuremat</p>{ribad(top)}</div>')
+        else:
+            pohjus = p.get("top_tooandjad_pohjus") or p.get("puudub_pohjus") or ""
+            veerud.append(f'<div><p class="gt">Kes: tööandjad</p><p class="ps">Selle portaali tööandjate arve ei õnnestunud lugeda. {e(pohjus)}</p></div>')
+        mk_t = ""
+        if mk:
+            mk_t = ('<details><summary>Maakonnad</summary><div>' + "".join(f'<span class="tp-m">{e(r["nimi"])} <b>{_arvt(r["arv"])}</b></span>' for r in mk) + '</div></details>')
+        nupud.append(f'<button type="button" role="tab" aria-selected="{"true" if i == 0 else "false"}" aria-controls="{pid}" id="tab-{pid}">{e(p["portaal"])} ({_arvt(p["kuulutusi_kokku"])})</button>')
+        osad.append(f'<div role="tabpanel" id="{pid}" aria-labelledby="tab-{pid}"{"" if i == 0 else " hidden"}><div class="tp-kolm">{"".join(veerud)}</div>{mk_t}</div>')
+    ilma = [p for p in P if not valdkonnad(p)]
+    def _pohj(p):
+        t = (p.get("puudub_pohjus") or "jaotust pole").rstrip(".")
+        return t[:1].lower() + t[1:]
+    ilma_t = "".join(f' {e(p["portaal"])} näitab ainult kogu arvu: {e(_pohj(p))}.' for p in ilma)
+    pt = "".join(f'<tr><td>{a(p["url"], p["portaal"])}</td><td class="v">{_arvt(p["kuulutusi_kokku"])}</td><td>{kp(p["kontrollitud"])}</td><td><small>{e(p.get("allikas_text") or p.get("allikas_tekst") or "")}</small></td></tr>' for p in P)
+    return f"""
+<div class="g12">
+<section class="pn sp12" id="toopakkumised" aria-labelledby="h-toopakkumised">
+  <div class="pn-h"><h2 id="h-toopakkumised">{h2}</h2></div>
+  <p class="ps">Portaali enda avalikud koondarvud, loetud iga päev. Portaalide arve ei liideta, sest sama kuulutus võib olla mitmes portaalis. Ühel kuulutusel võib olla mitu valdkonda või asukohta, nii et jaotuste summa võib olla suurem kui kuulutuste arv. Kategooriad on portaali omad ja portaalide vahel erinevad.{ilma_t}</p>
+  <div class="p-tabs" role="tablist" aria-label="Tööportaal">{"".join(nupud)}</div>
+  {"".join(osad)}
+  <details><summary>Kõik portaalid ja kuidas arv loeti</summary><div><div class="tbl"><table><thead><tr><th scope="col">Portaal</th><th scope="col" class="v">Kuulutusi</th><th scope="col">Loetud</th><th scope="col">Lehel oli</th></tr></thead><tbody>{pt}</tbody></table></div></div></details>
+</section>
+</div>"""

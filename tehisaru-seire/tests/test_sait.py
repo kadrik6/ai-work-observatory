@@ -643,3 +643,14 @@ def test_vabad_ametikohad_tulevad_statistikaametist(sait):
     h2 = osa.split('id="h-vabad-kohad">')[1].split("</h2>")[0]
     assert f"{kokku:,.0f}".replace(",", " ") + " vaba ametikohta" in h2
     assert "PAV011" in osa and "PAV014" in osa and "Tallinn" in osa
+
+
+def test_tooportaalid_iga_portaal_eraldi(A, sait):
+    # Kadri 7.11.2026: mitu kuulutust portaalides, mis ametid, kus ja kes palkab; portaalide arve ei liideta
+    T = A["toopakkumised"]
+    osa = _jaotis(sait["too.html"], "toopakkumised")
+    for p in T["portaalid"]:
+        assert lehed_uudised._arvt(p["kuulutusi_kokku"]) in osa
+    kokku = sum(p["kuulutusi_kokku"] for p in T["portaalid"])
+    assert lehed_uudised._arvt(kokku) not in osa  # summat ei näidata
+    assert "Sobib ka ukrainlastele" not in osa  # lisasildid ei ole ametivaldkonnad

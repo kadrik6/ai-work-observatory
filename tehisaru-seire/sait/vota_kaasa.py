@@ -46,6 +46,8 @@ def vota(proj):
     (SISU / "uudiste-vaited.json").write_text(json.dumps(vaited, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     shutil.copyfile(uu / "olek.json", SISU / "uudiste-olek.json")
     shutil.copyfile(uu / "koondajad.json", SISU / "koondajad.json")  # keda koondajad ise tööle otsivad
+    if (uu / "toopakkumised.json").exists():  # tööportaalide kuulutuste arv ja jaotused (Kadri 7.11.2026)
+        shutil.copyfile(uu / "toopakkumised.json", SISU / "toopakkumised.json")
 
     h = _loe(proj / "seire-uuendus" / "hanked" / "leht.json")
     for r in h["loend"]:
