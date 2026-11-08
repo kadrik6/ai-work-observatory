@@ -803,3 +803,17 @@ def test_ai_kuulutused_filtreeritavad_ruhma_ja_maakonna_jargi(sait):
     assert read and all(o == o.lower() for _, _, o in read)
     valikud = set(re.findall(r'<option value="([^"]+)">', jao))
     assert {k for _, k, _ in read if k} == valikud
+
+
+def test_neli_vaiteparandust_8_11(sait):
+    """Sisuloogika ülevaatus 8.11.2026: ELi kohtadel aasta, kasvu võrreldavus, Töö h1 USA kohta, hangete üks number."""
+    h1 = lambda f: tekst(re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1))  # noqa: E731
+    assert re.search(r"ELi võrdluses \(20\d\d\) on inimesed", h1("index.html"))
+    assert "aastaga" not in h1("inimesed.html")
+    assert "küsimus võib erineda" in sait["inimesed.html"] and "küsimus võib erineda" in sait["index.html"]
+    assert h1("too.html").startswith("USA-s ")
+    plaat = lambda f, pid: re.search(rf'data-kpi="{pid}">(.*?)</div>', sait[f], re.S).group(1)  # noqa: E731
+    avaleht, hanked = plaat("index.html", "hanked"), plaat("hanked.html", "hk-arv")
+    suur = lambda h: re.search(r'class="big[^"]*">(\d+)<', h).group(1)  # noqa: E731
+    assert suur(avaleht) == suur(hanked), (avaleht, hanked)
+    assert "jaan" not in avaleht

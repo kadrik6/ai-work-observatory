@@ -14,7 +14,7 @@ from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link
 from andmekiht import EL, AndmeViga
 from komponendid import KUUD, aastatulbad, allikarida, e, kaart, kp, pr, riik, sihiriba
 from lehed_usaldus import RASKUS, _raskus
-from lehed_uudised import KASITSI
+from lehed_uudised import KASITSI, _vaja
 from pealkiri import taida
 
 SISU = Path(__file__).resolve().parent / "sisu"
@@ -216,8 +216,13 @@ def avaleht(A, vaade, vaated):
     if p_aasta not in prog or prog[p_aasta]["tegelik"]:
         raise AndmeViga(f"Töötuse prognoos aastaks {p_aasta} puudub")
     siht = A["sihid"]["ee-ettevotted-75"]
-    H = hanked()
-    h_uus = H[-1]
+    if andmed.leia(A, IN, "EE", "uusim:alus")["aasta"] != andmed.leia(A, EB, "EE", "uusim:alus")["aasta"]:
+        raise AndmeViga("Avalehe h1 annab ELi kohtadele ühe aasta, aga inimeste ja ettevõtete ELi aastad erinevad")
+    # Sama allikas ja periood nagu hangete lehel (sisuloogika 8.11.2026: avalehel 49 jaan–okt, hangete lehel 50 kuni 7.11).
+    HL = _vaja(A, "hanked_leht", "hanked-leht.json")
+    H = [{"aasta": r["aasta"], "ai_ja_andmed": r["ai_andmed"], "osa": r["ai_andmed_osakaal"]} for r in HL["aastad"]]
+    h_seis = HL.get("seis", {}).get("kuupaev", "")
+    h_uus = {**H[-1], "periood": f"kuni {kp(h_seis)}" if h_seis[:4] == str(H[-1]["aasta"]) and h_seis[5:] != "12-31" else "aasta"}
     V = A["vaited"]
     v_muud = [v for v in V if _raskus(v) == 0]
     lahti = sum(1 for l in A["lahknevused"] if l["staatus"] == "selgitamata")  # Kadri 6.11 21:38: lahknevused nähtavale
@@ -234,7 +239,7 @@ def avaleht(A, vaade, vaated):
     h_eel = H[-2]
     plaadid = "".join([
         kpi_plaat("inimesed", "Inimesed, kes kasutasid tehisaru (16–74)", f"{pr(ein['vaartus'])}%", str(ein["aasta"]),
-                  {"muutus": (f"{_p(ein['vaartus'] - ein25['vaartus'])} punkti aastaga", f"{ein25['aasta']}: {pr(ein25['vaartus'])}%"),
+                  {"muutus": (f"{_p(ein['vaartus'] - ein25['vaartus'])} punkti aastaga", f"{ein25['aasta']}: {pr(ein25['vaartus'])}% · küsimus võib erineda"),
                    "riba": kpi_riba(ein["vaartus"], 100, fookus=True)},
                   a(ein["url"], "Statistikaamet " + ein["allikas"].split("tabel ")[-1]), fookus=True, href="inimesed.html#kasutus"),
         kpi_plaat("ettevotted", "Ettevõtted, kes kasutavad tehisaru, ja riigi siht", f"{pr(eeb['vaartus'])}%",
@@ -249,7 +254,7 @@ def avaleht(A, vaade, vaated):
         kpi_plaat("tootus", "Töötuse määr, sesoonselt tasandatud", f"{pr(t_ee)}%", f"{KUUD[int(kuu[5:]) - 1]} {kuu[:4]}",
                   {"muutus": (f"{_p(t_ee - t_aasta_eest)} punkti aastaga", f"{KUUD[int(kuu[5:]) - 1]} {int(kuu[:4]) - 1}: {pr(t_aasta_eest)}% · EL {pr(t_el)}%")},
                   a(UNE_URL, "Eurostat une_rt_m"), href="too.html#tootus-kuud"),
-        kpi_plaat("hanked", "Tehisaru- ja andmehanked", str(h_uus["ai_ja_andmed"]), f"{h_uus['periood']} {h_uus['aasta']}",
+        kpi_plaat("hanked", "Tehisaru- ja andmehanked", str(h_uus["ai_ja_andmed"]), h_uus["periood"] if h_uus["periood"] != "aasta" else str(h_uus["aasta"]),
                   {"muutus": (f"{h_eel['aasta']} kokku {h_eel['ai_ja_andmed']}", f"{pr(h_uus['osa'])}% kõigist hangetest")},
                   f"Riigihangete register <span class=\"chip exp\">katseline</span>", href="hanked.html#aastad"),
         kpi_plaat("vaited", "Kontrollitud väited tehisaru kohta", str(len(V)), "",

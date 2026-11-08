@@ -61,7 +61,7 @@ def inimesed(A, vaade, vaated=None):
                 if v["klass"] in andmed.VORRELDAVAD and v["aasta"] > too25["aasta"]]
     too = max(too_uued, key=lambda v: v["aasta"]) if too_uued else too25
     # Kasutuse lehe pealkiri räägib ainult sellest, mis sellel lehel on (Kadri 6.11.2026 22:27, ettepanek 5)
-    kontrolli(vaade, f"aastaga {pr(kasv, 0)} punkti", f"tööl kasutab {pr(too['vaartus'])}%")
+    kontrolli(vaade, f"tööl kasutab {pr(too['vaartus'])}%")
 
     # Aasta jooksul: 2025 Eurostat → 2026 riiklik number, ainult kataloogi järgi sama mõõdikuga riigid
     paarid = []
@@ -241,7 +241,7 @@ def inimesed(A, vaade, vaated=None):
         raise AndmeViga("Tööalase kasutuse plaadi muutus eeldab kahte järjestikust võrreldavat aastat")
     aside = kpi_pais(
         kpi_plaat("in-kasutus", "Kasutas tehisaru (16–74)", f'{pr(ee["vaartus"])}%', str(ee["aasta"]),
-                  {"muutus": (f"{_p(kasv)} punkti aastaga", f'{y}: {pr(ee25["vaartus"])}%'),
+                  {"muutus": (f"{_p(kasv)} punkti aastaga", f'{y}: {pr(ee25["vaartus"])}% · küsimus võib erineda'),
                    "riba": kpi_riba(ee["vaartus"], 100, fookus=True)},
                   a(ee["url"], "Statistikaamet " + ee["allikas"].split("tabel ")[-1]), fookus=True),
         kpi_plaat("in-koht", "Koht ELis", f"{koht}.", f"/ {len(el)} · {y}",
@@ -249,11 +249,11 @@ def inimesed(A, vaade, vaated=None):
                    "riba": kpi_riba(ee25["vaartus"], 100, vrd=eu["vaartus"])},
                   a(EUROSTAT.format("isoc_ai_iaiu"), "Eurostat isoc_ai_iaiu")),
         kpi_plaat("in-tool", "Kasutas tehisaru tööl", f'{pr(too["vaartus"])}%', str(too["aasta"]),
-                  {"muutus": (f'{_p(too["vaartus"] - too25["vaartus"])} punkti aastaga', f'{too25["aasta"]}: {pr(too25["vaartus"])}%'),
+                  {"muutus": (f'{_p(too["vaartus"] - too25["vaartus"])} punkti aastaga', f'{too25["aasta"]}: {pr(too25["vaartus"])}% · küsimus võib erineda'),
                    "tekst": "<b>kõigist</b> 16–74-aastastest"},
                   a(too["url"], "Statistikaamet " + too["allikas"].split("tabel ")[-1])),
     )
-    lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem.")
+    lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem, kui {ee['aasta']}. aasta küsimus on sama mis {y}. aastal; seda pole veel kontrollitud.")
     return jaga(A, vaade, lead, [], [
         ("kasutus", [("kasutus", "Kasutus")], sec_kasutus), ("tool", [("tool", "Tööl")], sec_too),
         ("digi", [("digi", "Digioskused")], lisa_sihid(A, sec_digi, "digi", *SIHI_TEEMA["inimesed"])),

@@ -10,7 +10,7 @@
       "kusimused": "K1, K4, K11",
       "olek": "valmis",
       "kusimus": "Mis on tehisaru kasutuse peamised numbrid praegu ja kas neid võib usaldada?",
-      "h1": "{inimeste-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest** ja {ettevotete-tehisaru-kasutus|EE|uusim|p0}% ettevõtetest; ELi võrdluses on inimesed {inimeste-tehisaru-kasutus|EE|uusim:alus|koht}. ja ettevõtted {ettevotete-tehisaru-kasutus|EE|uusim:alus|koht}. kohal.",
+      "h1": "{inimeste-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest** ja {ettevotete-tehisaru-kasutus|EE|uusim|p0}% ettevõtetest; ELi võrdluses ({inimeste-tehisaru-kasutus|EE|uusim:alus|a}) on inimesed {inimeste-tehisaru-kasutus|EE|uusim:alus|koht}. ja ettevõtted {ettevotete-tehisaru-kasutus|EE|uusim:alus|koht}. kohal.",
       "osad": "Töölaud (Kadri 5.11.2026): kuus numbriplaati; ELi kaart ja järjestus omaette real; töötuse prognoos ja kuunumber; ettevõtete trend; Mis muutus; sihid; hanked (katseline); väited"
     },
     {
@@ -22,7 +22,7 @@
       "kusimused": "K1–K3",
       "olek": "valmis",
       "kusimus": "Kui paljud Eesti inimesed tehisaru kasutavad ja kas neil on oskusi?",
-      "h1": "Tehisaru kasutab **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest**, aastaga 18 punkti rohkem; tööl kasutab 36,9%.",
+      "h1": "Tehisaru kasutab **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest**, tööl kasutab 36,9%.",
       "osad": "Kasutus (kaart ja 2026. aasta kasv); tööalane kasutus; digioskused; „ei oska“ ja lahknevus C6. Enne avaldamist kontrollida, kas IT71 küsimus 2026 on sama mis 2025.",
       "alamlehed": [
         {
@@ -83,7 +83,7 @@
       "kusimused": "K6, K7",
       "olek": "valmis",
       "kusimus": "Milliseid töid tehisaru mõjutab ja mida tõendid tegelikult ütlevad?",
-      "h1": "Töökohtade kadu kogu tööturul ei ole veel näha, aga USA-s palgatakse tehisarule avatud ametitesse **vähem noori**.",
+      "h1": "USA-s ei ole töökohtade kadu kogu tööturul veel näha, aga tehisarule avatud ametitesse palgatakse **vähem noori**.",
       "osad": "Mida maailmas leiti; ülesannete kiirus katsetes; mida Eestis leiti; mis ees ootab (prognoos ei arvesta tehisaru mõju eraldi)",
       "alamlehed": [
         {
