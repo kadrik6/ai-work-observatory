@@ -337,14 +337,13 @@ def saidikaart(A, vaade, vaated):
         if v.get("alamlehed") and v["olek"] == "valmis":
             link += "<small>alamlehed: " + ", ".join(f'<a href="{s["fail"]}">{e(s["nimi"])}</a>' for s in v["alamlehed"]) + "</small>"
         read.append(f'<tr><td>{link}<small>{e(v["koht"])} · {e(v["kusimused"])}</small></td><td>{e(v["kusimus"])}</td>'
-                    f'<td class="h1">{taida(v["h1"], A)}</td><td>{e(v["osad"])}</td>'
-                    f'<td><span class="olek {v["olek"]}">{v["olek"]}</span></td></tr>')
-    pais = "".join(f'<th scope="col">{t}</th>' for t in ["Vaade", "Lugeja küsimus", "Pealkiri (vastus)", "Mis vaates on", "Olek"])
+                    f'<td class="h1">{taida(v["h1"], A)}</td><td>{e(v["osad"])}</td></tr>')
+    pais = "".join(f'<th scope="col">{t}</th>' for t in ["Vaade", "Lugeja küsimus", "Pealkiri (vastus)", "Mis vaates on"])
     return f"""
 <div class="pea yks">
   <div class="pea-tekst">
     <h1>{taida(vaade["h1"], A)}</h1>
-    <p class="lead">Valmis on {sum(v["olek"] == "valmis" for v in vaated)} vaadet {len(vaated)}-st; iga rea pealkiri on sama, mis vaate lehel.</p>
+    <p class="lead">Saidil on {sum(v["olek"] == "valmis" for v in vaated)} vaadet; iga rea pealkiri on sama, mis vaate lehel.</p>
     <p class="meta">Iga vaate järjekord: vastus, peamine tõend koos võrdlusega, mida see ei näita, mida see tähendab, siis üksikasjad ja allikad. Pealkirjade numbrid tulevad andmefailidest.</p>
   </div>
 </div>

@@ -11,7 +11,7 @@
       "olek": "valmis",
       "kusimus": "Mis on tehisaru kasutuse peamised numbrid praegu ja kas neid võib usaldada?",
       "h1": "{inimeste-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest** ja {ettevotete-tehisaru-kasutus|EE|uusim|p0}% ettevõtetest; ELi võrdluses ({inimeste-tehisaru-kasutus|EE|uusim:alus|a}) on inimesed {inimeste-tehisaru-kasutus|EE|uusim:alus|koht}. ja ettevõtted {ettevotete-tehisaru-kasutus|EE|uusim:alus|koht}. kohal.",
-      "osad": "Töölaud (Kadri 5.11.2026): kuus numbriplaati; ELi kaart ja järjestus omaette real; töötuse prognoos ja kuunumber; ettevõtete trend; Mis muutus; sihid; hanked; väited"
+      "osad": "Kuus numbriplaati; teemade tabel; ELi kaart ja järjestus; töötuse prognoos ja kuunumber; ettevõtete trend; Mis muutus; sihid; hanked; väited"
     },
     {
       "id": "inimesed",
@@ -23,7 +23,7 @@
       "olek": "valmis",
       "kusimus": "Kui paljud Eesti inimesed tehisaru kasutavad ja kas neil on oskusi?",
       "h1": "Tehisaru kasutab **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest**, tööl kasutab 36,9%.",
-      "osad": "Kasutus (kaart ja 2026. aasta kasv); tööalane kasutus; digioskused; „ei oska“ ja lahknevus C6. Enne avaldamist kontrollida, kas IT71 küsimus 2026 on sama mis 2025.",
+      "osad": "Kasutus (kaart ja 2026. aasta kasv); tööalane kasutus; digioskused; „ei oska“ ja lahknevus C6. IT71 küsimuse sõnastus 2026 võib erineda 2025. aasta omast.",
       "alamlehed": [
         {
           "fail": "inimesed.html",
@@ -54,7 +54,7 @@
       "olek": "valmis",
       "kusimus": "Kui suur osa ettevõtetest kasutab tehisaru ja kus on Eesti ELi skaalal?",
       "h1": "{ettevotete-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{ettevotete-tehisaru-kasutus|EE|uusim|p0}% Eesti ettevõtetest**; ELi võrdluses ({ettevotete-tehisaru-kasutus|EE|uusim:alus|a}) oli Eesti keskmisest ees, Soomest, Rootsist ja Taanist taga.",
-      "osad": "Kaks alamlehte (Kadri otsus 6.11.2026): Kasutus ja Eesti siht 75%; Tootlikkus ja võimekus (tootlikkus, digiintensiivsus, T&A kulu, ELi sihid)",
+      "osad": "Kaks alamlehte: Kasutus ja Eesti siht 75%; Tootlikkus ja võimekus (tootlikkus, digiintensiivsus, T&A kulu, ELi sihid)",
       "alamlehed": [
         {
           "fail": "ettevotted.html",
@@ -67,7 +67,7 @@
         {
           "fail": "ettevotted-voimekus.html",
           "nimi": "Tootlikkus ja võimekus",
-          "h1": "Tootlikkus, digiintensiivsus ja teadus- ja arendustegevus",
+          "h1": "Tehisaru kasutus oli seotud suurema tootlikkusega ainult koos töökorralduse muutusega; Eesti VKEde digiintensiivsus on **veidi alla ELi keskmise**.",
           "jaotised": [
             "tootlikkus",
             "voimekus"
@@ -84,8 +84,8 @@
       "kusimused": "K6, K7",
       "olek": "valmis",
       "kusimus": "Milliseid töid tehisaru mõjutab ja mida tõendid tegelikult ütlevad?",
-      "h1": "USA-s ei ole töökohtade kadu kogu tööturul veel näha, aga tehisarule avatud ametitesse palgatakse **vähem noori**.",
-      "osad": "Mida maailmas leiti; ülesannete kiirus katsetes; mida Eestis leiti; mis ees ootab (prognoos ei arvesta tehisaru mõju eraldi)",
+      "h1": "Eesti andmetest ei saa veel öelda, kas tehisaru vähendab töökohti; uuringud leiavad seni vähem tööd kitsastes rühmades, näiteks **USA noortel** tehisarule avatud ametites.",
+      "osad": "Eesti töötus, koondamised, palkamine ja tööpakkumised; mida maailmas leiti; ülesannete kiirus katsetes; mida Eestis leiti; prognoos (ei arvesta tehisaru mõju eraldi)",
       "alamlehed": [
         {
           "fail": "too.html",
@@ -98,7 +98,7 @@
         {
           "fail": "too-uuringud.html",
           "nimi": "Uuringud",
-          "h1": "Mida uuringud tehisaru ja töö kohta leidsid",
+          "h1": "Katsetes tegi tehisaru ülesanded kiiremaks, aga kogu tööturul pole mõju veel näha ja **Eesti uuringud töökohti veel ei mõõda**.",
           "jaotised": [
             "maailm",
             "ulesanded",
@@ -134,7 +134,7 @@
       "olek": "valmis",
       "kusimus": "Kuidas avalik sektor uuendusi ja tehisaru kasutab, avalike allikate järgi?",
       "h1": "Iga neljas avaliku sektori uuendaja kasutas **generatiivset tehisaru**, aga uuendustest jõuab laiendamiseni vaid kolmandik.",
-      "osad": "OECD avalik raport (doi 10.1787/c2c09a06-en): rakendamine ja laiendamine; tehisaru innovaatorite seas (48/170); kolm asutuste rühma; 8 soovitust. Hanked on 6.11.2026 21:59 alates jälle oma menüüpunkt (Kadri: hangete osa oli menüüst kadunud)"
+      "osad": "OECD avalik raport (doi 10.1787/c2c09a06-en): rakendamine ja laiendamine; tehisaru innovaatorite seas (48/170); kolm asutuste rühma; 8 soovitust. Hanked on oma menüüpunkt."
     },
     {
       "id": "hanked",
@@ -146,7 +146,7 @@
       "olek": "valmis",
       "kusimus": "Mida riik tehisaru ja andmete kohta hangib ning kuidas, et leida häid näiteid?",
       "h1": "Tehisaru- ja andmehanked on **alla 1% riigihangetest**; kvaliteeti hinnatakse neis sagedamini kui teistes IT-hangetes.",
-      "osad": "Kadri 5.11.2026: hanked omaette vaateks. Aastad; innovatsioonimärk vs 2% siht; kuidas hangitakse; hankijad; otsitav loend headest näidetest; klassifikaatori täpsus"
+      "osad": "Aastad; innovatsioonimärk ja 2% siht; kuidas hangitakse; hankijad; litsentsid; otsitav loend headest näidetest; klassifikaatori täpsus"
     },
     {
       "id": "reeglid",
@@ -158,7 +158,7 @@
       "olek": "valmis",
       "kusimus": "Millal ELi tehisaru määruse osad kehtima hakkavad?",
       "h1": "ELi tehisaru määrus kehtib üldiselt alates 2.08.2026, värbamise ja hariduse kõrge riskiga reeglid alates **2.12.2027**.",
-      "osad": "Tehisaru määruse tähtajad. Sihid on 6.11.2026 alates oma teema juures (Inimesed › Oskused, Ettevõtted, Hanked)"
+      "osad": "Tehisaru määruse tähtajad. Sihid on oma teema juures (Inimesed › Oskused, Ettevõtted, Hanked)."
     },
     {
       "id": "uudised",
@@ -170,7 +170,7 @@
       "olek": "valmis",
       "kusimus": "Mis on tehisaru, andmete ja töö kohta Eestis ja maailmas viimati teada antud ning kas see on tõend või arvamus?",
       "h1": "Tehisaru ja töö uudised Eestist ja maailmast: uudis, uuring ja **arvamus on eraldi märgitud**.",
-      "osad": "Ainult uudised ja nende allikad (Kadri 6.11.2026 22:27: väited läksid menüüsse Usaldus)."
+      "osad": "Uudised Eestist ja maailmast koos allikatega; väidete kontroll on menüüs Usaldus."
     },
     {
       "id": "kas-tosi",
@@ -182,7 +182,7 @@
       "olek": "valmis",
       "kusimus": "Kas see väide on tõsi ja kas allikad räägivad sama?",
       "h1": "IMF-i ja Goldman Sachsi **„puudutab“ on pealkirjades muutunud sõnaks „kaob“**; kaks Eurostati ja Statistikaameti lahknevust on selgitamata.",
-      "osad": "Kolm alamlehte (Kadri 6.11.2026 22:27, paigutuse ettepanekud 1–2): Väited, Lahknevused, Värskus (värskus ja muutuste logi).",
+      "osad": "Kolm alamlehte: Väited, Lahknevused, Värskus (värskus ja muutuste logi).",
       "alamlehed": [
         {
           "fail": "kas-see-on-tosi.html",
@@ -232,7 +232,7 @@
       "olek": "valmis",
       "kusimus": "Mis vaated saidil on ja mis on iga vaate vastus?",
       "h1": "Saidil on **kaheksa teemat**, avaleht ja „Kuidas lugeda“; iga vaade vastab ühele lugeja küsimusele.",
-      "osad": "Eelvaate abileht; pärast üleminekut läheb „Kuidas lugeda“ alla"
+      "osad": "Kõik vaated, nende lugeja küsimus ja peamine vastus ühes tabelis"
     }
   ]
 }

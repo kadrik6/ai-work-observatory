@@ -8,6 +8,8 @@ Iga pealkirja number tuleb andmetest. Mallist väljas olevad osad kontrollitakse
 """
 import collections
 import csv
+import html
+import re
 from pathlib import Path
 
 import andmekiht as andmed
@@ -122,7 +124,32 @@ def kpi_plaat(pid, lbl, big, per, kontekst, src, fookus=False, href=""):
             osad.append(f'<span class="tekst">{kontekst[k]}</span>' if k == "tekst" else kontekst[k])
     return (f'<div class="plaat kp" data-kpi="{pid}"><span class="lbl">{nimi}</span>'
             f'<span class="big{" s" if fookus else ""}">{big}{f"<small>{per}</small>" if per else ""}</span>'
-            f'<span class="ctx">{"".join(osad)}</span><span class="src">{src}</span></div>')
+            f'<span class="ctx">{"".join(osad)}</span><span class="src">{src}{kopeeri_nupp(pid, lbl, big, per, src)}</span></div>')
+
+
+KOOPIA_KES = {"ma-": "ELi tehisaru määrus", "too-noored": "", "too-taani": ""}
+
+
+def fakt(lbl, big, per, src, kes="Eesti"):
+    """Kopeeritav lause: kes, näitaja, number, periood ja allikas koos lingiga (sisuloogika 8.11.2026, idee 2)."""
+    tekst = lambda h: re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", h))).strip()  # noqa: E731
+    url = re.search(r'href="(https?://[^"]+)"', src or "")
+    nimi = tekst(lbl)
+    if kes and not any(s in nimi for s in ("Eesti", "USA", "Taani")):
+        nimi = f"{kes}, {nimi[0].lower()}{nimi[1:]}"
+    p = tekst(per).replace(" · ", ", ") if per else ""
+    p = f" {p}" if p.startswith(("/", "punkti")) else (f" ({p})" if p else "")
+    return (f"{nimi}: {tekst(big)}{p}."
+            + f" Allikas: {tekst(src)}" + (f", {html.unescape(url.group(1))}" if url else "") + ".")
+
+
+def kopeeri_nupp(pid, lbl, big, per, src):
+    """Nupp ainult siis, kui plaadil on välise allika link (seire enda loendeid ja kuulutuste arve ei tsiteerita)."""
+    if not re.search(r'href="https?://', src or "") or pid.startswith("tk-"):
+        return ""
+    kes = next((v for k, v in KOOPIA_KES.items() if pid.startswith(k)), "Eesti")
+    return (f'<button type="button" class="kopeeri" data-fakt="{e(fakt(lbl, big, per, src, kes))}" '
+            f'aria-label="Kopeeri fakt koos allikaga">Kopeeri</button>')
 
 
 def _p(x):
@@ -257,7 +284,7 @@ def avaleht(A, vaade, vaated):
                   a(UNE_URL, "Eurostat une_rt_m"), href="too.html#tootus-kuud"),
         kpi_plaat("hanked", "Tehisaru- ja andmehanked", str(h_uus["ai_ja_andmed"]), h_uus["periood"] if h_uus["periood"] != "aasta" else str(h_uus["aasta"]),
                   {"muutus": (f"{h_eel['aasta']} kokku {h_eel['ai_ja_andmed']}", f"{pr(h_uus['osa'])}% kõigist hangetest")},
-                  f"Riigihangete register", href="hanked.html#aastad"),
+                  a(HANKED_URL, "Riigihangete register"), href="hanked.html#aastad"),
         kpi_plaat("vaited", "Kontrollitud väited tehisaru kohta", str(len(V)), "",
                   {"muutus": (f"{len(v_muud)} ütleb muud kui allikas", menuu("kas-tosi", f"{lahti} allikate lahknevust selgitamata", "lahknevused"))},
                   menuu("kas-tosi", "Väited"), href="kas-see-on-tosi.html#vaited"),
@@ -315,12 +342,10 @@ def avaleht(A, vaade, vaated):
         pts = sorted((int(v["aasta"]), v["vaartus"]) for v in andmed.vali(A, EB, geo=g, klass="alus"))
         seeriad.append((nimi, pts, liik))
     ee_pts = seeriad[0][1]
-    kordaja = ee_pts[-1][1] / ee_pts[0][1]
-    kontrolli_kordaja = int(kordaja)
     trend = joon(seeriad, ee_pts[0][0], ee_pts[-1][0], 40, 10, h=140, x_margid=[p[0] for p in ee_pts], silt="Ettevõtete tehisaru kasutus")
     sec_trend = f"""
 <section class="pn sp5" id="trend" aria-labelledby="h-trend">
-  <div class="pn-h"><h2 id="h-trend">Eesti ettevõtete tehisaru kasutus <b>kasvas {ee_pts[0][0]}–{ee_pts[-1][0]} üle {kontrolli_kordaja} korra</b></h2></div>
+  <div class="pn-h"><h2 id="h-trend">Eesti ettevõtete tehisaru kasutus kasvas {ee_pts[0][0]}–{ee_pts[-1][0]} <b>{pr(ee_pts[0][1])}%-lt {pr(ee_pts[-1][1])}%-ni</b></h2></div>
   <p class="ps">% ettevõtetest, vähemalt 10 hõivatut. 2022 küsimust ei olnud.</p>
   {trend}
   {allikarida([(eu["allikas"], eu["url"], f"uuendatud {kp(eu['avaldatud'])}")])}
@@ -339,6 +364,8 @@ def avaleht(A, vaade, vaated):
     voog.append((eeb["avaldatud"], "uus number", "uus", f"Ettevõtete tehisaru kasutus {pr(eeb['vaartus'])}% (Statistikaamet)", eeb["url"]))
     voog = sorted(sorted(set(voog), key=lambda r: (r[1], r[3])), key=lambda r: r[0], reverse=True)  # kindel järjekord
     viimane = voog[0][0]
+    viim_nr = max(r[0] for r in voog if r[1] == "uus number")
+    viim_v = max((r[0] for r in voog if r[1] == "väide"), default=None)
     from datetime import date
     d = lambda iso: date.fromisoformat(iso[:10])  # noqa: E731
     uued = sum(1 for r in voog if (d(viimane) - d(r[0])).days <= VOO_PAEVI)
@@ -346,8 +373,8 @@ def avaleht(A, vaade, vaated):
                    f'<span>{f"<a href={chr(34)}{e(r[4])}{chr(34)}>{r[3]}</a>" if r[4] else r[3]}</span></li>' for r in voog[:VOO_RIDU])
     sec_voog = f"""
 <section class="pn sp5" id="muutus" aria-labelledby="h-muutus">
-  <div class="pn-h"><h2 id="h-muutus">Mis muutus: viimati <b>{kp(viimane)}</b></h2></div>
-  <p class="ps">{VOO_PAEVI} päevaga lisandus {uued}.</p>
+  <div class="pn-h"><h2 id="h-muutus">Mis muutus: uus number viimati <b>{kp(viim_nr)}</b>, väide {kp(viim_v) if viim_v else "–"}</h2></div>
+  <p class="ps">{VOO_PAEVI} päeva jooksul lisandus {uued} {"kanne" if uued == 1 else "kannet"}. Uudised on eraldi lehel.</p>
   <ul class="voog">{read}</ul>
   <p class="allikas">Kogu loend: {menuu("kas-tosi", "Usaldus › Värskus", "muutused")}. Tehisaru ja töö uudised Eestist ja maailmast: {menuu("uudised", "Uudised")}.</p>
 </section>"""
@@ -356,18 +383,15 @@ def avaleht(A, vaade, vaated):
     for sid in ("el-digioskused-80", "el-digiintensiivsus-90"):
         s_ = A["sihid"][sid]
         sihid.append((s_, andmed.leia(A, s_["naitaja"], s_["tase"], "uusim:alus"), False))
-    kaugus = [(float(s_["siht"]) - v["vaartus"], s_["id"]) for s_, v, _ in sihid]
-    if max(kaugus)[1] != "ee-ettevotted-75":
-        raise AndmeViga("Sihtide pealkiri eeldab, et ettevõtete siht on kõige kaugemal")
     s_read = "".join(
         f'<div class="siht{" f" if f else ""}"><div class="r"><span>{e(s_["nimi"])}, {"Eesti" if s_["tase"] == "EE" else "EL27"}</span>'
         f'<b>{pr(v["vaartus"])}% <small>{v["aasta"]} · siht {pr(float(s_["siht"]), 0)}% ({s_["aasta"]})</small></b></div>'
         f'{sihiriba(v["vaartus"], float(s_["siht"]), 100, "%", fookus=f)}</div>' for s_, v, f in sihid)
     sec_sihid = f"""
 <section class="pn sp3" id="sihid" aria-labelledby="h-sihid">
-  <div class="pn-h"><h2 id="h-sihid">Kolmest sihist on <b>ettevõtete kasutus</b> kõige kaugemal</h2></div>
+  <div class="pn-h"><h2 id="h-sihid">Eesti ettevõtete tehisaru kasutus on <b>{pr(eeb["vaartus"])}%</b>, siht on {pr(float(sihid[0][0]["siht"]), 0)}% aastaks {sihid[0][0]["aasta"]}; ELi kaks sihti on ELi kui terviku kohta</h2></div>
   <div class="sihid">{s_read}</div>
-  <p class="allikas">Iga siht oma allika ja skaalaga; ELi sihid on ELi kui terviku kohta. Üksikasjad: {menuu("ettevotted", "Ettevõtted", "kasutus")}, {menuu("inimesed", "Inimesed", "digi")}.</p>
+  <p class="allikas">Iga siht oma allika, skaala ja aastaga, seepärast neid omavahel ei järjestata. Üksikasjad: {menuu("ettevotted", "Ettevõtted", "kasutus")}, {menuu("inimesed", "Inimesed", "digi")}.</p>
 </section>"""
 
     sec_hanked = f"""
@@ -784,8 +808,8 @@ def teematabel(A, vaated, d):
             f'<small>{"katseline" if katse else ("värske" if varske else "vanem kui 3 kuud")}</small></td></tr>')
     sec = f"""
 <section class="pn sp12" id="teemad" aria-labelledby="h-teemad">
-  <div class="pn-h"><h2 id="h-teemad">Iga teema ühes reas: mis on mõõdetud, uuritud, väidetud ja mis on siht; <b>{tuhjad} lahtrit on veel hindamata</b></h2></div>
-  <p class="ps">Lahter viib teema lehel õigesse kohta. „Hindamata“ tähendab, et seire pole seda veel hinnanud, mitte et midagi pole.</p>
+  <div class="pn-h"><h2 id="h-teemad">Iga teema ühes reas: <b>mõõdetud, uuritud, väidetud ja siht</b></h2></div>
+  <p class="ps">Lahter viib teema lehel õigesse kohta. {tuhjad} lahtrit on veel hindamata: seire pole neid veel hinnanud, mis ei tähenda, et midagi pole.</p>
   <div class="tbl teematabel"><table><caption class="peidus">Teemad ja sisuliigid</caption>
   <thead><tr><th scope="col">Teema</th><th scope="col">Mõõdetud</th><th scope="col">Uuritud</th><th scope="col">Väidetud</th><th scope="col">Sihid ja reeglid</th><th scope="col">Värskus</th></tr></thead>
   <tbody>{"".join(ridu)}</tbody></table></div>

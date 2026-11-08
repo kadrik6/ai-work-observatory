@@ -814,7 +814,7 @@ def test_neli_vaiteparandust_8_11(sait):
     assert re.search(r"ELi võrdluses \(20\d\d\) on inimesed", h1("index.html"))
     assert "aastaga" not in h1("inimesed.html")
     assert "küsimus võib erineda" in sait["inimesed.html"] and "küsimus võib erineda" in sait["index.html"]
-    assert h1("too.html").startswith("USA-s ")
+    assert h1("too.html").startswith("Eesti andmetest")  # 8.11 õhtu: h1 algab Eestist (läbivaatus P4)
     plaat = lambda f, pid: re.search(rf'data-kpi="{pid}">(.*?)</div>', sait[f], re.S).group(1)  # noqa: E731
     avaleht, hanked = plaat("index.html", "hanked"), plaat("hanked.html", "hk-arv")
     suur = lambda h: re.search(r'class="big[^"]*">(\d+)<', h).group(1)  # noqa: E731
@@ -888,3 +888,39 @@ def test_uus_leht_avaneb_ulevalt():
     assert "n.type === 'back_forward'" in js and "sessionStorage.setItem(VOTI" in js
     assert "if (location.hash || liigutas) return;" in js
     assert "}, true); // püüdefaasis" in js
+
+
+def test_labivaatus_8_11_parandused(sait):
+    """Läbivaatus 8.11.2026 õhtul (doc 8BK9uy4sZcCP8Qvvjm34NW), parandused P1–P8 ja kopeeritav fakt."""
+    h1 = lambda f: tekst(re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1))  # noqa: E731
+    h2 = lambda f, i: tekst(re.search(rf'id="h-{i}">(.*?)</h2>', sait[f], re.S).group(1))  # noqa: E731
+    # P1: sihte ei järjestata
+    assert "kõige kaugemal" not in sait["index.html"] and "siht on 75% aastaks 2030" in h2("index.html", "sihid")
+    # P2: iga „viimati“ ütleb, mille kohta see on
+    assert h2("index.html", "muutus").startswith("Mis muutus: uus number viimati ")
+    assert h2("varskus.html", "muutused").startswith("Allikate ja lahknevuste logis")
+    # P3: alamlehtede h1 on vastus, mitte teema nimi
+    for f, nimi in [("inimesed-oskused.html", "Digioskused ja oskuse puudus"),
+                    ("ettevotted-voimekus.html", "Tootlikkus, digiintensiivsus ja teadus- ja arendustegevus"),
+                    ("too-uuringud.html", "Mida uuringud tehisaru ja töö kohta leidsid"),
+                    ("too-kirjandus.html", "Mida maailmas ja Eestis tehisarust ja tööst kirjutatakse"),
+                    ("too-ametid.html", "Millised Eesti ametid on tehisarule avatud")]:
+        assert h1(f) != nimi and len(h1(f)) > len(nimi) and "<b>" in re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1), f
+    assert re.search(r"digioskused on \d+,\d% Eesti inimestest", h1("inimesed-oskused.html"))
+    # P5: saidikaardil pole sisemärkmeid ega olekuveergu
+    assert "Kadri" not in sait["saidikaart.html"] and "Eelvaate" not in sait["saidikaart.html"]
+    assert ">Olek<" not in sait["saidikaart.html"]
+    # P6, P7, P8
+    assert h2("hanked.html", "tapsus").endswith("masinmärgendite järgi")
+    assert "hindamata" not in h2("index.html", "teemad")
+    assert "kolm puhul" not in sait["varskus.html"] and "korra" not in h2("index.html", "trend")
+    # Kopeeritav fakt: ainult välise allika lingiga plaatidel, lause sisaldab allika lingi
+    for f, h in sait.items():
+        for m in re.finditer(r'<div class="plaat kp" data-kpi="([^"]+)">(.*?)</div>', h, re.S):
+            nupp = re.search(r'data-fakt="([^"]+)"', m.group(2))
+            valine = re.search(r'<span class="src">.*?href="https?://', m.group(2), re.S)
+            assert bool(nupp) == bool(valine and not m.group(1).startswith("tk-")), (f, m.group(1))
+            if nupp:
+                assert "Allikas: " in nupp.group(1) and "https://" in nupp.group(1), (f, m.group(1))
+    js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
+    assert "button.kopeeri" in js and "navigator.clipboard" in js and "execCommand('copy')" in js
