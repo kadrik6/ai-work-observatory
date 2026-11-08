@@ -14,7 +14,9 @@ Kadri 8.11.2026: sait peab olema kolleegidele avatav link, mis ehitub GitHubist 
    Iga selline commit käivitab Verceli uue ehituse. Kui uus number ei klapi lehe pealkirjaga, töö kukub ja
    GitHub saadab teate; sait jääb eelmise seisuga.
 5. Uudised, koondajad, AI-kuulutused, hanked ja publikatsioonid tulevad projekti igapäevastest töödest
-   (`sait/vota_kaasa.py`). Need jõuavad veebi, kui nende hetkeseis (`sait/sisu/`) on `main` harus.
+   (7.23 ja 17.53 Tallinna aja järgi). Iga töö viimane samm on `bash tehisaru-seire/sait/sisu_maini.sh`
+   puhtas koopias: see võtab hetkeseisu (`sait/vota_kaasa.py`), ehitab saidi, jooksutab testid ja turvakontrolli
+   ning push'ib `main` harusse ainult kausta `sait/sisu/` (Kadri otsus 8.11.2026). Kui midagi kukub, push'i ei tule.
 
 ## Ühekordne seadistus (Kadri)
 
