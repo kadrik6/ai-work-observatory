@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-08 | Seire sait: avalehel on KPI-plaatide all teematabel (näidis C, Kadri valik). Selles on viis teemat ja veerud mõõdetud, uuritud, väidetud, sihid ja reeglid ning värskus. Tühi lahter on „hindamata“ ja neid on 3. Hangete ülevaatuse lõplik viitevalim: masinmärgendid langevad viitega kokku 83% (kappa 0,57). |
 | 2026-11-08 | Seire sait: neli väiteparandust sisuloogika ülevaatusest. Avalehe ELi kohtadel on aasta. Inimeste kasvu juures on märge „küsimus võib erineda“ ja Inimeste h1 kasvu ei väida. Töö h1 ütleb, et tulemus on USA kohta. Avaleht võtab hangete arvu samast failist ja perioodist kui hangete leht (50, kuni 7.11.2026). |
 | 2026-11-08 | Seire sait: töö lehe AI-kuulutuste tabelis saab nüüd otsida ning filtreerida rühma ja maakonna järgi (Kadri kommentaar). Test lisatud. |
 | 2026-11-08 | Seire sait, Hanked: hoiatus ja täpsuse osa uuendatud pärast käsitsi pimeülevaatust (Kadri kommentaar lehel 8.11: „käsitsi ülevaatus on tehtud, uuenda lehte“). 100 hanget 782-st, kokkulangevus 78% (kappa 0,43), pärast juhendi täpsustamist 90% (kappa 0,62, optimistlik); koondarvud hangete tuvastuse lõimest, märgendusfailid pole repos (`lehed_uudised.KASITSI`). Klassifikaator ja leht.json pole veel uute reeglite järgi uuendatud, seega aastaid ei võrrelda endiselt. Litsentside osas märge: uue juhendi järgi pole litsentsiost tehisaru- ega andmehange. |

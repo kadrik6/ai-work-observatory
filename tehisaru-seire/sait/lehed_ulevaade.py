@@ -6,6 +6,7 @@ Töö vaates (Kadri 5.11 22:22: soovitused 1–5 kehtivad).
 
 Iga pealkirja number tuleb andmetest. Mallist väljas olevad osad kontrollitakse abi.kontrolli() abil.
 """
+import collections
 import csv
 from pathlib import Path
 
@@ -396,9 +397,11 @@ def avaleht(A, vaade, vaated):
   <h1>{taida(vaade["h1"], A)}</h1>
   <p class="seis-t">Andmed: Statistikaamet {kp(ein["avaldatud"])} ja {kp(eeb["avaldatud"])}, Eurostat {kp(UNE_UUENDATUD)}</p>
 </div>
-<nav aria-label="Sellel lehel"><ul class="sellel"><li><a href="#el">Eesti ELis</a></li><li><a href="#tootus">Töö ja töötus</a></li><li><a href="#trend">Ettevõtted</a></li><li><a href="#muutus">Mis muutus</a></li><li><a href="#sihid">Sihid</a></li><li><a href="#hanked">Hanked</a></li><li><a href="#vaited">Väited</a></li></ul></nav>
+<nav aria-label="Sellel lehel"><ul class="sellel"><li><a href="#teemad">Teemad</a></li><li><a href="#el">Eesti ELis</a></li><li><a href="#tootus">Töö ja töötus</a></li><li><a href="#trend">Ettevõtted</a></li><li><a href="#muutus">Mis muutus</a></li><li><a href="#sihid">Sihid</a></li><li><a href="#hanked">Hanked</a></li><li><a href="#vaited">Väited</a></li></ul></nav>
 <div class="plaadid kaks" aria-label="Peamised numbrid">{plaadid}</div>"""
-    return (pea + '<div class="g12">' + sec_el + "</div>"
+    sec_teemad, _ = teematabel(A, vaated, {"ein": ein, "eeb": eeb, "ds": ds, "t_ee": t_ee, "t_el": t_el, "kuu": kuu, "h_uus": h_uus})
+    return (pea + '<div class="g12">' + sec_teemad + "</div>"
+            + '<div class="g12">' + sec_el + "</div>"
             # ettevõtete trend ELi koha järel, siis töötus (Kadri 6.11.2026 22:27, ettepanek 9)
             + '<div class="g12">' + sec_trend + sec_prog + "</div>"
             + '<div class="g12">' + sec_voog + sec_sihid + sec_hanked + "</div>"
@@ -665,3 +668,127 @@ def vabad_ametikohad():
   {allikarida([("Statistikaamet PAV011 ja PAV014", PAV_URL, f"avaldatud {kp(uuendatud)}")])}
 </section>
 </div>"""
+
+
+# ---------------------------------------------------------------- Avalehe teematabel (näidis C, Kadri 8.11.2026)
+
+# Väited, millel pole näitajat, kuuluvad teemasse id järgi (käsitsi, ülevaatus 8.11.2026).
+VAITE_TEEMA = {"ettevotete-tehisaru-kasutus": "ettevotted", "tehisaru-oskuse-puudus": "inimesed",
+               "inimeste-tehisaru-kasutus": "inimesed", "tooalane-tehisaru-kasutus": "inimesed",
+               "inimeste-digioskused": "inimesed",
+               "pwc-2026-tootlikkus-40": "ettevotted", "err-2026-oskused-39": "too", "err-2026-vahendamine-40": "too",
+               "worthynews-2024-imf-40": "too", "247wallst-2025-goldman-300m": "too",
+               "uudis-ai-oskajad-votavad-tookohad": "too", "uudis-challenger-okt-153074": "too",
+               "uudis-ai-noorte-esimene-too": "too"}
+LAHK_TEEMA = {"ettevotete-tehisaru-kasutus": "ettevotted", "tehisaru-oskuse-puudus": "inimesed"}
+VARSKE_PAEVI = 92
+
+
+def vaite_teema(v):
+    t = VAITE_TEEMA.get(v["naitaja"]) or VAITE_TEEMA.get(v["id"])
+    if not t:
+        raise AndmeViga(f"Väitel {v['id']} pole avalehe tabelis teemat: lisa see VAITE_TEEMA-sse")
+    return t
+
+
+def teematabel(A, vaated, d):
+    """Read on teemad, veerud mõõdetud / uuritud / väidetud / sihid ja reeglid / värskus.
+    Tühi lahter on „hindamata“ (andmeid pole veel hinnatud), mitte null. d: avalehel juba arvutatud numbrid."""
+    import datetime
+    from lehed_teemad import _o
+    menuu = lambda vid, tekst, ank="": link(vaated, vid, tekst, ank)  # noqa: E731
+    U = A["uuringud"]
+    V = A["vaited"]
+    vt = collections.defaultdict(list)
+    for v in V:
+        vt[vaite_teema(v)].append(v)
+    lahk = collections.defaultdict(list)
+    for l in A["lahknevused"]:
+        if l["staatus"] == "selgitamata":
+            lahk[LAHK_TEEMA.get(l["naitaja"], "")].append(l)
+    HL = A["hanked_leht"]
+    inn = [r for r in HL["aastad"] if r.get("innovatsioonimark_osakaal") is not None][-1]
+    O = A["otsused"]
+    kr = next(r for r in O if r["id"] == "ai-korge-risk-iii")
+    gk, lai = _o(A, "genai-kesk"), _o(A, "laiendati")
+    siht_ee = A["sihid"]["ee-ettevotted-75"]
+    siht_ds = A["sihid"]["el-digioskused-80"]
+
+    def uuring(k, tekst, vid, ank):
+        u = U[k]
+        return f'{menuu(vid, tekst, ank)}<small>{e(u["autorid"].split(",")[0].split(" ja ")[0])} {u["aasta"]}, {e(u["kus"])}</small>'
+
+    def vaited(tid):
+        vv = vt.get(tid, [])
+        ll = lahk.get(tid, [])
+        if not vv and not ll:
+            return ""
+        osad = []
+        if vv:
+            muud = sum(_raskus(v) == 0 for v in vv)
+            osad.append(menuu("kas-tosi", f"{len(vv)} {'väide' if len(vv) == 1 else 'väidet'}") +
+                        (f'<small>{muud} ütleb muud kui allikas</small>' if muud else '<small>ükski ei ütle muud kui allikas</small>'))
+        if ll:
+            osad.append(f'<small>{menuu("kas-tosi", ("lahknevus " if len(ll) == 1 else "lahknevused ") + ", ".join(x["kood"] for x in ll), "lahknevused")} selgitamata</small>')
+        return "".join(osad)
+
+    read = [
+        ("inimesed", "Inimesed", "kasutus ja oskused",
+         (f'{pr(d["ein"]["vaartus"])}%', f'kasutas tehisaru {d["ein"]["aasta"]}', "kasutus", True, d["ein"]["avaldatud"]),
+         uuring("bick2024", "USA-s kasutas " + U["bick2024"]["leid"].split("%")[0] + "% töötajatest tehisaru tööl", "inimesed", "tool"),
+         vaited("inimesed"),
+         f'digioskused {pr(d["ds"]["vaartus"])}%, ELi siht {pr(float(siht_ds["siht"]), 0)}% ({siht_ds["aasta"]})',
+         ("inimesed", "digi")),
+        ("ettevotted", "Ettevõtted", "kasutus ja võimekus",
+         (f'{pr(d["eeb"]["vaartus"])}%', taida("kasutab " + str(d["eeb"]["aasta"]) + " · ELis {" + EB + "|EE|uusim:alus|koht}. ({" + EB + "|EE|uusim:alus|a})", A), "kasutus", False, d["eeb"]["avaldatud"]),
+         uuring("vahter2026", "Eestis tõstab tootlikkust ainult koos töökorralduse muutusega", "ettevotted", "kasutus"),
+         vaited("ettevotted"),
+         f'siht {pr(float(siht_ee["siht"]), 0)}% ({siht_ee["aasta"]})', ("ettevotted", "kasutus")),
+        ("too", "Töö", "tööturg ja mõju",
+         (f'{pr(d["t_ee"])}%', f'töötus {KUUD[int(d["kuu"][5:]) - 1]} {d["kuu"][:4]} · EL {pr(d["t_el"])}%', "tootus-kuud", False, UNE_UUENDATUD),
+         uuring("canaries2026", "USA-s palgatakse tehisarule avatud ametitesse vähem noori", "too", "maailm"),
+         vaited("too"),
+         f'värbamise kõrge riski reeglid alates {kp(kr["kuupaev"])}', ("reeglid", "tahtajad")),
+        ("avalik-sektor", "Avalik sektor", "uuendused ja tehisaru",
+         (f'{gk["vaartus"]}%', f'uuendajatest kasutas generatiivset tehisaru ({gk["lugeja"]}/{gk["nimetaja"]})', "tehisaru", False, "2026-11-03"),
+         menuu("avalik-sektor", "uuendustest laiendati " + lai["vaartus"] + "%", "lehter") + "<small>OECD 2026, Eesti</small>",
+         vaited("avalik-sektor"),
+         "OECD 8 soovitust", ("avalik-sektor", "soovitused")),
+        ("hanked", "Hanked", "mida riik ostab",
+         (str(d["h_uus"]["ai_ja_andmed"]), f'hanget {d["h_uus"]["periood"]} · {pr(d["h_uus"]["osa"])}% kõigist', "aastad", False, HL["seis"]["kuupaev"]),
+         "",
+         vaited("hanked"),
+         f'innovatsioonimärk {pr(inn["innovatsioonimark_osakaal"])}% ({inn["aasta"]}), siht 2%', ("hanked", "innovatsioon")),
+    ]
+    viimane = max(r[3][4] for r in read)
+    vd = datetime.date.fromisoformat(viimane)
+    hind = '<span class="m-puud">hindamata</span>'
+    tuhjad = 0
+    ridu = []
+    for tid, nimi, kus, mo, uu, va, si, si_l in read:
+        arv, sel, ank, fookus, kuup = mo
+        varske = (vd - datetime.date.fromisoformat(kuup)).days <= VARSKE_PAEVI
+        katse = tid == "hanked"
+        arv_link = link(vaated, tid, arv, ank).replace("<a ", '<a class="m-arv f" ' if fookus else '<a class="m-arv" ', 1)
+        lahtrid = []
+        for veerg, sisu in (("Uuritud", uu), ("Väidetud", va)):
+            if not sisu:
+                tuhjad += 1
+            lahtrid.append(f'<td data-v="{veerg}">{sisu or hind}</td>')
+        ridu.append(
+            f'<tr><th scope="row">{menuu(tid, nimi)}<small>{e(kus)}</small></th>'
+            f'<td data-v="Mõõdetud">{arv_link}<small>{sel}</small></td>'
+            + "".join(lahtrid) +
+            f'<td data-v="Sihid ja reeglid">{menuu(si_l[0], si, si_l[1])}</td>'
+            f'<td data-v="Värskus" class="n"><span class="kpv"><span class="v-tapp{" katse" if katse else ("" if varske else " vana")}" aria-hidden="true"></span>{kp(kuup)}</span>'
+            f'<small>{"katseline" if katse else ("värske" if varske else "vanem kui 3 kuud")}</small></td></tr>')
+    sec = f"""
+<section class="pn sp12" id="teemad" aria-labelledby="h-teemad">
+  <div class="pn-h"><h2 id="h-teemad">Iga teema ühes reas: mis on mõõdetud, uuritud, väidetud ja mis on siht; <b>{tuhjad} lahtrit on veel hindamata</b></h2></div>
+  <p class="ps">Lahter viib teema lehel õigesse kohta. „Hindamata“ tähendab, et seire pole seda veel hinnanud, mitte et midagi pole.</p>
+  <div class="tbl teematabel"><table><caption class="peidus">Teemad ja sisuliigid</caption>
+  <thead><tr><th scope="col">Teema</th><th scope="col">Mõõdetud</th><th scope="col">Uuritud</th><th scope="col">Väidetud</th><th scope="col">Sihid ja reeglid</th><th scope="col">Värskus</th></tr></thead>
+  <tbody>{"".join(ridu)}</tbody></table></div>
+  <p class="allikas">Värske = andmed avaldatud kuni {VARSKE_PAEVI} päeva enne kõige uuemat ({kp(viimane)}). Iga lahtri allikas on teema lehel.</p>
+</section>"""
+    return sec, tuhjad

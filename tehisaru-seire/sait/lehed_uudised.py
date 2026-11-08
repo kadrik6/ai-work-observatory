@@ -179,10 +179,11 @@ def uudised(A, vaade, vaated=None):
 
 # Käsitsi pimeülevaatus (Kadri 5.–8.11.2026, koondtulemus hangete tuvastuse lõimest 8.11.2026; märgendusfailid
 # ei ole selles repos). Klassifikaator ja leht.json ei ole uute reeglite järgi veel uuendatud.
-KASITSI = {"n": 100, "valim": 782, "kuupaev": "2026-11-08", "kokku": 78, "kappa": "0,43",
-           "kokku_parast": 90, "kappa_parast": "0,62", "ootel": 3}
-KASITSI_LAUSE = (f'{KASITSI["n"]} hanget vaadati käsitsi pimesi üle ({kp(KASITSI["kuupaev"])}). Kokkulangevus masinmärgenditega oli '
-                 f'{KASITSI["kokku"]}% (kappa {KASITSI["kappa"]}). Märgendusjuhendit täpsustati ja klassifikaatorit uuendatakse; '
+# 8.11 12:37 lõplik viitevalim: 83 EI, 15 ANDMED, 2 AI; „kokku“ = masinmärgendid vs viide, „kasitsi“ = Kadri esmamärgendid vs viide.
+KASITSI = {"n": 100, "valim": 782, "kuupaev": "2026-11-08", "kokku": 83, "kappa": "0,57",
+           "kasitsi": 91, "kappa_kasitsi": "0,66", "viide": {"ei": 83, "andmed": 15, "ai": 2}, "ootel": 0}
+KASITSI_LAUSE = (f'{KASITSI["n"]} hanget vaadati käsitsi pimesi üle ja neile pandi lõplik viitemärgend ({kp(KASITSI["kuupaev"])}). '
+                 f'Masinmärgendid langevad viitega kokku {KASITSI["kokku"]}% (kappa {KASITSI["kappa"]}). Klassifikaatorit uuendatakse; '
                  'kuni selleni on arvud masinmärgistus.')
 
 LITS_SISSE = re.compile(r"litsents|licen[cs]|kasutusõigus|tarkvarateenus|tarkvara\w* (?:soet|ost|rent|hankimine)"
@@ -475,7 +476,7 @@ def hanked(A, vaade, vaated=None):
 <div class="g12">
 <section class="pn sp12" id="tapsus" aria-labelledby="h-tapsus">
   <div class="pn-h"><h2 id="h-tapsus">Klassifikaator leiab umbes <b>{pr(tul["saagis"] * 100, 0)}%</b> tehisaru- ja andmehangetest ning {pr(tul["tapsus"] * 100, 0)}% leitutest on õiged</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">Testitud {hind["hindamine"]["test"]} hankel alates {hind["hindamine"]["testi_alates"]}. aastast. Märgendid ({hind["margendid"]["kokku"]}) tegi Claude; {KASITSI["n"]} neist vaadati käsitsi pimesi üle: kokkulangevus {KASITSI["kokku"]}% (kappa {KASITSI["kappa"]}), pärast juhendi täpsustamist {KASITSI["kokku_parast"]}% (kappa {KASITSI["kappa_parast"]}; optimistlik, sest juhendit täpsustati samade ridade põhjal). Täpsus ja saagis on veel mõõdetud masina märgendite vastu. eForms-hangetest ({_arv(lev["hankeid"])}) on valimi põhjal umbes {lev["valimi_pohjal"]["hinnang"]} tehisaru- või andmehanget (95% vahemik {vmin}–{vmax}); klassifikaator leidis {lev["valitud_leidis"]}.</p>
+  <p class="ps">Testitud {hind["hindamine"]["test"]} hankel alates {hind["hindamine"]["testi_alates"]}. aastast. Märgendid ({hind["margendid"]["kokku"]}) tegi Claude; {KASITSI["n"]} neist vaadati käsitsi pimesi üle: lõplikus viitevalimis on {KASITSI["viide"]["ei"]} ei, {KASITSI["viide"]["andmed"]} andmehanget ja {KASITSI["viide"]["ai"]} tehisaruhanget. Masinmärgendid langevad viitega kokku {KASITSI["kokku"]}% (kappa {KASITSI["kappa"]}), käsitsi esmamärgendid {KASITSI["kasitsi"]}% (kappa {KASITSI["kappa_kasitsi"]}). Täpsus ja saagis on veel mõõdetud masina märgendite vastu. eForms-hangetest ({_arv(lev["hankeid"])}) on valimi põhjal umbes {lev["valimi_pohjal"]["hinnang"]} tehisaru- või andmehanget (95% vahemik {vmin}–{vmax}); klassifikaator leidis {lev["valitud_leidis"]}.</p>
   <div class="tbl"><table><thead><tr><th scope="col">Meetod</th><th scope="col" class="v">Täpsus (95%)</th><th scope="col" class="v">Saagis (95%)</th><th scope="col" class="v">F1</th></tr></thead>
   <tbody>{"".join(t_rows)}</tbody></table></div>
 </section>

@@ -817,3 +817,24 @@ def test_neli_vaiteparandust_8_11(sait):
     suur = lambda h: re.search(r'class="big[^"]*">(\d+)<', h).group(1)  # noqa: E731
     assert suur(avaleht) == suur(hanked), (avaleht, hanked)
     assert "jaan" not in avaleht
+
+
+def test_avalehe_teematabel_naidis_c(sait):
+    """Kadri 8.11.2026: avalehel KPI-plaatide all tabel, read on teemad, tühi lahter = „hindamata“."""
+    h = sait["index.html"]
+    assert h.index('class="plaadid kaks"') < h.index('id="teemad"') < h.index('id="el"')
+    jao = h[h.index('id="teemad"'):]
+    jao = jao[:jao.index("</section>")]
+    veerud = re.findall(r'<th scope="col">([^<]+)</th>', jao)
+    assert veerud == ["Teema", "Mõõdetud", "Uuritud", "Väidetud", "Sihid ja reeglid", "Värskus"]
+    read = re.findall(r'<th scope="row"><a href="([^"#]+)', jao)
+    assert read == ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"]
+    tuhjad = jao.count('<span class="m-puud">hindamata</span>')
+    assert f"{tuhjad} lahtrit on veel hindamata" in jao
+    assert len(re.findall(r"<td data-v=", jao)) == 5 * 5
+
+
+def test_iga_vaide_on_avalehe_tabelis_teemaga(A):
+    import lehed_ulevaade
+    for v in A["vaited"]:
+        assert lehed_ulevaade.vaite_teema(v) in {"inimesed", "ettevotted", "too", "avalik-sektor", "hanked"}
