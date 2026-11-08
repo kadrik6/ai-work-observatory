@@ -339,7 +339,7 @@ kaotus = f'''          <div class="ts-pair">
 
 # 1b. Eesti koondamised ja tehisaru roll (käsitsi kogutud nimekiri)
 KE = json.load(open(TS + 'koondamised_ee.json'))
-ROLL = {'otsene': 'Otsene', 'osaline': 'Üks põhjustest', 'kaudne': 'Kaudne', 'tulevikus': 'Tulevikus võimalik', 'ei_mainita': 'Ei mainita'}
+ROLL = {'otsene': 'Otsene', 'osaline': 'Üks põhjustest', 'kaudne': 'Kaudne', 'tulevikus': 'Tulevikus võimalik', 'ei_pohjus': 'Pole põhjus', 'ei_mainita': 'Ei mainita'}
 kr = []
 for j in KE['juhtumid']:
     kp_ = j['kuupaev']; kpe = f'{int(kp_[8:])}.{int(kp_[5:7])}.{kp_[:4]}'
@@ -347,8 +347,8 @@ for j in KE['juhtumid']:
     kr.append(f"""<tr><td><a class="ts-t-name" href="{e(j['url'])}" target="_blank" rel="noopener">{e(j['ettevote'])}</a><span class="ts-t-sub">{kpe} · {e(j['sektor'])}</span></td>
 <td class="ts-num"><span class="ts-t-name">{arv_}</span><span class="ts-t-sub">{e(j['arv_tekst'])}</span></td>
 <td><span class="ts-tag ts-roll-{j['roll']}">{ROLL[j['roll']]}</span><p class="ts-leid">{e(j['pohjus'])}</p><span class="ts-t-sub">Ütles: {e(j['kes_utles'])}. Allikas: {e(j['allikas'])}</span></td></tr>""")
-mainitud = sum(1 for j in KE['juhtumid'] if j['roll'] != 'ei_mainita')
-LYH = {'otsene': 'otsene põhjus', 'osaline': 'üks põhjustest', 'kaudne': 'kaudne põhjus', 'tulevikus': 'tuleviku risk', 'ei_mainita': 'ei mainita'}
+mainitud = sum(1 for j in KE['juhtumid'] if j['roll'] not in ('ei_mainita', 'ei_pohjus'))  # ei_pohjus: tehisaru eitati
+LYH = {'otsene': 'otsene põhjus', 'osaline': 'üks põhjustest', 'kaudne': 'kaudne põhjus', 'tulevikus': 'tuleviku risk', 'ei_pohjus': 'pole põhjus', 'ei_mainita': 'ei mainita'}
 MAXK = 500
 jrj = sorted(KE['juhtumid'], key=lambda j: -(j['arv_eestis'] or j.get('arv_ulem') or 0))
 kb = []
@@ -362,7 +362,7 @@ for j in jrj:
     else:
         rida = f'<span class="ts-hb-track"><span class="ts-kb-puudu">Eesti arv teadmata ({e(j["arv_tekst"].split(",")[0])}) · {LYH[j["roll"]]}</span></span>'
     kb.append(f'<li><span class="ts-hb-name"><b>{e(j["ettevote"])}</b> <small>{kpe}</small></span>{rida}</li>')
-legend = ''.join(f'<span class="ts-kb-leg"><i class="ts-kb-{k}"></i>{v}</span>' for k, v in (('osaline', 'tehisaru üks põhjustest'), ('kaudne', 'kaudne: tehisaru muutis turgu'), ('ei_mainita', 'tehisaru ei mainita')))
+legend = ''.join(f'<span class="ts-kb-leg"><i class="ts-kb-{k}"></i>{v}</span>' for k, v in (('osaline', 'tehisaru üks põhjustest'), ('kaudne', 'kaudne: tehisaru muutis turgu'), ('ei_mainita', 'tehisaru ei mainita või pole põhjus')))
 eesti_k = f'''          <div class="ts-head-sm">
             <p class="ts-kicker">Eesti suuremad koondamised 2026, koondatavaid Eestis</p>
             <h4 class="ts-ctitle ts-ctitle-sm">Suurimas, Pipedrive’i koondamises oli tehisaru <span class="ts-sig">kaudne põhjus</span>; otse nimetas seda ainult Telia</h4>
@@ -578,7 +578,7 @@ css = '''
   .ts-roll-otsene, .ts-roll-osaline { background: var(--ts-signal); border-color: var(--ts-signal); color: var(--surface); }
   .ts-roll-kaudne { border-color: var(--ts-signal); color: var(--ts-signal); }
   .ts-roll-tulevikus { border-style: dashed; }
-  .ts-roll-ei_mainita { border-color: var(--ink-muted); color: var(--ink-muted); }
+  .ts-roll-ei_mainita, .ts-roll-ei_pohjus { border-color: var(--ink-muted); color: var(--ink-muted); }
   .ts-tw-koond td .ts-tag { margin-bottom: 6px; }
   .ts-kb li { grid-template-columns: minmax(7rem, 26%) minmax(0, 1fr); }
   .ts-kb .ts-hb-name { color: var(--ink); }
@@ -588,7 +588,7 @@ css = '''
   .ts-kb-osaline, .ts-kb-otsene { background: var(--ts-signal) !important; }
   .ts-kb-kaudne { background: color-mix(in srgb, var(--ts-signal) 28%, transparent) !important; box-shadow: inset 0 0 0 2px var(--ts-signal); }
   .ts-kb-tulevikus { background: transparent !important; box-shadow: inset 0 0 0 2px var(--ink); }
-  .ts-kb-ei_mainita { background: var(--ts-context) !important; }
+  .ts-kb-ei_mainita, .ts-kb-ei_pohjus { background: var(--ts-context) !important; }
   .ts-kb-ulem { background-image: repeating-linear-gradient(135deg, transparent 0 5px, var(--surface) 5px 8px) !important; }
   .ts-kb-puudu { position: absolute; left: 6px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--ink-muted); white-space: nowrap; }
   .ts-kb-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 var(--cds-gap-sm); font-size: 13px; color: var(--ink-muted); }

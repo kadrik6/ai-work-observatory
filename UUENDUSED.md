@@ -4,6 +4,10 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-08 | Seire sait: uus alamleht Uudised › Ettekanded (usaldatud seminaride ja konverentside ettekannete kokkuvõtted avalikest salvestistest). Saidile lähevad ainult kinnitatud kirjed (`sait/ootel.py`); 9 kandidaati ootavad Kadri kinnitust. |
+| 8.11.2026 | Seire sait: teemasid on kaks. Hele on endine Pehme ja on vaikimisi, Tume jääb, valge Hele eemaldati (Kadri 22:15). Tumedas teemas on „eksitav“ punakas roosa ääris läbipaistval taustal (variant C, Kadri 22:14), hallid sildid ja allikas on heledamad. |
+| 8.11.2026 | Seire sait: vaiketeema on alati Pehme, ka siis, kui seade on tumedas režiimis. Varem avanes uuel aadressil (Vercel) tume teema. Kadri 22:13. |
+| 8.11.2026 | Koondamiste tehisaru rollile lisandus „ei_pohjus“ (ettevõte ütles otse, et tehisaru ei ole põhjus). Eesti Energia juhtum on nüüd selle rolliga (Äripäev 6.11), mitte „ei mainita“. Muudetud: tooelu-seire/koondamised_ee.json, seire sait, KJZJ generaator tee_leiud.py. Kadri 8.11 22:06. |
 | 8.11.2026 | Seire sait: uudiste „eksitav“ silt on heleroosa (tume teema: tumeroosa taust, heleroosa tekst), Kadri 22:02. |
 | 8.11.2026 | Seire sait: „uus“ märk on U8 heledam oranž (#f2a65e, Kadri lukustas 21:57); avalehe „Mis muutus“ loendis on märgil ainult „uus“, mitte „uus number“. |
 | 8.11.2026 | Seire sait: Verceli külastusloendur (Web Analytics, küpsisteta) laaditakse ainult *.vercel.app aadressil (Kadri 21:51 „jah, lisa“). Analüütika tuleb Verceli projektis sisse lülitada. |

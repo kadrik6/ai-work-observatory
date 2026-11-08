@@ -451,7 +451,7 @@ def avaleht(A, vaade, vaated):
 # ---------------------------------------------------------------- Töö vaate Eesti rida
 
 ROLL_NIMI = {"otsene": "otsene põhjus", "osaline": "üks põhjus", "kaudne": "kaudne", "tulevikus": "võib tulevikus",
-             "ei_mainita": "ei mainita"}
+             "ei_pohjus": "pole põhjus", "ei_mainita": "ei mainita"}
 
 
 def koondamise_arv(r):
@@ -505,7 +505,8 @@ def too_eesti(A):
     # Keskel: töökohad ettevõtte kaupa, värv näitab, mida ettevõte tehisaru kohta ütles (Kadri 5.11 23:06)
     RYHM = {"otsene": ("s", "nimetas tehisaru põhjusena"), "osaline": ("s", "nimetas tehisaru põhjusena"),
             "kaudne": ("m", "mainis tehisaru muul moel"), "tulevikus": ("m", "mainis tehisaru muul moel"),
-            "ei_mainita": ("t", "tehisaru ei mainitud")}
+            "ei_pohjus": ("t", "tehisaru polnud põhjus"),
+            "ei_mainita": ("t", "tehisaru polnud põhjus")}  # ei_pohjus: ettevõte eitas (Kadri 8.11.2026)
     def _arv(r):
         return r["arv_eestis"] if r.get("arv_eestis") is not None else r.get("arv_ulem")
     teada = sorted((r for r in juhtumid if _arv(r)), key=_arv, reverse=True)
@@ -522,7 +523,7 @@ def too_eesti(A):
         f'<span class="kr-a">{"kuni " if r.get("arv_eestis") is None else ""}{_arv(r)}{"+" if r.get("arv_vahemalt") else ""}</span></div>' for r in teada)
     ribad += "".join(f'<div class="kr" data-k="{e(r["id"])}" role="listitem"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
                      f'<span class="kr-rada"><span class="kr-pole">arv pole teada</span></span><span class="kr-a"></span></div>' for r in pole)
-    legend = "".join(f'<span><i class="kr-t {k}"></i>{e(t)}</span>' for k, t in [("s", "nimetas tehisaru põhjusena"), ("m", "mainis tehisaru muul moel"), ("t", "tehisaru ei mainitud")])
+    legend = "".join(f'<span><i class="kr-t {k}"></i>{e(t)}</span>' for k, t in [("s", "nimetas tehisaru põhjusena"), ("m", "mainis tehisaru muul moel"), ("t", "tehisaru ei mainitud või eitati")])
     sec_v = f"""
 <div class="kk-vis" id="koondamised-visuaal">
   <h3 class="kk-h3" id="h-koondamised-v">Tehisaru nimetati üheks põhjuseks <b>{pohjus} töökoha</b> juures {piir}{kokku}-st</h3>
