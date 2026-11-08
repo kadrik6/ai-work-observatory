@@ -251,11 +251,11 @@ def _digi_ja_ta(A):
 </div>"""
 
 
-# ---------------------------------------------------------------- Põhjamaade võrdlus (Tehisaru 2027 meetod)
+# ---------------------------------------------------------------- Põhjamaade võrdlus (100 = Põhjamaade keskmine)
 
 RIIGID7 = ["EE", "FI", "SE", "DK", "NO", "DE", "NL"]
-POHJA4 = ["FI", "SE", "DK", "NO"]  # Tehisaru 2027 võrdlus: Põhjamaad koos Norraga (ELi skaalal on ainult 3)
-# (mõõdik analüüsi failis, seire näitaja või None, lühinimi, ühik, komakohti, väiksem on parem)
+POHJA4 = ["FI", "SE", "DK", "NO"]  # Põhjamaad koos Norraga (ELi skaalal on ainult 3)
+# (kataloogi mõõdik, seire näitaja või None, lühinimi, ühik, komakohti, väiksem on parem)
 PROFIIL = [
     ("eurostat-isoc-ai-iaiu", "inimeste-tehisaru-kasutus", "Inimesed kasutavad generatiivset tehisaru", "% 16–74-aastastest", 1, False),
     ("eurostat-isoc-ai-iaiu-too", "tooalane-tehisaru-kasutus", "Inimesed kasutavad seda tööl", "% 16–74-aastastest", 1, False),
@@ -272,16 +272,14 @@ PP_HINNANG = {"yle": "üle kõigi Põhjamaade", "vahemik": "Põhjamaade vahemiku
 PP_NIMI = {"EE": "Eesti", "FI": "Soome", "SE": "Rootsi", "DK": "Taani", "NO": "Norra", "DE": "Saksamaa", "NL": "Holland"}
 
 
-def pohjamaade_profiil(A, csv_fail=None):
-    """Üheksa näitajat seitsmes riigis. Seire andmed, kui näitaja on seires; muidu analüüsi fail (raportid/html)."""
-    import csv
-    from pathlib import Path
+def pohjamaade_profiil(A):
+    """Üheksa näitajat seitsmes riigis. Seire andmed, kui näitaja on seires; muidu kataloogi välisvaatlused
+    (kataloog/vaatlused-valis.csv), mida kataloog/lae_valis.py laeb iga päev otse Eurostati ja UNESCO UIS-i API-st."""
     from statistics import mean
-    csv_fail = csv_fail or Path(__file__).resolve().parent.parent / "raportid" / "html" / "analuus-andmed.csv"
-    S, meta = {}, {}
-    for r in csv.DictReader(open(csv_fail, encoding="utf-8")):
-        S.setdefault(r["moodik"], {}).setdefault(r["riik"], {})[int(r["aasta"])] = float(r["vaartus"])
-        meta[r["moodik"]] = (r["allikas"].replace("INT-", "").replace("EUROSTAT", "Eurostat"), r["andmestik"], r["url"])
+    S = {}
+    for r in A["valis_vaatlused"]:
+        if r["vaartus"]:
+            S.setdefault(r["moodik"], {}).setdefault(r["riik"], {})[int(r["aasta"])] = float(r["vaartus"])
     out = []
     for mid, nid, nimi, uhik, k, vp in PROFIIL:
         if nid:  # seire enda Eurostati aegrida (uueneb iga päev)
@@ -294,9 +292,11 @@ def pohjamaade_profiil(A, csv_fail=None):
                        A["moodikud"].get(next((x for x in A["moodikud"] if A["moodikud"][x]["naitaja"] == nid
                                                and A["moodikud"][x]["vorreldavus"] == "alus"), ""), {}).get("url") or m["url"])
         else:
-            s, allikas = S.get(mid, {}), meta.get(mid)
-            if not s:
-                raise AndmeViga(f"Põhjamaade võrdlus: mõõdik {mid} puudub failis {csv_fail.name}")
+            m = A["moodikud"].get(mid)
+            s = S.get(mid, {})
+            if not s or m is None:
+                raise AndmeViga(f"Põhjamaade võrdlus: mõõdik {mid} puudub kataloogis (moodikud.csv või vaatlused-valis.csv)")
+            allikas = (m["allikas"].replace("INT-", "").replace("EUROSTAT", "Eurostat"), m["andmestik"], m["url"])
         aastad = sorted({y for g in RIIGID7 for y in s.get(g, {})}, reverse=True)
         a = next((y for y in aastad if y in s.get("EE", {}) and sum(1 for g in RIIGID7[1:] if y in s.get(g, {})) >= 5), None)
         if a is None:
@@ -380,7 +380,7 @@ def _pohjamaad(A):
       ("Maas", "risk", f'Põhjamaadest maas: {e(nimed(maas))}.' if maas else "Eesti ei jää üheski näitajas Põhjamaadest maha."),
       ("Põhjamaade tasemel", "s", f'{e(nimed(tasemel)[:1].upper() + nimed(tasemel)[1:])}.' if tasemel else "Mitte üheski näitajas."),
       ("Kuidas arvutatud", "", "Arvutatud: indeks = Eesti väärtus / Põhjamaade keskmine × 100 (näitajal „ei oska“ vastupidi, sest väiksem on parem). "
-                               "Aasta on uusim, kus on olemas Eesti ja vähemalt viis teist riiki. Meetod on sama mis Tehisaru 2027 lehel."),
+                               "Aasta on uusim, kus on olemas Eesti ja vähemalt viis teist riiki."),
       ("Erinev keskmine", "", f'Siin on Põhjamaade keskmine neli riiki koos Norraga. Lehe Kasutus vahe Põhjamaadega arvutab ainult kolm ELi Põhjamaad, '
                               f'seepärast on ettevõtete vahe seal teine number (siin Eesti {pr(ettev["ee"])}% ja Põhjamaade keskmine {pr(ettev["pk"])}%, {ettev["a"]}).'),
   ])}</div>
@@ -388,7 +388,7 @@ def _pohjamaad(A):
     <summary>Näita andmetabelit ja indeksit</summary>
     <div>{tabel(["Näitaja", "Eesti", "Põhjamaade keskmine", "Indeks (100 = Põhjamaad), arvutatud", "Hinnang", "Koht"], t_read,
                 pealdis="Eesti ja Põhjamaade keskmine üheksas näitajas")}
-      <p>Kuus näitajat tulevad seire enda Eurostati andmetest ja uuenevad iga päev. IKT-spetsialistid, IKT lõpetajad ja teadlased tulevad Tehisaru 2027 analüüsi failist (Eurostat ja UNESCO UIS).</p></div>
+      <p>Kuus näitajat tulevad seire enda Eurostati andmetest ja uuenevad iga päev. IKT-spetsialistid tulevad Eurostatist ning IKT lõpetajad ja teadlased UNESCO UIS-ist. Seire laeb need iga päev otse allika API-st.</p></div>
   </details>
 </section>"""
 

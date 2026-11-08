@@ -157,6 +157,8 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
         "leiud_arvud": loe_csv(sisu / "leiud-arvud.csv"),
         "sihid": {r["id"]: r for r in loe_csv(sisu / "sihid.csv")},
         "kataloogi_vaatlused": loe_csv(juur / "kataloog" / "vaatlused-api.csv"),
+        # UNESCO UIS ja muud välisallikad; kataloog/lae_valis.py uuendab neid iga päev otse API-dest
+        "valis_vaatlused": loe_csv(juur / "kataloog" / "vaatlused-valis.csv"),
         "allikad": loe_csv(juur / "allikad" / "allikad.csv"),
         "otsused": sorted(loe_csv(juur / "kataloog" / "otsused.csv"), key=lambda r: r["kuupaev"]),
         "sundmused": loe_csv(juur / "raportid" / "sundmused.csv"),

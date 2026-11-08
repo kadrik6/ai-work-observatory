@@ -1048,7 +1048,7 @@ def test_eesti_otsused_tulevad_kogumisest(A):
         lehed_teemad.eesti_otsused({**A, "uudised": U}, vaade, None, "2026-11-09")
 
 
-def test_pohjamaade_profiil_arvutab_indeksi_nagu_tehisaru_2027(A):
+def test_pohjamaade_profiil_arvutab_indeksi_otse_kataloogist(A):
     import lehed
     P = lehed.pohjamaade_profiil(A)
     assert len(P) == 9 and sum(p["seirest"] for p in P) == 6
@@ -1058,10 +1058,30 @@ def test_pohjamaade_profiil_arvutab_indeksi_nagu_tehisaru_2027(A):
         assert abs(p["indeks"] - oodatud) < 1e-9
     oskus = next(p for p in P if p["mid"] == "eurostat-isoc-ai-iaiuxr-oskus")
     assert oskus["vp"]  # „ei oska“: väiksem on parem, indeks pööratakse
+    # Kolm näitajat tulevad kataloogist (kataloog/lae_valis.py laeb need iga päev otse API-st), mitte teise lehe failist
+    uis = next(p for p in P if p["mid"] == "uis-teadlased")
+    assert not uis["seirest"] and "UIS" in uis["allikas"][0]
+    import copy
+    B = copy.copy(A)
+    B["valis_vaatlused"] = [r for r in A["valis_vaatlused"] if r["moodik"] != "uis-teadlased"]
+    with pytest.raises(andmekiht.AndmeViga):
+        lehed.pohjamaade_profiil(B)
 
 
-def test_tehisaru_2027_sisu_on_seire_saidil(sait):
-    # Kadri 8.11.2026: Tehisaru 2027 uuringutulemused ja metoodika ühes kohas, samade reeglitega
+def test_sait_ei_loe_teiste_lehtede_faile():
+    # Kadri 8.11.2026: sait ei võta infot Kadri teistelt lehtedelt; kõik tuleb otse allikatest
+    from pathlib import Path
+    sait_kaust = Path(__file__).resolve().parent.parent / "sait"
+    for p in sait_kaust.glob("*.py"):
+        t = p.read_text(encoding="utf-8")
+        for keelatud in ("analuus-andmed.csv", "digiriik-2027", "jagatav-", "Tehisaru 2027 lehe"):
+            assert keelatud not in t, (p.name, keelatud)
+    for p in (sait_kaust / "sisu").glob("*.csv"):
+        assert "Tehisaru 2027" not in p.read_text(encoding="utf-8"), p.name
+
+
+def test_uuringutulemused_ja_metoodika_on_seire_saidil(sait):
+    # Kadri 8.11.2026: uuringutulemused ja metoodika ühes kohas, otse allikatest, samade reeglitega
     av = sait["avalik-sektor.html"]
     for i in ("etapid", "liigid", "moju", "oskused", "kupsus", "rahastus"):
         assert f'id="{i}"' in av, i
