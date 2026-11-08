@@ -17,7 +17,7 @@
   --wrap: 1240px; --panel: #ffffff; --page: #ffffff;
   color-scheme: light;
 }
-/* Kolm teemat (Kadri 5.11.2026 21:51): Hele = valge, Pehme = hele udusinine, Tume = pehme tume (#1f2023). Andmevärv kõigis sinine. */
+/* Teemad (Kadri 8.11.2026): Hele = endine Pehme (data-seire-teema="soft") ja Tume. Valge :root on ainult ilma skriptita. Andmevärv kõigis sinine. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-seire-teema]) {
   --surface: #27282c; --surface-2: #2c2d31; --surface-3: #313237; --brand-soft: #2d3142;
@@ -79,7 +79,7 @@ h3 { font-size: 18px; font-weight: 700; line-height: 1.3; }
 .teema:hover { color: var(--ink); border-color: var(--border); }
 .teema svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .teema svg { display: none; }
-.teema[data-t="light"] .paike, .teema:not([data-t]) .paike, .teema[data-t="soft"] .pool, .teema[data-t="dark"] .kuu { display: block; }
+.teema:not([data-t]) .paike, .teema[data-t="soft"] .paike, .teema[data-t="dark"] .kuu { display: block; }  /* kaks teemat (Kadri 8.11.2026) */
 .menu { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin: 6px 0 0; padding: 0; list-style: none; }
 .menu::-webkit-scrollbar { display: none; }
 .menu a, .menu span { display: inline-flex; align-items: center; height: 36px; padding: 0 12px; font-size: 15px; white-space: nowrap; color: var(--ink-2); text-decoration: none; border-bottom: 3px solid transparent; }
@@ -708,10 +708,13 @@ h3.veerg { font-size: 13.5px; }
 .u-l.arv { background: var(--surface-3); color: var(--ink-2); }
 /* Tavaline uudis on vaikne märk; sinine täide jääb aruandele ja uuringule (Kadri 7.11.2026: vähem värvi) */
 .u-l.vaikne { background: none; color: var(--ink-3); font-weight: 600; padding-left: 0; }
-.u-l.risk { background: var(--eksitav-bg); color: var(--eksitav-ink); }  /* „eksitav“: heleroosa (Kadri 8.11.2026 22:02) */
-:root { --eksitav-bg: #fce4ee; --eksitav-ink: #a3184f; }  /* kontrast 6,2:1 */
-@media (prefers-color-scheme: dark) { :root:not([data-seire-teema]) { --eksitav-bg: #4a2535; --eksitav-ink: #ffc4da; } }
-:root[data-seire-teema="dark"] { --eksitav-bg: #4a2535; --eksitav-ink: #ffc4da; }  /* kontrast 8,8:1 */
+.u-l.risk { background: var(--eksitav-bg); color: var(--eksitav-ink); box-shadow: var(--eksitav-aar); }  /* „eksitav“: heleroosa (Kadri 8.11.2026 22:02) */
+:root { --eksitav-bg: #fce4ee; --eksitav-ink: #a3184f; --eksitav-aar: none; }  /* kontrast 6,2:1 */
+/* Tume teema: variant C punakam, roosa ääris ja läbipaistev taust (Kadri 22:14); hallid sildid ja allikas heledamad (Kadri 22:12) */
+@media (prefers-color-scheme: dark) { :root:not([data-seire-teema]) { --eksitav-bg: transparent; --eksitav-ink: #ffa8b4; --eksitav-aar: inset 0 0 0 1px #e86a78; } }
+:root[data-seire-teema="dark"] { --eksitav-bg: transparent; --eksitav-ink: #ffa8b4; --eksitav-aar: inset 0 0 0 1px #e86a78; }  /* tekst 8,1:1, ääris 4,7:1 */
+:root[data-seire-teema="dark"] .u-t, :root[data-seire-teema="dark"] .u-a { color: var(--ink-2); }
+:root[data-seire-teema="dark"] .u-t { border-color: #5a5c66; }
 .u-l.suur { background: var(--signal); color: var(--on-signal); }
 /* „uus“ märk: U8 heledam oranž (Kadri lukustas 8.11.2026 21:57, varem täisoranž); tume tekst, kontrast 8,9:1 mõlemas teemas */
 .u-l.uus, .voog .t.uus { background: #f2a65e; color: #2b1a05; }

@@ -947,8 +947,10 @@ def test_eksitav_silt_on_heleroosa(sait):
     # Kadri 8.11.2026 22:02: „eksitav silt võiks olla heleroosades toonides“
     assert '<span class="u-l risk">eksitav</span>' in sait["uudised.html"]
     css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
-    assert ".u-l.risk { background: var(--eksitav-bg); color: var(--eksitav-ink); }" in css
+    assert ".u-l.risk { background: var(--eksitav-bg); color: var(--eksitav-ink); box-shadow: var(--eksitav-aar); }" in css
     assert "--eksitav-bg: #fce4ee; --eksitav-ink: #a3184f;" in css
+    # tume teema: variant C punakam (Kadri 8.11.2026 22:14)
+    assert ':root[data-seire-teema="dark"] { --eksitav-bg: transparent; --eksitav-ink: #ffa8b4; --eksitav-aar: inset 0 0 0 1px #e86a78; }' in css
 
 
 def test_tehisaru_eitamine_on_oma_roll(sait):
@@ -967,3 +969,10 @@ def test_vaiketeema_on_pehme_ka_tumedas_seadmes():
     from sait import kest
     assert "prefers-color-scheme" not in kest.TEEMA_JS
     assert "t='soft'" in kest.TEEMA_JS
+
+
+def test_kaks_teemat_hele_ja_tume():
+    # Kadri 8.11.2026 22:15: Pehme on nüüd Hele (vaikimisi) ja senine valge Hele eemaldati.
+    js = (ehita.SIIN / "sait.js").read_text(encoding="utf-8")
+    assert "var JARG = ['soft', 'dark'];" in js and "soft: 'Hele', dark: 'Tume'" in js
+    assert "'light'" not in js.split("var JARG")[1].split(";")[0]
