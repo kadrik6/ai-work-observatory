@@ -174,3 +174,15 @@ def test_uis_vaatlused_ja_uuendatud():
                   {"publicationDate": "2026-05-08", "themeDataStatus": [{"theme": "EDUCATION", "lastUpdate": "02/09/2026"}]}]
     assert valis.uis_uuendatud(versioonid, "EDUCATION") == "2026-02-09"
     assert valis.uis_uuendatud(versioonid, "CULTURE") == ""
+
+
+def test_uksiku_allika_viga_ei_kukuta_sammu():
+    import importlib.util
+    k = Path(__file__).resolve().parents[1] / "kataloog"
+    spec = importlib.util.spec_from_file_location("lae_valis", k / "lae_valis.py")
+    lae_valis = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lae_valis)
+    ok, viga = {"olek": "ok", "viga": ""}, {"olek": "viga", "viga": "HTTP 403"}
+    assert lae_valis.lopukood(["a", "b"], {"a": ok, "b": viga}) == 0
+    assert lae_valis.lopukood(["a", "b"], {"a": ok, "b": ok}) == 0
+    assert lae_valis.lopukood(["a", "b"], {"a": viga, "b": viga}) == 1

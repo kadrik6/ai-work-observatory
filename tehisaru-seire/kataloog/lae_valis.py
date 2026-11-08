@@ -278,7 +278,20 @@ def main(argv=None):
     _kirjuta(OLEK, OLEKU_VALJAD, [olek[m] for m in MOODIKUD if m in olek])
     vigu = sum(1 for m in valitud if olek[m]["olek"] == "viga")
     print(f"Valmis: {len(read)} vaatlust failis {VALJA.name}. Vigu: {vigu}.")
-    return 1 if vigu else 0
+    return lopukood(valitud, olek)
+
+
+def lopukood(valitud, olek):
+    """Üksiku allika viga on hoiatus, mitte kogu sammu viga.
+
+    Väline API (ILO, StatCan jt) on vahel maas või keelab päringu. Siis jäävad alles
+    eelmised read ja olekufail märgib vea, nii et käivitus ei pea punaseks minema.
+    Kood 1 tuleb ainult siis, kui ükski valitud allikas ei vastanud.
+    """
+    vead = [m for m in valitud if olek[m]["olek"] == "viga"]
+    for m in vead:  # GitHub Actions näitab need kokkuvõttes kollase hoiatusena
+        print(f"::warning title=Väline allikas ei vastanud::{m}: {olek[m]['viga'][:200]}")
+    return 1 if valitud and len(vead) == len(valitud) else 0
 
 
 if __name__ == "__main__":
