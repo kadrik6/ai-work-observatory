@@ -24,3 +24,15 @@ Kadri 8.11.2026: sait peab olema kolleegidele avatav link, mis ehitub GitHubist 
    (esimesel korral küsib Vercel luba GitHubi rakendusele; anna ligipääs ainult sellele repole).
 2. Framework Preset: Other. Root Directory: jäta tühjaks (repo juur). Muud seaded tulevad failist `vercel.json`.
 3. Deploy. Aadress on kujul `<projekt>.vercel.app`.
+
+## Igapäevased andmed ja Deploy Hook (8.11.2026)
+
+Vercel Hobby ehitab `main`-i git-push'ist ainult siis, kui commit'i autor on Kadri. Igapäevaste andmete
+commit'id (`seire-igapaevane`, `github-actions[bot]`) saavad Vercelis oleku „Deployment was blocked“.
+Seepärast käivitab töövoog `.github/workflows/vercel-ehita.yml` ehituse Deploy Hookiga. Ühekordne seadistus:
+
+1. Vercelis: projekt → Settings → Git → Deploy Hooks. Nimi `igapaevane`, haru `main` → Create Hook. Kopeeri URL.
+2. GitHubis: repo → Settings → Secrets and variables → Actions → New repository secret.
+   Nimi `VERCEL_DEPLOY_HOOK`, väärtus on see URL. URL-i ära kopeeri vestlusesse ega faili.
+
+Kui saladust pole, töövoog jätab ehituse vahele ja sait jääb viimase Kadri commit'i seisu.

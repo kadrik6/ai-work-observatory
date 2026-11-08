@@ -43,3 +43,10 @@ def test_kulastusloendur_ainult_vercelis():
             h = f.read_text(encoding="utf-8")
             if "<header" in h:
                 assert kest.ANALYYTIKA_JS in h, f.name
+
+
+def test_igapaevased_commitid_ehitatakse_deploy_hookiga():
+    # 8.11.2026: Vercel Hobby blokeeris seire-igapaevane commit'i 0802a39 („Deployment was blocked“)
+    w = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "vercel-ehita.yml").read_text(encoding="utf-8")
+    assert "secrets.VERCEL_DEPLOY_HOOK" in w and "workflows: [sait-andmed]" in w
+    assert "https://api.vercel.com" not in w  # hooki URL on ainult saladuses
