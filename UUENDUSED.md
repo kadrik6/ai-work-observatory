@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-08 | Seire sait: põhimenüü M2 „Üks rida, tugev“ (Kadri valik): teemad päise keskel paksult, saidi nimi vasakul, hallid jooned eemaldatud. |
 | 2026-11-08 | Vercel: igapäevaste andmete commit'id ehitatakse Deploy Hookiga (`.github/workflows/vercel-ehita.yml`), sest Hobby plaan blokeeris commit'i 0802a39, mille autor polnud Kadri. Vajab Kadri ühekordset seadistust (`sait/VEEB.md`). |
 | 2026-11-08 | Seire sait: uus alamleht Uudised › Ettekanded (usaldatud seminaride ja konverentside ettekannete kokkuvõtted avalikest salvestistest). Saidile lähevad ainult kinnitatud kirjed (`sait/ootel.py`); 9 kandidaati ootavad Kadri kinnitust. |
 | 8.11.2026 | Seire sait: teemasid on kaks. Hele on endine Pehme ja on vaikimisi, Tume jääb, valge Hele eemaldati (Kadri 22:15). Tumedas teemas on „eksitav“ punakas roosa ääris läbipaistval taustal (variant C, Kadri 22:14), hallid sildid ja allikas on heledamad. |
