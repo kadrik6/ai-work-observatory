@@ -1317,3 +1317,30 @@ html[data-t] .g12 > * { min-width: 0; max-width: 100%; }
 html[data-t] .tbl { max-width: 100%; overflow-x: auto; }
 @media (max-width: 680px) { html[data-t] .g12 { column-gap: 8px; } }
 
+/* Avalehe päise pilt B7 (Kadri 8.11.2026 23:49: „B7 with gradient 55%“): pilt pealkirja taga, mustvalge,
+   sulandub vasakult ja alt lehe taustaks; nähtavus 55%. Tekst on vasakul, kus pildil on tühi sein. */
+html[data-t] .pea-rahu.pilt { position: relative; isolation: isolate; padding-top: 56px; padding-bottom: 48px; min-height: 300px; }
+html[data-t] .pea-rahu.pilt::before {
+  content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
+              linear-gradient(0deg, var(--page) 0%, transparent 30%),
+              url("pilt/avaleht.jpg") right 62% / cover no-repeat;
+  filter: grayscale(1) brightness(1.08) contrast(.94); opacity: .55; pointer-events: none;
+}
+html[data-t] .pea-rahu.pilt h1 { max-width: 22ch; }
+html[data-t] .pea-rahu.pilt .alla { max-width: 56ch; }
+html[data-t] .pea-rahu.pilt + nav .sellel { margin-top: 24px; }
+/* Tume teema: B5 tumendatud pilt, mustvalge (Kadri 8.11.2026 23:50) */
+html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before {
+  background: linear-gradient(90deg, rgba(31,32,35,.82) 0%, rgba(31,32,35,.55) 45%, rgba(31,32,35,.25) 75%),
+              url("pilt/avaleht.jpg") right 62% / cover no-repeat;
+  filter: grayscale(1); opacity: 1;
+}
+@media (max-width: 680px) {
+  html[data-t] .pea-rahu.pilt { min-height: 0; padding-top: 168px; padding-bottom: 8px; }
+  html[data-t] .pea-rahu.pilt::before { bottom: auto; height: 150px;
+    background: linear-gradient(0deg, var(--page) 0%, transparent 35%), url("pilt/avaleht.jpg") right top / auto 150px no-repeat; }
+}
+@media (max-width: 680px) {
+  html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { background: url("pilt/avaleht.jpg") right top / auto 150px no-repeat; filter: grayscale(1) brightness(.6); }
+}

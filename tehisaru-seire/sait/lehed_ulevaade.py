@@ -432,7 +432,7 @@ def avaleht(A, vaade, vaated):
 </section>"""
 
     pea = f"""
-<div class="pea-t pea-rahu">
+<div class="pea-t pea-rahu pilt">
   <h1>{taida(vaade["h1"], A)}</h1>
   <div class="alla">
     <p class="tutvus">{TUTVUS}</p>

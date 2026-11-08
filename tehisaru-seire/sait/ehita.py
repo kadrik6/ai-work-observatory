@@ -168,6 +168,9 @@ def ehita(valjund=VALJUND, A=None):
         (valjund / vana).write_text(suunaja(uus), encoding="utf-8")
     for nimi in ("stiil.css", "sait.js"):
         shutil.copyfile(SIIN / nimi, valjund / nimi)
+    # Avalehe päise pilt (Kadri 8.11.2026, B7)
+    (valjund / "pilt").mkdir(exist_ok=True)
+    shutil.copyfile(SIIN / "pilt" / "avaleht.jpg", valjund / "pilt" / "avaleht.jpg")
     # Veebis (Vercel) on sait esialgu link, mida otsingumootorid ei indekseeri (Kadri 8.11.2026).
     # Sama keeld on ka päises X-Robots-Tag (vercel.json). Avalikuks tegemine on Kadri otsus.
     (valjund / "robots.txt").write_text(ROBOTS, encoding="utf-8")

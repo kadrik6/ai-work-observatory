@@ -60,6 +60,14 @@ def test_pilt_on_lubatud_ainult_testides(tmp_path):
     assert not kontrolli.kontrolli_faili(tmp_path, test, [])[0]
 
 
+def test_saidi_paisepilt_on_ainus_erand(tmp_path):
+    """Kadri luba 8.11.2026: ainult see üks failitee, mitte kogu kaust."""
+    luba = fail(tmp_path, "tehisaru-seire/sait/pilt/avaleht.jpg", b"\xff\xd8")
+    teine = fail(tmp_path, "tehisaru-seire/sait/pilt/teine.jpg", b"\xff\xd8")
+    assert not kontrolli.kontrolli_faili(tmp_path, luba, [])[0]
+    assert kontrolli.kontrolli_faili(tmp_path, teine, [])[0]
+
+
 def test_isiklikud_fotod_on_keelatud_ka_testikaustas_valjas(tmp_path):
     tee = fail(tmp_path, "tehisaru-seire/raportid/html/fotod/p.jpg", b"\xff\xd8")
     vead, _ = kontrolli.kontrolli_faili(tmp_path, tee, [])
