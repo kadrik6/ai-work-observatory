@@ -922,5 +922,9 @@ def test_labivaatus_8_11_parandused(sait):
             assert bool(nupp) == bool(valine and not m.group(1).startswith("tk-")), (f, m.group(1))
             if nupp:
                 assert "Allikas: " in nupp.group(1) and "https://" in nupp.group(1), (f, m.group(1))
+                # Kadri 8.11 20:18: nupp on ikoon, sõna tuleb hõljudes (data-silt), ekraanilugejale aria-label
+                b = re.search(r'<button[^>]*class="kopeeri".*?</button>', m.group(2), re.S).group(0)
+                assert "<svg" in b and 'data-silt="' in b and 'aria-label="' in b, (f, m.group(1))
+                assert re.sub(r"<[^>]+>", "", b).strip() == "", (f, m.group(1))
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
     assert "button.kopeeri" in js and "navigator.clipboard" in js and "execCommand('copy')" in js

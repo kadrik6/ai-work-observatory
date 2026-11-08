@@ -432,7 +432,7 @@
     var p = plaat.querySelector('.fakt-tekst');
     if (!p) { p = document.createElement('textarea'); p.className = 'fakt-tekst'; p.readOnly = true; p.rows = 3; plaat.appendChild(p); }
     p.value = tekst; p.focus(); p.select();
-    nupp.textContent = 'Vali ja kopeeri';
+    nupp.setAttribute('data-silt', 'Vali tekst ja kopeeri');
   }
   function vana(tekst) {
     var t = document.createElement('textarea');
@@ -444,8 +444,11 @@
     return ok;
   }
   function tehtud(nupp) {
-    nupp.textContent = 'Kopeeritud';
-    setTimeout(function () { nupp.textContent = 'Kopeeri'; }, 2000);
+    var vaike = 'Kopeeri fakt koos allikaga';
+    nupp.classList.add('ok'); nupp.setAttribute('data-silt', 'Kopeeritud'); nupp.setAttribute('aria-label', 'Kopeeritud');
+    setTimeout(function () {
+      nupp.classList.remove('ok'); nupp.setAttribute('data-silt', vaike); nupp.setAttribute('aria-label', vaike);
+    }, 2000);
   }
   document.addEventListener('click', function (ev) {
     var nupp = ev.target.closest && ev.target.closest('button.kopeeri');

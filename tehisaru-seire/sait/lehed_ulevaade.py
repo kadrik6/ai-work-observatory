@@ -149,7 +149,18 @@ def kopeeri_nupp(pid, lbl, big, per, src):
         return ""
     kes = next((v for k, v in KOOPIA_KES.items() if pid.startswith(k)), "Eesti")
     return (f'<button type="button" class="kopeeri" data-fakt="{e(fakt(lbl, big, per, src, kes))}" '
-            f'aria-label="Kopeeri fakt koos allikaga">Kopeeri</button>')
+            f'data-silt="Kopeeri fakt koos allikaga" aria-label="Kopeeri fakt koos allikaga">{KOOPIA_IKOONID}</button>')
+
+
+# Ikoon nupul, sõna ilmub hõljudes (Kadri 8.11.2026 20:18). Kaks ikooni: kopeeri ja linnuke pärast õnnestumist.
+KOOPIA_IKOONID = (
+    '<svg class="ik ik-kop" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false">'
+    '<rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/>'
+    '<path d="M10.5 3.5v-.5a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.5" '
+    'fill="none" stroke="currentColor" stroke-width="1.4"/></svg>'
+    '<svg class="ik ik-ok" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false">'
+    '<path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" '
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
 
 def _p(x):
