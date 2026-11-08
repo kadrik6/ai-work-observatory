@@ -1023,8 +1023,10 @@ th, td { padding: 6px 10px; }
 #toopakkumised .tp-kolm { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 36px; align-items: start; margin-top: 12px; }
 #toopakkumised .tp-kolm .gt { margin-bottom: 2px; }
 #toopakkumised .tp-kolm .ps { margin: 0 0 8px; }
-#toopakkumised .lihtne .rida, #toopakkumised .lihtne .telg { grid-template-columns: 11em minmax(0, 1fr) 3.6em; }
-#toopakkumised .lihtne .rida .n { white-space: normal; line-height: 1.15; }
+/* Kadri MKUS-i kommentaar 8.11.2026 21:42 „ühtlusta siin blokkide vahesid“: silt ühel real (täisnimi hõljukil),
+   nii et igal real on sama kõrgus ja kolm plokki joonduvad; arvuveerg kitsam, sildile rohkem ruumi. */
+#toopakkumised .lihtne .rida, #toopakkumised .lihtne .telg { grid-template-columns: 12.5em minmax(0, 1fr) 3.4em; }
+#toopakkumised .lihtne .rida .n { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 #toopakkumised .tp-m { display: inline-block; margin: 0 14px 6px 0; font-size: 14px; color: var(--ink-2); }
 @media (max-width: 1100px) { #toopakkumised .tp-kolm { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 760px) { #toopakkumised .tp-kolm { grid-template-columns: minmax(0, 1fr); } }

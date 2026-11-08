@@ -144,7 +144,7 @@ def lihtribad(read, lopp, samm=10, uhik="%", fookus=None, k=0):
     out = ['<div class="ribad lihtne" aria-hidden="true">']
     for i, (silt, v, tekst) in enumerate(read):
         liik = "fookus" if fookus is not None and (i == fookus or silt == fookus) else ""
-        out.append(f'<div class="rida {liik}"><span class="n">{e(silt)}</span><span class="rada">'
+        out.append(f'<div class="rida {liik}"><span class="n" title="{e(silt)}">{e(silt)}</span><span class="rada">'
                    f'<span class="tulp" style="width:{min(v, lopp) / lopp * 100:.2f}%"></span></span>'
                    f'<span class="v">{e(tekst if tekst is not None else pr(v, k) + uhik)}</span></div>')
     out.append(_telg(0, lopp, samm, uhik))
