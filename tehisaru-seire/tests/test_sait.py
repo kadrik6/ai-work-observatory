@@ -869,3 +869,12 @@ def test_eli_jarjestuses_ainult_top10_ja_koik(sait):
         for osa in re.findall(r'<div class="kogus bump-n"[^>]*>(.*?)</div>', sait[f], re.S):
             if "(27)" in osa:
                 assert re.findall(r">(Top \d+|kõik \(\d+\))<", osa) == ["Top 10", "kõik (27)"], (f, osa)
+
+
+def test_koik_teemalehed_jargivad_malli_a(sait):
+    """Kadri 8.11.2026: sama plokijärjekord igal teemalehel."""
+    for f in ("inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"):
+        h = sait[f]
+        jrk = [h.find(x) for x in ('id="andmed"', 'id="t-uuringud"', 'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
+        assert -1 not in jrk and jrk == sorted(jrk), f
+        assert len(re.findall(r'class="sakk-sisu">', h)) == 1, f
