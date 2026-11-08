@@ -495,6 +495,34 @@
    "kus": "USA",
    "valim": "ametliku ettevõtete kiiruuringu BTOS 2026. aasta tehisaru lisa, esinduslik, viide nov 2025 – jaan 2026",
    "leid": "Tehisaru kasutas 18% firmadest (töötajate arvuga kaalutult 32%). Uuring mõõdab kolme kihti: firma, äritegevuse valdkond ja töötaja ülesanne. Laiem kasutus valdkondades seostub parema äritulemusega. Tehisaruga seotud töötajate vähendamist teatas 2% firmadest."
+  },
+  {
+   "id": "wu2026",
+   "autorid": "Wu, Liu",
+   "aasta": 2026,
+   "pealkiri": "Young Employment Diverged Across Five Professional Services During the Spread of Generative AI",
+   "kanal": "Societies 16(11), 376 (MDPI)",
+   "retsenseeritud": true,
+   "url": "https://www.mdpi.com/2075-4698/16/11/376",
+   "avaldatud": "2026-11",
+   "meetod": "kirjeldav",
+   "kus": "USA, 47 osariiki ja Columbia ringkond",
+   "valim": "USA statistikaameti Quarterly Workforce Indicators 2006–2025, 22–24-aastased võrreldes 25–54-aastastega viies kutseteenuste harus",
+   "leid": "2022. aasta lõpust 2025. aasta lõpuni vähenes 22–24-aastaste hõive arvutiteenustes 27,0% ja konsultatsioonis 19,4%, kuigi kogu hõive muutus −4,2% ja +1,3%. Advokaadibüroodes ja inseneriteenustes noorte hõive kasvas. Noorte ja vanemate hõive suhte langus neis kahes harus on suurem kui ükski varasem kolmeaastane langus alates 2006. aastast. Autorid ütlevad, et analüüs ei näita, kui palju selle põhjustas tehisaru."
+  },
+  {
+   "id": "yu2026",
+   "autorid": "Yu",
+   "aasta": 2026,
+   "pealkiri": "Dull, Dirty, Dangerous? Working Conditions and the Limits of Occupational AI Exposure (arXiv 2611.06888)",
+   "kanal": "arXiv eeltrükk",
+   "retsenseeritud": false,
+   "url": "https://arxiv.org/abs/2611.06888",
+   "avaldatud": "2026-11-04",
+   "meetod": "kirjeldav",
+   "kus": "USA",
+   "valim": "754 ametit, 21 töötingimuste tunnust O*NET-ist, kaks tehisaru kokkupuute mõõdikut",
+   "leid": "Ametites, kus tehisaru kokkupuude on suurem, on keskmiselt vähem igavat, räpast ja ohtlikku tööd. Kui arvestada füüsilist koormust, haridust ja palka, seos nõrgeneb ja ühe mõõdiku järgi kaob. Tehisaru puudutab seega eeskätt ameteid, kus rasket ja ohtlikku tööd on niigi vähem."
   }
  ],
  "kiirus": [
