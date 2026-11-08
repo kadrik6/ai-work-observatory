@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-08 | Ettekanded: igapäevane otsing 8 usaldatud kanalist (`kataloog/ettekannete-kanalid.json`, `sait/lae_ettekanded.py`, töövoog `ettekanded.yml`). Repo läheb ainult kandidaatide nimekiri; kokkuvõte läheb saidile Kadri kinnitusega (`sait/ETTEKANDED.md`). |
 | 2026-11-08 | Seire sait: põhimenüü M2 „Üks rida, tugev“ (Kadri valik): teemad päise keskel paksult, saidi nimi vasakul, hallid jooned eemaldatud. |
 | 2026-11-08 | Vercel: igapäevaste andmete commit'id ehitatakse Deploy Hookiga (`.github/workflows/vercel-ehita.yml`), sest Hobby plaan blokeeris commit'i 0802a39, mille autor polnud Kadri. Vajab Kadri ühekordset seadistust (`sait/VEEB.md`). |
 | 2026-11-08 | Seire sait: uus alamleht Uudised › Ettekanded (usaldatud seminaride ja konverentside ettekannete kokkuvõtted avalikest salvestistest). Saidile lähevad ainult kinnitatud kirjed (`sait/ootel.py`); 9 kandidaati ootavad Kadri kinnitust. |
