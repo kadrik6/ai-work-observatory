@@ -1,0 +1,28 @@
+{
+  "viimane_kontroll": "2026-11-07T18:05:00+02:00",
+  "allikad": [
+    {
+      "nimi": "ERR uudised (RSS)",
+      "ok": true
+    },
+    {
+      "nimi": "ERR News (RSS)",
+      "ok": true
+    },
+    {
+      "nimi": "Uudisteotsing (Eesti)",
+      "ok": true,
+      "markus": "17.53: 'koondamine', 'tehisaru', 'Eesti Energia koondamine' (täna) tulemusi ei andnud; ERR RSS-is uut koondamislugu pole"
+    },
+    {
+      "nimi": "Uudisteotsing (maailm)",
+      "ok": true,
+      "markus": "17.53: Autodeski ~1000 koondamist (layoffs.fyi) jäi välja, sest allikat ei õnnestunud avada"
+    },
+    {
+      "nimi": "Challenger kuuaruanne",
+      "ok": true,
+      "markus": "kuuaruanne; järgmine detsembri alguses"
+    }
+  ]
+}

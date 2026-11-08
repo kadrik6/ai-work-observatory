@@ -1,6 +1,6 @@
 {
- "kirjeldus": "Eesti koondamised, kus on küsitud, kas tehisaru oli põhjus. Kogutud käsitsi uudistest, kontrollitud lingi kaudu. See ei ole täielik nimekiri. Uudistest hoitakse ainult pealkirja, linki, kuupäeva ja oma sõnadega lühikest põhjust, mitte artikli teksti. Väli arv_ulem on Eesti arvu ülempiir, kui teatati vahemik.",
- "kontrollitud": "2026-11-05",
+ "kirjeldus": "Eesti koondamised, kus on küsitud, kas tehisaru oli põhjus. Kogutud käsitsi uudistest, kontrollitud lingi kaudu. See ei ole täielik nimekiri. Uudistest hoitakse ainult pealkirja, linki, kuupäeva ja oma sõnadega lühikest põhjust, mitte artikli teksti. Väli arv_ulem on Eesti arvu ülempiir, kui teatati vahemik. Väli arv_vahemalt = teatatud arv on alampiir (lõplik arv pole veel teada).",
+ "kontrollitud": "2026-11-06",
  "rollid": {
   "otsene": "Ettevõte ütleb, et tehisaru teeb tööd inimeste asemel.",
   "osaline": "Ettevõte nimetab tehisaru ühe põhjusena koos teistega, näiteks kulude vähendamise või automatiseerimisega.",
@@ -14,11 +14,12 @@
    "kuupaev": "2026-11-05",
    "ettevote": "Eesti Energia",
    "sektor": "energeetika",
-   "arv_eestis": null,
-   "arv_tekst": "umbes 10% ametikohtadest; Enefit Industrys, Enefit Poweris ja Eesti Energia AS-is kokku 390, lisaks Enefit OÜ ja Elektrilevi; Ida-Virumaal umbes 300; lõplikud arvud 23.11",
+   "arv_eestis": 390,
+   "arv_vahemalt": true,
+   "arv_tekst": "umbes 10% ametikohtadest; Enefit Industry, Enefit Power ja Eesti Energia AS kokku 390, lisaks Enefit OÜ ja Elektrilevi; lõplikud arvud 23.11",
    "roll": "ei_mainita",
-   "kes_utles": "juht Andrus Durejko pressikonverentsil",
-   "pohjus": "Ebakindel energiaturg ja langevad hinnaprognoosid, uute tootmisvõimsuste tõttu kasvanud püsikulud; eesmärk vähendada püsikulusid 10%. Puudutab tugistruktuure (IT, remont, transport, turundus), mitte operaatoreid. Tehisaru ei mainita.",
+   "kes_utles": "ettevõtte juhatus pressikonverentsil",
+   "pohjus": "Ebakindel energiaturg ja langevad hinnaprognoosid, püsikulud kasvasid uute tootmisvõimsuste tõttu. Puudutab tugivaldkondi (IT, remont, transport, turundus), mitte operaatoreid. Tehisaru ei mainita.",
    "pealkiri": "Eesti Energia plaanib koondada 10 protsenti ametikohtadest",
    "url": "https://www.err.ee/1610186842/eesti-energia-plaanib-koondada-10-protsenti-ametikohtadest",
    "allikas": "ERR"
@@ -31,8 +32,8 @@
    "arv_eestis": 3,
    "arv_tekst": "3 töötajat",
    "roll": "ei_mainita",
-   "kes_utles": "ERR",
-   "pohjus": "Sisepinged ja juhtimise muutmine.",
+   "kes_utles": "uudis",
+   "pohjus": "Sisepinged ja juhtimise muutmine. Tehisaru ei mainita.",
    "pealkiri": "Sisepingetes EKKM muudab juhtimist ja koondab kolm töötajat",
    "url": "https://www.err.ee/1610183455/sisepingetes-ekkm-muudab-juhtimist-ja-koondab-kolm-tootajat",
    "allikas": "ERR"
