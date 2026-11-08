@@ -22,6 +22,13 @@ def _v(nimi):
 
 # Teema valitakse lehe sees enne joonistamist, mitte ainult sait.js-is (Kadri 6.11.2026: alamlehel tuli Hele,
 # sest brauser võttis vahemälust vana sait.js). Vaikimisi Pehme; süsteemi tumeda korral Tume; salvestatud valik ees.
+# Verceli külastusloendur (Kadri 8.11.2026 21:51 „jah, lisa“). Laaditakse ainult Verceli aadressil, mitte Claude'i
+# artefaktis ega kohalikus failis. Vercel Web Analytics ei kasuta küpsiseid; analüütika tuleb Vercelis sisse lülitada.
+VERCEL_HOSTID = (".vercel.app",)
+ANALYYTIKA_JS = ("<script>(function(){var h=location.hostname,ok=" + "||".join(f"h.slice(-{len(x)})==='{x}'" for x in VERCEL_HOSTID)
+                 + ";if(!ok)return;window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};"
+                 "var s=document.createElement('script');s.defer=true;s.src='/_vercel/insights/script.js';"
+                 "document.head.appendChild(s)})()</script>")
 TEEMA_JS = ("<script>(function(){var t=null;try{t=localStorage.getItem('seire-teema-2')}catch(e){}"
             "if(['light','soft','dark'].indexOf(t)<0)t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?null:'soft';"
             "if(t)document.documentElement.setAttribute('data-seire-teema',t)})()</script>")
@@ -148,6 +155,7 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
 {TEEMA_JS}
 <link rel="stylesheet" href="stiil.css?v={_v("stiil.css")}">
 <script src="sait.js?v={_v("sait.js")}"></script>
+{ANALYYTIKA_JS}
 </head>
 <body>
 <a class="skip" href="#sisu">Mine sisu juurde</a>

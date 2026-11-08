@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 8.11.2026 | Seire sait: Verceli külastusloendur (Web Analytics, küpsisteta) laaditakse ainult *.vercel.app aadressil (Kadri 21:51 „jah, lisa“). Analüütika tuleb Verceli projektis sisse lülitada. |
 | 8.11.2026 | Seire sait: tööportaalide kolmes plokis on sildid ühel real (täisnimi hõljukil), nii et ridade vahed on ühtlased (Kadri MKUS-i kommentaar 21:42). |
 | 8.11.2026 | Seire sait: kuulutuste ja hangete filtri all näitavad rühmanupud ja maakonnad kogusummasid praeguste teiste valikute järgi ning loendur „N kuulutust M-st“; „Näita 12/24/48“ rida peidetakse filtri ajal päriselt (Kadri 21:45). |
 | 8.11.2026 | Seire sait: kinnituskord (Kadri otsus 21:36 „Ootavad kinnitust“). Igapäevase töö uuringu- ja väitemustandid lähevad saidile alles pärast Kadri „jah“-i (`sait/ootel.py`, väli `seire_olek`); kinnitatud uuringud lähevad uuringute kokku. OECD valvur (`sait/oecd_valvur.py`, sait-andmed.yml) otsib Crossrefist uut Eesti OECD väljaannet. „Mis uueneb ise“ tabel näitab uut korda. EKKM-i koondamine jäetakse saidilt välja (Kadri 21:41: pole piisavalt asjakohane). |

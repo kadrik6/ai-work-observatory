@@ -29,3 +29,17 @@ def test_robots_keelab_koik(tmp_path):
     # väljundis on ainult saidi failid: html, stiil, skript ja robots.txt
     lubatud = re.compile(r".+\.html$|^stiil\.css$|^sait\.js$|^robots\.txt$")
     assert all(lubatud.match(p.name) for p in tmp_path.iterdir()), sorted(p.name for p in tmp_path.iterdir())
+
+
+def test_kulastusloendur_ainult_vercelis():
+    """Verceli Web Analytics (Kadri 8.11.2026): skript laaditakse ainult *.vercel.app aadressil."""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "sait"))
+    import kest
+    assert "/_vercel/insights/script.js" in kest.ANALYYTIKA_JS
+    assert "h.slice(-11)==='.vercel.app'" in kest.ANALYYTIKA_JS and "if(!ok)return" in kest.ANALYYTIKA_JS
+    d = Path(__file__).resolve().parents[1] / "valjund" / "sait"
+    if d.exists():
+        for f in d.glob("*.html"):
+            h = f.read_text(encoding="utf-8")
+            if "<header" in h:
+                assert kest.ANALYYTIKA_JS in h, f.name
