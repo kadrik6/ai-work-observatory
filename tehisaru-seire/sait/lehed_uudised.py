@@ -19,7 +19,9 @@ OECD_URL = "https://doi.org/10.1787/c2c09a06-en"
 LIIK = {"uudis": ("uudis", "vaikne"), "aruanne": ("aruanne", ""), "uuring": ("uuring", ""),
         "arvamus": ("arvamus", "arv"), "eksitav": ("eksitav", "risk")}
 TEEMA = {"koondamine": "koondamine", "ai_too": "tehisaru ja töö", "ai_uldine": "tehisaru", "andmed": "andmed",
-         "uuring": "uuring", "eksitav": "eksitav"}
+         "uuring": "uuring", "eksitav": "eksitav", "riik": "riigi otsused ja tähtajad"}
+# Teema „riik“ (TOOELU kogumine alates 9.11.2026): riigi otsused, eelnõud, hanked, tähtajad, üritused ja aruanded
+RIIGI_LIIK = {"otsus": "otsus", "eelnõu": "eelnõu", "hange": "hange", "tähtaeg": "tähtaeg", "üritus": "üritus", "aruanne": "aruanne"}
 ROLL = {"otsene": "tehisaru otsene põhjus", "osaline": "tehisaru üks põhjus", "kaudne": "tehisaru kaudselt",
         "tulevikus": "tehisaru võib tulevikus",
         "ei_pohjus": "tehisaru pole põhjus", "ei_mainita": "tehisaru ei mainita", "statistika": "statistika"}
@@ -64,6 +66,13 @@ def _uudis(r):
     jatk = bool(r.get("_jatk") or eesliide.match(arv_t) or eesliide.match(pohjus))
     arv_t, pohjus = eesliide.sub("", arv_t), eesliide.sub("", pohjus)
     arv_t, pohjus = arv_t[:1].upper() + arv_t[1:], pohjus[:1].upper() + pohjus[1:]
+    if r.get("teema") == "riik":
+        if r.get("riigi_liik") and r["riigi_liik"] not in RIIGI_LIIK:
+            raise AndmeViga(f"uudised.jsonl: tundmatu riigi_liik {r.get('riigi_liik')!r} ({r.get('pealkiri', '')[:40]})")
+        if r.get("riigi_liik"):
+            sildid.append(f'<span class="u-t">{e(RIIGI_LIIK[r["riigi_liik"]])}</span>')
+        if r.get("tahtaeg"):
+            sildid.append(f'<span class="u-t s">tähtaeg {e(kp(r["tahtaeg"]))}</span>')
     if jatk:
         sildid.append('<span class="u-t">jätkulugu</span>')
     if r.get("_uus"):

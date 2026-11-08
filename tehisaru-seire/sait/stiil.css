@@ -1192,6 +1192,40 @@ th, td { padding: 6px 10px; }
 .u-voog .ek-m { margin: 4px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-2); }
 .u-voog .ek-m li { display: list-item; padding: 1px 0; border: 0; font-size: 13.5px; }
 
+/* OECD lisatulemused: pikemad sildid (Tehisaru 2027 sisu, 8.11.2026) */
+@media (min-width: 681px) {
+  #liigid .lihtne .rida, #liigid .lihtne .telg, #oskused .lihtne .rida, #oskused .lihtne .telg,
+  #lehter .lihtne .rida, #lehter .lihtne .telg { grid-template-columns: 15.5em minmax(0, 1fr) 4.6em; }
+}
+/* Põhjamaade võrdlus: 9 näitajat, iga rida oma skaalal (Tehisaru 2027 meetod, Kadri 8.11.2026) */
+.pp { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.pp-rida { display: grid; grid-template-columns: 17em minmax(0, 1fr) 7.2em; gap: 14px; align-items: center; font-size: 15px; }
+.pp-rida .n small { display: block; font-size: 13.6px; color: var(--ink-3); }
+.pp-rada { position: relative; height: 26px; border-top: 1px solid var(--context); margin-top: 13px; }
+.pp-ala { position: absolute; top: -7px; height: 14px; background: var(--context); opacity: .7; border-radius: 2px; }
+.pp-p { position: absolute; top: -4px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--mark-ctx); }
+.pp-el { position: absolute; top: -9px; height: 18px; margin-left: -1px; border-left: 2px solid var(--context-strong); }
+.pp-ee { position: absolute; top: -8px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: var(--mark-signal); }
+.pp-rida .v { white-space: nowrap; color: var(--ink-2); text-align: right; }
+.pp-rida .v b { color: var(--signal); }
+.pp-leg { display: inline-block; vertical-align: middle; margin: 0 2px; }
+.pp-leg.ala { width: 18px; height: 10px; background: var(--context); }
+.pp-leg.el { width: 0; height: 12px; border-left: 2px solid var(--context-strong); }
+.pp-leg.ee { width: 10px; height: 10px; border-radius: 50%; background: var(--mark-signal); }
+@media (max-width: 680px) {
+  .pp-rida { grid-template-columns: minmax(0, 1fr) 5.6em; }
+  .pp-rida .n { grid-column: 1 / -1; }
+}
+/* Nummerdatud järeldused (Arenguseire) */
+ol.sammud { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 14px; }
+ol.sammud li { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 12px; }
+ol.sammud .nr { font: 700 18px/1.4 "Space Grotesk", sans-serif; color: var(--ink-3); }
+ol.sammud h3 { margin: 0 0 2px; font-size: 18px; }
+ol.sammud p { margin: 0; max-width: 72ch; }
+.teemad.ei-naita li { border-top: 1px solid var(--context); }
+.teemad.ei-naita h3 { font-size: 16px; margin: 0; }
+.teemad.ei-naita p { margin: 0; font-size: 15px; }
+
 /* Põhimenüü M2 „Üks rida, tugev“ (Kadri 8.11.2026 22:50 „kasuta M2 riba“; labor kirjeldused/stiilid/taustalabor/menuu_labor.py):
    saidi nimi vasakul, teemad päise keskel paksult, ilma halli püst- ja alumise jooneta (22:45 ja 22:49). */
 @media (min-width: 681px) {

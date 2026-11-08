@@ -54,7 +54,7 @@
       "olek": "valmis",
       "kusimus": "Kui suur osa ettevõtetest kasutab tehisaru ja kus on Eesti ELi skaalal?",
       "h1": "{ettevotete-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{ettevotete-tehisaru-kasutus|EE|uusim|p0}% Eesti ettevõtetest**; ELi võrdluses ({ettevotete-tehisaru-kasutus|EE|uusim:alus|a}) oli Eesti keskmisest ees, Soomest, Rootsist ja Taanist taga.",
-      "osad": "Kaks alamlehte: Kasutus ja Eesti siht 75%; Tootlikkus ja võimekus (tootlikkus, digiintensiivsus, T&A kulu, ELi sihid)",
+      "osad": "Kaks alamlehte: Kasutus ja Eesti siht 75%; Tootlikkus ja võimekus (tootlikkus, digiintensiivsus, T&A kulu, ELi sihid, Arenguseire järeldused, Põhjamaade võrdlus 9 näitajas)",
       "alamlehed": [
         {
           "fail": "ettevotted.html",
@@ -70,7 +70,9 @@
           "h1": "Tehisaru kasutus oli seotud suurema tootlikkusega ainult koos töökorralduse muutusega; Eesti VKEde digiintensiivsus on **veidi alla ELi keskmise**.",
           "jaotised": [
             "tootlikkus",
-            "voimekus"
+            "voimekus",
+            "arenguseire",
+            "pohjamaad"
           ]
         }
       ]
@@ -158,7 +160,23 @@
       "olek": "valmis",
       "kusimus": "Millal ELi tehisaru määruse osad kehtima hakkavad?",
       "h1": "ELi tehisaru määrus kehtib üldiselt alates 2.08.2026, värbamise ja hariduse kõrge riskiga reeglid alates **2.12.2027**.",
-      "osad": "Tehisaru määruse tähtajad. Sihid on oma teema juures (Inimesed › Oskused, Ettevõtted, Hanked)."
+      "osad": "Kaks alamlehte: ELi tehisaru määruse tähtajad; Eesti otsused ja tähtajad igapäevasest uudistekogumisest. Sihid on oma teema juures (Inimesed › Oskused, Ettevõtted, Hanked).",
+      "alamlehed": [
+        {
+          "fail": "tehisaru-maarus.html",
+          "nimi": "ELi tähtajad",
+          "jaotised": [
+            "tahtajad"
+          ]
+        },
+        {
+          "fail": "eesti-otsused.html",
+          "nimi": "Eesti otsused ja tähtajad",
+          "jaotised": [
+            "eesti"
+          ]
+        }
+      ]
     },
     {
       "id": "uudised",
@@ -172,8 +190,23 @@
       "h1": "Tehisaru ja töö uudised Eestist ja maailmast: uudis, uuring ja **arvamus on eraldi märgitud**.",
       "osad": "Uudised Eestist ja maailmast koos allikatega; väidete kontroll on menüüs Usaldus.",
       "alamlehed": [
-        {"fail": "uudised.html", "nimi": "Uudised", "jaotised": ["uudised", "allikad"]},
-        {"fail": "ettekanded.html", "nimi": "Ettekanded", "h1": "Usaldatud seminaride ja konverentside ettekanded", "lead": "Kokkuvõte on meie sõnadega, iga ettekanne on avalik salvestis. Esineja kogemus ja arvamus ei ole mõõtmistulemus.", "jaotised": ["ettekanded"]}
+        {
+          "fail": "uudised.html",
+          "nimi": "Uudised",
+          "jaotised": [
+            "uudised",
+            "allikad"
+          ]
+        },
+        {
+          "fail": "ettekanded.html",
+          "nimi": "Ettekanded",
+          "h1": "Usaldatud seminaride ja konverentside ettekanded",
+          "lead": "Kokkuvõte on meie sõnadega, iga ettekanne on avalik salvestis. Esineja kogemus ja arvamus ei ole mõõtmistulemus.",
+          "jaotised": [
+            "ettekanded"
+          ]
+        }
       ]
     },
     {

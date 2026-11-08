@@ -289,6 +289,72 @@ KLASSI_SELGITUS = [
 ]
 
 
+# Tehisaru 2027 lehe metoodika (Kadri 8.11.2026: kõik ühes kohas, samad meetodid). Ainult avalikud allikad.
+DYAK_URL = "https://valitsus.ee/sites/default/files/documents/2026-06/DYAK%202035%20arengukava.pdf"
+PROG_URL = "https://www.justdigi.ee/sites/default/files/documents/2026-06/Digi%C3%BChiskonna%20programm%202027-2030%20eeln%C3%B5u.pdf"
+ARS_URL = "https://arenguseire.ee/raportid/tehnoloogilise-arenguga-seotud-trendid-eesti-ettevotluses/"
+MOISTED = [
+    ("Inimeste tehisaru kasutus", "Eurostat, Statistikaamet", "Generatiivse tehisaru tööriistade kasutamine, 16–74-aastased.", "inimesed"),
+    ("Ettevõtete tehisaru kasutus", "Eurostat, Statistikaamet", "Ettevõte kasutab vähemalt üht tehisaru tehnoloogiat. Vähemalt 10 hõivatuga ettevõtted, finantssektorita.", "ettevotted"),
+    ("Digioskused", "Eurostat", "Inimese vähemalt baastasemel digioskused. Arvutatakse tegevuste põhjal, mida inimene on teinud, mitte testiga.", "inimesed"),
+    ("Digiintensiivsus", "Eurostat, Arenguseire Keskus", "Kui paljusid digitehnoloogiaid ettevõte kasutab (12 tunnusest). Seire näitab vähemalt baastaset; Arenguseire raport kasutab kõrget ja väga kõrget taset.", "ettevotted"),
+    ("OECD vastajad", "OECD", "Vabatahtlikult vastanud avaliku sektori juhid ja töötajad, mitte kõik töötajad. Kas nad esindavad kõiki, aruanne ei hinda.", "avalik-sektor"),
+]
+EI_NAITA = [
+    ("Kasutus ei ole sama mis kasu", f'Eurostat ja Statistikaamet küsivad, kas inimene või ettevõte kasutab tehisaru. Kas see tõstab tootlikkust, need andmed ei ütle. '
+                                      f'<a href="{ARS_URL}">Arenguseire Keskus</a> leidis seose alles koos töökorralduse muutusega.'),
+    ("Uuendus ei ole sama mis kogu töö", "OECD 28% loeb innovaatorite uuendusi, mitte kõiki töötajaid ega asutusi. Küsimus esitati ainult neile, kes olid viimase kahe aasta jooksul midagi uuendanud."),
+    ("Mõõdik ei ole sama mis avaldatud arvutus", f'Avaliku sektori tehisaru kasutust mõõdab <a href="{DYAK_URL}">arengukava</a> mõõdik 7 (50,8% aastal 2024), '
+                                                 "aga selle arvutuskäik pole avaldatud. Statistikaamet ja Eurostat sellist näitajat ei avalda."),
+    ("Puuduv number ei ole null", "Tehisaru investeeringute kohta avalikku allikat ei leitud. Kui number puudub, ei tähenda see, et kulu või mõju oleks null."),
+    ("Tegevused ei ole oskuste test", "Digioskuste näitaja liidab tegevused, mida inimene on teinud. Inimese oskusi ei testita."),
+    ("Kõik 16–74-aastased ei ole töötajad", "Tööalase kasutuse osakaal on arvutatud kõigist 16–74-aastastest, ka töötutest ja õpilastest."),
+    ("Riiklik 2026 ei ole Eurostat 2025", "Riiklikud 2026. aasta numbrid ei ole Eurostati omadega täielikult võrreldavad, näiteks Eesti kasutab uut tegevusalade klassifikaatorit."),
+]
+
+
+def _metoodika(A, vaated):
+    from abi import link
+    gk = A["avalik"]["genai-kesk"]
+    m_read = [[f'<b>{e(n)}</b><small>{e(k)}</small>', e(t), link(vaated, v, next((x["menuu"] for x in vaated or [] if x["id"] == v), v) or v)]
+              for n, k, t, v in MOISTED]
+    a_read = [
+        ["<b>50,8%</b><small>2024, küsitlus 2025</small>", "Asutused ja omavalitsused, kes on kasutanud vähemalt üht tehisaru tehnoloogiat",
+         f'<a href="{DYAK_URL}">Digiühiskonna arengukava 2035</a>, mõõdik 7 (Justiits- ja Digiministeeriumi uuring)',
+         "Lähtetase. Arvutuskäik (küsimus, nimetaja, kas omavalitsused on sees) on avaldamata."],
+        ["<b>55%, 75%, 90%</b><small>2027, 2030, 2035</small>", "Sama mõõdiku sihid: asutuste ja omavalitsuste osakaal",
+         f'<a href="{PROG_URL}">Digiühiskonna programm 2027–2030</a> (eelnõu, tabel 3); arengukava',
+         "Siht. Vahesiht 55% kehtib juba 2027. aastal."],
+        [f'<b>{gk["vaartus"]}%</b><small>2026; omavalitsustes {A["avalik"]["genai-kov"]["vaartus"]}%</small>',
+         f'Innovaatorite uuendused: keskvalitsuse innovaatoritest {gk["lugeja"]} {gk["nimetaja"]}-st kasutas uuenduses generatiivset tehisaru',
+         '<a href="https://doi.org/10.1787/c2c09a06-en">OECD 2026</a>, joonis 7.2',
+         "Ainult taust. Küsiti ainult neilt, kes olid 24 kuu jooksul midagi uuendanud; kõigi töötajate kasutust ei näita."],
+    ]
+    ei = "".join(f'<li><h3>{e(p)}</h3><p>{t}</p></li>' for p, t in EI_NAITA)
+    return f"""
+<section class="jaotis" id="moisted" aria-labelledby="h-moisted">
+  <header>
+    <h2 id="h-moisted">Viis mõistet kõlavad sarnaselt, aga <b>mõõdavad eri asju</b></h2>
+    <p class="alam">Kui kaks numbrit kasutavad eri mõistet, ei panda neid samale teljele.</p>
+  </header>
+  {tabel(["Mõiste", "Mida see tähendab", "Kus saidil"], m_read, numbrid=[], piir=True, pealdis="Sarnased mõisted")}
+</section>
+<section class="jaotis" id="avaliku-numbrid" aria-labelledby="h-avaliku-numbrid">
+  <header>
+    <h2 id="h-avaliku-numbrid">Avaliku sektori tehisaru numbrid <b>ei ole omavahel võrreldavad</b>: üks loeb asutusi, teine innovaatorite uuendusi</h2>
+    <p class="alam">„Kasutamine“ on eri allikates määratletud eri moodi. Siht on oma mõõdiku kõrval, mitte teise allika numbri kõrval.</p>
+  </header>
+  {tabel(["Number", "Mida see loeb", "Allikas", "Kuidas kasutada"], a_read, numbrid=[], piir=True, pealdis="Mida iga avaliku sektori tehisaru number mõõdab")}
+  {allikarida([("Digiühiskonna arengukava 2035", DYAK_URL, "valitsus kinnitas 7.05.2026"), ("Digiühiskonna programm 2027–2030 eelnõu", PROG_URL, "2026")])}
+</section>
+<section class="jaotis" id="numbrid-ei-naita" aria-labelledby="h-numbrid-ei-naita">
+  <header>
+    <h2 id="h-numbrid-ei-naita">Seitse asja, mida numbrid <b>ei näita</b></h2>
+  </header>
+  <ul class="teemad ei-naita">{ei}</ul>
+</section>"""
+
+
 def kuidas(A, vaade, vaated=None):
     Al = A["allikad"]
     kontrolli(vaade, f"{len(Al)} allikast")
@@ -369,8 +435,10 @@ def kuidas(A, vaade, vaated=None):
     lead = ""
     sec_uu = _uuenemine(A)
     lingid = [("uuendused", "Mis uueneb ise")] if sec_uu else []
-    return (pea(A, vaade, lead, lingid + [("allikad", "Allikad"), ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], [], aside=aside)
-            + sec_uu + sec_a + sec_m + sec_v + sec_u)
+    sec_mt = _metoodika(A, vaated)
+    return (pea(A, vaade, lead, lingid + [("moisted", "Mõisted"), ("numbrid-ei-naita", "Mida ei näita"), ("allikad", "Allikad"),
+                                          ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], [], aside=aside)
+            + sec_uu + sec_mt + sec_a + sec_m + sec_v + sec_u)
 
 
 def _ootab(n):

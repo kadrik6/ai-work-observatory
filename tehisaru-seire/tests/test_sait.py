@@ -1017,3 +1017,57 @@ def test_pohimenuu_on_m2_keskel_ilma_joonteta():
     m2 = css.split("Põhimenüü M2")[1]
     assert "justify-content: center" in m2 and "font-weight: 600" in m2
     assert ".top { border-bottom-color: transparent; }" in m2 and "border-left" not in m2
+
+
+def _vaade(vid):
+    import copy
+    return copy.deepcopy(next(v for v in json.loads((ehita.SIIN / "vaated.json").read_text(encoding="utf-8"))["vaated"] if v["id"] == vid))
+
+
+def test_eesti_otsused_tulevad_kogumisest(A):
+    # Kadri 8.11.2026 23:02: riigi otsused ja tähtajad leiab kogumine ise (teema „riik“), käsitsi neid ei kanta
+    from andmekiht import AndmeViga
+    vaade = _vaade("reeglid")
+    assert [s["fail"] for s in vaade["alamlehed"]] == ["tehisaru-maarus.html", "eesti-otsused.html"]
+    alam = lambda: next(s for s in vaade["alamlehed"] if s["fail"] == "eesti-otsused.html")  # noqa: E731
+    h = lehed_teemad.eesti_otsused({**A, "uudised": []}, vaade, None, "2026-11-09")
+    assert "pole kogumine veel leidnud" in h and "igapäevasest uudistekogumisest" in alam()["h1"]
+    U = [{"kuupaev": "2026-11-09", "piirkond": "EE", "teema": "riik", "riigi_liik": "hange", "tahtaeg": "2026-11-12",
+          "pealkiri": "Gigatehaste ühishange", "url": "https://www.justdigi.ee/x", "allikas": "justdigi.ee", "liik": "uudis",
+          "pohjus": "Pakkumused 12.11.", "kontrollitud": True},
+         {"kuupaev": "2026-11-09", "piirkond": "EE", "teema": "riik", "riigi_liik": "otsus", "pealkiri": "Valitsuse otsus",
+          "url": "https://valitsus.ee/y", "allikas": "valitsus.ee", "liik": "uudis", "pohjus": "", "kontrollitud": True},
+         {"kuupaev": "2026-11-08", "piirkond": "EE", "teema": "ai_too", "pealkiri": "Muu uudis", "url": "https://err.ee/z",
+          "allikas": "ERR", "liik": "uudis", "pohjus": ""}]
+    h = lehed_teemad.eesti_otsused({**A, "uudised": U}, vaade, None, "2026-11-09")
+    assert "Gigatehaste ühishange" in h and "Valitsuse otsus" in h and "Muu uudis" not in h
+    assert "tähtaeg 12.11.2026" in h and "Ees olevad tähtajad (1)" in h
+    assert "järgmine tähtaeg on 12.11.2026" in alam()["h1"] and "2 Eesti riigi" in alam()["h1"]
+    U[0]["riigi_liik"] = "tundmatu"
+    with pytest.raises(AndmeViga):
+        lehed_teemad.eesti_otsused({**A, "uudised": U}, vaade, None, "2026-11-09")
+
+
+def test_pohjamaade_profiil_arvutab_indeksi_nagu_tehisaru_2027(A):
+    import lehed
+    P = lehed.pohjamaade_profiil(A)
+    assert len(P) == 9 and sum(p["seirest"] for p in P) == 6
+    for p in P:
+        assert p["n_po"] >= 3 and p["n"] >= 6  # Eesti ja vähemalt viis teist riiki
+        oodatud = (p["pk"] / p["ee"] if p["vp"] else p["ee"] / p["pk"]) * 100
+        assert abs(p["indeks"] - oodatud) < 1e-9
+    oskus = next(p for p in P if p["mid"] == "eurostat-isoc-ai-iaiuxr-oskus")
+    assert oskus["vp"]  # „ei oska“: väiksem on parem, indeks pööratakse
+
+
+def test_tehisaru_2027_sisu_on_seire_saidil(sait):
+    # Kadri 8.11.2026: Tehisaru 2027 uuringutulemused ja metoodika ühes kohas, samade reeglitega
+    av = sait["avalik-sektor.html"]
+    for i in ("etapid", "liigid", "moju", "oskused", "kupsus", "rahastus"):
+        assert f'id="{i}"' in av, i
+    assert "22 punkti vähem" in tekst(av) and "83% uuendusrahast tuli ELilt" in tekst(av)
+    ev = sait["ettevotted-voimekus.html"]
+    assert 'id="arenguseire"' in ev and 'id="pohjamaad"' in ev and "Arvutatud: indeks" in ev
+    kl = sait["kuidas-lugeda.html"]
+    assert 'id="moisted"' in kl and 'id="numbrid-ei-naita"' in kl and "Seitse asja" in kl
+    assert "eesti-otsused.html" in sait and 'href="eesti-otsused.html"' in sait["tehisaru-maarus.html"]

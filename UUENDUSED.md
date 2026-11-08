@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-08 | Seire sait: Tehisaru 2027 sisu ühte kohta (Kadri 8.11). Avalik sektor: OECD lisatulemused (uuenduse liik, mõjuskoor, etapid, hindamismeetodid, soovitud oskused, juhtimise küpsus, usaldus, rahastus; `sait/sisu/avalik-sektor.csv` +37 rida). Ettevõtted › Tootlikkus ja võimekus: Arenguseire kolm järeldust ja risk (`sait/sisu/leiud.csv`) ning Põhjamaade võrdlus 9 näitajas (Tehisaru 2027 meetod; 6 näitajat seire andmetest, 3 failist `raportid/html/analuus-andmed.csv`). Tehisaru määrus: uus alamleht `eesti-otsused.html`, kirjed ainult uudistekogumise teemast „riik“ (käsitsi ei kanta). Kuidas lugeda: mõisted, avaliku sektori numbrite tabel ja „Mida numbrid ei näita“. |
 | 2026-11-08 | Ettekanded: igapäevane otsing 8 usaldatud kanalist (`kataloog/ettekannete-kanalid.json`, `sait/lae_ettekanded.py`, töövoog `ettekanded.yml`). Repo läheb ainult kandidaatide nimekiri; kokkuvõte läheb saidile Kadri kinnitusega (`sait/ETTEKANDED.md`). |
 | 2026-11-08 | Seire sait: põhimenüü M2 „Üks rida, tugev“ (Kadri valik): teemad päise keskel paksult, saidi nimi vasakul, hallid jooned eemaldatud. |
 | 2026-11-08 | Vercel: igapäevaste andmete commit'id ehitatakse Deploy Hookiga (`.github/workflows/vercel-ehita.yml`), sest Hobby plaan blokeeris commit'i 0802a39, mille autor polnud Kadri. Vajab Kadri ühekordset seadistust (`sait/VEEB.md`). |
