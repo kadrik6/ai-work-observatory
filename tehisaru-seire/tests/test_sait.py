@@ -1009,3 +1009,11 @@ def test_ettekanded_ainult_kinnitatud():
     d = {"allikad": [], "ettekanded": [{"id": "a", "seire_olek": "kinnitatud", "liik": "ettekanne"}, {"id": "b"}, {"id": "c", "seire_olek": "tagasi"}]}
     v = kinnitatud_ettekanded(d)
     assert [r["id"] for r in v["ettekanded"]] == ["a"] and "liik" not in v["ettekanded"][0]
+
+
+def test_pohimenuu_on_m2_keskel_ilma_joonteta():
+    # Kadri 8.11.2026 22:50 „kasuta M2 riba“: teemad päise keskel paksult, hallid jooned läbipaistvad
+    css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
+    m2 = css.split("Põhimenüü M2")[1]
+    assert "justify-content: center" in m2 and "font-weight: 600" in m2
+    assert ".top { border-bottom-color: transparent; }" in m2 and "border-left" not in m2

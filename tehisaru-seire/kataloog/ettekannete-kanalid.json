@@ -1,0 +1,13 @@
+{
+  "kirjeldus": "Usaldatud ürituste ja asutuste avalikud videokanalid ettekannete igapäevaseks otsinguks (Kadri valik 8.11.2026: „jah 1-4, 6-8“). sait/lae_ettekanded.py loeb seda faili.",
+  "kanalid": [
+    {"id": "ut-dss", "nimi": "Tartu Ülikooli andmeteaduse seminar", "riik": "EE", "leht": "https://cs.ut.ee/en/content/data-science-seminars", "miks": "TÜ arvutiteaduse instituudi seminarisari; salvestised avalikud YouTube'is", "filter": false},
+    {"id": "latitude59", "nimi": "Latitude59", "riik": "EE", "kanal": "UCVSEYuF5-xS99L8vhVfn34A", "url": "https://latitude59.ee/", "miks": "Eesti suurim tehnoloogia- ja idukonverents"},
+    {"id": "startup-day", "nimi": "sTARTUp Day", "riik": "EE", "kanal": "UCG9hcEbq8awVkt0Ro47D1yQ", "url": "https://www.startupday.ee/", "miks": "Tartu ettevõtlusfestival; korraldajate seas Tartu Ülikool ja Tartu linn"},
+    {"id": "arenguseire", "nimi": "Arenguseire Keskus", "riik": "EE", "esitusloend": "PLU985AFYCOtNG_XT2Fq7fTJJpYtKUNZ_G", "url": "https://arenguseire.ee/", "miks": "Riigikogu juures tegutsev tulevikuuuringute keskus; tööturu ja tehnoloogia seminarid"},
+    {"id": "oecd", "nimi": "OECD", "riik": "INT", "kasutaja": "@OECD", "url": "https://www.oecd.org/", "miks": "Rahvusvaheline organisatsioon; tehisaru ja töö tuleviku poliitika"},
+    {"id": "oecd-ai", "nimi": "OECD.AI", "riik": "INT", "kasutaja": "@OECD-AI", "url": "https://oecd.ai/", "miks": "OECD tehisaru poliitika vaatluskeskus, sh AI-WIPS (tehisaru töös, oskustes ja tootlikkuses)"},
+    {"id": "ilo", "nimi": "Rahvusvaheline Tööorganisatsioon (ILO)", "riik": "INT", "kasutaja": "@ILO", "url": "https://www.ilo.org/", "miks": "ÜRO tööorganisatsioon; tehisaru ja töö globaalne vaade"},
+    {"id": "stanford-hai", "nimi": "Stanford HAI", "riik": "INT", "kasutaja": "@StanfordHAI", "url": "https://hai.stanford.edu/", "miks": "Stanfordi inimkeskse tehisaru instituut; AI Index ja uuringud"}
+  ]
+}

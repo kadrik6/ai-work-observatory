@@ -1,0 +1,46 @@
+name: ettekanded
+# Ettekannete igapäevane otsing usaldatud kanalitest (Kadri 8.11.2026). Leiab uued videod ja proovib automaatsubtiitreid.
+# Repo läheb ainult kandidaatide nimekiri (pealkiri, link, kuupäev). Subtiitrid jäävad 7 päevaks töö artefaktiks
+# „subtiitrid“, millest igapäevane töö kirjutab kokkuvõtte mustandi. Saidile läheb kokkuvõte alles Kadri kinnitusega.
+on:
+  schedule:
+    - cron: "17 4 * * *"   # 06:17 Tallinna talveajal, enne 07:23 igapäevast tööd
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: main-andmed
+  cancel-in-progress: false
+jobs:
+  otsi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: yt-dlp
+        run: pip install --quiet yt-dlp
+      - name: Otsi uusi ettekandeid
+        working-directory: tehisaru-seire
+        run: python sait/lae_ettekanded.py --subtiitrid "$RUNNER_TEMP/subtiitrid" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Subtiitrid töö artefaktiks (mitte repo)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: subtiitrid
+          path: ${{ runner.temp }}/subtiitrid
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: Commit, kui kandidaate lisandus
+        env:
+          KEELATUD_SONAD: ${{ secrets.KEELATUD_SONAD }}
+          KEELATUD_KAUSTAD: ${{ secrets.KEELATUD_KAUSTAD }}
+        run: |
+          git add tehisaru-seire/sait/sisu/ettekannete-kandidaadid.json
+          if git diff --cached --quiet; then echo "Uusi kandidaate pole"; exit 0; fi
+          python turvakontroll/kontrolli.py
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "Ettekannete kandidaadid $(date -u +%F)"
+          git pull --rebase -q origin main && git push
