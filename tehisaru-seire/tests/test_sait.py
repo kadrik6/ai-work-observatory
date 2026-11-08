@@ -517,9 +517,10 @@ def test_uus_margid_on_oranzid(sait):
     # Kadri 7.11.2026: „värvi kõik uus märgid oranziks“; „suur uudis“ jääb siniseks
     assert '<span class="u-l suur">uus</span>' not in sait["uudised.html"]
     assert '<span class="t s">uus number</span>' not in sait["index.html"]
-    assert sait["index.html"].count('<span class="t uus">uus number</span>') >= 1
+    assert sait["index.html"].count('<span class="t uus">uus</span>') >= 1  # Kadri 8.11: ainult „uus“
+    assert '<span class="t uus">uus number</span>' not in sait["index.html"]
     css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
-    assert ".u-l.uus, .voog .t.uus { background: var(--accent);" in css
+    assert ".u-l.uus, .voog .t.uus { background: #f2a65e; color: #2b1a05; }" in css  # U8, Kadri 8.11.2026
 
 
 def test_pikad_teemad_on_alamlehtedeks_jagatud(sait):
@@ -940,3 +941,11 @@ def test_labivaatus_8_11_parandused(sait):
     assert tut and "kuidas-lugeda.html" in tut.group(1) and "allikaga" in tut.group(1)
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
     assert "button.kopeeri" in js and "navigator.clipboard" in js and "execCommand('copy')" in js
+
+
+def test_eksitav_silt_on_heleroosa(sait):
+    # Kadri 8.11.2026 22:02: „eksitav silt võiks olla heleroosades toonides“
+    assert '<span class="u-l risk">eksitav</span>' in sait["uudised.html"]
+    css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
+    assert ".u-l.risk { background: var(--eksitav-bg); color: var(--eksitav-ink); }" in css
+    assert "--eksitav-bg: #fce4ee; --eksitav-ink: #a3184f;" in css

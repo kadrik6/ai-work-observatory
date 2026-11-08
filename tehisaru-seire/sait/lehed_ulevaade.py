@@ -384,7 +384,7 @@ def avaleht(A, vaade, vaated):
     from datetime import date
     d = lambda iso: date.fromisoformat(iso[:10])  # noqa: E731
     uued = sum(1 for r in voog if (d(viimane) - d(r[0])).days <= VOO_PAEVI)
-    read = "".join(f'<li><span class="d">{kp(r[0])}</span><span class="t {r[2]}">{e(r[1])}</span>'
+    read = "".join(f'<li><span class="d">{kp(r[0])}</span><span class="t {r[2]}">{e("uus" if r[2] == "uus" else r[1])}</span>'
                    f'<span>{f"<a href={chr(34)}{e(r[4])}{chr(34)}>{r[3]}</a>" if r[4] else r[3]}</span></li>' for r in voog[:VOO_RIDU])
     sec_voog = f"""
 <section class="pn sp5" id="muutus" aria-labelledby="h-muutus">
