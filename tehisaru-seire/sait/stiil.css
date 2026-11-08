@@ -1139,8 +1139,8 @@ th, td { padding: 6px 10px; }
 
 /* Kopeeritav fakt (8.11.2026): vaikne nupp allikarea lõpus; täidetud ei ole, sest see pole lehe peamine tegevus. */
 .plaat.kp .src { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-.kopeeri { position: relative; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; color: var(--ink-2); background: none; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
-.kopeeri:hover { color: var(--signal); border-color: var(--border); }
+.kopeeri { position: relative; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; color: var(--ink-2); background: none; border: 0; border-radius: 4px; cursor: pointer; }
+.kopeeri:hover { background: var(--grid); }
 .kopeeri:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
 .kopeeri .ik-ok, .kopeeri.ok .ik-kop { display: none; }
 .kopeeri.ok .ik-ok { display: block; }
