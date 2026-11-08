@@ -1,4 +1,5 @@
-"""Võtab projekti kaustast saidi jaoks avaliku hetkeseisu: uudised, uudiste väited, hanked ja publikatsioonid.
+"""Võtab projekti kaustast saidi jaoks avaliku hetkeseisu: uudised, uudiste väited, hanked, publikatsioonid ja
+Kadri kinnitatud uued uuringud (vt sait/ootel.py).
 
 Neid andmeid uuendavad igapäevased tööd väljaspool repot (uudiste kogumine, hangete Actionsi käik, OpenAlexi
 analüüs). Sait ehitab ainult repo failidest. Repo reegli järgi kopeeritakse siia midagi väljastpoolt ainult Kadri loal.
@@ -17,6 +18,9 @@ from pathlib import Path
 
 SISU = Path(__file__).resolve().parent / "sisu"
 KIRJELDUS_MAX = 300  # hanke kirjelduse pikkus; täistekst jääb registrisse
+NAITA = {"kinnitatud", "varasem"}  # väite olekud, mis lähevad saidile
+UURINGU_VALJAD = ("id", "autorid", "aasta", "pealkiri", "kanal", "retsenseeritud", "url", "avaldatud", "meetod",
+                  "kus", "valim", "leid", "lisatud", "seire_kinnitatud")
 
 
 def _loe(p):
@@ -33,6 +37,15 @@ def ilma_nimedeta(kes):
     return re.sub(r"\s*\([^()\d]*\)", "", kes).strip()
 
 
+def naidatavad_vaited(read):
+    return [r for r in read if r.get("seire_olek") in NAITA]
+
+
+def kinnitatud_uuringud(read):
+    """Ainult kinnitatud uuringud ja ainult avalikud väljad (kandidaadi sisemine viide jääb välja)."""
+    return [{k: u[k] for k in UURINGU_VALJAD if k in u} for u in read if u.get("seire_olek") == "kinnitatud"]
+
+
 def vota(proj):
     proj = Path(proj)
     uu = proj / "tooelu-uudised"
@@ -40,7 +53,10 @@ def vota(proj):
     for r in read:
         r.pop("kes_utles", None)
     (SISU / "uudised.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in read), encoding="utf-8")
-    vaited = _loe(uu / "vaited.json")
+    # Kinnituskord (Kadri 8.11.2026 21:36): automaatsed mustandid lähevad saidile alles pärast Kadri „jah“-i.
+    # Ilma olekuta kirje on ootel. „varasem“ = oli saidil enne kinnituskorda.
+    koik_vaited = _loe(uu / "vaited.json")
+    vaited = naidatavad_vaited(koik_vaited)
     for r in vaited:  # väide kuulub väljaandele: sulgudes nimed (ilma kuupäevata) jäävad välja
         r["kes"] = ilma_nimedeta(r.get("kes", ""))
     (SISU / "uudiste-vaited.json").write_text(json.dumps(vaited, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -52,6 +68,12 @@ def vota(proj):
         k = _loe(uu / "ai_tookuulutused.json")
         k.pop("nahtud_id", None)  # kogumise sisemine olek, saidil pole vaja
         _kirjuta("ai-tookuulutused.json", k)
+
+    lisa_p = proj / "tooelu-leht-andmed" / "leiud-lisa.json"
+    koik_uu = _loe(lisa_p).get("uuringud", []) if lisa_p.exists() else []
+    _kirjuta("uuringud-lisa.json", kinnitatud_uuringud(koik_uu))
+    _kirjuta("ootel.json", {"uuringud": sum(1 for u in koik_uu if not u.get("seire_olek")),
+                            "vaited": sum(1 for r in koik_vaited if not r.get("seire_olek"))})
 
     h = _loe(proj / "seire-uuendus" / "hanked" / "leht.json")
     for r in h["loend"]:

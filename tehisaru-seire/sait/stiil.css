@@ -203,6 +203,7 @@ td small { display: block; color: var(--ink-3); font-size: 14px; }
 tr.fookus td { font-weight: 700; color: var(--signal); }
 .vrd { color: var(--accent-text); font-weight: 600; white-space: nowrap; }
 .kogus { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 15px; color: var(--ink-2); margin-top: 8px; }
+.kogus[hidden] { display: none; }  /* filtri ajal on näha kõik sobivad read; „Näita 12/24/48“ peidetakse */
 .kogus button { font: 400 15px/1 var(--font-sans); height: 28px; padding: 0 10px; border-radius: 100px; border: 1px solid var(--control); background: var(--surface); color: var(--ink); cursor: pointer; }
 .kogus button[aria-pressed="true"] { background: var(--signal); border-color: var(--signal); color: var(--on-signal); font-weight: 600; }
 
@@ -937,21 +938,12 @@ summary { padding-block: 3px; }
 .alamlehed a { padding: 7px 14px; min-height: 32px; border-radius: 0; font-size: 15px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
 .alamlehed a:hover { background: none; color: var(--ink); }
 .alamlehed a[aria-current="page"] { background: none; box-shadow: none; color: var(--signal); border-bottom-color: var(--signal); }
-.lehel-rida { margin-top: 2px; }
 
-/* „Sellel lehel“ paremal (≥1200 px); kitsamal ekraanil rida sakkide all */
-.lehel-parem { display: none; }
-@media (min-width: 1200px) {
-  main.raamiga { display: grid; grid-template-columns: minmax(0, 1fr) 176px; gap: 0 24px; align-items: start; }
-  .raam-sisu { min-width: 0; }
-  .lehel-parem { display: block; position: sticky; top: calc(var(--top-h, 90px) + 14px); padding-top: 14px; max-height: calc(100svh - var(--top-h, 90px) - 28px); overflow: auto; }
-  .lehel-rida { display: none; }
-  .lehel-parem .kt { margin: 0 0 6px; font-size: 12.5px; font-weight: 600; color: var(--ink-3); }
-  .lehel-parem .sellel { display: flex; flex-direction: column; gap: 0; flex-wrap: nowrap; }
-  .lehel-parem .sellel a { display: block; min-height: 0; padding: 4px 0 4px 10px; border: 0; border-left: 2px solid var(--border); border-radius: 0; background: none; color: var(--ink-2); font-size: 13.5px; }
-  .lehel-parem .sellel a:hover { color: var(--signal); border-left-color: var(--signal); }
-  .lehel-parem .sellel a[aria-current="true"] { color: var(--signal); border-left-color: var(--signal); font-weight: 600; }
-}
+/* „Sellel lehel“ = R1 (Kadri lukustas 8.11.2026 21:24): igal ekraanil üks kiibirida sakkide all, mis kerimisel kleepub
+   päise alla, et teise jaotise saaks valida ilma üles kerimata. Kõrguse (--lehel-h) mõõdab sait.js ankrute jaoks. */
+.lehel-rida { position: sticky; top: var(--top-h, 90px); z-index: 4; background: var(--page); margin-top: 2px; padding: 6px 0; }
+.lehel-rida.kleepub { box-shadow: 0 1px 0 var(--border); }
+html { scroll-padding-top: calc(var(--top-h, 110px) + var(--lehel-h, 0px) + 8px); }
 .lehel-rida .sellel a[aria-current="true"] { color: var(--signal); border-color: var(--signal); background: var(--surface); font-weight: 600; }
 @media (max-width: 700px) { .lehel-rida .sellel { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; } .lehel-rida .sellel li { flex: none; } }
 
@@ -1031,8 +1023,10 @@ th, td { padding: 6px 10px; }
 #toopakkumised .tp-kolm { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 36px; align-items: start; margin-top: 12px; }
 #toopakkumised .tp-kolm .gt { margin-bottom: 2px; }
 #toopakkumised .tp-kolm .ps { margin: 0 0 8px; }
-#toopakkumised .lihtne .rida, #toopakkumised .lihtne .telg { grid-template-columns: 11em minmax(0, 1fr) 3.6em; }
-#toopakkumised .lihtne .rida .n { white-space: normal; line-height: 1.15; }
+/* Kadri MKUS-i kommentaar 8.11.2026 21:42 „ühtlusta siin blokkide vahesid“: silt ühel real (täisnimi hõljukil),
+   nii et igal real on sama kõrgus ja kolm plokki joonduvad; arvuveerg kitsam, sildile rohkem ruumi. */
+#toopakkumised .lihtne .rida, #toopakkumised .lihtne .telg { grid-template-columns: 12.5em minmax(0, 1fr) 3.4em; }
+#toopakkumised .lihtne .rida .n { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 #toopakkumised .tp-m { display: inline-block; margin: 0 14px 6px 0; font-size: 14px; color: var(--ink-2); }
 @media (max-width: 1100px) { #toopakkumised .tp-kolm { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 760px) { #toopakkumised .tp-kolm { grid-template-columns: minmax(0, 1fr); } }

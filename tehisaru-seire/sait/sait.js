@@ -204,8 +204,36 @@
       var sisend = o.querySelector('input'), loe = o.querySelector('.h-loe'), ruhm = '', kus = '';
       var valik = o.querySelector('select[data-kus]'), uhik = o.getAttribute('data-uhik') || 'hanget';
       function riba() { var r = tabel.parentNode.nextElementSibling; return r && r.classList.contains('kogus') ? r : null; }
+      function sobib(r, q_, ruhm_, kus_) {
+        return (!q_ || r.getAttribute('data-otsi').indexOf(q_) >= 0) &&
+          (!ruhm_ || (ruhm_ === 'hea' ? r.getAttribute('data-hea') === '1' : r.getAttribute('data-ruhm') === ruhm_)) &&
+          (!kus_ || r.getAttribute('data-kus') === kus_);
+      }
+      // Filtri all näitavad rühmanupud ja maakonnad, mitu rida on teiste valikute juures (Kadri 8.11.2026 21:45).
+      var nupud = Array.prototype.slice.call(o.querySelectorAll('button[data-r]'));
+      var valikud = valik ? Array.prototype.slice.call(valik.options) : [];
+      function alus(el) {
+        if (!el.hasAttribute('data-alg')) el.setAttribute('data-alg', el.textContent);
+        return el.getAttribute('data-alg').replace(/ \(\d+\)$/, '');
+      }
+      function loenda(q) {
+        var filter = !!(q || ruhm || kus);
+        nupud.forEach(function (b) {
+          var r_ = b.getAttribute('data-r');
+          if (!filter) { b.textContent = b.getAttribute('data-alg') || b.textContent; return; }
+          var m = read.filter(function (r) { return sobib(r, q, r_, kus); }).length;
+          b.textContent = alus(b) + ' (' + m + ')';
+        });
+        valikud.forEach(function (op) {
+          if (!filter) { op.textContent = op.getAttribute('data-alg') || op.textContent; return; }
+          var m = read.filter(function (r) { return sobib(r, q, ruhm, op.value); }).length;
+          op.textContent = alus(op) + ' (' + m + ')';
+        });
+      }
+      nupud.forEach(alus); valikud.forEach(alus);
       function filtreeri() {
         var q = sisend.value.trim().toLowerCase(), k = riba();
+        loenda(q);
         if (!q && !ruhm && !kus) {
           if (k) { k.hidden = false; k.querySelector('button').click(); } else { read.forEach(function (r) { r.hidden = false; }); }
           loe.textContent = '';
@@ -213,13 +241,8 @@
         }
         if (k) k.hidden = true;
         var n = 0;
-        read.forEach(function (r) {
-          var ok = (!q || r.getAttribute('data-otsi').indexOf(q) >= 0) &&
-            (!ruhm || (ruhm === 'hea' ? r.getAttribute('data-hea') === '1' : r.getAttribute('data-ruhm') === ruhm)) &&
-            (!kus || r.getAttribute('data-kus') === kus);
-          r.hidden = !ok; if (ok) n++;
-        });
-        loe.textContent = n + ' ' + uhik;
+        read.forEach(function (r) { var ok = sobib(r, q, ruhm, kus); r.hidden = !ok; if (ok) n++; });
+        loe.textContent = n + ' ' + uhik + (n < read.length ? ' ' + read.length + '-st' : '');
       }
       sisend.addEventListener('input', filtreeri);
       if (valik) valik.addEventListener('change', function () { kus = valik.value; filtreeri(); });
@@ -272,11 +295,15 @@
   function korgus() {
     var p = document.querySelector('header.top');
     if (p) document.documentElement.style.setProperty('--top-h', p.offsetHeight + 'px');
+    // R1 (Kadri 8.11.2026): „Sellel lehel“ rida kleepub päise alla; ankur peab jääma ka selle rea alla.
+    var r = document.querySelector('.lehel-rida');
+    document.documentElement.style.setProperty('--lehel-h', (r ? r.offsetHeight : 0) + 'px');
   }
   document.addEventListener('DOMContentLoaded', function () {
     korgus();
     window.addEventListener('resize', korgus);
-    // „Sellel lehel“ on kaks koopiat (laial ekraanil parem veerg, kitsal rida sakkide all); märge käib mõlemas.
+    // „Sellel lehel“ on üks kleepuv rida sakkide all (R1). Kui see on päise all kinni, saab rida peene alajoone.
+    var rida = document.querySelector('.lehel-rida');
     var lingid = Array.prototype.slice.call(document.querySelectorAll('.lehel .sellel a[href^="#"]'));
     if (!lingid.length) return;
     var hrefid = [];
@@ -288,18 +315,37 @@
     var valitud = null;
     function sea(h) {
       lingid.forEach(function (a) {
-        if (h && a.getAttribute('href') === h) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+        if (h && a.getAttribute('href') === h) {
+          if (a.getAttribute('aria-current') === 'true') return;
+          a.setAttribute('aria-current', 'true');
+          // Telefonis on rida külgsuunas keritav: märgitud kiip tuuakse nähtavale.
+          var ul = a.closest('.sellel');
+          if (ul && ul.scrollWidth > ul.clientWidth) {
+            var ar = a.getBoundingClientRect(), ur = ul.getBoundingClientRect();
+            if (ar.left < ur.left || ar.right > ur.right) ul.scrollLeft += ar.left - ur.left - 16;
+          }
+        } else a.removeAttribute('aria-current');
       });
     }
     function margi() {
       if (valitud) { sea(valitud); return; }
-      var piir = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--top-h'), 10) || 110) + 24;
+      var st = getComputedStyle(document.documentElement);
+      var piir = (parseInt(st.getPropertyValue('--top-h'), 10) || 110) + (parseInt(st.getPropertyValue('--lehel-h'), 10) || 0) + 24;
+      if (rida) rida.classList.toggle('kleepub', rida.getBoundingClientRect().top <= (parseInt(st.getPropertyValue('--top-h'), 10) || 0) + 1);
       var k = -1, parim = -Infinity;
       sihid.forEach(function (t, i) {
         if (!t) return;
         var y = Math.round(t.getBoundingClientRect().top);
         if (y <= piir && y > parim + 1) { parim = y; k = i; }
       });
+      // Lehe lõpus ei jõua viimased jaotised piirini: siis märgitakse esimene nähtav jaotis, mis jäi piirist allapoole.
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        sihid.forEach(function (t, i) {
+          if (!t) return;
+          var y = Math.round(t.getBoundingClientRect().top);
+          if (y > piir && y < window.innerHeight && (k < 0 || y > parim + 1)) { parim = y; k = i; }
+        });
+      }
       sea(k >= 0 ? hrefid[k] : null);
     }
     lingid.forEach(function (a) {

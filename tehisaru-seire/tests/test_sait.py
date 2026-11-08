@@ -620,7 +620,16 @@ def test_navigatsioon_b_koik_teemad_sakid_ja_sellel_lehel(sait):
             main = re.search(r"<main.*?</main>", h, re.S).group(0)
             assert main.index('class="alamlehed"') > main.index("</h1>"), s["fail"]  # sakid pealkirja all
             assert '<nav class="rada"' in main
-    assert 'class="lehel lehel-parem"' in sait["too.html"] and 'class="lehel lehel-rida"' in sait["too.html"]
+    # R1 (Kadri 8.11.2026 21:24): ainult rida sakkide all, paremat veergu pole ja sisu saab kogu laiuse
+    assert 'class="lehel lehel-parem"' not in sait["too.html"] and 'class="lehel lehel-rida"' in sait["too.html"]
+    assert ' raamiga' not in re.search(r"<main[^>]*>", sait["too.html"]).group(0)
+    # Kleepuv rida on <main> otsene laps, muidu ei jää see kerimisel nähtavale
+    for f, s in sait.items():
+        if 'lehel-rida' not in s:
+            continue
+        enne = s[s.index("<main"):s.index('class="lehel lehel-rida"')]
+        assert enne.count("<div") == enne.count("</div"), f'{f}: „Sellel lehel“ rida on div-i sees'
+
     assert '<nav class="rada"' not in sait["index.html"]
 
 
