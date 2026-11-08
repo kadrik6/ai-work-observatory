@@ -1070,3 +1070,23 @@ th, td { padding: 6px 10px; }
 .kriba u { position: absolute; top: -3px; bottom: -3px; border-left: 2px solid var(--ink-2); }
 @media (max-width: 760px) { .plaadid.kaks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 420px) { .plaadid.kaks { grid-template-columns: minmax(0, 1fr); } }
+
+/* Hanked: litsentsid (8.11.2026) — eesmärgi ribad + asutus × eesmärk maatriks, hele skaala tumeda tekstiga */
+.lits { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px 32px; align-items: start; margin-top: 8px; }
+.lits > div { min-width: 0; }
+.lits .lits-mx { grid-column: 1 / -1; }
+.lits .vr { grid-template-columns: 14em minmax(0, 1fr) 2em; }
+.lits-m { font-size: 13px; }
+.lits-m th, .lits-m td { padding: 4px 8px; }
+.lits-m th[scope="row"] { font-weight: 600; white-space: nowrap; }
+.lits-m thead th { font-size: 12px; line-height: 1.2; vertical-align: bottom; }
+.lits-m td.lm { background: color-mix(in srgb, var(--signal) var(--s), var(--panel)); color: var(--ink); font: 700 13px var(--font-display); text-align: center; }
+.lits-m td.lm small { display: block; font: 400 11px/1.2 var(--font-sans); color: var(--ink-2); }
+.lits-m td.lm-0 { background: none; }
+.lits-m tr.muud th { font-weight: 400; color: var(--ink-2); }
+@media (max-width: 900px) { .lits { grid-template-columns: 1fr; } }
+@media (max-width: 680px) { .lits-m th[scope="row"] { white-space: normal; min-width: 8em; max-width: 9em; position: sticky; left: 0; background: var(--panel); } .lits .vr { grid-template-columns: 9.5em minmax(0, 1fr) 2em; } }
+/* KPI legend: väike märk + sõna (Kadri 8.11.2026 vähem teksti) */
+.plaat.kp .lgd .lg { display: inline-block; width: 2px; height: 10px; margin: 0 5px -1px 0; background: var(--target); }
+.plaat.kp .lgd .lg.v { background: var(--ink-2); }
+.plaat.kp .tekst b, .plaat.kp .marg b { color: var(--ink); font-weight: 600; }

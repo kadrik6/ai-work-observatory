@@ -48,6 +48,10 @@ def vota(proj):
     shutil.copyfile(uu / "koondajad.json", SISU / "koondajad.json")  # keda koondajad ise tööle otsivad
     if (uu / "toopakkumised.json").exists():  # tööportaalide kuulutuste arv ja jaotused (Kadri 7.11.2026)
         shutil.copyfile(uu / "toopakkumised.json", SISU / "toopakkumised.json")
+    if (uu / "ai_tookuulutused.json").exists():  # tehisaru- ja andmetööde kuulutused (Kadri 8.11.2026)
+        k = _loe(uu / "ai_tookuulutused.json")
+        k.pop("nahtud_id", None)  # kogumise sisemine olek, saidil pole vaja
+        _kirjuta("ai-tookuulutused.json", k)
 
     h = _loe(proj / "seire-uuendus" / "hanked" / "leht.json")
     for r in h["loend"]:

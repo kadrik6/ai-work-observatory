@@ -4,7 +4,9 @@ Andmed tulevad Kadri loal projekti kaustast toodud avalikust hetkeseisust (sait/
 sisu/uudised.jsonl, sisu/uudiste-vaited.json, sisu/uudiste-olek.json, sisu/hanked-leht.json, sisu/publikatsioonid.json.
 Iga pealkirja number tuleb andmetest; pealkirjad, mida mall ei kata, kontrollitakse abi.kontrolli() abil.
 """
+import collections
 import datetime
+import re
 
 from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, jaga, pea, seotud
 from andmekiht import AndmeViga
@@ -141,13 +143,13 @@ def uudised(A, vaade, vaated=None):
     korjaja = "Seire uudistekogumine"
     aside = kpi_pais(
         kpi_plaat("ud-ee", "Eesti uudised", str(len(ee)), "",
-                  {"muutus": (f"{uusi(ee)} viimase 7 päevaga", f'uusim {kp(ee[0]["kuupaev"])}' if ee else "")}, korjaja, fookus=True),
+                  {"muutus": (f"+{uusi(ee)} nädalaga", f'uusim {kp(ee[0]["kuupaev"])}' if ee else "")}, korjaja, fookus=True),
         kpi_plaat("ud-maailm", "Maailma uudised, aruanded ja uuringud", str(len(m)), "",
-                  {"muutus": (f"{uusi(m)} viimase 7 päevaga", f'uusim {kp(m[0]["kuupaev"])}' if m else "")}, korjaja),
+                  {"muutus": (f"+{uusi(m)} nädalaga", f'uusim {kp(m[0]["kuupaev"])}' if m else "")}, korjaja),
         kpi_plaat("ud-suured", "Suured uudised", str(len(suured)), "",
-                  {"tekst": f"koondamine üle 50 inimese, riigi otsus või uus statistika; {arvamusi} on arvamuslood, mitte tõendid"}, korjaja),
+                  {"tekst": f"üle 50 koondatu, riigi otsus, statistika · <b>{arvamusi} arvamuslugu</b>"}, korjaja),
         kpi_plaat("ud-kontroll", "Viimane kontroll", f"{vk.day}.{vk.month:02d}", f"{vk:%H:%M}",
-                  {"tekst": f'{korras} allikat {len(O["allikad"])}-st vastas; uueneb iga päev kell 7.23 ja 17.53'}, korjaja),
+                  {"tekst": f'<b>{korras}/{len(O["allikad"])}</b> allikat vastas · 7.23 ja 17.53'}, korjaja),
     )
     lead = "Arvamus ei ole tõend."
 
@@ -171,6 +173,37 @@ def uudised(A, vaade, vaated=None):
         ("uudised", [("eesti-uudised", "Eesti"), ("maailma-uudised", "Maailm")], sec_u),
         ("allikad", [("uudiste-allikad", "Allikad")], sec_k),
     ], aside=aside)
+
+
+# ---------------------------------------------------------------- Hanked: litsentsid (Kadri 8.11.2026)
+
+LITS_SISSE = re.compile(r"litsents|licen[cs]|kasutusõigus|tarkvarateenus|tarkvara\w* (?:soet|ost|rent|hankimine)"
+                        r"|tableau|snowflake|vertica|veeam|cohesity", re.I)
+LITS_VALJA = re.compile(r"alkomeetr|arendus(?!.*litsents)", re.I)
+LITS_TOOTED = [("Tableau", r"tableau"), ("Qlik", r"qlik"), ("SAP", r"\bsap\b"), ("Snowflake", r"snowflake"),
+               ("Vertica", r"vertica"), ("Accurity", r"accurity"), ("Cohesity", r"cohesity"), ("Veeam", r"veeam"),
+               ("Trend AI", r"trend ai"), ("Progress", r"progress")]
+# Eesmärk tuleb hanke kirjeldusest („eesmärk on …“), kui see on kirjas; muidu toote liigist. Järjekord loeb.
+LITS_EESM = [("Andmeanalüüs ja aruanded", r"tableau|qlik|ärianalüüs|analüütika"),
+             ("Varundus ja andmekaitse", r"cohesity|veeam"),
+             ("Andmeladu", r"snowflake|vertica|andmela"),
+             ("Andmehaldus ja -kvaliteet", r"accurity|andmekataloog|andmehaldus|andmekvaliteet|kvaliteeditarkvara"),
+             ("Majandustarkvara", r"\bsap\b"),
+             ("Tehisaru rakendus", r"tehisintellekt")]
+
+
+def litsentsid(loend):
+    """Litsentsi- ja tarkvarakasutuse hanked tuvastatud tehisaru- ja andmehangete hulgast: [(rida, toode, eesmärk, kirjeldusest)]."""
+    out = []
+    for r in loend:
+        if not LITS_SISSE.search(r["t"]) or LITS_VALJA.search(r["t"]):
+            continue
+        tl = r["t"].lower()
+        toode = next((n for n, m in LITS_TOOTED if re.search(m, tl)), "")
+        ees = next((n for n, m in LITS_EESM if re.search(m, tl)), "Muu või pole kirjas")
+        m = re.search(r"[Ee]esmärk on ([^.]{10,160})", r.get("k") or "")
+        out.append((r, toode, ees, m.group(1).strip() if m else ""))
+    return out
 
 
 # ---------------------------------------------------------------- Hanked
@@ -221,7 +254,7 @@ def hanked(A, vaade, vaated=None):
     aside = kpi_pais(
         kpi_plaat("hk-arv", "Tehisaru- ja andmehanked", str(h1["ai_andmed"]), f'{h1["aasta"]}{"*" if poolik else ""}',
                   {"muutus": (f'{h0["aasta"]} kokku {h0["ai_andmed"]}',
-                              f'{pr(h1["ai_andmed_osakaal"])}% kõigist {_arv(h1["hankeid"])} hankest' + ("; * aasta pole läbi" if poolik else ""))},
+                              f'{pr(h1["ai_andmed_osakaal"])}% kõigist hangetest' + (" · * aasta pooleli" if poolik else ""))},
                   a(HANKED_URL, "Riigihangete register") + katseline, fookus=True),
         kpi_plaat("hk-kvaliteet", "Hindas ka kvaliteeti, mitte ainult hinda", f'{pr(kv["ai_andmed"], 0)}%', f"{p0}–{p1}",
                   {"tekst": f'kõigis hangetes {pr(kv["koik"], 0)}%',
@@ -232,8 +265,8 @@ def hanked(A, vaade, vaated=None):
                    "riba": kpi_riba(yks["ai_andmed"], 100, vrd=round(yks["it_muud"]), vrd_nimi="teised IT-hanked")},
                   f'Pakkumuste arv teada {V["ai_andmed"]["pakkumusi_teada"]} hankel'),
         kpi_plaat("hk-tapsus", "Tuvastuse täpsus", f'{pr(tul["tapsus"] * 100, 0)}%', "",
-                  {"tekst": f'leitud hangetest on päriselt tehisaru- või andmehanked; leitakse {pr(tul["saagis"] * 100, 0)}% neist'},
-                  "Masina märgendid, pole inimese kontrollitud" + katseline),
+                  {"tekst": f'leiab <b>{pr(tul["saagis"] * 100, 0)}%</b> hangetest (saagis)'},
+                  "Masinmärgendid" + katseline),
     )
     lead = ("Tehisaru = "
             "pealkirjas või kirjelduses on tehisaru märksõna; andmed = andmeladu, -haldus, -analüüs jms. "
@@ -288,6 +321,99 @@ def hanked(A, vaade, vaated=None):
   <p class="ps">{p0}–{p1}. {K["uks_hange_hankijaid"]} hankijat tegi ainult ühe sellise hanke. Kümme suurimat:</p>
   <div class="viis hk">{t_read}</div>
 </section>"""
+
+    # 4b. Litsentsid: kes milliseid litsentse hangib ja milleks (Kadri 8.11.2026)
+    LI = litsentsid(H["loend"])
+    sec_lits = ""
+    if LI:
+        lyh = {"Andmeanalüüs ja aruanded": "Analüüs ja aruanded", "Andmehaldus ja -kvaliteet": "Andmehaldus",
+               "Majandustarkvara": "Majandus­tarkvara", "Varundus ja andmekaitse": "Varundus",
+               "Tehisaru rakendus": "Tehisaru", "Muu või pole kirjas": "Muu"}
+        ees_n = collections.Counter(x[2] for x in LI)
+        veerud = sorted(ees_n, key=lambda k: (k == "Muu või pole kirjas", -ees_n[k]))
+        as_n = collections.Counter(x[0]["h"] for x in LI)
+        ridu = [h for h, c in as_n.most_common() if c >= 2]
+        muud = [h for h in as_n if h not in ridu]
+        tooted = collections.Counter(x[1] for x in LI if x[1])
+        top_e = veerud[0]
+        top_t = collections.Counter(x[1] for x in LI if x[2] == top_e and x[1]).most_common(1)
+        top_t = top_t[0][0] if top_t else ""
+        t_asutusi = len({x[0]["h"] for x in LI if x[1] == top_t})
+        a0, a1 = min(x[0]["a"] for x in LI), max(x[0]["a"] for x in LI)
+        # Pikendamine: sama asutus, sama toode, mitu aastat
+        pik = collections.Counter()
+        for h, td in {(x[0]["h"], x[1]) for x in LI if x[1]}:
+            pik[(h, td)] = len({x[0]["a"] for x in LI if x[0]["h"] == h and x[1] == td})
+        (p_h, p_t), p_k = pik.most_common(1)[0]
+        emax = ees_n[top_e]
+        b_read = "".join(f'<div class="vr{" f" if k == top_e else ""}"><span class="vr-n" title="{e(k)}">{e(k)}</span>'
+                         f'<span class="vr-r"><i style="width:{c / emax * 100:.1f}%"></i></span><span class="vr-v">{c}</span></div>'
+                         for k, c in ees_n.most_common())
+        cmax = max(collections.Counter((x[0]["h"], x[2]) for x in LI).values())
+
+        def _rakk(hs, k):
+            xs = [x for x in LI if x[0]["h"] in hs and x[2] == k]
+            if not xs:
+                return '<td class="lm-0"></td>'
+            td = collections.Counter(x[1] or "nimetamata" for x in xs)
+            tt = ", ".join(f"{n} {c}" for n, c in td.most_common())
+            pea_t = td.most_common(1)[0][0]
+            return (f'<td class="lm" style="--s:{12 + 58 * min(len(xs), cmax) / cmax:.0f}%" title="{e(tt)}">'
+                    f'{len(xs)}{f"<small>{e(pea_t)}</small>" if pea_t != "nimetamata" else ""}</td>')
+        lyh_as = {"Rahandusministeeriumi Infotehnoloogiakeskus": "Rahandusministeeriumi IT-keskus (RMIT)",
+                  "Siseministeeriumi infotehnoloogia- ja arenduskeskus": "Siseministeeriumi IT-keskus (SMIT)",
+                  "Keskkonnaministeeriumi Infotehnoloogiakeskus": "Keskkonnaministeeriumi IT-keskus",
+                  "Tervise ja Heaolu Infosüsteemide Keskus": "TEHIK", "sihtasutus Põhja-Eesti Regionaalhaigla": "Regionaalhaigla",
+                  "Ettevõtluse Arendamise Sihtasutus": "EAS", "Ettevõtluse ja Innovatsiooni Sihtasutus": "EIS (endine EAS)",
+                  "Haridus- ja Teadusministeerium": "Haridus- ja Teadusministeerium", "Riigi Tugiteenuste Keskus": "RTK"}
+        m_read = "".join(f'<tr><th scope="row" title="{e(h)}">{e(lyh_as.get(h, h))}</th>' + "".join(_rakk([h], k) for k in veerud)
+                         + f'<td class="v">{as_n[h]}</td></tr>' for h in ridu)
+        if muud:
+            m_read += (f'<tr class="muud"><th scope="row">Muud asutused ({len(muud)}, igaüks 1 hange)</th>'
+                       + "".join(_rakk(muud, k) for k in veerud) + f'<td class="v">{len(muud)}</td></tr>')
+        m_pais = "".join(f'<th scope="col" title="{e(k)}">{lyh.get(k, e(k))}</th>' for k in veerud)
+        l_rows = []
+        for r, td, ees, kirj in sorted(LI, key=lambda x: (x[0]["kp"] or str(x[0]["a"])), reverse=True):
+            pealk = f'<a href="{e(r["url"])}">{e(r["t"])}</a>' if r.get("url") else e(r["t"])
+            ees_t = f'{e(ees)}<small>{e(kirj)}</small>' if kirj else e(ees)
+            l_rows.append(f'<tr><td class="n">{r["a"]}</td><td>{pealk}<small>{e(r["h"])}</small></td>'
+                          f'<td>{e(td) or "—"}</td><td>{ees_t}</td><td class="v">{_eur(r.get("v"))}</td></tr>')
+        n_kirj = sum(1 for x in LI if x[3])
+        sec_lits = f"""
+<div class="g12">
+<section class="pn sp12" id="litsentsid" aria-labelledby="h-litsentsid">
+  <div class="pn-h"><h2 id="h-litsentsid">{len(LI)} litsentsihankest {ees_n[top_e]} on {e(top_e.lower())}: <b>{e(top_t)} litsentse hangib {t_asutusi} asutust</b></h2><span class="chip exp">katseline</span></div>
+  <p class="ps">{a0}–{a1}, {len(as_n)} asutust. Sama litsentsi pikendatakse sageli igal aastal uue hankega: {e(p_h)} hankis {e(p_t)} litsentse {p_k} aastal.</p>
+  <div class="lits">
+    <div>
+      <p class="gt" id="g-lits-ees">Litsentsihanked eesmärgi järgi</p>
+      <div class="viis lits-ees" aria-describedby="g-lits-ees">{b_read}</div>
+    </div>
+    <div class="lits-tooted">
+      <p class="gt">Tooted pealkirjas</p>
+      <p class="gs">{", ".join(f"<b>{e(n)}</b> {c}" for n, c in tooted.most_common())}. {len(LI) - sum(tooted.values())} hanke pealkirjas toodet pole.</p>
+    </div>
+    <div class="lits-mx">
+      <p class="gt" id="g-lits-as">Kes milliseid litsentse hangib: hangete arv asutuse ja eesmärgi järgi</p>
+      <div class="tbl"><table class="lits-m" aria-describedby="g-lits-as"><thead><tr><th scope="col">Asutus</th>{m_pais}<th scope="col" class="v">Kokku</th></tr></thead>
+      <tbody>{m_read}</tbody></table></div>
+      <p class="gs">Lahtris on hangete arv ja peamine toode.</p>
+    </div>
+  </div>
+  <details>
+    <summary>Näita kõiki {len(LI)} litsentsihanget koos eesmärgiga</summary>
+    <div class="tbl"><table data-piir><thead><tr><th scope="col">Aasta</th><th scope="col">Hange ja hankija</th><th scope="col">Toode</th><th scope="col">Eesmärk</th><th scope="col" class="v">Eeldatav maksumus</th></tr></thead>
+    <tbody>{"".join(l_rows)}</tbody></table></div>
+  </details>
+  <details>
+    <summary>Kuidas litsentsihanked leiti ja mida see ei näita</summary>
+    <p class="ps">Litsentsihange on tuvastatud tehisaru- ja andmehange, mille pealkirjas on litsents, kasutusõigus, tarkvarateenus, tarkvara ost või rent või tuntud tootenimi. Arenduse hanked ei ole sees, kui pealkiri litsentsi ei nimeta.
+    Eesmärk on võetud hanke kirjeldusest, kui seal on lause „eesmärk on …“ ({n_kirj} hankel), muidu toote liigist (nt Tableau = andmeanalüüs ja aruanded).
+    IT-majad (Rahandusministeeriumi, Siseministeeriumi ja Keskkonnaministeeriumi IT-keskus, TEHIK, RTK) hangivad ka teiste asutuste jaoks, seega hankija ei pruugi olla kasutaja.
+    Tehisaru tööriistade litsentsid, mille hanke pealkiri ei viita tehisarule ega andmetele (nt üldised kontoritarkvara paketid), siia ei jõua.</p>
+  </details>
+</section>
+</div>"""
 
     # 5. Leia hea näide
     loend = sorted(H["loend"], key=lambda r: r["kp"] or "", reverse=True)
@@ -349,9 +475,10 @@ def hanked(A, vaade, vaated=None):
     hoiatus = ('<div class="hoiatus" role="note"><p><b>Kontrollimata masinmärgistus.</b> Selle lehe hanked märkis tehisaru- '
                'või andmehangeteks keelemudel, mitte inimene. Ka täpsus on mõõdetud masina märgendite vastu. Numbrid on suunaandvad, '
                'mitte statistika: aastate võrdlus ja kindlad järeldused tulevad pärast seda, kui 100 hanget on käsitsi üle vaadatud.</p></div>')
-    return (pea(A, vaade, lead, [("aastad", "Viimane aasta"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], [], aside=aside) + hoiatus
+    return (pea(A, vaade, lead, [("aastad", "Viimane aasta"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("litsentsid", "Litsentsid"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], [], aside=aside) + hoiatus
             + '<div class="g12">' + sec_aastad + sec_inn + "</div>"
             + '<div class="g12">' + sec_viis + sec_hankijad + "</div>"
+            + sec_lits
             + sec_loend + sec_tapsus
             + seotud(vaated, [("avalik-sektor", "Avalik sektor: kas uuendused jõuavad laiendamiseni"), ("reeglid", "Tehisaru määrus: tähtajad")]))
 
@@ -590,5 +717,84 @@ def toopakkumised(A):
   <div class="p-tabs" role="tablist" aria-label="Tööportaal">{"".join(nupud)}</div>
   {"".join(osad)}
   <details><summary>Kõik portaalid ja kuidas arv loeti</summary><div><p>Kategooriad on portaali omad; üks kuulutus võib olla mitmes kategoorias.{ilma_t}</p><div class="tbl"><table><thead><tr><th scope="col">Portaal</th><th scope="col" class="v">Kuulutusi</th><th scope="col">Loetud</th><th scope="col">Lehel oli</th></tr></thead><tbody>{pt}</tbody></table></div></div></details>
+</section>
+</div>"""
+
+
+# ---------------------------------------------------------------- Töö: tehisaru- ja andmetööde kuulutused
+
+TK_TOOANDJA = {"Töötukassa vahendatud pakkumised": "Töötukassa kaudu (eri tööandjad)"}
+TK_NIMI = {"ai_amet": "Tehisaru amet", "andmeamet": "Andmeamet", "ai_oskus": "Tehisaru muus ametis",
+           "ai_firma_noue": "Firma üldnõue"}
+
+
+def ai_kuulutused(A):
+    """CV.ee tehisaru- ja andmetööde kuulutused rühmade kaupa (Kadri 8.11.2026, andmed TOOELU igapäevasest tööst).
+    Rühmad ei kattu, seega neid võib liita. „Firma üldnõue“ on eraldi, et üks firma ei paisutaks oskuste rühma."""
+    K = A.get("ai_kuulutused")
+    if not K or not K.get("ruhmad"):
+        return ""
+    from lehed_ulevaade import kpi_plaat
+    from komponendid import lihtribad
+    R = K["ruhmad"]
+    for g in ("ai_amet", "andmeamet", "ai_oskus"):
+        if g not in R:
+            raise AndmeViga(f"ai-tookuulutused.json: rühm {g} puudub")
+    kp_ = K["uuendatud"][:10]
+    url = "https://www.cv.ee/et/search"
+    pohi = ("ai_amet", "andmeamet", "ai_oskus")
+    kirj = {"ai_amet": "pealkirjas AI, ML, LLM, andmeteadlane jms",
+            "andmeamet": "pealkirjas andmed, data, BI, analytics",
+            "ai_oskus": "muu amet, kuulutus <b>mainib tehisaru</b>"}
+    plaadid = "".join(
+        kpi_plaat({"ai_amet": "tk-ai", "andmeamet": "tk-andmed", "ai_oskus": "tk-oskus"}[g], TK_NIMI[g], _arvt(R[g]["arv"]), "",
+                  {"muutus": (f'<span class="u-l uus">+{R[g]["uusi"]} uut</span> nädalaga', ""), "tekst": kirj[g]},
+                  a(url, "CV.ee"), fookus=(g == "ai_oskus"))
+        for g in pohi)
+    tooandjad, maakonnad = {}, {}
+    for g in pohi:
+        for r in R[g].get("tooandjad", []):
+            nm = TK_TOOANDJA.get(r["nimi"], r["nimi"])
+            tooandjad[nm] = tooandjad.get(nm, 0) + r["arv"]
+        for r in R[g].get("maakonnad", []):
+            maakonnad[r["nimi"]] = maakonnad.get(r["nimi"], 0) + r["arv"]
+
+    def ribad(d, n=10):
+        read = sorted(d.items(), key=lambda x: -x[1])[:n]
+        if not read:
+            return ""
+        lopp = max(v for _, v in read)
+        samm = next(s for s in (2, 5, 10, 20, 50, 100) if lopp / s <= 5)
+        lopp = -(-lopp // samm) * samm
+        return lihtribad([(nm, v, str(v)) for nm, v in read], lopp, samm=samm, uhik="", fookus=0)
+    kokku3 = sum(R[g]["arv"] for g in pohi)
+    rows = []
+    for r in sorted(K.get("kuulutused", []), key=lambda r: (r.get("avaldatud") or ""), reverse=True):
+        uus = ' <span class="u-l uus">uus</span>' if r.get("uus") else ""
+        kaug = {"FULLY_REMOTE": "kaugtöö", "HYBRID": "hübriid"}.get(r.get("kaugtoo") or "", "")
+        rows.append(f'<tr><td class="n">{kp(r["avaldatud"]) if r.get("avaldatud") else ""}</td>'
+                    f'<td><a href="{e(r["url"])}">{e(r["pealkiri"])}</a>{uus}<small>{e(TK_TOOANDJA.get(r.get("tooandja") or "", r.get("tooandja") or ""))}</small></td>'
+                    f'<td>{e(TK_NIMI.get(r["ruhm"], r["ruhm"]))}</td><td>{e(r.get("maakond") or "")}{f"<small>{kaug}</small>" if kaug else ""}</td></tr>')
+    fn = R.get("ai_firma_noue")
+    fn_t = ""
+    if fn:
+        top_fn = ", ".join(f'{e(x["nimi"])} {x["arv"]}' for x in fn.get("tooandjad", [])[:5])
+        fn_t = (f'<p>Lisaks on <b>{_arvt(fn["arv"])} kuulutust</b> ({fn["uusi"]} uut), kus tehisaru on ainult tööandja ühises lauses, '
+                f'mis kordub firma eri kuulutustes (nt „AI tööriistade igapäevane kasutus on ootus“). Need on loendis rühmana „Firma üldnõue“, '
+                f'mitte oskuste all. Enim: {top_fn}.</p>')
+    return f"""
+<div class="g12">
+<section class="pn sp12" id="ai-kuulutused" aria-labelledby="h-ai-kuulutused">
+  <div class="pn-h"><h2 id="h-ai-kuulutused">{_arvt(K["kuulutusi_kokku"])} kuulutusest {R["ai_amet"]["arv"] + R["andmeamet"]["arv"]} on tehisaru- või andmeametid, aga <b>{R["ai_oskus"]["arv"]} muu ameti kuulutust mainib tehisaru</b></h2></div>
+  <p class="ps">CV.ee, {kp(kp_)}. „Uus“ = avaldatud viimase 7 päeva jooksul.</p>
+  <div class="plaadid kaks">{plaadid}</div>
+  <div class="kaks tk-ribad">
+    <div><p class="gt">Kes otsib: enim kuulutusi ({kokku3} kuulutust kolmes rühmas)</p>{ribad(tooandjad)}</div>
+    <div><p class="gt">Kus: maakond</p>{ribad(maakonnad, 8)}</div>
+  </div>
+  <p class="gt">Kõik kuulutused</p>
+  <div class="tbl"><table data-piir><thead><tr><th scope="col">Avaldatud</th><th scope="col">Kuulutus ja tööandja</th><th scope="col">Rühm</th><th scope="col">Kus</th></tr></thead>
+  <tbody>{"".join(rows)}</tbody></table></div>
+  <details><summary>Täpsustused: firma üldnõue ja mida see ei näita</summary><div>{fn_t}<p>{e(K.get("piirangud", ""))} Liigitus on märksõnapõhine, inimene pole seda kontrollinud.</p></div></details>
 </section>
 </div>"""

@@ -80,6 +80,7 @@ KPI_VER1 = {"inimesed": ("muutus", "riba"), "ettevotted": ("muutus", "riba"), "d
             "us-muud": ("tekst", "riba"), "us-lahk": ("tekst",), "us-uudis": ("tekst",),
             "kl-allikad": ("tekst",), "kl-klassid": ("tekst",), "kl-uuringud": ("tekst",),
             "ma-jargmine": ("muutus", "tekst"), "ma-korge": ("muutus", "tekst"), "ma-osad": ("muutus", "riba"),
+            "tk-ai": ("muutus", "tekst"), "tk-andmed": ("muutus", "tekst"), "tk-oskus": ("muutus", "tekst"),
             "ud-ee": ("muutus",), "ud-maailm": ("muutus",), "ud-suured": ("tekst",), "ud-kontroll": ("tekst",)}
 
 
@@ -94,10 +95,14 @@ def kpi_riba(v, lopp, siht=None, vrd=None, vrd_nimi="EL", fookus=False, siht_tek
     o = (f'<span class="kriba{" f" if fookus else ""}" aria-hidden="true"><i style="width:{p(v)}"></i>'
          + (f'<b style="left:{p(siht)}"></b>' if siht is not None else "")
          + (f'<u style="left:{p(vrd)}"></u>' if vrd is not None else "") + "</span>")
+    # Kadri 8.11.2026: vähem teksti — üks rida, märgi juures ainult sõna ja number
+    lg = []
     if siht is not None:
-        o += f'<span class="marg">oranž kriips: {e(siht_tekst or "siht " + pr(siht, 0) + "%")}</span>'
+        lg.append(f'<i class="lg s"></i>{e(siht_tekst or "siht " + pr(siht, 0) + "%")}')
     if vrd is not None:
-        o += f'<span class="marg">tume kriips: {e(vrd_nimi)} {pr(vrd, 0 if float(vrd).is_integer() else 1)}%</span>'
+        lg.append(f'<i class="lg v"></i>{e(vrd_nimi)} {pr(vrd, 0 if float(vrd).is_integer() else 1)}%')
+    if lg:
+        o += f'<span class="marg lgd">{" · ".join(lg)}</span>'
     return o
 
 
@@ -233,12 +238,12 @@ def avaleht(A, vaade, vaated):
                   a(ein["url"], "Statistikaamet " + ein["allikas"].split("tabel ")[-1]), fookus=True, href="inimesed.html#kasutus"),
         kpi_plaat("ettevotted", "Ettevõtted, kes kasutavad tehisaru, ja riigi siht", f"{pr(eeb['vaartus'])}%",
                   f"{eeb['aasta']} · siht {pr(float(siht['siht']), 0)}%",
-                  {"muutus": (f"{_p(eeb['vaartus'] - sa_eel['vaartus'])} punkti aastaga", f"{eeb['aasta'] - 1}: {pr(sa_eel['vaartus'])}% (teine tabel, kontrollimata)"),
-                   "riba": kpi_riba(eeb["vaartus"], 100, siht=float(siht["siht"]), siht_tekst=f"Eesti siht {pr(float(siht['siht']), 0)}% aastaks {siht['aasta']}")},
+                  {"muutus": (f"{_p(eeb['vaartus'] - sa_eel['vaartus'])} punkti aastaga", f"{eeb['aasta'] - 1}: {pr(sa_eel['vaartus'])}% (kontrollimata)"),
+                   "riba": kpi_riba(eeb["vaartus"], 100, siht=float(siht["siht"]), siht_tekst=f"siht {pr(float(siht['siht']), 0)}% ({siht['aasta']})")},
                   a(eeb["url"], "Statistikaamet " + eeb["allikas"].split("tabel ")[-1]), href="ettevotted.html#kasutus"),
         kpi_plaat("digi", "Vähemalt baastaseme digioskused", f"{pr(ds['vaartus'])}%", str(ds["aasta"]),
                   {"muutus": (f"{_p(ds['vaartus'] - ds23['vaartus'])} punkti {ds23['aasta']}. aastast", f"EL {pr(ds_el['vaartus'])}%"),
-                   "riba": kpi_riba(ds["vaartus"], 100, siht=float(A["sihid"]["el-digioskused-80"]["siht"]), vrd=ds_el["vaartus"], siht_tekst=f"ELi siht {pr(float(A['sihid']['el-digioskused-80']['siht']), 0)}% ({A['sihid']['el-digioskused-80']['aasta']}, ELi kohta)")},
+                   "riba": kpi_riba(ds["vaartus"], 100, siht=float(A["sihid"]["el-digioskused-80"]["siht"]), vrd=ds_el["vaartus"], siht_tekst=f"ELi siht {pr(float(A['sihid']['el-digioskused-80']['siht']), 0)}% ({A['sihid']['el-digioskused-80']['aasta']})")},
                   "Eurostat", href="inimesed.html#digi"),
         kpi_plaat("tootus", "Töötuse määr, sesoonselt tasandatud", f"{pr(t_ee)}%", f"{KUUD[int(kuu[5:]) - 1]} {kuu[:4]}",
                   {"muutus": (f"{_p(t_ee - t_aasta_eest)} punkti aastaga", f"{KUUD[int(kuu[5:]) - 1]} {int(kuu[:4]) - 1}: {pr(t_aasta_eest)}% · EL {pr(t_el)}%")},

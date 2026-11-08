@@ -162,7 +162,8 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
                     if uu.exists() else None)
     for voti, nimi in [("uudiste_vaited", "uudiste-vaited.json"), ("uudiste_olek", "uudiste-olek.json"),
                        ("hanked_leht", "hanked-leht.json"), ("publikatsioonid", "publikatsioonid.json"),
-                       ("koondajad", "koondajad.json"), ("toopakkumised", "toopakkumised.json")]:
+                       ("koondajad", "koondajad.json"), ("toopakkumised", "toopakkumised.json"),
+                       ("ai_kuulutused", "ai-tookuulutused.json")]:
         A[voti] = loe_json(sisu / nimi) if (sisu / nimi).exists() else None
     lisa_uudiste_koondamised(A)
     lisa_uudiste_vaited(A)

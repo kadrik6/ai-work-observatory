@@ -278,15 +278,15 @@ def ettevotted(A, vaade, vaated=None):
     sv = float(siht["siht"])
     aside = kpi_pais(
         kpi_plaat("ev-kasutus", "Kasutab tehisaru (10+ hõivatut)", f'{pr(ee["vaartus"])}%', f'{ee["aasta"]} · siht {pr(sv, 0)}%',
-                  {"muutus": (f'{_p(ee["vaartus"] - sa_eel["vaartus"])} punkti aastaga', f'{ee["aasta"] - 1}: {pr(sa_eel["vaartus"])}% (teine tabel, kontrollimata)'),
-                   "riba": kpi_riba(ee["vaartus"], 100, siht=sv, fookus=True, siht_tekst=f'Eesti siht {pr(sv, 0)}% aastaks {siht["aasta"]}')},
+                  {"muutus": (f'{_p(ee["vaartus"] - sa_eel["vaartus"])} punkti aastaga', f'{ee["aasta"] - 1}: {pr(sa_eel["vaartus"])}% (kontrollimata)'),
+                   "riba": kpi_riba(ee["vaartus"], 100, siht=sv, fookus=True, siht_tekst=f'siht {pr(sv, 0)}% ({siht["aasta"]})')},
                   a(ee["url"], "Statistikaamet " + ee["allikas"].split("tabel ")[-1]), fookus=True),
         kpi_plaat("ev-koht", "Koht ELis", f"{koht}.", f"/ {n_el} · {y}",
-                  {"muutus": (f"{k_ee[y0] - koht} kohta üles {y0}. aastast", f'{y0}: {k_ee[y0]}. koht · {y}: Eesti {pr(ee_el["vaartus"])}%'),
+                  {"muutus": (f"{k_ee[y0] - koht} kohta üles", f'{y0}: {k_ee[y0]}. koht · Eesti {pr(ee_el["vaartus"])}%'),
                    "riba": kpi_riba(ee_el["vaartus"], 100, vrd=eu["vaartus"])},
                   a("https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "Eurostat isoc_eb_ai")),
         kpi_plaat("ev-pohja", "Vahe Põhjamaade keskmisega", f"{pr(vahe)}", f"punkti · {y}",
-                  {"muutus": (f"{_p(vahe - vahe0)} punkti 2023. aastast", f"2023: {pr(vahe0)} punkti; Soome, Rootsi, Taani")},
+                  {"muutus": (f"{_p(vahe - vahe0)} punkti 2023. aastast", f"2023: {pr(vahe0)} · Soome, Rootsi, Taani")},
                   a("https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "Eurostat isoc_eb_ai")),
     )
     lead = ("Kasutus kasvab kiiresti, aga vahe Põhjamaadega on punktides suurenenud. "

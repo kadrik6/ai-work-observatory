@@ -762,8 +762,10 @@ def test_kpi_plaadid_jargivad_lukustatud_valikut_ver1(sait):
         assert ('class="muut"' in pl) == ("muutus" in osad), pid
         assert ('class="kriba' in pl) == ("riba" in osad), pid
         assert ('class="tekst"' in pl) == ("tekst" in osad), pid
-    assert "oranž kriips: Eesti siht 75% aastaks 2030" in h and "ELi siht 80% (2030, ELi kohta)" in h
-    assert "tume kriips: omavalitsused 27%" in sait["avalik-sektor.html"]
+    # 8.11.2026 (Kadri: vähem teksti): legend on märk + sõna, mitte „oranž/tume kriips:“
+    assert '<i class="lg s"></i>siht 75% (2030)' in h and "ELi siht 80% (2030)" in h
+    assert '<i class="lg v"></i>omavalitsused 27%' in sait["avalik-sektor.html"]
+    assert "kriips:" not in "".join(sait.values())
 
 
 def test_alamlehtede_paise_numbrid_on_ver1_plaadid(sait):
@@ -773,3 +775,14 @@ def test_alamlehtede_paise_numbrid_on_ver1_plaadid(sait):
         for pl in h.split('class="plaat kp"')[1:]:
             pl = pl.split('<span class="src">')[0]
             assert '<span class="lbl">' in pl and '<span class="ctx">' in pl, f
+
+
+def test_hanked_litsentsid_ja_ai_kuulutused(sait):
+    # Kadri 8.11.2026: milliseid litsentse mis asutused hangivad ja milleks; AI- ja andmetööde kuulutused seiresse
+    h = sait["hanked.html"]
+    assert 'id="litsentsid"' in h and 'class="lits-m"' in h and "litsentse hangib" in h
+    assert "Eesmärk</th>" in h and "Kuidas litsentsihanked leiti" in h
+    t = sait["too.html"]
+    if 'id="ai-kuulutused"' in t:  # andmed tulevad igapäevasest kogumisest (sisu/ai-tookuulutused.json)
+        osa = t.split('id="ai-kuulutused"')[1].split("</section>")[0]
+        assert osa.count('class="plaat kp"') == 3 and "Firma üldnõue" in osa and "data-piir" in osa

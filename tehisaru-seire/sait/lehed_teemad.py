@@ -245,12 +245,12 @@ def inimesed(A, vaade, vaated=None):
                    "riba": kpi_riba(ee["vaartus"], 100, fookus=True)},
                   a(ee["url"], "Statistikaamet " + ee["allikas"].split("tabel ")[-1]), fookus=True),
         kpi_plaat("in-koht", "Koht ELis", f"{koht}.", f"/ {len(el)} · {y}",
-                  {"tekst": f'Eesti {pr(ee25["vaartus"])}%, ELi keskmine {pr(eu["vaartus"])}%',
+                  {"tekst": f'Eesti <b>{pr(ee25["vaartus"])}%</b>',
                    "riba": kpi_riba(ee25["vaartus"], 100, vrd=eu["vaartus"])},
                   a(EUROSTAT.format("isoc_ai_iaiu"), "Eurostat isoc_ai_iaiu")),
         kpi_plaat("in-tool", "Kasutas tehisaru tööl", f'{pr(too["vaartus"])}%', str(too["aasta"]),
                   {"muutus": (f'{_p(too["vaartus"] - too25["vaartus"])} punkti aastaga', f'{too25["aasta"]}: {pr(too25["vaartus"])}%'),
-                   "tekst": "% kõigist 16–74-aastastest, mitte ainult töötajatest"},
+                   "tekst": "<b>kõigist</b> 16–74-aastastest"},
                   a(too["url"], "Statistikaamet " + too["allikas"].split("tabel ")[-1])),
     )
     lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem.")
@@ -529,20 +529,20 @@ def too(A, vaade, vaated=None):
     from lehed_ulevaade import _p, kpi_pais, kpi_plaat
     aside = kpi_pais(
         kpi_plaat("too-noored", "Noorte (22–25) hõive tehisarule avatud ametites, USA", e(can["muutus"]), "",
-                  {"tekst": "võrreldes vähem avatud ametitega; laialdast töökohtade kadu ei ole"},
+                  {"tekst": "vs vähem avatud ametid · <b>laialdast kadu pole</b>"},
                   a(U["canaries2026"]["url"], f'Brynjolfsson jt {U["canaries2026"]["aasta"]}'), fookus=True),
         kpi_plaat("too-taani", "Mõju tulule ja töötundidele, Taani", "&lt; 2%", "",
-                  {"tekst": "kaks aastat pärast ChatGPT tulekut muutust ei leitud; üle 2% mõju on välistatud"},
+                  {"tekst": "<b>muutust ei leitud</b> 2 aastat pärast ChatGPT-d"},
                   a(hum["url"], f'Humlum ja Vestergaard {hum["aasta"]}')),
         kpi_plaat("too-prognoos", "Eesti töötuse prognoos", f'{pr(t2030["protsent"])}%', "2030",
                   {"muutus": (f'{_p(t2030["protsent"] - t_tegelik["protsent"])} punkti {t_tegelik["aasta"]}. aastast',
-                              f'{t_tegelik["aasta"]}: {pr(t_tegelik["protsent"])}%; tehisaru mõju pole eraldi arvestatud')},
+                              f'{t_tegelik["aasta"]}: {pr(t_tegelik["protsent"])}% · <b>tehisaru mõjuta</b>')},
                   a(rm["url"], f'Rahandusministeerium, {kp(rm["avaldatud"])}')),
     )
     lead = ("Mõnes ametis on vähenenud ka vabakutseliste tööd. "
             "Eesti kohta selliseid mõõtmisi veel ei ole.")
     from lehed_ulevaade import too_eesti, tootus_el, vabad_ametikohad
-    from lehed_uudised import palkamine, toopakkumised, uuringud_too
+    from lehed_uudised import ai_kuulutused, palkamine, toopakkumised, uuringud_too
     sec_uuritakse = uuringud_too(A)
     sec_palk = palkamine(A)
     return jaga(A, vaade, lead, [], [
@@ -551,6 +551,7 @@ def too(A, vaade, vaated=None):
         ("palkamine", [("palkamine", "Keda koondajad otsivad")], sec_palk),
         ("vabad-kohad", [("vabad-kohad", "Kus ja mida palgatakse")], vabad_ametikohad()),
         ("toopakkumised", [("toopakkumised", "Tööportaalid")], toopakkumised(A)),
+        ("ai-kuulutused", [("ai-kuulutused", "AI-tööd")], ai_kuulutused(A)),
         ("tulevik", [("tulevik", "Mis ees ootab")], sec_tulevik),
         ("maailm", [("maailm", "Mida maailmas leiti")], sec_maailm),
         ("ulesanded", [("ulesanded", "Ülesanded")], sec_kiirus),
@@ -686,14 +687,14 @@ def avalik_sektor(A, vaade, vaated=None):
         raise AndmeViga("avalik-sektor.csv: uuendajate märkuses puudub juhtide ja haldustöötajate osa")
     oecd = lambda i: a(OECD_URL, f'OECD 2026, {_o(A, i)["koht"].split(", ")[-1]}')  # noqa: E731
     aside = ('<aside class="vastus kpi-pais" aria-label="Peamised numbrid">' + "".join([
-        kpi_plaat("uuendus", "vastanud avalikest teenistujatest tegi viimase 24 kuu jooksul uuenduse", f'{pr(v("uuendajad"), 0)}%', "2025–2026",
-                  {"muutus": (f"juhtidest {m.group(1)}%, haldustöötajatest {m.group(2)}%", ""), "riba": kpi_riba(v("uuendajad"), 100, fookus=True)},
+        kpi_plaat("uuendus", "Tegi uuenduse (avalikud teenistujad, 24 kuud)", f'{pr(v("uuendajad"), 0)}%', "2025–2026",
+                  {"muutus": (f"juhid {m.group(1)}% · haldustöötajad {m.group(2)}%", ""), "riba": kpi_riba(v("uuendajad"), 100, fookus=True)},
                   oecd("uuendajad"), fookus=True),
-        kpi_plaat("laiendus", "olulisimatest uuendustest jõudis rakendamiseni → laiendati", f'{pr(v("rakendati"), 0)} → {pr(v("laiendati"), 0)}%', "",
-                  {"tekst": "Kolmandik jõuab laiendamiseni", "riba": kpi_riba(v("laiendati"), 100, vrd=v("rakendati"), vrd_nimi="rakendati")},
+        kpi_plaat("laiendus", "Uuendus rakendati → laiendati", f'{pr(v("rakendati"), 0)} → {pr(v("laiendati"), 0)}%', "",
+                  {"tekst": "<b>kolmandik</b> jõuab laiendamiseni", "riba": kpi_riba(v("laiendati"), 100, vrd=v("rakendati"), vrd_nimi="rakendati")},
                   oecd("rakendati")),
-        kpi_plaat("genai", "keskvalitsuse innovaatoritest kasutas oma uuenduses generatiivset tehisaru", f'{gk["vaartus"]}%', f'{gk["lugeja"]}/{gk["nimetaja"]}',
-                  {"tekst": f'Omavalitsustes {gl["vaartus"]}% ({gl["lugeja"]}/{gl["nimetaja"]})', "riba": kpi_riba(v("genai-kesk"), 100, vrd=v("genai-kov"), vrd_nimi="omavalitsused")},
+        kpi_plaat("genai", "Kasutab generatiivset tehisaru (keskvalitsuse uuendajad)", f'{gk["vaartus"]}%', f'{gk["lugeja"]}/{gk["nimetaja"]}',
+                  {"tekst": "omavalitsustes " + ("<b>peaaegu sama</b>" if abs(float(gk["vaartus"]) - float(gl["vaartus"])) < 3 else f'<b>{gl["vaartus"]}%</b>'), "riba": kpi_riba(v("genai-kesk"), 100, vrd=v("genai-kov"), vrd_nimi="omavalitsused")},
                   oecd("genai-kesk")),
     ]) + "</aside>")
     # Hanked on oma menüükoht; lehtede vahel on rida „Seotud“ (Kadri 6.11.2026 22:27, ettepanek 8)
@@ -754,10 +755,10 @@ def reeglid(A, vaade, vaated=None, tana=None):
                   {"muutus": (_kuud(pl1[0]), ""), "tekst": e(pl1[2])},
                   a(O[0]["url"], "Euroopa Komisjon"), fookus=True),
         kpi_plaat("ma-korge", "Kõrge riskiga kasutus", kp(kr["kuupaev"]), "",
-                  {"muutus": (_kuud(kr["kuupaev"]), ""), "tekst": "näiteks CV-de sorteerimine värbamisel ja hindamine koolis"},
+                  {"muutus": (_kuud(kr["kuupaev"]), ""), "tekst": "nt <b>CV-de sorteerimine</b>, hindamine koolis"},
                   a(kr["url"], "Euroopa Komisjon")),
         kpi_plaat("ma-osad", "Tähtajad 2024–2028", f"{len(moodas)}", f"/ {len(O)} möödas",
-                  {"muutus": (f"{len(ees)} on veel ees", f"üldiselt kohaldatav alates {kp(uld['kuupaev'])}"),
+                  {"muutus": (f"{len(ees)} on veel ees", f"kehtib alates {kp(uld['kuupaev'])}"),
                    "riba": kpi_riba(len(moodas), len(O))},
                   a(uld["url"], "Euroopa Komisjon")),
     )

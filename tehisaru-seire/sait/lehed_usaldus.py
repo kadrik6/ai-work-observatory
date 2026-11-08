@@ -125,15 +125,15 @@ def kas_tosi(A, vaade, vaated=None):
     n_uud = sum(1 for v in V if v.get("uudisest"))
     aside = kpi_pais(
         kpi_plaat("us-muud", "Väide ütleb muud kui allikas", str(loend[0]), f"/ {n} väitest",
-                  {"tekst": f"vale tõlgendus, vale nimetaja või liialdus; {loend[1]} vajab täpsustust",
+                  {"tekst": f"<b>{loend[1]}</b> vajab täpsustust",
                    "riba": kpi_riba(loend[0], n, fookus=True)},
                   "Seire väidete kontroll", fookus=True),
         kpi_plaat("us-lahk", "Selgitamata lahknevused", str(len(lahti)), "",
-                  {"tekst": "Eurostat ja Statistikaamet annavad sama küsitluse kohta eri numbri: "
-                            + ", ".join(f'{l["kood"]} {LNIMI.get(l["naitaja"], l["naitaja"])}' for l in lahti)},
+                  {"tekst": "Eurostat vs Statistikaamet: <b>"
+                            + ", ".join(f'{l["kood"]} {LNIMI.get(l["naitaja"], l["naitaja"])}' for l in lahti) + "</b>"},
                   "Seire allikate võrdlus"),
         kpi_plaat("us-uudis", "Väited uudistest", str(n_uud), f"/ {n} väitest",
-                  {"tekst": "kontrollitud algallika järgi samal skaalal kui teised väited"},
+                  {"tekst": "kontrollitud <b>algallika järgi</b>"},
                   "Seire uudiste kontroll"),
     )
     lead = "Avalikud väited, ka uudistest, kontrollitud algallika järgi ühel skaalal."
@@ -357,13 +357,13 @@ def kuidas(A, vaade, vaated=None):
     from lehed_ulevaade import kpi_pais, kpi_plaat
     aside = kpi_pais(
         kpi_plaat("kl-allikad", "Allikad", str(len(Al)), "",
-                  {"tekst": f"{riiklik} riiklikku statistikaametit ja {len(Al) - riiklik} rahvusvahelist organisatsiooni"},
+                  {"tekst": f"<b>{riiklik}</b> statistikaametit · <b>{len(Al) - riiklik}</b> rahvusvahelist"},
                   "Allikate register", fookus=True),
         kpi_plaat("kl-klassid", "Võrreldavuse klassid", str(len(KLASSI_SELGITUS)), "",
-                  {"tekst": "näitavad, kas kaks numbrit on võrreldavad; ühel teljel ainult „võrdlusalus“ ja „sama“"},
+                  {"tekst": "kas numbrid on <b>võrreldavad</b>"},
                   "Seire kataloog"),
         kpi_plaat("kl-uuringud", "Uuringud tehisarust ja tööst", str(len(U)), "",
-                  {"tekst": f"neist {n_tugev} tugeva tõendiga (katse või registriandmed)"},
+                  {"tekst": f"<b>{n_tugev}</b> tugeva tõendiga"},
                   "Uuringute kogu"),
     )
     lead = ""
