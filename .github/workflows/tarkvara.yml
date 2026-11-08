@@ -1,0 +1,42 @@
+name: tarkvara
+
+# Tarkvara- ja platvormihanked tootja kaupa (Microsoft, Power BI, Fabric vs Tableau, Qlik, SAS, Google, avatud lähtekood).
+# Laeb registri põhitabeli (hanked/lae.py) ja kirjutab logisse read "TARKVARA ...". Ainult lugemisõigus: repo ei muutu.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["tarkvara/**"]
+    paths: ["hanked/tarkvara.py", ".github/workflows/tarkvara.yml"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tarkvara-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  tarkvara:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache/restore@v4
+        with:
+          path: valjund/toores
+          key: hanked-toores-v1-${{ github.run_id }}
+          restore-keys: hanked-toores-v1-
+      - run: pip install -r hanked/requirements.txt
+      - name: Laadimine ja põhitabel
+        run: python hanked/lae.py --valjund valjund > valjund-lae.log && tail -3 valjund-lae.log
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: valjund/toores
+          key: hanked-toores-v1-${{ github.run_id }}
+      - name: Tarkvarahanked
+        run: cd hanked && python tarkvara.py --valjund ../valjund
