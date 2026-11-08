@@ -251,6 +251,166 @@ def _digi_ja_ta(A):
 </div>"""
 
 
+# ---------------------------------------------------------------- Põhjamaade võrdlus (Tehisaru 2027 meetod)
+
+RIIGID7 = ["EE", "FI", "SE", "DK", "NO", "DE", "NL"]
+POHJA4 = ["FI", "SE", "DK", "NO"]  # Tehisaru 2027 võrdlus: Põhjamaad koos Norraga (ELi skaalal on ainult 3)
+# (mõõdik analüüsi failis, seire näitaja või None, lühinimi, ühik, komakohti, väiksem on parem)
+PROFIIL = [
+    ("eurostat-isoc-ai-iaiu", "inimeste-tehisaru-kasutus", "Inimesed kasutavad generatiivset tehisaru", "% 16–74-aastastest", 1, False),
+    ("eurostat-isoc-ai-iaiu-too", "tooalane-tehisaru-kasutus", "Inimesed kasutavad seda tööl", "% 16–74-aastastest", 1, False),
+    ("eurostat-isoc-eb-ai", EB, "Ettevõtted kasutavad tehisaru", "% vähemalt 10 hõivatuga ettevõtetest", 1, False),
+    ("eurostat-isoc-ai-iaiuxr-oskus", "tehisaru-oskuse-puudus", "Ei kasuta tehisaru, sest ei oska", "% 16–74-aastastest, väiksem on parem", 1, True),
+    ("eurostat-isoc-sk-dskl-i21", "inimeste-digioskused", "Vähemalt baastasemel digioskused", "% 16–74-aastastest", 1, False),
+    ("eurostat-isoc-sks-itspt", None, "IKT-spetsialistid hõivatute seas", "% hõivatutest", 1, False),
+    ("uis-ikt-lopetajad", None, "IKT eriala lõpetajad", "% kõrgkoolide lõpetajatest", 1, False),
+    ("eurostat-rd-e-gerdtot", "ta-kulud", "Teadus- ja arendustegevuse kulu", "% SKPst", 2, False),
+    ("uis-teadlased", None, "Teadlased", "miljoni elaniku kohta", 0, False),
+]
+PP_HINNANG = {"yle": "üle kõigi Põhjamaade", "vahemik": "Põhjamaade vahemikus", "maas": "Põhjamaadest maas, EList eespool",
+              "alla_el": "ELi keskmisest maas", "alla_pohja": "alla kõigi Põhjamaade"}
+PP_NIMI = {"EE": "Eesti", "FI": "Soome", "SE": "Rootsi", "DK": "Taani", "NO": "Norra", "DE": "Saksamaa", "NL": "Holland"}
+
+
+def pohjamaade_profiil(A, csv_fail=None):
+    """Üheksa näitajat seitsmes riigis. Seire andmed, kui näitaja on seires; muidu analüüsi fail (raportid/html)."""
+    import csv
+    from pathlib import Path
+    from statistics import mean
+    csv_fail = csv_fail or Path(__file__).resolve().parent.parent / "raportid" / "html" / "analuus-andmed.csv"
+    S, meta = {}, {}
+    for r in csv.DictReader(open(csv_fail, encoding="utf-8")):
+        S.setdefault(r["moodik"], {}).setdefault(r["riik"], {})[int(r["aasta"])] = float(r["vaartus"])
+        meta[r["moodik"]] = (r["allikas"].replace("INT-", "").replace("EUROSTAT", "Eurostat"), r["andmestik"], r["url"])
+    out = []
+    for mid, nid, nimi, uhik, k, vp in PROFIIL:
+        if nid:  # seire enda Eurostati aegrida (uueneb iga päev)
+            s = {}
+            for v in A["vaatlused"]:
+                if v["naitaja"] == nid and v["klass"] == "alus" and v["geo"] in RIIGID7 + [EL]:
+                    s.setdefault(v["geo"], {})[v["aasta"]] = v["vaartus"]
+            m = A["meta"][nid]
+            allikas = (A["naitajad"][nid]["allikas"], A["naitajad"][nid]["andmestik"],
+                       A["moodikud"].get(next((x for x in A["moodikud"] if A["moodikud"][x]["naitaja"] == nid
+                                               and A["moodikud"][x]["vorreldavus"] == "alus"), ""), {}).get("url") or m["url"])
+        else:
+            s, allikas = S.get(mid, {}), meta.get(mid)
+            if not s:
+                raise AndmeViga(f"Põhjamaade võrdlus: mõõdik {mid} puudub failis {csv_fail.name}")
+        aastad = sorted({y for g in RIIGID7 for y in s.get(g, {})}, reverse=True)
+        a = next((y for y in aastad if y in s.get("EE", {}) and sum(1 for g in RIIGID7[1:] if y in s.get(g, {})) >= 5), None)
+        if a is None:
+            raise AndmeViga(f"Põhjamaade võrdlus: mõõdikul {mid} pole aastat, kus on Eesti ja vähemalt 5 riiki")
+        v = {g: s[g][a] for g in RIIGID7 + [EL] if a in s.get(g, {})}
+        ee, el = v["EE"], v.get(EL)
+        po = [v[g] for g in POHJA4 if g in v]
+        pk = mean(po)
+        parem = (lambda x, y: x < y) if vp else (lambda x, y: x > y)
+        jrk = sorted((g for g in RIIGID7 if g in v), key=lambda g: v[g] if vp else -v[g])
+        if el is not None and parem(el, ee):
+            h = "alla_el"
+        elif all(parem(ee, x) for x in po):
+            h = "yle"
+        elif all(parem(x, ee) for x in po):
+            h = "maas" if el is not None else "alla_pohja"
+        else:
+            h = "vahemik"
+        out.append(dict(mid=mid, nimi=nimi, uhik=uhik, k=k, vp=vp, a=a, v=v, ee=ee, el=el, pk=pk, po=po, n_po=len(po),
+                        koht=jrk.index("EE") + 1, n=len(jrk), hinnang=h, indeks=(pk / ee if vp else ee / pk) * 100,
+                        allikas=allikas, seirest=bool(nid)))
+    return out
+
+
+def _arvt(x, k):
+    """Arv koos tuhandete tühikuga (4 800)."""
+    t = pr(x, k)
+    t_int, _, frac = t.partition(",")
+    if len(t_int) > 4:
+        t_int = f"{int(t_int):,}".replace(",", " ")
+    return t_int + ("," + frac if frac else "")
+
+
+def _pohjamaad(A):
+    P = pohjamaade_profiil(A)
+    tasemel = [p for p in P if p["hinnang"] in ("yle", "vahemik")]
+    maas = [p for p in P if p["hinnang"] not in ("yle", "vahemik")]
+    from abi import OMASTAV
+    arv = lambda n: OMASTAV[n] + "s" if n in OMASTAV else "mitte ühe"  # noqa: E731  seesütlev: kolmes, viies
+    read = []
+    for p in P:
+        vv = list(p["v"].values())
+        lo, hi = min(vv), max(vv)
+        pad = (hi - lo) * 0.08 or 1
+        lo, hi = max(0, lo - pad), hi + pad
+        x = lambda z: (z - lo) / (hi - lo) * 100  # noqa: E731
+        punktid = "".join(f'<i class="pp-p" style="left:{x(z):.2f}%" title="{e(PP_NIMI[g])} {pr(z, p["k"])}"></i>'
+                          for g, z in p["v"].items() if g not in ("EE", EL))
+        ala = f'<span class="pp-ala" style="left:{x(min(p["po"])):.2f}%;width:{x(max(p["po"])) - x(min(p["po"])):.2f}%"></span>'
+        el = f'<i class="pp-el" style="left:{x(p["el"]):.2f}%" title="EL {pr(p["el"], p["k"])}"></i>' if p["el"] is not None else ""
+        ee = f'<i class="pp-ee" style="left:{x(p["ee"]):.2f}%"></i>'
+        u = "%" if p["uhik"].startswith("%") else ""
+        read.append(f'<div class="pp-rida"><span class="n">{e(p["nimi"])}<small>{e(p["uhik"])} · {p["a"]}</small></span>'
+                    f'<span class="pp-rada" aria-hidden="true">{ala}{punktid}{el}{ee}</span>'
+                    f'<span class="v"><b>{_arvt(p["ee"], p["k"])}{u}</b> {p["koht"]}./{p["n"]}</span></div>')
+    t_read = [[f'<b>{e(p["nimi"])}</b><small>{e(p["uhik"])}, {p["a"]}</small>', _arvt(p["ee"], p["k"]),
+               _arvt(p["pk"], p["k"]), f'{pr(p["indeks"], 0)}', e(PP_HINNANG[p["hinnang"]]),
+               f'{p["koht"]}./{p["n"]}'] for p in P]
+    allikad = []
+    for p in P:
+        nm = f'{p["allikas"][0]}, {p["allikas"][1]}'
+        if all(nm != x[0] for x in allikad):
+            allikad.append((nm, p["allikas"][2], ""))
+    ettev = next(p for p in P if p["mid"] == "eurostat-isoc-eb-ai")
+    vaike = lambda t: t if t[1:2].isupper() else t[:1].lower() + t[1:]  # noqa: E731  „IKT“ jääb suurtähtedega
+    nimed = lambda pp: ", ".join(vaike(p["nimi"]) for p in pp)  # noqa: E731
+    return f"""
+<section class="jaotis" id="pohjamaad" aria-labelledby="h-pohjamaad">
+  <header>
+    <h2 id="h-pohjamaad">Üheksast näitajast on Eesti Põhjamaade tasemel {arv(len(tasemel))}, <b>{arv(len(maas))} jääb Põhjamaadest maha</b></h2>
+    <p class="alam">Seitse riiki igal näitajal: Eesti, Soome, Rootsi, Taani, Norra, Saksamaa ja Holland. Iga rida on oma skaalal, ridu omavahel ei võrrelda.</p>
+    {vastavus("osaliselt", "Näitajad on samast küsimustikust kõigis riikides, aga need mõõdavad eri asju (inimesed, ettevõtted, kulud). Ühte koondnumbrit neist ei arvutata.")}
+  </header>
+  <figure aria-labelledby="g-pohjamaad">
+    <figcaption><span class="gt" id="g-pohjamaad">Eesti seitsme riigi seas, iga näitaja oma skaalal</span>
+      <span class="gs"><i class="pp-leg ala"></i> Põhjamaade vahemik (Soome, Rootsi, Taani, Norra) · <i class="pp-leg el"></i> ELi keskmine · <i class="pp-leg ee"></i> Eesti · paremal Eesti väärtus ja koht.</span></figcaption>
+    <div class="pp">{"".join(read)}</div>
+    {allikarida(allikad)}
+  </figure>
+  <div class="kulg">{faktid([
+      ("Maas", "risk", f'Põhjamaadest maas: {e(nimed(maas))}.' if maas else "Eesti ei jää üheski näitajas Põhjamaadest maha."),
+      ("Põhjamaade tasemel", "s", f'{e(nimed(tasemel)[:1].upper() + nimed(tasemel)[1:])}.' if tasemel else "Mitte üheski näitajas."),
+      ("Kuidas arvutatud", "", "Arvutatud: indeks = Eesti väärtus / Põhjamaade keskmine × 100 (näitajal „ei oska“ vastupidi, sest väiksem on parem). "
+                               "Aasta on uusim, kus on olemas Eesti ja vähemalt viis teist riiki. Meetod on sama mis Tehisaru 2027 lehel."),
+      ("Erinev keskmine", "", f'Siin on Põhjamaade keskmine neli riiki koos Norraga. Lehe Kasutus vahe Põhjamaadega arvutab ainult kolm ELi Põhjamaad, '
+                              f'seepärast on ettevõtete vahe seal teine number (siin Eesti {pr(ettev["ee"])}% ja Põhjamaade keskmine {pr(ettev["pk"])}%, {ettev["a"]}).'),
+  ])}</div>
+  <details>
+    <summary>Näita andmetabelit ja indeksit</summary>
+    <div>{tabel(["Näitaja", "Eesti", "Põhjamaade keskmine", "Indeks (100 = Põhjamaad), arvutatud", "Hinnang", "Koht"], t_read,
+                pealdis="Eesti ja Põhjamaade keskmine üheksas näitajas")}
+      <p>Kuus näitajat tulevad seire enda Eurostati andmetest ja uuenevad iga päev. IKT-spetsialistid, IKT lõpetajad ja teadlased tulevad Tehisaru 2027 analüüsi failist (Eurostat ja UNESCO UIS).</p></div>
+  </details>
+</section>"""
+
+
+def _arenguseire(A):
+    L = A["leiud"]
+    j = [L["ars-jareldus-digi"], L["ars-jareldus-juhtimine"], L["ars-jareldus-koostoo"]]
+    risk = L["ars-risk-lohe"]
+    li = "".join(f'<li><span class="nr">{i}</span><div><h3>{e(r["leid"].split(":")[0])}</h3><p>{e(r["leid"].split(": ", 1)[1][:1].upper() + r["leid"].split(": ", 1)[1][1:])}</p></div></li>'
+                 for i, r in enumerate(j, 1))
+    return f"""
+<section class="jaotis" id="arenguseire" aria-labelledby="h-arenguseire">
+  <header>
+    <h2 id="h-arenguseire">Arenguseire Keskuse järeldus: ettevõtteid tuleb toetada tervikuna, <b>mitte ainult tööriistade katsetamisel</b></h2>
+    <p class="alam">Soovitus · Arenguseire Keskus. {e(j[0]["markus"])}</p>
+  </header>
+  <ol class="sammud">{li}</ol>
+  {faktid([("Risk · Arenguseire Keskus", "risk", e(risk["leid"]))], koik_lahti=True)}
+  {allikarida([(j[0]["allikas"], j[0]["url"], kp(j[0]["avaldatud"]) + "; " + j[0]["kontrollitud"])])}
+</section>"""
+
+
 def ettevotted(A, vaade, vaated=None):
     """Kaks alamlehte (sisuloogika 6.11.2026, Kadri otsus 6): Kasutus | Tootlikkus ja võimekus."""
     from abi import jaga
@@ -324,6 +484,8 @@ def ettevotted(A, vaade, vaated=None):
         ("tootlikkus", [("tootlikkus", "Tootlikkus")], _tootlikkus(A)),
         ("voimekus", [("digi", "Digiintensiivsus"), ("ta", "Teadus ja arendus")],
          lisa_sihid(A, lisa_sihid(A, _digi_ja_ta(A), "digi", "el-digiintensiivsus-90"), "ta", "el-ta-3")),
+        ("arenguseire", [("arenguseire", "Arenguseire järeldused")], _arenguseire(A)),
+        ("pohjamaad", [("pohjamaad", "Põhjamaade võrdlus")], _pohjamaad(A)),
     ], aside=aside)
 
 

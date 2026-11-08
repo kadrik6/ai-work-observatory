@@ -672,11 +672,12 @@ def avalik_sektor(A, vaade, vaated=None):
       {allikas}
     </figure>
     <figure aria-labelledby="g-hindamine">
-      <figcaption><span class="gt" id="g-hindamine">Mida hinnati, % hindamistest</span>
-        <span class="gs">Ainult hinnatud uuendustest.</span></figcaption>
-      {lihtribad([("Protsess, töötajad", v("hindamine-protsess-tootajad"), None), ("Protsess, juhid", v("hindamine-protsess-juhid"), None),
-                  ("Raha väärtus, juhid", v("hindamine-vfm-juhid"), None), ("Raha väärtus, töötajad", v("hindamine-vfm-tootajad"), None)], 100, 25, "%")}
-      {allikarida([("OECD (2026)", OECD_URL, _o(A, "hindamine-vfm-juhid")["koht"])])}
+      <figcaption><span class="gt" id="g-hindamine">Hindamismeetod, % töötajate kirjeldatud hindamistest</span>
+        <span class="gs">Üks hindamine võib kasutada mitut meetodit. Juhtide järgi oli tasuvuse hindamine {pr(v("hindamine-vfm-juhid"), 0)}%.</span></figcaption>
+      {lihtribad([("Protsess", v("hindamine-protsess-tootajad"), None), ("Tasuvus", v("hindamine-vfm-tootajad"), None),
+                  ("Teooriapõhine", v("hindamine-teooria-tootajad"), None), ("Kulude ja tulude analüüs", v("hindamine-cba-tootajad"), None),
+                  ("Katse (RCT)", v("hindamine-rct-tootajad"), None), ("Kvaasikatse", v("hindamine-kvaasi-tootajad"), None)], 100, 25, "%")}
+      {allikarida([("OECD (2026)", OECD_URL, "joonised 6.3 ja 6.4 (lk 132–133)")])}
     </figure>
     </div>
     <div class="kulg">
@@ -711,6 +712,144 @@ def avalik_sektor(A, vaade, vaated=None):
       ])}
     </div>
   </div>
+</section>"""
+
+    # Tehisaru 2027 lehelt toodud OECD lisatulemused (Kadri 8.11.2026: kõik ühes kohas, samad meetodid)
+    et = [("Uurimine", "etapp-uurimine"), ("Ideed", "etapp-ideed"), ("Prototüüp", "etapp-prototyyp"),
+          ("Hindamine", "etapp-hindamine"), ("Otsus", "etapp-otsus")]
+    langus = round(v("etapp-prototyyp") - v("etapp-hindamine"))
+    if max(round(v(et[i][1]) - v(et[i + 1][1])) for i in range(len(et) - 1)) != langus:
+        raise AndmeViga("OECD etapid: suurim langus ei ole enam prototüübist hindamiseni")
+    sec_etapid = f"""
+<section class="jaotis" id="etapid" aria-labelledby="h-etapid">
+  <header>
+    <h2 id="h-etapid">Uuendused jäävad toppama hindamise ja otsuse ees: prototüübist hindamiseni jõuab <b>{langus} punkti vähem</b> projekte</h2>
+    <p class="alam">Uuendusprojektide osakaal, mis jõudis etapini (projekte {", ".join(_o(A, k)["lugeja"] for _, k in et)}).</p>
+  </header>
+  <div class="kaks">
+    <figure aria-labelledby="g-etapid">
+      <figcaption><span class="gt" id="g-etapid">Etapini jõudnud uuendusprojektid, %</span></figcaption>
+      {lihtribad([(n, v(k), None) for n, k in et], 100, 25, "%", fookus="Hindamine")}
+      {allikarida([("OECD (2026)", OECD_URL, _o(A, "etapp-uurimine")["koht"])])}
+    </figure>
+    <div class="kulg">
+      {vastavus("osaliselt", "Vastajad kirjeldasid oma projekte. Tehisaru projekte eraldi ei loendata.")}
+      {faktid([
+          ("Fakt", "", f'Kõige olulisematest uuendustest jõuab rakendamiseni {pr(v("rakendati"), 0)}%, laiendatakse {pr(v("laiendati"), 0)}%. {e(_o(A, "etapp-otsus")["markus"])}'),
+          ("Tõlgendus · OECD", "s", "Hinnatakse peamiselt protsessi; mõju ja tasuvust hinnatakse harvem, nii et otsustajal on vähe tõendeid laiendamiseks."),
+      ], koik_lahti=True)}
+    </div>
+  </div>
+</section>"""
+
+    liigid = [("Olemasoleva parandamine", "liik-parandus"), ("Kohanemine muutustega", "liik-kohanemine"),
+              ("Missioonipõhine", "liik-missioon"), ("Tulevikku ennetav", "liik-ennetav"), ("Muu", "liik-muu")]
+    if not 60 <= v("liik-parandus") <= 70:
+        raise AndmeViga("OECD uuenduse liigid: „kaks kolmandikku“ ei klapi enam")
+    mootmed = [("Eesmärk", "eesmark"), ("Potentsiaal", "potentsiaal"), ("Võimekus", "voimekus"), ("Mõju", "moju")]
+    ix = lambda m, k: f'{_o(A, f"indeks-{m}-{k}")["vaartus"].replace(".", ",")}'  # noqa: E731
+    if max(v(f"indeks-moju-max"), 0) >= min(v(f"indeks-{m}-min") for _, m in mootmed[:3]):
+        raise AndmeViga("OECD indeks: mõju ei ole enam kõigist teistest mõõtmetest madalam")
+    m_read = [[f'<b>{n}</b><small>{e(_o(A, f"indeks-{m}-min")["markus"].split(". ")[0].rstrip("."))}.</small>', f"{ix(m, 'min')}–{ix(m, 'max')}"] for n, m in mootmed]
+    sec_liigid = f"""
+<section class="jaotis" id="liigid" aria-labelledby="h-liigid">
+  <header>
+    <h2 id="h-liigid">Kaks kolmandikku uuendustest parandab olemasolevat, <b>tulevikku ennetavaid on {pr(v("liik-ennetav"), 0)}%</b></h2>
+    <p class="alam">Uuendajate osakaal uuenduse liigi järgi. Üks uuendus võib kuuluda mitmesse liiki, seega osad ei liitu 100%-ni.</p>
+  </header>
+  <div class="kaks">
+    <figure aria-labelledby="g-liigid">
+      <figcaption><span class="gt" id="g-liigid">Uuenduse liik, % uuendajatest</span></figcaption>
+      {lihtribad([(n, v(k), None) for n, k in liigid], 100, 25, "%", fookus="Tulevikku ennetav")}
+      {allikarida([("OECD (2026)", OECD_URL, _o(A, "liik-parandus")["koht"])])}
+    </figure>
+    <div class="kulg">
+      {faktid([("Fakt", "", e(_o(A, "liik-parandus")["markus"].split(". ", 1)[1]))], koik_lahti=True)}
+    </div>
+  </div>
+</section>
+<section class="jaotis" id="moju" aria-labelledby="h-moju">
+  <header>
+    <h2 id="h-moju">Tahe ja oskused on olemas, aga uuenduste <b>mõju mõõdetakse vähe</b>: mõju skoor on kõigis valitsemisalades {ix("moju", "min")}–{ix("moju", "max")}</h2>
+    <p class="alam">OECD indeks 0–1 neljas mõõtmes, vastajate järgi valitsemisalas. Tabelis on madalaim ja kõrgeim valitsemisala.</p>
+  </header>
+  <div class="kaks">
+    <div>{tabel(["Mõõde", "Vahemik valitsemisalade vahel"], m_read, fookus_rida=3, pealdis="OECD innovatsioonivõimekuse indeks valitsemisalade kaupa")}
+      {allikarida([("OECD (2026)", OECD_URL, _o(A, "indeks-moju-min")["koht"])])}</div>
+    <div class="kulg">
+      {faktid([
+          ("Tõlgendus · OECD", "s", "Omavalitsuste töötajad teevad uuendusi sama sageli kui keskvalitsuses, aga neil on vähem oma eelarvet ja struktuure, mis uuendusi toetaksid."),
+          ("Pea meeles", "risk", e(_o(A, "indeks-moju-min")["markus"].split(". ", 1)[1])),
+      ])}
+    </div>
+  </div>
+</section>"""
+
+    osk = [("Tehisaru kasutuselevõtt", "oskus-kasutuselevott"), ("Strateegiline juhtimine ja teenused", "oskus-strateegia"),
+           ("Suhtlus ja mõjutamine", "oskus-suhtlus"), ("Digi- ja andmeoskused", "oskus-digi"),
+           ("Andmepõhised otsused", "oskus-andmeotsused"), ("Tehisaruoskuste arendamine", "oskus-arendus")]
+    if max(osk, key=lambda x: v(x[1]))[1] != "oskus-kasutuselevott":
+        raise AndmeViga("OECD oskused: tehisaru kasutuselevõtt ei ole enam kõige soovitum oskus")
+    kn, kp_ = _o(A, "kirjaoskus-genai-null"), _o(A, "kupsus-null")
+    sec_oskused = f"""
+<section class="jaotis" id="oskused" aria-labelledby="h-oskused">
+  <header>
+    <h2 id="h-oskused">Töötajad tahavad kõige rohkem arendada <b>tehisaru kasutuselevõtu</b> oskusi</h2>
+    <p class="alam">Vastused küsimusele „Milliseid oskusi tahaksid kõige rohkem arendada?“, kokku {_o(A, "oskus-kasutuselevott")["nimetaja"]} vastust.</p>
+  </header>
+  <div class="kaks">
+    <figure aria-labelledby="g-oskused">
+      <figcaption><span class="gt" id="g-oskused">Soovitud oskus, % vastustest</span></figcaption>
+      {lihtribad([(n, v(k), None) for n, k in osk], 50, 10, "%", fookus=0)}
+      {allikarida([("OECD (2026)", OECD_URL, _o(A, "oskus-kasutuselevott")["koht"])])}
+    </figure>
+    <div class="kulg">
+      {faktid([
+          ("Hoiatus · OECD", "risk", e(_o(A, "oskus-arendus")["markus"])),
+          ("Kuidas mõõdeti", "", e(_o(A, "oskus-kasutuselevott")["markus"])),
+      ])}
+    </div>
+  </div>
+</section>
+<section class="jaotis" id="kupsus" aria-labelledby="h-kupsus">
+  <header>
+    <h2 id="h-kupsus">Üheski asutuses ei ole tehisaru juhtimise küpsus üle {pr(v("kupsus-max"), 0)}% ega töötajate kasutusvõimekus üle {pr(v("kasutusvoimekus-max"), 0)}%; <b>{kp_["lugeja"]} asutusel {kp_["nimetaja"]}-st on küpsus null</b></h2>
+    <p class="alam">{e(_o(A, "kupsus-max")["markus"])} {e(_o(A, "kasutusvoimekus-max")["markus"])}</p>
+  </header>
+  <div class="kaks">
+    <figure aria-labelledby="g-kupsus">
+      <figcaption><span class="gt" id="g-kupsus">Asutused tehisaru juhtimise küpsuse järgi, asutuste arv</span></figcaption>
+      {osad([("Küpsus null", int(kp_["lugeja"]), "k-a", e(kp_["markus"])),
+             ("Küpsus üle nulli", int(kp_["nimetaja"]) - int(kp_["lugeja"]), "k-c", f'kõrgeim {pr(v("kupsus-max"), 0)}%')], f'{kp_["nimetaja"]} asutust')}
+      {allikarida([("OECD (2026)", OECD_URL, kp_["koht"])])}
+    </figure>
+    <div class="kulg">
+      {faktid([
+          ("Fakt", "", f'{kn["lugeja"]} asutuses {kn["nimetaja"]}-st {e(kn["mida"].split("-st ", 1)[1])}. {e(kn["markus"])} ({e(kn["koht"])})'),
+          ("Usaldus", "risk", f'{pr(v("usaldus"), 0)}% {e(_o(A, "usaldus")["mida"])}. {e(_o(A, "usaldus")["markus"])} ({e(_o(A, "usaldus")["koht"])})'),
+      ], koik_lahti=True)}
+    </div>
+  </div>
+</section>"""
+
+    hi = _o(A, "hanked-innovatsioon")
+    hp = _o(A, "hanked-pole")
+    fond = _o(A, "innovatsioonifond")
+    r_read = [
+        [f'<b>{pr(v("raha-el"), 0)}%</b>', e(_o(A, "raha-el")["mida"]) + f'<small>{e(_o(A, "raha-el")["markus"])}</small>', e(_o(A, "raha-el")["koht"])],
+        [f'<b>{pr(v("hanked-innovatsioon"), 1)}%</b>', e(hi["mida"]) + f'<small>{e(hi["markus"])} Siht on samast aruandest.</small>', e(hi["koht"])],
+        [f'<b>{pr(v("hanked-pole"), 0)}%</b> <small>({hp["lugeja"]}/{hp["nimetaja"]})</small>', e(hp["mida"]), e(hp["koht"])],
+        [f'<b>{pr(v("innovatsioonifond"), 0)} mln €</b>', e(fond["mida"]), e(fond["koht"])],
+    ]
+    sec_raha = f"""
+<section class="jaotis" id="rahastus" aria-labelledby="h-rahastus">
+  <header>
+    <h2 id="h-rahastus">Uuendusi rahastatakse projektidest: <b>{pr(v("raha-el"), 0)}% uuendusrahast tuli ELilt</b> ja innovatsioonihankeid tehakse vähe</h2>
+    <p class="alam">Iga number loeb eri asja, seepärast on need tabelis, mitte ühel teljel.</p>
+  </header>
+  {tabel(["Number", "Mida see loeb", "Kus aruandes"], r_read, numbrid=[], pealdis="Avaliku sektori uuenduste rahastus")}
+  {faktid([("Vastuolu aruandes", "risk", e(fond["markus"]))], koik_lahti=True)}
+  {allikarida([("OECD (2026)", OECD_URL, "2. ja 6. peatükk")])}
 </section>"""
 
     nimed = {"klaster-eesliin": ("Eestvedajad", "k-a"), "klaster-enamus": ("Piiratud enamus", "k-b"),
@@ -771,10 +910,12 @@ def avalik_sektor(A, vaade, vaated=None):
     import teemamall as tm
     from lehed_ulevaade import vaite_teema
     U = A["uuringud"]
-    sec_andmed = tm.andmesakid("avalik-sektor", "Uuri andmeid: uuendused, tehisaru, asutuste rühmad ja OECD soovitused",
+    sec_andmed = tm.andmesakid("avalik-sektor", "Uuri andmeid: uuendused, tehisaru, rahastus, asutuste rühmad ja OECD soovitused",
                                "Kõik numbrid on OECD avalikust raportist (2026), küsitlus detsember 2025 kuni veebruar 2026.", [
-        ("lehter", "Rakendamine", sec_lehter),
-        ("tehisaru", "Tehisaru", sec_genai),
+        ("lehter", "Rakendamine", sec_lehter + sec_etapid),
+        ("liigid", "Uuenduse liik ja mõju", sec_liigid),
+        ("tehisaru", "Tehisaru", sec_genai + sec_oskused),
+        ("rahastus", "Rahastus", sec_raha),
         ("kiirused", "Kolm rühma", sec_kiirus),
         ("soovitused", "Soovitused", sec_soov),
     ])
@@ -853,7 +994,55 @@ def reeglid(A, vaade, vaated=None, tana=None):
     )
     j_tekst = f'Järgmine tähtaeg on {jargmine[1]}: {e(jargmine[2].lower())}.' if jargmine else ""
     lead = j_tekst
-    return pea(A, vaade, lead, [], [], aside=aside) + sec_aeg
+    sec_ee = eesti_otsused(A, vaade, vaated, tana)
+    return jaga(A, vaade, lead, [], [
+        ("tahtajad", [("tahtajad", "ELi tähtajad")], sec_aeg),
+        ("eesti", [("eesti-otsused", "Eesti otsused")], sec_ee),
+    ], aside=aside)
+
+
+def eesti_otsused(A, vaade, vaated, tana):
+    """Eesti riigi otsused, eelnõud, hanked ja tähtajad igapäevasest uudistekogumisest (teema „riik“, alates 9.11.2026).
+
+    Kirjeid ei kanta käsitsi (Kadri 8.11.2026 23:02: kogumine peab need ise leidma)."""
+    from lehed_uudised import RIIGI_LIIK, _uudis
+    U = [r for r in (A.get("uudised") or []) if r.get("teema") == "riik"]
+    U.sort(key=lambda r: r["kuupaev"], reverse=True)
+    ees = sorted((r for r in U if r.get("tahtaeg") and r["tahtaeg"] >= tana), key=lambda r: r["tahtaeg"])
+    fail = "eesti-otsused.html"
+    if not U:
+        alam_h1(vaade, fail, "Eesti riigi otsused, eelnõud ja tähtajad tulevad siia **igapäevasest uudistekogumisest**.")
+        return f"""
+<section class="jaotis" id="eesti-otsused" aria-labelledby="h-eesti-otsused">
+  <header>
+    <h2 id="h-eesti-otsused">Riigi otsuseid ja tähtaegu pole kogumine veel leidnud</h2>
+    <p class="alam">Kogumine otsib kaks korda päevas riigi otsuseid, eelnõusid, riigihankeid, tähtaegu, üritusi ja aruandeid. Kirjeid ei kanta siia käsitsi.</p>
+  </header>
+</section>"""
+    loend = lambda rr: f'<ul class="u-voog" data-piir-li="12">{"".join(_uudis(r) for r in rr)}</ul>'  # noqa: E731
+    if ees:
+        j = ees[0]
+        alam_h1(vaade, fail, f'Kogumine on leidnud {len(U)} Eesti riigi otsust, eelnõu või tähtaega; '
+                             f'**järgmine tähtaeg on {kp(j["tahtaeg"])}**.')
+    else:
+        alam_h1(vaade, fail, f'Kogumine on leidnud {len(U)} Eesti riigi otsust või eelnõu; **eesolevaid tähtaegu neis pole**.')
+    liigid = {}
+    for r in U:
+        liigid[r.get("riigi_liik") or "muu"] = liigid.get(r.get("riigi_liik") or "muu", 0) + 1
+    kokku = ", ".join(f'{n} {RIIGI_LIIK.get(k, k)}' for k, n in sorted(liigid.items(), key=lambda x: -x[1]))
+    ees_html = (f'<h3 class="veerg">Ees olevad tähtajad ({len(ees)})</h3>' + loend(ees)) if ees else ""
+    return f"""
+<section class="jaotis" id="eesti-otsused" aria-labelledby="h-eesti-otsused">
+  <header>
+    <h2 id="h-eesti-otsused">Riigi otsused, eelnõud ja tähtajad: <b>{len(U)} kirjet</b> ({e(kokku)})</h2>
+    <p class="alam">Kirjed tulevad igapäevasest uudistekogumisest (riigi asutuste lehed ja uudisteotsing), mitte käsitsi. Iga kirje juures on algallika link.</p>
+    {vastavus("osaliselt", "Kogumine leiab avalikult teatatud otsuseid. Eelnõude infosüsteemi kogumine ei loe, nii et kõik eelnõud ei pruugi siia jõuda.")}
+  </header>
+  {ees_html}
+  <h3 class="veerg">Kõik kirjed, uusimad eespool</h3>
+  {loend(U)}
+  <p class="lingid">{link(vaated, "uudised", "Kõik uudised")}</p>
+</section>"""
 
 
 SIHI_TEEMA = {"inimesed": ("el-digioskused-80",), "ettevotted": ("ee-ettevotted-75",),
