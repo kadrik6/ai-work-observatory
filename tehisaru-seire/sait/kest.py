@@ -30,7 +30,7 @@ ANALYYTIKA_JS = ("<script>(function(){var h=location.hostname,ok=" + "||".join(f
                  "var s=document.createElement('script');s.defer=true;s.src='/_vercel/insights/script.js';"
                  "document.head.appendChild(s)})()</script>")
 TEEMA_JS = ("<script>(function(){var t=null;try{t=localStorage.getItem('seire-teema-2')}catch(e){}"
-            "if(['light','soft','dark'].indexOf(t)<0)t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?null:'soft';"
+            "if(['light','soft','dark'].indexOf(t)<0)t='soft';"  # Pehme ka siis, kui seade on tumedas režiimis (Kadri 8.11.2026)
             "if(t)document.documentElement.setAttribute('data-seire-teema',t)})()</script>")
 
 

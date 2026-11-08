@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 8.11.2026 | Seire sait: vaiketeema on alati Pehme, ka siis, kui seade on tumedas režiimis. Varem avanes uuel aadressil (Vercel) tume teema. Kadri 22:13. |
 | 8.11.2026 | Koondamiste tehisaru rollile lisandus „ei_pohjus“ (ettevõte ütles otse, et tehisaru ei ole põhjus). Eesti Energia juhtum on nüüd selle rolliga (Äripäev 6.11), mitte „ei mainita“. Muudetud: tooelu-seire/koondamised_ee.json, seire sait, KJZJ generaator tee_leiud.py. Kadri 8.11 22:06. |
 | 8.11.2026 | Seire sait: uudiste „eksitav“ silt on heleroosa (tume teema: tumeroosa taust, heleroosa tekst), Kadri 22:02. |
 | 8.11.2026 | Seire sait: „uus“ märk on U8 heledam oranž (#f2a65e, Kadri lukustas 21:57); avalehe „Mis muutus“ loendis on märgil ainult „uus“, mitte „uus number“. |

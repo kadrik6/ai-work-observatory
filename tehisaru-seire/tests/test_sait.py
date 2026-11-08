@@ -960,3 +960,10 @@ def test_tehisaru_eitamine_on_oma_roll(sait):
     K = json.loads((ehita.SIIN.parent.parent / "tooelu-seire" / "koondamised_ee.json").read_text(encoding="utf-8"))
     assert "ei_pohjus" in K["rollid"]
     assert next(j for j in K["juhtumid"] if j["id"] == "eesti-energia-2026-11")["roll"] == "ei_pohjus"
+
+
+def test_vaiketeema_on_pehme_ka_tumedas_seadmes():
+    # Kadri 8.11.2026: Vercelis avanes tume teema, sest seade oli tumedas režiimis; vaikimisi peab olema Pehme.
+    from sait import kest
+    assert "prefers-color-scheme" not in kest.TEEMA_JS
+    assert "t='soft'" in kest.TEEMA_JS
