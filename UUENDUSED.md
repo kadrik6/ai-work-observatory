@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 8.11.2026 | Seire sait: „Sellel lehel“ R1 (Kadri lukustas 21:24). Parem veerg kadus, sisu saab kogu laiuse; jaotiste kiibirida on igal ekraanil pealkirjaploki all ja kleepub kerimisel päise alla. Ankrud jäävad rea alla (--lehel-h), lehe lõpus märgitakse viimane nähtav jaotis, telefonis keritakse märgitud kiip nähtavale. Test kontrollib, et rida on `<main>` otsene laps. |
 | 8.11.2026 | Seire sait: „Kõik teemad“ nupp on N6 „Ainult ikoon“ (Kadri lukustas 8.11 kell 21:20): arvutis ruudustikuikoon, silt ilmub hõljudes ja fookusega, ekraanilugejale „Kõik teemad“; telefonis ikoon + „Menüü“. |
 | 8.11.2026 | Seire sait: „Kõik teemad“ menüü on M1 „Kaardid hallil“ (Kadri lukustas 8.11 kell 21:13): hallil taustal valged teemakaardid, küsimus nime all, alamlehed kiipidena, avatud menüü taga leht tumeneb ja klõps kattele sulgeb menüü. Telefonis on iga teema juures küsimus. Nupu kuju valitakse eraldi. |
 | 8.11.2026 | Seire sait: Pehme teema (vaikimisi) on nüüd H1 „Helehall“: hele neutraalne hall taust ja valged kastid sinaka asemel (Kadri lukustas 8.11 kell 21:01 taustanäidiste lehelt). Muutusid ainult Pehme teema taustatokenid failis `sait/stiil.css`. |

@@ -81,18 +81,40 @@ def _lehel(nav, cls):
     return nav.replace('<nav aria-label="Sellel lehel">', f'<nav class="lehel {cls}" aria-label="Sellel lehel">', 1)
 
 
+def _ploki_lopp(sisu, i):
+    """Koht pärast välimist <div>-i, mille sees on indeks i (või i ise, kui see pole ühegi div-i sees)."""
+    sugavus, algus = 0, None
+    for t in re.finditer(r"<(/?)div\b[^>]*>", sisu[:i]):
+        if t.group(1):
+            sugavus -= 1
+        else:
+            if sugavus == 0:
+                algus = t.start()
+            sugavus += 1
+    if sugavus <= 0:
+        return i
+    for t in re.finditer(r"<(/?)div\b[^>]*>", sisu[i:]):
+        sugavus += -1 if t.group(1) else 1
+        if sugavus == 0:
+            return i + t.end()
+    return i
+
+
 def leht(A, vaated, vaade, sisu, title, fail=None):
     fail = fail or vaade["fail"]
     # Navigatsioon B (Kadri 6.11.2026 22:51): päises teemad ja „Kõik teemad“; teema alamlehed sakkidena pealkirja all;
-    # „Sellel lehel“ laial ekraanil paremal kleepuvas veerus, kitsamal sakkide all üks rida.
+    # „Sellel lehel“ on igal ekraanil üks rida sakkide all, mis kerimisel jääb päise alla kleepuma
+    # (Kadri lukustas 8.11.2026 21:24 R1; parem veerg kitsendas sisu).
     teema = next((v for v in vaated if v["id"] == vaade["teema"]), None) if vaade.get("teema") else vaade
     sakid = alamlehed(teema, fail) if teema.get("alamlehed") else ""
     m = re.search(r'<nav aria-label="Sellel lehel">.*?</nav>', sisu, re.S)
     lehel = m.group(0) if m else ""
-    parem = ""
     if lehel:
-        parem = _lehel(lehel, "lehel-parem").replace('<ul class="sellel">', '<p class="kt">Sellel lehel</p><ul class="sellel">', 1)
-        sisu = sisu[:m.start()] + sakid + _lehel(lehel, "lehel-rida") + sisu[m.end():]
+        # Kleepuv rida peab olema <main> otsene laps (sticky töötab ainult vanema piires), seega läheb see
+        # pealkirjaploki (div.pea) järele; sakid jäävad oma kohale.
+        sisu = sisu[:m.start()] + sakid + sisu[m.end():]
+        k = _ploki_lopp(sisu, m.start())
+        sisu = sisu[:k] + _lehel(lehel, "lehel-rida") + sisu[k:]
     elif sakid:
         lead = re.search(r'<p class="lead">.*?</p>', sisu, re.S)
         k = lead.end() if lead else sisu.index("</h1>") + 5
@@ -113,7 +135,6 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
                     for v in vaated if not v["menuu"] and v["id"] != "avaleht" and v["olek"] == "valmis"]
     kavas = [v for v in vaated if not v["menuu"] and v["olek"] != "valmis" and v["id"] != "avaleht"]
     jalus_lingid += [f'{e("Kuidas lugeda" if v["id"] == "kuidas" else v["id"])} (tulekul)' for v in kavas]
-    raam = ' raamiga' if parem else ''
     return f"""<!doctype html>
 <html lang="et">
 <head>
@@ -141,11 +162,8 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
     <nav aria-label="Teemad" class="paisteemad"><ul class="menu">{menuu(vaated, vaade.get("teema") or vaade["id"])}</ul></nav>
   </div>
 </header>
-<main id="sisu" class="wrap{raam}">
-<div class="raam-sisu">
+<main id="sisu" class="wrap">
 {sisu}
-</div>
-{parem}
 </main>
 <footer class="jalus">
   <div class="wrap">

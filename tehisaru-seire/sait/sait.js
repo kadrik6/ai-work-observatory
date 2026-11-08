@@ -272,11 +272,15 @@
   function korgus() {
     var p = document.querySelector('header.top');
     if (p) document.documentElement.style.setProperty('--top-h', p.offsetHeight + 'px');
+    // R1 (Kadri 8.11.2026): „Sellel lehel“ rida kleepub päise alla; ankur peab jääma ka selle rea alla.
+    var r = document.querySelector('.lehel-rida');
+    document.documentElement.style.setProperty('--lehel-h', (r ? r.offsetHeight : 0) + 'px');
   }
   document.addEventListener('DOMContentLoaded', function () {
     korgus();
     window.addEventListener('resize', korgus);
-    // „Sellel lehel“ on kaks koopiat (laial ekraanil parem veerg, kitsal rida sakkide all); märge käib mõlemas.
+    // „Sellel lehel“ on üks kleepuv rida sakkide all (R1). Kui see on päise all kinni, saab rida peene alajoone.
+    var rida = document.querySelector('.lehel-rida');
     var lingid = Array.prototype.slice.call(document.querySelectorAll('.lehel .sellel a[href^="#"]'));
     if (!lingid.length) return;
     var hrefid = [];
@@ -288,18 +292,37 @@
     var valitud = null;
     function sea(h) {
       lingid.forEach(function (a) {
-        if (h && a.getAttribute('href') === h) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+        if (h && a.getAttribute('href') === h) {
+          if (a.getAttribute('aria-current') === 'true') return;
+          a.setAttribute('aria-current', 'true');
+          // Telefonis on rida külgsuunas keritav: märgitud kiip tuuakse nähtavale.
+          var ul = a.closest('.sellel');
+          if (ul && ul.scrollWidth > ul.clientWidth) {
+            var ar = a.getBoundingClientRect(), ur = ul.getBoundingClientRect();
+            if (ar.left < ur.left || ar.right > ur.right) ul.scrollLeft += ar.left - ur.left - 16;
+          }
+        } else a.removeAttribute('aria-current');
       });
     }
     function margi() {
       if (valitud) { sea(valitud); return; }
-      var piir = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--top-h'), 10) || 110) + 24;
+      var st = getComputedStyle(document.documentElement);
+      var piir = (parseInt(st.getPropertyValue('--top-h'), 10) || 110) + (parseInt(st.getPropertyValue('--lehel-h'), 10) || 0) + 24;
+      if (rida) rida.classList.toggle('kleepub', rida.getBoundingClientRect().top <= (parseInt(st.getPropertyValue('--top-h'), 10) || 0) + 1);
       var k = -1, parim = -Infinity;
       sihid.forEach(function (t, i) {
         if (!t) return;
         var y = Math.round(t.getBoundingClientRect().top);
         if (y <= piir && y > parim + 1) { parim = y; k = i; }
       });
+      // Lehe lõpus ei jõua viimased jaotised piirini: siis märgitakse esimene nähtav jaotis, mis jäi piirist allapoole.
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        sihid.forEach(function (t, i) {
+          if (!t) return;
+          var y = Math.round(t.getBoundingClientRect().top);
+          if (y > piir && y < window.innerHeight && (k < 0 || y > parim + 1)) { parim = y; k = i; }
+        });
+      }
       sea(k >= 0 ? hrefid[k] : null);
     }
     lingid.forEach(function (a) {
