@@ -42,12 +42,13 @@
   --panel: #27282c; --page: #1f2023;
   color-scheme: dark;
 }
+/* Pehme = H1 „Helehall“ (Kadri lukustas 8.11.2026 21:01 taustanäidiste lehelt): hele neutraalne hall taust, valged kastid. */
 :root[data-seire-teema="soft"] {
-  --surface: #f6f8fc; --surface-2: #f0f3f9; --surface-3: #e3e7f0; --brand-soft: #dfe5fb;
+  --surface: #ffffff; --surface-2: #f6f7f9; --surface-3: #e9ebef; --brand-soft: #dfe5fb;
   --ink: #151926; --ink-2: #3d4460; --ink-3: #545b74;
   --context: #b2b8c9; --context-strong: #34394c;
-  --border: #d3d9e7; --grid: #e3e7f0; --control: #7b8299;
-  --mark-ctx: #7b8299; --panel: #f6f8fc; --page: #ebeff7;
+  --border: #e2e4e8; --grid: #eceef1; --control: #7b8299;
+  --mark-ctx: #7b8299; --panel: #ffffff; --page: #f3f4f6;
   color-scheme: light;
 }
 
@@ -61,7 +62,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 .skip { position: absolute; left: -999px; }
 .kaart td.h1 { font-family: var(--font-display); font-size: 15px; }
 .kaart td.h1 b { color: var(--signal); }
-.skip:focus { left: 16px; top: 8px; z-index: 10; background: var(--surface); padding: 6px 10px; }
+.skip:focus { left: 16px; top: 8px; z-index: 10; background: var(--surface); padding: 7px 10px; }
 p { margin: 0; }
 h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 400; color: var(--ink); line-height: 1.2; text-wrap: balance; }
 h1 b, h2 b, h3 b { font-weight: 700; color: var(--signal); }
@@ -248,7 +249,7 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
   :root:not([data-seire-teema]) { --k0: #46549a; --k1: #5c6dc0; --k2: #7688de; --k3: #98a8f2; --k4: #c0cbff; --k-bg: #38393e; --k-na: #1f2023; --osa-b: #6b7fe0; --osa-c: #3a4680; }
 }
 :root[data-seire-teema="dark"] { --k0: #46549a; --k1: #5c6dc0; --k2: #7688de; --k3: #98a8f2; --k4: #c0cbff; --k-bg: #38393e; --k-na: #1f2023; --osa-b: #6b7fe0; --osa-c: #3a4680; }
-:root[data-seire-teema="soft"] { --k-bg: #dbe0ec; --k-na: #f6f8fc; --osa-c: #d6defa; }
+:root[data-seire-teema="soft"] { --k-bg: #dbe0ec; --k-na: #ffffff; --osa-c: #d6defa; }
 .kaart-ala { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 24px; align-items: end; }
 @media (max-width: 680px) { .kaart-ala { grid-template-columns: minmax(0, 1fr); } }
 .kaart { position: relative; }
@@ -494,6 +495,7 @@ h3.veerg { font-size: 13.5px; }
 /* ---- Ülevaade töölauana (5.11.2026) ---- */
 .pea-t { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px; padding-top: 14px; }
 .pea-t h1 { max-width: 75ch; }
+.pea-t .tutvus { flex-basis: 100%; max-width: 75ch; margin: 0; font-size: 15px; color: var(--ink-2); }
 .seis-t { font-size: 13px; color: var(--ink-3); margin-left: auto; }
 .pea-t + nav .sellel { margin-top: 8px; }
 .plaadid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
@@ -504,7 +506,7 @@ h3.veerg { font-size: 13.5px; }
 .plaat .big small { font: 400 12.5px var(--font-sans); color: var(--ink-3); margin-left: 4px; letter-spacing: 0; }
 .plaat .cmp { font-size: 13px; color: var(--ink-2); }
 .plaat .src { font-size: 12.5px; color: var(--ink-3); margin-top: auto; padding-top: 2px; }
-.plaat .src a { color: inherit; }
+.plaat .src a { color: inherit; display: inline-block; min-height: 24px; line-height: 24px; }
 .plaat .sihiriba { margin: 6px 0 4px; }
 .chip { display: inline-block; font-size: 12px; font-weight: 600; line-height: 17px; padding: 0 7px; border-radius: 100px; border: 1px solid currentColor; white-space: nowrap; }
 .chip.exp { color: var(--accent-text); }
@@ -893,6 +895,37 @@ summary { padding-block: 3px; }
 .mega-lisa { max-width: var(--wrap); margin: 0 auto; padding: 10px max(16px, env(safe-area-inset-left, 0px)) 14px; font-size: 14px;
   border-top: 1px solid var(--border); color: var(--ink-3); }
 .mega-lisa a { display: inline-block; padding: 3px 0; }
+
+/* „Kõik teemad“ M1 „Kaardid hallil“ (Kadri lukustas 8.11.2026 21:13 menüü näidiste lehelt): hallil taustal valged
+   teemakaardid, küsimus nime all, alamlehed kiipidena; avatud menüü taga leht tumeneb, klõps kattele sulgeb (sait.js). */
+.mega[open]::before { content: ""; position: fixed; inset: 0; background: rgb(21 25 38 / .28); z-index: 5; }
+.mega > summary { position: relative; z-index: 7; }
+.mega[open] > summary { background: var(--surface-3); border-color: var(--surface-3); color: var(--ink); }
+.mega-paneel { background: var(--page); border-bottom: 0; box-shadow: 0 12px 28px rgb(21 25 38 / .16); }
+.mega-ruut { gap: 12px; padding-top: 16px; padding-bottom: 12px; }
+.mega-t { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; gap: 6px; }
+.mega-t:has(.mega-nimi[aria-current]) { border-color: var(--signal); }
+.mega-t p { order: 2; margin: 0; font-size: 13.5px; }
+.mega-t ul { order: 3; flex-direction: row; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+.mega-t li a { padding: 2px 9px; border: 1px solid var(--border); border-radius: 100px; font-size: 13px; background: var(--panel); }
+.mega-t li a:hover { border-color: var(--signal); text-decoration: none; }
+.mega-lisa { border-top: 0; padding-top: 4px; }
+
+/* „Kõik teemad“ nupp N6 „Ainult ikoon“ (Kadri lukustas 8.11.2026 21:20): arvutis ruudustikuikoon, silt ilmub hõljudes
+   ja klaviatuuri fookusega; ekraanilugeja loeb „Kõik teemad“ (.mega-arvuti). Telefonis ikoon + „Menüü“. */
+.mega > summary { border-color: transparent; background: transparent; gap: 8px; width: 36px; height: 36px; padding: 0; justify-content: center; }
+.mega > summary::before { content: ""; flex: none; width: 16px; height: 16px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1.5' y='1.5' width='5' height='5' rx='1'/%3E%3Crect x='9.5' y='1.5' width='5' height='5' rx='1'/%3E%3Crect x='1.5' y='9.5' width='5' height='5' rx='1'/%3E%3Crect x='9.5' y='9.5' width='5' height='5' rx='1'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1.5' y='1.5' width='5' height='5' rx='1'/%3E%3Crect x='9.5' y='1.5' width='5' height='5' rx='1'/%3E%3Crect x='1.5' y='9.5' width='5' height='5' rx='1'/%3E%3Crect x='9.5' y='9.5' width='5' height='5' rx='1'/%3E%3C/svg%3E") center / contain no-repeat; }
+.mega-arvuti { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.mega > summary::after { content: "Kõik teemad"; position: absolute; left: 0; top: calc(100% + 6px); width: auto; height: auto; border: 0; transform: none;
+  white-space: nowrap; font: 600 12px/1.3 var(--font-sans); color: var(--panel); background: var(--ink); border-radius: 4px; padding: 3px 7px;
+  opacity: 0; pointer-events: none; z-index: 8; transition: opacity .12s; }
+.mega > summary:hover::after, .mega > summary:focus-visible::after { opacity: 1; }
+.mega > summary:hover { background: var(--surface-3); }
+.mega[open] > summary { background: var(--surface-3); border-color: transparent; }
+.mega[open] > summary::after { opacity: 0; transform: none; }
+@media (prefers-reduced-motion: reduce) { .mega > summary::after { transition: none; } }
+@media (max-width: 680px) { .mega > summary { width: auto; height: auto; padding: 0 14px; } .mega > summary::after { display: none; } }
 @media (max-width: 1100px) { .mega-ruut { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* Rada ja sakid */
@@ -931,10 +964,11 @@ summary { padding-block: 3px; }
   .mega > summary { min-height: 44px; padding: 0 14px; }
   .mega-arvuti { display: none; }
   .mega-tel { display: inline; }
-  .mega-ruut { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 6px; }
-  .mega-t { border-bottom: 1px solid var(--border); }
-  .mega-t ul, .mega-t p { display: none; }
-  .mega-nimi { display: flex; align-items: center; min-height: 48px; font-size: 16px; }
+  .mega-ruut { grid-template-columns: minmax(0, 1fr); gap: 8px; padding-top: 10px; }
+  .mega-t { padding: 10px 12px; gap: 2px; }
+  .mega-t ul { display: none; }
+  .mega-t p { font-size: 13px; }
+  .mega-nimi { display: flex; align-items: center; min-height: 32px; font-size: 16px; }
   .mega-lisa a { padding: 10px 0; }
   .alamlehed { flex-wrap: wrap; overflow-x: visible; }
   .alamlehed a { min-height: 40px; display: inline-flex; align-items: center; padding: 0 12px; }
@@ -1098,7 +1132,8 @@ th, td { padding: 6px 10px; }
 .teematabel th[scope="row"] a { font: 700 15px var(--font-display); color: var(--ink); text-decoration: none; }
 .teematabel th[scope="row"] a:hover { text-decoration: underline; }
 .teematabel td small, .teematabel th small { display: block; font-size: 12.5px; color: var(--ink-3); }
-.teematabel .m-arv { font: 700 19px/1.15 var(--font-display); color: var(--ink); text-decoration: none; font-variant-numeric: tabular-nums; }
+.teematabel .m-arv { display: inline-block; min-height: 24px; font: 700 19px/24px var(--font-display); color: var(--ink); text-decoration: none; font-variant-numeric: tabular-nums; }
+@media (max-width: 40rem) { .teematabel td a:not(.m-arv) { display: inline-block; padding: 3px 0; } }
 .teematabel .m-arv.f { color: var(--signal); }
 .teematabel .m-arv:hover { text-decoration: underline; }
 .m-puud { color: var(--ink-3); font-size: 12.5px; font-style: italic; }
@@ -1136,3 +1171,17 @@ th, td { padding: 6px 10px; }
 .jaotis.teema-andmed { background: none; border: 0; border-radius: 0; padding: 0; }
 .teema-lopp { align-items: start; }
 .t-loend li.tyhi { display: block; }
+
+/* Kopeeritav fakt (8.11.2026): vaikne nupp allikarea lõpus; täidetud ei ole, sest see pole lehe peamine tegevus. */
+.plaat.kp .src { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.kopeeri { position: relative; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; color: var(--ink-2); background: none; border: 0; border-radius: 4px; cursor: pointer; }
+.kopeeri:hover { background: var(--grid); }
+.kopeeri:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.kopeeri .ik-ok, .kopeeri.ok .ik-kop { display: none; }
+.kopeeri.ok .ik-ok { display: block; }
+.kopeeri.ok { color: var(--signal); }
+.kopeeri::after { content: attr(data-silt); position: absolute; right: 0; bottom: calc(100% + 6px); white-space: nowrap; font: inherit; font-size: 12px; line-height: 1.3; color: var(--panel); background: var(--ink); border-radius: 4px; padding: 3px 7px; pointer-events: none; opacity: 0; transition: opacity .12s; z-index: 5; }
+.kopeeri:hover::after, .kopeeri:focus-visible::after, .kopeeri.ok::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .kopeeri::after { transition: none; } }
+@media (pointer: coarse) { .kopeeri { width: 36px; height: 36px; } }
+.fakt-tekst { width: 100%; margin-top: 6px; font: inherit; font-size: 12.5px; color: var(--ink); background: var(--panel); border: 1px solid var(--border); border-radius: 4px; padding: 4px 6px; resize: vertical; }

@@ -1,7 +1,7 @@
 """Usalduse vaated ja sisenemine: Kas see on tõsi?, Avaleht, Kuidas lugeda (5.11.2026)."""
 import re
 import andmekiht as andmed
-from abi import ARVSONAD, SEESTYTLEV, a, jaga, kontrolli, link, pea
+from abi import ARVSONAD, OMASTAV, SEESTYTLEV, a, jaga, kontrolli, link, pea
 from andmekiht import EL, AndmeViga
 from komponendid import (allikarida, e, faktid, kohariba, kp, lihtribad, osad, pr, riik, tabel, vastavus)
 from pealkiri import taida
@@ -169,7 +169,7 @@ def varskus_ja_muutused(A, vaated):
     sec_varskus = f"""
 <section class="jaotis" id="varskus" aria-labelledby="h-varskus">
   <header>
-    <h2 id="h-varskus">{SEESTYTLEV[len(v_read)].capitalize()} näitajast {"<b>kõik on Eurostatis ajakohased</b>" if koik_ajakohased else "<b>mõni on vananenud</b>"}; {ARVSONAD[uuem]} puhul on riiklikul statistikaametil juba uuem number</h2>
+    <h2 id="h-varskus">{SEESTYTLEV[len(v_read)].capitalize()} näitajast {"<b>kõik on Eurostatis ajakohased</b>" if koik_ajakohased else "<b>mõni on vananenud</b>"}; {f"{OMASTAV[uuem]} puhul on riiklikul statistikaametil juba uuem number" if uuem else "riiklikel statistikaametitel uuemat numbrit pole"}</h2>
     <p class="alam">Ajakohane tähendab, et allikas pole avaldanud uuemat aastat, kui seire näitab. Uuem riiklik number on lehel eraldi märgitud.</p>
   </header>
   {tabel(["Näitaja", "Allikas uuendas", "Järgmine oodatav", "Seis", "Uuem number"], v_read, numbrid=[], pealdis="Näitajate värskus")}
@@ -181,7 +181,7 @@ def varskus_ja_muutused(A, vaated):
     sec_muut = f"""
 <section class="jaotis" id="muutused" aria-labelledby="h-muutused">
   <header>
-    <h2 id="h-muutused">Viimane muutus allikates oli <b>{kp(S[0]["kuupaev"])}</b></h2>
+    <h2 id="h-muutused">Allikate ja lahknevuste logis on viimane kanne <b>{kp(S[0]["kuupaev"])}</b></h2>
     <p class="alam">Logis on allikate uued numbrid ja leitud lahknevused, uuemad üleval.</p>
   </header>
   {tabel(["Kuupäev", "Liik", "Mis muutus"], s_read, numbrid=[], piir=True, pealdis="Muutuste logi")}

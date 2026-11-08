@@ -7,7 +7,7 @@ import datetime
 from pathlib import Path
 
 import andmekiht as andmed
-from abi import SEESTYTLEV, ARVSONAD, a, kontrolli, link, jaga, pea, seotud
+from abi import SEESTYTLEV, ARVSONAD, a, alam_h1, kontrolli, link, jaga, pea, seotud
 from andmekiht import EL, AndmeViga
 from komponendid import (aastatulbad, ajajoon, allikarida, e, ei_naita, faktid, hantlid, kaart, kp, lihtribad,
                          margend, muutus, osad, pr, riik, ribad, sihiriba, tabel, vastavus)
@@ -277,6 +277,9 @@ def inimesed(A, vaade, vaated=None):
         (f"Tööl, {too['allikas']}", too["url"], too["avaldatud"], f"{too['aasta']}, kõigist 16–74-aastastest"),
         ("ELi võrdlus, Eurostat isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), eu.get("avaldatud") or None, f"{y}, ELi riigid"),
     ])
+    alam_h1(vaade, "inimesed-oskused.html",
+            f'Vähemalt baastaseme digioskused on **{pr(ds["vaartus"])}% Eesti inimestest**, ELi {siht["aasta"]}. aasta siht on {siht["siht"]}%; '
+            f'oskuse puudusel jätab tehisaru kasutamata {pr(os_ee["vaartus"])}%.')
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Andmed")], sec_andmed),
         ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
@@ -332,7 +335,7 @@ def too(A, vaade, vaated=None):
     rm = U[tulevik["tootus_ee"]["uuring"]]
     if "Tehisaru mõju ei ole töötuse prognoosis" not in rm["leid"]:
         raise AndmeViga("Töötuse prognoosi juures puudub märge, et tehisaru mõju ei ole eraldi arvestatud")
-    kontrolli(vaade, "USA-s", "vähem noori")
+    kontrolli(vaade, "Eesti andmetest", "USA noortel")
     if _muutus_arv(can["muutus"]) >= 0:
         raise AndmeViga("Noorte hõive langus ei ole enam andmetes")
 
@@ -567,7 +570,7 @@ def too(A, vaade, vaated=None):
     lead = ("Mõnes ametis on vähenenud ka vabakutseliste tööd. "
             "Eesti kohta selliseid mõõtmisi veel ei ole.")
     from lehed_ulevaade import too_eesti, tootus_el, vabad_ametikohad
-    from lehed_uudised import ai_kuulutused, palkamine, toopakkumised, uuringud_too
+    from lehed_uudised import _arv, ai_kuulutused, palkamine, toopakkumised, uuringud_too
     sec_uuritakse = uuringud_too(A)
     sec_palk = palkamine(A)
     # Teemamall A (Kadri 8.11.2026): number → graafik sakkides → uuringud → väited → reeglid → allikad.
@@ -604,6 +607,17 @@ def too(A, vaade, vaated=None):
         ("Töötuse prognoos, Rahandusministeerium", rm["url"], rm["avaldatud"], "aasta keskmine, tehisaru mõju eraldi ei arvestata",
          f'{KUUD[int(rm["avaldatud"][5:7]) - 1]} {rm["avaldatud"][:4]}' if len(rm["avaldatud"]) == 7 else None),
     ])
+    alam_h1(vaade, "too-ametid.html",
+            f'Eesti töötajatest **{pr(K["avatud"], 0)}% on ametites**, mida generatiivne tehisaru puudutab; '
+            f'nende hõive kasvas {A0}–{A1} vähem kui teistes ametites.')
+    P = A.get("publikatsioonid")
+    if P:
+        tais = [r for r in P["aastad"] if not r["poolik"]]
+        p1 = tais[-1]
+        p0 = next(r for r in tais if r["aasta"] == p1["aasta"] - 2)
+        alam_h1(vaade, "too-kirjandus.html",
+                f'Tehisarust ja tööst ilmus {p1["aasta"]}. aastal **{_arv(p1["koik"])} publikatsiooni**, '
+                f'{pr(p1["koik"] / p0["koik"])} korda rohkem kui {p0["aasta"]}.')
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Andmed")], sec_andmed),
         ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],

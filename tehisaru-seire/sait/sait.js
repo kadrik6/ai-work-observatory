@@ -365,7 +365,7 @@
     function uuenda() { s.setAttribute('aria-expanded', m.open ? 'true' : 'false'); }
     m.addEventListener('toggle', uuenda); uuenda();
     document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && m.open) { m.open = false; s.focus(); } });
-    document.addEventListener('click', function (ev) { if (m.open && !m.contains(ev.target)) m.open = false; });
+    document.addEventListener('click', function (ev) { if (m.open && (!m.contains(ev.target) || ev.target === m)) m.open = false; });  // ev.target === m: klõps tumendatud kattele
     m.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { m.open = false; }); });
   });
 })();
@@ -422,4 +422,42 @@
     if (!h || h.charAt(0) === '#' || /^[a-z]+:/i.test(h) || a.target === '_blank') return;
     if (h.indexOf('#') < 0) { salvesta(); lahkus = true; window.scrollTo(0, 0); }
   }, true); // püüdefaasis: claude.ai kest võib lingiklõpsu ise käsitleda
+})();
+
+// Kopeeritav fakt (sisuloogika 8.11.2026, idee 2): nupp numbriplaadil kopeerib lause koos allika ja lingiga.
+// Kui lõikelauale kirjutada ei saa (nt artefakti raam keelab), näidatakse lause plaadi all valituna, et saaks ise kopeerida.
+(function () {
+  function naita(nupp, tekst) {
+    var plaat = nupp.closest('.plaat');
+    var p = plaat.querySelector('.fakt-tekst');
+    if (!p) { p = document.createElement('textarea'); p.className = 'fakt-tekst'; p.readOnly = true; p.rows = 3; plaat.appendChild(p); }
+    p.value = tekst; p.focus(); p.select();
+    nupp.setAttribute('data-silt', 'Vali tekst ja kopeeri');
+  }
+  function vana(tekst) {
+    var t = document.createElement('textarea');
+    t.value = tekst; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t); t.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(t);
+    return ok;
+  }
+  function tehtud(nupp) {
+    var vaike = 'Kopeeri fakt koos allikaga';
+    nupp.classList.add('ok'); nupp.setAttribute('data-silt', 'Kopeeritud'); nupp.setAttribute('aria-label', 'Kopeeritud');
+    setTimeout(function () {
+      nupp.classList.remove('ok'); nupp.setAttribute('data-silt', vaike); nupp.setAttribute('aria-label', vaike);
+    }, 2000);
+  }
+  document.addEventListener('click', function (ev) {
+    var nupp = ev.target.closest && ev.target.closest('button.kopeeri');
+    if (!nupp) return;
+    var tekst = nupp.getAttribute('data-fakt') || '';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(tekst).then(function () { tehtud(nupp); }, function () {
+        if (vana(tekst)) tehtud(nupp); else naita(nupp, tekst);
+      });
+    } else if (vana(tekst)) tehtud(nupp); else naita(nupp, tekst);
+  });
 })();

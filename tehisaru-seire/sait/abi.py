@@ -11,6 +11,8 @@ from pealkiri import taida
 ARVSONAD = {0: "null", 1: "üks", 2: "kaks", 3: "kolm", 4: "neli", 5: "viis", 6: "kuus", 7: "seitse", 8: "kaheksa",
             9: "üheksa", 10: "kümme", 11: "üksteist", 12: "kaksteist", 13: "kolmteist",
             14: "neliteist", 15: "viisteist"}
+OMASTAV = {1: "ühe", 2: "kahe", 3: "kolme", 4: "nelja", 5: "viie", 6: "kuue", 7: "seitsme", 8: "kaheksa",
+           9: "üheksa", 10: "kümne"}
 SEESTYTLEV = {2: "kahest", 3: "kolmest", 4: "neljast", 5: "viiest", 6: "kuuest", 7: "seitsmest", 8: "kaheksast",
               9: "üheksast", 10: "kümnest", 11: "üheteistkümnest", 12: "kaheteistkümnest",
               13: "kolmeteistkümnest", 14: "neljateistkümnest", 15: "viieteistkümnest"}
@@ -94,13 +96,21 @@ def jaga(A, vaade, lead, ree, plokid, aside=None):
             algus = f"""
 <div class="pea yks alam-pea">
   <div class="pea-tekst">
-    <h1>{e(s["h1"])}</h1>
+    <h1>{taida(s["h1"], A)}</h1>
     {f'<p class="lead">{s["lead"]}</p>' if s.get("lead") else ""}
     {sellel_lehel(lingid) if lingid else ""}
   </div>
 </div>"""
         lehed[s["fail"]] = algus + "".join(h for *_, h in oma)
     return Jagatud(lehed)
+
+
+def alam_h1(vaade, fail, tekst):
+    """Alamlehe h1 andmetest (sisuloogika 8.11.2026: h1 on vastuse lause, mitte teema nimi)."""
+    s = next((s for s in vaade.get("alamlehed", []) if s.get("fail") == fail), None)
+    if s is None:
+        raise AndmeViga(f"Vaatel {vaade['id']} pole alamlehte {fail}")
+    s["h1"] = tekst
 
 
 def seotud(vaated, lingid):
