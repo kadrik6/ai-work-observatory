@@ -17,6 +17,7 @@ Uuenduse käivitab ajastatud töö (iga päev 7.23 ja andmete jaoks 17.53 Tallin
 | `lisalehed.py` | osa „Mis toimub“ (`toimub.html`): Eurostati töötus, koondamised, koondajate taust, tehisaru- ja andmehanked, uudised, väited |
 | `hanked_logist.py` | `hanked.yml` logi `LEHT` ridadest `hanked/leht.json` |
 | `ehita_leht.py`, `uudised-mall.html` | uudisteleht (uudised, Eesti koondamised, väited) |
+| `ai_tood.py` | AI- ja andmetööde kuulutused CV.ee avalikust otsingust (Kadri 8.11.2026): `$UUDISED/ai_tookuulutused.json`. Neli rühma pealkirja ja teksti märksõnade järgi; tööandja ühine lause (sama lõik vähemalt 3 kuulutuses) eraldi. Salvestab ainult pealkirja, tööandja, maakonna, kuupäeva ja lingi. |
 
 ## Andmekaustad (keskkonnamuutujad)
 

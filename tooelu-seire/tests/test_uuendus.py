@@ -57,7 +57,11 @@ def test_koondajate_plokk_loeb_kuulutused_ja_jatab_kontrollimata_valja(tmp_path,
                   "otsib": {"kontrollitud": None, "ametid": [], "tekst": "Ei kontrollitud.", "url": None}}}}))
     koond = [{"ettevote": "A"}, {"ettevote": "B"}, {"ettevote": "C"}]
     h = m.koondajate_plokk(koond)
-    assert "otsivad praegu kokku 1 inimest, 0 firmat ei otsi kedagi" in h
+    assert "otsivad praegu 1 inimest" in h
+    assert "0 firmat 1-st ei otsi praegu kedagi." in h
+    # A otsib müüjat, aga koondab IT-d: teised ametid. Eesti arv puudub mõlemal.
+    assert "A otsib teisi ameteid kui need, mida koondab." in h
+    assert "Eesti koondatavate arv pole teada: A, B." in h
     assert "Taustaandmeid pole veel: C" in h
     assert "Müügijuht" in h
 
@@ -77,3 +81,38 @@ def test_hangete_plokk_jaotab_tehisaru_ja_andmed(tmp_path, monkeypatch):
     # 2026: tehisaru 5, andmed 9 - 5 = 4; varem oli andmeid alati rohkem.
     assert "esimest korda rohkem kui andmehankeid: 5 ja 4" in h
     assert 'data-loend="hanked-ai"' in h and 'data-loend="hanked-andmed"' in h
+
+
+def _tulemus(tmp_path, kuulutused, total):
+    """TinyFish fetch_content tulemus: JSON markdowni põgendustega tekstina."""
+    t = json.dumps({"total": total, "vacancies": kuulutused}).replace("_", "\\_")
+    f = tmp_path / "tulemus.json"
+    f.write_text(json.dumps({"results": [{"text": t}]}))
+    return f
+
+
+def test_ai_tood_liigitab_ja_eraldab_firma_uldlause(tmp_path):
+    uld = "Perks may differ depending on your location and role{} At Bolt, using AI daily is a baseline expectation."
+    k = [{"id": 1, "positionTitle": "Senior AI Engineer", "employerName": "X", "countyId": 67, "publishDate": "2026-11-07T10:00"},
+         {"id": 2, "positionTitle": "Andmeinsener", "employerName": "Y", "countyId": 78, "publishDate": "2026-11-01"},
+         {"id": 3, "positionTitle": "Data communication specialist", "employerName": "Y"},
+         {"id": 4, "positionTitle": "Raamatupidaja", "employerName": "Z", "positionContent": "Oskus kasutada tehisintellekti tööriistu."},
+         {"id": 5, "positionTitle": "Kassihoidja", "employerName": "Z", "positionContent": "Kodukülastus, ML Capital Properties."},
+         {"id": 6, "positionTitle": "Sales Manager", "employerName": "Bolt", "positionContent": uld.format("")},
+         {"id": 7, "positionTitle": "Driver Ops", "employerName": "Bolt", "positionContent": uld.format(".")},
+         {"id": 8, "positionTitle": "Designer", "employerName": "Bolt", "positionContent": uld.format("") + " You use AI tools to prototype."}]
+    env = dict(os.environ, UUDISED=str(tmp_path))
+    r = subprocess.run([sys.executable, "-I", str(UUENDUS / "ai_tood.py"), str(_tulemus(tmp_path, k, 8))],
+                       env=env, capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    d = json.loads((tmp_path / "ai_tookuulutused.json").read_text())
+    ruhm = {x["id"]: x["ruhm"] for x in d["kuulutused"]}
+    # 3 = "data communication", 5 = firmanimi: ei ole AI- ega andmetöö.
+    assert ruhm == {1: "ai_amet", 2: "andmeamet", 4: "ai_oskus", 6: "ai_firma_noue", 7: "ai_firma_noue", 8: "ai_oskus"}
+    assert d["kuulutusi_kokku"] == 8 and d["portaali_kokku"] == 8
+    assert d["kuulutused"][0].keys() == {"id", "ruhm", "pealkiri", "tooandja", "maakond", "kaugtoo", "avaldatud", "url", "uus"}
+    assert "positionContent" not in json.dumps(d)
+    # Teisel käivitusel on kõik juba nähtud.
+    subprocess.run([sys.executable, "-I", str(UUENDUS / "ai_tood.py"), str(_tulemus(tmp_path, k, 8))], env=env, check=True)
+    d = json.loads((tmp_path / "ai_tookuulutused.json").read_text())
+    assert all(g["uusi"] == 0 for g in d["ruhmad"].values())

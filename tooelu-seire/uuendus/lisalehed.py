@@ -158,7 +158,7 @@ def koondamiste_plokk(koond):
 
 
 def koondajate_plokk(koond):
-    """Kes koondab (sektor, firma liik), milliseid ameteid ja keda samad firmad praegu otsivad (Kadri 5.11.2026)."""
+    """Kes koondab (sektor, firma liik), milliseid ameteid ja keda samad firmad praegu otsivad (Kadri 5.11 ja 6.11.2026)."""
     try:
         andmed = json.loads((UUDISED / "koondajad.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
@@ -169,12 +169,18 @@ def koondajate_plokk(koond):
         if k["ettevote"] in firmad and k["ettevote"] not in nahtud:
             jarjekord.append(k["ettevote"])
             nahtud.add(k["ettevote"])
-    puudu = [k["ettevote"] for k in koond if k["ettevote"] not in firmad]
+    puudu = sorted({k["ettevote"] for k in koond if k["ettevote"] not in firmad})
     if not jarjekord:
         return ""
     kontrollitud = [firmad[f]["otsib"] for f in jarjekord if firmad[f]["otsib"].get("kontrollitud")]
     kuulutusi = sum(len(o["ametid"]) for o in kontrollitud)
     nullis = sum(1 for o in kontrollitud if not o["ametid"])
+    # Koondatavate arv Eestis: ainult need firmad, kelle Eesti arv on uudises olemas
+    arvud = {f: (firmad[f].get("koondab_ee") or {}) for f in jarjekord}
+    koondab_kokku = sum(a["arv"] for a in arvud.values() if a.get("arv"))
+    arv_puudu = [f.split(" (")[0] for f, a in arvud.items() if not a.get("arv")]
+    if koondab_kokku >= 100:
+        koondab_kokku = round(koondab_kokku, -1)  # ligikaudne summa, ära näita üksikuid
     # Ametiliikide võrdlus: mitu firmat koondab seda liiki ameteid ja mitu kuulutust samadelt firmadelt praegu on
     liigid = []
     for liik in andmed["ametiliigid"]:
@@ -184,20 +190,50 @@ def koondajate_plokk(koond):
             liigid.append((liik, koondab, otsib))
     liigid.sort(key=lambda r: (-r[1], -r[2]))
     liigiread = "".join(f'<tr><td>{e(l)}</td><td class="r">{k or "–"}</td><td class="r">{o or "–"}</td></tr>' for l, k, o in liigid)
+    # Kas firma otsib sama liiki ameteid, mida koondab?
+    sama, teised = [], []
+    for f in jarjekord:
+        am = firmad[f]["otsib"]["ametid"]
+        if not am:
+            continue
+        lyhi = f.split(" (")[0]
+        if any(a["liik"] in firmad[f]["kaotatud"] for a in am):
+            sama.append(lyhi)
+        else:
+            teised.append(lyhi)
     firmaread = []
     for f in jarjekord:
         d = firmad[f]
         o = d["otsib"]
+        a = arvud[f]
         if o.get("kontrollitud"):
-            nimed = "; ".join(a["nimi"] for a in o["ametid"])
-            otsib = (e(nimed) + ". " if nimed else "") + e(o["tekst"]) + (f' <a href="{e(o["url"])}">Vaata</a>' if o.get("url") else "")
+            if o["ametid"]:
+                nimed = "<br>".join(
+                    e(x["nimi"]) + (f' <span class="small">({kp(x["avaldatud"])})</span>' if x.get("avaldatud") else "")
+                    for x in o["ametid"])
+            else:
+                nimed = "<b>ei otsi kedagi</b>"
+            link = f' <a href="{e(o["url"])}">Vaata</a>' if o.get("url") else ""
+            otsib = f'{nimed}<br><span class="small">{e(o["tekst"])}{link}</span>'
         else:
-            otsib = e(o["tekst"])
+            otsib = f'<span class="small">{e(o["tekst"])}</span>'
+        arv = f'<b>{a["arv"]}</b>' if a.get("arv") else "?"
+        arv_lisa = f'<br><span class="small">{e(a["tekst"])}</span>' if a.get("tekst") and a["tekst"] != str(a.get("arv")) else ""
         firmaread.append(
-            f'<tr><th scope="row">{e(f)}</th><td>{e(d["sektor"])}<br><span class="small">{e(d["firma_liik"])}</span></td>'
+            f'<tr><th scope="row">{e(f)}<br><span class="small">{e(d["sektor"])}, {e(d.get("omand", ""))}</span></th>'
+            f'<td class="r">{arv}{arv_lisa}</td>'
             f'<td>{e(d["kaotatud_tekst"])} <a href="{e(d["kaotatud_allikas"])}">Allikas</a></td><td>{otsib}</td></tr>')
-    pais = (f"Koondajad otsivad praegu kokku {kuulutusi} inimest, {nullis} firmat ei otsi kedagi"
-            if kuulutusi else "Koondajatel pole praegu ühtegi avatud tööpakkumist")
+    if kuulutusi:
+        pais = f"Koondajad kaotavad Eestis umbes {koondab_kokku} töökohta ja otsivad praegu {kuulutusi} inimest"
+    else:
+        pais = f"Koondajad kaotavad Eestis umbes {koondab_kokku} töökohta ja ei otsi praegu kedagi"
+    analyys = [f"{nullis} firmat {len(kontrollitud)}-st ei otsi praegu kedagi."]
+    if sama:
+        analyys.append(f"Sama liiki ameteid, mida koondab, otsib ainult {', '.join(sama)}.")
+    if teised:
+        analyys.append(f"{', '.join(teised)} otsib teisi ameteid kui need, mida koondab.")
+    if arv_puudu:
+        analyys.append(f"Eesti koondatavate arv pole teada: {', '.join(arv_puudu)}. Summa on ligikaudne.")
     rühmad = {}
     for f in jarjekord:
         rühmad.setdefault(firmad[f].get("omand", "muu"), []).append(f"{f.split(' (')[0]} ({firmad[f]['sektor']})")
@@ -206,16 +242,18 @@ def koondajate_plokk(koond):
     lisa = (f' Taustaandmeid pole veel: {e(", ".join(puudu))}.' if puudu else "")
     return f'''<section id="koondajad"><div class="section-head"><p class="eyebrow">Kes koondab ja keda samad firmad otsivad</p>
 <h2>{e(pais)}</h2></div>
+<p>{e(" ".join(analyys))}</p>
+<div class="card"><h3 class="chart-title">Firma kaupa: koondab ja otsib</h3>
+<p class="chart-sub">Koondatavad Eestis koondamisuudisest, avatud kuulutused firma enda tööpakkumiste lehelt (sulgudes kuulutuse avaldamise kuupäev).</p>
+<div class="table-wrap"><table class="koondajad-firmad"><thead><tr><th>Firma</th><th class="r">Koondab Eestis</th><th>Mis ametid kaovad</th><th>Keda otsib praegu</th></tr></thead>
+<tbody>{"".join(firmaread)}</tbody></table></div></div>
+<details class="koondajad-detail"><summary>Ametiliigid ja firmade liik</summary>
 <p><b>Kes koondab.</b> {e(kes)}.</p>
 <p><b>Mis ametid.</b> Koondatakse peamiselt kontori-, IT- ja tugiameteid. Tootmise põhitöötajaid (näiteks jaamade operaatoreid) ei koondata.</p>
-<div class="card"><h3 class="chart-title">Ametiliigid: kaotatud ja pakutavad</h3>
 <p class="chart-sub">Mitu firmat koondab seda liiki ameteid ja mitu kuulutust samadel firmadel praegu Eestis avatud on.</p>
 <div class="table-wrap"><table><thead><tr><th>Ametiliik</th><th class="r">Koondab (firmasid)</th><th class="r">Otsib (kuulutusi)</th></tr></thead>
-<tbody>{liigiread}</tbody></table></div></div>
-<details class="koondajad-detail"><summary>Firma kaupa: sektor, firma liik, kaotatud ja pakutavad ametid</summary>
-<div class="table-wrap"><table class="koondajad-firmad"><thead><tr><th>Firma</th><th>Sektor ja liik</th><th>Mis ametid kaovad</th><th>Keda otsib praegu</th></tr></thead>
-<tbody>{"".join(firmaread)}</tbody></table></div></details>
-<p class="small">Kaotatud ametid on koondamisuudisest; firmad ei avalda alati täpset nimekirja. Pakutavad ametid on firma enda tööpakkumiste lehelt seisuga {kp(kp_k) if kp_k else "–"}: leht ei näita sisemisi ümberpaigutusi ega ainult LinkedInis avaldatud kuulutusi. Väike valim, mitte terve tööturu pilt.{lisa}</p></section>'''
+<tbody>{liigiread}</tbody></table></div></details>
+<p class="small">Kaotatud ametid on koondamisuudisest; firmad ei avalda alati täpset nimekirja. Pakutavad ametid on firma enda tööpakkumiste lehelt seisuga {kp(kp_k) if kp_k else "–"}: leht ei näita sisemisi ümberpaigutusi ega ainult LinkedInis avaldatud kuulutusi. Kuulutus võib olla mitme riigi kohta. Väike valim, mitte terve tööturu pilt.{lisa}</p></section>'''
 
 
 def uudiste_plokk(uud, olek):
