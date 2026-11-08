@@ -1,52 +1,48 @@
 id,vaartus,lugeja,nimetaja,mida,koht,markus
-uuendajad,29,,,"avalikest teenistujatest tegi viimase 24 kuu jooksul vähemalt ühe uuenduse","1. peatükk, joonis 1.2","Keskvalitsuses ja omavalitsustes sama, 29%. Juhtidest 64%, haldustöötajatest 18%."
-rakendati,62,,,"olulisimatest uuendustest jõudis rakendamiseni","6. peatükk, joonis 6.2","Vastajad nimetasid oma olulisima uuenduse ja selle viimase etapi."
-laiendati,33,,,"olulisimatest uuendustest laiendati","6. peatükk, joonis 6.2","OECD nimetab seda lehtri efektiks: enamik jääb pidama prototüübi, hindamise või otsuse etapis."
-hindamine-vfm-juhid,35,,,"hindamistest kasutas raha väärtuse (VfM) hindamist, juhtide järgi","6. peatükk, joonis 6.3","Hindamisi oli üldse vähe, seepärast on osakaal ebakindel."
-hindamine-vfm-tootajad,23,,,"hindamistest kasutas raha väärtuse (VfM) hindamist, töötajate järgi","6. peatükk, joonis 6.3",
-hindamine-protsess-juhid,40,,,"hindamistest oli protsessi hindamine, juhtide järgi","6. peatükk, joonis 6.3",
-hindamine-protsess-tootajad,48,,,"hindamistest oli protsessi hindamine, töötajate järgi","6. peatükk, joonis 6.3",
-genai-kesk,28,48,170,"keskvalitsuse innovaatoritest kasutas oma uuenduses generatiivset tehisaru","7. peatükk, joonis 7.2","Küsiti ainult neilt, kes tegid 24 kuu jooksul uuenduse. Ei ole kõigi teenistujate osakaal."
-genai-kov,27,19,71,"omavalitsuste innovaatoritest kasutas oma uuenduses generatiivset tehisaru","7. peatükk, joonis 7.2",
-klaster-eesliin,27,,73,"asutust on võimestatud eestvedajad (empowered front-runners)","4. peatükk","Kõige rohkem uuendusi ja tulemusi, kõrgeim psühholoogiline turvalisus ja riskivalmidus."
-klaster-enamus,40,,73,"asutust on piiratud enamus (constrained majority)","4. peatükk","Suurim rühm. Veidi alla keskmise peaaegu kõigis näitajates; OECD kirjeldab seda inertsina, mitte vastuseisuna."
-klaster-vaikesed,6,,73,"asutust on väikesed iseseisvad kasutuselevõtjad (disconnected adopters)","4. peatükk","Väga väikesed asutused (keskmiselt umbes 4 töötajat). Generatiivse tehisaru kasutuses teistest rühmadest ees. Väike rühm, üldistada ettevaatlikult."
-vastajad-juhid,55,,,"asutuse juhti vastas täielikult (lisaks 115 osaliselt)","lisa 1.A",
-vastajad-tootajad,563,,,"avalikku teenistujat vastas täielikult (lisaks 1140 osaliselt)","lisa 1.A","70,7% keskvalitsusest, 29,3% omavalitsustest. Küsitlus detsember 2025 kuni veebruar 2026."
-liik-parandus,65,,,"uuendajatest nimetas uuenduse liigiks olemasoleva parandamise","1. peatükk, joonis 1.5 (lk 22)","Üks uuendus võib kuuluda mitmesse liiki. Enamik uuendusi on sisemised töövahendid ja halduskoormuse vähendamine; poliitika tasandil uuendatakse vähe."
-liik-kohanemine,34,,,"uuendajatest nimetas uuenduse liigiks kohanemise muutustega","1. peatükk, joonis 1.5 (lk 22)",
-liik-missioon,20,,,"uuendajatest nimetas uuenduse liigiks missioonipõhise uuenduse","1. peatükk, joonis 1.5 (lk 22)",
-liik-ennetav,13,,,"uuendajatest nimetas uuenduse liigiks tulevikku ennetava uuenduse","1. peatükk, joonis 1.5 (lk 22)",
-liik-muu,10,,,"uuendajatest nimetas muu liigi","1. peatükk, joonis 1.5 (lk 22)",
-indeks-eesmark-min,0.49,,,"eesmärgi skoor (0–1), madalaim valitsemisala","1. peatükk, joonis 1.4 (lk 19)","Eesmärk: miks uuendatakse."
+uuendajad,29,,,avalikest teenistujatest tegi viimase 24 kuu jooksul vähemalt ühe uuenduse,"1. peatükk, joonis 1.2","Keskvalitsuses ja omavalitsustes sama, 29%. Juhtidest 64%, haldustöötajatest 18%."
+rakendati,62,,,olulisimatest uuendustest jõudis rakendamiseni,"6. peatükk, joonis 6.2",Vastajad nimetasid oma olulisima uuenduse ja selle viimase etapi.
+laiendati,33,,,olulisimatest uuendustest laiendati,"6. peatükk, joonis 6.2","OECD nimetab seda lehtri efektiks: enamik jääb pidama prototüübi, hindamise või otsuse etapis."
+hindamine-vfm-juhid,35,,,"hindamistest kasutas raha väärtuse (VfM) hindamist, juhtide järgi","6. peatükk, joonis 6.4 (lk 133)","Hindamisi oli üldse vähe, seepärast on osakaal ebakindel."
+hindamine-vfm-tootajad,23,,,"hindamistest kasutas raha väärtuse (VfM) hindamist, töötajate järgi","6. peatükk, joonis 6.3 (lk 132)",
+hindamine-protsess-juhid,40,,,"hindamistest oli protsessi hindamine, juhtide järgi","6. peatükk, joonis 6.4 (lk 133)",
+hindamine-protsess-tootajad,48,,,"hindamistest oli protsessi hindamine, töötajate järgi","6. peatükk, joonis 6.3 (lk 132)",
+genai-kesk,28,48,170,keskvalitsuse innovaatoritest kasutas oma uuenduses generatiivset tehisaru,"7. peatükk, joonis 7.2","Küsiti ainult neilt, kes tegid 24 kuu jooksul uuenduse. Ei ole kõigi teenistujate osakaal."
+genai-kov,27,19,71,omavalitsuste innovaatoritest kasutas oma uuenduses generatiivset tehisaru,"7. peatükk, joonis 7.2",
+klaster-eesliin,27,,73,asutust on võimestatud eestvedajad (empowered front-runners),4. peatükk,"Kõige rohkem uuendusi ja tulemusi, kõrgeim psühholoogiline turvalisus ja riskivalmidus."
+klaster-enamus,40,,73,asutust on piiratud enamus (constrained majority),4. peatükk,"Suurim rühm. Veidi alla keskmise peaaegu kõigis näitajates; OECD kirjeldab seda inertsina, mitte vastuseisuna."
+klaster-vaikesed,6,,73,asutust on väikesed iseseisvad kasutuselevõtjad (disconnected adopters),4. peatükk,"Väga väikesed asutused (keskmiselt umbes 4 töötajat). Generatiivse tehisaru kasutuses teistest rühmadest ees. Väike rühm, üldistada ettevaatlikult."
+vastajad-juhid,55,,,asutuse juhti vastas täielikult (lisaks 115 osaliselt),lisa 1.A,
+vastajad-tootajad,563,,,avalikku teenistujat vastas täielikult (lisaks 1140 osaliselt),lisa 1.A,"70,7% keskvalitsusest, 29,3% omavalitsustest. Küsitlus detsember 2025 kuni veebruar 2026."
+liik-parandus,65,,,uuendajatest nimetas uuenduse liigiks olemasoleva parandamise,"1. peatükk, joonis 1.5 (lk 22)",Üks uuendus võib kuuluda mitmesse liiki. Enamik uuendusi on sisemised töövahendid ja halduskoormuse vähendamine; poliitika tasandil uuendatakse vähe.
+liik-kohanemine,34,,,uuendajatest nimetas uuenduse liigiks kohanemise muutustega,"1. peatükk, joonis 1.5 (lk 22)",
+liik-missioon,20,,,uuendajatest nimetas uuenduse liigiks missioonipõhise uuenduse,"1. peatükk, joonis 1.5 (lk 22)",
+liik-ennetav,13,,,uuendajatest nimetas uuenduse liigiks tulevikku ennetava uuenduse,"1. peatükk, joonis 1.5 (lk 22)",
+liik-muu,10,,,uuendajatest nimetas muu liigi,"1. peatükk, joonis 1.5 (lk 22)",
+indeks-eesmark-min,0.49,,,"eesmärgi skoor (0–1), madalaim valitsemisala","1. peatükk, joonis 1.4 (lk 19)",Eesmärk: miks uuendatakse.
 indeks-eesmark-max,0.68,,,"eesmärgi skoor (0–1), kõrgeim valitsemisala","1. peatükk, joonis 1.4 (lk 19)",
-indeks-potentsiaal-min,0.60,,,"potentsiaali skoor (0–1), madalaim valitsemisala","1. peatükk, joonis 1.4 (lk 19)","Potentsiaal: oskused ja tahe."
+indeks-potentsiaal-min,0.60,,,"potentsiaali skoor (0–1), madalaim valitsemisala","1. peatükk, joonis 1.4 (lk 19)",Potentsiaal: oskused ja tahe.
 indeks-potentsiaal-max,0.74,,,"potentsiaali skoor (0–1), kõrgeim valitsemisala","1. peatükk, joonis 1.4 (lk 19)",
 indeks-voimekus-min,0.47,,,"võimekuse skoor (0–1), madalaim valitsemisala","1. peatükk, joonis 1.4 (lk 19)","Võimekus: kultuur, luba katsetada, ressursid."
 indeks-voimekus-max,0.77,,,"võimekuse skoor (0–1), kõrgeim valitsemisala","1. peatükk, joonis 1.4 (lk 19)",
 indeks-moju-min,0.09,,,"mõju skoor (0–1), madalaim valitsemisala","1. peatükk, joonis 1.4 (lk 19)","Mõju: kas uuenduste tulemusi mõõdetakse. Kultuuri, kaitse, välis- ja rahanduse valitsemisala valim on väike (n = 11–33). Aruande tekst (lk 20) võrdleb keskvalitsuse ja omavalitsuste võimekust numbritega 0,37 ja 0,29, joonisel on omavalitsuste võimekus 0,54; aruanne erinevust ei selgita."
 indeks-moju-max,0.21,,,"mõju skoor (0–1), kõrgeim valitsemisala","1. peatükk, joonis 1.4 (lk 19)",
-etapp-uurimine,60,49,,"uuendusprojektidest jõudis uurimise etappi","6. peatükk, joonis 6.2 (lk 131)","Lugeja on projektide arv."
-etapp-ideed,58,47,,"uuendusprojektidest jõudis ideede etappi","6. peatükk, joonis 6.2 (lk 131)",
-etapp-prototyyp,52,42,,"uuendusprojektidest jõudis prototüübi etappi","6. peatükk, joonis 6.2 (lk 131)",
-etapp-hindamine,30,24,,"uuendusprojektidest jõudis hindamise etappi","6. peatükk, joonis 6.2 (lk 131)",
-etapp-otsus,25,20,,"uuendusprojektidest jõudis otsuse etappi","6. peatükk, joonis 6.2 (lk 131)","Ülikoolidest tuleb uuenduse idee 5% ja teadusasutustest 2% juhtudest (joonis 6.5)."
-hindamine-teooria-tootajad,23,,,"hindamistest oli teooriapõhine hindamine, töötajate järgi","6. peatükk, joonis 6.4 (lk 133)","Üks hindamine võib kasutada mitut meetodit."
-hindamine-cba-tootajad,9,,,"hindamistest oli kulude ja tulude analüüs, töötajate järgi","6. peatükk, joonis 6.4 (lk 133)",
-hindamine-rct-tootajad,6,,,"hindamistest oli juhuslikustatud katse (RCT), töötajate järgi","6. peatükk, joonis 6.4 (lk 133)",
-hindamine-kvaasi-tootajad,5,,,"hindamistest oli kvaasikatse, töötajate järgi","6. peatükk, joonis 6.4 (lk 133)",
-oskus-kasutuselevott,36,,417,"vastustest nimetas kõige soovitumaks oskuseks tehisaru kasutuselevõtu","7. peatükk, joonis 7.8 (lk 162)","Vabad vastused tõlgiti inglise keelde ja rühmitati keelemudeli abil; rühmade nimed kontrollis inimene."
-oskus-strateegia,28,,417,"vastustest nimetas strateegilise juhtimise ja teenused","7. peatükk, joonis 7.8 (lk 162)",
-oskus-suhtlus,11,,417,"vastustest nimetas suhtluse ja mõjutamise","7. peatükk, joonis 7.8 (lk 162)",
-oskus-digi,9,,417,"vastustest nimetas digi- ja andmeoskused","7. peatükk, joonis 7.8 (lk 162)",
-oskus-andmeotsused,8,,417,"vastustest nimetas andmepõhised otsused","7. peatükk, joonis 7.8 (lk 162)",
-oskus-arendus,8,,417,"vastustest nimetas tehisaruoskuste arendamise","7. peatükk, joonis 7.8 (lk 162)","OECD hoiatab, et kui tehisaru tööriistu ostetakse ilma oma projektijuhtimise oskuseta, jäävad need töösse sidumata."
-kirjaoskus-genai-null,5,5,20,"asutuses 20-st ei kasutanud ükski uuendus generatiivset tehisaru","7. peatükk, joonis 7.3 (lk 157)","Asutuste keskmine tehisaru kirjaoskus (enesehinnang 1–5) oli 3,24 ja generatiivse tehisaru osakaal uuendustes keskmiselt 26%. Kahes väikeses asutuses oli osakaal 67%, kuigi kirjaoskus jäi alla keskmise."
-kupsus-max,67,,,"kõrgeim tehisaru juhtimise küpsus asutuses, % juhi jah-vastustest","7. peatükk, joonis 7.4 (lk 158)","Küpsus = kui suur osa juhi vastustest tehisaru poliitika, juhendi ja toe kohta oli „jah“. Ainult asutused, kus vastas ka juht (44)."
-kasutusvoimekus-max,46,,,"kõrgeim töötajate tehisaru kasutusvõimekus asutuses, %","7. peatükk, joonis 7.4 (lk 158)","Kasutusvõimekus = töötajate kasutus ja oskuste enesehinnang."
-kupsus-null,16,16,44,"asutusel 44-st on tehisaru juhtimise küpsus null","7. peatükk, joonis 7.4 (lk 158)","Juht ei märkinud ühtegi tehisaru poliitikat, juhendit ega tuge."
-usaldus,35,,,"eestlastest usub, et riik kasutab tehisaru teenuste paremaks kohandamiseks","7. peatükk (lk 154), OECD usalduse uuring","Eestlased suhtuvad riigi tehisaru kasutusse vähem positiivselt kui OECD riikides keskmiselt."
-raha-el,83,,,"keskvalitsuse eelmise eelarveaasta uuendusrahast (umbes 6 mln eurot) tuli ELilt","2. peatükk (lk 38)","Enamik uuendusi tehakse asutuse sisemiste arendusvahenditega."
-hanked-innovatsioon,1.9,,,"hangete eelarvest läheb teadus- ja arendustööle või uuenduslikele lahendustele (alla 1% hangete arvust)","2. peatükk, joonis 2.9 (lk 41)","Riigi siht on 2% aastaks 2027 (OECD aruanne, lk 41)."
-hanked-pole,88,14,16,"vastanud asutustest ei teinud ühtegi innovatsioonihanget","2. peatükk (lk 42)",
-innovatsioonifond,60,,,"Riigikantselei avaliku sektori innovatsioonifond aastatel 2023–2029 (ELi raha)","6. peatükk (lk 134) ja kokkuvõte","Fond toetab katsetamist, mitte laiendamist. Aruande ühes peatükis on kirjas, et fond on lõpetamisel (lk 134); kokkuvõttes soovitab OECD seda jätkata ja tugevdada."
+etapp-uurimine,60,49,,uuendusprojektidest jõudis uurimise etappi,"6. peatükk, joonis 6.2 (lk 131)",Lugeja on projektide arv.
+etapp-ideed,58,47,,uuendusprojektidest jõudis ideede etappi,"6. peatükk, joonis 6.2 (lk 131)",
+etapp-prototyyp,52,42,,uuendusprojektidest jõudis prototüübi etappi,"6. peatükk, joonis 6.2 (lk 131)",
+etapp-hindamine,30,24,,uuendusprojektidest jõudis hindamise etappi,"6. peatükk, joonis 6.2 (lk 131)",
+etapp-otsus,25,20,,uuendusprojektidest jõudis otsuse etappi,"6. peatükk, joonis 6.2 (lk 131)",Ülikoolidest tuleb uuenduse idee 5% ja teadusasutustest 2% juhtudest (joonis 6.5).
+hindamine-teooria-tootajad,23,,,"hindamistest oli teooriapõhine hindamine, töötajate järgi","6. peatükk, joonis 6.3 (lk 132)",Üks hindamine võib kasutada mitut meetodit.
+hindamine-cba-tootajad,9,,,"hindamistest oli kulude ja tulude analüüs, töötajate järgi","6. peatükk, joonis 6.3 (lk 132)",
+hindamine-rct-tootajad,6,,,"hindamistest oli juhuslikustatud katse (RCT), töötajate järgi","6. peatükk, joonis 6.3 (lk 132)",
+hindamine-kvaasi-tootajad,5,,,"hindamistest oli kvaasikatse, töötajate järgi","6. peatükk, joonis 6.3 (lk 132)",
+oskus-kasutuselevott,36,,417,vastustest nimetas kõige soovitumaks oskuseks tehisaru kasutuselevõtu,"7. peatükk, joonis 7.8 (lk 162)",Vabad vastused tõlgiti masinaga inglise keelde ja tõlget kontrollis inimene. Rühmad leidis ja nimetas keelemudel. Vastuste arv 417 on kuue rühma vastuste summa (arvutatud).
+oskus-strateegia,28,,417,vastustest nimetas strateegilise juhtimise ja teenused,"7. peatükk, joonis 7.8 (lk 162)",
+oskus-suhtlus,11,,417,vastustest nimetas suhtluse ja mõjutamise,"7. peatükk, joonis 7.8 (lk 162)",
+oskus-digi,9,,417,vastustest nimetas digi- ja andmeoskused,"7. peatükk, joonis 7.8 (lk 162)",
+oskus-andmeotsused,8,,417,vastustest nimetas andmepõhised otsused,"7. peatükk, joonis 7.8 (lk 162)",
+oskus-arendus,8,,417,vastustest nimetas tehisaruoskuste arendamise,"7. peatükk, joonis 7.8 (lk 162)","OECD hoiatab, et kui tehisaru tööriistu ostetakse ilma oma projektijuhtimise oskuseta, jäävad need töösse sidumata (lk 161–162)."
+usaldus,35,,,"eestlastest usub, et riik kasutab tehisaru teenuste paremaks kohandamiseks","7. peatükk (lk 154), OECD usalduse uuring",Eestlased suhtuvad riigi tehisaru kasutusse vähem positiivselt kui OECD riikides keskmiselt.
+raha-el,83,,,keskvalitsuse eelmise eelarveaasta uuendusrahast (umbes 6 mln eurot) tuli ELilt,2. peatükk (lk 38),Enamik uuendusi tehakse asutuse sisemiste arendusvahenditega.
+hanked-innovatsioon,1.9,,,hangete eelarvest läheb teadus- ja arendustööle või uuenduslikele lahendustele (alla 1% hangete arvust),"2. peatükk (lk 41), andmed Põllu (2026)","Riigi siht on, et innovatsioonihanked oleksid 2% kõigist hangetest aastaks 2027 ja 5% aastaks 2035 (OECD aruanne, lk 41 ja 49)."
+hanked-pole,88,,,vastanud asutustest ei teinud ühtegi innovatsioonihanget,"2. peatükk, joonis 2.9 (lk 42)","Valim on väike: joonisel on n = 16. Joonise märkuse järgi on n hangete arv, seepärast ei näita me asutuste arvu."
+innovatsioonifond,60,,,Riigikantselei avaliku sektori innovatsioonifond aastatel 2023–2029 (ELi raha),"2. peatükk, kast 2.2 (lk 39)","Fond toetab katsetamist, mitte laiendamist. Aruande ühes peatükis on kirjas, et fond on lõpetamisel (lk 134); kokkuvõttes soovitab OECD seda jätkata ja tugevdada."

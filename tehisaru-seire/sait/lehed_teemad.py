@@ -714,7 +714,7 @@ def avalik_sektor(A, vaade, vaated=None):
   </div>
 </section>"""
 
-    # Tehisaru 2027 lehelt toodud OECD lisatulemused (Kadri 8.11.2026: kõik ühes kohas, samad meetodid)
+    # OECD lisatulemused otse aruandest (Kadri 8.11.2026: kõik ühes kohas, otse allikast; kontrollitud aruande PDF-ist)
     et = [("Uurimine", "etapp-uurimine"), ("Ideed", "etapp-ideed"), ("Prototüüp", "etapp-prototyyp"),
           ("Hindamine", "etapp-hindamine"), ("Otsus", "etapp-otsus")]
     langus = round(v("etapp-prototyyp") - v("etapp-hindamine"))
@@ -790,7 +790,6 @@ def avalik_sektor(A, vaade, vaated=None):
            ("Andmepõhised otsused", "oskus-andmeotsused"), ("Tehisaruoskuste arendamine", "oskus-arendus")]
     if max(osk, key=lambda x: v(x[1]))[1] != "oskus-kasutuselevott":
         raise AndmeViga("OECD oskused: tehisaru kasutuselevõtt ei ole enam kõige soovitum oskus")
-    kn, kp_ = _o(A, "kirjaoskus-genai-null"), _o(A, "kupsus-null")
     sec_oskused = f"""
 <section class="jaotis" id="oskused" aria-labelledby="h-oskused">
   <header>
@@ -813,23 +812,16 @@ def avalik_sektor(A, vaade, vaated=None):
 </section>
 <section class="jaotis" id="kupsus" aria-labelledby="h-kupsus">
   <header>
-    <h2 id="h-kupsus">Üheski asutuses ei ole tehisaru juhtimise küpsus üle {pr(v("kupsus-max"), 0)}% ega töötajate kasutusvõimekus üle {pr(v("kasutusvoimekus-max"), 0)}%; <b>{kp_["lugeja"]} asutusel {kp_["nimetaja"]}-st on küpsus null</b></h2>
-    <p class="alam">{e(_o(A, "kupsus-max")["markus"])} {e(_o(A, "kasutusvoimekus-max")["markus"])}</p>
+    <h2 id="h-kupsus">OECD: enamikul asutustest <b>pole generatiivse tehisaru jaoks piisavat juhtimisraamistikku</b></h2>
+    <p class="alam">Aruanne näitab asutusi joonistel 7.3 ja 7.4 ainult punktidena. Täpseid asutuste arve tekstis ei ole, seepärast neid siin ei ole.</p>
   </header>
-  <div class="kaks">
-    <figure aria-labelledby="g-kupsus">
-      <figcaption><span class="gt" id="g-kupsus">Asutused tehisaru juhtimise küpsuse järgi, asutuste arv</span></figcaption>
-      {osad([("Küpsus null", int(kp_["lugeja"]), "k-a", e(kp_["markus"])),
-             ("Küpsus üle nulli", int(kp_["nimetaja"]) - int(kp_["lugeja"]), "k-c", f'kõrgeim {pr(v("kupsus-max"), 0)}%')], f'{kp_["nimetaja"]} asutust')}
-      {allikarida([("OECD (2026)", OECD_URL, kp_["koht"])])}
-    </figure>
-    <div class="kulg">
-      {faktid([
-          ("Fakt", "", f'{kn["lugeja"]} asutuses {kn["nimetaja"]}-st {e(kn["mida"].split("-st ", 1)[1])}. {e(kn["markus"])} ({e(kn["koht"])})'),
-          ("Usaldus", "risk", f'{pr(v("usaldus"), 0)}% {e(_o(A, "usaldus")["mida"])}. {e(_o(A, "usaldus")["markus"])} ({e(_o(A, "usaldus")["koht"])})'),
-      ], koik_lahti=True)}
-    </div>
-  </div>
+  {faktid([
+      ("Fakt · OECD", "", "Enamikul asutustest pole generatiivse tehisaru jaoks piisavat juhtimisraamistikku. Asutused peavad suurendama nii töötajate kasutusvõimekust kui ka juhtimise küpsust (OECD 2026, lk 156, joonis 7.4)."),
+      ("Kuidas mõõdeti", "", "Juhtimise küpsus on asutuse juhi jah-vastuste osakaal küsimustele tehisaru poliitika, juhendi ja toe kohta. Kasutusvõimekus liidab töötajate generatiivse tehisaru kasutuse ja oskuste enesehinnangu. Joonisel on ainult asutused, kus vastas ka juht."),
+      ("Tõlgendus · OECD", "", "Tehisaru kirjaoskus on OECD hinnangul generatiivse tehisaru kasutuse peamine tõukejõud kõigil valitsemistasanditel (lk 156, joonis 7.3)."),
+      ("Usaldus", "risk", f'{pr(v("usaldus"), 0)}% {e(_o(A, "usaldus")["mida"])}. {e(_o(A, "usaldus")["markus"])} ({e(_o(A, "usaldus")["koht"])})'),
+  ], koik_lahti=True)}
+  {allikarida([("OECD (2026)", OECD_URL, "7. peatükk (lk 154–158)")])}
 </section>"""
 
     hi = _o(A, "hanked-innovatsioon")
@@ -837,8 +829,8 @@ def avalik_sektor(A, vaade, vaated=None):
     fond = _o(A, "innovatsioonifond")
     r_read = [
         [f'<b>{pr(v("raha-el"), 0)}%</b>', e(_o(A, "raha-el")["mida"]) + f'<small>{e(_o(A, "raha-el")["markus"])}</small>', e(_o(A, "raha-el")["koht"])],
-        [f'<b>{pr(v("hanked-innovatsioon"), 1)}%</b>', e(hi["mida"]) + f'<small>{e(hi["markus"])} Siht on samast aruandest.</small>', e(hi["koht"])],
-        [f'<b>{pr(v("hanked-pole"), 0)}%</b> <small>({hp["lugeja"]}/{hp["nimetaja"]})</small>', e(hp["mida"]), e(hp["koht"])],
+        [f'<b>{pr(v("hanked-innovatsioon"), 1)}%</b>', e(hi["mida"]) + f'<small>{e(hi["markus"])}</small>', e(hi["koht"])],
+        [f'<b>{pr(v("hanked-pole"), 0)}%</b>', e(hp["mida"]) + f'<small>{e(hp["markus"])}</small>', e(hp["koht"])],
         [f'<b>{pr(v("innovatsioonifond"), 0)} mln €</b>', e(fond["mida"]), e(fond["koht"])],
     ]
     sec_raha = f"""

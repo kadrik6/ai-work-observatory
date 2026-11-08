@@ -26,9 +26,10 @@ def test_vercel_ehitab_ainult_saidi_kausta_ja_keelab_indekseerimise():
 def test_robots_keelab_koik(tmp_path):
     ehita.ehita(tmp_path)
     assert (tmp_path / "robots.txt").read_text(encoding="utf-8") == "User-agent: *\nDisallow: /\n"
-    # väljundis on ainult saidi failid: html, stiil, skript ja robots.txt
-    lubatud = re.compile(r".+\.html$|^stiil\.css$|^sait\.js$|^robots\.txt$")
+    # väljundis on ainult saidi failid: html, stiil, skript, robots.txt ja avalehe päise pilt
+    lubatud = re.compile(r".+\.html$|^stiil\.css$|^sait\.js$|^robots\.txt$|^pilt$")
     assert all(lubatud.match(p.name) for p in tmp_path.iterdir()), sorted(p.name for p in tmp_path.iterdir())
+    assert sorted(p.name for p in (tmp_path / "pilt").iterdir()) == ["avaleht.jpg"]
 
 
 def test_kulastusloendur_ainult_vercelis():

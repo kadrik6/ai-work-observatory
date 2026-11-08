@@ -10,7 +10,7 @@
       "kusimused": "K1, K4, K11",
       "olek": "valmis",
       "kusimus": "Mis on tehisaru kasutuse peamised numbrid praegu ja kas neid võib usaldada?",
-      "h1": "{inimeste-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest** ja {ettevotete-tehisaru-kasutus|EE|uusim|p0}% ettevõtetest; ELi võrdluses ({inimeste-tehisaru-kasutus|EE|uusim:alus|a}) on inimesed {inimeste-tehisaru-kasutus|EE|uusim:alus|koht}. ja ettevõtted {ettevotete-tehisaru-kasutus|EE|uusim:alus|koht}. kohal.",
+      "h1": "Tehisaru kasutuses on Eesti inimesed ELis {inimeste-tehisaru-kasutus|EE|uusim:alus|koht}., **ettevõtted {ettevotete-tehisaru-kasutus|EE|uusim:alus|koht}. kohal** ({inimeste-tehisaru-kasutus|EE|uusim:alus|a})",
       "osad": "Kuus numbriplaati; teemade tabel; ELi kaart ja järjestus; töötuse prognoos ja kuunumber; ettevõtete trend; Mis muutus; sihid; hanked; väited"
     },
     {

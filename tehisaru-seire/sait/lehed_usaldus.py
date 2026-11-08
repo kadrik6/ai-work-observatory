@@ -289,7 +289,7 @@ KLASSI_SELGITUS = [
 ]
 
 
-# Tehisaru 2027 lehe metoodika (Kadri 8.11.2026: kõik ühes kohas, samad meetodid). Ainult avalikud allikad.
+# Metoodika: mõisted ja avaliku sektori numbrid (Kadri 8.11.2026: kõik ühes kohas, otse allikast). Ainult avalikud allikad.
 DYAK_URL = "https://valitsus.ee/sites/default/files/documents/2026-06/DYAK%202035%20arengukava.pdf"
 PROG_URL = "https://www.justdigi.ee/sites/default/files/documents/2026-06/Digi%C3%BChiskonna%20programm%202027-2030%20eeln%C3%B5u.pdf"
 ARS_URL = "https://arenguseire.ee/raportid/tehnoloogilise-arenguga-seotud-trendid-eesti-ettevotluses/"
@@ -304,7 +304,7 @@ EI_NAITA = [
     ("Kasutus ei ole sama mis kasu", f'Eurostat ja Statistikaamet küsivad, kas inimene või ettevõte kasutab tehisaru. Kas see tõstab tootlikkust, need andmed ei ütle. '
                                       f'<a href="{ARS_URL}">Arenguseire Keskus</a> leidis seose alles koos töökorralduse muutusega.'),
     ("Uuendus ei ole sama mis kogu töö", "OECD 28% loeb innovaatorite uuendusi, mitte kõiki töötajaid ega asutusi. Küsimus esitati ainult neile, kes olid viimase kahe aasta jooksul midagi uuendanud."),
-    ("Mõõdik ei ole sama mis avaldatud arvutus", f'Avaliku sektori tehisaru kasutust mõõdab <a href="{DYAK_URL}">arengukava</a> mõõdik 7 (50,8% aastal 2024), '
+    ("Mõõdik ei ole sama mis avaldatud arvutus", f'Avaliku sektori tehisaru kasutust mõõdab <a href="{DYAK_URL}">arengukava</a> mõõdik 7 (50,8%), '
                                                  "aga selle arvutuskäik pole avaldatud. Statistikaamet ja Eurostat sellist näitajat ei avalda."),
     ("Puuduv number ei ole null", "Tehisaru investeeringute kohta avalikku allikat ei leitud. Kui number puudub, ei tähenda see, et kulu või mõju oleks null."),
     ("Tegevused ei ole oskuste test", "Digioskuste näitaja liidab tegevused, mida inimene on teinud. Inimese oskusi ei testita."),
@@ -319,11 +319,11 @@ def _metoodika(A, vaated):
     m_read = [[f'<b>{e(n)}</b><small>{e(k)}</small>', e(t), link(vaated, v, next((x["menuu"] for x in vaated or [] if x["id"] == v), v) or v)]
               for n, k, t, v in MOISTED]
     a_read = [
-        ["<b>50,8%</b><small>2024, küsitlus 2025</small>", "Asutused ja omavalitsused, kes on kasutanud vähemalt üht tehisaru tehnoloogiat",
-         f'<a href="{DYAK_URL}">Digiühiskonna arengukava 2035</a>, mõõdik 7 (Justiits- ja Digiministeeriumi uuring)',
-         "Lähtetase. Arvutuskäik (küsimus, nimetaja, kas omavalitsused on sees) on avaldamata."],
+        ["<b>50,8%</b><small>arengukavas aasta 2024, programmis 2025</small>", "Asutused ja omavalitsused, kes on kasutanud vähemalt üht tehisaru tehnoloogiat",
+         f'<a href="{DYAK_URL}">Digiühiskonna arengukava 2035</a>, mõõdik 7 (lk 17, allikas JDM)',
+         "Lähtetase. Arengukava märgib selle aastaks 2024, programmi eelnõu (tabel 3) aastaks 2025. Arvutuskäik (küsimus, nimetaja) on avaldamata."],
         ["<b>55%, 75%, 90%</b><small>2027, 2030, 2035</small>", "Sama mõõdiku sihid: asutuste ja omavalitsuste osakaal",
-         f'<a href="{PROG_URL}">Digiühiskonna programm 2027–2030</a> (eelnõu, tabel 3); arengukava',
+         f'<a href="{PROG_URL}">Digiühiskonna programm 2027–2030</a> (eelnõu, tabel 3: 55% 2027, 65% 2028, 70% 2029, 75% 2030); <a href="{DYAK_URL}">arengukava</a> (75% 2030, 90% 2035)',
          "Siht. Vahesiht 55% kehtib juba 2027. aastal."],
         [f'<b>{gk["vaartus"]}%</b><small>2026; omavalitsustes {A["avalik"]["genai-kov"]["vaartus"]}%</small>',
          f'Innovaatorite uuendused: keskvalitsuse innovaatoritest {gk["lugeja"]} {gk["nimetaja"]}-st kasutas uuenduses generatiivset tehisaru',

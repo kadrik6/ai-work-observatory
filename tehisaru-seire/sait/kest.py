@@ -31,7 +31,9 @@ ANALYYTIKA_JS = ("<script>(function(){var h=location.hostname,ok=" + "||".join(f
                  "document.head.appendChild(s)})()</script>")
 TEEMA_JS = ("<script>(function(){var t=null;try{t=localStorage.getItem('seire-teema-2')}catch(e){}"
             "if(t!=='dark')t='soft';"  # Hele (endine Pehme) ka tumedas seadmes; valge Hele eemaldati (Kadri 8.11.2026)
-            "if(t)document.documentElement.setAttribute('data-seire-teema',t)})()</script>")
+            "if(t)document.documentElement.setAttribute('data-seire-teema',t);"
+            # A1 kujundus (Kadri 8.11.2026 23:41); artefakti kest kirjutab <html> üle, seepärast ka skriptiga
+            "document.documentElement.setAttribute('data-t','1')})()</script>")
 
 
 def menuu(vaated, praegune):
@@ -143,7 +145,7 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
     kavas = [v for v in vaated if not v["menuu"] and v["olek"] != "valmis" and v["id"] != "avaleht"]
     jalus_lingid += [f'{e("Kuidas lugeda" if v["id"] == "kuidas" else v["id"])} (tulekul)' for v in kavas]
     return f"""<!doctype html>
-<html lang="et">
+<html lang="et" data-t="1">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
