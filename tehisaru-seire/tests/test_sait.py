@@ -822,7 +822,7 @@ def test_ai_kuulutused_filtreeritavad_ruhma_ja_maakonna_jargi(sait):
 def test_neli_vaiteparandust_8_11(sait):
     """Sisuloogika ülevaatus 8.11.2026: ELi kohtadel aasta, kasvu võrreldavus, Töö h1 USA kohta, hangete üks number."""
     h1 = lambda f: tekst(re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1))  # noqa: E731
-    assert re.search(r"ELi võrdluses \(20\d\d\) on inimesed", h1("index.html"))
+    assert re.search(r"ELis \d+\., ettevõtted \d+\. kohal \(20\d\d\)", h1("index.html"))  # ELi kohal on aasta
     assert "aastaga" not in h1("inimesed.html")
     assert "küsimus võib erineda" in sait["inimesed.html"] and "küsimus võib erineda" in sait["index.html"]
     assert h1("too.html").startswith("Eesti andmetest")  # 8.11 õhtu: h1 algab Eestist (läbivaatus P4)
@@ -939,7 +939,11 @@ def test_labivaatus_8_11_parandused(sait):
                 assert re.sub(r"<[^>]+>", "", b).strip() == "", (f, m.group(1))
     # Esmakordne lugeja (kolleeg lingiga): avalehel ütleb üks lause, mis sait see on, ja viitab lugemisjuhendile
     tut = re.search(r'<p class="tutvus">(.*?)</p>', sait["index.html"], re.S)
-    assert tut and "kuidas-lugeda.html" in tut.group(1) and "allikaga" in tut.group(1)
+    assert tut and "allikaga" in tut.group(1)
+    # Kadri 8.11.2026: allikad ja lugemisjuhend on ühe lühikese lingi taga, mitte päises paremal
+    allikad = re.search(r'<details class="allikad-l"><summary>Allikad ja kuupäevad</summary>(.*?)</details>', sait["index.html"], re.S)
+    assert allikad and "kuidas-lugeda.html" in allikad.group(1) and "Statistikaamet" in allikad.group(1)
+    assert 'class="seis-t"' not in sait["index.html"]
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
     assert "button.kopeeri" in js and "navigator.clipboard" in js and "execCommand('copy')" in js
 
@@ -1091,3 +1095,15 @@ def test_uuringutulemused_ja_metoodika_on_seire_saidil(sait):
     kl = sait["kuidas-lugeda.html"]
     assert 'id="moisted"' in kl and 'id="numbrid-ei-naita"' in kl and "Seitse asja" in kl
     assert "eesti-otsused.html" in sait and 'href="eesti-otsused.html"' in sait["tehisaru-maarus.html"]
+
+
+def test_a1_kujundus_kogu_saidil(sait):
+    # Kadri 8.11.2026 23:41: „A1 teema sobib kõige paremini“ (katseleht kirjeldused/stiilid/t2027-seire)
+    import kest
+    css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
+    assert "html[data-t] .plaat" in css and ".pea-rahu" in css
+    assert "setAttribute('data-t','1')" in kest.TEEMA_JS  # artefaktis kirjutatakse <html> üle
+    pehme = css.split(':root[data-seire-teema="soft"] {', 1)[1].split("}", 1)[0]
+    assert "--page: #ffffff" in pehme and "--surface-2: #f9f9f9" in pehme
+    h1 = re.search(r"<h1>(.*?)</h1>", sait["index.html"], re.S).group(1)
+    assert re.fullmatch(r"Tehisaru kasutuses on Eesti inimesed ELis \d+\., <b>ettevõtted \d+\. kohal</b> \(20\d\d\)", h1), h1

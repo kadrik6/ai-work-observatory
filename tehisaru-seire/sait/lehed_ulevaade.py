@@ -128,8 +128,8 @@ def kpi_plaat(pid, lbl, big, per, kontekst, src, fookus=False, href=""):
 
 
 # Esmakordsele lugejale (kolleeg, kes saab lingi): mis sait see on. Kadri 8.11.2026, enne kolleegidele näitamist.
-TUTVUS = ("Tehisaru kasutus ja mõju Eestis ja ELis ühes kohas: ametlik statistika, uuringud ja meedias levivate "
-          "väidete kontroll, iga number koos allikaga.")
+# Lühike päis (Kadri 8.11.2026: pealkiri ja selle all olev tekst lühemaks, allikad ühe lingi taha)
+TUTVUS = "Tehisaru kasutus ja mõju Eestis ja ELis: statistika, uuringud ja väidete kontroll, iga number allikaga."
 
 KOOPIA_KES = {"ma-": "ELi tehisaru määrus", "too-noored": "", "too-taani": ""}
 
@@ -432,10 +432,16 @@ def avaleht(A, vaade, vaated):
 </section>"""
 
     pea = f"""
-<div class="pea-t">
+<div class="pea-t pea-rahu">
   <h1>{taida(vaade["h1"], A)}</h1>
-  <p class="tutvus">{TUTVUS} {menuu("kuidas", "Kuidas numbreid lugeda")}.</p>
-  <p class="seis-t">Andmed: Statistikaamet {kp(ein["avaldatud"])} ja {kp(eeb["avaldatud"])}, Eurostat {kp(UNE_UUENDATUD)}</p>
+  <div class="alla">
+    <p class="tutvus">{TUTVUS}</p>
+    <details class="allikad-l"><summary>Allikad ja kuupäevad</summary><div>
+      <p>Andmed: Statistikaamet {kp(ein["avaldatud"])} ja {kp(eeb["avaldatud"])}, Eurostat {kp(UNE_UUENDATUD)}.</p>
+      <p>ELi järjestus on {ein25["aasta"]}. aasta kohta (Eurostat). Iga number on allikaga, allikas on numbri juures.</p>
+      <p>{menuu("kuidas", "Kuidas numbreid lugeda")}</p>
+    </div></details>
+  </div>
 </div>
 <nav aria-label="Sellel lehel"><ul class="sellel"><li><a href="#teemad">Teemad</a></li><li><a href="#el">Eesti ELis</a></li><li><a href="#tootus">Töö ja töötus</a></li><li><a href="#trend">Ettevõtted</a></li><li><a href="#muutus">Mis muutus</a></li><li><a href="#sihid">Sihid</a></li><li><a href="#hanked">Hanked</a></li><li><a href="#vaited">Väited</a></li></ul></nav>
 <div class="plaadid kaks" aria-label="Peamised numbrid">{plaadid}</div>"""

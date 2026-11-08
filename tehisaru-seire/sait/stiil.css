@@ -42,13 +42,14 @@
   --panel: #27282c; --page: #1f2023;
   color-scheme: dark;
 }
-/* Pehme = H1 „Helehall“ (Kadri lukustas 8.11.2026 21:01 taustanäidiste lehelt): hele neutraalne hall taust, valged kastid. */
+/* Hele (väärtus "soft") = A1 „Tehisaru 2027“ valge leht (Kadri 8.11.2026 23:41: „A1 teema sobib kõige paremini“);
+   asendab 21:01 lukustatud Helehalli. Valge leht, helehallid numbrikaardid, jaotised ilma kastita. */
 :root[data-seire-teema="soft"] {
-  --surface: #ffffff; --surface-2: #f6f7f9; --surface-3: #e9ebef; --brand-soft: #dfe5fb;
-  --ink: #151926; --ink-2: #3d4460; --ink-3: #545b74;
-  --context: #b2b8c9; --context-strong: #34394c;
-  --border: #e2e4e8; --grid: #eceef1; --control: #7b8299;
-  --mark-ctx: #7b8299; --panel: #ffffff; --page: #f3f4f6;
+  --surface: #ffffff; --surface-2: #f9f9f9; --surface-3: #f0f0f2; --brand-soft: #e6eafc;
+  --ink: #151926; --ink-2: #4b4e62; --ink-3: #737482;
+  --context: #d2d3d8; --context-strong: #34394c;
+  --border: #e1e2e5; --grid: #f0f0f2; --control: #838494;
+  --mark-ctx: #8b8d99; --panel: #ffffff; --page: #ffffff;
   color-scheme: light;
 }
 
@@ -1245,3 +1246,74 @@ ol.sammud p { margin: 0; max-width: 72ch; }
 .top .menu a { color: var(--ink); font-size: 16px; font-weight: 600; padding: 0 12px; border-bottom-width: 3px; }
 .top .menu a:hover { color: var(--signal); }
 .top .menu a[aria-current="page"] { color: var(--signal); border-bottom-color: var(--signal); }
+
+/* =========================================================
+   A1 „Tehisaru 2027“ kujundus kogu saidil (Kadri 8.11.2026 23:41). Pärit katselehelt
+   kirjeldused/stiilid/t2027-seire (A1). html[data-t] pannakse igale lehele (kest.py).
+   ========================================================= */
+/* ---- Rahulik päis: kõigis variantides ---- */
+.pea-rahu { display: block; padding-top: 20px; }
+.pea-rahu h1 { max-width: 30ch; }
+.pea-rahu .alla { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-top: 8px; }
+.pea-rahu .tutvus { margin: 0; color: var(--ink-2); max-width: 70ch; }
+.allikad-l { font-size: 14px; color: var(--ink-2); border: 0; padding: 0; margin: 0; }
+.allikad-l summary { cursor: pointer; color: var(--signal); list-style: none; display: inline-flex; align-items: center; min-height: 24px; font-size: 14px; }
+.allikad-l summary::-webkit-details-marker { display: none; }
+.allikad-l summary::after { content: "→"; margin-left: 4px; }
+.allikad-l[open] summary::after { content: "↑"; }
+.allikad-l summary:hover { text-decoration: underline; }
+.allikad-l > div { margin-top: 6px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); max-width: 60ch; line-height: 1.5; font-size: 14px; }
+.allikad-l > div p { margin: 0 0 4px; }
+
+html[data-t] {
+  --wrap: 1280px; --radius: 12px;
+}
+html[data-t] body { font-size: 16.5px; line-height: 1.55; }
+html[data-t] .wrap { padding-left: max(16px, 3vw, env(safe-area-inset-left, 0px)); padding-right: max(16px, 3vw, env(safe-area-inset-right, 0px)); }
+html[data-t] .top { border-bottom: 1px solid var(--border); }
+html[data-t] h1 { font: 400 clamp(30px, 3.6vw, 46px)/1.12 var(--font-display); letter-spacing: -0.015em; }
+html[data-t] h1 b { font-weight: 700; }
+html[data-t] .pea-rahu { padding-top: 40px; }
+html[data-t] .pea-rahu .alla { margin-top: 14px; }
+html[data-t] .pea-rahu .tutvus { font-size: 18px; }
+html[data-t] .pea-rahu + nav .sellel { margin-top: 20px; }
+html[data-t] .sellel a { border-color: var(--border); background: transparent; }
+
+/* numbrikaardid */
+html[data-t] .plaadid { gap: 16px; margin-top: 24px; }
+html[data-t] .plaat { background: var(--surface-2); border: 0; border-radius: var(--radius); padding: 16px 18px; gap: 4px; }
+html[data-t] .plaat .lbl { font-size: 14.5px; color: var(--ink-2); }
+html[data-t] .plaat .big { font-size: 34px; letter-spacing: -0.02em; margin-top: 2px; }
+html[data-t] .plaat .big small { font-size: 14px; }
+html[data-t] .plaat.kp .ctx { font-size: 14px; }
+html[data-t] .plaat.kp .marg { font-size: 13.5px; }
+html[data-t] .plaat .src { font-size: 13.5px; padding-top: 8px; }
+
+/* jaotised: ilma kastita, vaba ruum ümber */
+html[data-t] .g12 { gap: 56px 48px; margin-top: 56px; }
+html[data-t] .pn { background: transparent; border: 0; border-radius: 0; padding: 0; gap: 12px; }
+html[data-t] .pn-h h2, html[data-t] .pn h2 { font: 400 clamp(21px, 2vw, 26px)/1.25 var(--font-display); max-width: 48ch; }
+html[data-t] .pn h2 b { font-weight: 700; }
+html[data-t] .pn-h + p, html[data-t] .pn > p { font-size: 15px; color: var(--ink-2); }
+html[data-t] .pn .gt { font-size: 15px; }
+html[data-t] .pn .allikas, html[data-t] .allikas { font-size: 13.5px; }
+
+/* tabelid: ainult rõhtjooned, päis tavakirjas, paks joon päise all */
+@media (min-width: 681px) {
+html[data-t] table { font-size: 15px; }
+html[data-t] th, html[data-t] td { border: 0; border-bottom: 1px solid var(--border); padding: 10px 14px 10px 0; }
+html[data-t] thead th { background: transparent; text-transform: none; letter-spacing: 0; font-size: 14px; font-weight: 600; color: var(--ink-2); border-bottom: 2px solid var(--ink); }
+html[data-t] td small { font-size: 13px; }
+}
+
+@media (max-width: 680px) {
+  html[data-t] h1 { font-size: 28px; }
+  html[data-t] .pea-rahu { padding-top: 20px; }
+  html[data-t] .pea-rahu .tutvus { font-size: 16px; }
+  html[data-t] .g12 { gap: 36px 8px; margin-top: 36px; }
+}
+/* telefonis ei tohi tabel lehte laiemaks venitada */
+html[data-t] .g12 > * { min-width: 0; max-width: 100%; }
+html[data-t] .tbl { max-width: 100%; overflow-x: auto; }
+@media (max-width: 680px) { html[data-t] .g12 { column-gap: 8px; } }
+
