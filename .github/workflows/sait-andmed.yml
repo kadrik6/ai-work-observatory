@@ -1,0 +1,56 @@
+name: sait-andmed
+
+# Seire saidi (Vercel) ametliku statistika igapäevane värskendus otse allikatest (Eurostat, Statistikaamet,
+# OECD, ILO, riiklikud statistikaametid, vabad ametikohad). Muudab ainult andmefaile. Kui sait ehitub, testid
+# ja turvakontroll läbivad ning mõni number muutus, teeb commit'i main harule; Vercel ehitab saidi siis uuesti.
+# Kui uus number ei klapi lehe pealkirjaga (sait/ehita.py kontrolli), töö kukub ja commit'i ei tule:
+# see on teade, et pealkiri vajab inimese pilku. Uudised, hanked ja publikatsioonid tulevad eraldi (vt README).
+
+on:
+  schedule:
+    - cron: "41 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sait-andmed
+  cancel-in-progress: false
+
+jobs:
+  andmed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r tehisaru-seire/requirements.txt
+      - name: Ametlik statistika otse allikatest
+        working-directory: tehisaru-seire
+        run: |
+          python run.py
+          python kataloog/lae_valis.py
+          python sait/lae_vabad.py || echo "HOIATUS vabad ametikohad jäid eelmise seisuga"
+          python sait/lae_el_jarjestus.py || echo "HOIATUS ELi järjestus jäi eelmise seisuga"
+      - name: Sait ehitub ja testid läbivad
+        working-directory: tehisaru-seire
+        run: |
+          python sait/ehita.py > /dev/null
+          python -m pytest -q
+      - name: Commit, kui andmed muutusid
+        env:
+          KEELATUD_SONAD: ${{ secrets.KEELATUD_SONAD }}
+          KEELATUD_KAUSTAD: ${{ secrets.KEELATUD_KAUSTAD }}
+        run: |
+          git add tehisaru-seire/andmed tehisaru-seire/kaardid tehisaru-seire/kataloog/vaatlused-valis.csv \
+                  tehisaru-seire/kataloog/valis-olek.csv tehisaru-seire/sait/sisu/vabad-ametikohad.csv \
+                  tehisaru-seire/sait/sisu/vabad-jarjestus.csv tehisaru-seire/sait/sisu/el-jarjestus.csv
+          if git diff --cached --quiet; then echo "Uusi numbreid pole"; exit 0; fi
+          python turvakontroll/kontrolli.py
+          git diff --cached --stat >> "$GITHUB_STEP_SUMMARY"
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "Andmed: ametliku statistika värskendus $(date -u +%F)"
+          git push

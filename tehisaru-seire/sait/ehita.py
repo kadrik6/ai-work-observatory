@@ -168,7 +168,13 @@ def ehita(valjund=VALJUND, A=None):
         (valjund / vana).write_text(suunaja(uus), encoding="utf-8")
     for nimi in ("stiil.css", "sait.js"):
         shutil.copyfile(SIIN / nimi, valjund / nimi)
+    # Veebis (Vercel) on sait esialgu link, mida otsingumootorid ei indekseeri (Kadri 8.11.2026).
+    # Sama keeld on ka päises X-Robots-Tag (vercel.json). Avalikuks tegemine on Kadri otsus.
+    (valjund / "robots.txt").write_text(ROBOTS, encoding="utf-8")
     return sorted(kirjutatud)
+
+
+ROBOTS = "User-agent: *\nDisallow: /\n"
 
 
 if __name__ == "__main__":
