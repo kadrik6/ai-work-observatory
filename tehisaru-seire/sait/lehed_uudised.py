@@ -781,9 +781,16 @@ def ai_kuulutused(A):
     for r in sorted(K.get("kuulutused", []), key=lambda r: (r.get("avaldatud") or ""), reverse=True):
         uus = ' <span class="u-l uus">uus</span>' if r.get("uus") else ""
         kaug = {"FULLY_REMOTE": "kaugtöö", "HYBRID": "hübriid"}.get(r.get("kaugtoo") or "", "")
-        rows.append(f'<tr><td class="n">{kp(r["avaldatud"]) if r.get("avaldatud") else ""}</td>'
+        otsi = " ".join([r["pealkiri"], r.get("tooandja") or "", r.get("maakond") or "", TK_NIMI.get(r["ruhm"], "")]).lower()
+        rows.append(f'<tr data-ruhm="{e(r["ruhm"])}" data-kus="{e(r.get("maakond") or "")}" data-otsi="{e(otsi)}">'
+                    f'<td class="n">{kp(r["avaldatud"]) if r.get("avaldatud") else ""}</td>'
                     f'<td><a href="{e(r["url"])}">{e(r["pealkiri"])}</a>{uus}<small>{e(TK_TOOANDJA.get(r.get("tooandja") or "", r.get("tooandja") or ""))}</small></td>'
                     f'<td>{e(TK_NIMI.get(r["ruhm"], r["ruhm"]))}</td><td>{e(r.get("maakond") or "")}{f"<small>{kaug}</small>" if kaug else ""}</td></tr>')
+    ruhmad_k = collections.Counter(r["ruhm"] for r in K.get("kuulutused", []))
+    r_nupud = "".join(f'<button type="button" data-r="{g}" aria-pressed="false">{e(TK_NIMI[g].lower())} ({ruhmad_k[g]})</button>'
+                      for g in TK_NIMI if ruhmad_k.get(g))
+    kus_k = collections.Counter(r.get("maakond") for r in K.get("kuulutused", []) if r.get("maakond"))
+    kus_val = "".join(f'<option value="{e(m)}">{e(m)} ({c})</option>' for m, c in kus_k.most_common())
     fn = R.get("ai_firma_noue")
     fn_t = ""
     if fn:
@@ -802,7 +809,11 @@ def ai_kuulutused(A):
     <div><p class="gt">Kus: maakond</p>{ribad(maakonnad, 8)}</div>
   </div>
   <p class="gt">Kõik kuulutused</p>
-  <div class="tbl"><table data-piir><thead><tr><th scope="col">Avaldatud</th><th scope="col">Kuulutus ja tööandja</th><th scope="col">Rühm</th><th scope="col">Kus</th></tr></thead>
+  <div class="h-otsing" data-uhik="kuulutust"><input type="search" placeholder="nt analüütik, Bolt, Tartu" aria-label="Otsi kuulutustest">
+    <div class="u-f" role="group" aria-label="Rühm"><button type="button" data-r="" aria-pressed="true">kõik</button>{r_nupud}</div>
+    <select data-kus aria-label="Maakond"><option value="">kõik maakonnad</option>{kus_val}</select>
+    <span class="h-loe" aria-live="polite"></span></div>
+  <div class="tbl"><table class="h-tabel" data-piir><thead><tr><th scope="col">Avaldatud</th><th scope="col">Kuulutus ja tööandja</th><th scope="col">Rühm</th><th scope="col">Kus</th></tr></thead>
   <tbody>{"".join(rows)}</tbody></table></div>
   <details><summary>Täpsustused: firma üldnõue ja mida see ei näita</summary><div>{fn_t}<p>{e(K.get("piirangud", ""))} Liigitus on märksõnapõhine, inimene pole seda kontrollinud.</p></div></details>
 </section>

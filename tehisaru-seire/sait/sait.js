@@ -201,11 +201,12 @@
     document.querySelectorAll('.h-otsing').forEach(function (o) {
       var tabel = o.parentNode.querySelector('table.h-tabel');
       var read = Array.prototype.slice.call(tabel.tBodies[0].rows);
-      var sisend = o.querySelector('input'), loe = o.querySelector('.h-loe'), ruhm = '';
+      var sisend = o.querySelector('input'), loe = o.querySelector('.h-loe'), ruhm = '', kus = '';
+      var valik = o.querySelector('select[data-kus]'), uhik = o.getAttribute('data-uhik') || 'hanget';
       function riba() { var r = tabel.parentNode.nextElementSibling; return r && r.classList.contains('kogus') ? r : null; }
       function filtreeri() {
         var q = sisend.value.trim().toLowerCase(), k = riba();
-        if (!q && !ruhm) {
+        if (!q && !ruhm && !kus) {
           if (k) { k.hidden = false; k.querySelector('button').click(); } else { read.forEach(function (r) { r.hidden = false; }); }
           loe.textContent = '';
           return;
@@ -214,12 +215,14 @@
         var n = 0;
         read.forEach(function (r) {
           var ok = (!q || r.getAttribute('data-otsi').indexOf(q) >= 0) &&
-            (!ruhm || (ruhm === 'hea' ? r.getAttribute('data-hea') === '1' : r.getAttribute('data-ruhm') === ruhm));
+            (!ruhm || (ruhm === 'hea' ? r.getAttribute('data-hea') === '1' : r.getAttribute('data-ruhm') === ruhm)) &&
+            (!kus || r.getAttribute('data-kus') === kus);
           r.hidden = !ok; if (ok) n++;
         });
-        loe.textContent = n + ' hanget';
+        loe.textContent = n + ' ' + uhik;
       }
       sisend.addEventListener('input', filtreeri);
+      if (valik) valik.addEventListener('change', function () { kus = valik.value; filtreeri(); });
       o.querySelectorAll('button[data-r]').forEach(function (b) {
         b.addEventListener('click', function () {
           ruhm = b.getAttribute('data-r');

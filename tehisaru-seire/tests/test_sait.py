@@ -787,3 +787,19 @@ def test_hanked_litsentsid_ja_ai_kuulutused(sait):
     if 'id="ai-kuulutused"' in t:  # andmed tulevad igapäevasest kogumisest (sisu/ai-tookuulutused.json)
         osa = t.split('id="ai-kuulutused"')[1].split("</section>")[0]
         assert osa.count('class="plaat kp"') == 3 and "Firma üldnõue" in osa and "data-piir" in osa
+
+
+def test_ai_kuulutused_filtreeritavad_ruhma_ja_maakonna_jargi(sait):
+    h = sait["too.html"]
+    jao = h[h.index('id="ai-kuulutused"'):]
+    jao = jao[:jao.index("</section>")]
+    assert 'class="h-otsing" data-uhik="kuulutust"' in jao
+    assert 'aria-label="Otsi kuulutustest"' in jao
+    assert '<select data-kus aria-label="Maakond">' in jao
+    assert 'data-r="ai_amet"' in jao and 'data-r="andmeamet"' in jao
+    assert 'table class="h-tabel"' in jao
+    import re
+    read = re.findall(r'<tr data-ruhm="([^"]+)" data-kus="([^"]*)" data-otsi="([^"]+)">', jao)
+    assert read and all(o == o.lower() for _, _, o in read)
+    valikud = set(re.findall(r'<option value="([^"]+)">', jao))
+    assert {k for _, k, _ in read if k} == valikud
