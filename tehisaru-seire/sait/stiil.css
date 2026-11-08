@@ -910,6 +910,22 @@ summary { padding-block: 3px; }
 .mega-t li a { padding: 2px 9px; border: 1px solid var(--border); border-radius: 100px; font-size: 13px; background: var(--panel); }
 .mega-t li a:hover { border-color: var(--signal); text-decoration: none; }
 .mega-lisa { border-top: 0; padding-top: 4px; }
+
+/* „Kõik teemad“ nupp N6 „Ainult ikoon“ (Kadri lukustas 8.11.2026 21:20): arvutis ruudustikuikoon, silt ilmub hõljudes
+   ja klaviatuuri fookusega; ekraanilugeja loeb „Kõik teemad“ (.mega-arvuti). Telefonis ikoon + „Menüü“. */
+.mega > summary { border-color: transparent; background: transparent; gap: 8px; width: 36px; height: 36px; padding: 0; justify-content: center; }
+.mega > summary::before { content: ""; flex: none; width: 16px; height: 16px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1.5' y='1.5' width='5' height='5' rx='1'/%3E%3Crect x='9.5' y='1.5' width='5' height='5' rx='1'/%3E%3Crect x='1.5' y='9.5' width='5' height='5' rx='1'/%3E%3Crect x='9.5' y='9.5' width='5' height='5' rx='1'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1.5' y='1.5' width='5' height='5' rx='1'/%3E%3Crect x='9.5' y='1.5' width='5' height='5' rx='1'/%3E%3Crect x='1.5' y='9.5' width='5' height='5' rx='1'/%3E%3Crect x='9.5' y='9.5' width='5' height='5' rx='1'/%3E%3C/svg%3E") center / contain no-repeat; }
+.mega-arvuti { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.mega > summary::after { content: "Kõik teemad"; position: absolute; left: 0; top: calc(100% + 6px); width: auto; height: auto; border: 0; transform: none;
+  white-space: nowrap; font: 600 12px/1.3 var(--font-sans); color: var(--panel); background: var(--ink); border-radius: 4px; padding: 3px 7px;
+  opacity: 0; pointer-events: none; z-index: 8; transition: opacity .12s; }
+.mega > summary:hover::after, .mega > summary:focus-visible::after { opacity: 1; }
+.mega > summary:hover { background: var(--surface-3); }
+.mega[open] > summary { background: var(--surface-3); border-color: transparent; }
+.mega[open] > summary::after { opacity: 0; transform: none; }
+@media (prefers-reduced-motion: reduce) { .mega > summary::after { transition: none; } }
+@media (max-width: 680px) { .mega > summary { width: auto; height: auto; padding: 0 14px; } .mega > summary::after { display: none; } }
 @media (max-width: 1100px) { .mega-ruut { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* Rada ja sakid */
