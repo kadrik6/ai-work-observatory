@@ -11,7 +11,7 @@
       "olek": "valmis",
       "kusimus": "Mis on tehisaru kasutuse peamised numbrid praegu ja kas neid võib usaldada?",
       "h1": "{inimeste-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest** ja {ettevotete-tehisaru-kasutus|EE|uusim|p0}% ettevõtetest; ELi võrdluses ({inimeste-tehisaru-kasutus|EE|uusim:alus|a}) on inimesed {inimeste-tehisaru-kasutus|EE|uusim:alus|koht}. ja ettevõtted {ettevotete-tehisaru-kasutus|EE|uusim:alus|koht}. kohal.",
-      "osad": "Töölaud (Kadri 5.11.2026): kuus numbriplaati; ELi kaart ja järjestus omaette real; töötuse prognoos ja kuunumber; ettevõtete trend; Mis muutus; sihid; hanked (katseline); väited"
+      "osad": "Töölaud (Kadri 5.11.2026): kuus numbriplaati; ELi kaart ja järjestus omaette real; töötuse prognoos ja kuunumber; ettevõtete trend; Mis muutus; sihid; hanked; väited"
     },
     {
       "id": "inimesed",
@@ -29,8 +29,8 @@
           "fail": "inimesed.html",
           "nimi": "Kasutus",
           "jaotised": [
-            "kasutus",
-            "tool"
+            "andmed",
+            "teema-lopp"
           ]
         },
         {
@@ -60,7 +60,8 @@
           "fail": "ettevotted.html",
           "nimi": "Kasutus",
           "jaotised": [
-            "kasutus"
+            "andmed",
+            "teema-lopp"
           ]
         },
         {
@@ -145,7 +146,7 @@
       "olek": "valmis",
       "kusimus": "Mida riik tehisaru ja andmete kohta hangib ning kuidas, et leida häid näiteid?",
       "h1": "Tehisaru- ja andmehanked on **alla 1% riigihangetest**; kvaliteeti hinnatakse neis sagedamini kui teistes IT-hangetes.",
-      "osad": "Kadri 5.11.2026: hanked omaette vaateks. Aastad; innovatsioonimärk vs 2% siht; kuidas hangitakse; hankijad; otsitav loend headest näidetest; klassifikaatori täpsus (katseline)"
+      "osad": "Kadri 5.11.2026: hanked omaette vaateks. Aastad; innovatsioonimärk vs 2% siht; kuidas hangitakse; hankijad; otsitav loend headest näidetest; klassifikaatori täpsus"
     },
     {
       "id": "reeglid",

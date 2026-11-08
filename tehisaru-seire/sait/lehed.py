@@ -291,8 +291,36 @@ def ettevotted(A, vaade, vaated=None):
     )
     lead = ("Kasutus kasvab kiiresti, aga vahe Põhjamaadega on punktides suurenenud. "
             "Eesti andmetel on tehisaru seotud suurema tootlikkusega alles siis, kui muutub ka töökorraldus.")
+    # Teemamall A (Kadri 8.11.2026): andmed sakkides, siis uuringud, väited, reeglid, allikad
+    import teemamall as tm
+    from lehed_ulevaade import vaite_teema
+    U = A["uuringud"]
+    kas = lisa_sihid(A, _kasutus(A), "kasutus", "ee-ettevotted-75")
+    jagu = kas.index('<section class="jaotis" id="kasutus-uued"')
+    sec_andmed = tm.andmesakid("ettevotted", "Uuri andmeid: kasutus ELis ja teiste riikide 2026. aasta numbrid",
+                               "ELi võrdlus on Eurostati aasta; riikide uued numbrid on eraldi, sest need ei sobi ELi skaalale.", [
+        ("kasutus", "Kasutus ELis", kas[:jagu]),
+        ("uued", "Riikide 2026. aasta numbrid", kas[jagu:]),
+    ])
+    lyh = lambda k: e(tm.esimene_lause(U[k]["leid"]))  # noqa: E731
+    t_uuringud = tm.uuringute_plokk(vaated, [
+        ("Eesti", f'{lyh("vahter2026")} ({e(U["vahter2026"]["autorid"].split(",")[0])} {U["vahter2026"]["aasta"]})', "ettevotted", "tootlikkus"),
+        ("Eesti", f'{lyh("oska2025")} (OSKA {U["oska2025"]["aasta"]})', "ettevotted", "tootlikkus"),
+        ("OECD", f'{lyh("calvino2023")} (Calvino ja Fontanelli {U["calvino2023"]["aasta"]})', "ettevotted", "tootlikkus"),
+        ("Katse", f'Firmad, kes nägid teiste ümberkorraldatud töövooge, leidsid 44% rohkem kasutusviise ja teenisid 1,9 korda rohkem tulu (Kim jt {U["kim2026"]["aasta"]}).', "too", "ulesanded"),
+    ], [("ettevotted", "Tootlikkus ja võimekus", "tootlikkus")])
+    t_vaited = tm.vaidete_plokk(A, vaated, "ettevotted", vaite_teema)
+    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-uldkohaldamine", "ai-korge-risk-iii"])
+    t_allikad = tm.allikate_plokk([
+        (f"Kasutus, {ee['allikas']}", ee["url"], ee["avaldatud"], f"{ee['aasta']}, vähemalt 10 hõivatuga ettevõtted"),
+        ("ELi võrdlus, Eurostat isoc_eb_ai", "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table",
+         ee_el.get("avaldatud") or None, f"{y}, ELi riigid"),
+        (f"Siht, {siht['allikas']}", siht["url"], siht["kontrollitud"], f"{pr(sv, 0)}% aastaks {siht['aasta']}; kontrollitud"),
+    ])
     return jaga(A, vaade, lead, [], [
-        ("kasutus", [("kasutus", "Kasutus")], lisa_sihid(A, _kasutus(A), "kasutus", "ee-ettevotted-75")),
+        ("andmed", [("andmed", "Andmed")], sec_andmed),
+        ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
+         tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
         ("tootlikkus", [("tootlikkus", "Tootlikkus")], _tootlikkus(A)),
         ("voimekus", [("digi", "Digiintensiivsus"), ("ta", "Teadus ja arendus")],
          lisa_sihid(A, lisa_sihid(A, _digi_ja_ta(A), "digi", "el-digiintensiivsus-90"), "ta", "el-ta-3")),

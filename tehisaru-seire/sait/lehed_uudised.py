@@ -259,7 +259,7 @@ def hanked(A, vaade, vaated=None):
     from lehed_ulevaade import kpi_pais, kpi_plaat, kpi_riba
     h1, h0 = aastad[-1], aastad[-2]
     yks = {g: V[g]["uks_pakkuja_osakaal"] for g in ("ai_andmed", "it_muud", "koik")}
-    katseline = ' <span class="chip exp">katseline</span>'
+    katseline = ""  # Kadri 8.11.2026 16:29: pimeülevaatus tehtud, katselisuse märgid ära
     aside = kpi_pais(
         kpi_plaat("hk-arv", "Tehisaru- ja andmehanked", str(h1["ai_andmed"]), f'{h1["aasta"]}{"*" if poolik else ""}',
                   {"muutus": (f'{h0["aasta"]} kokku {h0["ai_andmed"]}',
@@ -282,11 +282,11 @@ def hanked(A, vaade, vaated=None):
             "Tehisaru uuringute ja mõjuanalüüside hankeid eraldi veel ei loeta.")
 
     # 1. Ainult viimane aasta (sisuloogika 6.11.2026, Kadri otsus 5): aastate võrdlust ei näidata, kuni vähemalt
-    # 100 hanget on inimese pimesi märgistatud. Klassifikaator on katseline.
+    # 100 hanget on inimese pimesi märgistatud (lõplik viitevalim 8.11.2026).
     u = aastad[-1]
     sec_aastad = f"""
 <section class="pn sp5" id="aastad" aria-labelledby="h-aastad">
-  <div class="pn-h"><h2 id="h-aastad">Klassifikaator leidis {u["aasta"]}. aastal{" kuni " + kp(seis) if poolik else ""} <b>{u["ai_andmed"]} tehisaru- ja andmehanget</b>, {pr(u["ai_andmed_osakaal"])}% kõigist</h2><span class="chip exp">katseline</span></div>
+  <div class="pn-h"><h2 id="h-aastad">Klassifikaator leidis {u["aasta"]}. aastal{" kuni " + kp(seis) if poolik else ""} <b>{u["ai_andmed"]} tehisaru- ja andmehanget</b>, {pr(u["ai_andmed_osakaal"])}% kõigist</h2></div>
   <p class="ps">Neist {u["ai_marksonaga"]} on tehisaru märksõnaga ja {u["ai_andmed"] - u["ai_marksonaga"]} andmehanked. Aastate võrdlust ei näidata enne, kui klassifikaator on uuendatud pärast 100 hanke pimesi ülevaatust.</p>
   {_viis_rida(f"Klassifikaatori leitud hanked {u['aasta']}, arv", [("tehisaru", u["ai_marksonaga"], True), ("andmed", u["ai_andmed"] - u["ai_marksonaga"], False)], uhik="", k=0)}
 </section>"""
@@ -391,7 +391,7 @@ def hanked(A, vaade, vaated=None):
         sec_lits = f"""
 <div class="g12">
 <section class="pn sp12" id="litsentsid" aria-labelledby="h-litsentsid">
-  <div class="pn-h"><h2 id="h-litsentsid">{len(LI)} litsentsihankest {ees_n[top_e]} on {e(top_e.lower())}: <b>{e(top_t)} litsentse hangib {t_asutusi} asutust</b></h2><span class="chip exp">katseline</span></div>
+  <div class="pn-h"><h2 id="h-litsentsid">{len(LI)} litsentsihankest {ees_n[top_e]} on {e(top_e.lower())}: <b>{e(top_t)} litsentse hangib {t_asutusi} asutust</b></h2></div>
   <p class="ps">{a0}–{a1}, {len(as_n)} asutust. Sama litsentsi pikendatakse sageli igal aastal uue hankega: {e(p_h)} hankis {e(p_t)} litsentse {p_k} aastal.</p>
   <div class="lits">
     <div>
@@ -453,7 +453,7 @@ def hanked(A, vaade, vaated=None):
     sec_loend = f"""
 <div class="g12">
 <section class="pn sp12" id="loend" aria-labelledby="h-loend">
-  <div class="pn-h"><h2 id="h-loend">Leia sarnane hange, mida eeskujuks võtta: <b>{n_hea} head näidet</b> {len(loend)}-st</h2><span class="chip exp">katseline</span></div>
+  <div class="pn-h"><h2 id="h-loend">Leia sarnane hange, mida eeskujuks võtta: <b>{n_hea} head näidet</b> {len(loend)}-st</h2></div>
   <p class="ps">Hea näide: kvaliteeti hinnati, pakkumusi oli vähemalt kaks ja hange ei katkenud.</p>
   <div class="h-otsing"><input type="search" placeholder="nt andmeladu, kõnetuvastus, Tableau" aria-label="Otsi hangetest">
     <div class="u-f" role="group" aria-label="Rühm"><button type="button" data-r="" aria-pressed="true">kõik</button><button type="button" data-r="ai">tehisaru</button><button type="button" data-r="andmed">andmed</button><button type="button" data-r="hea">head näited</button></div>
@@ -475,7 +475,7 @@ def hanked(A, vaade, vaated=None):
     sec_tapsus = f"""
 <div class="g12">
 <section class="pn sp12" id="tapsus" aria-labelledby="h-tapsus">
-  <div class="pn-h"><h2 id="h-tapsus">Klassifikaator leiab umbes <b>{pr(tul["saagis"] * 100, 0)}%</b> tehisaru- ja andmehangetest ning {pr(tul["tapsus"] * 100, 0)}% leitutest on õiged</h2><span class="chip exp">katseline</span></div>
+  <div class="pn-h"><h2 id="h-tapsus">Klassifikaator leiab umbes <b>{pr(tul["saagis"] * 100, 0)}%</b> tehisaru- ja andmehangetest ning {pr(tul["tapsus"] * 100, 0)}% leitutest on õiged</h2></div>
   <p class="ps">Testitud {hind["hindamine"]["test"]} hankel alates {hind["hindamine"]["testi_alates"]}. aastast. Märgendid ({hind["margendid"]["kokku"]}) tegi Claude; {KASITSI["n"]} neist vaadati käsitsi pimesi üle: lõplikus viitevalimis on {KASITSI["viide"]["ei"]} ei, {KASITSI["viide"]["andmed"]} andmehanget ja {KASITSI["viide"]["ai"]} tehisaruhanget. Masinmärgendid langevad viitega kokku {KASITSI["kokku"]}% (kappa {KASITSI["kappa"]}), käsitsi esmamärgendid {KASITSI["kasitsi"]}% (kappa {KASITSI["kappa_kasitsi"]}). Täpsus ja saagis on veel mõõdetud masina märgendite vastu. eForms-hangetest ({_arv(lev["hankeid"])}) on valimi põhjal umbes {lev["valimi_pohjal"]["hinnang"]} tehisaru- või andmehanget (95% vahemik {vmin}–{vmax}); klassifikaator leidis {lev["valitud_leidis"]}.</p>
   <div class="tbl"><table><thead><tr><th scope="col">Meetod</th><th scope="col" class="v">Täpsus (95%)</th><th scope="col" class="v">Saagis (95%)</th><th scope="col" class="v">F1</th></tr></thead>
   <tbody>{"".join(t_rows)}</tbody></table></div>

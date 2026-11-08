@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-08 | Seire sait: Inimesed ja Ettevõtted on teemamalli A järgi (andmesakid, uuringud, väited, reeglid, allikad). ELi järjestuse joonisel on valikud ainult Top 10 ja kõik (Kadri kommentaar). Hangete „katseline“ märgid on eemaldatud, sest pimeülevaatus on tehtud (Kadri kommentaar). Leiu esimene lause ei katke enam kohas „2024. aastal“. |
 | 2026-11-08 | Seire sait: Töö lehel ei ole „Uuri andmeid“ ümber enam suurt välimist kasti (Kadri 16:26). |
 | 2026-11-08 | Seire sait: Töö lehel on teemamall A (Kadri valik). Järjekord on number, „Uuri andmeid“ seitsmes sakis, uuringud, väited, reeglid ning allikad ja värskus. Vanad ankrud avavad õige saki. Telefonis on leht 12,9 ekraani asemel 5,4 ekraani pikk. struktuur.py loeb ainult nähtavat sakki. Uus moodul sait/teemamall.py. |
 | 2026-11-08 | Seire sait: avalehel on KPI-plaatide all teematabel (näidis C, Kadri valik). Selles on viis teemat ja veerud mõõdetud, uuritud, väidetud, sihid ja reeglid ning värskus. Tühi lahter on „hindamata“ ja neid on 3. Hangete ülevaatuse lõplik viitevalim: masinmärgendid langevad viitega kokku 83% (kappa 0,57). |

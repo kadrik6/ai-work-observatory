@@ -345,7 +345,8 @@ def test_too_vaates_on_eesti_tooturg_praegu(A, sait):
 def test_hangete_aastaid_ei_vorrelda_enne_inimese_kontrolli(sait):
     # Kadri otsus 5 (6.11.2026): ainult viimase aasta arv sildiga „katseline“, kuni 100 hanget on pimesi märgistatud
     osa = _jaotis(sait["hanked.html"], "aastad")
-    assert "katseline" in osa and "pimesi" in osa and "tulbad2" not in osa
+    # Kadri 8.11.2026 16:29: pimeülevaatus tehtud, „katseline“ ära; aastaid ikka ei võrrelda enne klassifikaatori uuendust
+    assert "katseline" not in osa and "pimesi" in osa and "tulbad2" not in osa
     assert "pimesi" in _jaotis(sait["index.html"], "hanked") and "aastatulbad" not in _jaotis(sait["index.html"], "hanked")
     assert 'id="hanked"' not in sait["avalik-sektor.html"]
 
@@ -449,7 +450,9 @@ def test_hanked_on_katseline_ja_tapsus_tuleb_andmetest(A, sait):
     hm = A["hanked_leht"]["hindamine"]["hindamine"]
     t = hm["tulemused"][hm["valitud"]]
     # 8.11.2026: 100 hanget käsitsi pimesi üle vaadatud; klassifikaator veel uuendamata
-    assert h.count("katseline") >= 3 and "vaadati käsitsi pimesi üle" in h and "Kontrollimata masinmärgistus" not in h
+    # 8.11.2026 16:29 (Kadri): katselisusele viitavaid märke enam pole
+    assert "katseline" not in h and "vaadati käsitsi pimesi üle" in h and "Kontrollimata masinmärgistus" not in h
+    assert "katseline" not in sait["index.html"]
     assert f'<b>{komponendid.pr(t["saagis"] * 100, 0)}%</b>' in h.split('id="h-tapsus">')[1].split("</h2>")[0]
 
 
@@ -858,3 +861,11 @@ def test_struktuur_loeb_ainult_nahtavat_sakki():
     s = '<main><p>yks kaks</p><div role="tabpanel" id="a" hidden><div><p>peidus tekst siin</p></div><h2>x</h2></div><h2>y</h2></main>'
     m = struktuur.moodik({"x.html": s})["x.html"]
     assert m["sonu"] == 3 and m["h2"] == 1
+
+
+def test_eli_jarjestuses_ainult_top10_ja_koik(sait):
+    """Kadri 8.11.2026 16:28 (avalehe kommentaar): „jäta alles ainult top 10 ja kõik valikud“."""
+    for f in ("index.html", "too.html"):
+        for osa in re.findall(r'<div class="kogus bump-n"[^>]*>(.*?)</div>', sait[f], re.S):
+            if "(27)" in osa:
+                assert re.findall(r">(Top \d+|kõik \(\d+\))<", osa) == ["Top 10", "kõik (27)"], (f, osa)

@@ -255,8 +255,32 @@ def inimesed(A, vaade, vaated=None):
                   a(too["url"], "Statistikaamet " + too["allikas"].split("tabel ")[-1])),
     )
     lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem, kui {ee['aasta']}. aasta küsimus on sama mis {y}. aastal; seda pole veel kontrollitud.")
+    # Teemamall A (Kadri 8.11.2026, Töö järel teine teema)
+    import teemamall as tm
+    from lehed_ulevaade import vaite_teema
+    U = A["uuringud"]
+    sec_andmed = tm.andmesakid("inimesed", "Uuri andmeid: kasutus ELis ja tööl",
+                               "Iga sakk on üks andmestik. ELi võrdlus on Eurostati aasta, uusim Eesti number Statistikaameti oma.", [
+        ("kasutus", "Kasutus ELis", sec_kasutus),
+        ("tool", "Tööl", sec_too),
+    ])
+    lyh = lambda k: e(tm.esimene_lause(U[k]["leid"]))  # noqa: E731
+    t_uuringud = tm.uuringute_plokk(vaated, [
+        ("USA", f'{lyh("bick2024")} ({e(U["bick2024"]["autorid"].split(",")[0])} jt {U["bick2024"]["aasta"]})', "too", "ulesanded"),
+        ("Suurbritannia", f'Avalikus sektoris hindasid kasutajad, et säästsid umbes 26 minutit päevas; seda, milleks aega kasutati, ei mõõdetud (GDS {U["gds2025"]["aasta"]}).', "too", "ulesanded"),
+        ("Eesti", "Inimeste kasutust mõõdab Statistikaamet; uuringut selle kohta, mida kasutus inimestele annab, Eestis veel pole.", "inimesed", "tool"),
+    ], [("inimesed", "Oskused", "digi"), ("too", "Uuringud töö kohta", "maailm")])
+    t_vaited = tm.vaidete_plokk(A, vaated, "inimesed", vaite_teema)
+    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-keelud-kirjaoskus", "ai-uldkohaldamine"])
+    t_allikad = tm.allikate_plokk([
+        (f"Kasutus, {ee['allikas']}", ee["url"], ee["avaldatud"], f"{ee['aasta']}, 16–74-aastased"),
+        (f"Tööl, {too['allikas']}", too["url"], too["avaldatud"], f"{too['aasta']}, kõigist 16–74-aastastest"),
+        ("ELi võrdlus, Eurostat isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), eu.get("avaldatud") or None, f"{y}, ELi riigid"),
+    ])
     return jaga(A, vaade, lead, [], [
-        ("kasutus", [("kasutus", "Kasutus")], sec_kasutus), ("tool", [("tool", "Tööl")], sec_too),
+        ("andmed", [("andmed", "Andmed")], sec_andmed),
+        ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
+         tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
         ("digi", [("digi", "Digioskused")], lisa_sihid(A, sec_digi, "digi", *SIHI_TEEMA["inimesed"])),
         ("ei-oska", [("ei-oska", "„Ei oska“")], sec_os),
     ], aside=aside)
@@ -560,7 +584,7 @@ def too(A, vaade, vaated=None):
         ("ai-tood", "AI-tööd", ai_kuulutused(A)),
         ("prognoos", "Prognoos", sec_tulevik),
     ])
-    lyh = lambda k: e(U[k]["leid"].split(". ")[0].rstrip(".")) + "."  # noqa: E731
+    lyh = lambda k: e(tm.esimene_lause(U[k]["leid"]))  # noqa: E731
     t_uuringud = tm.uuringute_plokk(vaated, [
         ("USA", f'{lyh("canaries2026")} ({e(U["canaries2026"]["autorid"].split(",")[0])} {U["canaries2026"]["aasta"]})', "too", "maailm"),
         ("Taani", f'{lyh("humlum2025")} ({e(U["humlum2025"]["autorid"].split(",")[0])} {U["humlum2025"]["aasta"]})', "too", "maailm"),

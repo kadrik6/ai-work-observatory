@@ -1,7 +1,7 @@
 """Ülevaade (avaleht) töölauana (Kadri valikud 5.11.2026, suundade leht 9EWSmGTPNJRapX5z9CoEc6).
 
 Ülesehitus: pealkiri, kuus numbriplaati, ELi kaart koos järjestusega omaette real, siis töötuse prognoos ja
-ettevõtete trend, siis „Mis muutus“, sihid ja hanked (katseline), lõpuks väidete tabel. Koondamised on ainult
+ettevõtete trend, siis „Mis muutus“, sihid ja hanked, lõpuks väidete tabel. Koondamised on ainult
 Töö vaates (Kadri 5.11 22:22: soovitused 1–5 kehtivad).
 
 Iga pealkirja number tuleb andmetest. Mallist väljas olevad osad kontrollitakse abi.kontrolli() abil.
@@ -257,7 +257,7 @@ def avaleht(A, vaade, vaated):
                   a(UNE_URL, "Eurostat une_rt_m"), href="too.html#tootus-kuud"),
         kpi_plaat("hanked", "Tehisaru- ja andmehanked", str(h_uus["ai_ja_andmed"]), h_uus["periood"] if h_uus["periood"] != "aasta" else str(h_uus["aasta"]),
                   {"muutus": (f"{h_eel['aasta']} kokku {h_eel['ai_ja_andmed']}", f"{pr(h_uus['osa'])}% kõigist hangetest")},
-                  f"Riigihangete register <span class=\"chip exp\">katseline</span>", href="hanked.html#aastad"),
+                  f"Riigihangete register", href="hanked.html#aastad"),
         kpi_plaat("vaited", "Kontrollitud väited tehisaru kohta", str(len(V)), "",
                   {"muutus": (f"{len(v_muud)} ütleb muud kui allikas", menuu("kas-tosi", f"{lahti} allikate lahknevust selgitamata", "lahknevused"))},
                   menuu("kas-tosi", "Väited"), href="kas-see-on-tosi.html#vaited"),
@@ -372,7 +372,7 @@ def avaleht(A, vaade, vaated):
 
     sec_hanked = f"""
 <section class="pn sp4" id="hanked" aria-labelledby="h-hanked">
-  <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehangete osa on <b>alla 1%</b> kõigist hangetest</h2><span class="chip exp">katseline</span></div>
+  <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehangete osa on <b>alla 1%</b> kõigist hangetest</h2></div>
   <p class="ps">{h_uus["aasta"]} ({e(h_uus["periood"])}): <b>{h_uus["ai_ja_andmed"]}</b> hanget, {pr(h_uus["osa"])}% kõigist. Aastaid ei võrrelda enne, kui klassifikaator on uuendatud pärast 100 hanke pimesi ülevaatust.</p>
   <p class="allikas">Allikas: {a(HANKED_URL, "riigihangete register")} ja TED; masinmärgistus, {KASITSI["n"]} hanget käsitsi üle vaadatud (kokkulangevus {KASITSI["kokku"]}%). Kõik hanked: {menuu("hanked", "Hanked")}.</p>
 </section>"""
@@ -544,7 +544,7 @@ def el_jarjestus(naitaja, fookus="EE", kahanevalt=True, koht_praegu=None, aasta_
                         f"registris {koht_praegu}; käivita python3 sait/lae_el_jarjestus.py")
     jarjest = sorted(koht, key=lambda g: koht[g].get(aastad[-1], 99))
     nimed = {g: riik(g) for g in jarjest}
-    g = jarjestuse_muutus({nimed[x]: koht[x] for x in jarjest}, aastad, nimed[fookus], None, piirid=(5, 10, 15),
+    g = jarjestuse_muutus({nimed[x]: koht[x] for x in jarjest}, aastad, nimed[fookus], None, piirid=(10,),  # Kadri 8.11.2026: ainult Top 10 ja kõik
                           silt=R[0]["kirjeldus"], lai=lai, kitsas=(358, 24, 130))
     from komponendid import tabel
     tbl = tabel(["Riik"] + [str(a) for a in aastad],
@@ -768,7 +768,7 @@ def teematabel(A, vaated, d):
     for tid, nimi, kus, mo, uu, va, si, si_l in read:
         arv, sel, ank, fookus, kuup = mo
         varske = (vd - datetime.date.fromisoformat(kuup)).days <= VARSKE_PAEVI
-        katse = tid == "hanked"
+        katse = False  # Kadri 8.11.2026 16:29: hangete katselisuse märk ära
         arv_link = link(vaated, tid, arv, ank).replace("<a ", '<a class="m-arv f" ' if fookus else '<a class="m-arv" ', 1)
         lahtrid = []
         for veerg, sisu in (("Uuritud", uu), ("Väidetud", va)):

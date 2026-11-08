@@ -5,6 +5,7 @@ uuringud, väited, reeglid ning allikad ja värskus. Väited ja reeglid on teema
 jääb Usalduse ja Tehisaru määruse alla. Vanad ankrud jäävad sakkide sisse alles ja sait.js avab õige saki.
 """
 import datetime
+import re
 
 from abi import link
 from andmekiht import AndmeViga
@@ -65,9 +66,9 @@ def vaidete_plokk(A, vaated, tid, teema_jargi, n=3):
         f'<small class="oige">{e(v["oige_lause"] or v["selgitus"])}</small></span></li>'
         for v in vv[:n])
     return f"""<section class="pn" id="t-vaited" aria-labelledby="h-t-vaited">
-  <h2 id="h-t-vaited">Väited: {len(vv)} kontrollitud, <b>{muud} ütleb muud kui allikas</b></h2>
+  <h2 id="h-t-vaited">Väited: {len(vv)} kontrollitud, {f"<b>{muud} ütleb muud kui allikas</b>" if muud else "ükski ei ütle muud kui allikas"}</h2>
   <ul class="t-vaited">{read}</ul>
-  <p class="lingid">{link(vaated, "kas-tosi", f"Kõik {len(vv)} väidet ja hinnangute selgitus (Usaldus)")}</p>
+  <p class="lingid">{link(vaated, "kas-tosi", "Kõik väited ja hinnangute selgitus (Usaldus)")}</p>
 </section>"""
 
 
@@ -119,3 +120,8 @@ def allikate_plokk(read):
 
 def teema_lopp(uuringud, vaited, reeglid, allikad):
     return f'<div class="teema-lopp">{uuringud}{vaited}{reeglid}{allikad}</div>'
+
+
+def esimene_lause(tekst):
+    """Leiu esimene lause; punkt numbri järel („2024. aastal“) ei lõpeta lauset."""
+    return re.split(r"(?<![0-9])\. ", tekst, maxsplit=1)[0].rstrip(".") + "."
