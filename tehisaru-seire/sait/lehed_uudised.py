@@ -21,7 +21,8 @@ LIIK = {"uudis": ("uudis", "vaikne"), "aruanne": ("aruanne", ""), "uuring": ("uu
 TEEMA = {"koondamine": "koondamine", "ai_too": "tehisaru ja töö", "ai_uldine": "tehisaru", "andmed": "andmed",
          "uuring": "uuring", "eksitav": "eksitav"}
 ROLL = {"otsene": "tehisaru otsene põhjus", "osaline": "tehisaru üks põhjus", "kaudne": "tehisaru kaudselt",
-        "tulevikus": "tehisaru võib tulevikus", "ei_mainita": "tehisaru ei mainita", "statistika": "statistika"}
+        "tulevikus": "tehisaru võib tulevikus",
+        "ei_pohjus": "tehisaru pole põhjus", "ei_mainita": "tehisaru ei mainita", "statistika": "statistika"}
 HINNANG = {"tosi": ("peab paika", "ok"), "osaliselt": ("osaliselt", "warn"), "vale": ("vale", "risk"),
            "eksitav": ("eksitav", "risk"), "kontrollimata": ("kontrollimata", "warn")}
 

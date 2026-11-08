@@ -949,3 +949,14 @@ def test_eksitav_silt_on_heleroosa(sait):
     css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
     assert ".u-l.risk { background: var(--eksitav-bg); color: var(--eksitav-ink); }" in css
     assert "--eksitav-bg: #fce4ee; --eksitav-ink: #a3184f;" in css
+
+
+def test_tehisaru_eitamine_on_oma_roll(sait):
+    # Kadri 8.11.2026: „kuidas saab olla, et tehisaru ei mainita, kui isegi pealkirjas on sõna tehisaru“.
+    # Kui ettevõte ütleb otse, et tehisaru pole põhjus, on roll ei_pohjus, mitte ei_mainita.
+    from sait import lehed_uudised, lehed_ulevaade
+    assert lehed_uudised.ROLL["ei_pohjus"] == "tehisaru pole põhjus"
+    assert lehed_ulevaade.ROLL_NIMI["ei_pohjus"] == "pole põhjus"
+    K = json.loads((ehita.SIIN.parent.parent / "tooelu-seire" / "koondamised_ee.json").read_text(encoding="utf-8"))
+    assert "ei_pohjus" in K["rollid"]
+    assert next(j for j in K["juhtumid"] if j["id"] == "eesti-energia-2026-11")["roll"] == "ei_pohjus"

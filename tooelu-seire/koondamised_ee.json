@@ -1,11 +1,12 @@
 {
  "kirjeldus": "Eesti koondamised, kus on küsitud, kas tehisaru oli põhjus. Kogutud käsitsi uudistest, kontrollitud lingi kaudu. See ei ole täielik nimekiri. Uudistest hoitakse ainult pealkirja, linki, kuupäeva ja oma sõnadega lühikest põhjust, mitte artikli teksti. Väli arv_ulem on Eesti arvu ülempiir, kui teatati vahemik. Väli arv_vahemalt = teatatud arv on alampiir (lõplik arv pole veel teada).",
- "kontrollitud": "2026-11-06",
+ "kontrollitud": "2026-11-08",
  "rollid": {
   "otsene": "Ettevõte ütleb, et tehisaru teeb tööd inimeste asemel.",
   "osaline": "Ettevõte nimetab tehisaru ühe põhjusena koos teistega, näiteks kulude vähendamise või automatiseerimisega.",
   "kaudne": "Ettevõte ütleb, et tehisaru muutis turgu või klientide ootusi, aga ei asenda inimesi.",
   "tulevikus": "Praegune koondamine on muul põhjusel, aga ettevõte ütleb, et tehisaru võib tulevikus töökohti vähendada.",
+  "ei_pohjus": "Ettevõte ütleb otse, et tehisaru ei ole koondamise põhjus.",
   "ei_mainita": "Teates ega uudises tehisaru ei mainita."
  },
  "juhtumid": [
@@ -17,9 +18,9 @@
    "arv_eestis": 390,
    "arv_vahemalt": true,
    "arv_tekst": "umbes 10% ametikohtadest; Enefit Industry, Enefit Power ja Eesti Energia AS kokku 390, lisaks Enefit OÜ ja Elektrilevi; lõplikud arvud 23.11",
-   "roll": "ei_mainita",
-   "kes_utles": "ettevõtte juhatus pressikonverentsil",
-   "pohjus": "Ebakindel energiaturg ja langevad hinnaprognoosid, püsikulud kasvasid uute tootmisvõimsuste tõttu. Puudutab tugivaldkondi (IT, remont, transport, turundus), mitte operaatoreid. Tehisaru ei mainita.",
+   "roll": "ei_pohjus",
+   "kes_utles": "juhatuse esimees Andrus Durejko (Äripäev 6.11.2026); teade pressikonverentsil 5.11",
+   "pohjus": "Ebakindel energiaturg ja langevad hinnaprognoosid, püsikulud kasvasid uute tootmisvõimsuste tõttu. Puudutab tugivaldkondi, mitte operaatoreid. 6.11 ütles juht Äripäevale, et põhjus ei ole tehisaru, vaid liiga kõrged püsikulud.",
    "pealkiri": "Eesti Energia plaanib koondada 10 protsenti ametikohtadest",
    "url": "https://www.err.ee/1610186842/eesti-energia-plaanib-koondada-10-protsenti-ametikohtadest",
    "allikas": "ERR"
