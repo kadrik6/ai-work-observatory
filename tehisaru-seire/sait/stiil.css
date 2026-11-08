@@ -895,6 +895,21 @@ summary { padding-block: 3px; }
 .mega-lisa { max-width: var(--wrap); margin: 0 auto; padding: 10px max(16px, env(safe-area-inset-left, 0px)) 14px; font-size: 14px;
   border-top: 1px solid var(--border); color: var(--ink-3); }
 .mega-lisa a { display: inline-block; padding: 3px 0; }
+
+/* „Kõik teemad“ M1 „Kaardid hallil“ (Kadri lukustas 8.11.2026 21:13 menüü näidiste lehelt): hallil taustal valged
+   teemakaardid, küsimus nime all, alamlehed kiipidena; avatud menüü taga leht tumeneb, klõps kattele sulgeb (sait.js). */
+.mega[open]::before { content: ""; position: fixed; inset: 0; background: rgb(21 25 38 / .28); z-index: 5; }
+.mega > summary { position: relative; z-index: 7; }
+.mega[open] > summary { background: var(--surface-3); border-color: var(--surface-3); color: var(--ink); }
+.mega-paneel { background: var(--page); border-bottom: 0; box-shadow: 0 12px 28px rgb(21 25 38 / .16); }
+.mega-ruut { gap: 12px; padding-top: 16px; padding-bottom: 12px; }
+.mega-t { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; gap: 6px; }
+.mega-t:has(.mega-nimi[aria-current]) { border-color: var(--signal); }
+.mega-t p { order: 2; margin: 0; font-size: 13.5px; }
+.mega-t ul { order: 3; flex-direction: row; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+.mega-t li a { padding: 2px 9px; border: 1px solid var(--border); border-radius: 100px; font-size: 13px; background: var(--panel); }
+.mega-t li a:hover { border-color: var(--signal); text-decoration: none; }
+.mega-lisa { border-top: 0; padding-top: 4px; }
 @media (max-width: 1100px) { .mega-ruut { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* Rada ja sakid */
@@ -933,10 +948,11 @@ summary { padding-block: 3px; }
   .mega > summary { min-height: 44px; padding: 0 14px; }
   .mega-arvuti { display: none; }
   .mega-tel { display: inline; }
-  .mega-ruut { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 6px; }
-  .mega-t { border-bottom: 1px solid var(--border); }
-  .mega-t ul, .mega-t p { display: none; }
-  .mega-nimi { display: flex; align-items: center; min-height: 48px; font-size: 16px; }
+  .mega-ruut { grid-template-columns: minmax(0, 1fr); gap: 8px; padding-top: 10px; }
+  .mega-t { padding: 10px 12px; gap: 2px; }
+  .mega-t ul { display: none; }
+  .mega-t p { font-size: 13px; }
+  .mega-nimi { display: flex; align-items: center; min-height: 32px; font-size: 16px; }
   .mega-lisa a { padding: 10px 0; }
   .alamlehed { flex-wrap: wrap; overflow-x: visible; }
   .alamlehed a { min-height: 40px; display: inline-flex; align-items: center; padding: 0 12px; }

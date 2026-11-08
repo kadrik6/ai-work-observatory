@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 8.11.2026 | Seire sait: „Kõik teemad“ menüü on M1 „Kaardid hallil“ (Kadri lukustas 8.11 kell 21:13): hallil taustal valged teemakaardid, küsimus nime all, alamlehed kiipidena, avatud menüü taga leht tumeneb ja klõps kattele sulgeb menüü. Telefonis on iga teema juures küsimus. Nupu kuju valitakse eraldi. |
 | 8.11.2026 | Seire sait: Pehme teema (vaikimisi) on nüüd H1 „Helehall“: hele neutraalne hall taust ja valged kastid sinaka asemel (Kadri lukustas 8.11 kell 21:01 taustanäidiste lehelt). Muutusid ainult Pehme teema taustatokenid failis `sait/stiil.css`. |
 | 8.11.2026 | Seire sait kolleegidele (Kadri 8.11): avalehe pealkirja all üks lause, mis sait see on, ja link „Kuidas numbreid lugeda“. Allikalingid plaatidel ja teematabeli numbrid on vähemalt 24 px kõrged (WCAG 2.5.8), telefonis ka teematabeli lingid. |
 | 8.11.2026 | Seire sait: numbriplaadi kopeerimisnupp on nüüd ääriseta ikoon (hõljudes kergelt hall taust); sõna „Kopeeri fakt koos allikaga“ tuleb nähtavale hõljudes või klaviatuuri fookusega, pärast kopeerimist linnuke ja „Kopeeritud“ (Kadri 8.11). Ekraanilugeja saab sama teksti aria-label'ist. Avaldatud saiti see veel ei muuda. |

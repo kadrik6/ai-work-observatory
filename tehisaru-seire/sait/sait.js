@@ -365,7 +365,7 @@
     function uuenda() { s.setAttribute('aria-expanded', m.open ? 'true' : 'false'); }
     m.addEventListener('toggle', uuenda); uuenda();
     document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && m.open) { m.open = false; s.focus(); } });
-    document.addEventListener('click', function (ev) { if (m.open && !m.contains(ev.target)) m.open = false; });
+    document.addEventListener('click', function (ev) { if (m.open && (!m.contains(ev.target) || ev.target === m)) m.open = false; });  // ev.target === m: klõps tumendatud kattele
     m.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { m.open = false; }); });
   });
 })();
