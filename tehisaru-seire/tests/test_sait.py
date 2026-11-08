@@ -941,3 +941,11 @@ def test_labivaatus_8_11_parandused(sait):
     assert tut and "kuidas-lugeda.html" in tut.group(1) and "allikaga" in tut.group(1)
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
     assert "button.kopeeri" in js and "navigator.clipboard" in js and "execCommand('copy')" in js
+
+
+def test_eksitav_silt_on_heleroosa(sait):
+    # Kadri 8.11.2026 22:02: „eksitav silt võiks olla heleroosades toonides“
+    assert '<span class="u-l risk">eksitav</span>' in sait["uudised.html"]
+    css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
+    assert ".u-l.risk { background: var(--eksitav-bg); color: var(--eksitav-ink); }" in css
+    assert "--eksitav-bg: #fce4ee; --eksitav-ink: #a3184f;" in css

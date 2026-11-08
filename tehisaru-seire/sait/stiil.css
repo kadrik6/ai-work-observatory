@@ -708,7 +708,10 @@ h3.veerg { font-size: 13.5px; }
 .u-l.arv { background: var(--surface-3); color: var(--ink-2); }
 /* Tavaline uudis on vaikne märk; sinine täide jääb aruandele ja uuringule (Kadri 7.11.2026: vähem värvi) */
 .u-l.vaikne { background: none; color: var(--ink-3); font-weight: 600; padding-left: 0; }
-.u-l.risk { background: color-mix(in srgb, var(--accent) 16%, var(--panel)); color: var(--accent-text); }
+.u-l.risk { background: var(--eksitav-bg); color: var(--eksitav-ink); }  /* „eksitav“: heleroosa (Kadri 8.11.2026 22:02) */
+:root { --eksitav-bg: #fce4ee; --eksitav-ink: #a3184f; }  /* kontrast 6,2:1 */
+@media (prefers-color-scheme: dark) { :root:not([data-seire-teema]) { --eksitav-bg: #4a2535; --eksitav-ink: #ffc4da; } }
+:root[data-seire-teema="dark"] { --eksitav-bg: #4a2535; --eksitav-ink: #ffc4da; }  /* kontrast 8,8:1 */
 .u-l.suur { background: var(--signal); color: var(--on-signal); }
 /* „uus“ märk: U8 heledam oranž (Kadri lukustas 8.11.2026 21:57, varem täisoranž); tume tekst, kontrast 8,9:1 mõlemas teemas */
 .u-l.uus, .voog .t.uus { background: #f2a65e; color: #2b1a05; }

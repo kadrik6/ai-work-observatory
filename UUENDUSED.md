@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 8.11.2026 | Seire sait: uudiste „eksitav“ silt on heleroosa (tume teema: tumeroosa taust, heleroosa tekst), Kadri 22:02. |
 | 8.11.2026 | Seire sait: „uus“ märk on U8 heledam oranž (#f2a65e, Kadri lukustas 21:57); avalehe „Mis muutus“ loendis on märgil ainult „uus“, mitte „uus number“. |
 | 8.11.2026 | Seire sait: Verceli külastusloendur (Web Analytics, küpsisteta) laaditakse ainult *.vercel.app aadressil (Kadri 21:51 „jah, lisa“). Analüütika tuleb Verceli projektis sisse lülitada. |
 | 8.11.2026 | Seire sait: tööportaalide kolmes plokis on sildid ühel real (täisnimi hõljukil), nii et ridade vahed on ühtlased (Kadri MKUS-i kommentaar 21:42). |
