@@ -4,7 +4,7 @@ Iga vaate järjekord (sisuloogika hinnang): vastus, peamine tõend koos võrdlus
 mida see tähendab, siis üksikasjad ja allikad.
 """
 import andmekiht as andmed
-from andmekiht import EL
+from andmekiht import EL, AndmeViga
 from komponendid import (allikarida, e, ei_naita, faktid, hantlid, jaga_klassid, kaart, kp, leiu_ribad, margend, pr,
                          riik, tabel, telg, vastavus)
 from pealkiri import taida
@@ -261,22 +261,42 @@ def ettevotted(A, vaade, vaated=None):
     koht = andmed.koht(A, EB, "EE", ee_el["aasta"])
     n_el = len(A["el_riigid"])
     siht = A["sihid"]["ee-ettevotted-75"]
-    ree = [
-        (f'{pr(ee["vaartus"])}%', f'Eesti ettevõtetest kasutas tehisaru {ee["aasta"]}. aastal (10+ hõivatut, uus klassifikaator).',
-         f'<a href="{e(ee["url"])}">{e(ee["allikas"])}</a>, {kp(ee["avaldatud"])}'),
-        (f'{koht}. <small>/ {n_el} ELi riigist</small>', f'{ee_el["aasta"]}: Eesti {pr(ee_el["vaartus"])}%, EL {pr(eu["vaartus"])}%. Uusim aasta, mida saab ELiga võrrelda.',
-         e(ee_el["allikas"])),
-        (f'{siht["siht"]}% <small>aastaks {siht["aasta"]}</small>', 'Eesti siht Statistikaameti numbril; klassifikaator kontrollimata.',
-         f'<a href="{e(siht["url"])}">{e(siht["allikas"])}</a>'),
-    ]
+    # Päise plaadid käsitsi valitud kontekstiga (ver1 laiendus, Kadri 8.11.2026). Siht on esimese plaadi ribal,
+    # kolmas plaat näitab vahet Põhjamaadega, millest räägib ka lead.
+    from abi import a
+    from lehed_ulevaade import _p, el_jarjestus, kpi_pais, kpi_plaat, kpi_riba
+    sa_eel = next(t for t in A["naitajad"][EB]["teised_allikad"] if t["allikas"].startswith("Statistikaamet, tabel IT149"))
+    y = ee_el["aasta"]
+    j = el_jarjestus(EB, koht_praegu=koht, aasta_praegu=y)
+    if not j:
+        raise AndmeViga("Ettevõtete koha muutus vajab faili sisu/el-jarjestus.csv")
+    k_ee = j[1]
+    y0 = min(k_ee)
+    pm = sum(andmed.leia(A, EB, g, y)["vaartus"] for g in POHJAMAAD) / len(POHJAMAAD)
+    pm0 = sum(andmed.leia(A, EB, g, 2023)["vaartus"] for g in POHJAMAAD) / len(POHJAMAAD)
+    vahe, vahe0 = pm - ee_el["vaartus"], pm0 - andmed.leia(A, EB, "EE", 2023)["vaartus"]
+    sv = float(siht["siht"])
+    aside = kpi_pais(
+        kpi_plaat("ev-kasutus", "Kasutab tehisaru (10+ hõivatut)", f'{pr(ee["vaartus"])}%', f'{ee["aasta"]} · siht {pr(sv, 0)}%',
+                  {"muutus": (f'{_p(ee["vaartus"] - sa_eel["vaartus"])} punkti aastaga', f'{ee["aasta"] - 1}: {pr(sa_eel["vaartus"])}% (teine tabel, kontrollimata)'),
+                   "riba": kpi_riba(ee["vaartus"], 100, siht=sv, fookus=True, siht_tekst=f'Eesti siht {pr(sv, 0)}% aastaks {siht["aasta"]}')},
+                  a(ee["url"], "Statistikaamet " + ee["allikas"].split("tabel ")[-1]), fookus=True),
+        kpi_plaat("ev-koht", "Koht ELis", f"{koht}.", f"/ {n_el} · {y}",
+                  {"muutus": (f"{k_ee[y0] - koht} kohta üles {y0}. aastast", f'{y0}: {k_ee[y0]}. koht · {y}: Eesti {pr(ee_el["vaartus"])}%'),
+                   "riba": kpi_riba(ee_el["vaartus"], 100, vrd=eu["vaartus"])},
+                  a("https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "Eurostat isoc_eb_ai")),
+        kpi_plaat("ev-pohja", "Vahe Põhjamaade keskmisega", f"{pr(vahe)}", f"punkti · {y}",
+                  {"muutus": (f"{_p(vahe - vahe0)} punkti 2023. aastast", f"2023: {pr(vahe0)} punkti; Soome, Rootsi, Taani")},
+                  a("https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "Eurostat isoc_eb_ai")),
+    )
     lead = ("Kasutus kasvab kiiresti, aga vahe Põhjamaadega on punktides suurenenud. "
             "Eesti andmetel on tehisaru seotud suurema tootlikkusega alles siis, kui muutub ka töökorraldus.")
-    return jaga(A, vaade, lead, ree, [
+    return jaga(A, vaade, lead, [], [
         ("kasutus", [("kasutus", "Kasutus")], lisa_sihid(A, _kasutus(A), "kasutus", "ee-ettevotted-75")),
         ("tootlikkus", [("tootlikkus", "Tootlikkus")], _tootlikkus(A)),
         ("voimekus", [("digi", "Digiintensiivsus"), ("ta", "Teadus ja arendus")],
          lisa_sihid(A, lisa_sihid(A, _digi_ja_ta(A), "digi", "el-digiintensiivsus-90"), "ta", "el-ta-3")),
-    ])
+    ], aside=aside)
 
 
 # ---------------------------------------------------------------- Saidikaart

@@ -755,10 +755,21 @@ def test_kpi_plaadid_jargivad_lukustatud_valikut_ver1(sait):
     h = sait["index.html"]
     assert '<div class="plaadid kaks"' in h and "data-kiht" not in h and "pl-lyl" not in h
     for pid, osad in lehed_ulevaade.KPI_VER1.items():
-        leht = "avalik-sektor.html" if pid in ("uuendus", "laiendus", "genai") else "index.html"
-        pl = sait[leht].split(f'data-kpi="{pid}"')[1].split('<span class="src">')[0]
+        # 8.11.2026: ver1 laiendati alamlehtede päisele; iga plaat on täpselt ühel lehel
+        lehed = [f for f, s in sait.items() if f'data-kpi="{pid}"' in s]
+        assert len(lehed) == 1, (pid, lehed)
+        pl = sait[lehed[0]].split(f'data-kpi="{pid}"')[1].split('<span class="src">')[0]
         assert ('class="muut"' in pl) == ("muutus" in osad), pid
         assert ('class="kriba' in pl) == ("riba" in osad), pid
         assert ('class="tekst"' in pl) == ("tekst" in osad), pid
     assert "oranž kriips: Eesti siht 75% aastaks 2030" in h and "ELi siht 80% (2030, ELi kohta)" in h
     assert "tume kriips: omavalitsused 27%" in sait["avalik-sektor.html"]
+
+
+def test_alamlehtede_paise_numbrid_on_ver1_plaadid(sait):
+    # Kadri 8.11.2026: teiste lehtede päise numbrid ver1 kujule, iga plaat käsitsi valitud kontekstiga
+    for f, h in sait.items():
+        assert '<aside class="vastus"' not in h, f
+        for pl in h.split('class="plaat kp"')[1:]:
+            pl = pl.split('<span class="src">')[0]
+            assert '<span class="lbl">' in pl and '<span class="ctx">' in pl, f

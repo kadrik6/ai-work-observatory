@@ -70,7 +70,22 @@ def plaat(lbl, big, small="", cmp="", src="", fookus=False, lisa="", href=""):
 # iga plaadi kontekst on oma: muutus ja/või tekst ja/või võrdlusriba. Lugeja neid ei muuda.
 KPI_VER1 = {"inimesed": ("muutus", "riba"), "ettevotted": ("muutus", "riba"), "digi": ("muutus", "riba"),
             "tootus": ("muutus",), "hanked": ("muutus",), "vaited": ("muutus",),
-            "uuendus": ("muutus", "riba"), "laiendus": ("tekst", "riba"), "genai": ("tekst", "riba")}
+            "uuendus": ("muutus", "riba"), "laiendus": ("tekst", "riba"), "genai": ("tekst", "riba"),
+            # Alamlehtede päis (Kadri 8.11.2026: „ka teistel alamlehtedel, käsitsi üle vaadatud nagu ver1“).
+            # Iga plaat sai oma konteksti: muutus, kui on võrreldav eelmine aasta; riba, kui on siht või võrdlus.
+            "in-kasutus": ("muutus", "riba"), "in-koht": ("tekst", "riba"), "in-tool": ("muutus", "tekst"),
+            "ev-kasutus": ("muutus", "riba"), "ev-koht": ("muutus", "riba"), "ev-pohja": ("muutus",),
+            "too-noored": ("tekst",), "too-taani": ("tekst",), "too-prognoos": ("muutus",),
+            "hk-arv": ("muutus",), "hk-kvaliteet": ("tekst", "riba"), "hk-uks": ("tekst", "riba"), "hk-tapsus": ("tekst",),
+            "us-muud": ("tekst", "riba"), "us-lahk": ("tekst",), "us-uudis": ("tekst",),
+            "kl-allikad": ("tekst",), "kl-klassid": ("tekst",), "kl-uuringud": ("tekst",),
+            "ma-jargmine": ("muutus", "tekst"), "ma-korge": ("muutus", "tekst"), "ma-osad": ("muutus", "riba"),
+            "ud-ee": ("muutus",), "ud-maailm": ("muutus",), "ud-suured": ("tekst",), "ud-kontroll": ("tekst",)}
+
+
+def kpi_pais(*plaadid):
+    """Alamlehe päise numbriplaadid samas kujus nagu avalik sektor (ver1)."""
+    return '<aside class="vastus kpi-pais" aria-label="Peamised numbrid">' + "".join(plaadid) + "</aside>"
 
 
 def kpi_riba(v, lopp, siht=None, vrd=None, vrd_nimi="EL", fookus=False, siht_tekst=None):

@@ -120,18 +120,29 @@ def kas_tosi(A, vaade, vaated=None):
   <div class="kaks vordne">{"".join(l_kaardid)}</div>
 </section>"""
 
-    ree = [
-        (f'{loend[0]} <small>/ {n} väitest</small>', 'ütleb muud kui allikas: vale tõlgendus, vale nimetaja või liialdus.', "Seire väidete kontroll"),
-        (f'{len(lahti)} <small>lahknevust</small>', 'Eurostati ja Statistikaameti vahel on selgitamata (C5 ettevõtted, C6 „ei oska“).', "Seire allikate võrdlus"),
-        (f'{sum(1 for v in V if v.get("uudisest"))} <small>/ {n} väitest</small>', 'on pärit uudistest ja kontrollitud samal skaalal.', "Seire uudiste kontroll"),
-    ]
+    from lehed_ulevaade import kpi_pais, kpi_plaat, kpi_riba
+    LNIMI = {"ettevotete-tehisaru-kasutus": "ettevõtted", "tehisaru-oskuse-puudus": "„ei oska“"}
+    n_uud = sum(1 for v in V if v.get("uudisest"))
+    aside = kpi_pais(
+        kpi_plaat("us-muud", "Väide ütleb muud kui allikas", str(loend[0]), f"/ {n} väitest",
+                  {"tekst": f"vale tõlgendus, vale nimetaja või liialdus; {loend[1]} vajab täpsustust",
+                   "riba": kpi_riba(loend[0], n, fookus=True)},
+                  "Seire väidete kontroll", fookus=True),
+        kpi_plaat("us-lahk", "Selgitamata lahknevused", str(len(lahti)), "",
+                  {"tekst": "Eurostat ja Statistikaamet annavad sama küsitluse kohta eri numbri: "
+                            + ", ".join(f'{l["kood"]} {LNIMI.get(l["naitaja"], l["naitaja"])}' for l in lahti)},
+                  "Seire allikate võrdlus"),
+        kpi_plaat("us-uudis", "Väited uudistest", str(n_uud), f"/ {n} väitest",
+                  {"tekst": "kontrollitud algallika järgi samal skaalal kui teised väited"},
+                  "Seire uudiste kontroll"),
+    )
     lead = "Avalikud väited, ka uudistest, kontrollitud algallika järgi ühel skaalal."
     # Usaldus (Kadri 6.11.2026 22:27): väited, lahknevused ja värskus on üks teema kolmel alamlehel
-    return jaga(A, vaade, lead, ree, [
+    return jaga(A, vaade, lead, [], [
         ("vaited", [("vaited", "Väited")], sec_v),
         ("lahknevused", [("lahknevused", "Lahknevused")], sec_l),
         ("varskus", [("varskus", "Värskus"), ("muutused", "Mis muutus")], varskus_ja_muutused(A, vaated)),
-    ])
+    ], aside=aside)
 
 
 ALLIKA_NIMED = {"ec.europa.eu": "Eurostat", "stat.ee": "Statistikaamet", "scb.se": "SCB (Rootsi)", "statistikbanken.dk": "Danmarks Statistik",
@@ -343,15 +354,22 @@ def kuidas(A, vaade, vaated=None):
   {tabel(["Uuring", "Tõend", "Kus", "Mida leiti"], u_read, numbrid=[], piir=True, pealdis="Uuringute kogu")}
 </section>"""
 
-    ree = [
-        (f'{len(Al)} <small>allikat</small>', f'{riiklik} riiklikku statistikaametit ja {len(Al) - riiklik} rahvusvahelist organisatsiooni.', "Allikate register"),
-        (f'{len(KLASSI_SELGITUS)} <small>klassi</small>', 'näitavad, kas kaks numbrit on võrreldavad. Ühel teljel võivad olla ainult „võrdlusalus“ ja „sama“.', "Seire kataloog"),
-        (f'{len(U)} <small>uuringut</small>', 'tehisaru ja töö kohta, igaühel tõendi tugevus.', "Uuringute kogu"),
-    ]
+    from lehed_ulevaade import kpi_pais, kpi_plaat
+    aside = kpi_pais(
+        kpi_plaat("kl-allikad", "Allikad", str(len(Al)), "",
+                  {"tekst": f"{riiklik} riiklikku statistikaametit ja {len(Al) - riiklik} rahvusvahelist organisatsiooni"},
+                  "Allikate register", fookus=True),
+        kpi_plaat("kl-klassid", "Võrreldavuse klassid", str(len(KLASSI_SELGITUS)), "",
+                  {"tekst": "näitavad, kas kaks numbrit on võrreldavad; ühel teljel ainult „võrdlusalus“ ja „sama“"},
+                  "Seire kataloog"),
+        kpi_plaat("kl-uuringud", "Uuringud tehisarust ja tööst", str(len(U)), "",
+                  {"tekst": f"neist {n_tugev} tugeva tõendiga (katse või registriandmed)"},
+                  "Uuringute kogu"),
+    )
     lead = ""
     sec_uu = _uuenemine(A)
     lingid = [("uuendused", "Mis uueneb ise")] if sec_uu else []
-    return (pea(A, vaade, lead, lingid + [("allikad", "Allikad"), ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], ree)
+    return (pea(A, vaade, lead, lingid + [("allikad", "Allikad"), ("margid", "Märgid"), ("vorreldavus", "Võrreldavus"), ("uuringud", "Uuringud")], [], aside=aside)
             + sec_uu + sec_a + sec_m + sec_v + sec_u)
 
 

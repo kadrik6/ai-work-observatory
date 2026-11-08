@@ -235,20 +235,30 @@ def inimesed(A, vaade, vaated=None):
   </details>
 </section>"""
 
-    ree = [
-        (f'{pr(ee["vaartus"])}%', f'Eesti 16–74-aastastest kasutas tehisaru {ee["aasta"]}. aastal (viimase 3 kuu jooksul).',
-         f'{a(ee["url"], ee["allikas"])}, {kp(ee["avaldatud"])}'),
-        (f'{koht}. <small>/ {len(el)} ELi riigist</small>', f'{y}: Eesti {pr(ee25["vaartus"])}%, EL {pr(eu["vaartus"])}%. Uusim aasta, mida saab ELiga võrrelda.',
-         e(ee25["allikas"])),
-        (f'{pr(too["vaartus"])}% <small>tööl</small>', f'kasutas tehisaru tööalaselt ({too["aasta"]}), % kõigist 16–74-aastastest.',
-         f'{a(too["url"], too["allikas"])}'),
-    ]
+    # Päise plaadid käsitsi valitud kontekstiga (ver1 laiendus, Kadri 8.11.2026)
+    from lehed_ulevaade import _p, kpi_pais, kpi_plaat, kpi_riba
+    if too["aasta"] != too25["aasta"] + 1:
+        raise AndmeViga("Tööalase kasutuse plaadi muutus eeldab kahte järjestikust võrreldavat aastat")
+    aside = kpi_pais(
+        kpi_plaat("in-kasutus", "Kasutas tehisaru (16–74)", f'{pr(ee["vaartus"])}%', str(ee["aasta"]),
+                  {"muutus": (f"{_p(kasv)} punkti aastaga", f'{y}: {pr(ee25["vaartus"])}%'),
+                   "riba": kpi_riba(ee["vaartus"], 100, fookus=True)},
+                  a(ee["url"], "Statistikaamet " + ee["allikas"].split("tabel ")[-1]), fookus=True),
+        kpi_plaat("in-koht", "Koht ELis", f"{koht}.", f"/ {len(el)} · {y}",
+                  {"tekst": f'Eesti {pr(ee25["vaartus"])}%, ELi keskmine {pr(eu["vaartus"])}%',
+                   "riba": kpi_riba(ee25["vaartus"], 100, vrd=eu["vaartus"])},
+                  a(EUROSTAT.format("isoc_ai_iaiu"), "Eurostat isoc_ai_iaiu")),
+        kpi_plaat("in-tool", "Kasutas tehisaru tööl", f'{pr(too["vaartus"])}%', str(too["aasta"]),
+                  {"muutus": (f'{_p(too["vaartus"] - too25["vaartus"])} punkti aastaga', f'{too25["aasta"]}: {pr(too25["vaartus"])}%'),
+                   "tekst": "% kõigist 16–74-aastastest, mitte ainult töötajatest"},
+                  a(too["url"], "Statistikaamet " + too["allikas"].split("tabel ")[-1])),
+    )
     lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem.")
-    return jaga(A, vaade, lead, ree, [
+    return jaga(A, vaade, lead, [], [
         ("kasutus", [("kasutus", "Kasutus")], sec_kasutus), ("tool", [("tool", "Tööl")], sec_too),
         ("digi", [("digi", "Digioskused")], lisa_sihid(A, sec_digi, "digi", *SIHI_TEEMA["inimesed"])),
         ("ei-oska", [("ei-oska", "„Ei oska“")], sec_os),
-    ])
+    ], aside=aside)
 
 
 # ---------------------------------------------------------------- Töö
@@ -516,21 +526,26 @@ def too(A, vaade, vaated=None):
   </details>
 </section>"""
 
-    ree = [
-        (f'{e(can["muutus"])}', f'22–25-aastaste hõive tehisarule avatud ametites võrreldes vähem avatud ametitega, USA. Laialdast töökohtade kadu ei ole.',
-         a(U["canaries2026"]["url"], f'Brynjolfsson jt {U["canaries2026"]["aasta"]}')),
-        ('&lt; 2%', f'Taanis ei muutunud kaks aastat pärast ChatGPT tulekut tulu ega töötunnid; üle 2% mõju on välistatud.',
-         a(hum["url"], f'Humlum ja Vestergaard {hum["aasta"]}')),
-        (f'{pr(t2030["protsent"])}% <small>2030</small>', f'Eesti töötuse prognoos ({t_tegelik["aasta"]}: {pr(t_tegelik["protsent"])}%). Tehisaru mõju ei ole eraldi arvestatud.',
-         a(rm["url"], f'Rahandusministeerium, {kp(rm["avaldatud"])}')),
-    ]
+    from lehed_ulevaade import _p, kpi_pais, kpi_plaat
+    aside = kpi_pais(
+        kpi_plaat("too-noored", "Noorte (22–25) hõive tehisarule avatud ametites, USA", e(can["muutus"]), "",
+                  {"tekst": "võrreldes vähem avatud ametitega; laialdast töökohtade kadu ei ole"},
+                  a(U["canaries2026"]["url"], f'Brynjolfsson jt {U["canaries2026"]["aasta"]}'), fookus=True),
+        kpi_plaat("too-taani", "Mõju tulule ja töötundidele, Taani", "&lt; 2%", "",
+                  {"tekst": "kaks aastat pärast ChatGPT tulekut muutust ei leitud; üle 2% mõju on välistatud"},
+                  a(hum["url"], f'Humlum ja Vestergaard {hum["aasta"]}')),
+        kpi_plaat("too-prognoos", "Eesti töötuse prognoos", f'{pr(t2030["protsent"])}%', "2030",
+                  {"muutus": (f'{_p(t2030["protsent"] - t_tegelik["protsent"])} punkti {t_tegelik["aasta"]}. aastast',
+                              f'{t_tegelik["aasta"]}: {pr(t_tegelik["protsent"])}%; tehisaru mõju pole eraldi arvestatud')},
+                  a(rm["url"], f'Rahandusministeerium, {kp(rm["avaldatud"])}')),
+    )
     lead = ("Mõnes ametis on vähenenud ka vabakutseliste tööd. "
             "Eesti kohta selliseid mõõtmisi veel ei ole.")
     from lehed_ulevaade import too_eesti, tootus_el, vabad_ametikohad
     from lehed_uudised import palkamine, toopakkumised, uuringud_too
     sec_uuritakse = uuringud_too(A)
     sec_palk = palkamine(A)
-    return jaga(A, vaade, lead, ree, [
+    return jaga(A, vaade, lead, [], [
         ("eesti-praegu", [("tootus-kuud", "Töötus"), ("koondamised", "Koondamised")], too_eesti(A)),
         ("tootus-el", [("tootus-el", "Töötus ELis")], tootus_el()),
         ("palkamine", [("palkamine", "Keda koondajad otsivad")], sec_palk),
@@ -543,7 +558,7 @@ def too(A, vaade, vaated=None):
         ("uuritakse", [("uuritakse", "Mida uuritakse"), ("publikatsioonid", "Publikatsioonid"), ("eesti-allikad", "Eesti allikad")], sec_uuritakse),
         ("kokkupuude", [("kokkupuude", "Ametid")], sec_kokkupuude),
         ("hoive", [("hoive", "Hõive muutus")], sec_hoive),
-    ])
+    ], aside=aside)
 
 
 # ---------------------------------------------------------------- Avalik sektor
@@ -726,14 +741,29 @@ def reeglid(A, vaade, vaated=None, tana=None):
   {allikarida([(O[0]["allikas"], O[0]["url"], "kontrollitud " + kp(kontroll))])}
 </section>"""
 
-    ree = [
-        (kp(uld["kuupaev"]), e(uld["mida_tahendab"]), a(uld["url"], "Euroopa Komisjon")),
-        (kp(kr["kuupaev"]), "Kõrge riskiga kasutus, näiteks CV-de sorteerimine värbamisel ja hindamine koolis.", a(kr["url"], "Euroopa Komisjon")),
-        (f'{len(O)} <small>tähtaega</small>', "Määrus jõustub osade kaupa 2024–2028.", a(O[0]["url"], "Euroopa Komisjon")),
-    ]
+    from lehed_ulevaade import kpi_pais, kpi_plaat, kpi_riba
+    def _kuud(kuup):
+        if kuup < tana:
+            return "kehtib juba"
+        d0, d1 = datetime.date.fromisoformat(tana), datetime.date.fromisoformat(kuup)
+        k = (d1.year - d0.year) * 12 + d1.month - d0.month
+        return "sel kuul" if k <= 0 else f"{k} kuu pärast"
+    pl1 = jargmine or moodas[-1]  # kui kõik tähtajad on möödas, näitab esimene plaat viimast
+    aside = kpi_pais(
+        kpi_plaat("ma-jargmine", "Järgmine tähtaeg" if jargmine else "Viimane tähtaeg", pl1[1], "",
+                  {"muutus": (_kuud(pl1[0]), ""), "tekst": e(pl1[2])},
+                  a(O[0]["url"], "Euroopa Komisjon"), fookus=True),
+        kpi_plaat("ma-korge", "Kõrge riskiga kasutus", kp(kr["kuupaev"]), "",
+                  {"muutus": (_kuud(kr["kuupaev"]), ""), "tekst": "näiteks CV-de sorteerimine värbamisel ja hindamine koolis"},
+                  a(kr["url"], "Euroopa Komisjon")),
+        kpi_plaat("ma-osad", "Tähtajad 2024–2028", f"{len(moodas)}", f"/ {len(O)} möödas",
+                  {"muutus": (f"{len(ees)} on veel ees", f"üldiselt kohaldatav alates {kp(uld['kuupaev'])}"),
+                   "riba": kpi_riba(len(moodas), len(O))},
+                  a(uld["url"], "Euroopa Komisjon")),
+    )
     j_tekst = f'Järgmine tähtaeg on {jargmine[1]}: {e(jargmine[2].lower())}.' if jargmine else ""
     lead = j_tekst
-    return pea(A, vaade, lead, [], ree) + sec_aeg
+    return pea(A, vaade, lead, [], [], aside=aside) + sec_aeg
 
 
 SIHI_TEEMA = {"inimesed": ("el-digioskused-80",), "ettevotted": ("ee-ettevotted-75",),

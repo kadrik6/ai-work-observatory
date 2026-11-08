@@ -69,7 +69,7 @@ class Jagatud(str):
         return s
 
 
-def jaga(A, vaade, lead, ree, plokid):
+def jaga(A, vaade, lead, ree, plokid, aside=None):
     """plokid: [(võti, [(ankur, lühike nimi)], html)]. vaade["alamlehed"]: [{fail, nimi, h1?, lead?, jaotised:[võti]}].
 
     Esimene alamleht saab vaate pealkirja ja numbrikastid. Tühi html (nt andmeid pole) jäetakse välja.
@@ -78,7 +78,7 @@ def jaga(A, vaade, lead, ree, plokid):
     plokid = [p for p in plokid if p[2].strip()]
     alamad = [s for s in vaade.get("alamlehed", []) if "vaade" not in s]  # {"vaade": id} = teine vaade sama teema all
     if not alamad:
-        return pea(A, vaade, lead, [l for _, ll, _ in plokid for l in ll], ree) + "".join(h for *_, h in plokid)
+        return pea(A, vaade, lead, [l for _, ll, _ in plokid for l in ll], ree, aside=aside) + "".join(h for *_, h in plokid)
     voti = {p[0]: p for p in plokid}
     kasutatud = [k for s in alamad for k in s["jaotised"] if k in voti]
     if sorted(kasutatud) != sorted(voti) or len(set(kasutatud)) != len(kasutatud):
@@ -89,7 +89,7 @@ def jaga(A, vaade, lead, ree, plokid):
         lingid = [l for _, ll, _ in oma for l in ll]
         lingid = lingid if len(lingid) > 1 else []
         if i == 0:
-            algus = pea(A, vaade, lead, lingid, ree)
+            algus = pea(A, vaade, lead, lingid, ree, aside=aside)
         else:
             algus = f"""
 <div class="pea yks alam-pea">

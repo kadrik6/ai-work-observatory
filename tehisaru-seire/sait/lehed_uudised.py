@@ -135,16 +135,20 @@ def uudised(A, vaade, vaated=None):
         return s[0] if s else (read[0] if read else None)
 
     ee_s, m_s = _suurim(ee), _suurim(m)
-    ree = [
-        (f'{len(ee)}', f'Eesti uudist; uusim {kp(ee[0]["kuupaev"])}.' if ee else "Eesti uudiseid pole.",
-         e(ee_s["pealkiri"]) if ee_s else ""),
-        (f'{len(m)}', f'maailma uudist, aruannet või uuringut; uusim {kp(m[0]["kuupaev"])}.' if m else "Maailma uudiseid pole.",
-         e(m_s["pealkiri"]) if m_s else ""),
-        (f'{len(suured)}', 'suurt uudist (koondamine üle 50 inimese, riigi otsus, uus ametlik statistika).',
-         f'{arvamusi} on arvamused, mitte tõendid'),
-        (f'{vk.day}.{vk.month:02d} {vk:%H:%M}', f'viimane kontroll; {korras} allikat {len(O["allikad"])}-st vastas.',
-         "Uueneb iga päev kell 7.23 ja 17.53"),
-    ]
+    from lehed_ulevaade import kpi_pais, kpi_plaat
+    nadal = (vk.date() - datetime.timedelta(days=6)).isoformat()
+    uusi = lambda read: sum(r["kuupaev"] >= nadal for r in read)  # noqa: E731
+    korjaja = "Seire uudistekogumine"
+    aside = kpi_pais(
+        kpi_plaat("ud-ee", "Eesti uudised", str(len(ee)), "",
+                  {"muutus": (f"{uusi(ee)} viimase 7 päevaga", f'uusim {kp(ee[0]["kuupaev"])}' if ee else "")}, korjaja, fookus=True),
+        kpi_plaat("ud-maailm", "Maailma uudised, aruanded ja uuringud", str(len(m)), "",
+                  {"muutus": (f"{uusi(m)} viimase 7 päevaga", f'uusim {kp(m[0]["kuupaev"])}' if m else "")}, korjaja),
+        kpi_plaat("ud-suured", "Suured uudised", str(len(suured)), "",
+                  {"tekst": f"koondamine üle 50 inimese, riigi otsus või uus statistika; {arvamusi} on arvamuslood, mitte tõendid"}, korjaja),
+        kpi_plaat("ud-kontroll", "Viimane kontroll", f"{vk.day}.{vk.month:02d}", f"{vk:%H:%M}",
+                  {"tekst": f'{korras} allikat {len(O["allikad"])}-st vastas; uueneb iga päev kell 7.23 ja 17.53'}, korjaja),
+    )
     lead = "Arvamus ei ole tõend."
 
     allikad = "".join(f'<li><span class="{"ok" if s["ok"] else "risk"}">{"vastas" if s["ok"] else "ei vastanud"}</span> {e(s["nimi"])}</li>' for s in O["allikad"])
@@ -163,10 +167,10 @@ def uudised(A, vaade, vaated=None):
              + _uudiste_paneel("eesti-uudised", f"Eesti: <b>{len(ee)} uudist</b>, neist {sum(r['liik'] == 'arvamus' for r in ee)} arvamust", ee, "sp6", viimane)
              + _uudiste_paneel("maailma-uudised", f"Maailm: <b>{len(m)} uudist</b>, aruannet ja uuringut", m, "sp6", viimane)
              + "</div>")
-    return jaga(A, vaade, lead, ree, [
+    return jaga(A, vaade, lead, [], [
         ("uudised", [("eesti-uudised", "Eesti"), ("maailma-uudised", "Maailm")], sec_u),
         ("allikad", [("uudiste-allikad", "Allikad")], sec_k),
-    ])
+    ], aside=aside)
 
 
 # ---------------------------------------------------------------- Hanked
@@ -210,16 +214,27 @@ def hanked(A, vaade, vaated=None):
     tul = hind["hindamine"]["tulemused"][val]
     lev = hind["levimus"]
 
-    ree = [
-        (f'{aastad[-1]["ai_andmed"]} <small>{aastad[-1]["aasta"]}{"*" if poolik else ""}</small>', f'tehisaru- ja andmehanget ehk {pr(aastad[-1]["ai_andmed_osakaal"])}% kõigist {_arv(aastad[-1]["hankeid"])} hankest{" (* aasta pole läbi)" if poolik else ""}.',
-         a(HANKED_URL, "riigihangete register")),
-        (f'{pr(kv["ai_andmed"], 0)}%', f'neist hindas ka kvaliteeti ({p0}–{p1}); teistes IT-hangetes {pr(kv["it_muud"], 0)}%, kõigis {pr(kv["koik"], 0)}%.',
-         "hindamiskriteeriumid registris"),
-        (f'{pr(V["ai_andmed"]["uks_pakkuja_osakaal"], 0)}%', f'said ainult ühe pakkumuse; teistes IT-hangetes {pr(V["it_muud"]["uks_pakkuja_osakaal"], 0)}%, kõigis {pr(V["koik"]["uks_pakkuja_osakaal"], 0)}%.',
-         f'pakkumuste arv teada {V["ai_andmed"]["pakkumusi_teada"]} hankel'),
-        (f'{pr(tul["tapsus"] * 100, 0)}%', f'leitud hangetest on päriselt tehisaru- või andmehanked (täpsus); leitakse {pr(tul["saagis"] * 100, 0)}% neist (saagis).',
-         "katseline klassifikaator, märgendid pole inimese kontrollitud"),
-    ]
+    from lehed_ulevaade import kpi_pais, kpi_plaat, kpi_riba
+    h1, h0 = aastad[-1], aastad[-2]
+    yks = {g: V[g]["uks_pakkuja_osakaal"] for g in ("ai_andmed", "it_muud", "koik")}
+    katseline = ' <span class="chip exp">katseline</span>'
+    aside = kpi_pais(
+        kpi_plaat("hk-arv", "Tehisaru- ja andmehanked", str(h1["ai_andmed"]), f'{h1["aasta"]}{"*" if poolik else ""}',
+                  {"muutus": (f'{h0["aasta"]} kokku {h0["ai_andmed"]}',
+                              f'{pr(h1["ai_andmed_osakaal"])}% kõigist {_arv(h1["hankeid"])} hankest' + ("; * aasta pole läbi" if poolik else ""))},
+                  a(HANKED_URL, "Riigihangete register") + katseline, fookus=True),
+        kpi_plaat("hk-kvaliteet", "Hindas ka kvaliteeti, mitte ainult hinda", f'{pr(kv["ai_andmed"], 0)}%', f"{p0}–{p1}",
+                  {"tekst": f'kõigis hangetes {pr(kv["koik"], 0)}%',
+                   "riba": kpi_riba(kv["ai_andmed"], 100, vrd=round(kv["it_muud"]), vrd_nimi="teised IT-hanked")},
+                  "Hindamiskriteeriumid registris"),
+        kpi_plaat("hk-uks", "Said ainult ühe pakkumuse", f'{pr(yks["ai_andmed"], 0)}%', f"{p0}–{p1}",
+                  {"tekst": f'kõigis hangetes {pr(yks["koik"], 0)}%',
+                   "riba": kpi_riba(yks["ai_andmed"], 100, vrd=round(yks["it_muud"]), vrd_nimi="teised IT-hanked")},
+                  f'Pakkumuste arv teada {V["ai_andmed"]["pakkumusi_teada"]} hankel'),
+        kpi_plaat("hk-tapsus", "Tuvastuse täpsus", f'{pr(tul["tapsus"] * 100, 0)}%', "",
+                  {"tekst": f'leitud hangetest on päriselt tehisaru- või andmehanked; leitakse {pr(tul["saagis"] * 100, 0)}% neist'},
+                  "Masina märgendid, pole inimese kontrollitud" + katseline),
+    )
     lead = ("Tehisaru = "
             "pealkirjas või kirjelduses on tehisaru märksõna; andmed = andmeladu, -haldus, -analüüs jms. "
             "Tehisaru uuringute ja mõjuanalüüside hankeid eraldi veel ei loeta.")
@@ -334,7 +349,7 @@ def hanked(A, vaade, vaated=None):
     hoiatus = ('<div class="hoiatus" role="note"><p><b>Kontrollimata masinmärgistus.</b> Selle lehe hanked märkis tehisaru- '
                'või andmehangeteks keelemudel, mitte inimene. Ka täpsus on mõõdetud masina märgendite vastu. Numbrid on suunaandvad, '
                'mitte statistika: aastate võrdlus ja kindlad järeldused tulevad pärast seda, kui 100 hanget on käsitsi üle vaadatud.</p></div>')
-    return (pea(A, vaade, lead, [("aastad", "Viimane aasta"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], ree) + hoiatus
+    return (pea(A, vaade, lead, [("aastad", "Viimane aasta"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], [], aside=aside) + hoiatus
             + '<div class="g12">' + sec_aastad + sec_inn + "</div>"
             + '<div class="g12">' + sec_viis + sec_hankijad + "</div>"
             + sec_loend + sec_tapsus
