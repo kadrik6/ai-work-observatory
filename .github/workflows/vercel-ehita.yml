@@ -1,0 +1,28 @@
+name: vercel-ehita
+# Vercel Hobby ehitab main'i git-push'ist ainult siis, kui commit'i autor on Kadri. Igapäevaste andmete
+# commit'id (seire-igapaevane, github-actions[bot], Claude) jäävad Vercelis „Deployment was blocked“ olekusse.
+# See töövoog käivitab ehituse Verceli Deploy Hookiga (Kadri 8.11.2026). Hooki URL on GitHubi saladus
+# VERCEL_DEPLOY_HOOK; kui saladust pole, töövoog ei tee midagi.
+on:
+  push:
+    branches: [main]
+    paths: ["tehisaru-seire/**"]
+  workflow_run:
+    workflows: [sait-andmed]
+    types: [completed]
+  workflow_dispatch:
+permissions: {}
+jobs:
+  ehita:
+    runs-on: ubuntu-latest
+    # Kadri enda commit'i ehitab Vercel ise; topelt ehitust pole vaja
+    if: >-
+      (github.event_name != 'push' || github.event.head_commit.author.email != '106835383+kadrik6@users.noreply.github.com') &&
+      (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    steps:
+      - name: Käivita Verceli ehitus
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "VERCEL_DEPLOY_HOOK saladust pole, jätan vahele"; exit 0; fi
+          curl -fsS -X POST "$HOOK" > /dev/null && echo "Verceli ehitus käivitatud"
