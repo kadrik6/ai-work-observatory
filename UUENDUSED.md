@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 8.11.2026 | Seire sait: kuulutuste ja hangete filtri all näitavad rühmanupud ja maakonnad kogusummasid praeguste teiste valikute järgi ning loendur „N kuulutust M-st“; „Näita 12/24/48“ rida peidetakse filtri ajal päriselt (Kadri 21:45). |
 | 8.11.2026 | Seire sait: kinnituskord (Kadri otsus 21:36 „Ootavad kinnitust“). Igapäevase töö uuringu- ja väitemustandid lähevad saidile alles pärast Kadri „jah“-i (`sait/ootel.py`, väli `seire_olek`); kinnitatud uuringud lähevad uuringute kokku. OECD valvur (`sait/oecd_valvur.py`, sait-andmed.yml) otsib Crossrefist uut Eesti OECD väljaannet. „Mis uueneb ise“ tabel näitab uut korda. EKKM-i koondamine jäetakse saidilt välja (Kadri 21:41: pole piisavalt asjakohane). |
 | 8.11.2026 | Seire sait: „Sellel lehel“ R1 (Kadri lukustas 21:24). Parem veerg kadus, sisu saab kogu laiuse; jaotiste kiibirida on igal ekraanil pealkirjaploki all ja kleepub kerimisel päise alla. Ankrud jäävad rea alla (--lehel-h), lehe lõpus märgitakse viimane nähtav jaotis, telefonis keritakse märgitud kiip nähtavale. Test kontrollib, et rida on `<main>` otsene laps. |
 | 8.11.2026 | Seire sait: „Kõik teemad“ nupp on N6 „Ainult ikoon“ (Kadri lukustas 8.11 kell 21:20): arvutis ruudustikuikoon, silt ilmub hõljudes ja fookusega, ekraanilugejale „Kõik teemad“; telefonis ikoon + „Menüü“. |

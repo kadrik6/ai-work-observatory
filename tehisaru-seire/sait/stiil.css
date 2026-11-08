@@ -203,6 +203,7 @@ td small { display: block; color: var(--ink-3); font-size: 14px; }
 tr.fookus td { font-weight: 700; color: var(--signal); }
 .vrd { color: var(--accent-text); font-weight: 600; white-space: nowrap; }
 .kogus { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 15px; color: var(--ink-2); margin-top: 8px; }
+.kogus[hidden] { display: none; }  /* filtri ajal on näha kõik sobivad read; „Näita 12/24/48“ peidetakse */
 .kogus button { font: 400 15px/1 var(--font-sans); height: 28px; padding: 0 10px; border-radius: 100px; border: 1px solid var(--control); background: var(--surface); color: var(--ink); cursor: pointer; }
 .kogus button[aria-pressed="true"] { background: var(--signal); border-color: var(--signal); color: var(--on-signal); font-weight: 600; }
 

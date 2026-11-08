@@ -204,8 +204,36 @@
       var sisend = o.querySelector('input'), loe = o.querySelector('.h-loe'), ruhm = '', kus = '';
       var valik = o.querySelector('select[data-kus]'), uhik = o.getAttribute('data-uhik') || 'hanget';
       function riba() { var r = tabel.parentNode.nextElementSibling; return r && r.classList.contains('kogus') ? r : null; }
+      function sobib(r, q_, ruhm_, kus_) {
+        return (!q_ || r.getAttribute('data-otsi').indexOf(q_) >= 0) &&
+          (!ruhm_ || (ruhm_ === 'hea' ? r.getAttribute('data-hea') === '1' : r.getAttribute('data-ruhm') === ruhm_)) &&
+          (!kus_ || r.getAttribute('data-kus') === kus_);
+      }
+      // Filtri all näitavad rühmanupud ja maakonnad, mitu rida on teiste valikute juures (Kadri 8.11.2026 21:45).
+      var nupud = Array.prototype.slice.call(o.querySelectorAll('button[data-r]'));
+      var valikud = valik ? Array.prototype.slice.call(valik.options) : [];
+      function alus(el) {
+        if (!el.hasAttribute('data-alg')) el.setAttribute('data-alg', el.textContent);
+        return el.getAttribute('data-alg').replace(/ \(\d+\)$/, '');
+      }
+      function loenda(q) {
+        var filter = !!(q || ruhm || kus);
+        nupud.forEach(function (b) {
+          var r_ = b.getAttribute('data-r');
+          if (!filter) { b.textContent = b.getAttribute('data-alg') || b.textContent; return; }
+          var m = read.filter(function (r) { return sobib(r, q, r_, kus); }).length;
+          b.textContent = alus(b) + ' (' + m + ')';
+        });
+        valikud.forEach(function (op) {
+          if (!filter) { op.textContent = op.getAttribute('data-alg') || op.textContent; return; }
+          var m = read.filter(function (r) { return sobib(r, q, ruhm, op.value); }).length;
+          op.textContent = alus(op) + ' (' + m + ')';
+        });
+      }
+      nupud.forEach(alus); valikud.forEach(alus);
       function filtreeri() {
         var q = sisend.value.trim().toLowerCase(), k = riba();
+        loenda(q);
         if (!q && !ruhm && !kus) {
           if (k) { k.hidden = false; k.querySelector('button').click(); } else { read.forEach(function (r) { r.hidden = false; }); }
           loe.textContent = '';
@@ -213,13 +241,8 @@
         }
         if (k) k.hidden = true;
         var n = 0;
-        read.forEach(function (r) {
-          var ok = (!q || r.getAttribute('data-otsi').indexOf(q) >= 0) &&
-            (!ruhm || (ruhm === 'hea' ? r.getAttribute('data-hea') === '1' : r.getAttribute('data-ruhm') === ruhm)) &&
-            (!kus || r.getAttribute('data-kus') === kus);
-          r.hidden = !ok; if (ok) n++;
-        });
-        loe.textContent = n + ' ' + uhik;
+        read.forEach(function (r) { var ok = sobib(r, q, ruhm, kus); r.hidden = !ok; if (ok) n++; });
+        loe.textContent = n + ' ' + uhik + (n < read.length ? ' ' + read.length + '-st' : '');
       }
       sisend.addEventListener('input', filtreeri);
       if (valik) valik.addEventListener('change', function () { kus = valik.value; filtreeri(); });
