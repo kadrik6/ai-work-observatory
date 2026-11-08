@@ -1132,3 +1132,5 @@ th, td { padding: 6px 10px; }
 .t-vaited .verd { align-self: start; }
 .teema-lopp .lingid { font-size: 13.5px; margin: 0; }
 @media (max-width: 760px) { .teema-lopp { grid-template-columns: minmax(0, 1fr); } }
+/* Kadri 8.11.2026 16:26: „Uuri andmeid“ ümber ei ole suurt välimist kasti (kast kasti sees); sakid ja sisukastid jäävad */
+.jaotis.teema-andmed { background: none; border: 0; border-radius: 0; padding: 0; }
