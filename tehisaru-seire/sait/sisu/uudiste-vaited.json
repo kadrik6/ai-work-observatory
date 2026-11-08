@@ -1,0 +1,77 @@
+[
+  {
+    "id": "ai-oskajad-votavad-tookohad",
+    "kuupaev": "2026-11-05",
+    "vaide": "AI-d oskavad inimesed võtavad töökohad",
+    "kes": "ERR „Otse uudistemajast“ 5.11.2026 (sarnaselt ERR News 3.11)",
+    "kes_url": "https://news.err.ee/1610186941/coding-school-founder-people-who-do-not-use-ai-universally-disadvantaged",
+    "hinnang": "osaliselt",
+    "kokkuvote": "Tööandjad maksavad tehisaruoskuse eest rohkem ja värbavad vähem algajaid ametitesse, kus tehisaru asendab tööd. Seda, et üks inimene võtab teise koha, keegi ei mõõda. Eestis on ainult arvamused.",
+    "toendid": [
+      {
+        "nimi": "PwC AI Jobs Barometer 2026",
+        "naitab": "Tehisaruoskust nõudvates töökuulutustes 62% kõrgem palk",
+        "tugevus": "nõrk–keskmine: kuulutused, mitte värbamised",
+        "url": "https://www.pwc.com/gx/en/news-room/press-releases/2026/pwc-2026-ai-jobs-barometer.html"
+      },
+      {
+        "nimi": "Stanford „Canaries“, aug 2026",
+        "naitab": "USA 22–25-aastaste hõive tehisarule avatud ametites 19% madalam, kogenutel vahet pole; põhjus on vähem värbamist",
+        "tugevus": "keskmine: suured palgaandmed, kirjeldav",
+        "url": "https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/"
+      },
+      {
+        "nimi": "Eesti",
+        "naitab": "Mõõtmist ei ole",
+        "tugevus": "puudub",
+        "url": ""
+      }
+    ]
+  },
+  {
+    "id": "challenger-okt-153074",
+    "kuupaev": "2026-11-05",
+    "vaide": "USA tööandjad teatasid oktoobris 153 074 koondamisest, rohkem kui kunagi alates 2003",
+    "kes": "Startup Fortune 3.11.2026",
+    "kes_url": "https://startupfortune.com/us-employers-announced-153074-job-cuts-in-october-the-most-since-2003/",
+    "hinnang": "vale",
+    "kokkuvote": "See on oktoobri 2025 arv. Challengeri 5.11.2026 aruande järgi oli oktoobris 2026 koondamisteateid 43 994 ja tehisaruga seostati neist 1265.",
+    "toendid": [
+      {
+        "nimi": "Challenger, Gray & Christmas 5.11.2026",
+        "naitab": "Oktoober 2026: 43 994; oktoober 2025: 153 074",
+        "tugevus": "tugev: primaarallikas",
+        "url": "https://www.challengergray.com/blog/october-layoffs-at-three-year-low-seasonal-hiring-plans-up-26/"
+      }
+    ]
+  },
+  {
+    "id": "ai-noorte-esimene-too",
+    "kuupaev": "2026-11-06",
+    "vaide": "Tehisaru tõttu on noortel raskem esimest tööd leida",
+    "kes": "ERR News 3.11.2026",
+    "kes_url": "https://news.err.ee/1610184274/ai-makes-it-harder-for-young-people-to-land-their-first-job",
+    "hinnang": "osaliselt",
+    "kokkuvote": "Noorte värbamine on tõesti langenud. Kanadas langes see aga ka ametites, mida tehisaru vähe puudutab, seega on peamine põhjus tõenäoliselt majandus ja pandeemiajärgne kohanemine. USA palgaandmetes on langus tehisarule avatud ametites suurem. Eestis seda ei mõõdeta.",
+    "toendid": [
+      {
+        "nimi": "Statistics Canada 28.10.2026",
+        "naitab": "Laialdast tõendit pole; noorte värbamine langes kõigis ametites (vähe avatud 4,0→3,3%, avatud 3,2→3,0%)",
+        "tugevus": "tugev: ametlik tööjõu-uuring 2006–2026, varased tulemused",
+        "url": "https://www150.statcan.gc.ca/n1/pub/36-28-0001/2026010/article/00003-eng.htm"
+      },
+      {
+        "nimi": "Stanford „Canaries“, aug 2026",
+        "naitab": "USA 22–25-aastaste hõive tehisarule avatud ametites 19% madalam kui vähem avatud ametites",
+        "tugevus": "keskmine: suured palgaandmed, kirjeldav",
+        "url": "https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/"
+      },
+      {
+        "nimi": "Eesti",
+        "naitab": "Mõõtmist ei ole (noorte värbamist ameti tehisarule avatuse järgi ei avaldata)",
+        "tugevus": "puudub",
+        "url": ""
+      }
+    ]
+  }
+]

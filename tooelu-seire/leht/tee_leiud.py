@@ -319,14 +319,19 @@ KP = T['koondamise_pohjused']
 _kr = [{'nimi': r['nimi'], 'protsent': round(r['teateid'] / KP['kokku'] * 100, 1)} for r in KP['read']]
 _kr.append({'nimi': 'Muud põhjused (jääk)', 'protsent': round((KP['kokku'] - sum(r['teateid'] for r in KP['read'])) / KP['kokku'] * 100, 1)})
 _kokku = f"{KP['kokku']:,}".replace(',', ' ')
+_jrk = sorted(KP['read'], key=lambda r: -r['teateid'])
+_ai = next(r for r in KP['read'] if r['nimi'] == 'Tehisaru')
+_ai_koht = {1: 'suurim', 2: 'teine', 3: 'kolmas'}.get(_jrk.index(_ai) + 1, str(_jrk.index(_ai) + 1) + '.')
+_ai_pr = _ai['teateid'] / KP['kokku'] * 100
+_ai_n = f"{_ai['teateid']:,}".replace(',', ' ')
 pohjused = f'''          <div class="ts-head-sm">
             <p class="ts-kicker">USA koondamisteated põhjuse järgi, {KP['periood']}, % kõigist</p>
-            <h4 class="ts-ctitle ts-ctitle-sm">Tehisaru on suurim üksikpõhjus, aga <span class="ts-sig">kolm neljandikku</span> teadetest on muudel põhjustel</h4>
+            <h4 class="ts-ctitle ts-ctitle-sm">Tehisaru on {_ai_koht} põhjus, aga <span class="ts-sig">{100 - _ai_pr:.0f}%</span> teadetest on muudel põhjustel</h4>
           </div>
           <div class="ts-hb-pohj">{hb(_kr, 30, 'Tehisaru')}</div>
           <p class="ts-csub">Kokku {_kokku} teadet. {e(KP['markus'])} Väljaspool tehnoloogiasektorit on tehisaruga seotud koondamisi vähe.</p>'''
 kaotus = f'''          <div class="ts-pair">
-            <div><span class="ts-big">24%</span><p>USA koondamisteadetest nimetas 2026. aasta esimesel seitsmel kuul põhjuseks tehisaru <span class="ts-t-sub">112 713 teadet 477 033st, Challenger, Gray &amp; Christmas</span></p></div>
+            <div><span class="ts-big">{_ai_pr:.0f}%</span><p>USA koondamisteadetest nimetas põhjuseks tehisaru ({KP['periood']}) <span class="ts-t-sub">{_ai_n} teadet {_kokku}-st, Challenger, Gray &amp; Christmas</span></p></div>
             <div><span class="ts-big">≈8%</span><p>ühe aasta palgast kaotasid viie aastaga inimesed, kelle ettevõte automatiseeris <span class="ts-t-sub">Holland 2000–2016, registriandmed, automatiseerimine üldiselt</span></p></div>
           </div>
           <p class="ts-csub">Need on eri mõõdikud ja neid ei liideta. Teade ei tähenda tegelikku koondamist ja tehisaru märkimine põhjuseks on ebamäärane. Eestis ega ELis ei loe keegi tehisaru tõttu koondatuid eraldi.</p>

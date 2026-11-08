@@ -1,0 +1,15 @@
+id,vaartus,lugeja,nimetaja,mida,koht,markus
+uuendajad,29,,,"avalikest teenistujatest tegi viimase 24 kuu jooksul vähemalt ühe uuenduse","1. peatükk, joonis 1.2","Keskvalitsuses ja omavalitsustes sama, 29%. Juhtidest 64%, haldustöötajatest 18%."
+rakendati,62,,,"olulisimatest uuendustest jõudis rakendamiseni","6. peatükk, joonis 6.2","Vastajad nimetasid oma olulisima uuenduse ja selle viimase etapi."
+laiendati,33,,,"olulisimatest uuendustest laiendati","6. peatükk, joonis 6.2","OECD nimetab seda lehtri efektiks: enamik jääb pidama prototüübi, hindamise või otsuse etapis."
+hindamine-vfm-juhid,35,,,"hindamistest kasutas raha väärtuse (VfM) hindamist, juhtide järgi","6. peatükk, joonis 6.3","Hindamisi oli üldse vähe, seepärast on osakaal ebakindel."
+hindamine-vfm-tootajad,23,,,"hindamistest kasutas raha väärtuse (VfM) hindamist, töötajate järgi","6. peatükk, joonis 6.3",
+hindamine-protsess-juhid,40,,,"hindamistest oli protsessi hindamine, juhtide järgi","6. peatükk, joonis 6.3",
+hindamine-protsess-tootajad,48,,,"hindamistest oli protsessi hindamine, töötajate järgi","6. peatükk, joonis 6.3",
+genai-kesk,28,48,170,"keskvalitsuse innovaatoritest kasutas oma uuenduses generatiivset tehisaru","7. peatükk, joonis 7.2","Küsiti ainult neilt, kes tegid 24 kuu jooksul uuenduse. Ei ole kõigi teenistujate osakaal."
+genai-kov,27,19,71,"omavalitsuste innovaatoritest kasutas oma uuenduses generatiivset tehisaru","7. peatükk, joonis 7.2",
+klaster-eesliin,27,,73,"asutust on võimestatud eestvedajad (empowered front-runners)","4. peatükk","Kõige rohkem uuendusi ja tulemusi, kõrgeim psühholoogiline turvalisus ja riskivalmidus."
+klaster-enamus,40,,73,"asutust on piiratud enamus (constrained majority)","4. peatükk","Suurim rühm. Veidi alla keskmise peaaegu kõigis näitajates; OECD kirjeldab seda inertsina, mitte vastuseisuna."
+klaster-vaikesed,6,,73,"asutust on väikesed iseseisvad kasutuselevõtjad (disconnected adopters)","4. peatükk","Väga väikesed asutused (keskmiselt umbes 4 töötajat). Generatiivse tehisaru kasutuses teistest rühmadest ees. Väike rühm, üldistada ettevaatlikult."
+vastajad-juhid,55,,,"asutuse juhti vastas täielikult (lisaks 115 osaliselt)","lisa 1.A",
+vastajad-tootajad,563,,,"avalikku teenistujat vastas täielikult (lisaks 1140 osaliselt)","lisa 1.A","70,7% keskvalitsusest, 29,3% omavalitsustest. Küsitlus detsember 2025 kuni veebruar 2026."
