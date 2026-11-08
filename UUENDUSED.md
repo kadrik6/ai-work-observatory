@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 8.11.2026 | Seire sait: Pehme teema (vaikimisi) on nüüd H1 „Helehall“: hele neutraalne hall taust ja valged kastid sinaka asemel (Kadri lukustas 8.11 kell 21:01 taustanäidiste lehelt). Muutusid ainult Pehme teema taustatokenid failis `sait/stiil.css`. |
 | 8.11.2026 | Seire sait kolleegidele (Kadri 8.11): avalehe pealkirja all üks lause, mis sait see on, ja link „Kuidas numbreid lugeda“. Allikalingid plaatidel ja teematabeli numbrid on vähemalt 24 px kõrged (WCAG 2.5.8), telefonis ka teematabeli lingid. |
 | 8.11.2026 | Seire sait: numbriplaadi kopeerimisnupp on nüüd ääriseta ikoon (hõljudes kergelt hall taust); sõna „Kopeeri fakt koos allikaga“ tuleb nähtavale hõljudes või klaviatuuri fookusega, pärast kopeerimist linnuke ja „Kopeeritud“ (Kadri 8.11). Ekraanilugeja saab sama teksti aria-label'ist. Avaldatud saiti see veel ei muuda. |
 | 8.11.2026 | Seire sait, läbivaatuse (8.11) parandused P1–P8: avalehe sihte ei järjestata enam (eri allikas, skaala ja aasta); Töö, Ametid, Kirjandus, Oskused, Ettevõtete võimekus ja Uuringud alamlehtede h1 on vastuse lause; Töö h1 algab Eesti andmetest; saidikaardilt kadusid sisemärkused; Hangete täpsuse pealkiri ütleb, et see on masinmärgendite järgi; trendi pealkiri „2,8%-lt 23,4%-ni“; „kolme puhul“ jms käänded. Uus: numbriplaatidel nupp „Kopeeri“, mis kopeerib fakti koos allika ja lingiga (ainult välise allikaga plaatidel). Test `test_labivaatus_8_11_parandused`. Avaldatud saiti see veel ei muuda. |
