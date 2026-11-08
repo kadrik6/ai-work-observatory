@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 8.11.2026 | Seire saidi avalehe päisepilt vahetati Kadri uue töölaua foto vastu (taim, part, sülearvuti); kujundus sama (mustvalge, B7 hele 55%, B5 tume). |
 | 8.11.2026 | Seire saidi avalehe päisesse tuli mustvalge töölaua foto: heledas teemas B7 (läbipaistvus 55%, hajuv üleminek), tumedas B5 (tumendatud). Turvakontroll lubab Kadri loal ainult faili `tehisaru-seire/sait/pilt/avaleht.jpg`, test valvab, et teisi pilte ei lubata. |
 | 2026-11-08 | Seire sait sai A1 „Tehisaru 2027“ kujunduse (Kadri 23:41): valge Hele teema, kastideta jaotised, suur pealkiri, hallid numbrikaardid ja kerged tabelid kõigil lehtedel. Avalehe päis on lühike: pealkiri ütleb ELi kohad koos aastaga, üks lause ja link „Allikad ja kuupäevad“. Asendab 21:01 Helehalli teema. |
 | 2026-11-08 | Seire sait ei võta enam infot teistelt lehtedelt: OECD lisanumbrid kontrolliti OECD aruande PDF-ist (parandatud joonise- ja leheviited, eemaldatud 4 numbrit, mida aruande tekstis pole), Arenguseire järeldused raporti veebilehelt ja PDF-ist, „Kuidas lugeda“ numbrid arengukava ja programmi PDF-ist (50,8% aasta erineb: arengukavas 2024, programmis 2025). Põhjamaade võrdluse 3 näitajat loetakse kataloogist (`kataloog/vaatlused-valis.csv`, laeb iga päev `lae_valis.py`), mitte faili `raportid/html/analuus-andmed.csv` kaudu. Uus test `test_sait_ei_loe_teiste_lehtede_faile`. |
