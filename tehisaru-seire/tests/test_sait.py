@@ -926,5 +926,8 @@ def test_labivaatus_8_11_parandused(sait):
                 b = re.search(r'<button[^>]*class="kopeeri".*?</button>', m.group(2), re.S).group(0)
                 assert "<svg" in b and 'data-silt="' in b and 'aria-label="' in b, (f, m.group(1))
                 assert re.sub(r"<[^>]+>", "", b).strip() == "", (f, m.group(1))
+    # Esmakordne lugeja (kolleeg lingiga): avalehel ütleb üks lause, mis sait see on, ja viitab lugemisjuhendile
+    tut = re.search(r'<p class="tutvus">(.*?)</p>', sait["index.html"], re.S)
+    assert tut and "kuidas-lugeda.html" in tut.group(1) and "allikaga" in tut.group(1)
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
     assert "button.kopeeri" in js and "navigator.clipboard" in js and "execCommand('copy')" in js

@@ -127,6 +127,10 @@ def kpi_plaat(pid, lbl, big, per, kontekst, src, fookus=False, href=""):
             f'<span class="ctx">{"".join(osad)}</span><span class="src">{src}{kopeeri_nupp(pid, lbl, big, per, src)}</span></div>')
 
 
+# Esmakordsele lugejale (kolleeg, kes saab lingi): mis sait see on. Kadri 8.11.2026, enne kolleegidele näitamist.
+TUTVUS = ("Tehisaru kasutus ja mõju Eestis ja ELis ühes kohas: ametlik statistika, uuringud ja meedias levivate "
+          "väidete kontroll, iga number koos allikaga.")
+
 KOOPIA_KES = {"ma-": "ELi tehisaru määrus", "too-noored": "", "too-taani": ""}
 
 
@@ -430,6 +434,7 @@ def avaleht(A, vaade, vaated):
     pea = f"""
 <div class="pea-t">
   <h1>{taida(vaade["h1"], A)}</h1>
+  <p class="tutvus">{TUTVUS} {menuu("kuidas", "Kuidas numbreid lugeda")}.</p>
   <p class="seis-t">Andmed: Statistikaamet {kp(ein["avaldatud"])} ja {kp(eeb["avaldatud"])}, Eurostat {kp(UNE_UUENDATUD)}</p>
 </div>
 <nav aria-label="Sellel lehel"><ul class="sellel"><li><a href="#teemad">Teemad</a></li><li><a href="#el">Eesti ELis</a></li><li><a href="#tootus">Töö ja töötus</a></li><li><a href="#trend">Ettevõtted</a></li><li><a href="#muutus">Mis muutus</a></li><li><a href="#sihid">Sihid</a></li><li><a href="#hanked">Hanked</a></li><li><a href="#vaited">Väited</a></li></ul></nav>
