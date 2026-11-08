@@ -8,6 +8,7 @@
 !CLAUDE.md
 !README.md
 !UUENDUSED.md
+!vercel.json
 !.claude/settings.json
 !.githooks/pre-commit
 !.github/workflows/*.yml
