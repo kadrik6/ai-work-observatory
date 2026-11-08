@@ -1,7 +1,7 @@
 {
 "kirjeldus": "Tehisaru- ja andmetööde kuulutused CV.ee-s. Kolm rühma: ai_amet = pealkirjas on tehisaru (AI, ML, LLM, tehisintellekt, masinõpe, andmeteadlane jne); andmeamet = pealkirjas on andmed, data, BI, analytics, statistik või andmebaas; ai_oskus = muu amet, mille kuulutuse tekst mainib tehisaru või tehisaru tööriistu; ai_firma_noue = muu amet, kus tehisaru on ainult tööandja ühises lauses (sama lõik vähemalt kolmes selle firma kuulutuses, nt firma üldnõue). Rühmad ei kattu. Märksõnapõhine liigitus, mitte käsitsi kontrollitud.",
 "allikas": "CV.ee avalik otsing (https://www.cv.ee/et/search), kõik kuulutused",
-"uuendatud": "2026-11-08T13:13+02:00",
+"uuendatud": "2026-11-08T13:24+02:00",
 "kuulutusi_kokku": 3371,
 "portaali_kokku": 3371,
 "uus_tahendab": "avaldatud viimase 7 päeva jooksul (esimene kontroll)",
@@ -163,16 +163,16 @@
 ]
 },
 "ai_oskus": {
-"arv": 55,
-"uusi": 27,
+"arv": 51,
+"uusi": 23,
 "tooandjad": [
 {
-"nimi": "Bolt",
-"arv": 19
+"nimi": "Töötukassa vahendatud pakkumised",
+"arv": 17
 },
 {
-"nimi": "Töötukassa vahendatud pakkumised",
-"arv": 18
+"nimi": "Bolt",
+"arv": 16
 },
 {
 "nimi": "Swedbank AS",
@@ -230,7 +230,7 @@
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 48
+"arv": 45
 },
 {
 "nimi": "Tartumaa",
@@ -239,20 +239,16 @@
 {
 "nimi": "Ida-Virumaa",
 "arv": 3
-},
-{
-"nimi": "Lääne-Virumaa",
-"arv": 1
 }
 ]
 },
 "ai_firma_noue": {
-"arv": 39,
-"uusi": 24,
+"arv": 42,
+"uusi": 27,
 "tooandjad": [
 {
 "nimi": "Bolt",
-"arv": 36
+"arv": 39
 },
 {
 "nimi": "pawaTech OÜ",
@@ -262,7 +258,7 @@
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 39
+"arv": 42
 }
 ]
 }
@@ -577,17 +573,6 @@
 "uus": true
 },
 {
-"id": 1678073,
-"ruhm": "ai_oskus",
-"pealkiri": "Commercial Category Manager",
-"tooandja": "Bolt",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-06",
-"url": "https://www.cv.ee/et/vacancy/1678073",
-"uus": true
-},
-{
 "id": 1677927,
 "ruhm": "ai_oskus",
 "pealkiri": "Informaatikaõpetaja",
@@ -607,28 +592,6 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1677833",
-"uus": true
-},
-{
-"id": 1677720,
-"ruhm": "ai_oskus",
-"pealkiri": "Senior Electronics Engineer",
-"tooandja": "Bolt",
-"maakond": "Harjumaa",
-"kaugtoo": "FULLY_REMOTE",
-"avaldatud": "2026-11-05",
-"url": "https://www.cv.ee/et/vacancy/1677720",
-"uus": true
-},
-{
-"id": 1677357,
-"ruhm": "ai_oskus",
-"pealkiri": "Commercial Manager",
-"tooandja": "Bolt",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-11-04",
-"url": "https://www.cv.ee/et/vacancy/1677357",
 "uus": true
 },
 {
@@ -772,17 +735,6 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-03",
 "url": "https://www.cv.ee/et/vacancy/1671429",
-"uus": true
-},
-{
-"id": 1676434,
-"ruhm": "ai_oskus",
-"pealkiri": "Lemmiklooma hoidja",
-"tooandja": "Töötukassa vahendatud pakkumised",
-"maakond": "Lääne-Virumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-11-03",
-"url": "https://www.cv.ee/et/vacancy/1676434",
 "uus": true
 },
 {
@@ -1160,6 +1112,28 @@
 "uus": true
 },
 {
+"id": 1678073,
+"ruhm": "ai_firma_noue",
+"pealkiri": "Commercial Category Manager",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-06",
+"url": "https://www.cv.ee/et/vacancy/1678073",
+"uus": true
+},
+{
+"id": 1677720,
+"ruhm": "ai_firma_noue",
+"pealkiri": "Senior Electronics Engineer",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "FULLY_REMOTE",
+"avaldatud": "2026-11-05",
+"url": "https://www.cv.ee/et/vacancy/1677720",
+"uus": true
+},
+{
 "id": 1677642,
 "ruhm": "ai_firma_noue",
 "pealkiri": "Senior QA Engineer, Bolt Plus",
@@ -1179,6 +1153,17 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677362",
+"uus": true
+},
+{
+"id": 1677357,
+"ruhm": "ai_firma_noue",
+"pealkiri": "Commercial Manager",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "ON_SITE",
+"avaldatud": "2026-11-04",
+"url": "https://www.cv.ee/et/vacancy/1677357",
 "uus": true
 },
 {
@@ -1760,8 +1745,8 @@
 "kuulutusi_kokku": 3371,
 "ai_amet": 19,
 "andmeamet": 22,
-"ai_oskus": 55,
-"ai_firma_noue": 39
+"ai_oskus": 51,
+"ai_firma_noue": 42
 }
 ],
 "piirangud": "Ainult üks portaal (CV.ee); CV Keskuse otsing ei andnud automaatsel lugemisel tulemusi ja Töötukassa robots.txt keelab otsingulehed. Sama ametikoht võib olla mitmes portaalis. Pealkiri 'analüütik' ilma andmesõnata ei lähe andmeametite alla (äri-, finants- ja turbeanalüütikud)."

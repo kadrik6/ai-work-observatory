@@ -1,5 +1,5 @@
 {
- "kirjeldus": "Eesti koondajate taust (Kadri 5.11.2026: millised ametid kaovad, mis sektor ja firma liik, keda samad firmad praegu tööle otsivad). Võti = ettevote nagu koondamised_ee.json-is või uudised.jsonl-is. 'kaotatud' tuleb ainult koondamisuudisest; 'otsib' tuleb firma enda tööpakkumiste lehelt (Eestis avatud kuulutused kontrollimise päeval). Tööpakkumiste leht ei näita sisemisi ümberpaigutusi ega ainult LinkedInis avaldatud kuulutusi. Igapäevane ülesanne kontrollib 'otsib' esmaspäeviti ja iga uue koondaja lisamisel. 'omand' on lihtne rühm kokkuvõtte jaoks. 'koondab_ee' = koondatavate arv Eestis uudise järgi (arv None, kui Eesti osa pole teada). 'avaldatud' = kuulutuse avaldamise kuupäev, kui leht seda näitab.",
+ "kirjeldus": "Eesti koondajate taust (Kadri 5.11.2026: millised ametid kaovad, mis sektor ja firma liik, keda samad firmad praegu tööle otsivad). Võti = ettevote nagu koondamised_ee.json-is või uudised.jsonl-is. 'kaotatud' tuleb ainult koondamisuudisest; 'otsib' tuleb firma enda tööpakkumiste lehelt (Eestis avatud kuulutused kontrollimise päeval). Tööpakkumiste leht ei näita sisemisi ümberpaigutusi ega ainult LinkedInis avaldatud kuulutusi. Igapäevane ülesanne kontrollib 'otsib' esmaspäeviti ja iga uue koondaja lisamisel. 'omand' on lihtne rühm kokkuvõtte jaoks. 'koondab_ee' = koondatavate arv Eestis uudise järgi (arv None, kui Eesti osa pole teada). 'avaldatud' = kuulutuse avaldamise kuupäev, kui leht seda näitab. Kaasatakse koondamised, kus Eestis kaob vähemalt 10 töökohta või tehisaru mainitakse (Kadri 8.11.2026: EKKM-i 3 töötajat polnud piisavalt asjakohane).",
  "ametiliigid": [
   "IT ja andmed",
   "disain ja turundus",
@@ -140,26 +140,6 @@
    "koondab_ee": {
     "arv": 390,
     "tekst": "esialgne, lõplik 23.11; Ida-Virumaal umbes 300"
-   }
-  },
-  "EKKM": {
-   "sektor": "kultuur",
-   "firma_liik": "väike kunstimuuseum",
-   "kaotatud": [
-    "muu"
-   ],
-   "kaotatud_tekst": "Kolm töötajat; juhtimise muutmine pärast sisepingeid.",
-   "kaotatud_allikas": "https://www.err.ee/1610183455/sisepingetes-ekkm-muudab-juhtimist-ja-koondab-kolm-tootajat",
-   "otsib": {
-    "kontrollitud": null,
-    "ametid": [],
-    "tekst": "Ei kontrollitud (väike asutus, eraldi tööpakkumiste lehte pole leitud).",
-    "url": null
-   },
-   "omand": "kultuuriasutus",
-   "koondab_ee": {
-    "arv": 3,
-    "tekst": null
    }
   }
  }

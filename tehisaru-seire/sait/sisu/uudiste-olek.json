@@ -1,5 +1,5 @@
 {
-  "viimane_kontroll": "2026-11-07T18:05:00+02:00",
+  "viimane_kontroll": "2026-11-08T17:58:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
@@ -12,12 +12,12 @@
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "17.53: 'koondamine', 'tehisaru', 'Eesti Energia koondamine' (täna) tulemusi ei andnud; ERR RSS-is uut koondamislugu pole"
+      "markus": "17.53: 'koondamine' ja 'Eesti Energia koondamine' uusi tulemusi ei andnud; 'tehisaru' andis Novaatori Stuart Russelli loo (mitte töö kohta) ja Äripäeva Goldman Sachsi loo"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "17.53: Autodeski ~1000 koondamist (layoffs.fyi) jäi välja, sest allikat ei õnnestunud avada"
+      "markus": "17.53: lisatud Microsofti lahkumispakkumine + töötajate kiri ja Goldman Sachsi AI-tööriistade piirang; Canva 6.11 jätkulood ja Filipiinide eelnõu kordused jäid välja (juba kajastatud)"
     },
     {
       "nimi": "Challenger kuuaruanne",

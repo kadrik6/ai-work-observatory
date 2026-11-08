@@ -26,7 +26,8 @@
         "tugevus": "puudub",
         "url": ""
       }
-    ]
+    ],
+    "seire_olek": "varasem"
   },
   {
     "id": "challenger-okt-153074",
@@ -43,7 +44,8 @@
         "tugevus": "tugev: primaarallikas",
         "url": "https://www.challengergray.com/blog/october-layoffs-at-three-year-low-seasonal-hiring-plans-up-26/"
       }
-    ]
+    ],
+    "seire_olek": "varasem"
   },
   {
     "id": "ai-noorte-esimene-too",
@@ -72,6 +74,7 @@
         "tugevus": "puudub",
         "url": ""
       }
-    ]
+    ],
+    "seire_olek": "varasem"
   }
 ]

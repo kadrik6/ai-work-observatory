@@ -1,0 +1,227 @@
+{
+"allikad": [
+{
+"id": "ut-dss",
+"nimi": "Tartu Ülikooli andmeteaduse seminar",
+"url": "https://cs.ut.ee/en/content/data-science-seminars",
+"miks": "TÜ arvutiteaduse instituudi seminarisari; salvestised avalikud YouTube'is"
+},
+{
+"id": "latitude59",
+"nimi": "Latitude59",
+"url": "https://latitude59.ee/",
+"miks": "Eesti suurim tehnoloogia- ja idukonverents"
+}
+],
+"ettekanded": [
+{
+"id": "korjus-2026-05",
+"esineja": "Kristjan Korjus",
+"amet": "Pactum AI kaasasutaja ja teadusjuht",
+"pealkiri": "Not Everyone Should Be a Builder at Your Company",
+"allikas": "ut-dss",
+"uritus": "TÜ andmeteaduse seminar „Agentic AI: who does what?“",
+"uritus_url": "https://cs.ut.ee/en/event/data-science-seminar-agentic-ai-who-does-what",
+"kuupaev": "2026-05-27",
+"video": "https://youtu.be/V9qubnxvJV0?t=1076",
+"keel": "inglise",
+"teemad": [
+"too",
+"ettevotted"
+],
+"kokkuvote": "Pactum andis kõigile töötajatele tehisaruagendid ja tootlikkus kasvas kohe. Korjuse sõnul kaob aga ühine suund, kui igaüks ehitab: tekib liiga palju funktsioone, slaide ja dokumente ning tagasiside, mis töötab, katkeb.",
+"mottes": [
+"Igal töötajal on Claude Code; oskused ja ühendused haldab keskne meeskond, agent töötab töötaja enda õigustega.",
+"Kui ehitamine on odav, võtab vähem oluline 80% tööst fookuse olulisimalt 20%-lt; fookus tähendab häid ideid tagasi lükata.",
+"Ettevõtte kogemus, mitte mõõtmine: esineja ütles ise, et nähtus võib olla ajutine."
+],
+"kontroll": "Kokkuvõte puhastatud automaatsubtiitrite põhjal (Kadri CLI, 8.11.2026); kuupäev ja kava cs.ut.ee järgi.",
+"seire_kinnitatud": "2026-11-08"
+},
+{
+"id": "scellier-2026-09",
+"esineja": "Jean-Baptiste Scellier",
+"amet": "Eesti Energia andmeteaduse meeskonna juht",
+"pealkiri": "Data Science for Electricity Trading: Focus on Battery",
+"allikas": "ut-dss",
+"uritus": "TÜ andmeteaduse seminar „Energy: Powering the Future with Data and AI“",
+"uritus_url": "https://cs.ut.ee/en/content/data-science-seminars",
+"kuupaev": "2026-09-22",
+"video": "https://youtu.be/jmSmB9Sd5CI?t=703",
+"keel": "inglise",
+"teemad": [
+"ettevotted"
+],
+"kokkuvote": "Aku juhtimine elektriturul on järjestikune otsustamine ebakindlate hindade all. Eesti Energia alustas lihtsast lineaarsest optimeerimisest; stiimulõpe on paljulubav, aga praegu veel tootmiskõlbmatu.",
+"mottes": [
+"Elekter on eriline kaup: seda ei saa suures koguses hoida ja hind kõigub tunni kaupa.",
+"Lihtne ja seletatav meetod enne keerulist: lineaarne optimeerimine töötab juba päriselus.",
+"Stiimulõpe vajab rohkem andmeid ja usaldust, enne kui sellele raha otsuseid usaldada."
+],
+"kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); väide kontrollitud transkripti vastu.",
+"seire_kinnitatud": "2026-11-08"
+},
+{
+"id": "braziulis-2026-09",
+"esineja": "Donatas Braziulis",
+"amet": "MarkeDroidi partnerluste asepresident",
+"pealkiri": "Teaching Batteries to Trade: Optimizing Distributed Energy Assets with Machine Learning",
+"allikas": "ut-dss",
+"uritus": "TÜ andmeteaduse seminar „Energy: Powering the Future with Data and AI“",
+"uritus_url": "https://cs.ut.ee/en/content/data-science-seminars",
+"kuupaev": "2026-09-22",
+"video": "https://youtu.be/jmSmB9Sd5CI?t=3678",
+"keel": "inglise",
+"teemad": [
+"ettevotted"
+],
+"kokkuvote": "Elektrihinnad kõiguvad nii palju, et kodude ja ettevõtete akude, päikesepaneelide ja soojuspumpade juhtimine on muutunud masinõppe ülesandeks. MarkeDroid teeb selliseid otsuseid miljoneid ja koondab väikesed seadmed üheks virtuaalseks elektrijaamaks.",
+"mottes": [
+"Planeerija kasutab kahte paralleelset mudelit: hinnaprognoos ja seadme juhtimine.",
+"Väärtus tekib väikeste seadmete koondamisest, mitte ühest suurest akust.",
+"Rasked kohad on andmete kvaliteet ja seadmete erinev käitumine."
+],
+"kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); „3,5 miljonit otsust“ kontrollitud transkripti vastu.",
+"seire_kinnitatud": "2026-11-08"
+},
+{
+"id": "lippus-2026-09",
+"esineja": "Markus Lippus",
+"amet": "GridRaveni kaasasutaja ja andmeteaduse juht",
+"pealkiri": "Weather as Grid Capacity",
+"allikas": "ut-dss",
+"uritus": "TÜ andmeteaduse seminar „Energy: Powering the Future with Data and AI“",
+"uritus_url": "https://cs.ut.ee/en/content/data-science-seminars",
+"kuupaev": "2026-09-22",
+"video": "https://youtu.be/jmSmB9Sd5CI?t=5169",
+"keel": "inglise",
+"teemad": [
+"ettevotted"
+],
+"kokkuvote": "Elektriliini läbilaskevõime sõltub ilmast: tuul jahutab liini ja lubab rohkem voolu. GridRaven prognoosib seda tõenäosuslikult, sest liiga optimistlik viga on palju kallim kui liiga ettevaatlik.",
+"mottes": [
+"Asümmeetriline viga: ülehindamine on ohtlik, alahindamine ainult kulukas.",
+"Andmed on kallutatud ja ilmajaamad ei asu liinide juures, seega tuleb arvestada ruumilist seost.",
+"Mudeliks on tingimuslik normaliseeriv voog, mis annab terve tõenäosusjaotuse, mitte ühe numbri."
+],
+"kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); kaks väidet kontrollitud transkripti vastu.",
+"seire_kinnitatud": "2026-11-08"
+},
+{
+"id": "grono-2025-12",
+"esineja": "Eric Grono",
+"amet": "Veriffi juhtiv andmeanalüütik",
+"pealkiri": "Tugev andmevundament enne tehisaru",
+"allikas": "ut-dss",
+"uritus": "TÜ andmeteaduse seminar „Autonomy Fabric for AI-Driven Operations“",
+"uritus_url": "https://cs.ut.ee/en/content/data-science-seminars",
+"kuupaev": "2025-12-11",
+"video": "https://youtu.be/1yz29qkPGT0?t=2852",
+"keel": "inglise",
+"teemad": [
+"ettevotted"
+],
+"kokkuvote": "Kliendile suunatud tehisaru on sama hea kui andmed selle all. Veriff lõi eraldi meeskonna, kes teeb kõigepealt korda andmetorud, usalduse ja ühe tõeallika ning alles siis rakendab uusi mudeleid.",
+"mottes": [
+"Viga, mis sisemises töölauas oli ebamugavus, muutub kliendile suunatud vestlusrobotis intsidendiks.",
+"Märgid nõrgast vundamendist: haprad andmetorud, kasutajad ei usalda numbreid, mitu tõeallikat.",
+"„Walk before you can run“: modelleerimine on väike osa masinõppesüsteemi tööst."
+],
+"kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); pealkiri moderaatori sõnastuse järgi, ametlikku pealkirja pole.",
+"seire_kinnitatud": "2026-11-08"
+},
+{
+"id": "hinno-2025",
+"esineja": "Risto Hinno",
+"amet": "Feelingstreami andmeanalüütik ja tarkvaraarendaja",
+"pealkiri": "Lost in transcription",
+"allikas": "ut-dss",
+"uritus": "TÜ andmeteaduse seminar „Text and What Next? AI Across Diverse Data Types“",
+"uritus_url": "https://cs.ut.ee/en/content/data-science-seminars",
+"kuupaev": "2025-03-19",
+"video": "https://youtu.be/NpDSDMYcdQk?t=5120",
+"keel": "inglise",
+"teemad": [
+"ettevotted"
+],
+"kokkuvote": "Kontaktikeskuste kõnede analüüs algab kõnetuvastusest, ja selle täpsus otsustab kõik järgnevad. Üldine veamäär ei ütle, kas ärile olulised sõnad tunti õigesti ära.",
+"mottes": [
+"Halb helikvaliteet ja keelte segunemine on igapäevane, mitte erand.",
+"Mudeli valik on kompromiss täpsuse ja arvutusressursi vahel.",
+"Täpsust tuleb mõõta ärikriitiliste sõnade järgi, mitte ainult keskmise veamäära järgi."
+],
+"kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); täpne kuupäev seminari lehel puudub.",
+"seire_kinnitatud": "2026-11-08"
+},
+{
+"id": "fishman-2024-09",
+"esineja": "Dmytro Fishman",
+"amet": "Tartu Ülikool ja Better Medicine",
+"pealkiri": "BetterMedicine: using AI to improve cancer diagnostics",
+"allikas": "ut-dss",
+"uritus": "TÜ andmeteaduse seminar „AI in action: success stories and lessons learned“",
+"uritus_url": "https://cs.ut.ee/en/content/data-science-seminars",
+"kuupaev": "2024-09-24",
+"video": "https://youtu.be/TfZFUJRFSDc?t=8474",
+"keel": "inglise",
+"teemad": [
+"ettevotted",
+"avalik-sektor"
+],
+"kokkuvote": "Radiolooge napib ja paljud vähid leitakse juhuslikult. Better Medicine'i BM Vision on radioloogi abiline, kuid enne kasutust peab see läbima kliinilise valideerimise ja meditsiiniseadme nõuded.",
+"mottes": [
+"Tehisaru on abiline, otsuse teeb radioloog.",
+"Kliiniline valideerimine ja jälgimisuuringute registreerimine on kohustuslikud, mitte valikulised.",
+"Andmete nappust leevendatakse nutikalt, aga see jääb peamiseks piiranguks."
+],
+"kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); kolm arvu kontrollitud transkripti vastu.",
+"seire_kinnitatud": "2026-11-08"
+},
+{
+"id": "laak-2024-01",
+"esineja": "Kristjan-Julius Laak",
+"amet": "Tartu Ülikool",
+"pealkiri": "Will AI help us to achieve the goals of modern education?",
+"allikas": "ut-dss",
+"uritus": "TÜ andmeteaduse seminar „Education in the age of big data and artificial intelligence“ (sTARTUp Day 2024)",
+"uritus_url": "https://cs.ut.ee/en/content/data-science-seminars",
+"kuupaev": "2024-01-24",
+"video": "https://youtu.be/rTTnT-0jhBY?t=3677",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"kokkuvote": "Isikupärastatud õpisüsteemid teevad tõhusamaks vana, ainepõhise õppe, aga kaasaegse hariduse eesmärgid on laiemad. Laagi hinnangul jääb suur osa klassis arendatavast ekraanist väljapoole.",
+"mottes": [
+"Põhjendus tuleb Bloomi „kahe sigma“ uuringust; hilisemad uuringud leidsid palju väiksema mõju.",
+"Koostöö, kriitiline mõtlemine ja eneseregulatsioon ei arene ekraani taga üksi.",
+"Avalik sektor peab haridustehnoloogia uuringutesse ise panustama, sest Eesti turg on väike."
+],
+"kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); kolm väidet kontrollitud transkripti vastu.",
+"seire_kinnitatud": "2026-11-08"
+},
+{
+"id": "tammiste-2023-11",
+"esineja": "Taavi Tammiste",
+"amet": "Fyma kaasasutaja ja tehnoloogiajuht",
+"pealkiri": "Practical usage of computer vision data in physical spaces",
+"allikas": "ut-dss",
+"uritus": "TÜ andmeteaduse seminar „Smart Sustainable Mobility and Communities“",
+"uritus_url": "https://cs.ut.ee/en/content/data-science-seminars",
+"kuupaev": "2023-11-28",
+"video": "https://youtu.be/-s_-paRRbeo?t=3508",
+"keel": "inglise",
+"teemad": [
+"ettevotted"
+],
+"kokkuvote": "Masinnägemise andmetest tekib väärtus siis, kui mõõdetakse kindlat protsessi, mitte ei koguta „kõike“. Pidev mõõtmine paljastab sageli müüte selle kohta, kuidas inimesed ruumi tegelikult kasutavad.",
+"mottes": [
+"„Kõik andmed kokku“ on esineja sõnul prügiandmed.",
+"Platvorm peab olema paindlik, sest küsimused muutuvad.",
+"Sünteetilised andmed aitavad, aga nende mudel jäi päris andmetel treenitust nõrgemaks."
+],
+"kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); kaks väidet kontrollitud transkripti vastu.",
+"seire_kinnitatud": "2026-11-08"
+}
+]
+}
