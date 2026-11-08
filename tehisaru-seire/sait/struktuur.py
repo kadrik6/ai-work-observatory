@@ -9,6 +9,7 @@ märkimata teema korral; tükeldamise piir on ainult hoiatus, sest otsus on inim
 """
 import html
 import re
+from html.parser import HTMLParser
 import sys
 from pathlib import Path
 
@@ -21,6 +22,55 @@ def _sisu(s):
     return re.sub(r"<script.*?</script>|<style.*?</style>", "", s, flags=re.S)
 
 
+class _Nahtav(HTMLParser):
+    """Jätab välja peidetud sakipaneelid (role="tabpanel" hidden): lugeja näeb korraga ühte sakki (teemamall A, 8.11.2026)."""
+    TUHJAD = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+
+    def __init__(self):
+        super().__init__(convert_charrefs=False)
+        self.osad, self.sugavus = [], 0
+
+    def handle_starttag(self, tag, attrs):
+        d = dict(attrs)
+        if self.sugavus:
+            if tag not in self.TUHJAD:
+                self.sugavus += 1
+            return
+        if d.get("role") == "tabpanel" and "hidden" in d:
+            self.sugavus = 1
+            return
+        self.osad.append(self.get_starttag_text())
+
+    def handle_startendtag(self, tag, attrs):
+        if not self.sugavus:
+            self.osad.append(self.get_starttag_text())
+
+    def handle_endtag(self, tag):
+        if self.sugavus:
+            if tag not in self.TUHJAD:
+                self.sugavus -= 1
+            return
+        self.osad.append(f"</{tag}>")
+
+    def handle_data(self, data):
+        if not self.sugavus:
+            self.osad.append(data)
+
+    def handle_entityref(self, name):
+        if not self.sugavus:
+            self.osad.append(f"&{name};")
+
+    def handle_charref(self, name):
+        if not self.sugavus:
+            self.osad.append(f"&#{name};")
+
+
+def nahtav(s):
+    p = _Nahtav()
+    p.feed(s)
+    return "".join(p.osad)
+
+
 def moodik(failid):
     """failid: {nimi: html}. Tagastab {nimi: {...}}."""
     out = {}
@@ -28,13 +78,14 @@ def moodik(failid):
         keha = _sisu(s)
         main = re.search(r"<main.*?</main>", keha, re.S)
         m = main.group(0) if main else keha
-        sonu = len(html.unescape(re.sub(r"<[^>]+>", " ", m)).split())
+        mn = nahtav(m)  # sõnad ja h2 ainult nähtavast osast (peidetud sakid välja)
+        sonu = len(html.unescape(re.sub(r"<[^>]+>", " ", mn)).split())
         lingid = set(l.split("#")[0] for l in re.findall(r'href="([a-z0-9-]+\.html)(?:#[^"]*)?"', keha))
         lingid_sisu = set(l.split("#")[0] for l in re.findall(r'href="([a-z0-9-]+\.html)(?:#[^"]*)?"', m))
         out[f] = {
             "title": (re.search(r"<title>(.*?)</title>", s) or [None, ""])[1],
             "h1": html.unescape(re.sub(r"<[^>]+>", "", (re.search(r"<h1>(.*?)</h1>", s, re.S) or [None, ""])[1])).strip(),
-            "sonu": sonu, "h2": len(re.findall(r"<h2", m)), "details": len(re.findall(r"<details", m)),
+            "sonu": sonu, "h2": len(re.findall(r"<h2", mn)), "details": len(re.findall(r"<details", m)),
             "tabelid": len(re.findall(r"<table", m)), "graafikud": len(re.findall(r'<figure|role="img"|<svg', m)),
             "valja": sorted(lingid - {f}), "valja_sisust": sorted(lingid_sisu - {f}),
             "menuu_marge": bool(re.search(r'<ul class="menu">.*?aria-current="page".*?</ul>', s, re.S)),

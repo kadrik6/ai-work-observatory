@@ -244,6 +244,26 @@
         });
       });
     });
+    // Teemamall A (8.11.2026): vana ankur (nt too.html#vabad-kohad) võib olla peidetud saki sees; ava see sakk ja keri sinna.
+    function avaAnkur(id, keri) {
+      var el = id && document.getElementById(id);
+      if (!el) return;
+      var paneel = el.closest('[role="tabpanel"]'), oli = false;
+      for (var p = paneel; p; p = p.parentElement && p.parentElement.closest('[role="tabpanel"]')) {
+        if (p.hidden) {
+          var nupp = document.querySelector('[role="tab"][aria-controls="' + p.id + '"]');
+          if (nupp) { nupp.click(); oli = true; }
+        }
+      }
+      if (keri && oli) el.scrollIntoView();
+    }
+    function hashId() { try { return decodeURIComponent(location.hash.slice(1)); } catch (e) { return ''; } }
+    avaAnkur(hashId(), true);
+    window.addEventListener('hashchange', function () { avaAnkur(hashId(), true); });
+    document.addEventListener('click', function (ev) {
+      var a = ev.target.closest && ev.target.closest('a[href^="#"]');
+      if (a) avaAnkur(a.getAttribute('href').slice(1), false);
+    });
   });
 })();
 

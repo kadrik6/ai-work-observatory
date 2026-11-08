@@ -1116,3 +1116,19 @@ th, td { padding: 6px 10px; }
   .teematabel td.n { display: grid; }
 }
 .teematabel .kpv { white-space: nowrap; }
+
+/* Teemamall A (8.11.2026): andmesakid ja teema lõpuplokid */
+.andmesakid { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: thin; padding-bottom: 2px; }
+.andmesakid button { white-space: nowrap; }
+.sakk-sisu > .g12 { margin-top: 0; }
+.teema-lopp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: var(--gap-section); }
+.teema-lopp > .pn h2 { font-size: 15.5px; }
+.t-loend, .t-vaited { list-style: none; margin: 0; padding: 0; display: grid; }
+.t-loend li, .t-vaited li { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 10px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 14px; }
+.t-loend li:first-child, .t-vaited li:first-child { border-top: 0; }
+.t-loend .k { color: var(--ink-3); font-size: 13px; font-variant-numeric: tabular-nums; }
+.t-loend small, .t-vaited small { display: block; color: var(--ink-3); font-size: 12.5px; }
+.t-vaited small.oige { color: var(--ink-2); font-size: 13px; margin-top: 2px; }
+.t-vaited .verd { align-self: start; }
+.teema-lopp .lingid { font-size: 13.5px; margin: 0; }
+@media (max-width: 760px) { .teema-lopp { grid-template-columns: minmax(0, 1fr); } }

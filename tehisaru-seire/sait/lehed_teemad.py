@@ -4,6 +4,7 @@ Iga vaate järjekord nagu Ettevõtetel: vastus (h1 ja kast), peamine tõend koos
 mida see tähendab, siis üksikasjad ja allikad. Mõõdetud number ja uuring kohtuvad küsimuse juures, mitte samal teljel.
 """
 import datetime
+from pathlib import Path
 
 import andmekiht as andmed
 from abi import SEESTYTLEV, ARVSONAD, a, kontrolli, link, jaga, pea, seotud
@@ -545,14 +546,44 @@ def too(A, vaade, vaated=None):
     from lehed_uudised import ai_kuulutused, palkamine, toopakkumised, uuringud_too
     sec_uuritakse = uuringud_too(A)
     sec_palk = palkamine(A)
+    # Teemamall A (Kadri 8.11.2026): number → graafik sakkides → uuringud → väited → reeglid → allikad.
+    import teemamall as tm
+    from komponendid import KUUD
+    from lehed_ulevaade import PAV_URL, UNE_URL, UNE_UUENDATUD, _loe, _kv, vaite_teema
+    sec_andmed = tm.andmesakid("too", "Uuri andmeid: töötus, koondamised, palkamine ja tööpakkumised Eestis",
+                               "Iga sakk on üks andmestik. Kuunumbrid ja kuulutused ei ütle, kas põhjus on tehisaru; põhjuse kohta on uuringud allpool.", [
+        ("tootus", "Töötus ja koondamised", too_eesti(A)),
+        ("tootus-el", "Töötus ELis", tootus_el()),
+        ("palkamine", "Keda koondajad otsivad", sec_palk),
+        ("vabad", "Vabad kohad", vabad_ametikohad()),
+        ("portaalid", "Tööportaalid", toopakkumised(A)),
+        ("ai-tood", "AI-tööd", ai_kuulutused(A)),
+        ("prognoos", "Prognoos", sec_tulevik),
+    ])
+    lyh = lambda k: e(U[k]["leid"].split(". ")[0].rstrip(".")) + "."  # noqa: E731
+    t_uuringud = tm.uuringute_plokk(vaated, [
+        ("USA", f'{lyh("canaries2026")} ({e(U["canaries2026"]["autorid"].split(",")[0])} {U["canaries2026"]["aasta"]})', "too", "maailm"),
+        ("Taani", f'{lyh("humlum2025")} ({e(U["humlum2025"]["autorid"].split(",")[0])} {U["humlum2025"]["aasta"]})', "too", "maailm"),
+        ("Katsed", f'Katsetes kulus ülesandele kuni 40% vähem aega, aga kogenud arendajatel oma projektis 19% rohkem aega (Noy ja Zhang {U["noy2023"]["aasta"]}; METR {U["metr2025"]["aasta"]}).', "too", "ulesanded"),
+        ("Eesti", "Eesti uuringud mõõdavad kasutust, tootlikkust ja takistusi; mõju töökohtadele pole veel mõõdetud.", "too", "eesti"),
+    ], [("too", "Uuringud", "maailm"), ("too", "Kirjandus", "uuritakse"), ("too", "Ametid ja hõive", "kokkupuude")])
+    t_vaited = tm.vaidete_plokk(A, vaated, "too", vaite_teema)
+    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-keelud-kirjaoskus", "ai-korge-risk-iii"])
+    vabad = [r for r in _loe("vabad-ametikohad.csv") if r["tabel"] == "PAV011"] if (Path(__file__).resolve().parent / "sisu" / "vabad-ametikohad.csv").exists() else []
+    kv_v = max((r["periood"] for r in vabad), key=_kv) if vabad else None
+    t_allikad = tm.allikate_plokk([
+        ("Töötus kuu kaupa, Eurostat une_rt_m", UNE_URL, UNE_UUENDATUD, "sesoonselt tasandatud"),
+        ("Koondamised, uudised", "", A["koondamised"]["kontrollitud"], "käsitsi kogutud, nimekiri pole täielik"),
+        ("Tööpakkumised, 3 portaali", "", A["toopakkumised"]["uuendatud"][:10], "kogutakse iga päev"),
+        ("AI- ja andmetööde kuulutused, CV.ee", "https://www.cv.ee/et/search", A["ai_kuulutused"]["uuendatud"][:10], "kogutakse iga päev"),
+        *([("Vabad ametikohad, Statistikaamet PAV011", PAV_URL, max(r["uuendatud"] for r in vabad), f"viimane kvartal: {kv_v}")] if vabad else []),
+        ("Töötuse prognoos, Rahandusministeerium", rm["url"], rm["avaldatud"], "aasta keskmine, tehisaru mõju eraldi ei arvestata",
+         f'{KUUD[int(rm["avaldatud"][5:7]) - 1]} {rm["avaldatud"][:4]}' if len(rm["avaldatud"]) == 7 else None),
+    ])
     return jaga(A, vaade, lead, [], [
-        ("eesti-praegu", [("tootus-kuud", "Töötus"), ("koondamised", "Koondamised")], too_eesti(A)),
-        ("tootus-el", [("tootus-el", "Töötus ELis")], tootus_el()),
-        ("palkamine", [("palkamine", "Keda koondajad otsivad")], sec_palk),
-        ("vabad-kohad", [("vabad-kohad", "Kus ja mida palgatakse")], vabad_ametikohad()),
-        ("toopakkumised", [("toopakkumised", "Tööportaalid")], toopakkumised(A)),
-        ("ai-kuulutused", [("ai-kuulutused", "AI-tööd")], ai_kuulutused(A)),
-        ("tulevik", [("tulevik", "Mis ees ootab")], sec_tulevik),
+        ("andmed", [("andmed", "Andmed")], sec_andmed),
+        ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
+         tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
         ("maailm", [("maailm", "Mida maailmas leiti")], sec_maailm),
         ("ulesanded", [("ulesanded", "Ülesanded")], sec_kiirus),
         ("eesti", [("eesti", "Eestis")], sec_eesti),

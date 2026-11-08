@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 2026-11-08 | Seire sait: Töö lehel on teemamall A (Kadri valik). Järjekord on number, „Uuri andmeid“ seitsmes sakis, uuringud, väited, reeglid ning allikad ja värskus. Vanad ankrud avavad õige saki. Telefonis on leht 12,9 ekraani asemel 5,4 ekraani pikk. struktuur.py loeb ainult nähtavat sakki. Uus moodul sait/teemamall.py. |
 | 2026-11-08 | Seire sait: avalehel on KPI-plaatide all teematabel (näidis C, Kadri valik). Selles on viis teemat ja veerud mõõdetud, uuritud, väidetud, sihid ja reeglid ning värskus. Tühi lahter on „hindamata“ ja neid on 3. Hangete ülevaatuse lõplik viitevalim: masinmärgendid langevad viitega kokku 83% (kappa 0,57). |
 | 2026-11-08 | Seire sait: neli väiteparandust sisuloogika ülevaatusest. Avalehe ELi kohtadel on aasta. Inimeste kasvu juures on märge „küsimus võib erineda“ ja Inimeste h1 kasvu ei väida. Töö h1 ütleb, et tulemus on USA kohta. Avaleht võtab hangete arvu samast failist ja perioodist kui hangete leht (50, kuni 7.11.2026). |
 | 2026-11-08 | Seire sait: töö lehe AI-kuulutuste tabelis saab nüüd otsida ning filtreerida rühma ja maakonna järgi (Kadri kommentaar). Test lisatud. |

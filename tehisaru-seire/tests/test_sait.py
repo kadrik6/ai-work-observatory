@@ -838,3 +838,23 @@ def test_iga_vaide_on_avalehe_tabelis_teemaga(A):
     import lehed_ulevaade
     for v in A["vaited"]:
         assert lehed_ulevaade.vaite_teema(v) in {"inimesed", "ettevotted", "too", "avalik-sektor", "hanked"}
+
+
+def test_too_leht_teemamall_a(sait):
+    """Kadri 8.11.2026: teemaleht A järgi: number, andmed sakkides, uuringud, väited, reeglid, allikad; vanad ankrud alles."""
+    h = sait["too.html"]
+    jrk = [h.index(x) for x in ('class="vastus kpi-pais"', 'id="andmed"', 'id="t-uuringud"', 'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
+    assert jrk == sorted(jrk)
+    for vana in ("tootus-kuud", "koondamised", "tootus-el", "palkamine", "vabad-kohad", "toopakkumised", "ai-kuulutused", "tulevik"):
+        assert f'id="{vana}"' in h, vana
+    sakid = re.findall(r'role="tab" id="sakk-([a-z-]+)-n" aria-controls="sakk-\1" aria-selected="(true|false)"', h)
+    assert len(sakid) == 7 and [s for s, v in sakid if v == "true"] == ["tootus"]
+    assert len(re.findall(r'class="sakk-sisu" hidden>', h)) == 6
+    assert "august 2026" in h[h.index('id="t-allikad"'):]
+
+
+def test_struktuur_loeb_ainult_nahtavat_sakki():
+    import struktuur
+    s = '<main><p>yks kaks</p><div role="tabpanel" id="a" hidden><div><p>peidus tekst siin</p></div><h2>x</h2></div><h2>y</h2></main>'
+    m = struktuur.moodik({"x.html": s})["x.html"]
+    assert m["sonu"] == 3 and m["h2"] == 1

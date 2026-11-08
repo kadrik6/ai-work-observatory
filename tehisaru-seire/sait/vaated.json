@@ -90,13 +90,8 @@
           "fail": "too.html",
           "nimi": "Tööturg praegu",
           "jaotised": [
-            "eesti-praegu",
-            "tootus-el",
-            "palkamine",
-            "vabad-kohad",
-            "toopakkumised",
-            "ai-kuulutused",
-            "tulevik"
+            "andmed",
+            "teema-lopp"
           ]
         },
         {
