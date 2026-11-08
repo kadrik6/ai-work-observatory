@@ -177,6 +177,14 @@ def uudised(A, vaade, vaated=None):
 
 # ---------------------------------------------------------------- Hanked: litsentsid (Kadri 8.11.2026)
 
+# Käsitsi pimeülevaatus (Kadri 5.–8.11.2026, koondtulemus hangete tuvastuse lõimest 8.11.2026; märgendusfailid
+# ei ole selles repos). Klassifikaator ja leht.json ei ole uute reeglite järgi veel uuendatud.
+KASITSI = {"n": 100, "valim": 782, "kuupaev": "2026-11-08", "kokku": 78, "kappa": "0,43",
+           "kokku_parast": 90, "kappa_parast": "0,62", "ootel": 3}
+KASITSI_LAUSE = (f'{KASITSI["n"]} hanget vaadati käsitsi pimesi üle ({kp(KASITSI["kuupaev"])}). Kokkulangevus masinmärgenditega oli '
+                 f'{KASITSI["kokku"]}% (kappa {KASITSI["kappa"]}). Märgendusjuhendit täpsustati ja klassifikaatorit uuendatakse; '
+                 'kuni selleni on arvud masinmärgistus.')
+
 LITS_SISSE = re.compile(r"litsents|licen[cs]|kasutusõigus|tarkvarateenus|tarkvara\w* (?:soet|ost|rent|hankimine)"
                         r"|tableau|snowflake|vertica|veeam|cohesity", re.I)
 LITS_VALJA = re.compile(r"alkomeetr|arendus(?!.*litsents)", re.I)
@@ -266,7 +274,7 @@ def hanked(A, vaade, vaated=None):
                   f'Pakkumuste arv teada {V["ai_andmed"]["pakkumusi_teada"]} hankel'),
         kpi_plaat("hk-tapsus", "Tuvastuse täpsus", f'{pr(tul["tapsus"] * 100, 0)}%', "",
                   {"tekst": f'leiab <b>{pr(tul["saagis"] * 100, 0)}%</b> hangetest (saagis)'},
-                  "Masinmärgendid" + katseline),
+                  f'Masina vs masina märgendid; käsitsi kokkulangevus {KASITSI["kokku"]}%' + katseline),
     )
     lead = ("Tehisaru = "
             "pealkirjas või kirjelduses on tehisaru märksõna; andmed = andmeladu, -haldus, -analüüs jms. "
@@ -278,7 +286,7 @@ def hanked(A, vaade, vaated=None):
     sec_aastad = f"""
 <section class="pn sp5" id="aastad" aria-labelledby="h-aastad">
   <div class="pn-h"><h2 id="h-aastad">Klassifikaator leidis {u["aasta"]}. aastal{" kuni " + kp(seis) if poolik else ""} <b>{u["ai_andmed"]} tehisaru- ja andmehanget</b>, {pr(u["ai_andmed_osakaal"])}% kõigist</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">Neist {u["ai_marksonaga"]} on tehisaru märksõnaga ja {u["ai_andmed"] - u["ai_marksonaga"]} andmehanked. Aastate võrdlust ei näidata enne, kui 100 hanget on inimese pimesi märgistatud.</p>
+  <p class="ps">Neist {u["ai_marksonaga"]} on tehisaru märksõnaga ja {u["ai_andmed"] - u["ai_marksonaga"]} andmehanked. Aastate võrdlust ei näidata enne, kui klassifikaator on uuendatud pärast 100 hanke pimesi ülevaatust.</p>
   {_viis_rida(f"Klassifikaatori leitud hanked {u['aasta']}, arv", [("tehisaru", u["ai_marksonaga"], True), ("andmed", u["ai_andmed"] - u["ai_marksonaga"], False)], uhik="", k=0)}
 </section>"""
 
@@ -409,6 +417,7 @@ def hanked(A, vaade, vaated=None):
     <summary>Kuidas litsentsihanked leiti ja mida see ei näita</summary>
     <p class="ps">Litsentsihange on tuvastatud tehisaru- ja andmehange, mille pealkirjas on litsents, kasutusõigus, tarkvarateenus, tarkvara ost või rent või tuntud tootenimi. Arenduse hanked ei ole sees, kui pealkiri litsentsi ei nimeta.
     Eesmärk on võetud hanke kirjeldusest, kui seal on lause „eesmärk on …“ ({n_kirj} hankel), muidu toote liigist (nt Tableau = andmeanalüüs ja aruanded).
+    8.11.2026 täpsustatud märgendusjuhendi järgi ei ole litsentsiost tehisaru- ega andmehange; klassifikaatori uuendus võtab need koondarvust välja, siin on need eraldi.
     IT-majad (Rahandusministeeriumi, Siseministeeriumi ja Keskkonnaministeeriumi IT-keskus, TEHIK, RTK) hangivad ka teiste asutuste jaoks, seega hankija ei pruugi olla kasutaja.
     Tehisaru tööriistade litsentsid, mille hanke pealkiri ei viita tehisarule ega andmetele (nt üldised kontoritarkvara paketid), siia ei jõua.</p>
   </details>
@@ -466,15 +475,15 @@ def hanked(A, vaade, vaated=None):
 <div class="g12">
 <section class="pn sp12" id="tapsus" aria-labelledby="h-tapsus">
   <div class="pn-h"><h2 id="h-tapsus">Klassifikaator leiab umbes <b>{pr(tul["saagis"] * 100, 0)}%</b> tehisaru- ja andmehangetest ning {pr(tul["tapsus"] * 100, 0)}% leitutest on õiged</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">Testitud {hind["hindamine"]["test"]} hankel alates {hind["hindamine"]["testi_alates"]}. aastast. Märgendid ({hind["margendid"]["kokku"]}) tegi Claude, inimene pole neid veel kontrollinud. eForms-hangetest ({_arv(lev["hankeid"])}) on valimi põhjal umbes {lev["valimi_pohjal"]["hinnang"]} tehisaru- või andmehanget (95% vahemik {vmin}–{vmax}); klassifikaator leidis {lev["valitud_leidis"]}.</p>
+  <p class="ps">Testitud {hind["hindamine"]["test"]} hankel alates {hind["hindamine"]["testi_alates"]}. aastast. Märgendid ({hind["margendid"]["kokku"]}) tegi Claude; {KASITSI["n"]} neist vaadati käsitsi pimesi üle: kokkulangevus {KASITSI["kokku"]}% (kappa {KASITSI["kappa"]}), pärast juhendi täpsustamist {KASITSI["kokku_parast"]}% (kappa {KASITSI["kappa_parast"]}; optimistlik, sest juhendit täpsustati samade ridade põhjal). Täpsus ja saagis on veel mõõdetud masina märgendite vastu. eForms-hangetest ({_arv(lev["hankeid"])}) on valimi põhjal umbes {lev["valimi_pohjal"]["hinnang"]} tehisaru- või andmehanget (95% vahemik {vmin}–{vmax}); klassifikaator leidis {lev["valitud_leidis"]}.</p>
   <div class="tbl"><table><thead><tr><th scope="col">Meetod</th><th scope="col" class="v">Täpsus (95%)</th><th scope="col" class="v">Saagis (95%)</th><th scope="col" class="v">F1</th></tr></thead>
   <tbody>{"".join(t_rows)}</tbody></table></div>
 </section>
 </div>"""
     # Kadri otsus 6.11.2026 22:11: Hanked jääb menüüsse, aga selge hoiatussildiga, kuni 100 hanget on käsitsi kontrollitud
-    hoiatus = ('<div class="hoiatus" role="note"><p><b>Kontrollimata masinmärgistus.</b> Selle lehe hanked märkis tehisaru- '
-               'või andmehangeteks keelemudel, mitte inimene. Ka täpsus on mõõdetud masina märgendite vastu. Numbrid on suunaandvad, '
-               'mitte statistika: aastate võrdlus ja kindlad järeldused tulevad pärast seda, kui 100 hanget on käsitsi üle vaadatud.</p></div>')
+    # Kadri 8.11.2026 (kommentaar lehel): „käsitsi ülevaatus on tehtud, uuenda lehte“
+    hoiatus = ('<div class="hoiatus" role="note"><p><b>Masinmärgistus, käsitsi osaliselt kontrollitud.</b> ' + e(KASITSI_LAUSE)
+               + ' Aastate võrdlus ja kindlad järeldused tulevad pärast klassifikaatori uuendamist.</p></div>')
     return (pea(A, vaade, lead, [("aastad", "Viimane aasta"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("litsentsid", "Litsentsid"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], [], aside=aside) + hoiatus
             + '<div class="g12">' + sec_aastad + sec_inn + "</div>"
             + '<div class="g12">' + sec_viis + sec_hankijad + "</div>"

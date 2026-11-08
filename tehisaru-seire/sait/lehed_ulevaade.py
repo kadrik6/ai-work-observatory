@@ -14,6 +14,7 @@ from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link
 from andmekiht import EL, AndmeViga
 from komponendid import KUUD, aastatulbad, allikarida, e, kaart, kp, pr, riik, sihiriba
 from lehed_usaldus import RASKUS, _raskus
+from lehed_uudised import KASITSI
 from pealkiri import taida
 
 SISU = Path(__file__).resolve().parent / "sisu"
@@ -366,8 +367,8 @@ def avaleht(A, vaade, vaated):
     sec_hanked = f"""
 <section class="pn sp4" id="hanked" aria-labelledby="h-hanked">
   <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehangete osa on <b>alla 1%</b> kõigist hangetest</h2><span class="chip exp">katseline</span></div>
-  <p class="ps">{h_uus["aasta"]} ({e(h_uus["periood"])}): <b>{h_uus["ai_ja_andmed"]}</b> hanget, {pr(h_uus["osa"])}% kõigist. Aastaid ei võrrelda enne, kui 100 hanget on inimese pimesi märgistatud.</p>
-  <p class="allikas">Allikas: {a(HANKED_URL, "riigihangete register")} ja TED; masinmärgistus, inimene pole kontrollinud. Kõik hanked: {menuu("hanked", "Hanked")}.</p>
+  <p class="ps">{h_uus["aasta"]} ({e(h_uus["periood"])}): <b>{h_uus["ai_ja_andmed"]}</b> hanget, {pr(h_uus["osa"])}% kõigist. Aastaid ei võrrelda enne, kui klassifikaator on uuendatud pärast 100 hanke pimesi ülevaatust.</p>
+  <p class="allikas">Allikas: {a(HANKED_URL, "riigihangete register")} ja TED; masinmärgistus, {KASITSI["n"]} hanget käsitsi üle vaadatud (kokkulangevus {KASITSI["kokku"]}%). Kõik hanked: {menuu("hanked", "Hanked")}.</p>
 </section>"""
     if max(r["osa"] for r in H) >= 1:
         raise AndmeViga("Hangete pealkiri ütleb „alla 1%“, aga osa on 1% või rohkem")
