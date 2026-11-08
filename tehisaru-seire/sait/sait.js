@@ -336,12 +336,22 @@
       var nupud = document.querySelectorAll(p[1]);
       nupud.forEach(function (b) { b.addEventListener('click', function () { sea(p[0], b.getAttribute(p[2])); }); });
       var v = q.get(p[0]);
-      if (v) nupud.forEach(function (b) { if (b.getAttribute(p[2]) === v) b.click(); });
+      if (v) nupud.forEach(function (b) {
+        if (b.getAttribute(p[2]) !== v) return;
+        b.click();
+        var pn = b.closest('[role="tabpanel"]');
+        if (pn && pn.hidden) { var n = document.querySelector('[role="tab"][aria-controls="' + pn.id + '"]'); if (n) n.click(); }
+      });
     });
     document.querySelectorAll('.h-otsing input').forEach(function (i) {
       i.addEventListener('input', function () { sea('otsi', i.value.trim()); });
       var v = q.get('otsi');
-      if (v) { i.value = v; i.dispatchEvent(new Event('input')); }
+      if (v) {
+        i.value = v; i.dispatchEvent(new Event('input'));
+        // Filter võib olla peidetud saki sees (teemamall A): ava see sakk, et lugeja näeks tulemust
+        var p = i.closest('[role="tabpanel"]');
+        if (p && p.hidden) { var n = document.querySelector('[role="tab"][aria-controls="' + p.id + '"]'); if (n) n.click(); }
+      }
     });
   });
 })();

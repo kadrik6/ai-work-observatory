@@ -483,13 +483,29 @@ def hanked(A, vaade, vaated=None):
 </div>"""
     # Kadri otsus 6.11.2026 22:11: Hanked jääb menüüsse, aga selge hoiatussildiga, kuni 100 hanget on käsitsi kontrollitud
     # Kadri 8.11.2026 (kommentaar lehel): „käsitsi ülevaatus on tehtud, uuenda lehte“
-    hoiatus = ('<div class="hoiatus" role="note"><p><b>Masinmärgistus, käsitsi osaliselt kontrollitud.</b> ' + e(KASITSI_LAUSE)
-               + ' Aastate võrdlus ja kindlad järeldused tulevad pärast klassifikaatori uuendamist.</p></div>')
-    return (pea(A, vaade, lead, [("aastad", "Viimane aasta"), ("viis", "Kuidas hangitakse"), ("hankijad", "Hankijad"), ("litsentsid", "Litsentsid"), ("loend", "Leia hea näide"), ("tapsus", "Kui täpne")], [], aside=aside) + hoiatus
-            + '<div class="g12">' + sec_aastad + sec_inn + "</div>"
-            + '<div class="g12">' + sec_viis + sec_hankijad + "</div>"
-            + sec_lits
-            + sec_loend + sec_tapsus
+    # Kadri 8.11.2026 16:29: pimeülevaatus tehtud, katselisusele viitav ära; meetodi lause jääb tavalise märkusena
+    markus = ('<p class="ps meetod">' + e(KASITSI_LAUSE)
+              + ' Aastaid võrreldakse pärast klassifikaatori uuendamist.</p>')
+    # Teemamall A (Kadri 8.11.2026): andmed sakkides, siis uuringud, väited, reeglid, allikad
+    import teemamall as tm
+    from lehed_ulevaade import vaite_teema
+    sec_andmed = tm.andmesakid("hanked", "Uuri andmeid: aastad, hankimise viis, litsentsid ja head näited",
+                               "Riigihangete registri ja TED-i hanked, märgistatud masinaga; meetod ja täpsus on viimases sakis.", [
+        ("aastad", "Aastad", '<div class="g12">' + sec_aastad + sec_inn + "</div>"),
+        ("viis", "Kuidas hangitakse", '<div class="g12">' + sec_viis + sec_hankijad + "</div>"),
+        ("litsentsid", "Litsentsid", sec_lits),
+        ("naited", "Head näited", sec_loend),
+        ("tapsus", "Täpsus", sec_tapsus),
+    ])
+    t_uuringud = tm.uuringute_plokk(vaated, [], [("avalik-sektor", "Avalik sektor (OECD 2026)", "")])
+    t_vaited = tm.vaidete_plokk(A, vaated, "hanked", vaite_teema)
+    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-uldkohaldamine", "ai-korge-risk-iii"])
+    t_allikad = tm.allikate_plokk([
+        ("Riigihangete register ja TED", HANKED_URL, H["seis"]["kuupaev"], "uuendatakse GitHub Actionsiga"),
+        ("Käsitsi pimeülevaatus, 100 hanget", "", KASITSI["kuupaev"], f'kokkulangevus {KASITSI["kokku"]}%, kappa {KASITSI["kappa"]}'),
+    ])
+    return (pea(A, vaade, lead, [("andmed", "Andmed"), ("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")], [], aside=aside) + markus
+            + sec_andmed + tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)
             + seotud(vaated, [("avalik-sektor", "Avalik sektor: kas uuendused jõuavad laiendamiseni"), ("reeglid", "Tehisaru määrus: tähtajad")]))
 
 

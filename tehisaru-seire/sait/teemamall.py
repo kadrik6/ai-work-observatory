@@ -41,7 +41,7 @@ def andmesakid(tid, pealkiri, alam, sakid):
 def uuringute_plokk(vaated, read, lingid):
     """read: [(silt, tekst, vaate id, ankur)]; lingid: [(vaate id, tekst, ankur)] alamlehtedele."""
     li = "".join(f'<li><span class="k">{e(s)}</span><span>{t} {link(vaated, vid, "Vaata", ank)}</span></li>'
-                 for s, t, vid, ank in read)
+                 for s, t, vid, ank in read) or '<li class="tyhi"><span class="m-puud">Selle teema uuringuid pole veel hinnatud.</span></li>'
     ll = " · ".join(link(vaated, vid, t, ank) for vid, t, ank in lingid)
     return f"""<section class="pn" id="t-uuringud" aria-labelledby="h-t-uuringud">
   <h2 id="h-t-uuringud">Uuringud</h2>

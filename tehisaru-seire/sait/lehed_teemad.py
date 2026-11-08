@@ -753,8 +753,28 @@ def avalik_sektor(A, vaade, vaated=None):
                   oecd("genai-kesk")),
     ]) + "</aside>")
     # Hanked on oma menüükoht; lehtede vahel on rida „Seotud“ (Kadri 6.11.2026 22:27, ettepanek 8)
-    return (pea(A, vaade, lead, [("lehter", "Rakendamine"), ("tehisaru", "Tehisaru"), ("kiirused", "Kolm rühma"), ("soovitused", "Soovitused")], ree, aside=aside)
-            + sec_lehter + sec_genai + sec_kiirus + sec_soov
+    # Teemamall A (Kadri 8.11.2026): andmed sakkides, siis uuringud, väited, reeglid, allikad
+    import teemamall as tm
+    from lehed_ulevaade import vaite_teema
+    U = A["uuringud"]
+    sec_andmed = tm.andmesakid("avalik-sektor", "Uuri andmeid: uuendused, tehisaru, asutuste rühmad ja OECD soovitused",
+                               "Kõik numbrid on OECD avalikust raportist (2026), küsitlus detsember 2025 kuni veebruar 2026.", [
+        ("lehter", "Rakendamine", sec_lehter),
+        ("tehisaru", "Tehisaru", sec_genai),
+        ("kiirused", "Kolm rühma", sec_kiirus),
+        ("soovitused", "Soovitused", sec_soov),
+    ])
+    t_uuringud = tm.uuringute_plokk(vaated, [
+        ("Eesti", "Alla 40-aastased hindavad oma tehisaru kirjaoskust kõrgemaks; juhid on enesekindlamad, aga mitte selles, kuidas tehisaru asutuses tööle panna (OECD 2026).", "avalik-sektor", "tehisaru"),
+        ("Suurbritannia", f'{e(tm.esimene_lause(U["gds2025"]["leid"]))} (GDS {U["gds2025"]["aasta"]})', "too", "ulesanded"),
+    ], [("hanked", "Hanked: mida riik ostab", "")])
+    t_vaited = tm.vaidete_plokk(A, vaated, "avalik-sektor", vaite_teema)
+    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-keelud-kirjaoskus", "ai-uldkohaldamine", "ai-korge-risk-iii"])
+    t_allikad = tm.allikate_plokk([
+        (OECD_NIMI, OECD_URL, "2026-11-03", "CC BY 4.0; küsitlus 12.2025–02.2026"),
+    ])
+    return (pea(A, vaade, lead, [("andmed", "Andmed"), ("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")], ree, aside=aside)
+            + sec_andmed + tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)
             + seotud(vaated, [("hanked", "Hanked: mida riik tehisaru ja andmete kohta ostab"), ("reeglid", "Tehisaru määrus: tähtajad")]))
 
 
