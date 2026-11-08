@@ -359,7 +359,8 @@ def test_menuus_on_kaheksa_teemat_ja_usaldus_on_oma_teema(sait):
     assert '<ul class="sellel"></ul>' not in "".join(sait.values())
     for f in ("kas-see-on-tosi.html", "lahknevused.html", "varskus.html"):
         assert '<a href="kas-see-on-tosi.html" aria-current="page">Usaldus</a>' in sait[f], f
-    assert 'class="alamlehed"' not in sait["uudised.html"]
+    # Kadri 8.11.2026 valis „Uudised › Ettekanded“: uudistel on nüüd kaks alamlehte
+    assert re.findall(r'<ul class="alamlehed">(.*?)</ul>', sait["uudised.html"])[0].count("<li>") == 2
 
 
 def test_lahknevused_ja_varskus_on_usalduse_all_nahtaval(sait):
@@ -976,3 +977,35 @@ def test_kaks_teemat_hele_ja_tume():
     js = (ehita.SIIN / "sait.js").read_text(encoding="utf-8")
     assert "var JARG = ['soft', 'dark'];" in js and "soft: 'Hele', dark: 'Tume'" in js
     assert "'light'" not in js.split("var JARG")[1].split(";")[0]
+
+
+def test_ettekanded_alamleht(A):
+    # Kadri 8.11.2026: usaldatud seminaride ja konverentside ettekannete kokkuvõtted, „Uudised › Ettekanded“.
+    import copy
+    from sait import lehed_uudised
+    from andmekiht import AndmeViga
+    vaade = copy.deepcopy(next(v for v in json.loads((ehita.SIIN / "vaated.json").read_text(encoding="utf-8"))["vaated"] if v["id"] == "uudised"))
+    assert [s["fail"] for s in vaade["alamlehed"]] == ["uudised.html", "ettekanded.html"]
+    E = {"allikad": [{"id": "ut-dss", "nimi": "TÜ seminar", "url": "https://cs.ut.ee/"}],
+         "ettekanded": [{"id": "x", "esineja": "Mari Maasikas", "amet": "juht", "pealkiri": "Pealkiri", "allikas": "ut-dss",
+                         "uritus": "Seminar", "kuupaev": "2025", "video": "https://youtu.be/abc?t=1", "kokkuvote": "Lühike.",
+                         "mottes": ["üks", "kaks", "kolm"], "teemad": ["too"]},
+                        {"id": "y", "esineja": "Jaan", "pealkiri": "Uuem", "allikas": "ut-dss", "kuupaev": "2026-05-27",
+                         "video": "https://youtu.be/def", "kokkuvote": "Teine."}]}
+    h = lehed_uudised.ettekanded({**A, "ettekanded": E, "ootel": {"ettekanded": 0}}, vaade)
+    assert h.index("Uuem") < h.index("Pealkiri")  # uuemad eespool, ka siis kui kuupäev on ainult aasta
+    assert '<span class="d">2025</span>' in h and "27.05.2026" in h and "<li>kaks</li>" in h
+    assert "2 kokkuvõtet" in next(s for s in vaade["alamlehed"] if s["fail"] == "ettekanded.html")["h1"]
+    # Tühi olek ütleb, mitu ootab kinnitust
+    assert "3 ootab" in lehed_uudised.ettekanded({**A, "ettekanded": None, "ootel": {"ettekanded": 3}}, vaade)
+    # Allikas peab olema usaldatud loendis
+    E["ettekanded"][0]["allikas"] = "tundmatu"
+    with pytest.raises(AndmeViga):
+        lehed_uudised.ettekanded({**A, "ettekanded": E}, vaade)
+
+
+def test_ettekanded_ainult_kinnitatud():
+    from sait.vota_kaasa import kinnitatud_ettekanded
+    d = {"allikad": [], "ettekanded": [{"id": "a", "seire_olek": "kinnitatud", "liik": "ettekanne"}, {"id": "b"}, {"id": "c", "seire_olek": "tagasi"}]}
+    v = kinnitatud_ettekanded(d)
+    assert [r["id"] for r in v["ettekanded"]] == ["a"] and "liik" not in v["ettekanded"][0]

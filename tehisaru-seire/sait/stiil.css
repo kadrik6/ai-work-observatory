@@ -1185,3 +1185,9 @@ th, td { padding: 6px 10px; }
 @media (prefers-reduced-motion: reduce) { .kopeeri::after { transition: none; } }
 @media (pointer: coarse) { .kopeeri { width: 36px; height: 36px; } }
 .fakt-tekst { width: 100%; margin-top: 6px; font: inherit; font-size: 12.5px; color: var(--ink); background: var(--panel); border: 1px solid var(--border); border-radius: 4px; padding: 4px 6px; resize: vertical; }
+
+/* Ettekanded (Kadri 8.11.2026): esineja rida ja kolm peamist mõtet */
+.u-voog .ek-kes { color: var(--ink-2); font-size: 13.5px; }
+.u-voog .ek-kes a.u-ur { font-weight: 400; color: var(--ink-2); }
+.u-voog .ek-m { margin: 4px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-2); }
+.u-voog .ek-m li { display: list-item; padding: 1px 0; border: 0; font-size: 13.5px; }

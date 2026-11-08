@@ -170,10 +170,70 @@ def uudised(A, vaade, vaated=None):
              + _uudiste_paneel("eesti-uudised", f"Eesti: <b>{len(ee)} uudist</b>, neist {sum(r['liik'] == 'arvamus' for r in ee)} arvamust", ee, "sp6", viimane)
              + _uudiste_paneel("maailma-uudised", f"Maailm: <b>{len(m)} uudist</b>, aruannet ja uuringut", m, "sp6", viimane)
              + "</div>")
+    sec_e = ettekanded(A, vaade)
     return jaga(A, vaade, lead, [], [
         ("uudised", [("eesti-uudised", "Eesti"), ("maailma-uudised", "Maailm")], sec_u),
         ("allikad", [("uudiste-allikad", "Allikad")], sec_k),
+        ("ettekanded", [("ettekanded", "Ettekanded"), ("ettekannete-allikad", "Üritused")], sec_e),
     ], aside=aside)
+
+
+# ---------------------------------------------------------------- Ettekanded (Kadri 8.11.2026)
+
+ETTEKANDE_TEEMA = {"too": "Töö", "ettevotted": "Ettevõtted", "inimesed": "Inimesed", "avalik-sektor": "Avalik sektor"}
+
+
+def _kp_osa(iso):
+    """Kuupäev või ainult aasta (kui seminari täpne päev pole avalik)."""
+    return kp(iso) if len(iso) == 10 else iso
+
+
+def _ettekanne(r, allikad):
+    for k in ("id", "esineja", "pealkiri", "kuupaev", "video", "kokkuvote", "allikas"):
+        if not r.get(k):
+            raise AndmeViga(f"ettekanded.json: kirjel {r.get('id', '?')} puudub {k}")
+    if r["allikas"] not in allikad:
+        raise AndmeViga(f"ettekanded.json: {r['id']} allikas {r['allikas']} pole usaldatud allikate loendis")
+    if not r["video"].startswith("https://"):
+        raise AndmeViga(f"ettekanded.json: {r['id']} video link pole https")
+    teemad = "".join(f'<span class="u-t">{e(ETTEKANDE_TEEMA[t])}</span>' for t in r.get("teemad", []) if t in ETTEKANDE_TEEMA)
+    uritus = (f'<a class="u-ur" href="{e(r["uritus_url"])}">{e(r["uritus"])}</a>' if r.get("uritus_url") else e(r.get("uritus", "")))
+    mottes = "".join(f"<li>{e(m)}</li>" for m in r.get("mottes", []))
+    return (f'<li data-liik="ettekanne">'
+            f'<span class="d">{_kp_osa(r["kuupaev"])}</span>'
+            f'<div><a href="{e(r["video"])}">{e(r["pealkiri"])}</a>'
+            f'<p class="ek-kes"><b>{e(r["esineja"])}</b>{", " + e(r["amet"]) if r.get("amet") else ""} · {uritus}</p>'
+            f'<p class="u-k">{e(r["kokkuvote"])}</p>'
+            f'{f"<ul class=ek-m>{mottes}</ul>" if mottes else ""}'
+            f'<p class="u-m"><span class="u-l arv">ettekanne</span>{teemad}'
+            f'<span class="u-a" title="{e(r.get("kontroll", ""))}">{e(allikad[r["allikas"]]["nimi"])}</span></p></div></li>')
+
+
+def ettekanded(A, vaade):
+    E = A.get("ettekanded") or {"allikad": [], "ettekanded": []}
+    allikad = {a["id"]: a for a in E.get("allikad", [])}
+    read = sorted(E.get("ettekanded", []), key=lambda r: r["kuupaev"], reverse=True)
+    ootel = (A.get("ootel") or {}).get("ettekanded", 0)
+    n = len(read)
+    from abi import alam_h1
+    alam_h1(vaade, "ettekanded.html",
+            f"Usaldatud seminaride ja konverentside ettekanded: **{n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'}** avalikest salvestistest"
+            if n else "Usaldatud seminaride ja konverentside ettekanded: **kokkuvõtted ootavad kinnitust**")
+    sisu = (f'<ul class="u-voog ek" data-piir-li="12">{"".join(_ettekanne(r, allikad) for r in read)}</ul>' if read
+            else f'<p class="ps">Ettekandeid pole veel kinnitatud{f" ({ootel} ootab)" if ootel else ""}.</p>')
+    al = "".join(f'<li><a href="{e(a["url"])}">{e(a["nimi"])}</a>{" · " + e(a["miks"]) if a.get("miks") else ""}</li>' for a in allikad.values())
+    return f"""
+<div class="g12">
+<section class="pn sp12" id="ettekanded" aria-labelledby="h-ettekanded">
+  <div class="pn-h"><h2 id="h-ettekanded">Ettekanded uuemad eespool{f", <b>{ootel} ootab kinnitust</b>" if ootel and read else ""}</h2></div>
+  {sisu}
+</section>
+<section class="pn sp12" id="ettekannete-allikad" aria-labelledby="h-ettekannete-allikad">
+  <div class="pn-h"><h2 id="h-ettekannete-allikad">Usaldatud üritused</h2></div>
+  <ul class="u-allikad">{al}</ul>
+  <p class="ps">Kokkuvõte tehakse salvestise automaatsubtiitritest ja seda kontrollitakse paari väite kaupa; transkripti teksti saidil ei hoita. Uus ettekanne läheb saidile pärast kinnitamist.</p>
+</section>
+</div>"""
 
 
 # ---------------------------------------------------------------- Hanked: litsentsid (Kadri 8.11.2026)

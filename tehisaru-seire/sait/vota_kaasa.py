@@ -46,6 +46,17 @@ def kinnitatud_uuringud(read):
     return [{k: u[k] for k in UURINGU_VALJAD if k in u} for u in read if u.get("seire_olek") == "kinnitatud"]
 
 
+ETTEKANDE_VALJAD = ("id", "esineja", "amet", "pealkiri", "allikas", "uritus", "uritus_url", "kuupaev", "video", "keel",
+                    "teemad", "kokkuvote", "mottes", "kontroll", "seire_kinnitatud")
+
+
+def kinnitatud_ettekanded(d):
+    """Usaldatud ürituste ettekanded (Kadri 8.11.2026): saidile ainult kinnitatud kirjed ja avalikud väljad."""
+    return {"allikad": d.get("allikad", []),
+            "ettekanded": [{k: r[k] for k in ETTEKANDE_VALJAD if k in r} for r in d.get("ettekanded", [])
+                           if r.get("seire_olek") == "kinnitatud"]}
+
+
 def vota(proj):
     proj = Path(proj)
     uu = proj / "tooelu-uudised"
@@ -72,8 +83,12 @@ def vota(proj):
     lisa_p = proj / "tooelu-leht-andmed" / "leiud-lisa.json"
     koik_uu = _loe(lisa_p).get("uuringud", []) if lisa_p.exists() else []
     _kirjuta("uuringud-lisa.json", kinnitatud_uuringud(koik_uu))
+    ek_p = proj / "seire-uks-sait" / "ettekanded.json"
+    ek = _loe(ek_p) if ek_p.exists() else {}
+    _kirjuta("ettekanded.json", kinnitatud_ettekanded(ek))
     _kirjuta("ootel.json", {"uuringud": sum(1 for u in koik_uu if not u.get("seire_olek")),
-                            "vaited": sum(1 for r in koik_vaited if not r.get("seire_olek"))})
+                            "vaited": sum(1 for r in koik_vaited if not r.get("seire_olek")),
+                            "ettekanded": sum(1 for r in ek.get("ettekanded", []) if not r.get("seire_olek"))})
 
     h = _loe(proj / "seire-uuendus" / "hanked" / "leht.json")
     for r in h["loend"]:

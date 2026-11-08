@@ -170,7 +170,11 @@
       "olek": "valmis",
       "kusimus": "Mis on tehisaru, andmete ja töö kohta Eestis ja maailmas viimati teada antud ning kas see on tõend või arvamus?",
       "h1": "Tehisaru ja töö uudised Eestist ja maailmast: uudis, uuring ja **arvamus on eraldi märgitud**.",
-      "osad": "Uudised Eestist ja maailmast koos allikatega; väidete kontroll on menüüs Usaldus."
+      "osad": "Uudised Eestist ja maailmast koos allikatega; väidete kontroll on menüüs Usaldus.",
+      "alamlehed": [
+        {"fail": "uudised.html", "nimi": "Uudised", "jaotised": ["uudised", "allikad"]},
+        {"fail": "ettekanded.html", "nimi": "Ettekanded", "h1": "Usaldatud seminaride ja konverentside ettekanded", "lead": "Kokkuvõte on meie sõnadega, iga ettekanne on avalik salvestis. Esineja kogemus ja arvamus ei ole mõõtmistulemus.", "jaotised": ["ettekanded"]}
+      ]
     },
     {
       "id": "kas-tosi",
