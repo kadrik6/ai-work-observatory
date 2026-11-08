@@ -710,8 +710,8 @@ h3.veerg { font-size: 13.5px; }
 .u-l.vaikne { background: none; color: var(--ink-3); font-weight: 600; padding-left: 0; }
 .u-l.risk { background: color-mix(in srgb, var(--accent) 16%, var(--panel)); color: var(--accent-text); }
 .u-l.suur { background: var(--signal); color: var(--on-signal); }
-/* „uus“ märk on alati oranž (Kadri 7.11.2026); tume tekst, sest valge oranžil ei anna 4,5:1 */
-.u-l.uus, .voog .t.uus { background: var(--accent); color: #1f2023; }
+/* „uus“ märk: U8 heledam oranž (Kadri lukustas 8.11.2026 21:57, varem täisoranž); tume tekst, kontrast 8,9:1 mõlemas teemas */
+.u-l.uus, .voog .t.uus { background: #f2a65e; color: #2b1a05; }
 .voog .t.uus { justify-self: start; align-self: start; font-size: 12px; line-height: 16px; padding: 0 6px; border-radius: 100px; white-space: nowrap; }
 .u-t { border: 1px solid var(--border); color: var(--ink-3); }
 .u-t.s { border-color: var(--signal); color: var(--signal); }
