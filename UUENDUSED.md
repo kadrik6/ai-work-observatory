@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 8.11.2026 | Seire sait: menüüst või lingiga uuele lehele minnes avaneb leht alati ülevalt, ka kui eelmisel lehel oli alla keritud (Kadri MKUS-i kommentaar). Erand: #ankur viib oma kohta ja tagasi-nupp taastab koha, kust lugeja lahkus. |
 | 2026-11-08 | Seire sait: Avalik sektor ja Hanked on teemamalli A järgi. Kõik viis teemalehte on nüüd sama ülesehitusega. Hangete hoiatuskast on asendatud tavalise meetodimärkusega. Filtri link (?otsi=, ?ruhm=) avab õige saki. |
 | 2026-11-08 | Seire sait: Inimesed ja Ettevõtted on teemamalli A järgi (andmesakid, uuringud, väited, reeglid, allikad). ELi järjestuse joonisel on valikud ainult Top 10 ja kõik (Kadri kommentaar). Hangete „katseline“ märgid on eemaldatud, sest pimeülevaatus on tehtud (Kadri kommentaar). Leiu esimene lause ei katke enam kohas „2024. aastal“. |
 | 2026-11-08 | Seire sait: Töö lehel ei ole „Uuri andmeid“ ümber enam suurt välimist kasti (Kadri 16:26). |

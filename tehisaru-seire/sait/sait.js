@@ -390,3 +390,36 @@
     });
   });
 })();
+
+// Kadri kommentaar 8.11.2026: „suuna navigeerimisel alati lehe ülaossa, isegi kui olen eelmises vaates alla
+// scrollinud“. Uus leht avaneb ülevalt; erand on #ankur (lugeja tahab kindlat kohta) ja tagasi-nupp (viib kohta, kust lugeja lahkus).
+(function () {
+  try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) { /* sandbox */ }
+  var VOTI = 'seire-keri:' + location.pathname;
+  function tagasi() {
+    try { var n = performance.getEntriesByType('navigation')[0]; return n && n.type === 'back_forward'; } catch (e) { return false; }
+  }
+  var liigutas = false; // lugeja hakkas ise kerima enne „load“ sündmust: ära kisu teda tagasi üles
+  ['wheel', 'touchstart', 'keydown'].forEach(function (e) { window.addEventListener(e, function () { liigutas = true; }, { passive: true }); });
+  function ules() {
+    if (location.hash || liigutas) return;
+    var y = 0;
+    if (tagasi()) { try { y = parseInt(sessionStorage.getItem(VOTI), 10) || 0; } catch (e) { y = 0; } }
+    window.scrollTo(0, y);
+  }
+  document.addEventListener('DOMContentLoaded', ules);
+  window.addEventListener('load', ules);
+  window.addEventListener('pageshow', function (ev) { if (!ev.persisted) ules(); });
+  // Tagasi-nupp viib samasse kohta, kust lugeja lahkus (kasutusloogika: tagasi taastab oleku).
+  var lahkus = false;
+  function salvesta() { try { sessionStorage.setItem(VOTI, String(Math.round(window.scrollY))); } catch (e) { /* privaatne aken */ } }
+  window.addEventListener('pagehide', function () { if (!lahkus) salvesta(); });
+  // Link teisele lehele: keri enne lahkumist üles, et ka sama aknasse laaditud leht ei jätkaks vanast kohast.
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('a[href]');
+    if (!a || ev.button || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    var h = a.getAttribute('href');
+    if (!h || h.charAt(0) === '#' || /^[a-z]+:/i.test(h) || a.target === '_blank') return;
+    if (h.indexOf('#') < 0) { salvesta(); lahkus = true; window.scrollTo(0, 0); }
+  }, true); // püüdefaasis: claude.ai kest võib lingiklõpsu ise käsitleda
+})();

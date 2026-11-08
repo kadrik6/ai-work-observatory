@@ -878,3 +878,13 @@ def test_koik_teemalehed_jargivad_malli_a(sait):
         jrk = [h.find(x) for x in ('id="andmed"', 'id="t-uuringud"', 'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
         assert -1 not in jrk and jrk == sorted(jrk), f
         assert len(re.findall(r'class="sakk-sisu">', h)) == 1, f
+
+
+def test_uus_leht_avaneb_ulevalt():
+    # Kadri MKUS-i kommentaar 8.11.2026: „suuna navigeerimisel alati lehe ülaossa, isegi kui olen eelmises vaates
+    # alla scrollinud“. Brauseri kerimise taastamine on välja lülitatud; erand on #ankur ja tagasi-nupp.
+    js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
+    assert "history.scrollRestoration = 'manual'" in js
+    assert "n.type === 'back_forward'" in js and "sessionStorage.setItem(VOTI" in js
+    assert "if (location.hash || liigutas) return;" in js
+    assert "}, true); // püüdefaasis" in js
