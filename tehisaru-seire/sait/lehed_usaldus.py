@@ -373,6 +373,10 @@ def kuidas(A, vaade, vaated=None):
             + sec_uu + sec_a + sec_m + sec_v + sec_u)
 
 
+def _ootab(n):
+    return "Praegu ei oota midagi." if not n else f"Praegu ootab {n}."
+
+
 def _uuenemine(A):
     """Mis saidil uueneb ise ja mis käsitsi, koos viimase kuupäevaga (Kadri 6.11.2026 20:03)."""
     O, H, P, F = A.get("uudiste_olek"), A.get("hanked_leht"), A.get("publikatsioonid"), (A.get("koondajad") or {}).get("firmad")
@@ -383,6 +387,9 @@ def _uuenemine(A):
         return kp(x[:10]) if x else "—"
     otsib = min((f["otsib"]["kontrollitud"] for f in (F or {}).values() if f["otsib"].get("kontrollitud")), default="")
     kandidaate = sum(1 for j in K.get("juhtumid", []) if j.get("kandidaat"))
+    Oo, Ov = A.get("ootel") or {}, A.get("oecd_valvur") or {}
+    viim_uuring = max([T.get("kontrollitud", "")] + [u.get("seire_kinnitatud", "") for u in A.get("uuringud", {}).values() if u.get("lisa")])
+    viim_vaide = max([v.get("kuupaev", "") for v in A.get("uudiste_vaited") or []], default="")
     read = [
         ("Uudised Eestist ja maailmast", "ise, kaks korda päevas (7.23 ja 17.53), sh jätkulood; kell 12.53 suured uudised", d(O["viimane_kontroll"]) if O else "—",
          "Mitte midagi. Uudise liigi ja leviku märgib kogumine ise."),
@@ -394,16 +401,23 @@ def _uuenemine(A):
         ("Hanked", "ise, iga päev (GitHub Actions)", d((H or {}).get("seis", {}).get("kuupaev", "")),
          "Klassifikaatori märgendeid pole inimene kontrollinud."),
         ("Publikatsioonid (Töö)", "ise, esmaspäeviti (OpenAlex)", d((P or {}).get("meta", {}).get("aeg", "")), "Mitte midagi."),
-        ("Uuringute leiud ja kokkuvõtted (Töö)", "käsitsi", d(T.get("kontrollitud", "")), "Uue uuringu lisamine ja kontroll."),
-        ("Väited ja lahknevused (Uudised ja väited › Väited)", "käsitsi", "—", "Uue väite kontroll algallika vastu."),
-        ("OECD avaliku sektori raport", "käsitsi, ühekordne", kp("2026-11-03"), "Uue raporti korral numbrite ülekandmine."),
+        ("Uuringute leiud ja kokkuvõtted (Töö)", "otsing ja mustand ise, iga päev; saidile pärast kinnitust", d(viim_uuring),
+         f"Mustandi kinnitamine (leid ja arvud allika kokkuvõttest). {_ootab(Oo.get('uuringud'))}"),
+        ("Väited (Usaldus › Väited)", "uudistest ise, kontroll algallika vastu; saidile pärast kinnitust", d(viim_vaide),
+         f"Hinnangu kinnitamine. {_ootab(Oo.get('vaited'))}"),
+        ("Lahknevused (Usaldus › Lahknevused)", "ise, kui allikad annavad sama asja kohta eri numbri", d(A.get("uuendatud", "")),
+         "Põhjuse selgitamine allikaga."),
+        ("OECD avaliku sektori raport", "uue väljaande otsing ise, iga päev", d(Ov.get("kontrollitud", "")),
+         (f"Leitud uus väljaanne „{Ov['uued'][0]['pealkiri']}“ ({kp(Ov['uued'][0]['kuupaev'])}): numbrid tuleb üle kanda."
+          if Ov.get("uued") else "Uue raporti korral numbrite ülekandmine (viimane: 3.11.2026).")),
     ]
     t = "".join(f'<tr><td><b>{e(n)}</b></td><td>{e(k)}</td><td class="n">{v}</td><td>{e(m)}</td></tr>' for n, k, v, m in read)
-    ise = sum(1 for r in read if r[1].startswith("ise") or r[1].startswith("uudistest"))
+    ise = sum(1 for r in read if (r[1].startswith("ise") or r[1].startswith("uudistest")) and "kinnitust" not in r[1])
+    pool = sum(1 for r in read if " ise" in r[1] and "kinnitust" in r[1] or r[1].startswith("uue väljaande otsing"))
     return f"""
 <section class="jaotis" id="uuendused" aria-labelledby="h-uuendused">
   <header>
-    <h2 id="h-uuendused">Saidi {len(read)} osast uueneb ise <b>{ise}</b>, ülejäänud käsitsi</h2>
+    <h2 id="h-uuendused">Saidi {len(read)} osast uueneb ise <b>{ise}</b>; {pool} puhul otsib arvuti ise ja inimene kinnitab</h2>
     <p class="alam">Sait ehitatakse uuesti kaks korda päevas (7.23 ja 17.53) ja avaldatakse ainult siis, kui kõik testid läbivad. Kuupäev on viimane kontroll või andmete seis.</p>
   </header>
   <div class="tbl"><table><thead><tr><th scope="col">Osa</th><th scope="col">Kuidas uueneb</th><th scope="col">Viimati</th><th scope="col">Mida on vaja käsitsi</th></tr></thead><tbody>{t}</tbody></table></div>

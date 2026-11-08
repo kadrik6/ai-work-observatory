@@ -21,6 +21,26 @@ EL = "EU27_2020"
 TOENDI_SILT = {"vahter2026": "tugev andmestik, nõrk tulemus"}
 
 
+# Ettevõtted, mis ei kuulu saidile (koondamiste tabel, uudised, koondajad), koos põhjusega
+VALJA_ETTEVOTTED = {
+    "ekkm": "Kadri 8.11.2026 21:41: kunstimuuseumi koondamine sisepingete tõttu pole tehisaru ja töö teemaga piisavalt seotud",
+}
+
+
+def jata_valja(A):
+    """Eemaldab VALJA_ETTEVOTTED kõigist ettevõttega seotud loenditest; repo ja projekti andmefailid jäävad samaks."""
+    valja = lambda nimi: (nimi or "").strip().lower() in VALJA_ETTEVOTTED  # noqa: E731
+    K = A.get("koondamised") or {}
+    if K.get("juhtumid"):
+        K["juhtumid"] = [j for j in K["juhtumid"] if not valja(j.get("ettevote"))]
+    if A.get("uudised"):
+        A["uudised"] = [r for r in A["uudised"] if not valja(r.get("ettevote"))]
+    F = (A.get("koondajad") or {}).get("firmad")
+    if F:
+        for nimi in [n for n in F if valja(n)]:
+            del F[nimi]
+
+
 def lisa_uudiste_koondamised(A):
     """Igapäevaste uudiste Eesti koondamised, mida käsitsi kontrollitud nimekirjas veel pole, lähevad Töö vaatesse
     kandidaadina (Kadri 6.11.2026: Eesti Energia puudus, sest nimekiri uuenes ainult käsitsi). Ettevõte loetakse samaks
@@ -163,8 +183,11 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
     for voti, nimi in [("uudiste_vaited", "uudiste-vaited.json"), ("uudiste_olek", "uudiste-olek.json"),
                        ("hanked_leht", "hanked-leht.json"), ("publikatsioonid", "publikatsioonid.json"),
                        ("koondajad", "koondajad.json"), ("toopakkumised", "toopakkumised.json"),
-                       ("ai_kuulutused", "ai-tookuulutused.json")]:
+                       ("ai_kuulutused", "ai-tookuulutused.json"), ("ootel", "ootel.json"),
+                       ("oecd_valvur", "oecd-valvur.json")]:
         A[voti] = loe_json(sisu / nimi) if (sisu / nimi).exists() else None
+    lisa_kinnitatud_uuringud(A, sisu / "uuringud-lisa.json")
+    jata_valja(A)
     lisa_uudiste_koondamised(A)
     lisa_uudiste_vaited(A)
     for r in A["avalik"].values():
@@ -277,6 +300,20 @@ def arvuta_kokkupuude(sisu):
         "ametid": ametid, "el": el_pr, "aeg": aeg, "aeg_uhtlane": aeg_uhtlane, "ilo_ameteid": len(aste),
         "ilo_avatud_ameteid": sum(1 for a in aste.values() if a in ("1", "2", "3", "4")),
     }
+
+
+def lisa_kinnitatud_uuringud(A, p):
+    """Igapäevase ülevaatuse uuringud, mille Kadri on kinnitanud (sait/ootel.py), lähevad uuringute kogusse.
+    Repo tooelu-seire/leiud.json võidab, kui id on mõlemas. Tundmatu meetod = ehitus kukub."""
+    if not p.exists() or not A.get("tooelu"):
+        return
+    meetodid = {m for mm in A["tooelu"].get("kindlus", {}).values() for m in mm}
+    for u in loe_json(p):
+        if u["id"] in A["uuringud"]:
+            continue
+        if u.get("meetod") not in meetodid:
+            raise AndmeViga(f"sisu/uuringud-lisa.json uuring {u['id']}: meetodil {u.get('meetod')!r} pole tõendi tugevust")
+        A["uuringud"][u["id"]] = dict(u, lisa=True)
 
 
 def koonda_vaited(riskid, vaited):
