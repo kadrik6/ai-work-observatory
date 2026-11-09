@@ -16,6 +16,9 @@ API = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
 NAITAJAD = {
     "ettevotete-tehisaru-kasutus": ("isoc_eb_ai", "size_emp=GE10&unit=PC_ENT&nace_r2=C10-S951_X_K&indic_is=E_AI_TANY",
                                     "Tehisaru kasutavad ettevõtted, % vähemalt 10 hõivatuga ettevõtetest"),
+    # Kadri 9.11.2026: inimeste kasutuse järjestus ajas; Eurostat mõõtis seda esimest korda 2025
+    "inimeste-tehisaru-kasutus": ("isoc_ai_iaiu", "indic_is=I_IUAI&unit=PC_IND&ind_type=IND_TOTAL",
+                                  "Generatiivset tehisaru kasutanud inimesed, % 16–74-aastastest"),
     "tootuse-maar": ("une_rt_a", "age=Y15-74&unit=PC_ACT&sex=T&sinceTimePeriod=2015",
                      "Töötuse määr, % tööjõust, 15–74-aastased"),
 }

@@ -568,7 +568,7 @@ def _kv(p):
     return int(a), {"I": 1, "II": 2, "III": 3, "IV": 4}[k]
 
 
-def el_jarjestus(naitaja, fookus="EE", kahanevalt=True, koht_praegu=None, aasta_praegu=None, lai=(720, 130, 140)):
+def el_jarjestus(naitaja, fookus="EE", kahanevalt=True, koht_praegu=None, aasta_praegu=None, lai=(720, 130, 140), min_aastaid=1):
     """ELi riikide koht aastate kaupa sisu/el-jarjestus.csv põhjal (lae_el_jarjestus.py, Eurostat).
     Kadri 7.11.2026: järjestuse muutus ajas. koht_praegu: kui antud, peab viimase aasta koht registriga klappima.
     Tagastab (graafik, koht {aasta: koht}, aastad, tabel, uuendatud) või None, kui faili pole."""
@@ -582,6 +582,8 @@ def el_jarjestus(naitaja, fookus="EE", kahanevalt=True, koht_praegu=None, aasta_
     for r in R:
         v.setdefault(r["geo"], {})[int(r["aasta"])] = float(r["vaartus"])
     aastad = sorted({a for x in v.values() for a in x})
+    if len(aastad) < min_aastaid:  # järjestuse muutus vajab vähemalt kahte aastat
+        return None
     koht = {g: {} for g in v}
     for a in aastad:
         for i, g in enumerate(sorted((g for g in v if a in v[g]), key=lambda g: -v[g][a] if kahanevalt else v[g][a]), 1):

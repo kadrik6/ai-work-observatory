@@ -74,6 +74,21 @@ def inimesed(A, vaade, vaated=None):
                        sorted(paarid, key=lambda p: -(p[1]["vaartus"] - p[0]["vaartus"])))
     g_aasta = hantlid(paarid, 30, 80, 10, "%", k=1)
     se = next((v1 for v0, v1 in paarid if v1["geo"] == "SE"), None)
+    # ELi järjestus (Kadri 9.11.2026): sama vaade nagu ettevõtetel. Eurostat mõõtis inimeste kasutust esimest korda
+    # {y}. aastal; kui tuleb teine aasta (lae_el_jarjestus.py), muutub loend ise järjestuse muutuse graafikuks.
+    from lehed_ulevaade import el_jarjestus, jarjestus
+    b_in = el_jarjestus(IN, koht_praegu=koht, aasta_praegu=y, lai=(640, 130, 140), min_aastaid=2)
+    if b_in:
+        b_g, b_k, b_a, b_tbl, _ = b_in
+        g_jrj = f'<div class="el-bump">{b_g}</div>'
+        gt_jrj = f"Eesti koht ELis aastate kaupa, {b_a[0]}–{b_a[-1]}"
+        gs_jrj = "Generatiivse tehisaru kasutajad, % 16–74-aastastest. Klõpsa real, et see esile tõsta."
+    else:
+        lopp = max(10 * -(-max(v["vaartus"] for v in el.values()) // 10), 50)
+        g_jrj = jarjestus(list(el.values()), lopp, eu["vaartus"], f"EL {pr(eu['vaartus'])}")
+        gt_jrj = f"ELi riigid järjestuses, {y}, % 16–74-aastastest"
+        gs_jrj = (f"Eurostat mõõtis seda esimest korda {y}. aastal. Kui {y + 1}. aasta number tuleb, "
+                  "näitab see graafik ka koha muutust.")
     it71 = _risk(A, "piirang", IN, "kaks eri protsenti")
     sa_m = A["moodikud"]["sa-it71"]
 
@@ -106,6 +121,12 @@ def inimesed(A, vaade, vaated=None):
           <span class="gs">{y} Eurostat, {y + 1} riiklik statistikaamet. Punkte juurde: {kasvud}.</span></figcaption>
         {g_aasta}
         {allikarida([(sa_m["nimi"], sa_m["url"], kp(ee["avaldatud"]))] + [(v1["allikas"], v1["url"], "") for _, v1 in paarid if v1["geo"] != "EE"])}
+      </figure>
+      <figure class="plokk" aria-labelledby="g-jrj">
+        <figcaption><span class="gt" id="g-jrj">{gt_jrj}</span>
+          <span class="gs">{gs_jrj}</span></figcaption>
+        {g_jrj}
+        {allikarida([("Eurostat, isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), "uuendatud " + kp(m_in["allikas_uuendas"]))])}
       </figure>
       {usaldus}
     </div>
