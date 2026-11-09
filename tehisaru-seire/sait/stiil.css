@@ -1243,7 +1243,7 @@ ol.sammud p { margin: 0; max-width: 72ch; }
 .top { border-bottom-color: transparent; }
 .top .mark { font-size: 18px; }
 .top .paisteemad { padding-left: 8px; }
-.top .menu a { color: var(--ink); font-size: 16px; font-weight: 400; padding: 0 12px; border-bottom-width: 3px; } /* tavakiri, Kadri 9.11.2026 00:16 */
+.top .menu a { color: var(--ink); font-size: 15px; font-weight: 400; padding: 0 12px; border-bottom-width: 3px; } /* tavakiri, Kadri 9.11.2026 00:16; 15 px, Kadri 00:50 */
 .top .menu a:hover { color: var(--signal); }
 .top .menu a[aria-current="page"] { color: var(--signal); font-weight: 400; border-bottom-color: var(--signal); }
 
