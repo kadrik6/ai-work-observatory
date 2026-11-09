@@ -4,7 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
-| 9.11.2026 | Seire sait, avaleht: päise taustapilt vahetatud Kadri valitud pildiga B (androidi lähivaade heledal taustal, `sait/pilt/avaleht.jpg`; 07:11 valitud A asendati 07:16). Käsitlus sama: mustvalge, nähtavus 55%. |
+| 9.11.2026 | Seire sait, avaleht: päise taustapilt sõltub teemast (Kadri 07:18 „tumedas A ja heledas B“). Heledas ja pehmes teemas pilt B (androidi lähivaade, `sait/pilt/avaleht.jpg`), tumedas pilt A (androidi profiil oru kohal, `sait/pilt/avaleht-tume.jpg`). Käsitlus sama: mustvalge, nähtavus 55%. Uus test `test_paise_pilt_teema_jargi`. |
 | 9.11.2026 | Seire sait, avaleht: päise taustapilt vahetatud Kadri saadetud pildiga (valgusküllane töölaud taimega, `sait/pilt/avaleht.jpg`). Käsitlus sama: mustvalge, nähtavus 55%, sulandub vasakult ja alt. |
 | 9.11.2026 | Seire sait, Ettevõtted: uus sakk „Ekspertide hinnang (GEM)“. GEM 2025/2026 Global Report (lk 135): Eesti eksperdid hindavad uute ettevõtjate tehisaruteadlikkust 6,6 punktiga 10-st. Märgitud „eksperthinnang, mitte mõõtmine“, oma 0–10 skaalal, mitte Eurostati %-teljel. Andmed `sait/sisu/leiud.csv` ja `leiud-arvud.csv`. Kadri „lisa“ kolleegi soovitusele. |
 | 9.11.2026 | Seire sait, Töö › Ametid: tabel „Kõige avatumad ametid Eestis“ on nüüd tulpdiagramm (töötajad, aste 4 sinisega, 12 rida + „kõik (46)“); tabel jääb „Näita andmetabelit“ taha. Kadri soov; test lisatud. |

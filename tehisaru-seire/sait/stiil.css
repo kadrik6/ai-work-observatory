@@ -1331,12 +1331,17 @@ html[data-t] .pea-rahu.pilt::before {
 html[data-t] .pea-rahu.pilt h1 { max-width: 22ch; }
 html[data-t] .pea-rahu.pilt .alla { max-width: 56ch; }
 html[data-t] .pea-rahu.pilt + nav .sellel { margin-top: 24px; }
-/* Tume teema: sama pilt ja üleminek, mustvalge, nähtavus 55% nagu heledas (Kadri 9.11.2026 00:04) */
-html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale(1); opacity: .55; }
+/* Tume teema: oma pilt A (Kadri 9.11.2026 07:18 „tumedas A ja heledas B“), sama üleminek, mustvalge, nähtavus 55% */
+html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale(1); opacity: .55;
+  background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
+              linear-gradient(0deg, var(--page) 0%, transparent 30%),
+              url("pilt/avaleht-tume.jpg") right 62% / cover no-repeat; }
 @media (max-width: 680px) {
   html[data-t] .pea-rahu.pilt { min-height: 0; padding-top: 168px; padding-bottom: 8px; }
   html[data-t] .pea-rahu.pilt::before { bottom: auto; height: 150px;
     background: linear-gradient(0deg, var(--page) 0%, transparent 35%), url("pilt/avaleht.jpg") right top / auto 150px no-repeat; }
+  html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before {
+    background: linear-gradient(0deg, var(--page) 0%, transparent 35%), url("pilt/avaleht-tume.jpg") right top / auto 150px no-repeat; }
 }
 
 /* Saidi nimi päises: suurem ja must, ka avalehel (Kadri 9.11.2026 00:13) */

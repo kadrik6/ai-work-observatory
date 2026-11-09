@@ -1165,3 +1165,11 @@ def test_gem_eksperthinnang_on_eraldi_sakis(A, sait):
     # ei ole Eurostati %-teljel ega samas plokis kui ELi kaart
     assert 'class="gem-skaala"' in osa and 'class="gem-skaala"' not in _jaotis(h, "kasutus")
     assert "ei ole võrreldavad" in tekst(osa)
+
+
+def test_paise_pilt_teema_jargi():
+    # Kadri 9.11.2026 07:18: „tumedas A ja heledas B“ – tumedal teemal oma pilt, ka telefonis
+    css = (Path(__file__).resolve().parent.parent / "sait" / "stiil.css").read_text(encoding="utf-8")
+    tume = [r for r in css.split("}") if 'data-seire-teema="dark"] .pea-rahu.pilt::before' in r]
+    assert len(tume) == 2 and all("pilt/avaleht-tume.jpg" in r for r in tume)
+    assert css.count('url("pilt/avaleht.jpg")') == 2
