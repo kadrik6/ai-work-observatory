@@ -1243,9 +1243,9 @@ ol.sammud p { margin: 0; max-width: 72ch; }
 .top { border-bottom-color: transparent; }
 .top .mark { font-size: 18px; }
 .top .paisteemad { padding-left: 8px; }
-.top .menu a { color: var(--ink); font-size: 16px; font-weight: 600; padding: 0 12px; border-bottom-width: 3px; }
+.top .menu a { color: var(--ink); font-size: 16px; font-weight: 400; padding: 0 12px; border-bottom-width: 3px; } /* tavakiri, Kadri 9.11.2026 00:16 */
 .top .menu a:hover { color: var(--signal); }
-.top .menu a[aria-current="page"] { color: var(--signal); border-bottom-color: var(--signal); }
+.top .menu a[aria-current="page"] { color: var(--signal); font-weight: 400; border-bottom-color: var(--signal); }
 
 /* =========================================================
    A1 „Tehisaru 2027“ kujundus kogu saidil (Kadri 8.11.2026 23:41). Pärit katselehelt
@@ -1330,17 +1330,51 @@ html[data-t] .pea-rahu.pilt::before {
 html[data-t] .pea-rahu.pilt h1 { max-width: 22ch; }
 html[data-t] .pea-rahu.pilt .alla { max-width: 56ch; }
 html[data-t] .pea-rahu.pilt + nav .sellel { margin-top: 24px; }
-/* Tume teema: B5 tumendatud pilt, mustvalge (Kadri 8.11.2026 23:50) */
-html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before {
-  background: linear-gradient(90deg, rgba(31,32,35,.82) 0%, rgba(31,32,35,.55) 45%, rgba(31,32,35,.25) 75%),
-              url("pilt/avaleht.jpg") right 62% / cover no-repeat;
-  filter: grayscale(1); opacity: 1;
-}
+/* Tume teema: sama pilt ja üleminek, mustvalge, nähtavus 55% nagu heledas (Kadri 9.11.2026 00:04) */
+html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale(1); opacity: .55; }
 @media (max-width: 680px) {
   html[data-t] .pea-rahu.pilt { min-height: 0; padding-top: 168px; padding-bottom: 8px; }
   html[data-t] .pea-rahu.pilt::before { bottom: auto; height: 150px;
     background: linear-gradient(0deg, var(--page) 0%, transparent 35%), url("pilt/avaleht.jpg") right top / auto 150px no-repeat; }
 }
-@media (max-width: 680px) {
-  html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { background: url("pilt/avaleht.jpg") right top / auto 150px no-repeat; filter: grayscale(1) brightness(.6); }
+
+/* Saidi nimi päises: suurem ja must, ka avalehel (Kadri 9.11.2026 00:13) */
+.top .mark, .top .mark[aria-current="page"] { color: var(--ink); font-size: 27px; letter-spacing: -0.02em; line-height: 1.1; }
+@media (max-width: 680px) { .top .mark, .top .mark[aria-current="page"] { font-size: 22px; } }
+
+/* Menüüs on 9 teemat (Avaleht esimesena, Kadri 9.11.2026): kitsamal sülearvutil väiksem vahe, et rida mahuks */
+@media (min-width: 681px) and (max-width: 1439px) { .top .menu a { padding: 0 9px; } }
+
+/* Liikumine L2 „Üleminek + ribad“, kiirus aeglane (Kadri 9.11.2026 00:26; labor kirjeldused/stiilid/taustalabor/liikumise_labor.py):
+   lehte vahetades hajub sisu üle, päis jääb paigale; numbriplaatide ribad kasvavad avamisel korra nullist väärtuseni.
+   Kui kasutaja on liikumise süsteemis välja lülitanud, jääb kõik paigale. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  .top { view-transition-name: pais; }
+  ::view-transition-group(pais) { animation: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 300ms; animation-timing-function: ease; }
+  @keyframes l-riba { from { transform: scaleX(0); } }
+  .kriba i { transform-origin: left center; animation: l-riba 1050ms cubic-bezier(.2,.7,.2,1) 225ms both; }
+  .plaadid > .plaat:nth-child(2) .kriba i { animation-delay: 315ms; }
+  .plaadid > .plaat:nth-child(3) .kriba i { animation-delay: 405ms; }
+  .plaadid > .plaat:nth-child(4) .kriba i { animation-delay: 495ms; }
+  .plaadid > .plaat:nth-child(5) .kriba i { animation-delay: 585ms; }
+  .plaadid > .plaat:nth-child(6) .kriba i { animation-delay: 675ms; }
 }
+
+/* Avatud menüü avalehe stiilis (Kadri 9.11.2026 00:27): hallid ümarad plaadid ilma ääriseta nagu numbriplaadid,
+   teema nimi must Space Grotesk, sinine ainult hõljudes ja praeguse teema peal. */
+html[data-t] .mega-paneel { background: var(--page); box-shadow: 0 16px 32px rgb(21 25 38 / .10); }
+html[data-t] .mega-ruut { gap: 16px; padding-top: 20px; padding-bottom: 12px; }
+html[data-t] .mega-t { background: var(--surface-2); border: 0; border-radius: 12px; padding: 16px 18px; gap: 6px; }
+html[data-t] .mega-t:has(.mega-nimi[aria-current]) { box-shadow: inset 0 0 0 1.5px var(--signal); }
+html[data-t] .mega-nimi { font: 500 19px/1.25 var(--font-display); color: var(--ink); letter-spacing: -0.01em; }
+html[data-t] .mega-nimi:hover { color: var(--signal); text-decoration: none; }
+html[data-t] .mega a.mega-nimi[aria-current="page"] { color: var(--signal); font-weight: 500; }
+html[data-t] .mega-t p { color: var(--ink-2); font-size: 14px; }
+html[data-t] .mega-t li a { background: var(--page); border-color: var(--border); color: var(--ink-2); font-size: 13.5px; }
+html[data-t] .mega-t li a:hover { border-color: var(--signal); color: var(--signal); }
+html[data-t] .mega-lisa { padding-bottom: 18px; }
+html[data-t] .mega-lisa a { color: var(--ink-2); }
+html[data-t] .mega-lisa a:hover { color: var(--signal); }
+@media (max-width: 680px) { html[data-t] .mega-t { padding: 12px 14px; } html[data-t] .mega-nimi { font-size: 17px; } }

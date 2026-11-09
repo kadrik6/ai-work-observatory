@@ -354,7 +354,7 @@ def test_hangete_aastaid_ei_vorrelda_enne_inimese_kontrolli(sait):
 def test_menuus_on_kaheksa_teemat_ja_usaldus_on_oma_teema(sait):
     # Kadri 6.11.2026 21:59: Hanked on oma menüüpunkt. 22:27 (paigutuse ettepanekud 1–3, 10): Usaldus oma menüükoht
     menuu = re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1)
-    assert re.findall(r">([^<>]+)</a>", menuu) == ["Inimesed", "Ettevõtted", "Töö", "Avalik sektor", "Hanked", "Tehisaru määrus", "Uudised", "Usaldus"]
+    assert re.findall(r">([^<>]+)</a>", menuu) == ["Avaleht", "Inimesed", "Ettevõtted", "Töö", "Avalik sektor", "Hanked", "Tehisaru määrus", "Uudised", "Usaldus"]
     assert '<a href="hanked.html" aria-current="page">Hanked</a>' in sait["hanked.html"]
     assert '<ul class="sellel"></ul>' not in "".join(sait.values())
     for f in ("kas-see-on-tosi.html", "lahknevused.html", "varskus.html"):
@@ -639,9 +639,20 @@ def test_publikatsiooni_tsiteeringud_on_pealkirja_korval(A, sait):
     # Kadri MKUS-i kommentaar 7.11.2026 08:50: „tahaks näha kõrval arvu mitu korda on tsiteeritud“
     osa = _jaotis(sait["too-kirjandus.html"], "publikatsioonid")
     assert '<th scope="col" class="v">Tsiteeritud</th><th scope="col">Publikatsioon ja kanal</th>' in osa
-    koik = max((r for r in A["publikatsioonid"]["tood"] if r["grupp"] == "koik" and r.get("url")), key=lambda r: r["viiteid"])
+    koik = max((r for r in lehed_uudised.alates_aastast(A["publikatsioonid"], lehed_uudised.TSIT_ALATES) if r.get("url")), key=lambda r: r["viiteid"])
     rida = osa.split(f'<a href="{komponendid.e(koik["url"])}">')[0].rsplit("<tr>", 1)[1]
     assert lehed_uudised._arv(koik["viiteid"]) in rida
+
+
+def test_enim_tsiteeritud_alates_2026(A, sait):
+    # Kadri MKUS-i kommentaar 9.11.2026: „siin võiks olla enim tsiteeritud alates 2026“
+    osa = _jaotis(sait["too-kirjandus.html"], "publikatsioonid")
+    assert "Enim tsiteeritud alates 2026 (" in osa and "alates 2023" not in osa
+    read = lehed_uudised.alates_aastast(A["publikatsioonid"], 2026)
+    assert read and all(r["avaldatud"] >= "2026" for r in read)
+    assert len({r["url"] for r in read}) == len(read)
+    paneel = osa.split('id="pub-alates"')[1].split("</table>")[0]
+    assert paneel.count("<tr>") == len([r for r in read if r.get("url")]) + 1  # + päis
 
 
 def test_eesti_toode_pohinumbrid_on_tabelis(A, sait):
@@ -1016,10 +1027,10 @@ def test_ettekanded_ainult_kinnitatud():
 
 
 def test_pohimenuu_on_m2_keskel_ilma_joonteta():
-    # Kadri 8.11.2026 22:50 „kasuta M2 riba“: teemad päise keskel paksult, hallid jooned läbipaistvad
+    # Kadri 8.11.2026 22:50 „kasuta M2 riba“: teemad päise keskel, hallid jooned läbipaistvad; 9.11 tavakirjas
     css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
     m2 = css.split("Põhimenüü M2")[1]
-    assert "justify-content: center" in m2 and "font-weight: 600" in m2
+    assert "justify-content: center" in m2 and "font-weight: 400" in m2  # teemad tavakirjas (Kadri 9.11.2026)
     assert ".top { border-bottom-color: transparent; }" in m2 and "border-left" not in m2
 
 
@@ -1107,3 +1118,12 @@ def test_a1_kujundus_kogu_saidil(sait):
     assert "--page: #ffffff" in pehme and "--surface-2: #f9f9f9" in pehme
     h1 = re.search(r"<h1>(.*?)</h1>", sait["index.html"], re.S).group(1)
     assert re.fullmatch(r"Tehisaru kasutuses on Eesti inimesed ELis \d+\., <b>ettevõtted \d+\. kohal</b> \(20\d\d\)", h1), h1
+
+
+def test_liikumine_l2_aeglane_ja_vahendatud_liikumise_austus():
+    """Kadri 9.11.2026 „use L2 + aeglane“: ainult lehe üleminek ja ribade kasv, kõik reduced-motion kaitse all."""
+    css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
+    osa = css.split("Liikumine L2")[1]
+    plokk = osa.split("@media (prefers-reduced-motion: no-preference) {", 1)[1]
+    assert "@view-transition { navigation: auto; }" in plokk and "l-riba 1050ms" in plokk
+    assert "@view-transition" not in css.split("Liikumine L2")[0]  # liikumist pole mujal kaitseta

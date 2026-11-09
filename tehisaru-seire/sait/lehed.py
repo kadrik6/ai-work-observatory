@@ -58,6 +58,18 @@ def _kasutus(A):
          f'on eri klassifikaatoriga (<a href="{e(vaide["url"])}">Statistikaamet, {e(kp(vaide["kuupaev"]))}</a>).'),
     ])
 
+    # Koha muutus ELis aastate kaupa, sama graafik nagu avalehel (Kadri 9.11.2026: „I really like these visuals“)
+    from lehed_ulevaade import el_jarjestus
+    j_ev = el_jarjestus(EB, koht_praegu=koht, aasta_praegu=y, lai=(640, 130, 140), min_aastaid=2)
+    jrj_fig = ""
+    if j_ev:
+        b_g, b_k, b_a, _, b_uuend = j_ev
+        jrj_fig = f"""<figure class="plokk" aria-labelledby="g-jrj">
+        <figcaption><span class="gt" id="g-jrj">Eesti koht ELis aastate kaupa, {b_a[0]}–{b_a[-1]}: {b_k[b_a[0]]}. → {b_k[b_a[-1]]}.</span>
+          <span class="gs">Tehisaru kasutavad ettevõtted, % vähemalt 10 hõivatuga ettevõtetest. Klõpsa real, et see esile tõsta.</span></figcaption>
+        <div class="el-bump">{b_g}</div>
+        {allikarida([("Eurostat, isoc_eb_ai", "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "uuendatud " + kp(b_uuend))])}
+      </figure>"""
     aastad = sorted({v["aasta"] for v in andmed.vali(A, EB, "EE", klass="alus")})
     d_read = []
     for g in ["EE", "FI", "SE", "DK", "NO", "DE", "NL", EL]:
@@ -92,6 +104,7 @@ def _kasutus(A):
         </div>
         <p class="gs">Eesti kasvab suhtes kiiremini, aga punktides aeglasemalt kui Põhjamaad.</p>
       </div>
+      {jrj_fig}
       {usaldus}
     </div>
   </div>

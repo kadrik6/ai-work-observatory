@@ -37,7 +37,10 @@ TEEMA_JS = ("<script>(function(){var t=null;try{t=localStorage.getItem('seire-te
 
 
 def menuu(vaated, praegune):
-    out = []
+    # Avaleht menüü esimeseks (Kadri 9.11.2026 00:25: ainult saidi nime kaudu ei olnud avaleht leitav)
+    kodu = next((v for v in vaated if v["id"] == "avaleht"), None)
+    cur = ' aria-current="page"' if praegune == "avaleht" else ""
+    out = [f'<li><a href="{kodu["fail"]}"{cur}>Avaleht</a></li>'] if kodu else []
     for v in vaated:
         if not v["menuu"] or v.get("teema"):  # teema alamvaade (nt Hanked) on teema teisel real, mitte menüüs
             continue

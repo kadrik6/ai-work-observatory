@@ -4,6 +4,16 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 9.11.2026 | Seire sait, Töö › Kirjandus: sakk „Enim tsiteeritud alates 2023“ on nüüd „Enim tsiteeritud alates 2026“ (Kadri MKUS-i kommentaar). Read tulevad OpenAlexi kahest tsiteeritute loendist, ainult 2026. aastal ilmunud tööd; test lisatud. |
+| 9.11.2026 | Ettevõtete lehe ELi võrdluses on nüüd Eesti koha muutus aastate kaupa (2021–2025, sama graafik nagu avalehel). Inimeste lehel on kõigi 27 ELi riigi järjestus 2025 (vaikimisi esimesed 10); Eurostat mõõtis inimeste kasutust esimest korda 2025, nii et kui 2026. aasta number tuleb, muutub see ise koha muutuse graafikuks (`lae_el_jarjestus.py` laeb nüüd ka isoc_ai_iaiu). |
+| 9.11.2026 | Seire saidi avatud menüü (ruudustiku nupp) on avalehe stiilis: hallid ümarad plaadid ilma ääriseta, teema nimi must, sinine ainult hõljudes ja praeguse teema peal. |
+| 9.11.2026 | Seire saidi liikumine L2 aeglane (Kadri valik laborist): lehte vahetades hajub sisu 300 ms jooksul üle, päis jääb paigale; numbriplaatide ribad kasvavad avamisel korra nullist väärtuseni. Reduced-motion seadega liikumist pole. |
+| 9.11.2026 | Seire saidi ülemise menüü esimene teema on „Avaleht“, sest avalehele pääses enne ainult saidi nime kaudu. |
+| 9.11.2026 | Seire saidi ülemise menüü teemad on tavakirjas (enne paks); aktiivne teema on sinine ja alla joonitud. |
+| 9.11.2026 | Seire saidi nimi päises on suurem (27 px, telefonis 22 px) ja must, ka avalehel (enne sinine). |
+| 9.11.2026 | Seire saidi päisepilt on Kadri lõplik foto. Päis on jälle madalam (pilt kärbitakse päise kõrguseks) nagu eelmises versioonis, tumedas teemas nähtavus 55%. |
+| 9.11.2026 | Seire saidi päisepilt näidatakse originaalproportsioonis ilma kärpimata: päis on vähemalt pildi kõrgune (sülearvutis umbes 490 px), telefonis on kogu pilt teksti kohal. |
+| 9.11.2026 | Seire saidi päisepilt vahetati Kadri uue foto vastu (väiksem part, taim, sülearvuti). Tumedas teemas on pilt nüüd sama moodi kui heledas: mustvalge, nähtavus 55%, hajub lehe taustaks. |
 | 8.11.2026 | Seire saidi avalehe päisepilt vahetati Kadri uue töölaua foto vastu (taim, part, sülearvuti); kujundus sama (mustvalge, B7 hele 55%, B5 tume). |
 | 8.11.2026 | Seire saidi avalehe päisesse tuli mustvalge töölaua foto: heledas teemas B7 (läbipaistvus 55%, hajuv üleminek), tumedas B5 (tumendatud). Turvakontroll lubab Kadri loal ainult faili `tehisaru-seire/sait/pilt/avaleht.jpg`, test valvab, et teisi pilte ei lubata. |
 | 2026-11-08 | Seire sait sai A1 „Tehisaru 2027“ kujunduse (Kadri 23:41): valge Hele teema, kastideta jaotised, suur pealkiri, hallid numbrikaardid ja kerged tabelid kõigil lehtedel. Avalehe päis on lühike: pealkiri ütleb ELi kohad koos aastaga, üks lause ja link „Allikad ja kuupäevad“. Asendab 21:01 Helehalli teema. |

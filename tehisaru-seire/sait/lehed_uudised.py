@@ -581,6 +581,23 @@ def hanked(A, vaade, vaated=None):
 
 # ---------------------------------------------------------------- Töö: mida uuritakse
 
+# Kadri MKUS-i kommentaar 9.11.2026: „siin võiks olla enim tsiteeritud alates 2026“ (oli: alates 2023)
+TSIT_ALATES = 2026
+
+
+def alates_aastast(P, aasta):
+    """Enim tsiteeritud tööd, mis ilmusid alates antud aastast. OpenAlexi kogujal on kaks tsiteeritute loendit:
+    50 enim tsiteeritut 12 kuu jooksul („aasta“) ja alates 2023 („koik“). Mõlemad on tsiteeringute järgi tipp,
+    seega nende ühendist alates antud aastast ilmunud tööd on selle aasta enim tsiteeritud tööd kuni
+    12 kuu loendi lõikepiirini. Sama töö on ainult ühe korra."""
+    nahtud, read = set(), []
+    for r in P["tood"]:
+        if r["grupp"] in ("aasta", "koik") and int(r["avaldatud"][:4]) >= aasta and r.get("url") not in nahtud:
+            nahtud.add(r.get("url"))
+            read.append(r)
+    return read
+
+
 def uuringud_too(A):
     """Töö vaate jaotis: publikatsioonid tehisarust ja tööst (OpenAlex) ning Eesti allikad. Tühi, kui andmeid pole toodud."""
     P = A.get("publikatsioonid")
@@ -607,10 +624,10 @@ def uuringud_too(A):
     <div><p class="gt">Teema osa {aastad[-1]["aasta"]}. aasta publikatsioonidest</p><div class="viis teemad">{t_read}</div></div>
   </div>
 </section>"""
-    grupid = [("uusimad", "Uusimad"), ("aasta", "Enim tsiteeritud, 12 kuud"), ("koik", "Enim tsiteeritud alates 2023"), ("eesti", "Eesti autorid")]
+    grupid = [("uusimad", "Uusimad"), ("aasta", "Enim tsiteeritud, 12 kuud"), ("alates", f"Enim tsiteeritud alates {TSIT_ALATES}"), ("eesti", "Eesti autorid")]
     nupud, osad = [], []
     for i, (g, nimi) in enumerate(grupid):
-        read = [r for r in P["tood"] if r["grupp"] == g]
+        read = alates_aastast(P, TSIT_ALATES) if g == "alates" else [r for r in P["tood"] if r["grupp"] == g]
         if g == "uusimad":
             read.sort(key=lambda r: r["avaldatud"], reverse=True)
         elif g == "eesti":
