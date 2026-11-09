@@ -1,5 +1,5 @@
 {
-  "viimane_kontroll": "2026-11-08T17:58:00+02:00",
+  "viimane_kontroll": "2026-11-09T17:58:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
@@ -12,17 +12,42 @@
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "17.53: 'koondamine' ja 'Eesti Energia koondamine' uusi tulemusi ei andnud; 'tehisaru' andis Novaatori Stuart Russelli loo (mitte töö kohta) ja Äripäeva Goldman Sachsi loo"
+      "markus": "17.53: uut koondamist ega Eesti Energia jätkulugu ei olnud; lisatud Natalie Metsa arvamus (ERR)"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "17.53: lisatud Microsofti lahkumispakkumine + töötajate kiri ja Goldman Sachsi AI-tööriistade piirang; Canva 6.11 jätkulood ja Filipiinide eelnõu kordused jäid välja (juba kajastatud)"
+      "markus": "17.53: lisatud PhysicsWallah (tehisaru osaline põhjus); Heidi Health (tasuline, avamata), Bloomberg (blokeeritud) ja Filipiinide eelnõu kordus jäid välja"
     },
     {
       "nimi": "Challenger kuuaruanne",
       "ok": true,
       "markus": "kuuaruanne; järgmine detsembri alguses"
+    },
+    {
+      "nimi": "Arenguseire Keskus (RSS)",
+      "ok": true,
+      "markus": "17.53: uus postitus on lähisuhtevägivalla raport, teemaväline"
+    },
+    {
+      "nimi": "Eesti.ai uudised",
+      "ok": true,
+      "markus": "leht avaneb; Arunädal ja hange leitud"
+    },
+    {
+      "nimi": "Statistikaamet uudised",
+      "ok": true,
+      "markus": "leht avaneb; rss.xml annab 404"
+    },
+    {
+      "nimi": "Riigi otsingud (site: ja uudised)",
+      "ok": true,
+      "markus": "17.53: site:-päringud uusi tulemusi ei andnud"
+    },
+    {
+      "nimi": "OECD uudised (otsing)",
+      "ok": true,
+      "markus": "9.11: uut OECD tööturu ega tehisaru teadet ei leitud"
     }
   ]
 }
