@@ -1319,13 +1319,12 @@ html[data-t] .tbl { max-width: 100%; overflow-x: auto; }
 
 /* Avalehe päise pilt B7 (Kadri 8.11.2026 23:49: „B7 with gradient 55%“): pilt pealkirja taga, mustvalge,
    sulandub vasakult ja alt lehe taustaks; nähtavus 55%. Tekst on vasakul, kus pildil on tühi sein. */
-/* Pilt näidatakse originaalproportsioonis, kärpimata (Kadri 9.11.2026 00:06): päis on vähemalt pildi kõrgune (1916 × 690). */
-html[data-t] .pea-rahu.pilt { position: relative; isolation: isolate; padding-top: 56px; padding-bottom: 48px; min-height: calc(100vw * 690 / 1916); box-sizing: border-box; }
+html[data-t] .pea-rahu.pilt { position: relative; isolation: isolate; padding-top: 56px; padding-bottom: 48px; min-height: 300px; }
 html[data-t] .pea-rahu.pilt::before {
   content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%);
   background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
               linear-gradient(0deg, var(--page) 0%, transparent 30%),
-              url("pilt/avaleht.jpg") right center / cover no-repeat;
+              url("pilt/avaleht.jpg") right 62% / cover no-repeat;
   filter: grayscale(1) brightness(1.08) contrast(.94); opacity: .55; pointer-events: none;
 }
 html[data-t] .pea-rahu.pilt h1 { max-width: 22ch; }
@@ -1334,7 +1333,7 @@ html[data-t] .pea-rahu.pilt + nav .sellel { margin-top: 24px; }
 /* Tume teema: sama pilt ja üleminek, mustvalge, nähtavus 55% nagu heledas (Kadri 9.11.2026 00:04) */
 html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale(1); opacity: .55; }
 @media (max-width: 680px) {
-  html[data-t] .pea-rahu.pilt { min-height: 0; padding-top: calc(100vw * 690 / 1916 + 16px); padding-bottom: 8px; }
-  html[data-t] .pea-rahu.pilt::before { bottom: auto; height: calc(100vw * 690 / 1916);
-    background: linear-gradient(0deg, var(--page) 0%, transparent 35%), url("pilt/avaleht.jpg") center top / 100% auto no-repeat; }
+  html[data-t] .pea-rahu.pilt { min-height: 0; padding-top: 168px; padding-bottom: 8px; }
+  html[data-t] .pea-rahu.pilt::before { bottom: auto; height: 150px;
+    background: linear-gradient(0deg, var(--page) 0%, transparent 35%), url("pilt/avaleht.jpg") right top / auto 150px no-repeat; }
 }
