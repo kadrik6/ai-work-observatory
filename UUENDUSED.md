@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 9.11.2026 | Seire sait: avalehe päisepilt ei tee enam lehte laiemaks (Kadri 07:30). Pilt oli 100vw lai, mis sisaldab püstise kerimisriba laiust, ja tekitas rõhtsa kerimisriba. Nüüd on `html[data-t] body { overflow-x: clip; }`. Kontrollitud nähtava kerimisribaga brauseris laiustel 1024, 1366 ja 1920 px: rõhtsat kerimisriba ei ole ja kleepuv päis töötab. |
 | 9.11.2026 | Seire sait, Töö › Tehisarutööd: AI-kuulutuste jaotisse kaks uut leidu (Kadri kinnitas mustandi leiud 1 ja 2). „Tehisaru- ja andmetöödest X% on Harjumaal, kõigist töökuulutustest Y%“ (#tk-kus) ja „Tehisaru mainivatest kuulutustest X% on ühelt tööandjalt“ (#tk-yks). Numbrid arvutatakse iga ehitusega failidest `ai-tookuulutused.json` ja `toopakkumised.json`. |
 | 9.11.2026 | Seire sait, avaleht: päise taustapilt sõltub teemast (Kadri 07:18 „tumedas A ja heledas B“). Heledas ja pehmes teemas pilt B (androidi lähivaade, `sait/pilt/avaleht.jpg`), tumedas pilt A (androidi profiil oru kohal, `sait/pilt/avaleht-tume.jpg`). Käsitlus sama: mustvalge, nähtavus 55%. Uus test `test_paise_pilt_teema_jargi`. |
 | 9.11.2026 | Seire sait, avaleht: päise taustapilt vahetatud Kadri saadetud pildiga (valgusküllane töölaud taimega, `sait/pilt/avaleht.jpg`). Käsitlus sama: mustvalge, nähtavus 55%, sulandub vasakult ja alt. |

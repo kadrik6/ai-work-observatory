@@ -1190,3 +1190,9 @@ def test_ai_kuulutuste_leiud_asukoht_ja_uks_tooandja(A, sait):
     osa = tekst(_jaotis(leht, "tk-yks"))
     assert f"{round(n / len(K['kuulutused']) * 100)}% on ühelt tööandjalt ({top})" in osa
     assert f"{n} / {len(K['kuulutused'])}" in osa
+
+
+def test_paise_pilt_ei_tee_saiti_laiemaks():
+    # Kadri 9.11.2026 07:30: „ära tee saiti piltide pärast laiemaks“ – 100vw pilt ei tohi tekitada rõhtsat kerimisriba
+    css = (Path(__file__).resolve().parent.parent / "sait" / "stiil.css").read_text(encoding="utf-8")
+    assert "html[data-t] body { overflow-x: clip; }" in css
