@@ -1266,7 +1266,8 @@ ol.sammud p { margin: 0; max-width: 72ch; }
 .allikad-l > div p { margin: 0 0 4px; }
 
 html[data-t] {
-  --wrap: 1280px; --radius: 12px;
+  /* Kadri 9.11.2026: laial ekraanil poole väiksemad külgvarud kui 1280 px piiriga: (ekraan + 1280) / 2, kuni 1920 px */
+  --wrap: clamp(1280px, calc(50vw + 640px), 1920px); --radius: 12px;
 }
 html[data-t] body { font-size: 16.5px; line-height: 1.55; }
 html[data-t] .wrap { padding-left: max(16px, 3vw, env(safe-area-inset-left, 0px)); padding-right: max(16px, 3vw, env(safe-area-inset-right, 0px)); }
