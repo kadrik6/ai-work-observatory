@@ -1,0 +1,55 @@
+{
+  "_markus": "Käsitsi kontrollitud avalik taust AI-tööriistade ligipääsu jaotisele (Kadri „jah, avalda“ 9.11.2026 19:59). Iga rida on algallikast üle vaadatud 9.11.2026; Soome juhendi lehte ei saanud otse avada, rida põhineb OECD.AI kirjeldusel. Meie soovitusi siia ei panda.",
+  "riigid": [
+    {
+      "riik": "Soome",
+      "tekst": "Rahandusministeeriumi juhend julgustab ametnikke ja juhte generatiivset tehisaru katsetama. See on üldine ja mittesiduv alus, mille põhjal asutused teevad oma täpsemad juhised.",
+      "allikas": "Rahandusministeerium (VM), 2025; kirjeldus OECD.AI",
+      "url": "https://oecd.ai/en/dashboards/policy-initiatives/guidelines-on-using-generative-artificial-intelligence-to-support-and-assist-work-in-public-administration"
+    },
+    {
+      "riik": "Holland",
+      "tekst": "Keskvalitsus koos omavalitsuste, provintside ja teiste asutustega andis ametnikele rohkem vabadust generatiivset tehisaru kasutada, kui nad täidavad seatud tingimusi.",
+      "allikas": "NL Digital Government, 2025",
+      "url": "https://www.nldigitalgovernment.nl/news/government-expands-position-on-use-of-generative-ai/"
+    },
+    {
+      "riik": "Ühendkuningriik",
+      "tekst": "Avalikke tööriistu (näiteks ChatGPT, Gemini) ei keelata, aga juhend hoiatab, et sisestatavaid andmeid seal kontrollida ei saa, seega tuleb kasutajatele õpetada, mida tohib sisestada. Keskvalitsuse asutused peavad avaldama, kus nad algoritme ja tehisaru kasutavad.",
+      "allikas": "AI Playbook for the UK Government, 10.02.2025",
+      "url": "https://www.gov.uk/government/publications/ai-playbook-for-the-uk-government/artificial-intelligence-playbook-for-the-uk-government-html"
+    },
+    {
+      "riik": "USA (föderaal)",
+      "tekst": "Ranged riskinõuded kehtivad ainult suure mõjuga tehisarule, mille väljund on peamine alus otsusele, mis mõjutab inimese õigusi või ohutust. Asutus avaldab oma kasutusjuhtude nimekirja vähemalt kord aastas.",
+      "allikas": "OMB memo M-25-21, 3.04.2025",
+      "url": "https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf"
+    }
+  ],
+  "uuringud": [
+    {
+      "leid": "Kolmes ettevõttes (4867 arendajat) lõpetasid AI-abiga arendajad 26% rohkem töid. Vähem kogenud arendajad võtsid tööriista rohkem kasutusele ja võitsid rohkem.",
+      "uuring": "Cui jt, Management Science 2026",
+      "url": "https://doi.org/10.1287/mnsc.2025.00535",
+      "liik": "eelretsenseeritud, väliskatse"
+    },
+    {
+      "leid": "Klienditoes lahendati AI-abiga tunnis 14% rohkem pöördumisi, kõige rohkem võitsid vähem kogenud töötajad.",
+      "uuring": "Brynjolfsson, Li, Raymond 2023",
+      "url": "https://www.nber.org/papers/w31161",
+      "liik": "väliuuring ettevõttes"
+    },
+    {
+      "leid": "758 konsultanti: tehisarule sobivates ülesannetes tehti 12% rohkem ja 25% kiiremini, aga tehisarule sobimatus ülesandes andsid AI kasutajad õige lahenduse 19% väiksema tõenäosusega.",
+      "uuring": "Dell'Acqua jt, Organization Science 2026",
+      "url": "https://doi.org/10.1287/orsc.2025.21838",
+      "liik": "eelretsenseeritud, eelregistreeritud katse"
+    },
+    {
+      "leid": "16 kogenud arendajat arvasid pärast tööd, et tehisaru kiirendas neid 20%, aga mõõdetud ajakulu kasvas 19%.",
+      "uuring": "Becker jt (METR) 2025",
+      "url": "https://arxiv.org/abs/2507.09089",
+      "liik": "eeltrükk, väike valim"
+    }
+  ]
+}
