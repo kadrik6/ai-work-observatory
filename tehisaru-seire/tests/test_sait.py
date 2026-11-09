@@ -639,9 +639,20 @@ def test_publikatsiooni_tsiteeringud_on_pealkirja_korval(A, sait):
     # Kadri MKUS-i kommentaar 7.11.2026 08:50: „tahaks näha kõrval arvu mitu korda on tsiteeritud“
     osa = _jaotis(sait["too-kirjandus.html"], "publikatsioonid")
     assert '<th scope="col" class="v">Tsiteeritud</th><th scope="col">Publikatsioon ja kanal</th>' in osa
-    koik = max((r for r in A["publikatsioonid"]["tood"] if r["grupp"] == "koik" and r.get("url")), key=lambda r: r["viiteid"])
+    koik = max((r for r in lehed_uudised.alates_aastast(A["publikatsioonid"], lehed_uudised.TSIT_ALATES) if r.get("url")), key=lambda r: r["viiteid"])
     rida = osa.split(f'<a href="{komponendid.e(koik["url"])}">')[0].rsplit("<tr>", 1)[1]
     assert lehed_uudised._arv(koik["viiteid"]) in rida
+
+
+def test_enim_tsiteeritud_alates_2026(A, sait):
+    # Kadri MKUS-i kommentaar 9.11.2026: „siin võiks olla enim tsiteeritud alates 2026“
+    osa = _jaotis(sait["too-kirjandus.html"], "publikatsioonid")
+    assert "Enim tsiteeritud alates 2026 (" in osa and "alates 2023" not in osa
+    read = lehed_uudised.alates_aastast(A["publikatsioonid"], 2026)
+    assert read and all(r["avaldatud"] >= "2026" for r in read)
+    assert len({r["url"] for r in read}) == len(read)
+    paneel = osa.split('id="pub-alates"')[1].split("</table>")[0]
+    assert paneel.count("<tr>") == len([r for r in read if r.get("url")]) + 1  # + päis
 
 
 def test_eesti_toode_pohinumbrid_on_tabelis(A, sait):

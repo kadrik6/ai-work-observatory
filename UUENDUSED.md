@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 9.11.2026 | Seire sait, Töö › Kirjandus: sakk „Enim tsiteeritud alates 2023“ on nüüd „Enim tsiteeritud alates 2026“ (Kadri MKUS-i kommentaar). Read tulevad OpenAlexi kahest tsiteeritute loendist, ainult 2026. aastal ilmunud tööd; test lisatud. |
 | 9.11.2026 | Ettevõtete lehe ELi võrdluses on nüüd Eesti koha muutus aastate kaupa (2021–2025, sama graafik nagu avalehel). Inimeste lehel on kõigi 27 ELi riigi järjestus 2025 (vaikimisi esimesed 10); Eurostat mõõtis inimeste kasutust esimest korda 2025, nii et kui 2026. aasta number tuleb, muutub see ise koha muutuse graafikuks (`lae_el_jarjestus.py` laeb nüüd ka isoc_ai_iaiu). |
 | 9.11.2026 | Seire saidi avatud menüü (ruudustiku nupp) on avalehe stiilis: hallid ümarad plaadid ilma ääriseta, teema nimi must, sinine ainult hõljudes ja praeguse teema peal. |
 | 9.11.2026 | Seire saidi liikumine L2 aeglane (Kadri valik laborist): lehte vahetades hajub sisu 300 ms jooksul üle, päis jääb paigale; numbriplaatide ribad kasvavad avamisel korra nullist väärtuseni. Reduced-motion seadega liikumist pole. |
