@@ -1361,3 +1361,20 @@ html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale
   .plaadid > .plaat:nth-child(5) .kriba i { animation-delay: 585ms; }
   .plaadid > .plaat:nth-child(6) .kriba i { animation-delay: 675ms; }
 }
+
+/* Avatud menüü avalehe stiilis (Kadri 9.11.2026 00:27): hallid ümarad plaadid ilma ääriseta nagu numbriplaadid,
+   teema nimi must Space Grotesk, sinine ainult hõljudes ja praeguse teema peal. */
+html[data-t] .mega-paneel { background: var(--page); box-shadow: 0 16px 32px rgb(21 25 38 / .10); }
+html[data-t] .mega-ruut { gap: 16px; padding-top: 20px; padding-bottom: 12px; }
+html[data-t] .mega-t { background: var(--surface-2); border: 0; border-radius: 12px; padding: 16px 18px; gap: 6px; }
+html[data-t] .mega-t:has(.mega-nimi[aria-current]) { box-shadow: inset 0 0 0 1.5px var(--signal); }
+html[data-t] .mega-nimi { font: 500 19px/1.25 var(--font-display); color: var(--ink); letter-spacing: -0.01em; }
+html[data-t] .mega-nimi:hover { color: var(--signal); text-decoration: none; }
+html[data-t] .mega a.mega-nimi[aria-current="page"] { color: var(--signal); font-weight: 500; }
+html[data-t] .mega-t p { color: var(--ink-2); font-size: 14px; }
+html[data-t] .mega-t li a { background: var(--page); border-color: var(--border); color: var(--ink-2); font-size: 13.5px; }
+html[data-t] .mega-t li a:hover { border-color: var(--signal); color: var(--signal); }
+html[data-t] .mega-lisa { padding-bottom: 18px; }
+html[data-t] .mega-lisa a { color: var(--ink-2); }
+html[data-t] .mega-lisa a:hover { color: var(--signal); }
+@media (max-width: 680px) { html[data-t] .mega-t { padding: 12px 14px; } html[data-t] .mega-nimi { font-size: 17px; } }

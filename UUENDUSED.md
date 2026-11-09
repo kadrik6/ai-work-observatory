@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 9.11.2026 | Seire saidi avatud menüü (ruudustiku nupp) on avalehe stiilis: hallid ümarad plaadid ilma ääriseta, teema nimi must, sinine ainult hõljudes ja praeguse teema peal. |
 | 9.11.2026 | Seire saidi liikumine L2 aeglane (Kadri valik laborist): lehte vahetades hajub sisu 300 ms jooksul üle, päis jääb paigale; numbriplaatide ribad kasvavad avamisel korra nullist väärtuseni. Reduced-motion seadega liikumist pole. |
 | 9.11.2026 | Seire saidi ülemise menüü esimene teema on „Avaleht“, sest avalehele pääses enne ainult saidi nime kaudu. |
 | 9.11.2026 | Seire saidi ülemise menüü teemad on tavakirjas (enne paks); aktiivne teema on sinine ja alla joonitud. |
