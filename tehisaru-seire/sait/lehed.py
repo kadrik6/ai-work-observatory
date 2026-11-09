@@ -473,6 +473,7 @@ LIGIPAAS_TEGU = {"avab_koigile": "avas tööriistad kõigile", "avab_ehitamise_p
 def _ligipaas(A):
     """Kes tohib tehisaru tööriistu ja agente kasutada (Kadri 9.11.2026 12:32: saidile kohe, märkega „töös, kogumine käib“).
     Andmed sisu/ligipaas.json (sait/vota_kaasa.py). Valim on uudistepõhine, seega näitame arve, mitte osakaale."""
+    from abi import a as a_
     from komponendid import tabel
     S = (A.get("ligipaas") or {}).get("sundmused") or []
     if not S:
@@ -512,6 +513,15 @@ def _ligipaas(A):
         yy = [r for r in S if r["kuupaev"][:4] == str(y)]
         read_aastad.append(f'<div class="lp-rida" role="listitem"><span class="lp-aasta">{y}</span>'
                            f'<div>{lahter([r for r in yy if avab(r)])}</div><div>{lahter([r for r in yy if not avab(r)])}</div></div>')
+    # Eesti avaliku sektori number otse Riigikontrolli ülevaatest (TOOELU ligipääsu lõime tekst 9.11.2026, algallikast kontrollitud)
+    rk = A["leiud"].get("rk-ai-kord")
+    eesti = []
+    if rk:
+        n = {r["ruhm"]: int(r["vaartus"]) for r in A["leiud_arvud"] if r["leid"] == "rk-ai-kord"}
+        eesti = [("Eesti asutused", "s", f'Riigikontrolli küsitluses ({rk["aasta"]}) kasutas {n["kasutab"]} vastanud asutust {n["vastas"]}-st '
+                  f'välismaiseid tehisaru valmislahendusi, aga <b>{n["korrata"]} asutusel puudus asutusesisene kord</b>, kuidas neid '
+                  f'korrektselt ja turvaliselt kasutada ({a_(rk["url"], "Riigikontroll " + kp(rk["avaldatud"]))}, {e(rk["koht"].split(";")[0])}). '
+                  "See on avalik sektor, mitte ettevõtted, ja ainult küsitlusele vastanud asutused.")]
     tabel_read = []
     for r in S:
         kus = "Eesti" if r["piirkond"] == "EE" else "maailm"
@@ -536,7 +546,7 @@ def _ligipaas(A):
       {"".join(read_aastad)}
     </div>
   </figure>
-  {faktid([("Valim on kallutatud", "risk", "Otsused tulevad uudistest, seepärast on neis rohkem suuri ja tuntud ettevõtteid. "
+  {faktid(eesti + [("Valim on kallutatud", "risk", "Otsused tulevad uudistest, seepärast on neis rohkem suuri ja tuntud ettevõtteid. "
             "Näitame arve, mitte osakaale: see ei ütle, kui suur osa ettevõtetest tööriistu lubab või keelab.")])}
   {tabel(["Kuupäev", "Ettevõte", "Otsus", "Mida otsustati", "Põhjus ettevõtte sõnul", "Allikas"], tabel_read,
          pealdis="Ettevõtete otsused tehisaru tööriistade kasutamise kohta, uuemad eespool", numbrid=[])}
@@ -611,6 +621,8 @@ def ettevotted(A, vaade, vaated=None):
          A["leiud"]["gem-ai-teadlikkus"]["avaldatud"], "2025, eksperthinnang 0–10, mitte mõõtmine",
          kp(A["leiud"]["gem-ai-teadlikkus"]["avaldatud"])),
         (f"Siht, {siht['allikas']}", siht["url"], siht["kontrollitud"], f"{pr(sv, 0)}% aastaks {siht['aasta']}; kontrollitud"),
+        ("Asutuste tehisaru kord, Riigikontroll", A["leiud"]["rk-ai-kord"]["url"], A["leiud"]["rk-ai-kord"]["avaldatud"],
+         "2025, küsitlusele vastanud 48 asutust"),
     ])
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Andmed")], sec_andmed),

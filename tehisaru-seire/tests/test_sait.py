@@ -1225,6 +1225,7 @@ def test_ai_tooriistade_ligipaas_ettevotete_lehel(sait, A):
     assert "Töös: kogumine käib" in sec
     assert f"Kogutud {len(S)} otsusest" in tekst(sec)
     assert "Näitame arve, mitte osakaale" in sec
+    assert "33 asutusel puudus asutusesisene kord" in tekst(sec)  # Riigikontroll 30.05.2025, p 58
     assert sec.count("<tr>") == len(S) + 1  # päis + üks rida otsuse kohta
     assert all("kontroll" not in r for r in S)  # sisemine kontrollimärge ei lähe saidile
 
