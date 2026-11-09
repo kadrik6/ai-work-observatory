@@ -1400,3 +1400,19 @@ html[data-t] .mega-lisa a:hover { color: var(--signal); }
 .ar-hl { color: var(--signal); }
 .ar-fig { margin-top: 32px; }
 .ar-fig > details { margin-top: 12px; }
+
+/* GEM ekspertide hinnang 0–10 (Kadri 9.11.2026): oma skaala, mitte Eurostati %-teljel. Tsoonid hallid, Eesti fookusvärv. */
+.gem-fig { margin: 24px 0 8px; max-width: 760px; }
+.gem-skaala { position: relative; height: 56px; margin-top: 40px; }
+.gem-tsoon { position: absolute; top: 24px; height: 14px; background: var(--grid); border-right: 2px solid var(--surface); }
+.gem-tsoon.piisav { background: color-mix(in srgb, var(--mark-ctx) 55%, var(--grid)); }
+.gem-tsoon.hea { background: var(--mark-ctx); border-right: 0; }
+.gem-tsoon small { position: absolute; top: 18px; left: 4px; font-size: 13.6px; color: var(--ink-2); white-space: nowrap; }
+.gem-tsoon.hea small { left: auto; right: 0; }
+.gem-mark { position: absolute; top: 16px; height: 26px; width: 3px; margin-left: -1px; background: var(--mark-signal); }
+.gem-mark b { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); white-space: nowrap; color: var(--signal); font-size: 16px; }
+.gem-telg { position: relative; height: 20px; margin-top: 18px; font-size: 13.6px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.gem-telg span { position: absolute; transform: translateX(-50%); }
+.gem-telg span:first-child { transform: none; }
+.gem-telg span:last-child { transform: translateX(-100%); }
+@media (max-width: 680px) { .gem-tsoon small { font-size: 12.5px; left: 2px; } }
