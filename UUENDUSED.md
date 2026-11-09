@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 9.11.2026 | Seire sait, Ettevõtted: uus sakk „Ekspertide hinnang (GEM)“. GEM 2025/2026 Global Report (lk 135): Eesti eksperdid hindavad uute ettevõtjate tehisaruteadlikkust 6,6 punktiga 10-st. Märgitud „eksperthinnang, mitte mõõtmine“, oma 0–10 skaalal, mitte Eurostati %-teljel. Andmed `sait/sisu/leiud.csv` ja `leiud-arvud.csv`. Kadri „lisa“ kolleegi soovitusele. |
 | 9.11.2026 | Seire sait, Töö › Ametid: tabel „Kõige avatumad ametid Eestis“ on nüüd tulpdiagramm (töötajad, aste 4 sinisega, 12 rida + „kõik (46)“); tabel jääb „Näita andmetabelit“ taha. Kadri soov; test lisatud. |
 | 9.11.2026 | Seire sait: päise teemamenüü kiri 16 → 15 px (Kadri soov). |
 | 9.11.2026 | Seire sait: päises saidi nimi 27 → 24 px (telefonis 22 → 20 px) ja kuupäevarida 12,5 → 11,5 px (Kadri soov). |

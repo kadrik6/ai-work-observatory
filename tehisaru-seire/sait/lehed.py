@@ -424,6 +424,46 @@ def _arenguseire(A):
 </section>"""
 
 
+def _gem(A, ee_el):
+    """Kadri 9.11.2026 („lisa“, kolleegi soovitus): GEM-i ekspertide hinnang Eurostati mõõdetud kasutuse kõrvale.
+    Eraldi sakk ja oma 0–10 skaala: hinnang ja ettevõtete osa ei ole võrreldavad, seega ei ole nad samal teljel."""
+    L = A["leiud"]["gem-ai-teadlikkus"]
+    v = float(next(r for r in A["leiud_arvud"] if r["leid"] == L["id"])["vaartus"])
+    if not 0 <= v <= 10:
+        raise AndmeViga("GEM-i ekspertide hinnang peab olema skaalal 0–10")
+    tase = "suurepärane" if v >= 7 else "piisav" if v >= 5 else "ebapiisav"
+    x = lambda t: f"{t * 10:g}%"  # noqa: E731
+    tsoonid = "".join(f'<span class="gem-tsoon {k}" style="left:{x(a)};width:{x(b - a)}"><small>{e(n)}</small></span>'
+                      for a, b, k, n in [(0, 5, "alla", "ebapiisav"), (5, 7, "piisav", "piisav"), (7, 10, "hea", "suurepärane")])
+    return f"""
+<section class="jaotis" id="gem" aria-labelledby="h-gem">
+  <header>
+    <h2 id="h-gem">Eesti eksperdid hindavad uute ettevõtjate tehisaruteadlikkust <b>{pr(v)} punktiga 10-st</b>, mis on GEM&#8209;i skaalal {tase}</h2>
+    <p class="alam"><b>Eksperthinnang, mitte mõõtmine.</b> Global Entrepreneurship Monitor (GEM) küsis {L["aasta"]}. aastal igas riigis ekspertidelt,
+      kui teadlikud on uued ettevõtjad vajadusest tehisarulahendusi arendada ja kasutada. Skaala 0–10.</p>
+  </header>
+  <figure class="gem-fig" aria-labelledby="g-gem">
+    <figcaption><span class="gt" id="g-gem">Ekspertide hinnang: uute ettevõtjate teadlikkus tehisaru vajadusest, Eesti {L["aasta"]}, 0–10</span></figcaption>
+    <div class="gem-skaala" role="img" aria-label="Eesti {pr(v)} punkti 10-st; alla 5 ebapiisav, 5–7 piisav, 7 või rohkem suurepärane">
+      {tsoonid}
+      <span class="gem-mark" style="left:{x(v)}"><b>Eesti {pr(v)}</b></span>
+    </div>
+    <div class="gem-telg" aria-hidden="true">{"".join(f'<span style="left:{x(t)}">{t}</span>' for t in (0, 5, 7, 10))}</div>
+  </figure>
+  {faktid([
+      ("Mida see ei näita", "risk",
+       "See ei ütle, kui paljud ettevõtted tehisaru kasutavad. Kasutust mõõdab Eurostat (saki „Kasutus ELis“ all: "
+       f"Eestis {pr(ee_el['vaartus'])}% vähemalt 10 hõivatuga ettevõtetest, {ee_el['aasta']}). Need kaks numbrit ei ole võrreldavad: "
+       "üks on ekspertide hinnang uutele ettevõtjatele, teine ettevõtete osa."),
+      ("Teised riigid", "", "GEM küsis sama 53 riigis. Ebapiisavaks (alla 5) hinnati neist kuus: Ungari, Angola, Lõuna-Aafrika, "
+       "Maroko, Alžeeria ja El Salvador."),
+      ("Mida GEM ei avalda", "", "GEM küsis ka uutelt ettevõtjatelt, kas tehisaru muutub nende ärile lähema kolme aasta jooksul väga "
+       "oluliseks. Eesti number on raportis ainult joonisel (7.4), mitte tekstis, seepärast seda siin ei ole."),
+  ])}
+  {allikarida([("GEM 2025/2026 Global Report", L["url"], kp(L["avaldatud"]) + "; " + L["koht"] + "; " + L["kontrollitud"])])}
+</section>"""
+
+
 def ettevotted(A, vaade, vaated=None):
     """Kaks alamlehte (sisuloogika 6.11.2026, Kadri otsus 6): Kasutus | Tootlikkus ja võimekus."""
     from abi import jaga
@@ -471,9 +511,10 @@ def ettevotted(A, vaade, vaated=None):
     kas = lisa_sihid(A, _kasutus(A), "kasutus", "ee-ettevotted-75")
     jagu = kas.index('<section class="jaotis" id="kasutus-uued"')
     sec_andmed = tm.andmesakid("ettevotted", "Uuri andmeid: kasutus ELis ja teiste riikide 2026. aasta numbrid",
-                               "ELi võrdlus on Eurostati aasta; riikide uued numbrid on eraldi, sest need ei sobi ELi skaalale.", [
+                               "ELi võrdlus on Eurostati aasta; riikide uued numbrid ja ekspertide hinnang on eraldi, sest need ei sobi ELi skaalale.", [
         ("kasutus", "Kasutus ELis", kas[:jagu]),
         ("uued", "Riikide 2026. aasta numbrid", kas[jagu:]),
+        ("gem", "Ekspertide hinnang (GEM)", _gem(A, ee_el)),
     ])
     lyh = lambda k: e(tm.esimene_lause(U[k]["leid"]))  # noqa: E731
     t_uuringud = tm.uuringute_plokk(vaated, [
@@ -488,6 +529,9 @@ def ettevotted(A, vaade, vaated=None):
         (f"Kasutus, {ee['allikas']}", ee["url"], ee["avaldatud"], f"{ee['aasta']}, vähemalt 10 hõivatuga ettevõtted"),
         ("ELi võrdlus, Eurostat isoc_eb_ai", "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table",
          ee_el.get("avaldatud") or None, f"{y}, ELi riigid"),
+        ("Ekspertide hinnang, GEM 2025/2026 Global Report", A["leiud"]["gem-ai-teadlikkus"]["url"],
+         A["leiud"]["gem-ai-teadlikkus"]["avaldatud"], "2025, eksperthinnang 0–10, mitte mõõtmine",
+         kp(A["leiud"]["gem-ai-teadlikkus"]["avaldatud"])),
         (f"Siht, {siht['allikas']}", siht["url"], siht["kontrollitud"], f"{pr(sv, 0)}% aastaks {siht['aasta']}; kontrollitud"),
     ])
     return jaga(A, vaade, lead, [], [

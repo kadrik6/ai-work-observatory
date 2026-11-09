@@ -1150,3 +1150,18 @@ def test_avatumad_ametid_on_tulpdiagramm(A, sait):
     assert osa.count('class="ar-r a4"') == sum(1 for r in K["ametid"] if str(r["aste"]) == "4")
     assert 'class="ar" data-piir="12"' in osa
     assert osa.index('class="ar"') < osa.index("<summary>Näita andmetabelit</summary>")
+
+
+def test_gem_eksperthinnang_on_eraldi_sakis(A, sait):
+    # Kadri 9.11.2026 („lisa“): GEM-i ekspertide hinnang Eurostati kasutuse kõrvale, selgelt märgitud ja oma skaalal
+    L = A["leiud"]["gem-ai-teadlikkus"]
+    v = next(r for r in A["leiud_arvud"] if r["leid"] == L["id"])["vaartus"]
+    assert L["url"].startswith("https://www.gemconsortium.org/") and L["koht"] and L["kontrollitud"]
+    h = sait["ettevotted.html"]
+    assert 'id="sakk-gem-n"' in h
+    osa = _jaotis(h, "gem")
+    assert "Eksperthinnang, mitte mõõtmine." in osa
+    assert f"Eesti {v.replace('.', ',')}" in osa
+    # ei ole Eurostati %-teljel ega samas plokis kui ELi kaart
+    assert 'class="gem-skaala"' in osa and 'class="gem-skaala"' not in _jaotis(h, "kasutus")
+    assert "ei ole võrreldavad" in tekst(osa)
