@@ -1440,3 +1440,7 @@ html[data-t] .mega-lisa a:hover { color: var(--signal); }
 .lp-tyhi { color: var(--ink-2); }
 #ligipaas .tbl td small { display: block; color: var(--ink-2); }
 #ligipaas td .lp-kiip { white-space: nowrap; }
+/* Ligipääsu jaotise taust: teised riigid ja uuringud (Kadri 9.11.2026 19:59) */
+#ligipaas .lp-lisa { margin-top: 40px; }
+#ligipaas .lp-lisa h3 { margin: 0 0 8px; font-size: 19px; line-height: 1.3; }
+#ligipaas .lp-lisa > p { margin: 0 0 24px; max-width: 68ch; font-size: 16px; color: var(--ink-2); }

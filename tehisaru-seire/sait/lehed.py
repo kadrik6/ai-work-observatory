@@ -531,6 +531,33 @@ def _ligipaas(A):
                            f'<span class="lp-kiip{" ava" if avab(r) else ""}">{e(LIGIPAAS_NIMI[r["ligipaas"]])}</span>',
                            e(r["tekst"]), e(r["pohjus"]) or "ettevõte ei kommenteerinud",
                            f'<a href="{e(r["url"])}">{e(r["allikas"] or "allikas")}</a>'])
+    K = A.get("ligipaas_kontekst") or {}
+    for r in (K.get("riigid") or []) + (K.get("uuringud") or []):
+        if not str(r.get("url", "")).startswith("https://"):
+            raise AndmeViga(f"ligipaas-kontekst.json: real puudub https-link ({r.get('riik') or r.get('uuring')})")
+    kontekst = ""
+    if K.get("riigid"):
+        # Kadri „jah, avalda“ 9.11.2026 19:59 (ligipääsu lõime LISA 9.11 õhtu); read algallikast üle kontrollitud
+        kontekst += f"""
+  <div class="lp-lisa" id="ligipaas-riigid">
+    <h3>Teised riigid ei keela tööriistu, vaid seavad tingimused</h3>
+    <p>Soome, Holland, Ühendkuningriik ja USA lubavad ametnikel generatiivset tehisaru kasutada. Piirid tulevad andmetest ja mõjust, mitte tööriistast.</p>
+    {tabel(["Riik", "Mida juhend ütleb", "Allikas"],
+           [[f"<b>{e(r['riik'])}</b>", e(r["tekst"]), f'<a href="{e(r["url"])}">{e(r["allikas"])}</a>'] for r in K["riigid"]],
+           pealdis="Kuidas teised riigid ametnike tehisaru kasutust korraldavad", numbrid=[])}
+    {faktid([("Kuidas lugeda", "", "Juhendid on võrdlusmaterjal, Eestile mitte siduvad. USA-s on hiljem lisandunud uusi nõudeid. "
+              "Soome juhendi lehte ei saanud otse avada, rida põhineb OECD.AI kirjeldusel.")])}
+  </div>"""
+    if K.get("uuringud"):
+        kontekst += f"""
+  <div class="lp-lisa" id="ligipaas-uuringud">
+    <h3>Kasu on päris, aga kasutaja ei näe alati, kus tehisaru eksib</h3>
+    <p>Katsetes tegid tehisaru kasutajad tööd rohkem ja kiiremini. Ühes katses said nad tehisarule sobimatus ülesandes vähem õigeid lahendusi, teises hindasid kogenud arendajad oma kiirust valesti.</p>
+    {tabel(["Leid", "Uuring", "Tõendi liik"],
+           [[e(r["leid"]), f'<a href="{e(r["url"])}">{e(r["uuring"])}</a>', e(r["liik"])] for r in K["uuringud"]],
+           pealdis="Uuringud tehisaru mõjust töö tulemusele", numbrid=[])}
+    {faktid([("Mida see ei näita", "risk", "Uuringud kasutasid 2022–2025 tööriistu ja erasektori töötajaid, mitte riigiametnikke ega tänaseid agente.")])}
+  </div>"""
     return f"""
 <section class="jaotis" id="ligipaas" aria-labelledby="h-ligipaas">
   <header>
@@ -550,6 +577,7 @@ def _ligipaas(A):
             "Näitame arve, mitte osakaale: see ei ütle, kui suur osa ettevõtetest tööriistu lubab või keelab.")])}
   {tabel(["Kuupäev", "Ettevõte", "Otsus", "Mida otsustati", "Põhjus ettevõtte sõnul", "Allikas"], tabel_read,
          pealdis="Ettevõtete otsused tehisaru tööriistade kasutamise kohta, uuemad eespool", numbrid=[])}
+  {kontekst}
 </section>"""
 
 

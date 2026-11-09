@@ -299,8 +299,8 @@ def inimesed(A, vaade, vaated=None):
         ("ELi võrdlus, Eurostat isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), eu.get("avaldatud") or None, f"{y}, ELi riigid"),
     ])
     alam_h1(vaade, "inimesed-oskused.html",
-            f'Vähemalt baastaseme digioskused on **{pr(ds["vaartus"])}% Eesti inimestest**, ELi {siht["aasta"]}. aasta siht on {siht["siht"]}%; '
-            f'oskuse puudusel jätab tehisaru kasutamata {pr(os_ee["vaartus"])}%.')
+            # Kadri 9.11.2026 20:26: pealkiri oli liiga pikk; siht ja „ei oska“ on kohe all plokkides
+            f'Vähemalt baastaseme digioskused on **{pr(ds["vaartus"])}% Eesti inimestest**')
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Andmed")], sec_andmed),
         ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],

@@ -1226,8 +1226,33 @@ def test_ai_tooriistade_ligipaas_ettevotete_lehel(sait, A):
     assert f"Kogutud {len(S)} otsusest" in tekst(sec)
     assert "Näitame arve, mitte osakaale" in sec
     assert "33 asutusel puudus asutusesisene kord" in tekst(sec)  # Riigikontroll 30.05.2025, p 58
-    assert sec.count("<tr>") == len(S) + 1  # päis + üks rida otsuse kohta
+    otsused = sec.split('class="lp-lisa"')[0]  # taustaplokkide tabelid ei ole otsused
+    assert otsused.count("<tr>") == len(S) + 1  # päis + üks rida otsuse kohta
     assert all("kontroll" not in r for r in S)  # sisemine kontrollimärge ei lähe saidile
+
+
+def test_ligipaasu_taust_teised_riigid_ja_uuringud(sait, A):
+    # Kadri „jah, avalda“ 9.11.2026 19:59: kaks taustaplokki samas jaotises; ainult avalikud allikad, iga rida lingiga,
+    # meie soovitust (keskne leht, värav) saidil pole
+    K = A.get("ligipaas_kontekst") or {}
+    if not K:
+        pytest.skip("sisu/ligipaas-kontekst.json puudub")
+    h = sait["ettevotted.html"]
+    sec = h[h.index('id="ligipaas"'):]
+    sec = sec[:sec.index("</section>")]
+    for plokk, read, pk in [("ligipaas-riigid", K["riigid"], "Teised riigid ei keela tööriistu, vaid seavad tingimused"),
+                            ("ligipaas-uuringud", K["uuringud"], "Kasu on päris, aga kasutaja ei näe alati, kus tehisaru eksib")]:
+        osa = sec[sec.index(f'id="{plokk}"'):]
+        osa = osa[:osa.index("</table>")]
+        assert pk in tekst(osa)
+        assert osa.count("<tr>") == len(read) + 1
+        for r in read:
+            assert r["url"].startswith("https://") and f'href="{r["url"]}"' in osa
+    assert {r["riik"] for r in K["riigid"]} == {"Soome", "Holland", "Ühendkuningriik", "USA (föderaal)"}
+    assert "Tõendi liik" in sec and "eeltrükk, väike valim" in sec
+    assert "värav" not in tekst(sec).lower()
+    # sama uuring on Töö lehel 14%; taustaplokk ei tohi näidata teist numbrit
+    assert "tunnis 14% rohkem pöördumisi" in tekst(sec)
 
 
 def test_ligipaasu_sundmused_votab_uudised_ja_tagasivaate():
