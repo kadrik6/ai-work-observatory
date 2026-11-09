@@ -1339,5 +1339,5 @@ html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale
 }
 
 /* Saidi nimi päises: suurem ja must, ka avalehel (Kadri 9.11.2026 00:13) */
-.top .mark, .top .mark[aria-current="page"] { color: var(--ink); font-size: 22px; letter-spacing: -0.015em; }
-@media (max-width: 680px) { .top .mark, .top .mark[aria-current="page"] { font-size: 20px; } }
+.top .mark, .top .mark[aria-current="page"] { color: var(--ink); font-size: 27px; letter-spacing: -0.02em; line-height: 1.1; }
+@media (max-width: 680px) { .top .mark, .top .mark[aria-current="page"] { font-size: 22px; } }

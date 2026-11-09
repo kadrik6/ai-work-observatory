@@ -5,7 +5,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 | Aeg | Mis muutus |
 |---|---|
 | 9.11.2026 | Seire saidi ülemise menüü teemad on tavakirjas (enne paks); aktiivne teema on sinine ja alla joonitud. |
-| 9.11.2026 | Seire saidi nimi päises on suurem (22 px, telefonis 20 px) ja must, ka avalehel (enne sinine). |
+| 9.11.2026 | Seire saidi nimi päises on suurem (27 px, telefonis 22 px) ja must, ka avalehel (enne sinine). |
 | 9.11.2026 | Seire saidi päisepilt on Kadri lõplik foto. Päis on jälle madalam (pilt kärbitakse päise kõrguseks) nagu eelmises versioonis, tumedas teemas nähtavus 55%. |
 | 9.11.2026 | Seire saidi päisepilt näidatakse originaalproportsioonis ilma kärpimata: päis on vähemalt pildi kõrgune (sülearvutis umbes 490 px), telefonis on kogu pilt teksti kohal. |
 | 9.11.2026 | Seire saidi päisepilt vahetati Kadri uue foto vastu (väiksem part, taim, sülearvuti). Tumedas teemas on pilt nüüd sama moodi kui heledas: mustvalge, nähtavus 55%, hajub lehe taustaks. |
