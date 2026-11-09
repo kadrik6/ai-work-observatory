@@ -138,9 +138,9 @@
       naita(12);
     });
     // ELi riikide järjestus: vaikimisi esimesed 10, ülejäänud nupust (Kadri 7.11.2026). Fookusriik jääb alati näha.
-    document.querySelectorAll('.jrj[data-piir]').forEach(function (j) {
+    document.querySelectorAll('.jrj[data-piir], .ar[data-piir]').forEach(function (j) {
       var piir = parseInt(j.getAttribute('data-piir'), 10) || 10;
-      var read = Array.prototype.slice.call(j.querySelectorAll('.jrj-r[data-n]'));
+      var read = Array.prototype.slice.call(j.querySelectorAll('.jrj-r[data-n], .ar-r'));
       if (read.length <= piir) return;
       var riba = document.createElement('div');
       riba.className = 'kogus';

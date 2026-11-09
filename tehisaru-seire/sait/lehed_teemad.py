@@ -449,6 +449,22 @@ def too(A, vaade, vaated=None):
               ("Minimaalne", K["osa"]["minimaalne"], None),
               ("Ei puutu kokku", K["osa"]["ei"], None)]
     k_tabel = [[e(r["nimi"]), _tuh(r["fte"]), r["aste"]] for r in K["ametid"]]
+    # Kadri 9.11.2026: „see siin vajab normaalset visuaali“ – tabel tulpdiagrammiks, aste 4 fookusvärviga, tabel klõpsu taga
+    ar = sorted(K["ametid"], key=lambda r: -r["fte"])
+    ar_lopp = max(r["fte"] for r in ar)
+    n4 = sum(1 for r in ar if str(r["aste"]) == "4")
+    ar_read = "".join(
+        f'<div class="ar-r{" a4" if str(r["aste"]) == "4" else ""}"><div class="ar-t"><span class="ar-n">{e(r["nimi"])}</span>'
+        f'<span class="ar-v">{_tuh(r["fte"])}<small>aste {e(str(r["aste"]))}</small></span></div>'
+        f'<span class="ar-rada"><span class="ar-tulp" style="width:{r["fte"] / ar_lopp * 100:.2f}%"></span></span></div>' for r in ar)
+    ametiribad = f"""<figure class="plokk ar-fig" aria-labelledby="g-ametid">
+        <figcaption><span class="gt" id="g-ametid">Kõige avatumad ametid Eestis: suurim rühm on {e(ar[0]["nimi"].lower())}; <b class="ar-hl">{n4} ametit on astmes 4</b></span>
+          <span class="gs">Töötajad täistööajale taandatult, 2022; ametid astmetes 3 ja 4. Sinine = aste 4, hall = aste 3.</span></figcaption>
+        <div class="ar" data-piir="12">{ar_read}</div>
+        <details><summary>Näita andmetabelit</summary>
+        {tabel(["Amet", "Töötajaid", "Aste"], k_tabel, piir=True, pealdis="Kõige avatumad ametid Eestis, töötajad täistööajale taandatult, 2022")}
+        </details>
+      </figure>"""
     ee_el, el_el = K["el"]["EE"], K["el"][EL]
     can_m = can["muutus"]
     sec_kokkupuude = f"""
@@ -462,8 +478,7 @@ def too(A, vaade, vaated=None):
         <span class="gs">Aste näitab, kui suur osa ameti ülesannetest on generatiivsele tehisarule avatud; 4 on kõige avatum. Täistööajale taandatud; {pr(K["liigitamata"])}% on ametites, mida ILO indeksis pole.</span></figcaption>
       {lihtribad(k_read, 50, 10, "%", fookus=0)}
       {allikarida([(f"ILO {ilo['aasta']}, kokkupuute indeks", ilo["url"], ""), ("Statistikaamet, tabel PA633", andmed.PA633_URL, "oktoober 2022")])}
-      <h3 class="tabeli-pealkiri">Kõige avatumad ametid Eestis</h3>
-      {tabel(["Amet", "Töötajaid", "Aste"], k_tabel, piir=True, pealdis="Kõige avatumad ametid Eestis, töötajad täistööajale taandatult, 2022")}
+      {ametiribad}
     </figure>
     <div class="kulg">
       {vastavus("osaliselt", "Kokkupuude ei ole mõju: indeks ei ütle, kas töö kaob, muutub või jääb samaks.")}
