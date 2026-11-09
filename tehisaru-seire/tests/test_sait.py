@@ -1196,3 +1196,19 @@ def test_paise_pilt_ei_tee_saiti_laiemaks():
     # Kadri 9.11.2026 07:30: „ära tee saiti piltide pärast laiemaks“ – 100vw pilt ei tohi tekitada rõhtsat kerimisriba
     css = (Path(__file__).resolve().parent.parent / "sait" / "stiil.css").read_text(encoding="utf-8")
     assert "html[data-t] body { overflow-x: clip; }" in css
+
+
+def test_sait_ei_tee_ise_vigu_mille_eest_hoiatab(sait):
+    # Sisuloogika läbivaatus 9.11.2026 (Kadri „jah“): sait ei tohi teha samu vigu, mida ta väidete kontrollis parandab
+    avaleht, ettevotted = (tekst(sait[f]) for f in ("index.html", "ettevotted.html"))
+    # 2025 ja 2026 on eri klassifikaatoriga: ettevõtete kasvu ei arvutata
+    assert "aastaga ei võrrelda" in avaleht.split("Ettevõtted, kes kasutavad tehisaru")[1][:200]
+    assert "aastaga ei võrrelda" in ettevotted.split("Kasutab tehisaru (10+ hõivatut)")[1][:200]
+    # number on vähemalt 10 hõivatuga ettevõtete kohta
+    assert "vähemalt 10 hõivatuga Eesti ettevõtetest" in tekst(re.search(r"<h1[^>]*>(.*?)</h1>", sait["ettevotted.html"], re.S).group(1))
+    # registriandmete seos, mitte põhjus
+    assert "tõstab tootlikkust" not in avaleht
+    # tööl kasutamine on kõigi 16–74-aastaste osa
+    assert "16–74-aastastest" in tekst(re.search(r"<h1[^>]*>(.*?)</h1>", sait["inimesed.html"], re.S).group(1))
+    # hangete aastaid veel ei võrrelda
+    assert "2025 kokku" not in avaleht

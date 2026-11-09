@@ -62,7 +62,7 @@ def inimesed(A, vaade, vaated=None):
                 if v["klass"] in andmed.VORRELDAVAD and v["aasta"] > too25["aasta"]]
     too = max(too_uued, key=lambda v: v["aasta"]) if too_uued else too25
     # Kasutuse lehe pealkiri räägib ainult sellest, mis sellel lehel on (Kadri 6.11.2026 22:27, ettepanek 5)
-    kontrolli(vaade, f"tööl kasutab {pr(too['vaartus'])}%")
+    kontrolli(vaade, f"tööl kasutab seda {pr(too['vaartus'])}% neist")
 
     # Aasta jooksul: 2025 Eurostat → 2026 riiklik number, ainult kataloogi järgi sama mõõdikuga riigid
     paarid = []
@@ -377,7 +377,7 @@ def too(A, vaade, vaated=None):
     sec_maailm = f"""
 <section class="jaotis" id="maailm" aria-labelledby="h-maailm">
   <header>
-    <h2 id="h-maailm">Kogu tööturul pole tehisaru mõju veel näha, <b>kitsastes rühmades</b> on tööd aga vähem</h2>
+    <h2 id="h-maailm">USA ja Taani uuringutes pole kogu tööturul tehisaru mõju veel näha, <b>kitsastes rühmades</b> on tööd aga vähem</h2>
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-maailm">

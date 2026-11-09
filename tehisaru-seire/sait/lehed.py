@@ -478,7 +478,6 @@ def ettevotted(A, vaade, vaated=None):
     # kolmas plaat näitab vahet Põhjamaadega, millest räägib ka lead.
     from abi import a
     from lehed_ulevaade import _p, el_jarjestus, kpi_pais, kpi_plaat, kpi_riba
-    sa_eel = next(t for t in A["naitajad"][EB]["teised_allikad"] if t["allikas"].startswith("Statistikaamet, tabel IT149"))
     y = ee_el["aasta"]
     j = el_jarjestus(EB, koht_praegu=koht, aasta_praegu=y)
     if not j:
@@ -491,7 +490,7 @@ def ettevotted(A, vaade, vaated=None):
     sv = float(siht["siht"])
     aside = kpi_pais(
         kpi_plaat("ev-kasutus", "Kasutab tehisaru (10+ hõivatut)", f'{pr(ee["vaartus"])}%', f'{ee["aasta"]} · siht {pr(sv, 0)}%',
-                  {"muutus": (f'{_p(ee["vaartus"] - sa_eel["vaartus"])} punkti aastaga', f'{ee["aasta"] - 1}: {pr(sa_eel["vaartus"])}% (kontrollimata)'),
+                  {"muutus": (f'{ee["aasta"] - 1}. aastaga ei võrrelda', "uus tegevusalade klassifikaator (EMTAK 2025)"),
                    "riba": kpi_riba(ee["vaartus"], 100, siht=sv, fookus=True, siht_tekst=f'siht {pr(sv, 0)}% ({siht["aasta"]})')},
                   a(ee["url"], "Statistikaamet " + ee["allikas"].split("tabel ")[-1]), fookus=True),
         kpi_plaat("ev-koht", "Koht ELis", f"{koht}.", f"/ {n_el} · {y}",
