@@ -354,7 +354,7 @@ def test_hangete_aastaid_ei_vorrelda_enne_inimese_kontrolli(sait):
 def test_menuus_on_kaheksa_teemat_ja_usaldus_on_oma_teema(sait):
     # Kadri 6.11.2026 21:59: Hanked on oma menüüpunkt. 22:27 (paigutuse ettepanekud 1–3, 10): Usaldus oma menüükoht
     menuu = re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1)
-    assert re.findall(r">([^<>]+)</a>", menuu) == ["Inimesed", "Ettevõtted", "Töö", "Avalik sektor", "Hanked", "Tehisaru määrus", "Uudised", "Usaldus"]
+    assert re.findall(r">([^<>]+)</a>", menuu) == ["Avaleht", "Inimesed", "Ettevõtted", "Töö", "Avalik sektor", "Hanked", "Tehisaru määrus", "Uudised", "Usaldus"]
     assert '<a href="hanked.html" aria-current="page">Hanked</a>' in sait["hanked.html"]
     assert '<ul class="sellel"></ul>' not in "".join(sait.values())
     for f in ("kas-see-on-tosi.html", "lahknevused.html", "varskus.html"):
@@ -1107,3 +1107,12 @@ def test_a1_kujundus_kogu_saidil(sait):
     assert "--page: #ffffff" in pehme and "--surface-2: #f9f9f9" in pehme
     h1 = re.search(r"<h1>(.*?)</h1>", sait["index.html"], re.S).group(1)
     assert re.fullmatch(r"Tehisaru kasutuses on Eesti inimesed ELis \d+\., <b>ettevõtted \d+\. kohal</b> \(20\d\d\)", h1), h1
+
+
+def test_liikumine_l2_aeglane_ja_vahendatud_liikumise_austus():
+    """Kadri 9.11.2026 „use L2 + aeglane“: ainult lehe üleminek ja ribade kasv, kõik reduced-motion kaitse all."""
+    css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
+    osa = css.split("Liikumine L2")[1]
+    plokk = osa.split("@media (prefers-reduced-motion: no-preference) {", 1)[1]
+    assert "@view-transition { navigation: auto; }" in plokk and "l-riba 1050ms" in plokk
+    assert "@view-transition" not in css.split("Liikumine L2")[0]  # liikumist pole mujal kaitseta

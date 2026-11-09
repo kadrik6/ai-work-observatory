@@ -1341,3 +1341,23 @@ html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale
 /* Saidi nimi päises: suurem ja must, ka avalehel (Kadri 9.11.2026 00:13) */
 .top .mark, .top .mark[aria-current="page"] { color: var(--ink); font-size: 27px; letter-spacing: -0.02em; line-height: 1.1; }
 @media (max-width: 680px) { .top .mark, .top .mark[aria-current="page"] { font-size: 22px; } }
+
+/* Menüüs on 9 teemat (Avaleht esimesena, Kadri 9.11.2026): kitsamal sülearvutil väiksem vahe, et rida mahuks */
+@media (min-width: 681px) and (max-width: 1439px) { .top .menu a { padding: 0 9px; } }
+
+/* Liikumine L2 „Üleminek + ribad“, kiirus aeglane (Kadri 9.11.2026 00:26; labor kirjeldused/stiilid/taustalabor/liikumise_labor.py):
+   lehte vahetades hajub sisu üle, päis jääb paigale; numbriplaatide ribad kasvavad avamisel korra nullist väärtuseni.
+   Kui kasutaja on liikumise süsteemis välja lülitanud, jääb kõik paigale. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  .top { view-transition-name: pais; }
+  ::view-transition-group(pais) { animation: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 300ms; animation-timing-function: ease; }
+  @keyframes l-riba { from { transform: scaleX(0); } }
+  .kriba i { transform-origin: left center; animation: l-riba 1050ms cubic-bezier(.2,.7,.2,1) 225ms both; }
+  .plaadid > .plaat:nth-child(2) .kriba i { animation-delay: 315ms; }
+  .plaadid > .plaat:nth-child(3) .kriba i { animation-delay: 405ms; }
+  .plaadid > .plaat:nth-child(4) .kriba i { animation-delay: 495ms; }
+  .plaadid > .plaat:nth-child(5) .kriba i { animation-delay: 585ms; }
+  .plaadid > .plaat:nth-child(6) .kriba i { animation-delay: 675ms; }
+}
