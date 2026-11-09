@@ -57,6 +57,25 @@ def kinnitatud_ettekanded(d):
                            if r.get("seire_olek") == "kinnitatud"]}
 
 
+LIGIPAAS = ("avab_koigile", "avab_ehitamise_piirab_avaldamise", "piirab_rolliga", "keelab")
+
+
+def ligipaasu_sundmused(uudised, tagasivaade):
+    """Ettevõtete otsused, kes tohib tehisaru tööriistu kasutada (Kadri 9.11.2026: saidile kohe, märkega „töös“).
+    Uudiste read, millel on `ligipaas`, ja vanemad juhtumid failist ligipaas-tagasivaade.jsonl. Sisemine kontrollimärge
+    (`kontroll`) ja nimed (`kes_utles`) saidile ei lähe; põhjus on ettevõtte enda sõnadega."""
+    out = []
+    for kust, read, tekst in (("uudis", uudised, "arv_tekst"), ("tagasivaade", tagasivaade, "tekst")):
+        for r in read:
+            if not r.get("ligipaas") or r.get("kontrollitud") is False:
+                continue
+            out.append({"kuupaev": r["kuupaev"], "kuupaev_tapsus": r.get("kuupaev_tapsus", ""), "piirkond": r.get("piirkond", ""),
+                        "ettevote": r["ettevote"], "sektor": r.get("sektor", ""), "ligipaas": r["ligipaas"],
+                        "pohjus": r.get("ligipaas_pohjus", ""), "tekst": r.get(tekst) or r.get("pealkiri", ""),
+                        "url": r.get("url", ""), "allikas": r.get("allikas", ""), "lisaallikas": r.get("lisaallikas", ""), "kust": kust})
+    return sorted(out, key=lambda r: r["kuupaev"], reverse=True)
+
+
 def vota(proj):
     proj = Path(proj)
     uu = proj / "tooelu-uudised"
@@ -64,6 +83,9 @@ def vota(proj):
     for r in read:
         r.pop("kes_utles", None)
     (SISU / "uudised.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in read), encoding="utf-8")
+    tv_p = uu / "ligipaas-tagasivaade.jsonl"
+    tv = [json.loads(r) for r in tv_p.read_text(encoding="utf-8").splitlines() if r.strip()] if tv_p.exists() else []
+    _kirjuta("ligipaas.json", {"sundmused": ligipaasu_sundmused(read, tv)})
     # Kinnituskord (Kadri 8.11.2026 21:36): automaatsed mustandid lähevad saidile alles pärast Kadri „jah“-i.
     # Ilma olekuta kirje on ootel. „varasem“ = oli saidil enne kinnituskorda.
     koik_vaited = _loe(uu / "vaited.json")
