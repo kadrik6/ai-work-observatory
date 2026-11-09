@@ -1,14 +1,14 @@
 {
 "kirjeldus": "Tehisaru- ja andmetööde kuulutused CV.ee-s. Kolm rühma: ai_amet = pealkirjas on tehisaru (AI, ML, LLM, tehisintellekt, masinõpe, andmeteadlane jne); andmeamet = pealkirjas on andmed, data, BI, analytics, statistik või andmebaas; ai_oskus = muu amet, mille kuulutuse tekst mainib tehisaru või tehisaru tööriistu; ai_firma_noue = muu amet, kus tehisaru on ainult tööandja ühises lauses (sama lõik vähemalt kolmes selle firma kuulutuses, nt firma üldnõue). Rühmad ei kattu. Märksõnapõhine liigitus, mitte käsitsi kontrollitud.",
 "allikas": "CV.ee avalik otsing (https://www.cv.ee/et/search), kõik kuulutused",
-"uuendatud": "2026-11-08T13:24+02:00",
-"kuulutusi_kokku": 3371,
-"portaali_kokku": 3371,
-"uus_tahendab": "avaldatud viimase 7 päeva jooksul (esimene kontroll)",
+"uuendatud": "2026-11-09T07:31+02:00",
+"kuulutusi_kokku": 3179,
+"portaali_kokku": 3179,
+"uus_tahendab": "kuulutus, mida eelmisel kontrollil polnud",
 "ruhmad": {
 "ai_amet": {
-"arv": 19,
-"uusi": 9,
+"arv": 17,
+"uusi": 0,
 "tooandjad": [
 {
 "nimi": "Bolt",
@@ -55,14 +55,6 @@
 "arv": 1
 },
 {
-"nimi": "Nordea Estonia",
-"arv": 1
-},
-{
-"nimi": "Ettevõtluse ja Innovatsiooni Sihtasutus",
-"arv": 1
-},
-{
 "nimi": "Shore Link OÜ",
 "arv": 1
 },
@@ -74,7 +66,7 @@
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 14
+"arv": 12
 },
 {
 "nimi": "Tartumaa",
@@ -88,7 +80,7 @@
 },
 "andmeamet": {
 "arv": 22,
-"uusi": 12,
+"uusi": 0,
 "tooandjad": [
 {
 "nimi": "Bolt",
@@ -163,20 +155,20 @@
 ]
 },
 "ai_oskus": {
-"arv": 51,
-"uusi": 23,
+"arv": 47,
+"uusi": 0,
 "tooandjad": [
-{
-"nimi": "Töötukassa vahendatud pakkumised",
-"arv": 17
-},
 {
 "nimi": "Bolt",
 "arv": 16
 },
 {
+"nimi": "Töötukassa vahendatud pakkumised",
+"arv": 15
+},
+{
 "nimi": "Swedbank AS",
-"arv": 3
+"arv": 2
 },
 {
 "nimi": "Sisu Tech OÜ",
@@ -223,14 +215,14 @@
 "arv": 1
 },
 {
-"nimi": "Telia Eesti AS",
+"nimi": "Techspinex OÜ",
 "arv": 1
 }
 ],
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 45
+"arv": 41
 },
 {
 "nimi": "Tartumaa",
@@ -243,12 +235,12 @@
 ]
 },
 "ai_firma_noue": {
-"arv": 42,
-"uusi": 27,
+"arv": 41,
+"uusi": 0,
 "tooandjad": [
 {
 "nimi": "Bolt",
-"arv": 39
+"arv": 38
 },
 {
 "nimi": "pawaTech OÜ",
@@ -258,7 +250,7 @@
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 42
+"arv": 41
 }
 ]
 }
@@ -273,7 +265,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678252",
-"uus": true
+"uus": false
 },
 {
 "id": 1678185,
@@ -284,7 +276,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678185",
-"uus": true
+"uus": false
 },
 {
 "id": 1678166,
@@ -295,7 +287,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678166",
-"uus": true
+"uus": false
 },
 {
 "id": 1677185,
@@ -306,7 +298,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677185",
-"uus": true
+"uus": false
 },
 {
 "id": 1677276,
@@ -317,7 +309,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677276",
-"uus": true
+"uus": false
 },
 {
 "id": 1676756,
@@ -328,7 +320,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-03",
 "url": "https://www.cv.ee/et/vacancy/1676756",
-"uus": true
+"uus": false
 },
 {
 "id": 1676758,
@@ -339,7 +331,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-03",
 "url": "https://www.cv.ee/et/vacancy/1676758",
-"uus": true
+"uus": false
 },
 {
 "id": 1676257,
@@ -350,7 +342,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-02",
 "url": "https://www.cv.ee/et/vacancy/1676257",
-"uus": true
+"uus": false
 },
 {
 "id": 1676255,
@@ -361,7 +353,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-02",
 "url": "https://www.cv.ee/et/vacancy/1676255",
-"uus": true
+"uus": false
 },
 {
 "id": 1676254,
@@ -372,7 +364,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-02",
 "url": "https://www.cv.ee/et/vacancy/1676254",
-"uus": true
+"uus": false
 },
 {
 "id": 1676252,
@@ -383,7 +375,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-02",
 "url": "https://www.cv.ee/et/vacancy/1676252",
-"uus": true
+"uus": false
 },
 {
 "id": 1676220,
@@ -394,7 +386,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-02",
 "url": "https://www.cv.ee/et/vacancy/1676220",
-"uus": true
+"uus": false
 },
 {
 "id": 1675823,
@@ -515,7 +507,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-07",
 "url": "https://www.cv.ee/et/vacancy/1678429",
-"uus": true
+"uus": false
 },
 {
 "id": 1675840,
@@ -526,7 +518,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1675840",
-"uus": true
+"uus": false
 },
 {
 "id": 1678275,
@@ -537,7 +529,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678275",
-"uus": true
+"uus": false
 },
 {
 "id": 1675713,
@@ -548,7 +540,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1675713",
-"uus": true
+"uus": false
 },
 {
 "id": 1678176,
@@ -559,7 +551,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678176",
-"uus": true
+"uus": false
 },
 {
 "id": 1677765,
@@ -570,7 +562,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1677765",
-"uus": true
+"uus": false
 },
 {
 "id": 1677927,
@@ -581,7 +573,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1677927",
-"uus": true
+"uus": false
 },
 {
 "id": 1677833,
@@ -592,7 +584,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1677833",
-"uus": true
+"uus": false
 },
 {
 "id": 1677324,
@@ -603,7 +595,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677324",
-"uus": true
+"uus": false
 },
 {
 "id": 1677317,
@@ -614,7 +606,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677317",
-"uus": true
+"uus": false
 },
 {
 "id": 1677198,
@@ -625,7 +617,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677198",
-"uus": true
+"uus": false
 },
 {
 "id": 1677203,
@@ -636,7 +628,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677203",
-"uus": true
+"uus": false
 },
 {
 "id": 1677199,
@@ -647,7 +639,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677199",
-"uus": true
+"uus": false
 },
 {
 "id": 1677173,
@@ -658,7 +650,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677173",
-"uus": true
+"uus": false
 },
 {
 "id": 1677174,
@@ -669,7 +661,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677174",
-"uus": true
+"uus": false
 },
 {
 "id": 1674576,
@@ -680,7 +672,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1674576",
-"uus": true
+"uus": false
 },
 {
 "id": 1677066,
@@ -691,7 +683,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677066",
-"uus": true
+"uus": false
 },
 {
 "id": 1677019,
@@ -702,7 +694,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677019",
-"uus": true
+"uus": false
 },
 {
 "id": 1676502,
@@ -713,7 +705,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1676502",
-"uus": true
+"uus": false
 },
 {
 "id": 1674078,
@@ -724,7 +716,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-03",
 "url": "https://www.cv.ee/et/vacancy/1674078",
-"uus": true
+"uus": false
 },
 {
 "id": 1671429,
@@ -735,7 +727,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-03",
 "url": "https://www.cv.ee/et/vacancy/1671429",
-"uus": true
+"uus": false
 },
 {
 "id": 1676351,
@@ -746,7 +738,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-03",
 "url": "https://www.cv.ee/et/vacancy/1676351",
-"uus": true
+"uus": false
 },
 {
 "id": 1676060,
@@ -757,7 +749,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-02",
 "url": "https://www.cv.ee/et/vacancy/1676060",
-"uus": true
+"uus": false
 },
 {
 "id": 1674978,
@@ -782,17 +774,6 @@
 "uus": false
 },
 {
-"id": 1674385,
-"ruhm": "ai_oskus",
-"pealkiri": "Raamatupidaja",
-"tooandja": "Töötukassa vahendatud pakkumised",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-10-28",
-"url": "https://www.cv.ee/et/vacancy/1674385",
-"uus": false
-},
-{
 "id": 1674372,
 "ruhm": "ai_oskus",
 "pealkiri": "E-kaubanduse projektijuht",
@@ -801,28 +782,6 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-10-28",
 "url": "https://www.cv.ee/et/vacancy/1674372",
-"uus": false
-},
-{
-"id": 1674269,
-"ruhm": "ai_oskus",
-"pealkiri": "Finantskontroller",
-"tooandja": "Töötukassa vahendatud pakkumised",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-10-28",
-"url": "https://www.cv.ee/et/vacancy/1674269",
-"uus": false
-},
-{
-"id": 1672829,
-"ruhm": "ai_oskus",
-"pealkiri": "Disainisüsteemi disainer",
-"tooandja": "Telia Eesti AS",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-10-23",
-"url": "https://www.cv.ee/et/vacancy/1672829",
 "uus": false
 },
 {
@@ -889,17 +848,6 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-10-22",
 "url": "https://www.cv.ee/et/vacancy/1672085",
-"uus": false
-},
-{
-"id": 1671409,
-"ruhm": "ai_oskus",
-"pealkiri": "Senior Credit Risk Modeller",
-"tooandja": "Swedbank AS",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-10-20",
-"url": "https://www.cv.ee/et/vacancy/1671409",
 "uus": false
 },
 {
@@ -1076,7 +1024,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678187",
-"uus": true
+"uus": false
 },
 {
 "id": 1678170,
@@ -1087,7 +1035,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678170",
-"uus": true
+"uus": false
 },
 {
 "id": 1678136,
@@ -1098,7 +1046,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678136",
-"uus": true
+"uus": false
 },
 {
 "id": 1678130,
@@ -1109,7 +1057,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678130",
-"uus": true
+"uus": false
 },
 {
 "id": 1678073,
@@ -1120,7 +1068,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678073",
-"uus": true
+"uus": false
 },
 {
 "id": 1677720,
@@ -1131,7 +1079,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-05",
 "url": "https://www.cv.ee/et/vacancy/1677720",
-"uus": true
+"uus": false
 },
 {
 "id": 1677642,
@@ -1142,7 +1090,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-05",
 "url": "https://www.cv.ee/et/vacancy/1677642",
-"uus": true
+"uus": false
 },
 {
 "id": 1677362,
@@ -1153,7 +1101,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677362",
-"uus": true
+"uus": false
 },
 {
 "id": 1677357,
@@ -1164,7 +1112,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677357",
-"uus": true
+"uus": false
 },
 {
 "id": 1677319,
@@ -1175,7 +1123,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677319",
-"uus": true
+"uus": false
 },
 {
 "id": 1677271,
@@ -1186,7 +1134,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677271",
-"uus": true
+"uus": false
 },
 {
 "id": 1677267,
@@ -1197,7 +1145,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677267",
-"uus": true
+"uus": false
 },
 {
 "id": 1677269,
@@ -1208,7 +1156,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677269",
-"uus": true
+"uus": false
 },
 {
 "id": 1677268,
@@ -1219,7 +1167,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677268",
-"uus": true
+"uus": false
 },
 {
 "id": 1677265,
@@ -1230,7 +1178,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677265",
-"uus": true
+"uus": false
 },
 {
 "id": 1677263,
@@ -1241,7 +1189,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677263",
-"uus": true
+"uus": false
 },
 {
 "id": 1677218,
@@ -1252,7 +1200,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677218",
-"uus": true
+"uus": false
 },
 {
 "id": 1677201,
@@ -1263,7 +1211,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677201",
-"uus": true
+"uus": false
 },
 {
 "id": 1677205,
@@ -1274,7 +1222,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677205",
-"uus": true
+"uus": false
 },
 {
 "id": 1677210,
@@ -1285,7 +1233,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677210",
-"uus": true
+"uus": false
 },
 {
 "id": 1677213,
@@ -1296,7 +1244,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677213",
-"uus": true
+"uus": false
 },
 {
 "id": 1677212,
@@ -1307,7 +1255,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677212",
-"uus": true
+"uus": false
 },
 {
 "id": 1677215,
@@ -1318,7 +1266,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677215",
-"uus": true
+"uus": false
 },
 {
 "id": 1677196,
@@ -1329,7 +1277,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677196",
-"uus": true
+"uus": false
 },
 {
 "id": 1677221,
@@ -1340,7 +1288,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677221",
-"uus": true
+"uus": false
 },
 {
 "id": 1676801,
@@ -1351,7 +1299,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-03",
 "url": "https://www.cv.ee/et/vacancy/1676801",
-"uus": true
+"uus": false
 },
 {
 "id": 1676304,
@@ -1362,7 +1310,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-02",
 "url": "https://www.cv.ee/et/vacancy/1676304",
-"uus": true
+"uus": false
 },
 {
 "id": 1675339,
@@ -1406,17 +1354,6 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-10-13",
 "url": "https://www.cv.ee/et/vacancy/1668686",
-"uus": false
-},
-{
-"id": 1667123,
-"ruhm": "ai_firma_noue",
-"pealkiri": "Senior Manager, Employee Relations",
-"tooandja": "Bolt",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-10-08",
-"url": "https://www.cv.ee/et/vacancy/1667123",
 "uus": false
 },
 {
@@ -1538,7 +1475,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678104",
-"uus": true
+"uus": false
 },
 {
 "id": 1678094,
@@ -1549,7 +1486,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-06",
 "url": "https://www.cv.ee/et/vacancy/1678094",
-"uus": true
+"uus": false
 },
 {
 "id": 1677149,
@@ -1560,7 +1497,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-05",
 "url": "https://www.cv.ee/et/vacancy/1677149",
-"uus": true
+"uus": false
 },
 {
 "id": 1671931,
@@ -1571,7 +1508,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1671931",
-"uus": true
+"uus": false
 },
 {
 "id": 1677107,
@@ -1582,7 +1519,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677107",
-"uus": true
+"uus": false
 },
 {
 "id": 1674519,
@@ -1593,7 +1530,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1674519",
-"uus": true
+"uus": false
 },
 {
 "id": 1676700,
@@ -1604,7 +1541,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-03",
 "url": "https://www.cv.ee/et/vacancy/1676700",
-"uus": true
+"uus": false
 },
 {
 "id": 1674075,
@@ -1615,7 +1552,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-03",
 "url": "https://www.cv.ee/et/vacancy/1674075",
-"uus": true
+"uus": false
 },
 {
 "id": 1676171,
@@ -1626,7 +1563,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-02",
 "url": "https://www.cv.ee/et/vacancy/1676171",
-"uus": true
+"uus": false
 },
 {
 "id": 1675882,
@@ -1659,28 +1596,6 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-10-28",
 "url": "https://www.cv.ee/et/vacancy/1674776",
-"uus": false
-},
-{
-"id": 1674664,
-"ruhm": "ai_amet",
-"pealkiri": "Lead / Senior AI Platform Engineer - Fighting Financial Crime",
-"tooandja": "Nordea Estonia",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-10-28",
-"url": "https://www.cv.ee/et/vacancy/1674664",
-"uus": false
-},
-{
-"id": 1673295,
-"ruhm": "ai_amet",
-"pealkiri": "Fookusvaldkonnajuht (IKT ja tehisintellekt)",
-"tooandja": "Ettevõtluse ja Innovatsiooni Sihtasutus",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-10-26",
-"url": "https://www.cv.ee/et/vacancy/1673295",
 "uus": false
 },
 {
@@ -1747,6 +1662,14 @@
 "andmeamet": 22,
 "ai_oskus": 51,
 "ai_firma_noue": 42
+},
+{
+"kuupaev": "2026-11-09",
+"kuulutusi_kokku": 3179,
+"ai_amet": 17,
+"andmeamet": 22,
+"ai_oskus": 47,
+"ai_firma_noue": 41
 }
 ],
 "piirangud": "Ainult üks portaal (CV.ee); CV Keskuse otsing ei andnud automaatsel lugemisel tulemusi ja Töötukassa robots.txt keelab otsingulehed. Sama ametikoht võib olla mitmes portaalis. Pealkiri 'analüütik' ilma andmesõnata ei lähe andmeametite alla (äri-, finants- ja turbeanalüütikud)."

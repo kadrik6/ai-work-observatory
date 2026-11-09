@@ -11,6 +11,42 @@
 "nimi": "Latitude59",
 "url": "https://latitude59.ee/",
 "miks": "Eesti suurim tehnoloogia- ja idukonverents"
+},
+{
+"id": "startup-day",
+"nimi": "sTARTUp Day",
+"url": "https://www.startupday.ee/",
+"miks": "Tartu ettevõtlusfestival; korraldajate seas Tartu Ülikool ja Tartu linn"
+},
+{
+"id": "arenguseire",
+"nimi": "Arenguseire Keskus",
+"url": "https://arenguseire.ee/",
+"miks": "Riigikogu juures tegutsev tulevikuuuringute keskus; tööturu ja tehnoloogia seminarid"
+},
+{
+"id": "oecd",
+"nimi": "OECD",
+"url": "https://www.oecd.org/",
+"miks": "Rahvusvaheline organisatsioon; tehisaru ja töö tuleviku poliitika"
+},
+{
+"id": "oecd-ai",
+"nimi": "OECD.AI",
+"url": "https://oecd.ai/",
+"miks": "OECD tehisaru poliitika vaatluskeskus, sh AI-WIPS (tehisaru töös, oskustes ja tootlikkuses)"
+},
+{
+"id": "ilo",
+"nimi": "Rahvusvaheline Tööorganisatsioon (ILO)",
+"url": "https://www.ilo.org/",
+"miks": "ÜRO tööorganisatsioon; tehisaru ja töö globaalne vaade"
+},
+{
+"id": "stanford-hai",
+"nimi": "Stanford HAI",
+"url": "https://hai.stanford.edu/",
+"miks": "Stanfordi inimkeskse tehisaru instituut; AI Index ja uuringud"
 }
 ],
 "ettekanded": [
