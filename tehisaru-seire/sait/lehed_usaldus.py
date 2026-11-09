@@ -490,3 +490,68 @@ def _uuenemine(A):
   </header>
   <div class="tbl"><table><thead><tr><th scope="col">Osa</th><th scope="col">Kuidas uueneb</th><th scope="col">Viimati</th><th scope="col">Mida on vaja käsitsi</th></tr></thead><tbody>{t}</tbody></table></div>
 </section>"""
+
+
+# ---------------------------------------------------------------- Mis see sait on (Kadri 9.11.2026)
+
+SAIDIST_LUGEJAD = [  # (kes, mida otsib, [(vaate id, lingi tekst, ankur)])
+    ("Huviline", "kui palju tehisaru Eestis kasutatakse ja mis on viimati juhtunud",
+     [("avaleht", "Avaleht", ""), ("uudised", "Uudised", "")]),
+    ("Ametnik või otsustaja", "kus Eesti on ELi skaalal, mida riik hangib ja millal määruse nõuded kehtima hakkavad",
+     [("avalik-sektor", "Avalik sektor", ""), ("hanked", "Hanked", ""), ("reeglid", "Tehisaru määrus", "")]),
+    ("Ajakirjanik", "kas meedias liikuv väide vastab allikale ja kas allikad räägivad sama",
+     [("kas-tosi", "Usaldus", "")]),
+    ("Uurija või analüütik", "mida uuringud tööturu kohta tegelikult näitavad ja kuidas numbreid võrrelda",
+     [("too", "Töö", ""), ("kuidas", "Kuidas lugeda", "")]),
+]
+
+
+def saidist(A, vaade, vaated):
+    """Tutvustus uuele lugejale: mis sait on, kellele, mis teemad, kolm sisuliiki, kuidas uueneb, mida sait ei ole."""
+    nimi = {v["id"]: v["menuu"] or v["id"] for v in vaated}
+    teemad = [v for v in vaated if v["menuu"] and v["olek"] == "valmis"]
+    l_read = "".join(
+        f'<div class="plokk"><h3>{e(kes)}</h3><p>Leiab, {e(mida)}.</p><p class="vaikne">Alusta: '
+        + ", ".join(link(vaated, vid, t, ank) for vid, t, ank in lingid) + "</p></div>"
+        for kes, mida, lingid in SAIDIST_LUGEJAD)
+    t_read = [[link(vaated, v["id"], nimi[v["id"]]), e(v["kusimus"]), taida(v["h1"], A)] for v in teemad]
+    n_allikad = len(A["allikad"])
+    return f"""
+<div class="pea yks">
+  <div class="pea-tekst">
+    <h1>{taida(vaade["h1"], A)}</h1>
+    <p class="lead">Sait on mõeldud inimesele, kes tahab kiiresti teada, kui palju tehisaru Eestis kasutatakse, mida see tööle teeb ja kas meedias liikuvad väited peavad paika. Iga number on allika lingiga.</p>
+  </div>
+</div>
+<section class="jaotis" id="kellele" aria-labelledby="h-kellele">
+  <header><h2 id="h-kellele">Kust alustada: <b>neli lugejat, neli algust</b></h2></header>
+  <div class="kolm neli">{l_read}</div>
+</section>
+<section class="jaotis" id="teemad" aria-labelledby="h-teemad">
+  <header>
+    <h2 id="h-teemad">Saidil on <b>{ARVSONAD.get(len(teemad), len(teemad))} teemat</b>; iga teema vastab ühele küsimusele</h2>
+    <p class="alam">Pealkiri on sama, mis teema lehel, ja selle numbrid tulevad andmetest.</p>
+  </header>
+  {tabel(["Teema", "Küsimus", "Vastus praegu"], t_read, numbrid=[], piir=True, pealdis="Saidi teemad")}
+</section>
+<section class="jaotis" id="sisuliigid" aria-labelledby="h-sisuliigid">
+  <header><h2 id="h-sisuliigid">Sisu on kolme liiki ja <b>neid ei segata ühele graafikule</b></h2></header>
+  <div class="kolm">
+    <div class="plokk"><h3>Mõõdetud</h3><p>Ametlik statistika {n_allikad} allikast: Statistikaamet, Eurostat, OECD, ILO ja teiste riikide statistikaametid. Need numbrid korduvad igal aastal sama küsimustikuga.</p></div>
+    <div class="plokk"><h3>Uuring</h3><p>Üksikud uuringud ja raportid. Iga uuringu juures on kirjas, kui tugev on tõend: katse ja registriandmed on tugevamad kui küsitlus või prognoos.</p></div>
+    <div class="plokk"><h3>Väide</h3><p>Meedias ja organisatsioonide tekstides esitatud väited, mis on võrreldud algallikaga. Väide kuulub väljaandele, mitte üksikule ajakirjanikule.</p></div>
+  </div>
+  <p class="vaikne">Mõõdetud number ja uuringu tulemus kohtuvad sama küsimuse juures, aga mitte samal teljel. Võrreldavuse reeglid: {link(vaated, "kuidas", "Kuidas lugeda", "vorreldavus")}.</p>
+</section>
+<section class="jaotis" id="kuidas-tootab" aria-labelledby="h-kuidas-tootab">
+  <header><h2 id="h-kuidas-tootab">Sait <b>uueneb ise</b>, aga uued uuringud ja väited lähevad lehele alles pärast inimese kinnitust</h2></header>
+  <ul class="loend">
+    <li>Statistika, uudised, koondamised, tööpakkumised ja hanked tulevad allikatest automaatselt. Mis ja kui tihti uueneb: {link(vaated, "kuidas", "Mis uueneb ise", "uuendused")}.</li>
+    <li>Kui kaks allikat annavad sama asja kohta eri numbri, jääb lahknevus nähtavale ja seda ei peideta: {link(vaated, "kas-tosi", "Usaldus")}.</li>
+    <li>Hangete tehisaru- ja andmehanked märgistab keelemudel; märgistust on võrreldud käsitsi pimeülevaatusega ja tulemus on hangete lehel.</li>
+  </ul>
+</section>
+<section class="jaotis" id="mida-ei-ole" aria-labelledby="h-mida-ei-ole">
+  <header><h2 id="h-mida-ei-ole">See sait <b>ei ole ametlik statistika</b> ega ühegi asutuse seisukoht</h2></header>
+  <p>Sait näitab, mida allikad ütlevad, ja märgib, kui kindel see on. Kui number on oluline otsuse jaoks, ava allikas: link on iga numbri juures.</p>
+</section>"""

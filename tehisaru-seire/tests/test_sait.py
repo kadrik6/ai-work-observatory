@@ -1127,3 +1127,15 @@ def test_liikumine_l2_aeglane_ja_vahendatud_liikumise_austus():
     plokk = osa.split("@media (prefers-reduced-motion: no-preference) {", 1)[1]
     assert "@view-transition { navigation: auto; }" in plokk and "l-riba 1050ms" in plokk
     assert "@view-transition" not in css.split("Liikumine L2")[0]  # liikumist pole mujal kaitseta
+
+
+def test_tutvustuse_leht_uuele_lugejale(A, sait):
+    # Kadri 9.11.2026: leht uuele lugejale, kes tahab aru saada, mis see sait on
+    h = sait["saidist.html"]
+    for jaotis in ("kellele", "teemad", "sisuliigid", "kuidas-tootab", "mida-ei-ole"):
+        assert f'id="{jaotis}"' in h
+    for f in ("inimesed.html", "ettevotted.html", "too.html", "hanked.html", "kas-see-on-tosi.html", "kuidas-lugeda.html#uuendused"):
+        assert f'href="{f}"' in h
+    assert 'href="saidist.html">Mis see sait on?</a>' in sait["index.html"]  # avalehelt leitav
+    assert 'href="saidist.html">Mis see sait on</a>' in sait["inimesed.html"]  # jaluses igal lehel
+    assert "Kadri" not in h

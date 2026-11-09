@@ -82,7 +82,7 @@ def mega(vaated, fail, kodu, teema_id=None):
         ul = ("<ul>" + "".join(f'<li>{a(s["fail"], e(s["nimi"]))}</li>' for s in alam) + "</ul>") if len(alam) > 1 else ""
         veerud.append(f'<div class="mega-t">{a(v["fail"], e(v["menuu"]), MEGA_NIMI, v["id"])}{ul}'
                       f'<p>{e(v.get("kusimus") or "")}</p></div>')
-    lisa = [a(kodu, "Avaleht")] + [a(v["fail"], {"kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}.get(v["id"], e(v["id"])))
+    lisa = [a(kodu, "Avaleht")] + [a(v["fail"], {"saidist": "Mis see sait on", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}.get(v["id"], e(v["id"])))
                                    for v in vaated if not v["menuu"] and v["id"] != "avaleht" and v["olek"] == "valmis"]
     return (f'<details class="mega"><summary><span class="mega-arvuti">Kõik teemad</span><span class="mega-tel">Menüü</span></summary>'
             f'<nav class="mega-paneel" aria-label="Kõik teemad"><div class="mega-ruut">{"".join(veerud)}</div>'
@@ -135,14 +135,14 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
     kodu = avaleht["fail"] if avaleht["olek"] == "valmis" else "saidikaart.html"
     if vaade["id"] != "avaleht":  # rada: kus lugeja on (Avaleht › Töö › Uuringud)
         osad = [f'<a href="{kodu}">Avaleht</a>']
-        nimi = teema["menuu"] or {"kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}.get(teema["id"], teema["id"])
+        nimi = teema["menuu"] or {"saidist": "Mis see sait on", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}.get(teema["id"], teema["id"])
         alam = next((s for s in teema.get("alamlehed", []) if s["fail"] == fail), None)
         osad.append(f'<a href="{teema["fail"]}">{e(nimi)}</a>' if alam and fail != teema["fail"] else f"<span>{e(nimi)}</span>")
         if alam and fail != teema["fail"]:
             osad.append(f'<span>{e(alam["nimi"])}</span>')
         k = sisu.index("<h1")
         sisu = sisu[:k] + f'<nav class="rada" aria-label="Asukoht"><p>{" › ".join(osad)}</p></nav>' + sisu[k:]
-    nimed = {"kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}
+    nimed = {"saidist": "Mis see sait on", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}
     jalus_lingid = [f'<a href="{v["fail"]}">{e(v["menuu"] or nimed.get(v["id"], v["id"]))}</a>'
                     for v in vaated if not v["menuu"] and v["id"] != "avaleht" and v["olek"] == "valmis"]
     kavas = [v for v in vaated if not v["menuu"] and v["olek"] != "valmis" and v["id"] != "avaleht"]

@@ -147,7 +147,7 @@ def ehita(valjund=VALJUND, A=None):
             sisu = lehed.EHITAJAD[v["id"]](A, v, vaated)
         else:
             raise EhitusViga(f"Vaade {v['id']} on „valmis“, aga sellel pole ehitajat (lehed.EHITAJAD)")
-        nimi = v["menuu"] or {"avaleht": "Avaleht", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}[v["id"]]
+        nimi = v["menuu"] or {"avaleht": "Avaleht", "saidist": "Mis see sait on", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}[v["id"]]
         pealkiri_ = "SEIRE · Tehisaru seire" if v["id"] == "avaleht" else f"{nimi} · Tehisaru seire"  # artefakti nimi „ID · Nimi“
         if getattr(sisu, "lehed", None):  # teema on jagatud alamlehtedeks
             nimed = {s["fail"]: s["nimi"] for s in v["alamlehed"]}
