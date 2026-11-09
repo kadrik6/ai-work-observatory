@@ -22,7 +22,7 @@
       "kusimused": "K1–K3",
       "olek": "valmis",
       "kusimus": "Kui paljud Eesti inimesed tehisaru kasutavad ja kas neil on oskusi?",
-      "h1": "Tehisaru kasutab **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti inimestest**, tööl kasutab 36,9%.",
+      "h1": "Tehisaru kasutab **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti 16–74-aastastest**, tööl kasutab seda 36,9% neist.",
       "osad": "Kasutus (kaart ja 2026. aasta kasv); tööalane kasutus; digioskused; „ei oska“ ja lahknevus C6. IT71 küsimuse sõnastus 2026 võib erineda 2025. aasta omast.",
       "alamlehed": [
         {
@@ -53,7 +53,7 @@
       "kusimused": "K4, K5",
       "olek": "valmis",
       "kusimus": "Kui suur osa ettevõtetest kasutab tehisaru ja kus on Eesti ELi skaalal?",
-      "h1": "{ettevotete-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{ettevotete-tehisaru-kasutus|EE|uusim|p0}% Eesti ettevõtetest**; ELi võrdluses ({ettevotete-tehisaru-kasutus|EE|uusim:alus|a}) oli Eesti keskmisest ees, Soomest, Rootsist ja Taanist taga.",
+      "h1": "{ettevotete-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{ettevotete-tehisaru-kasutus|EE|uusim|p0}% vähemalt 10 hõivatuga Eesti ettevõtetest**; ELi võrdluses ({ettevotete-tehisaru-kasutus|EE|uusim:alus|a}) oli Eesti keskmisest ees, Soomest, Rootsist ja Taanist taga.",
       "osad": "Kaks alamlehte: Kasutus ja Eesti siht 75%; Tootlikkus ja võimekus (tootlikkus, digiintensiivsus, T&A kulu, ELi sihid, Arenguseire järeldused, Põhjamaade võrdlus 9 näitajas)",
       "alamlehed": [
         {
@@ -61,6 +61,7 @@
           "nimi": "Kasutus",
           "jaotised": [
             "andmed",
+            "ligipaas",
             "teema-lopp"
           ]
         },
@@ -100,7 +101,7 @@
         {
           "fail": "too-uuringud.html",
           "nimi": "Uuringud",
-          "h1": "Katsetes tegi tehisaru ülesanded kiiremaks, aga kogu tööturul pole mõju veel näha ja **Eesti uuringud töökohti veel ei mõõda**.",
+          "h1": "Katsetes tegi tehisaru ülesanded kiiremaks, USA ja Taani uuringutes pole kogu tööturul mõju veel näha ja **Eesti uuringud töökohti veel ei mõõda**.",
           "jaotised": [
             "maailm",
             "ulesanded",
@@ -268,7 +269,7 @@
       "kusimused": "kõik",
       "olek": "valmis",
       "kusimus": "Kust numbrid tulevad, mis on võrreldav ja mis muutus viimati?",
-      "h1": "Numbrid tulevad 21 allikast ja võrrelda saab ainult **sama küsimustikuga numbreid**.",
+      "h1": "Ametlik statistika tuleb 21 allikast ja võrrelda saab ainult **sama küsimustikuga numbreid**.",
       "osad": "Allikad; märgid; võrreldavus; uuringute kogu"
     },
     {

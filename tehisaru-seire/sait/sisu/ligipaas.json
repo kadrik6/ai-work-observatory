@@ -1,0 +1,102 @@
+{
+"sundmused": [
+{
+"kuupaev": "2026-11-05",
+"kuupaev_tapsus": "",
+"piirkond": "maailm",
+"ettevote": "Goldman Sachs",
+"sektor": "pangandus",
+"ligipaas": "piirab_rolliga",
+"pohjus": "risk ja tootlikkus",
+"tekst": "keelas enamikul töötajatest arenenud AI koodimistööriistad (Claude Code, GitHub); jäävad ainult inseneridele ja kvantanalüütikutele",
+"url": "https://www.fastcompany.com/91636500/goldman-sachs-bans-non-engineers-from-using-advanced-ai-tools",
+"allikas": "Fast Company (Bloombergi põhjal); Äripäev 8.11",
+"lisaallikas": "",
+"kust": "uudis"
+},
+{
+"kuupaev": "2026-06-11",
+"kuupaev_tapsus": "",
+"piirkond": "maailm",
+"ettevote": "Samsung Electronics",
+"sektor": "elektroonika",
+"ligipaas": "avab_koigile",
+"pohjus": "tootlikkus ja otsuste kiirus; kolme aasta keeld lõppes, kõrvale turvaraamistik riski kontrolliks",
+"tekst": "Samsungi DX-divisjoni töötajad saavad kasutada ChatGPT-d, Geminit ja Claude'i; valik tehti umbes 2500 töötajaga katse järel. Sama kuu jooksul kõigis kontserni ettevõtetes.",
+"url": "https://www.cio.com/article/4184660/samsung-which-previously-blocked-chatgpt-is-now-fully-adopting-three-generative-ai-models-and-accelerating-its-ax-initiative.html",
+"allikas": "CIO",
+"lisaallikas": "",
+"kust": "tagasivaade"
+},
+{
+"kuupaev": "2026-01-01",
+"kuupaev_tapsus": "jaanuar 2026 (juurutamise algus)",
+"piirkond": "EE",
+"ettevote": "Pactum AI",
+"sektor": "tarkvara",
+"ligipaas": "avab_koigile",
+"pohjus": "tootlikkus (kasv oli kohene); hiljem probleem: liiga palju uusi funktsioone ja slaide võib ühtsuse kaotada",
+"tekst": "Pactumis on eraldi meeskond, kes andis tehisaruagendid kõigile töötajatele (sh personal, müük, turundus): kõigil on Claude Desktop koos Claude Code'iga. Juurutamine algas jaanuaris 2026 ja nüüd kasutavad seda kõik.",
+"url": "https://youtu.be/V9qubnxvJV0?t=1676",
+"allikas": "TÜ andmeteaduse seminar (Korjuse ettekanne); LinkedIn",
+"lisaallikas": "https://www.linkedin.com/posts/kristjankorjus_latitude59-latitude592026-activity-7462397816284389377-liTv",
+"kust": "tagasivaade"
+},
+{
+"kuupaev": "2025-04-07",
+"kuupaev_tapsus": "",
+"piirkond": "maailm",
+"ettevote": "Shopify",
+"sektor": "tarkvara",
+"ligipaas": "avab_koigile",
+"pohjus": "tootlikkus ja kasv („refleksiivne tehisaru kasutus on baasootus“); enne töötajate juurde küsimist tuleb näidata, miks tehisaru tööd ära ei tee",
+"tekst": "Juhi Tobias Lütke avalikustatud sisekiri: tehisaru kasutamine on kõigi töötajate baasootus.",
+"url": "https://www.forrester.com/blogs/what-you-can-learn-from-shopifys-ceos-memo-on-workforce-ai/",
+"allikas": "Forrester (Lütke kirja tsitaadid)",
+"lisaallikas": "https://x.com/tobi/status/1909251946235437514",
+"kust": "tagasivaade"
+},
+{
+"kuupaev": "2023-05-18",
+"kuupaev_tapsus": "",
+"piirkond": "maailm",
+"ettevote": "Apple",
+"sektor": "tehnoloogia",
+"ligipaas": "keelab",
+"pohjus": "andmeleke (konfidentsiaalsed andmed võivad jõuda mudelite arendajateni); ettevõte avalikult ei kommenteerinud, aluseks WSJ-i nähtud siseinfo",
+"tekst": "Apple piiras ChatGPT ja GitHub Copiloti kasutamist töötajatel.",
+"url": "https://techcrunch.com/2023/05/19/apple-reportedly-limits-internal-use-of-ai-powered-tools-like-chatgpt-and-github-copilot/",
+"allikas": "TechCrunch (WSJ põhjal)",
+"lisaallikas": "",
+"kust": "tagasivaade"
+},
+{
+"kuupaev": "2023-05-02",
+"kuupaev_tapsus": "",
+"piirkond": "maailm",
+"ettevote": "Samsung Electronics",
+"sektor": "elektroonika",
+"ligipaas": "keelab",
+"pohjus": "andmeleke (töötajad laadisid ChatGPT-sse tundlikku koodi); ajutine keeld firma arvutites",
+"tekst": "Samsung kinnitas CNBC-le, et piirab ajutiselt generatiivse tehisaru kasutamist firma arvutites. Ettevõtte sisesel küsitlusel pidas 65% vastajatest seda turvariskiks.",
+"url": "https://www.cnbc.com/2023/05/02/samsung-bans-use-of-ai-like-chatgpt-for-staff-after-misuse-of-chatbot.html",
+"allikas": "CNBC",
+"lisaallikas": "",
+"kust": "tagasivaade"
+},
+{
+"kuupaev": "2023-02-22",
+"kuupaev_tapsus": "",
+"piirkond": "maailm",
+"ettevote": "JPMorgan Chase",
+"sektor": "pangandus",
+"ligipaas": "keelab",
+"pohjus": "vastavus (kolmanda osapoole tarkvara piirangud) allika sõnul; pank keeldus kommenteerimast",
+"tekst": "Pank piiras ajutiselt ChatGPT kasutamist kõigil töötajatel.",
+"url": "https://www.cnn.com/2023/02/22/tech/jpmorgan-chatgpt-employees",
+"allikas": "CNN",
+"lisaallikas": "",
+"kust": "tagasivaade"
+}
+]
+}

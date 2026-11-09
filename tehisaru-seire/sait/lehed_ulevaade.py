@@ -275,11 +275,9 @@ def avaleht(A, vaade, vaated):
     ein25 = andmed.leia(A, IN, "EE", "uusim:alus")
     if ein25["aasta"] != ein["aasta"] - 1 or ein["klass"] not in andmed.VORRELDAVAD:
         raise AndmeViga("Inimeste plaadi muutus eeldab kahte järjestikust võrreldavat aastat")
-    sa_eel = next(t for t in A["naitajad"][EB]["teised_allikad"] if t["allikas"].startswith("Statistikaamet, tabel IT149"))
     t_aasta_eest = dict(T["EE"]).get(f"{int(kuu[:4]) - 1}{kuu[4:]}")
     if t_aasta_eest is None:
         raise AndmeViga(f"Töötuse plaadi muutus vajab kuud {int(kuu[:4]) - 1}{kuu[4:]}")
-    h_eel = H[-2]
     plaadid = "".join([
         kpi_plaat("inimesed", "Inimesed, kes kasutasid tehisaru (16–74)", f"{pr(ein['vaartus'])}%", str(ein["aasta"]),
                   {"muutus": (f"{_p(ein['vaartus'] - ein25['vaartus'])} punkti aastaga", f"{ein25['aasta']}: {pr(ein25['vaartus'])}% · küsimus võib erineda"),
@@ -287,7 +285,7 @@ def avaleht(A, vaade, vaated):
                   a(ein["url"], "Statistikaamet " + ein["allikas"].split("tabel ")[-1]), fookus=True, href="inimesed.html#kasutus"),
         kpi_plaat("ettevotted", "Ettevõtted, kes kasutavad tehisaru, ja riigi siht", f"{pr(eeb['vaartus'])}%",
                   f"{eeb['aasta']} · siht {pr(float(siht['siht']), 0)}%",
-                  {"muutus": (f"{_p(eeb['vaartus'] - sa_eel['vaartus'])} punkti aastaga", f"{eeb['aasta'] - 1}: {pr(sa_eel['vaartus'])}% (kontrollimata)"),
+                  {"muutus": (f"{eeb['aasta'] - 1}. aastaga ei võrrelda", "uus tegevusalade klassifikaator (EMTAK 2025)"),
                    "riba": kpi_riba(eeb["vaartus"], 100, siht=float(siht["siht"]), siht_tekst=f"siht {pr(float(siht['siht']), 0)}% ({siht['aasta']})")},
                   a(eeb["url"], "Statistikaamet " + eeb["allikas"].split("tabel ")[-1]), href="ettevotted.html#kasutus"),
         kpi_plaat("digi", "Vähemalt baastaseme digioskused", f"{pr(ds['vaartus'])}%", str(ds["aasta"]),
@@ -298,7 +296,7 @@ def avaleht(A, vaade, vaated):
                   {"muutus": (f"{_p(t_ee - t_aasta_eest)} punkti aastaga", f"{KUUD[int(kuu[5:]) - 1]} {int(kuu[:4]) - 1}: {pr(t_aasta_eest)}% · EL {pr(t_el)}%")},
                   a(UNE_URL, "Eurostat une_rt_m"), href="too.html#tootus-kuud"),
         kpi_plaat("hanked", "Tehisaru- ja andmehanked", str(h_uus["ai_ja_andmed"]), h_uus["periood"] if h_uus["periood"] != "aasta" else str(h_uus["aasta"]),
-                  {"muutus": (f"{h_eel['aasta']} kokku {h_eel['ai_ja_andmed']}", f"{pr(h_uus['osa'])}% kõigist hangetest")},
+                  {"muutus": (f"{pr(h_uus['osa'])}% kõigist hangetest", "aastaid veel ei võrrelda")},
                   a(HANKED_URL, "Riigihangete register"), href="hanked.html#aastad"),
         kpi_plaat("vaited", "Kontrollitud väited tehisaru kohta", str(len(V)), "",
                   {"muutus": (f"{len(v_muud)} ütleb muud kui allikas", menuu("kas-tosi", f"{lahti} allikate lahknevust selgitamata", "lahknevused"))},
@@ -790,7 +788,7 @@ def teematabel(A, vaated, d):
          ("inimesed", "digi")),
         ("ettevotted", "Ettevõtted", "kasutus ja võimekus",
          (f'{pr(d["eeb"]["vaartus"])}%', taida("kasutab " + str(d["eeb"]["aasta"]) + " · ELis {" + EB + "|EE|uusim:alus|koht}. ({" + EB + "|EE|uusim:alus|a})", A), "kasutus", False, d["eeb"]["avaldatud"]),
-         uuring("vahter2026", "Eestis tõstab tootlikkust ainult koos töökorralduse muutusega", "ettevotted", "kasutus"),
+         uuring("vahter2026", "Eestis on seotud suurema tootlikkusega ainult koos töökorralduse muutusega", "ettevotted", "kasutus"),
          vaited("ettevotted"),
          f'siht {pr(float(siht_ee["siht"]), 0)}% ({siht_ee["aasta"]})', ("ettevotted", "kasutus")),
         ("too", "Töö", "tööturg ja mõju",

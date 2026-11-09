@@ -464,6 +464,95 @@ def _gem(A, ee_el):
 </section>"""
 
 
+LIGIPAAS_NIMI = {"avab_koigile": "Avab kõigile", "avab_ehitamise_piirab_avaldamise": "Lubab ehitada, piirab avaldamist",
+                 "piirab_rolliga": "Piirab rolliga", "keelab": "Keelab"}
+LIGIPAAS_TEGU = {"avab_koigile": "avas tööriistad kõigile", "avab_ehitamise_piirab_avaldamise": "lubas ehitada, aga piiras avaldamist",
+                 "piirab_rolliga": "piiras neid rolliga", "keelab": "keelas need"}
+
+
+def _ligipaas(A):
+    """Kes tohib tehisaru tööriistu ja agente kasutada (Kadri 9.11.2026 12:32: saidile kohe, märkega „töös, kogumine käib“).
+    Andmed sisu/ligipaas.json (sait/vota_kaasa.py). Valim on uudistepõhine, seega näitame arve, mitte osakaale."""
+    from abi import a as a_
+    from komponendid import tabel
+    S = (A.get("ligipaas") or {}).get("sundmused") or []
+    if not S:
+        return ""
+    for r in S:
+        if r["ligipaas"] not in LIGIPAAS_NIMI:
+            raise AndmeViga(f"ligipaas.json: tundmatu rühm {r['ligipaas']!r} ({r['ettevote']})")
+        if not r.get("url"):
+            raise AndmeViga(f"ligipaas.json: otsusel puudub link ({r['ettevote']})")
+
+    def avab(r):
+        return r["ligipaas"].startswith("avab")
+
+    def lyh(n):
+        return n.split()[0] if len(n) > 12 else n
+
+    def aastad(rr):
+        a = sorted({r["kuupaev"][:4] for r in rr})
+        return a[0] if len(a) == 1 else f"{a[0]}–{a[-1]}"
+
+    def kiip(r):
+        eesti = " · Eesti" if r["piirkond"] == "EE" else ""
+        return (f'<li class="lp-kiip{" ava" if avab(r) else ""}"><b>{e(lyh(r["ettevote"]))}</b> '
+                f'<small>{int(r["kuupaev"][5:7])}/{r["kuupaev"][:4]}{eesti}</small></li>')
+
+    def lahter(rr):
+        if not rr:
+            return '<span class="lp-tyhi">–</span>'
+        return "<ul>" + "".join(kiip(r) for r in sorted(rr, key=lambda r: r["kuupaev"])) + "</ul>"
+
+    osad = [f"{len(rr)} {LIGIPAAS_TEGU[k]} ({aastad(rr)})" for k in LIGIPAAS_NIMI
+            for rr in [[r for r in S if r["ligipaas"] == k]] if rr]
+    pealkiri = f"Kogutud {len(S)} otsusest " + (", ".join(osad[:-1]) + " ja " + osad[-1] if len(osad) > 1 else osad[0])
+    a0, a1 = int(min(r["kuupaev"] for r in S)[:4]), int(max(r["kuupaev"] for r in S)[:4])
+    read_aastad = []
+    for y in range(a1, a0 - 1, -1):
+        yy = [r for r in S if r["kuupaev"][:4] == str(y)]
+        read_aastad.append(f'<div class="lp-rida" role="listitem"><span class="lp-aasta">{y}</span>'
+                           f'<div>{lahter([r for r in yy if avab(r)])}</div><div>{lahter([r for r in yy if not avab(r)])}</div></div>')
+    # Eesti avaliku sektori number otse Riigikontrolli ülevaatest (TOOELU ligipääsu lõime tekst 9.11.2026, algallikast kontrollitud)
+    rk = A["leiud"].get("rk-ai-kord")
+    eesti = []
+    if rk:
+        n = {r["ruhm"]: int(r["vaartus"]) for r in A["leiud_arvud"] if r["leid"] == "rk-ai-kord"}
+        eesti = [("Eesti asutused", "s", f'Riigikontrolli küsitluses ({rk["aasta"]}) kasutas {n["kasutab"]} vastanud asutust {n["vastas"]}-st '
+                  f'välismaiseid tehisaru valmislahendusi, aga <b>{n["korrata"]} asutusel puudus asutusesisene kord</b>, kuidas neid '
+                  f'korrektselt ja turvaliselt kasutada ({a_(rk["url"], "Riigikontroll " + kp(rk["avaldatud"]))}, {e(rk["koht"].split(";")[0])}). '
+                  "See on avalik sektor, mitte ettevõtted, ja ainult küsitlusele vastanud asutused.")]
+    tabel_read = []
+    for r in S:
+        kus = "Eesti" if r["piirkond"] == "EE" else "maailm"
+        # „jaanuar 2026 (juurutamise algus)“: täpse kuupäeva asemel allika enda täpsus
+        tabel_read.append([e(r["kuupaev_tapsus"]) if r.get("kuupaev_tapsus") else kp(r["kuupaev"]),
+                           f'<b>{e(r["ettevote"])}</b><small>{e(r["sektor"])} · {kus}</small>',
+                           f'<span class="lp-kiip{" ava" if avab(r) else ""}">{e(LIGIPAAS_NIMI[r["ligipaas"]])}</span>',
+                           e(r["tekst"]), e(r["pohjus"]) or "ettevõte ei kommenteerinud",
+                           f'<a href="{e(r["url"])}">{e(r["allikas"] or "allikas")}</a>'])
+    return f"""
+<section class="jaotis" id="ligipaas" aria-labelledby="h-ligipaas">
+  <header>
+    <h2 id="h-ligipaas">{e(pealkiri)}</h2>
+    <p class="alam"><span class="lp-toos">Töös: kogumine käib</span> Kes tohib ettevõttes tehisaru tööriistu ja agente kasutada?
+      Kogume ettevõtete otsuseid uudistest ja ettevõtete endi teadetest iga päev. Põhjus on ettevõtte enda sõnadega, mitte seire hinnang.</p>
+  </header>
+  <figure aria-labelledby="g-ligipaas">
+    <figcaption><span class="gt" id="g-ligipaas">Otsused aastate kaupa: vasakul avamised, paremal piiramised ja keelud</span>
+      <span class="gs">Iga kiip on üks otsus (kuu/aasta). Sama ettevõte võib olla mitu korda.</span></figcaption>
+    <div class="lp-ajajoon" role="list" aria-label="Otsused aastate kaupa">
+      <div class="lp-rida lp-pais" aria-hidden="true"><span></span><span>Avab</span><span>Piirab või keelab</span></div>
+      {"".join(read_aastad)}
+    </div>
+  </figure>
+  {faktid(eesti + [("Valim on kallutatud", "risk", "Otsused tulevad uudistest, seepärast on neis rohkem suuri ja tuntud ettevõtteid. "
+            "Näitame arve, mitte osakaale: see ei ütle, kui suur osa ettevõtetest tööriistu lubab või keelab.")])}
+  {tabel(["Kuupäev", "Ettevõte", "Otsus", "Mida otsustati", "Põhjus ettevõtte sõnul", "Allikas"], tabel_read,
+         pealdis="Ettevõtete otsused tehisaru tööriistade kasutamise kohta, uuemad eespool", numbrid=[])}
+</section>"""
+
+
 def ettevotted(A, vaade, vaated=None):
     """Kaks alamlehte (sisuloogika 6.11.2026, Kadri otsus 6): Kasutus | Tootlikkus ja võimekus."""
     from abi import jaga
@@ -478,7 +567,6 @@ def ettevotted(A, vaade, vaated=None):
     # kolmas plaat näitab vahet Põhjamaadega, millest räägib ka lead.
     from abi import a
     from lehed_ulevaade import _p, el_jarjestus, kpi_pais, kpi_plaat, kpi_riba
-    sa_eel = next(t for t in A["naitajad"][EB]["teised_allikad"] if t["allikas"].startswith("Statistikaamet, tabel IT149"))
     y = ee_el["aasta"]
     j = el_jarjestus(EB, koht_praegu=koht, aasta_praegu=y)
     if not j:
@@ -491,7 +579,7 @@ def ettevotted(A, vaade, vaated=None):
     sv = float(siht["siht"])
     aside = kpi_pais(
         kpi_plaat("ev-kasutus", "Kasutab tehisaru (10+ hõivatut)", f'{pr(ee["vaartus"])}%', f'{ee["aasta"]} · siht {pr(sv, 0)}%',
-                  {"muutus": (f'{_p(ee["vaartus"] - sa_eel["vaartus"])} punkti aastaga', f'{ee["aasta"] - 1}: {pr(sa_eel["vaartus"])}% (kontrollimata)'),
+                  {"muutus": (f'{ee["aasta"] - 1}. aastaga ei võrrelda', "uus tegevusalade klassifikaator (EMTAK 2025)"),
                    "riba": kpi_riba(ee["vaartus"], 100, siht=sv, fookus=True, siht_tekst=f'siht {pr(sv, 0)}% ({siht["aasta"]})')},
                   a(ee["url"], "Statistikaamet " + ee["allikas"].split("tabel ")[-1]), fookus=True),
         kpi_plaat("ev-koht", "Koht ELis", f"{koht}.", f"/ {n_el} · {y}",
@@ -533,9 +621,12 @@ def ettevotted(A, vaade, vaated=None):
          A["leiud"]["gem-ai-teadlikkus"]["avaldatud"], "2025, eksperthinnang 0–10, mitte mõõtmine",
          kp(A["leiud"]["gem-ai-teadlikkus"]["avaldatud"])),
         (f"Siht, {siht['allikas']}", siht["url"], siht["kontrollitud"], f"{pr(sv, 0)}% aastaks {siht['aasta']}; kontrollitud"),
+        ("Asutuste tehisaru kord, Riigikontroll", A["leiud"]["rk-ai-kord"]["url"], A["leiud"]["rk-ai-kord"]["avaldatud"],
+         "2025, küsitlusele vastanud 48 asutust"),
     ])
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Andmed")], sec_andmed),
+        ("ligipaas", [("ligipaas", "Kes tohib tööriistu kasutada")], _ligipaas(A)),
         ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
          tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
         ("tootlikkus", [("tootlikkus", "Tootlikkus")], _tootlikkus(A)),

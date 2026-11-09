@@ -186,7 +186,8 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
                        ("hanked_leht", "hanked-leht.json"), ("publikatsioonid", "publikatsioonid.json"),
                        ("koondajad", "koondajad.json"), ("toopakkumised", "toopakkumised.json"),
                        ("ai_kuulutused", "ai-tookuulutused.json"), ("ootel", "ootel.json"),
-                       ("oecd_valvur", "oecd-valvur.json"), ("ettekanded", "ettekanded.json")]:
+                       ("oecd_valvur", "oecd-valvur.json"), ("ettekanded", "ettekanded.json"),
+                       ("ligipaas", "ligipaas.json")]:
         A[voti] = loe_json(sisu / nimi) if (sisu / nimi).exists() else None
     lisa_kinnitatud_uuringud(A, sisu / "uuringud-lisa.json")
     jata_valja(A)

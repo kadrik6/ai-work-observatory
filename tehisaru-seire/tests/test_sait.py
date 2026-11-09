@@ -1196,3 +1196,46 @@ def test_paise_pilt_ei_tee_saiti_laiemaks():
     # Kadri 9.11.2026 07:30: „ära tee saiti piltide pärast laiemaks“ – 100vw pilt ei tohi tekitada rõhtsat kerimisriba
     css = (Path(__file__).resolve().parent.parent / "sait" / "stiil.css").read_text(encoding="utf-8")
     assert "html[data-t] body { overflow-x: clip; }" in css
+
+
+def test_sait_ei_tee_ise_vigu_mille_eest_hoiatab(sait):
+    # Sisuloogika läbivaatus 9.11.2026 (Kadri „jah“): sait ei tohi teha samu vigu, mida ta väidete kontrollis parandab
+    avaleht, ettevotted = (tekst(sait[f]) for f in ("index.html", "ettevotted.html"))
+    # 2025 ja 2026 on eri klassifikaatoriga: ettevõtete kasvu ei arvutata
+    assert "aastaga ei võrrelda" in avaleht.split("Ettevõtted, kes kasutavad tehisaru")[1][:200]
+    assert "aastaga ei võrrelda" in ettevotted.split("Kasutab tehisaru (10+ hõivatut)")[1][:200]
+    # number on vähemalt 10 hõivatuga ettevõtete kohta
+    assert "vähemalt 10 hõivatuga Eesti ettevõtetest" in tekst(re.search(r"<h1[^>]*>(.*?)</h1>", sait["ettevotted.html"], re.S).group(1))
+    # registriandmete seos, mitte põhjus
+    assert "tõstab tootlikkust" not in avaleht
+    # tööl kasutamine on kõigi 16–74-aastaste osa
+    assert "16–74-aastastest" in tekst(re.search(r"<h1[^>]*>(.*?)</h1>", sait["inimesed.html"], re.S).group(1))
+    # hangete aastaid veel ei võrrelda
+    assert "2025 kokku" not in avaleht
+
+
+def test_ai_tooriistade_ligipaas_ettevotete_lehel(sait, A):
+    # Kadri 9.11.2026 12:32: ligipääsu plokk saidile kohe, märkega „töös, kogumine käib“; valim on uudistepõhine
+    S = (A.get("ligipaas") or {}).get("sundmused") or []
+    if not S:
+        pytest.skip("sisu/ligipaas.json puudub")
+    h = sait["ettevotted.html"]
+    sec = h[h.index('id="ligipaas"'):]
+    sec = sec[:sec.index("</section>")]
+    assert "Töös: kogumine käib" in sec
+    assert f"Kogutud {len(S)} otsusest" in tekst(sec)
+    assert "Näitame arve, mitte osakaale" in sec
+    assert "33 asutusel puudus asutusesisene kord" in tekst(sec)  # Riigikontroll 30.05.2025, p 58
+    assert sec.count("<tr>") == len(S) + 1  # päis + üks rida otsuse kohta
+    assert all("kontroll" not in r for r in S)  # sisemine kontrollimärge ei lähe saidile
+
+
+def test_ligipaasu_sundmused_votab_uudised_ja_tagasivaate():
+    import vota_kaasa
+    uud = [{"kuupaev": "2026-11-05", "ettevote": "A", "ligipaas": "piirab_rolliga", "ligipaas_pohjus": "risk", "arv_tekst": "x", "url": "u"},
+           {"kuupaev": "2026-11-06", "ettevote": "B", "arv_tekst": "ei ole ligipääsu otsus", "url": "u"}]
+    tv = [{"kuupaev": "2023-05-02", "ettevote": "C", "ligipaas": "keelab", "tekst": "y", "url": "u", "kontroll": "sisemine", "kontrollitud": True},
+          {"kuupaev": "2024-01-01", "ettevote": "D", "ligipaas": "keelab", "tekst": "z", "url": "u", "kontrollitud": False}]
+    S = vota_kaasa.ligipaasu_sundmused(uud, tv)
+    assert [r["ettevote"] for r in S] == ["A", "C"]
+    assert all("kontroll" not in r for r in S)

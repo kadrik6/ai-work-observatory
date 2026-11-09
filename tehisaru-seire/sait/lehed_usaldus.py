@@ -364,7 +364,7 @@ def kuidas(A, vaade, vaated=None):
     sec_a = f"""
 <section class="jaotis" id="allikad" aria-labelledby="h-allikad">
   <header>
-    <h2 id="h-allikad">Numbrid tulevad <b>{len(Al)} allikast</b>: {riiklik} riiklikku statistikaametit ja {len(Al) - riiklik} rahvusvahelist organisatsiooni</h2>
+    <h2 id="h-allikad">Ametlik statistika tuleb <b>{len(Al)} allikast</b>: {riiklik} riiklikku statistikaametit ja {len(Al) - riiklik} rahvusvahelist organisatsiooni</h2>
     <p class="alam">Uuringud ja raportid (OECD, Arenguseire, ülikoolid) on lisaks sellele loendile ja nende juures on alati link.</p>
   </header>
   {tabel(["Allikas", "Andmeliides", "Uuendab", "Viimane tehisaru avaldus"], a_read, numbrid=[], piir=True, pealdis="Allikate register")}

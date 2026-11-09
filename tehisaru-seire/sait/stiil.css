@@ -1334,7 +1334,7 @@ html[data-t] .pea-rahu.pilt::before {
 html[data-t] .pea-rahu.pilt h1 { max-width: 22ch; }
 html[data-t] .pea-rahu.pilt .alla { max-width: 56ch; }
 html[data-t] .pea-rahu.pilt + nav .sellel { margin-top: 24px; }
-/* Tume teema: oma pilt A (Kadri 9.11.2026 07:18 „tumedas A ja heledas B“), sama üleminek, mustvalge, nähtavus 55% */
+/* Tume teema: oma pilt (Kadri 9.11.2026 16:41: tumedas T2 lained, heledas H1 võrk), sama üleminek, mustvalge, nähtavus 55% */
 html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale(1); opacity: .55;
   background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
               linear-gradient(0deg, var(--page) 0%, transparent 30%),
@@ -1424,3 +1424,19 @@ html[data-t] .mega-lisa a:hover { color: var(--signal); }
 .gem-telg span:first-child { transform: none; }
 .gem-telg span:last-child { transform: translateX(-100%); }
 @media (max-width: 680px) { .gem-tsoon small { font-size: 12.5px; left: 2px; } }
+
+/* AI-tööriistade ligipääs (Kadri 9.11.2026): aastad ridadena, avamised ja piiramised kahes veerus */
+.lp-toos { display: inline-block; font-size: 12px; line-height: 18px; padding: 0 8px; margin-right: 6px; border-radius: 100px;
+  background: #f2a65e; color: #2b1a05; font-weight: 600; }
+.lp-ajajoon { margin-top: 24px; max-width: 760px; }
+.lp-rida { display: grid; grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr); gap: 12px; padding: 8px 0; border-top: 1px solid var(--grid); align-items: start; }
+.lp-pais { border-top: 0; padding-top: 0; font-size: 14px; color: var(--ink-2); font-weight: 600; }
+.lp-aasta { font-weight: 700; font-variant-numeric: tabular-nums; }
+.lp-rida ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.lp-kiip { display: inline-block; font-size: 14px; line-height: 20px; padding: 2px 10px; border-radius: 100px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--ink); max-width: 100%; }
+.lp-kiip.ava { border-color: var(--signal); color: var(--signal-strong); }
+.lp-kiip small { color: var(--ink-2); font-size: 12px; }
+.lp-tyhi { color: var(--ink-2); }
+#ligipaas .tbl td small { display: block; color: var(--ink-2); }
+#ligipaas td .lp-kiip { white-space: nowrap; }
