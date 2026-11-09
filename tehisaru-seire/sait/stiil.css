@@ -1320,6 +1320,9 @@ html[data-t] .tbl { max-width: 100%; overflow-x: auto; }
 
 /* Avalehe päise pilt B7 (Kadri 8.11.2026 23:49: „B7 with gradient 55%“): pilt pealkirja taga, mustvalge,
    sulandub vasakult ja alt lehe taustaks; nähtavus 55%. Tekst on vasakul, kus pildil on tühi sein. */
+/* Kadri 9.11.2026 07:30: pilt ei tohi saiti laiemaks teha. 100vw sisaldab püstise kerimisriba laiust ja tekitas
+   kõrvale rõhtsa kerimisriba; clip lõikab selle ära, ilma et kleepuv päis lakkaks töötamast. */
+html[data-t] body { overflow-x: clip; }
 html[data-t] .pea-rahu.pilt { position: relative; isolation: isolate; padding-top: 56px; padding-bottom: 48px; min-height: 300px; }
 html[data-t] .pea-rahu.pilt::before {
   content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%);
