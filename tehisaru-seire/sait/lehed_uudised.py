@@ -841,6 +841,67 @@ TK_NIMI = {"ai_amet": "Tehisaru amet", "andmeamet": "Andmeamet", "ai_oskus": "Te
            "ai_firma_noue": "Firma üldnõue"}
 
 
+def _tk_leiud(A, K, R, kp_, url):
+    """Kaks leidu kuulutuste andmetest (Kadri 9.11.2026 kinnitas mustandi leiud 1 ja 2, artefakt Pp2Qxyqu5V1Fjh76rKnfHt).
+    Numbrid arvutatakse iga ehitusega samadest failidest, mitte käsitsi."""
+    from komponendid import allikarida, lihtribad
+    TP = A.get("toopakkumised") or {}
+    CV = next((p for p in TP.get("portaalid", []) if p["portaal"] == "CV.ee"), None)
+    kuul = K.get("kuulutused", [])
+    if not CV or not CV.get("asukoht_maakond") or not kuul:
+        return ""
+    pohi = ("ai_amet", "andmeamet", "ai_oskus")
+    pk = [r for r in kuul if r["ruhm"] in pohi]
+    if len(pk) != sum(R[g]["arv"] for g in pohi):
+        raise AndmeViga("ai-tookuulutused.json: kuulutuste loend ja rühmade arvud ei klapi")
+    n_pk, kokku = len(pk), CV["kuulutusi_kokku"]
+    mk_ai = collections.Counter(r.get("maakond") for r in pk)
+    mk_koik = sorted(CV["asukoht_maakond"], key=lambda r: -r["arv"])[:5]
+    suurim = mk_koik[0]["nimi"]
+    o_ai, o_koik = mk_ai[suurim] / n_pk * 100, mk_koik[0]["arv"] / kokku * 100
+    read_a = [(r["nimi"], mk_ai.get(r["nimi"], 0) / n_pk * 100,
+               f'{pr(mk_ai.get(r["nimi"], 0) / n_pk * 100, 0)}% ({mk_ai.get(r["nimi"], 0)})') for r in mk_koik]
+    read_k = [(r["nimi"], r["arv"] / kokku * 100, None) for r in mk_koik]
+    cvkp = (CV.get("kontrollitud") or kp_)[:10]
+    kus = f"""
+<section class="pn sp12" id="tk-kus" aria-labelledby="h-tk-kus">
+  <div class="pn-h"><h2 id="h-tk-kus">Tehisaru- ja andmetöödest <b>{pr(o_ai, 0)}% on {e(suurim)}l</b>, kõigist töökuulutustest {pr(o_koik, 0)}%</h2></div>
+  <p class="ps">CV.ee, {kp(kp_)}. Osa kuulutustest maakonna järgi, %. Väljaspool {e(suurim)}d on {n_pk - mk_ai[suurim]} tehisaru- ja andmetööd {n_pk}-st.</p>
+  <div class="kaks vordne">
+    <div><p class="gt">Tehisaru- ja andmetööd ({n_pk} kuulutust)</p>{lihtribad(read_a, 100, samm=25, fookus=0)}</div>
+    <div><p class="gt">Kõik kuulutused ({_arvt(kokku)})</p>{lihtribad(read_k, 100, samm=25, fookus=0)}</div>
+  </div>
+  <details><summary>Täpsustused</summary><div>
+    <p>Tehisaru- ja andmetööd on kolm rühma: pealkirjas tehisaru ({R["ai_amet"]["arv"]}), pealkirjas andmed ({R["andmeamet"]["arv"]}) ja muu amet, mille kuulutus mainib tehisaru ({R["ai_oskus"]["arv"]}). Rühm „Firma üldnõue“ ei ole sees. {mk_ai.get("Eesti (täpsustamata)", 0)} kuulutusel maakonda pole.</p>
+    <p>Kõigi kuulutuste maakonnad on CV.ee enda jaotus ({kp(cvkp)}). Üks kuulutus võib olla mitmes maakonnas, seega osad on ligikaudsed. Liigitus on märksõnapõhine ja inimene pole seda kontrollinud. See on ühe päeva seis, mitte trend.</p>
+  </div></details>
+  {allikarida([("CV.ee avalik otsing", url, "loetud " + kp(kp_))])}
+</section>"""
+    TN = {"ai_amet": "Pealkirjas tehisaru", "andmeamet": "Pealkirjas andmed", "ai_oskus": "Mainib tehisaru",
+          "ai_firma_noue": "Firma üldnõue"}
+    ta, n_k = collections.Counter(r.get("tooandja") for r in kuul), len(kuul)
+    top, n_top = ta.most_common(1)[0]
+    koik_r = collections.Counter(r["ruhm"] for r in kuul)
+    top_r = collections.Counter(r["ruhm"] for r in kuul if r.get("tooandja") == top)
+    read2 = sorted(((TN[g], top_r[g] / koik_r[g] * 100, f"{top_r[g]} / {koik_r[g]}") for g in TN if koik_r.get(g)),
+                   key=lambda x: -x[1])
+    read2.insert(0, ("Kõik neli rühma", n_top / n_k * 100, f"{n_top} / {n_k}"))
+    ilma = n_k - n_top
+    top_cv = next((r["arv"] for r in CV.get("top_tooandjad", []) if r["nimi"] == top), None)
+    top_koht = next((i for i, r in enumerate(CV.get("top_tooandjad", []), 1) if r["nimi"] == top), None)
+    lisa = (f" {e(top)} on ka kõigi CV.ee kuulutuste seas {top_koht}. suurim avaldaja ({top_cv} kuulutust)." if top_cv else "")
+    yks = f"""
+<section class="pn sp12" id="tk-yks" aria-labelledby="h-tk-yks">
+  <div class="pn-h"><h2 id="h-tk-yks">Tehisaru mainivatest kuulutustest <b>{pr(n_top / n_k * 100, 0)}% on ühelt tööandjalt</b> ({e(top)})</h2></div>
+  <p class="ps">CV.ee, {kp(kp_)}. {e(top)} kuulutuste osa igas rühmas, %.</p>
+  {lihtribad(read2, 100, samm=25, fookus=0)}
+  <p>Kui {e(top)} kuulutused välja jätta, jääb {ilma} kuulutust ehk {pr(ilma / kokku * 100)}% kõigist {_arvt(kokku)} kuulutusest. Kui {e(top)} kuulutusi lisab või eemaldab, muutub kogu arv palju, kuigi tööturul muud ei muutu.</p>
+  <details><summary>Täpsustused</summary><div><p>{e(top)} kuulutustest {top_r["ai_firma_noue"]} on rühmas „Firma üldnõue“: tehisaru on ainult firma ühises lauses, mis kordub kuulutusest kuulutusse.{lisa}</p></div></details>
+  {allikarida([("CV.ee avalik otsing", url, "loetud " + kp(kp_))])}
+</section>"""
+    return kus + yks
+
+
 def ai_kuulutused(A):
     """CV.ee tehisaru- ja andmetööde kuulutused rühmade kaupa (Kadri 8.11.2026, andmed TOOELU igapäevasest tööst).
     Rühmad ei kattu, seega neid võib liita. „Firma üldnõue“ on eraldi, et üks firma ei paisutaks oskuste rühma."""
@@ -921,4 +982,5 @@ def ai_kuulutused(A):
   <tbody>{"".join(rows)}</tbody></table></div>
   <details><summary>Täpsustused: firma üldnõue ja mida see ei näita</summary><div>{fn_t}<p>{e(K.get("piirangud", ""))} Liigitus on märksõnapõhine, inimene pole seda kontrollinud.</p></div></details>
 </section>
+{_tk_leiud(A, K, R, kp_, url)}
 </div>"""
