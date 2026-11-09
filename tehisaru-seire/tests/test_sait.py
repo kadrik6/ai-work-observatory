@@ -1016,10 +1016,10 @@ def test_ettekanded_ainult_kinnitatud():
 
 
 def test_pohimenuu_on_m2_keskel_ilma_joonteta():
-    # Kadri 8.11.2026 22:50 „kasuta M2 riba“: teemad päise keskel paksult, hallid jooned läbipaistvad
+    # Kadri 8.11.2026 22:50 „kasuta M2 riba“: teemad päise keskel, hallid jooned läbipaistvad; 9.11 tavakirjas
     css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
     m2 = css.split("Põhimenüü M2")[1]
-    assert "justify-content: center" in m2 and "font-weight: 600" in m2
+    assert "justify-content: center" in m2 and "font-weight: 400" in m2  # teemad tavakirjas (Kadri 9.11.2026)
     assert ".top { border-bottom-color: transparent; }" in m2 and "border-left" not in m2
 
 
