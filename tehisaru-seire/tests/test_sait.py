@@ -928,7 +928,7 @@ def test_labivaatus_8_11_parandused(sait):
                     ("too-kirjandus.html", "Mida maailmas ja Eestis tehisarust ja tööst kirjutatakse"),
                     ("too-ametid.html", "Millised Eesti ametid on tehisarule avatud")]:
         assert h1(f) != nimi and len(h1(f)) > len(nimi) and "<b>" in re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1), f
-    assert re.search(r"digioskused on \d+,\d% Eesti inimestest", h1("inimesed-oskused.html"))
+    assert re.search(r"digioskused on \d+,\d% Eesti 16–74-aastastest", h1("inimesed-oskused.html"))
     # P5: saidikaardil pole sisemärkmeid ega olekuveergu
     assert "Kadri" not in sait["saidikaart.html"] and "Eelvaate" not in sait["saidikaart.html"]
     assert ">Olek<" not in sait["saidikaart.html"]
@@ -1240,8 +1240,8 @@ def test_ligipaasu_taust_teised_riigid_ja_uuringud(sait, A):
     h = sait["ettevotted.html"]
     sec = h[h.index('id="ligipaas"'):]
     sec = sec[:sec.index("</section>")]
-    for plokk, read, pk in [("ligipaas-riigid", K["riigid"], "Teised riigid ei keela tööriistu, vaid seavad tingimused"),
-                            ("ligipaas-uuringud", K["uuringud"], "Kasu on päris, aga kasutaja ei näe alati, kus tehisaru eksib")]:
+    for plokk, read, pk in [("ligipaas-riigid", K["riigid"], "Soome, Holland, Ühendkuningriik ja USA lubavad ametnikel tehisaru kasutada tingimustega"),
+                            ("ligipaas-uuringud", K["uuringud"], "Kasu on päris, aga mitte igas ülesandes, ja kasutaja hinnang võib eksida")]:
         osa = sec[sec.index(f'id="{plokk}"'):]
         osa = osa[:osa.index("</table>")]
         assert pk in tekst(osa)
@@ -1251,6 +1251,10 @@ def test_ligipaasu_taust_teised_riigid_ja_uuringud(sait, A):
     assert {r["riik"] for r in K["riigid"]} == {"Soome", "Holland", "Ühendkuningriik", "USA (föderaal)"}
     assert "Tõendi liik" in sec and "eeltrükk, väike valim" in sec
     assert "värav" not in tekst(sec).lower()
+    # kriitiku läbivaatus 9.11.2026: pealkiri ei üldista „teisi riike“; tööriistakeelu vastunäide on algallikaga
+    assert "Teised riigid ei keela" not in tekst(sec)
+    assert "direction-001-2025-deepseek" in sec
+    assert "süstemaatiline ülevaade" in tekst(sec)
     # sama uuring on Töö lehel 14%; taustaplokk ei tohi näidata teist numbrit
     assert "tunnis 14% rohkem pöördumisi" in tekst(sec)
 

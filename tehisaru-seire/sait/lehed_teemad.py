@@ -300,7 +300,7 @@ def inimesed(A, vaade, vaated=None):
     ])
     alam_h1(vaade, "inimesed-oskused.html",
             # Kadri 9.11.2026 20:26: pealkiri oli liiga pikk; siht ja „ei oska“ on kohe all plokkides
-            f'Vähemalt baastaseme digioskused on **{pr(ds["vaartus"])}% Eesti inimestest**')
+            f'Vähemalt baastaseme digioskused on **{pr(ds["vaartus"])}% Eesti 16–74-aastastest**')
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Andmed")], sec_andmed),
         ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
