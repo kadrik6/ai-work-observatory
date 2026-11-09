@@ -1139,3 +1139,14 @@ def test_tutvustuse_leht_uuele_lugejale(A, sait):
     assert 'href="saidist.html">Mis see sait on?</a>' in sait["index.html"]  # avalehelt leitav
     assert 'href="saidist.html">Mis see sait on</a>' in sait["inimesed.html"]  # jaluses igal lehel
     assert "Kadri" not in h
+
+
+def test_avatumad_ametid_on_tulpdiagramm(A, sait):
+    # Kadri 9.11.2026: „see siin vajab normaalset visuaali“ – ametite tabel tulpadeks, tabel klõpsu taga
+    leht = next(h for h in sait.values() if 'id="kokkupuude"' in h)
+    osa = _jaotis(leht, "kokkupuude")
+    K = A["kokkupuude"]
+    assert len(re.findall(r'class="ar-r( a4)?"', osa)) == len(K["ametid"])
+    assert osa.count('class="ar-r a4"') == sum(1 for r in K["ametid"] if str(r["aste"]) == "4")
+    assert 'class="ar" data-piir="12"' in osa
+    assert osa.index('class="ar"') < osa.index("<summary>Näita andmetabelit</summary>")

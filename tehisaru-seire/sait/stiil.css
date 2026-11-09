@@ -1386,3 +1386,17 @@ html[data-t] .mega-lisa a:hover { color: var(--signal); }
 .kolm.neli { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 1199px) { .kolm.neli { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 680px) { .kolm.neli { grid-template-columns: minmax(0, 1fr); } }
+
+/* Kõige avatumad ametid (Kadri 9.11.2026): nimi ja arv tulba kohal, sest ametinimed on pikad; aste 4 fookusvärviga */
+.ar { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
+.ar-t { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; font-size: 15px; line-height: 1.3; }
+.ar-n { color: var(--ink); }
+.ar-v { color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ar-v small { margin-left: 8px; color: var(--ink-3); font-size: 13px; }
+.ar-rada { display: block; position: relative; height: 10px; margin-top: 4px; }
+.ar-tulp { position: absolute; left: 0; top: 0; bottom: 0; background: var(--mark-ctx); border-radius: 0 4px 4px 0; }
+.ar-r.a4 .ar-tulp { background: var(--mark-signal); }
+.ar-r.a4 .ar-v small { color: var(--signal); font-weight: 600; }
+.ar-hl { color: var(--signal); }
+.ar-fig { margin-top: 32px; }
+.ar-fig > details { margin-top: 12px; }
