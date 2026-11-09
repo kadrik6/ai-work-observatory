@@ -29,7 +29,7 @@ def test_robots_keelab_koik(tmp_path):
     # väljundis on ainult saidi failid: html, stiil, skript, robots.txt ja avalehe päise pilt
     lubatud = re.compile(r".+\.html$|^stiil\.css$|^sait\.js$|^robots\.txt$|^pilt$")
     assert all(lubatud.match(p.name) for p in tmp_path.iterdir()), sorted(p.name for p in tmp_path.iterdir())
-    assert sorted(p.name for p in (tmp_path / "pilt").iterdir()) == ["avaleht.jpg"]
+    assert sorted(p.name for p in (tmp_path / "pilt").iterdir()) == ["avaleht-tume.jpg", "avaleht.jpg"]
 
 
 def test_kulastusloendur_ainult_vercelis():

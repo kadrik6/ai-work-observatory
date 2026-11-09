@@ -1165,3 +1165,28 @@ def test_gem_eksperthinnang_on_eraldi_sakis(A, sait):
     # ei ole Eurostati %-teljel ega samas plokis kui ELi kaart
     assert 'class="gem-skaala"' in osa and 'class="gem-skaala"' not in _jaotis(h, "kasutus")
     assert "ei ole võrreldavad" in tekst(osa)
+
+
+def test_paise_pilt_teema_jargi():
+    # Kadri 9.11.2026 07:18: „tumedas A ja heledas B“ – tumedal teemal oma pilt, ka telefonis
+    css = (Path(__file__).resolve().parent.parent / "sait" / "stiil.css").read_text(encoding="utf-8")
+    tume = [r for r in css.split("}") if 'data-seire-teema="dark"] .pea-rahu.pilt::before' in r]
+    assert len(tume) == 2 and all("pilt/avaleht-tume.jpg" in r for r in tume)
+    assert css.count('url("pilt/avaleht.jpg")') == 2
+
+
+def test_ai_kuulutuste_leiud_asukoht_ja_uks_tooandja(A, sait):
+    # Kadri 9.11.2026: mustandi leiud 1 (asukoht) ja 2 (üks tööandja) AI-kuulutuste jaotisse; numbrid failidest
+    K = A["ai_kuulutused"]
+    if not K or not K.get("kuulutused"):
+        pytest.skip("kuulutuste andmed puuduvad")
+    leht = next(h for h in sait.values() if 'id="ai-kuulutused"' in h)
+    assert leht.index('id="ai-kuulutused"') < leht.index('id="tk-kus"') < leht.index('id="tk-yks"')
+    pk = [r for r in K["kuulutused"] if r["ruhm"] in ("ai_amet", "andmeamet", "ai_oskus")]
+    harju = sum(1 for r in pk if r.get("maakond") == "Harjumaa")
+    assert f"{round(harju / len(pk) * 100)}% on Harjumaal" in tekst(_jaotis(leht, "tk-kus"))
+    import collections as _c
+    top, n = _c.Counter(r.get("tooandja") for r in K["kuulutused"]).most_common(1)[0]
+    osa = tekst(_jaotis(leht, "tk-yks"))
+    assert f"{round(n / len(K['kuulutused']) * 100)}% on ühelt tööandjalt ({top})" in osa
+    assert f"{n} / {len(K['kuulutused'])}" in osa
