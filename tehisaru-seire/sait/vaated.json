@@ -248,6 +248,18 @@
       ]
     },
     {
+      "id": "saidist",
+      "fail": "saidist.html",
+      "menuu": null,
+      "koht": "jalus",
+      "vanem": "avaleht",
+      "kusimused": "–",
+      "olek": "valmis",
+      "kusimus": "Mis see sait on, kellele see on ja kust alustada?",
+      "h1": "Tehisaru seire koondab ühte kohta, mida **tehisaru kohta Eestis ja maailmas teatakse**: ametlikud numbrid, uuringud ja väidete kontroll.",
+      "osad": "Neli lugejat ja kust alustada; teemad koos vastusega; kolm sisuliiki; kuidas sait uueneb; mida sait ei ole"
+    },
+    {
       "id": "kuidas",
       "fail": "kuidas-lugeda.html",
       "menuu": null,

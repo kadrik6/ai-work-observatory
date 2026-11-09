@@ -435,7 +435,7 @@ def avaleht(A, vaade, vaated):
 <div class="pea-t pea-rahu pilt">
   <h1>{taida(vaade["h1"], A)}</h1>
   <div class="alla">
-    <p class="tutvus">{TUTVUS}</p>
+    <p class="tutvus">{TUTVUS} {menuu("saidist", "Mis see sait on?")}</p>
     <details class="allikad-l"><summary>Allikad ja kuupäevad</summary><div>
       <p>Andmed: Statistikaamet {kp(ein["avaldatud"])} ja {kp(eeb["avaldatud"])}, Eurostat {kp(UNE_UUENDATUD)}.</p>
       <p>ELi järjestus on {ein25["aasta"]}. aasta kohta (Eurostat). Iga number on allikaga, allikas on numbri juures.</p>

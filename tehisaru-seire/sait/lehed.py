@@ -507,7 +507,7 @@ def ettevotted(A, vaade, vaated=None):
 def saidikaart(A, vaade, vaated):
     read = []
     for v in vaated:
-        nimi = v["menuu"] or {"avaleht": "Avaleht", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}[v["id"]]
+        nimi = v["menuu"] or {"avaleht": "Avaleht", "saidist": "Mis see sait on", "kuidas": "Kuidas lugeda", "saidikaart": "Saidikaart"}[v["id"]]
         link = f'<a href="{v["fail"]}">{e(nimi)}</a>' if v["olek"] == "valmis" else e(nimi)
         if v.get("alamlehed") and v["olek"] == "valmis":
             link += "<small>alamlehed: " + ", ".join(f'<a href="{s["fail"]}">{e(s["nimi"])}</a>' for s in v["alamlehed"]) + "</small>"
@@ -533,5 +533,5 @@ import lehed_ulevaade as _o  # noqa: E402
 import lehed_uudised as _n  # noqa: E402
 
 EHITAJAD = {"avaleht": _o.avaleht, "inimesed": _t.inimesed, "ettevotted": ettevotted, "too": _t.too,
-            "avalik-sektor": _t.avalik_sektor, "reeglid": _t.reeglid, "kas-tosi": _u.kas_tosi, "kuidas": _u.kuidas,
+            "avalik-sektor": _t.avalik_sektor, "reeglid": _t.reeglid, "kas-tosi": _u.kas_tosi, "kuidas": _u.kuidas, "saidist": _u.saidist,
             "hanked": _n.hanked, "uudised": _n.uudised}

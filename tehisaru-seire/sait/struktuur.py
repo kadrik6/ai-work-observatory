@@ -102,7 +102,7 @@ def moodik(failid):
     return out
 
 
-def vead(M, avaleht="index.html", jalus=("kuidas-lugeda.html", "saidikaart.html")):
+def vead(M, avaleht="index.html", jalus=("saidist.html", "kuidas-lugeda.html", "saidikaart.html")):
     """Kõvad vead: orvud, tupikud, teema märkimata menüüs (v.a avaleht ja jaluse lehed)."""
     v = []
     for f, m in M.items():
