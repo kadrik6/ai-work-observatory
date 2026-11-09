@@ -1340,8 +1340,10 @@ html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale
 }
 
 /* Saidi nimi päises: suurem ja must, ka avalehel (Kadri 9.11.2026 00:13) */
-.top .mark, .top .mark[aria-current="page"] { color: var(--ink); font-size: 27px; letter-spacing: -0.02em; line-height: 1.1; }
-@media (max-width: 680px) { .top .mark, .top .mark[aria-current="page"] { font-size: 22px; } }
+.top .mark, .top .mark[aria-current="page"] { color: var(--ink); font-size: 24px; letter-spacing: -0.02em; line-height: 1.1; }
+@media (max-width: 680px) { .top .mark, .top .mark[aria-current="page"] { font-size: 20px; } }
+/* Kadri 9.11.2026 00:45: saidi nimi ja kuupäevarida natuke väiksemaks */
+@media (min-width: 681px) { .top .seis { font-size: 11.5px; } }
 
 /* Menüüs on 9 teemat (Avaleht esimesena, Kadri 9.11.2026): kitsamal sülearvutil väiksem vahe, et rida mahuks */
 @media (min-width: 681px) and (max-width: 1439px) { .top .menu a { padding: 0 9px; } }

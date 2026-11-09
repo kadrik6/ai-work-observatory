@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 9.11.2026 | Seire sait: päises saidi nimi 27 → 24 px (telefonis 22 → 20 px) ja kuupäevarida 12,5 → 11,5 px (Kadri soov). |
 | 9.11.2026 | Seire sait: laial ekraanil kasutab leht rohkem laiust. Külgvarud on poole väiksemad kui varem (sisu laius (ekraan + 1280) / 2, kuni 1920 px); 1920 px ekraanil 1600 px. Kadri soov. |
 | 9.11.2026 | Seire sait: uus leht „Mis see sait on“ (saidist.html) uuele lugejale: kellele sait on ja kust alustada, teemad koos praeguse vastusega, kolm sisuliiki, kuidas sait uueneb ja mida see ei ole. Link avalehe tutvustuses ja igal lehel jaluses (Kadri soov); test lisatud. |
 | 9.11.2026 | Seire sait, Töö › Kirjandus: sakk „Enim tsiteeritud alates 2023“ on nüüd „Enim tsiteeritud alates 2026“ (Kadri MKUS-i kommentaar). Read tulevad OpenAlexi kahest tsiteeritute loendist, ainult 2026. aastal ilmunud tööd; test lisatud. |
