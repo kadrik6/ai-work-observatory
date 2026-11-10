@@ -3,6 +3,7 @@
 
 Mustandid kirjutab igapäevane töö projekti kausta:
   tooelu-leht-andmed/leiud-lisa.json  → „uuringud“ (uuringu leid ja kokkuvõte)
+  seire-uks-sait/saidi-ettepanekud.json → saidi muudatuse ettepanekud (ehitatakse PR-iga, mitte automaatselt)
   tooelu-uudised/vaited.json          → väited (hinnang algallika vastu)
   seire-uks-sait/ettekanded.json      → usaldatud ürituste ettekanded (kokkuvõte oma sõnadega)
 Kirje olek on väljal „seire_olek“: puudub = ootel, „kinnitatud“, „tagasi“ (ei lähe saidile) või „varasem“
@@ -19,7 +20,10 @@ import sys
 from pathlib import Path
 
 FAILID = {"uuring": ("tooelu-leht-andmed/leiud-lisa.json", "uuringud"), "vaide": ("tooelu-uudised/vaited.json", None),
-          "ettekanne": ("seire-uks-sait/ettekanded.json", "ettekanded")}  # ettekanded: Kadri 8.11.2026
+          "ettekanne": ("seire-uks-sait/ettekanded.json", "ettekanded"),  # ettekanded: Kadri 8.11.2026
+          # suurte uudiste ja uute numbrite järgi saidi muutmise ettepanekud (Kadri 10.11.2026); kinnitatud kirjed
+          # ehitab seire saidi lõim tavapärase PR-iga, saidile need ise ei lähe (vt tooelu-uudised/README.md)
+          "saidimuudatus": ("seire-uks-sait/saidi-ettepanekud.json", "ettepanekud")}
 
 
 def _loe(kaust, liik):
@@ -71,6 +75,16 @@ def kokkuvote(kaust):
             out += [f"## {r['id']} · uuring", f"{r.get('autorid', '')} {r.get('aasta', '')}: {r.get('pealkiri', '')}",
                     f"- Kus: {r.get('kus', '')}; meetod: {r.get('meetod', '')}; valim: {r.get('valim', '')}",
                     f"- Leid: {r.get('leid', '')}", f"- Link: {r.get('url', '')}", ""]
+        elif liik == "saidimuudatus":
+            andmed = "; ".join(f"{x.get('naitaja', '')} {x.get('vaartus', '')} ({x.get('aasta', '')}, {x.get('allikas', '')})"
+                               for x in r.get("andmed") or [])
+            out += [f"## {r['id']} · saidi muudatus ({r.get('tegevus', '')})",
+                    f"Leht: {r.get('vaade', '')} › {r.get('osa', '')}",
+                    f"- Mis muutub: {r.get('mis_muutub', '')}", f"- Andmed: {andmed}",
+                    f"- Võrreldavus: {r.get('vorreldavus', '')}"]
+            if r.get("visuaal"):
+                out.append(f"- Visuaal: {r['visuaal']}")
+            out += [f"- Miks: {r.get('miks', '')}", f"- Uudised: {', '.join(r.get('uudised') or [])}", ""]
         elif liik == "ettekanne":
             out += [f"## {r['id']} · ettekanne", f"{r.get('esineja', '')}: {r.get('pealkiri', '')} ({r.get('uritus', '')}, {r.get('kuupaev', '')})",
                     f"- Kokkuvõte: {r.get('kokkuvote', '')}", f"- Video: {r.get('video', '')}", ""]

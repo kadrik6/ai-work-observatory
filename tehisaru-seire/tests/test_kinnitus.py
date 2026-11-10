@@ -42,6 +42,21 @@ def test_ootel_kirjed_ja_kinnitamine(tmp_path):
     assert ootel.muuda(k, "kinnitatud", ["koik"]) == ["u2"]
 
 
+def test_saidi_ettepanekud_on_kinnitusjarjekorras(tmp_path):
+    # Kadri 10.11.2026: suurte uudiste järgi saidi muutmise ettepanekud ootavad samuti „jah ID“-d
+    k = _kaust(tmp_path)
+    (k / "seire-uks-sait" / "saidi-ettepanekud.json").write_text(json.dumps({"kirjeldus": "x", "ettepanekud": [
+        {"id": "sp-1", "tegevus": "uuenda", "vaade": "ettevotted", "osa": "Kasutus", "mis_muutub": "Uus number.",
+         "andmed": [{"naitaja": "kasutab", "vaartus": 36.1, "aasta": 2026, "allikas": "Statistikaamet", "url": "https://s"}],
+         "vorreldavus": "K1", "uudised": ["https://u"], "miks": "M"}]}), encoding="utf-8")
+    assert [r["id"] for _, r in ootel.ootel(k) if r["id"].startswith("sp")] == ["sp-1"]
+    md = ootel.kokkuvote(k)
+    assert "## sp-1 · saidi muudatus (uuenda)" in md and "ettevotted › Kasutus" in md and "kasutab 36.1 (2026, Statistikaamet)" in md
+    assert ootel.muuda(k, "kinnitatud", ["sp-1"], tana="2026-11-10") == ["sp-1"]
+    d = json.loads((k / "seire-uks-sait" / "saidi-ettepanekud.json").read_text(encoding="utf-8"))
+    assert d["kirjeldus"] == "x" and d["ettepanekud"][0]["seire_olek"] == "kinnitatud"
+
+
 def test_saidile_lahevad_ainult_kinnitatud(tmp_path):
     k = _kaust(tmp_path)
     ootel.muuda(k, "kinnitatud", ["u1"], tana="2026-11-09")
