@@ -13,7 +13,7 @@ import re
 from pathlib import Path
 
 import andmekiht as andmed
-from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link
+from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, sonaga
 from andmekiht import EL, AndmeViga
 from komponendid import KUUD, aastatulbad, allikarida, e, kaart, kp, pr, riik, sihiriba
 from lehed_usaldus import RASKUS, _raskus
@@ -142,7 +142,7 @@ def fakt(lbl, big, per, src, kes="Eesti"):
     if kes and not any(s in nimi for s in ("Eesti", "USA", "Taani")):
         nimi = f"{kes}, {nimi[0].lower()}{nimi[1:]}"
     p = tekst(per).replace(" · ", ", ") if per else ""
-    p = f" {p}" if p.startswith(("/", "punkti")) else (f" ({p})" if p else "")
+    p = f" {p}" if p.startswith(("/", "punkti", "protsendipunkti")) else (f" ({p})" if p else "")
     return (f"{nimi}: {tekst(big)}{p}."
             + f" Allikas: {tekst(src)}" + (f", {html.unescape(url.group(1))}" if url else "") + ".")
 
@@ -280,7 +280,7 @@ def avaleht(A, vaade, vaated):
         raise AndmeViga(f"Töötuse plaadi muutus vajab kuud {int(kuu[:4]) - 1}{kuu[4:]}")
     plaadid = "".join([
         kpi_plaat("inimesed", "Inimesed, kes kasutasid tehisaru (16–74)", f"{pr(ein['vaartus'])}%", str(ein["aasta"]),
-                  {"muutus": (f"{_p(ein['vaartus'] - ein25['vaartus'])} punkti aastaga", f"{ein25['aasta']}: {pr(ein25['vaartus'])}% · küsimus võib erineda"),
+                  {"muutus": (f"{_p(ein['vaartus'] - ein25['vaartus'])} protsendipunkti aastaga", f"{ein25['aasta']}: {pr(ein25['vaartus'])}% · küsimus võib erineda"),
                    "riba": kpi_riba(ein["vaartus"], 100, fookus=True)},
                   a(ein["url"], "Statistikaamet " + ein["allikas"].split("tabel ")[-1]), fookus=True, href="inimesed.html#kasutus"),
         kpi_plaat("ettevotted", "Ettevõtted, kes kasutavad tehisaru, ja riigi siht", f"{pr(eeb['vaartus'])}%",
@@ -289,11 +289,11 @@ def avaleht(A, vaade, vaated):
                    "riba": kpi_riba(eeb["vaartus"], 100, siht=float(siht["siht"]), siht_tekst=f"siht {pr(float(siht['siht']), 0)}% ({siht['aasta']})")},
                   a(eeb["url"], "Statistikaamet " + eeb["allikas"].split("tabel ")[-1]), href="ettevotted.html#kasutus"),
         kpi_plaat("digi", "Vähemalt baastaseme digioskused", f"{pr(ds['vaartus'])}%", str(ds["aasta"]),
-                  {"muutus": (f"{_p(ds['vaartus'] - ds23['vaartus'])} punkti {ds23['aasta']}. aastast", f"EL {pr(ds_el['vaartus'])}%"),
+                  {"muutus": (f"{_p(ds['vaartus'] - ds23['vaartus'])} protsendipunkti {ds23['aasta']}. aastast", f"EL {pr(ds_el['vaartus'])}%"),
                    "riba": kpi_riba(ds["vaartus"], 100, siht=float(A["sihid"]["el-digioskused-80"]["siht"]), vrd=ds_el["vaartus"], siht_tekst=f"ELi siht {pr(float(A['sihid']['el-digioskused-80']['siht']), 0)}% ({A['sihid']['el-digioskused-80']['aasta']})")},
                   "Eurostat", href="inimesed.html#digi"),
         kpi_plaat("tootus", "Töötuse määr, sesoonselt tasandatud", f"{pr(t_ee)}%", f"{KUUD[int(kuu[5:]) - 1]} {kuu[:4]}",
-                  {"muutus": (f"{_p(t_ee - t_aasta_eest)} punkti aastaga", f"{KUUD[int(kuu[5:]) - 1]} {int(kuu[:4]) - 1}: {pr(t_aasta_eest)}% · EL {pr(t_el)}%")},
+                  {"muutus": (f"{_p(t_ee - t_aasta_eest)} protsendipunkti aastaga", f"{KUUD[int(kuu[5:]) - 1]} {int(kuu[:4]) - 1}: {pr(t_aasta_eest)}% · EL {pr(t_el)}%")},
                   a(UNE_URL, "Eurostat une_rt_m"), href="too.html#tootus-kuud"),
         kpi_plaat("hanked", "Tehisaru- ja andmehanked", str(h_uus["ai_ja_andmed"]), h_uus["periood"] if h_uus["periood"] != "aasta" else str(h_uus["aasta"]),
                   {"muutus": (f"{pr(h_uus['osa'])}% kõigist hangetest", "aastaid veel ei võrrelda")},
@@ -339,12 +339,12 @@ def avaleht(A, vaade, vaated):
     kuujoon = joon([("Eesti", [(idx[k], v) for k, v in viimased], "fookus"),
                     ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
                    0, 11, 10, 2, w=340, h=90, ml=4, mr=60, x_margid=[0, 11], lihtne=True,
-                   x_silt=lambda i: viimased[int(i)][0][5:] + "/" + viimased[int(i)][0][2:4], silt="Töötus viimased 12 kuud")
+                   x_silt=lambda i: viimased[int(i)][0][5:] + "." + viimased[int(i)][0][:4], silt="Töötus viimased 12 kuud")
     sec_prog = f"""
 <section class="pn sp7" id="tootus" aria-labelledby="h-tootus">
-  <div class="pn-h"><h2 id="h-tootus">Eesti töötus oli {kuu_seesytlev(kuu)} <b>{pr(t_ee)}%</b>; {p_aasta}. aasta keskmise prognoos on {pr(prog[p_aasta]['protsent'])}%, see on teine mõõdik</h2></div>
+  <div class="pn-h"><h2 id="h-tootus">Eesti töötus oli {kuu_seesytlev(kuu)} <b>{pr(t_ee)}%</b>; {p_aasta}. aasta keskmiseks prognoositakse {pr(prog[p_aasta]['protsent'])}%, mis on teine mõõdik ega ole kuunumbriga otse võrreldav</h2></div>
   <div class="g2"><div><p class="gt">Aasta keskmine, tegelik ja prognoos</p>{aastatulbad([(r["aasta"], r["protsent"], r["tegelik"]) for r in prog.values()], 10, 2)}</div>
-  <div><p class="gt">Kuu kaupa, sesoonselt tasandatud, {k0[5:]}/{k0[:4]}–{kuu[5:]}/{kuu[:4]}</p>{kuujoon}</div></div>
+  <div><p class="gt">Kuu kaupa, sesoonselt tasandatud, {k0[5:]}.{k0[:4]}–{kuu[5:]}.{kuu[:4]}</p>{kuujoon}</div></div>
   <p class="drift">Prognoos on aasta keskmine, kuunumber sesoonselt tasandatud. Tehisaru mõju prognoos eraldi ei arvesta.</p>
   {allikarida([(rm["pealkiri"], rm["url"], kp(rm["avaldatud"])), ("Eurostat une_rt_m", UNE_URL, f"uuendatud {kp(UNE_UUENDATUD)}")])}
 </section>"""
@@ -358,8 +358,8 @@ def avaleht(A, vaade, vaated):
     trend = joon(seeriad, ee_pts[0][0], ee_pts[-1][0], 40, 10, h=140, x_margid=[p[0] for p in ee_pts], silt="Ettevõtete tehisaru kasutus")
     sec_trend = f"""
 <section class="pn sp5" id="trend" aria-labelledby="h-trend">
-  <div class="pn-h"><h2 id="h-trend">Eesti ettevõtete tehisaru kasutus kasvas {ee_pts[0][0]}–{ee_pts[-1][0]} <b>{pr(ee_pts[0][1])}%-lt {pr(ee_pts[-1][1])}%-ni</b></h2></div>
-  <p class="ps">% ettevõtetest, vähemalt 10 hõivatut. 2022 küsimust ei olnud.</p>
+  <div class="pn-h"><h2 id="h-trend">Eesti ettevõtete tehisaru kasutus kasvas <b>{pr(ee_pts[0][1])}%-lt ({ee_pts[0][0]}) {pr(ee_pts[-1][1])}%-ni ({ee_pts[-1][0]})</b></h2></div>
+  <p class="ps">% ettevõtetest, vähemalt 10 hõivatut. 2022. aastal seda küsimust ei esitatud.</p>
   {trend}
   {allikarida([(eu["allikas"], eu["url"], f"uuendatud {kp(eu['avaldatud'])}")])}
 </section>"""
@@ -387,7 +387,7 @@ def avaleht(A, vaade, vaated):
     sec_voog = f"""
 <section class="pn sp5" id="muutus" aria-labelledby="h-muutus">
   <div class="pn-h"><h2 id="h-muutus">Mis muutus: uus number viimati <b>{kp(viim_nr)}</b>, väide {kp(viim_v) if viim_v else "–"}</h2></div>
-  <p class="ps">{VOO_PAEVI} päeva jooksul lisandus {uued} {"kanne" if uued == 1 else "kannet"}. Uudised on eraldi lehel.</p>
+  <p class="ps">Viimase {VOO_PAEVI} päeva jooksul lisandus {sonaga(uued)} {"kanne" if uued == 1 else "kannet"}. Uudised on eraldi lehel.</p>
   <ul class="voog">{read}</ul>
   <p class="allikas">Kogu loend: {menuu("kas-tosi", "Usaldus › Värskus", "muutused")}. Tehisaru ja töö uudised Eestist ja maailmast: {menuu("uudised", "Uudised")}.</p>
 </section>"""
@@ -410,7 +410,7 @@ def avaleht(A, vaade, vaated):
     sec_hanked = f"""
 <section class="pn sp4" id="hanked" aria-labelledby="h-hanked">
   <div class="pn-h"><h2 id="h-hanked">Tehisaru- ja andmehangete osa on <b>alla 1%</b> kõigist hangetest</h2></div>
-  <p class="ps">{h_uus["aasta"]} ({e(h_uus["periood"])}): <b>{h_uus["ai_ja_andmed"]}</b> hanget, {pr(h_uus["osa"])}% kõigist. Aastaid ei võrrelda enne, kui klassifikaator on uuendatud pärast 100 hanke pimesi ülevaatust.</p>
+  <p class="ps">{h_uus["aasta"]} ({e(h_uus["periood"])}): <b>{h_uus["ai_ja_andmed"]}</b> hanget, {pr(h_uus["osa"])}% kõigist. Aastaid ei võrrelda enne, kui klassifikaator on uuendatud pärast seda, kui 100 hanget oli pimesi üle vaadatud.</p>
   <p class="allikas">Allikas: {a(HANKED_URL, "riigihangete register")} ja TED; masinmärgistus, {KASITSI["n"]} hanget käsitsi üle vaadatud (kokkulangevus {KASITSI["kokku"]}%). Kõik hanked: {menuu("hanked", "Hanked")}.</p>
 </section>"""
     if max(r["osa"] for r in H) >= 1:
@@ -424,7 +424,7 @@ def avaleht(A, vaade, vaated):
         for v in V_jrj[:4])
     sec_vaited = f"""
 <section class="pn sp12" id="vaited" aria-labelledby="h-vaited">
-  <div class="pn-h"><h2 id="h-vaited">IMF-i ja Goldman Sachsi <b>„puudutab“ on pealkirjades muutunud sõnaks „kaob“</b></h2></div>
+  <div class="pn-h"><h2 id="h-vaited">IMFi ja Goldman Sachsi <b>„puudutab“ on pealkirjades muutunud sõnaks „kaob“</b></h2></div>
   <div class="tbl"><table><thead><tr><th scope="col" style="width:38%">Väide ja väljaanne</th><th scope="col" style="width:13%">Hinnang</th><th scope="col">Mida allikas tegelikult ütleb</th></tr></thead><tbody>{v_read}</tbody></table></div>
   <p class="allikas">Väide kuulub väljaandele. Siin {min(4, len(V))} väidet {len(V)}-st; kõik: {menuu("kas-tosi", "Väited")}.</p>
 </section>"""
@@ -484,14 +484,14 @@ def too_eesti(A):
     joonis = joon([("Eesti", [(idx[k], v) for k, v in T["EE"]], "fookus"),
                    ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
                   0, n, 10, 2, w=300, h=130, ml=4, mr=60, x_margid=[0, n], lihtne=True,
-                  x_silt=lambda i: T["EE"][int(i)][0][5:] + "/" + T["EE"][int(i)][0][2:4], silt="Töötuse määr kuu kaupa")
+                  x_silt=lambda i: T["EE"][int(i)][0][5:] + "." + T["EE"][int(i)][0][:4], silt="Töötuse määr kuu kaupa")
     aasta_tagasi = dict(T["EE"]).get(f"{int(kuu[:4]) - 1}{kuu[4:]}")
     muutus = "" if aasta_tagasi is None else (
-        f"Aasta varem {pr(aasta_tagasi)}%, muutus {'+' if t_ee >= aasta_tagasi else '−'}{pr(abs(t_ee - aasta_tagasi))} punkti. ")
+        f"Aasta varem {pr(aasta_tagasi)}%, muutus {'+' if t_ee >= aasta_tagasi else '−'}{pr(abs(t_ee - aasta_tagasi))} protsendipunkti. ")
     sec_t = f"""
 <section class="pn sp3" id="tootus-kuud" aria-labelledby="h-tootus-kuud">
   <div class="pn-h"><h2 id="h-tootus-kuud">Eesti töötus oli {kuu_seesytlev(kuu)} {kuu[:4]} <b>{pr(t_ee)}%</b>, ELis {pr(t_el)}%</h2></div>
-  <p class="ps">Töötuse määr, %, sesoonselt tasandatud, {k0[5:]}/{k0[:4]}–{kuu[5:]}/{kuu[:4]}. {muutus}Kuunumber ei ütle, kas põhjus on tehisaru.</p>
+  <p class="ps">Töötuse määr, %, sesoonselt tasandatud, {k0[5:]}.{k0[:4]}–{kuu[5:]}.{kuu[:4]}. {muutus}Kuunumber ei ütle, kas põhjus on tehisaru.</p>
   {joonis}
   {allikarida([("Eurostat une_rt_m", UNE_URL, f"uuendatud {kp(UNE_UUENDATUD)}")])}
 </section>"""
@@ -530,7 +530,7 @@ def too_eesti(A):
     legend = "".join(f'<span><i class="kr-t {k}"></i>{e(t)}</span>' for k, t in [("s", "nimetas tehisaru põhjusena"), ("m", "mainis tehisaru muul moel"), ("t", "tehisaru ei mainitud või eitati")])
     sec_v = f"""
 <div class="kk-vis" id="koondamised-visuaal">
-  <h3 class="kk-h3" id="h-koondamised-v">Tehisaru nimetati üheks põhjuseks <b>{pohjus} töökoha</b> juures {piir}{kokku}-st</h3>
+  <h3 class="kk-h3" id="h-koondamised-v">{piir.capitalize()}{kokku} koondatud töökohast <b>{pohjus} töökoha</b> puhul nimetati üheks põhjuseks tehisaru</h3>
   <p class="ps">Teatatud töökohad ettevõtte kaupa. Ainult koondamised, mille puhul uudis küsis tehisaru kohta; nimekiri pole täielik (kontrollitud {kp(K["kontrollitud"])}).</p>
   <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa">{ribad}</div>
   <p class="kr-leg">{legend}</p>
@@ -782,7 +782,7 @@ def teematabel(A, vaated, d):
     read = [
         ("inimesed", "Inimesed", "kasutus ja oskused",
          (f'{pr(d["ein"]["vaartus"])}%', f'kasutas tehisaru {d["ein"]["aasta"]}', "kasutus", True, d["ein"]["avaldatud"]),
-         uuring("bick2024", "USA-s kasutas " + U["bick2024"]["leid"].split("%")[0] + "% töötajatest tehisaru tööl", "inimesed", "tool"),
+         uuring("bick2024", "USAs kasutas " + U["bick2024"]["leid"].split("%")[0] + "% töötajatest tehisaru tööl", "inimesed", "tool"),
          vaited("inimesed"),
          f'digioskused {pr(d["ds"]["vaartus"])}%, ELi siht {pr(float(siht_ds["siht"]), 0)}% ({siht_ds["aasta"]})',
          ("inimesed", "digi")),
@@ -793,9 +793,9 @@ def teematabel(A, vaated, d):
          f'siht {pr(float(siht_ee["siht"]), 0)}% ({siht_ee["aasta"]})', ("ettevotted", "kasutus")),
         ("too", "Töö", "tööturg ja mõju",
          (f'{pr(d["t_ee"])}%', f'töötus {KUUD[int(d["kuu"][5:]) - 1]} {d["kuu"][:4]} · EL {pr(d["t_el"])}%', "tootus-kuud", False, UNE_UUENDATUD),
-         uuring("canaries2026", "USA-s palgatakse tehisarule avatud ametitesse vähem noori", "too", "maailm"),
+         uuring("canaries2026", "USAs palgatakse tehisarule avatud ametitesse vähem noori", "too", "maailm"),
          vaited("too"),
-         f'värbamise kõrge riski reeglid alates {kp(kr["kuupaev"])}', ("reeglid", "tahtajad")),
+         f'värbamise suure riskiga süsteemide reeglid alates {kp(kr["kuupaev"])}', ("reeglid", "tahtajad")),
         ("avalik-sektor", "Avalik sektor", "uuendused ja tehisaru",
          (f'{gk["vaartus"]}%', f'uuendajatest kasutas generatiivset tehisaru ({gk["lugeja"]}/{gk["nimetaja"]})', "tehisaru", False, "2026-11-03"),
          menuu("avalik-sektor", "uuendustest laiendati " + lai["vaartus"] + "%", "lehter") + "<small>OECD 2026, Eesti</small>",
@@ -832,7 +832,7 @@ def teematabel(A, vaated, d):
     sec = f"""
 <section class="pn sp12" id="teemad" aria-labelledby="h-teemad">
   <div class="pn-h"><h2 id="h-teemad">Iga teema ühes reas: <b>mõõdetud, uuritud, väidetud ja siht</b></h2></div>
-  <p class="ps">Lahter viib teema lehel õigesse kohta. {tuhjad} lahtrit on veel hindamata: seire pole neid veel hinnanud, mis ei tähenda, et midagi pole.</p>
+  <p class="ps">Lahter viib teema lehel õigesse kohta. {sonaga(tuhjad).capitalize()} {"lahter on" if tuhjad == 1 else "lahtrit on"} veel hindamata: seire pole neid veel hinnanud, mis ei tähenda, et midagi pole.</p>
   <div class="tbl teematabel"><table><caption class="peidus">Teemad ja sisuliigid</caption>
   <thead><tr><th scope="col">Teema</th><th scope="col">Mõõdetud</th><th scope="col">Uuritud</th><th scope="col">Väidetud</th><th scope="col">Sihid ja reeglid</th><th scope="col">Värskus</th></tr></thead>
   <tbody>{"".join(ridu)}</tbody></table></div>

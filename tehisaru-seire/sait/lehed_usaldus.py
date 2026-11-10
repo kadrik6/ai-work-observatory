@@ -1,7 +1,7 @@
 """Usalduse vaated ja sisenemine: Kas see on tõsi?, Avaleht, Kuidas lugeda (5.11.2026)."""
 import re
 import andmekiht as andmed
-from abi import ARVSONAD, OMASTAV, SEESTYTLEV, a, jaga, kontrolli, link, pea
+from abi import ARVSONAD, OMASTAV, SEESTYTLEV, a, jaga, kontrolli, link, pea, sonaga
 from andmekiht import EL, AndmeViga
 from komponendid import (allikarida, e, faktid, kohariba, kp, lihtribad, osad, pr, riik, tabel, vastavus)
 from pealkiri import taida
@@ -45,9 +45,9 @@ def kas_tosi_h1(A):
     suhe „neli kaheksast“ kutsuks üldistama, et pool avalikest väidetest on vale."""
     ids = {v["id"] for v in A["vaited"]}
     if not all(i in ids for i in PEAMINE_LEID):
-        raise AndmeViga("Väidete pealkiri räägib IMF-i ja Goldman Sachsi pealkirjadest, aga neid väiteid pole enam loendis")
+        raise AndmeViga("Väidete pealkiri räägib IMFi ja Goldman Sachsi pealkirjadest, aga neid väiteid pole enam loendis")
     lahti = sum(1 for l in A["lahknevused"] if l["staatus"] == "selgitamata")
-    return (f"IMF-i ja Goldman Sachsi **„puudutab“ on pealkirjades muutunud sõnaks „kaob“**; "
+    return (f"IMFi ja Goldman Sachsi **„puudutab“ on pealkirjades muutunud sõnaks „kaob“**; "
             f"{ARVSONAD[lahti]} Eurostati ja Statistikaameti lahknevust on selgitamata.")
 
 
@@ -57,7 +57,7 @@ def kas_tosi(A, vaade, vaated=None):
     loend = {k: sum(1 for v in V if _raskus(v) == k) for k in RASKUS}
     L = A["lahknevused"]
     lahti = [l for l in L if l["staatus"] == "selgitamata"]
-    kontrolli(vaade, "IMF-i ja Goldman Sachsi", f"{ARVSONAD[len(lahti)]} Eurostati ja Statistikaameti lahknevust")
+    kontrolli(vaade, "IMFi ja Goldman Sachsi", f"{ARVSONAD[len(lahti)]} Eurostati ja Statistikaameti lahknevust")
 
     o_read = [(RASKUS[k][0], loend[k], RASKUS[k][1], e({0: "Lause ütleb midagi muud või rohkem, kui allikas ütles.",
                                                        1: "Number on õige, aga lausest puudub, keda see kirjeldab, või suurus on ebakindel.",
@@ -169,7 +169,7 @@ def varskus_ja_muutused(A, vaated):
     sec_varskus = f"""
 <section class="jaotis" id="varskus" aria-labelledby="h-varskus">
   <header>
-    <h2 id="h-varskus">{SEESTYTLEV[len(v_read)].capitalize()} näitajast {"<b>kõik on Eurostatis ajakohased</b>" if koik_ajakohased else "<b>mõni on vananenud</b>"}; {f"{OMASTAV[uuem]} puhul on riiklikul statistikaametil juba uuem number" if uuem else "riiklikel statistikaametitel uuemat numbrit pole"}</h2>
+    <h2 id="h-varskus">{("Kõik " + ARVSONAD[len(v_read)] + " näitajat <b>on Eurostatis ajakohased</b>") if koik_ajakohased else (SEESTYTLEV[len(v_read)].capitalize() + " näitajast <b>mõni on vananenud</b>")}; {f"{OMASTAV[uuem]} puhul on riiklikul statistikaametil juba uuem number" if uuem else "riiklikel statistikaametitel uuemat numbrit pole"}</h2>
     <p class="alam">Ajakohane tähendab, et allikas pole avaldanud uuemat aastat, kui seire näitab. Uuem riiklik number on lehel eraldi märgitud.</p>
   </header>
   {tabel(["Näitaja", "Allikas uuendas", "Järgmine oodatav", "Seis", "Uuem number"], v_read, numbrid=[], pealdis="Näitajate värskus")}
@@ -309,7 +309,7 @@ EI_NAITA = [
     ("Puuduv number ei ole null", "Tehisaru investeeringute kohta avalikku allikat ei leitud. Kui number puudub, ei tähenda see, et kulu või mõju oleks null."),
     ("Tegevused ei ole oskuste test", "Digioskuste näitaja liidab tegevused, mida inimene on teinud. Inimese oskusi ei testita."),
     ("Kõik 16–74-aastased ei ole töötajad", "Tööalase kasutuse osakaal on arvutatud kõigist 16–74-aastastest, ka töötutest ja õpilastest."),
-    ("Riiklik 2026 ei ole Eurostat 2025", "Riiklikud 2026. aasta numbrid ei ole Eurostati omadega täielikult võrreldavad, näiteks Eesti kasutab uut tegevusalade klassifikaatorit."),
+    ("Statistikaameti 2026. aasta number ei ole sama mis Eurostati 2025. aasta number", "Riiklikud 2026. aasta numbrid ei ole Eurostati omadega täielikult võrreldavad, näiteks Eesti kasutab uut tegevusalade klassifikaatorit."),
 ]
 
 
@@ -398,7 +398,7 @@ def kuidas(A, vaade, vaated=None):
     sec_v = f"""
 <section class="jaotis" id="vorreldavus" aria-labelledby="h-vorreldavus">
   <header>
-    <h2 id="h-vorreldavus">Igal näitajal on üks võrdlusalus ja <b>{teisi} teist mõõdikut</b> on sellega võrreldud</h2>
+    <h2 id="h-vorreldavus">Igal näitajal on üks võrdlusalus ja <b>{sonaga(teisi)} teist mõõdikut</b> on sellega võrreldud</h2>
     <p class="alam">Ainult „võrdlusalus“ ja „sama“ võivad olla ühel teljel. Teised on lehtedel skaala all märkega „ei ole otse võrreldav“.</p>
   </header>
   {tabel(["Mõõdik", "Näitaja", "Klass", "Mis erineb"], m_read, numbrid=[], piir=True, pealdis="Mõõdikute võrreldavus")}
@@ -414,7 +414,7 @@ def kuidas(A, vaade, vaated=None):
     sec_u = f"""
 <section class="jaotis" id="uuringud" aria-labelledby="h-uuringud">
   <header>
-    <h2 id="h-uuringud">Uuringute kogus on <b>{len(U)} uuringut</b>, neist {n_tugev} tugeva tõendiga (katse või registriandmed)</h2>
+    <h2 id="h-uuringud">Kogus on <b>{len(U)} uuringut</b>, neist {n_tugev} tugeva tõendiga (katse või registriandmed)</h2>
     <p class="alam">Iga arv on võetud allika kokkuvõttest ja kontrollitud lingi kaudu ({kp(T.get("kontrollitud", ""))}).</p>
   </header>
   {tabel(["Uuring", "Tõend", "Kus", "Mida leiti"], u_read, numbrid=[], piir=True, pealdis="Uuringute kogu")}
@@ -485,7 +485,7 @@ def _uuenemine(A):
     return f"""
 <section class="jaotis" id="uuendused" aria-labelledby="h-uuendused">
   <header>
-    <h2 id="h-uuendused">Saidi {len(read)} osast uueneb ise <b>{ise}</b>; {pool} puhul otsib arvuti ise ja inimene kinnitab</h2>
+    <h2 id="h-uuendused">Saidi {sonaga(len(read), "seestytlev")} osast uueneb ise <b>{sonaga(ise)}</b>; {sonaga(pool, "omastav")} puhul otsib arvuti ise ja inimene kinnitab</h2>
     <p class="alam">Sait ehitatakse uuesti kaks korda päevas (7.23 ja 17.53) ja avaldatakse ainult siis, kui kõik testid läbivad. Kuupäev on viimane kontroll või andmete seis.</p>
   </header>
   <div class="tbl"><table><thead><tr><th scope="col">Osa</th><th scope="col">Kuidas uueneb</th><th scope="col">Viimati</th><th scope="col">Mida on vaja käsitsi</th></tr></thead><tbody>{t}</tbody></table></div>
