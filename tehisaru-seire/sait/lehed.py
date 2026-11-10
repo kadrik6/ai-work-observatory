@@ -540,23 +540,23 @@ def _ligipaas(A):
         # Kadri „jah, avalda“ 9.11.2026 19:59 (ligipääsu lõime LISA 9.11 õhtu); read algallikast üle kontrollitud
         kontekst += f"""
   <div class="lp-lisa" id="ligipaas-riigid">
-    <h3>Teised riigid ei keela tööriistu, vaid seavad tingimused</h3>
-    <p>Soome, Holland, Ühendkuningriik ja USA lubavad ametnikel generatiivset tehisaru kasutada. Piirid tulevad andmetest ja mõjust, mitte tööriistast.</p>
+    <h3>Soome, Holland, Ühendkuningriik ja USA lubavad ametnikel tehisaru kasutada tingimustega</h3>
+    <p>Piirid tulevad peamiselt andmetest ja mõjust. Üksikuid tööriistu on keelatud turvariski tõttu: näiteks Austraalia keelas 4.02.2025 DeepSeeki kõigis riigiasutuste süsteemides ja seadmetes (<a href="https://www.protectivesecurity.gov.au/publications-library/direction-001-2025-deepseek-products-applications-and-web-services">PSPF Direction 001-2025</a>).</p>
     {tabel(["Riik", "Mida juhend ütleb", "Allikas"],
            [[f"<b>{e(r['riik'])}</b>", e(r["tekst"]), f'<a href="{e(r["url"])}">{e(r["allikas"])}</a>'] for r in K["riigid"]],
            pealdis="Kuidas teised riigid ametnike tehisaru kasutust korraldavad", numbrid=[])}
-    {faktid([("Kuidas lugeda", "", "Juhendid on võrdlusmaterjal, Eestile mitte siduvad. USA-s on hiljem lisandunud uusi nõudeid. "
+    {faktid([("Kuidas lugeda", "", "Neli riiki on valik, mitte kõigi riikide ülevaade. Juhendid on võrdlusmaterjal, Eestile mitte siduvad. "
               "Soome juhendi lehte ei saanud otse avada, rida põhineb OECD.AI kirjeldusel.")])}
   </div>"""
     if K.get("uuringud"):
         kontekst += f"""
   <div class="lp-lisa" id="ligipaas-uuringud">
-    <h3>Kasu on päris, aga kasutaja ei näe alati, kus tehisaru eksib</h3>
+    <h3>Kasu on päris, aga mitte igas ülesandes, ja kasutaja hinnang võib eksida</h3>
     <p>Katsetes tegid tehisaru kasutajad tööd rohkem ja kiiremini. Ühes katses said nad tehisarule sobimatus ülesandes vähem õigeid lahendusi, teises hindasid kogenud arendajad oma kiirust valesti.</p>
     {tabel(["Leid", "Uuring", "Tõendi liik"],
            [[e(r["leid"]), f'<a href="{e(r["url"])}">{e(r["uuring"])}</a>', e(r["liik"])] for r in K["uuringud"]],
            pealdis="Uuringud tehisaru mõjust töö tulemusele", numbrid=[])}
-    {faktid([("Mida see ei näita", "risk", "Uuringud kasutasid 2022–2025 tööriistu ja erasektori töötajaid, mitte riigiametnikke ega tänaseid agente.")])}
+    {faktid([("Mida see ei näita", "risk", "Neli uuringut on valik, mitte süstemaatiline ülevaade. Need kasutasid 2022–2025 tööriistu ja erasektori töötajaid, mitte riigiametnikke ega tänaseid agente.")])}
   </div>"""
     return f"""
 <section class="jaotis" id="ligipaas" aria-labelledby="h-ligipaas">
