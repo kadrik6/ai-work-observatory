@@ -151,10 +151,10 @@
 "allikad": {
 "eforms": 7417
 },
-"ai_andmed": 50,
+"ai_andmed": 51,
 "ai_andmed_osakaal": 0.7,
 "marksonaloend": 50,
-"ai_marksonaga": 27,
+"ai_marksonaga": 28,
 "eeldatav_maksumus_ai": 31162483,
 "eeldatav_maksumus_teada_ai": 34,
 "innovatsioonimark": 111,
@@ -174,11 +174,11 @@
 2026
 ],
 "ai_andmed": {
-"hankeid": 155,
-"kriteeriumid_teada": 155,
-"ainult_hind_osakaal": 43.2,
+"hankeid": 156,
+"kriteeriumid_teada": 156,
+"ainult_hind_osakaal": 42.9,
 "kvaliteedi_kaal_mediaan": 60.0,
-"kvaliteedi_kaal_n": 88,
+"kvaliteedi_kaal_n": 89,
 "pakkumusi_teada": 82,
 "pakkumusi_mediaan": 2.0,
 "uks_pakkuja_osakaal": 23.2,
@@ -186,11 +186,11 @@
 "katkes_osakaal": 11.8
 },
 "it_muud": {
-"hankeid": 1535,
-"kriteeriumid_teada": 1535,
-"ainult_hind_osakaal": 62.2,
+"hankeid": 1534,
+"kriteeriumid_teada": 1534,
+"ainult_hind_osakaal": 62.3,
 "kvaliteedi_kaal_mediaan": 60.0,
-"kvaliteedi_kaal_n": 580,
+"kvaliteedi_kaal_n": 579,
 "pakkumusi_teada": 828,
 "pakkumusi_mediaan": 2.0,
 "uks_pakkuja_osakaal": 34.9,
@@ -213,13 +213,13 @@
 "kontsentratsioon": {
 "hankijaid": 90,
 "top10_protsenti_hankijaid": 9,
-"nende_osakaal": 41.4,
+"nende_osakaal": 41.5,
 "uks_hange_hankijaid": 40
 },
 "hankijad_top": [
 [
 "Riigi Tugiteenuste Keskus",
-27
+28
 ],
 [
 "Siseministeeriumi infotehnoloogia- ja arenduskeskus",
@@ -291,7 +291,7 @@
 {
 "voti": "eforms:301087-0000",
 "silt": "EI",
-"p": 0.18,
+"p": 0.17,
 "marksona": 1,
 "pealkiri": "Majandustarkvara SAP litsentside hooldus- ja tugiteenus 2026"
 },
@@ -466,7 +466,7 @@
 {
 "voti": "eforms:309482-0000",
 "silt": "EI",
-"p": 0.36,
+"p": 0.35,
 "marksona": 1,
 "pealkiri": "Cohesity andmehalduslahenduste litsentsid, tootetugi ja konsultatsioon"
 },
@@ -664,21 +664,21 @@
 "valitud": "marksonaloend",
 "tulemused": {
 "mudel": {
-"tapsus": 0.872,
-"saagis": 0.303,
-"f1": 0.45,
-"tp": 43,
+"tapsus": 0.87,
+"saagis": 0.297,
+"f1": 0.443,
+"tp": 42,
 "fp": 2,
-"fn": 75,
+"fn": 76,
 "n": 639,
 "positiivseid": 118,
 "tapsus_95": [
-0.671,
+0.665,
 1.0
 ],
 "saagis_95": [
-0.217,
-0.42
+0.209,
+0.411
 ]
 },
 "marksonaloend": {
@@ -741,7 +741,7 @@
 "jah": [
 [
 "zzmarkandmed",
-5.12
+5.11
 ],
 [
 "zzmarkai",
@@ -749,23 +749,23 @@
 ],
 [
 "tableau",
-2.66
+2.65
 ],
 [
 "ai",
-2.48
+2.47
 ],
 [
 "andme",
-1.99
+2.0
 ],
 [
 "ndme",
-1.99
+2.0
 ],
 [
 " andm",
-1.96
+1.97
 ],
 [
 "andmelao",
@@ -785,7 +785,7 @@
 ],
 [
 "ndm",
-1.74
+1.75
 ],
 [
 "cpv7220 zzmarkandmed",
@@ -812,16 +812,16 @@
 1.34
 ],
 [
+"dme",
+1.26
+],
+[
 " tehi",
 1.26
 ],
 [
-"dme",
-1.25
-],
-[
 "andmete",
-1.23
+1.24
 ],
 [
 "tehisaru",
@@ -836,25 +836,25 @@
 1.18
 ],
 [
-"bleau",
+"ablea",
 1.18
 ]
 ],
 "ei": [
 [
 "tootetugi",
--0.7
+-0.69
 ],
 [
 "infosüsteemi",
 -0.67
 ],
 [
-"leida",
+"arenduse",
 -0.58
 ],
 [
-"arenduse",
+"leida",
 -0.58
 ],
 [
@@ -866,11 +866,11 @@
 -0.5
 ],
 [
-"selle",
--0.5
+"osta",
+-0.49
 ],
 [
-"osta",
+"selle",
 -0.49
 ],
 [
@@ -883,7 +883,7 @@
 ],
 [
 "konsultatsioon",
--0.45
+-0.46
 ],
 [
 "cpv48 cpv4882",
@@ -906,19 +906,23 @@
 -0.42
 ],
 [
-"eelarvestamise",
+"litsentsid",
 -0.42
 ],
 [
-"litsentsid",
+"eelarvestamise",
 -0.41
 ],
 [
 "üst",
--0.41
+-0.4
 ],
 [
 "süs",
+-0.4
+],
+[
+"cpv3",
 -0.4
 ],
 [
@@ -930,15 +934,11 @@
 -0.4
 ],
 [
-"cpv3",
--0.4
-],
-[
-"süst",
+"ost",
 -0.39
 ],
 [
-"ost",
+"süst",
 -0.39
 ]
 ]
@@ -994,12 +994,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": null,
-"p": 0.1009,
+"p": 0.1001,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10967466/general-info",
 "vn": "316948-0000",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:316451-0000",
@@ -1016,12 +1017,13 @@
 "kv": 30.0,
 "ah": false,
 "kat": null,
-"p": 0.958,
+"p": 0.9589,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10908024/general-info",
 "vn": "316451-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:314435-0000",
@@ -1039,12 +1041,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": null,
-"p": 0.2561,
+"p": 0.2517,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10710546/general-info",
 "vn": "314435-0000",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:316542-0000",
@@ -1061,12 +1064,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": null,
-"p": 0.1896,
+"p": 0.1882,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10919124/general-info",
 "vn": "316542-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:316176-0000",
@@ -1083,12 +1087,13 @@
 "kv": 20.0,
 "ah": false,
 "kat": true,
-"p": 0.9003,
+"p": 0.899,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10880304/general-info",
 "vn": "316176-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:315171-0000",
@@ -1107,12 +1112,36 @@
 "kv": 60.0,
 "ah": false,
 "kat": null,
-"p": 0.9129,
+"p": 0.9147,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10783484/general-info",
 "vn": "315171-0000",
-"hea": 1
+"hea": 1,
+"ks": null
+},
+{
+"id": "eforms:315994-0000",
+"a": 2026,
+"kp": "2026-10-09",
+"t": "Õigusloome tulevikustsenaariumide ja hüpoteeside testkeskkonna \"Mõttepeegel\" ideekonkurss",
+"k": "Ideekonkursi eesmärk on leida parim teenuse- ja tehnoloogiakontseptsioon ning teostatav lahendusidee õigusloome varajases faasis kasutatavale hüpoteeside testimise ja tulevikustsenaariumide modelleerimise rakendusele \"Mõttepeegel\". \n\nIdeekonkursi võitjaga on hankijal kavas sõlmida hankeleping väljak…",
+"h": "Riigi Tugiteenuste Keskus",
+"cpv": [
+"72200000"
+],
+"v": null,
+"pk": null,
+"kv": 100.0,
+"ah": false,
+"kat": null,
+"p": 0.0965,
+"ai": true,
+"inn": true,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10862045/general-info",
+"vn": "315994-0000",
+"hea": 1,
+"ks": "AI: Mõttepeegel: õigusloome tulevikustsenaariumide ja hüpoteeside testkeskkond (Kadri 6.11.2026)"
 },
 {
 "id": "eforms:316179-0000",
@@ -1129,12 +1158,13 @@
 "kv": 90.0,
 "ah": false,
 "kat": null,
-"p": 0.8504,
+"p": 0.8496,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10880584/general-info",
 "vn": "316179-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:315845-0000",
@@ -1151,12 +1181,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": null,
-"p": 0.2376,
+"p": 0.2359,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10848184/general-info",
 "vn": "315845-0000",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:315437-0000",
@@ -1173,12 +1204,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.9098,
+"p": 0.9099,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10810864/general-info",
 "vn": "315437-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:314207-0000",
@@ -1195,12 +1227,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9824,
+"p": 0.9817,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10687764/general-info",
 "vn": "314207-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:314366-0000",
@@ -1217,12 +1250,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9435,
+"p": 0.9439,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10703564/general-info",
 "vn": "314366-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:311171-0000",
@@ -1240,12 +1274,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.901,
+"p": 0.8996,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10380044/general-info",
 "vn": "311171-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:313550-0000",
@@ -1264,12 +1299,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.9522,
+"p": 0.9525,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10611986/general-info",
 "vn": "313550-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:313120-0000",
@@ -1287,12 +1323,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9004,
+"p": 0.9021,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10567384/general-info",
 "vn": "313120-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:309482-0000",
@@ -1309,12 +1346,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.3257,
+"p": 0.3182,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10218324/general-info",
 "vn": "309482-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:312510-0000",
@@ -1331,12 +1369,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.9442,
+"p": 0.9446,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10499504/general-info",
 "vn": "312510-0000",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:311457-0000",
@@ -1353,12 +1392,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.875,
+"p": 0.874,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10407904/general-info",
 "vn": "311457-0000",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:311689-0000",
@@ -1375,12 +1415,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.9049,
+"p": 0.9047,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10428624/general-info",
 "vn": "311689-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:311850-0000",
@@ -1397,12 +1438,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9654,
+"p": 0.9659,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10443924/general-info",
 "vn": "311850-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:310312-0000",
@@ -1419,12 +1461,13 @@
 "kv": 100.0,
 "ah": false,
 "kat": false,
-"p": 0.9405,
+"p": 0.9399,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10293844/general-info",
 "vn": "310312-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:311263-0000",
@@ -1442,12 +1485,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9363,
+"p": 0.9351,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10388804/general-info",
 "vn": "311263-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:311574-0000",
@@ -1464,12 +1508,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9496,
+"p": 0.9501,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10419644/general-info",
 "vn": "311574-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:309231-0000",
@@ -1487,12 +1532,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.9261,
+"p": 0.927,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10193024/general-info",
 "vn": "309231-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:309575-0000",
@@ -1514,7 +1560,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10225364/general-info",
 "vn": "309575-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:310818-0000",
@@ -1531,12 +1578,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9574,
+"p": 0.9566,
 "ai": false,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10346224/general-info",
 "vn": "310818-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:310862-0000",
@@ -1553,12 +1601,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": true,
-"p": 0.9101,
+"p": 0.9097,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10350204/general-info",
 "vn": "310862-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:309108-0000",
@@ -1577,12 +1626,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.4075,
+"p": 0.4034,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10180624/general-info",
 "vn": "309108-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:307997-0000",
@@ -1600,12 +1650,13 @@
 "kv": 45.0,
 "ah": false,
 "kat": true,
-"p": 0.3714,
+"p": 0.3637,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10087724/general-info",
 "vn": "307997-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:309052-0000",
@@ -1622,12 +1673,13 @@
 "kv": 22.2,
 "ah": false,
 "kat": false,
-"p": 0.8309,
+"p": 0.8276,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10175324/general-info",
 "vn": "309052-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:308758-0000",
@@ -1645,12 +1697,13 @@
 "kv": 65.0,
 "ah": false,
 "kat": false,
-"p": 0.1793,
+"p": 0.1775,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10150524/general-info",
 "vn": "308758-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:310282-0000",
@@ -1667,12 +1720,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9766,
+"p": 0.9762,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10291564/general-info",
 "vn": "310282-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:310153-0000",
@@ -1689,12 +1743,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.3516,
+"p": 0.3468,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10280144/general-info",
 "vn": "310153-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:294809-0000",
@@ -1713,12 +1768,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9088,
+"p": 0.9084,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8799824/general-info",
 "vn": "294809-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:307815-0000",
@@ -1740,7 +1796,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10071644/general-info",
 "vn": "307815-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:308846-0000",
@@ -1757,12 +1814,13 @@
 "kv": 80.0,
 "ah": false,
 "kat": false,
-"p": 0.9118,
+"p": 0.9123,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10157184/general-info",
 "vn": "308846-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:308432-0000",
@@ -1779,12 +1837,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.1873,
+"p": 0.1837,
 "ai": false,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10123264/general-info",
 "vn": "308432-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:308151-0000",
@@ -1801,12 +1860,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.9508,
+"p": 0.951,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10099705/general-info",
 "vn": "308151-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:304551-0000",
@@ -1823,12 +1883,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9737,
+"p": 0.9729,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9760425/general-info",
 "vn": "304551-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:308068-0000",
@@ -1850,7 +1911,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10093185/general-info",
 "vn": "308068-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:306408-0000",
@@ -1867,12 +1929,13 @@
 "kv": 75.0,
 "ah": false,
 "kat": false,
-"p": 0.8766,
+"p": 0.8769,
 "ai": false,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9947884/general-info",
 "vn": "306408-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:306319-0000",
@@ -1889,12 +1952,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.8727,
+"p": 0.8714,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9940024/general-info",
 "vn": "306319-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:307212-0000",
@@ -1911,12 +1975,13 @@
 "kv": 80.0,
 "ah": false,
 "kat": false,
-"p": 0.1837,
+"p": 0.1818,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10021804/general-info",
 "vn": "307212-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:303925-0000",
@@ -1933,12 +1998,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.2026,
+"p": 0.2004,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9683344/general-info",
 "vn": "303925-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:305330-0000",
@@ -1960,7 +2026,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9844264/general-info",
 "vn": "305330-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:305993-0000",
@@ -1977,12 +2044,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.8784,
+"p": 0.8766,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9909184/general-info",
 "vn": "305993-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:305497-0000",
@@ -2000,12 +2068,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": true,
-"p": 0.9355,
+"p": 0.9351,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9862284/general-info",
 "vn": "305497-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:305530-0000",
@@ -2022,12 +2091,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9033,
+"p": 0.9023,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9866226/general-info",
 "vn": "305530-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:303897-0000",
@@ -2046,12 +2116,13 @@
 "kv": 65.0,
 "ah": false,
 "kat": false,
-"p": 0.2207,
+"p": 0.2184,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9680104/general-info",
 "vn": "303897-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:304672-0000",
@@ -2068,12 +2139,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.9611,
+"p": 0.9608,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9777784/general-info",
 "vn": "304672-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:304428-0000",
@@ -2090,12 +2162,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.1745,
+"p": 0.1727,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9740584/general-info",
 "vn": "304428-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:302431-0000",
@@ -2113,12 +2186,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.8803,
+"p": 0.8796,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9525964/general-info",
 "vn": "302431-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:299354-0000",
@@ -2135,12 +2209,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.3914,
+"p": 0.3863,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9231584/general-info",
 "vn": "299354-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:302502-0000",
@@ -2157,12 +2232,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9338,
+"p": 0.9326,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9532404/general-info",
 "vn": "302502-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:302582-0000",
@@ -2179,12 +2255,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8908,
+"p": 0.8909,
 "ai": false,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9539724/general-info",
 "vn": "302582-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:302330-0000",
@@ -2201,12 +2278,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.2258,
+"p": 0.2242,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9516404/general-info",
 "vn": "302330-0000",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:301087-0000",
@@ -2224,12 +2302,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.0988,
+"p": 0.0978,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9395704/general-info",
 "vn": "301087-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:302085-0000",
@@ -2247,12 +2326,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8874,
+"p": 0.888,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9492004/general-info",
 "vn": "302085-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:299674-0000",
@@ -2270,12 +2350,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.1847,
+"p": 0.1805,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9263284/general-info",
 "vn": "299674-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:296869-0000",
@@ -2292,12 +2373,13 @@
 "kv": 75.0,
 "ah": false,
 "kat": false,
-"p": 0.8692,
+"p": 0.8695,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8982404/general-info",
 "vn": "296869-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:298162-0000",
@@ -2314,12 +2396,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9316,
+"p": 0.9313,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9113584/general-info",
 "vn": "298162-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:300341-0000",
@@ -2336,12 +2419,13 @@
 "kv": 8.6,
 "ah": false,
 "kat": false,
-"p": 0.0611,
+"p": 0.061,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9323745/general-info",
 "vn": "300341-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:300458-0000",
@@ -2358,12 +2442,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": true,
-"p": 0.1912,
+"p": 0.1892,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9333004/general-info",
 "vn": "300458-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:300237-0000",
@@ -2380,12 +2465,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9398,
+"p": 0.9396,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9314764/general-info",
 "vn": "300237-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:300605-0000",
@@ -2402,12 +2488,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9751,
+"p": 0.9744,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9347185/general-info",
 "vn": "300605-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:299357-0000",
@@ -2424,12 +2511,13 @@
 "kv": 80.0,
 "ah": false,
 "kat": true,
-"p": 0.9161,
+"p": 0.9166,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9231704/general-info",
 "vn": "299357-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:297175-0000",
@@ -2446,12 +2534,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.2621,
+"p": 0.258,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9011085/general-info",
 "vn": "297175-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:299024-0000",
@@ -2468,12 +2557,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9781,
+"p": 0.9768,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9201704/general-info",
 "vn": "299024-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:298938-0000",
@@ -2490,12 +2580,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9191,
+"p": 0.9195,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9193144/general-info",
 "vn": "298938-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:298573-0000",
@@ -2514,12 +2605,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.9209,
+"p": 0.921,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9153464/general-info",
 "vn": "298573-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:298012-0000",
@@ -2537,12 +2629,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": true,
-"p": 0.9533,
+"p": 0.9534,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9097984/general-info",
 "vn": "298012-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:297772-0000",
@@ -2564,7 +2657,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9071164/general-info",
 "vn": "297772-0000",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:298683-0000",
@@ -2582,12 +2676,13 @@
 "kv": 30.0,
 "ah": false,
 "kat": false,
-"p": 0.3763,
+"p": 0.3698,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9165245/general-info",
 "vn": "298683-0000",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:298513-0000",
@@ -2604,12 +2699,13 @@
 "kv": 90.0,
 "ah": false,
 "kat": false,
-"p": 0.9262,
+"p": 0.9261,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9148024/general-info",
 "vn": "298513-0000",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:297134-0000",
@@ -2626,12 +2722,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.2163,
+"p": 0.2165,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9006404/general-info",
 "vn": "297134-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:296969-0000",
@@ -2649,12 +2746,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.2936,
+"p": 0.2914,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8991526/general-info",
 "vn": "296969-0000",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:297498-0000",
@@ -2671,12 +2769,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.248,
+"p": 0.2473,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9045684/general-info",
 "vn": "297498-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:297092-0000",
@@ -2695,12 +2794,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.887,
+"p": 0.8876,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9001064/general-info",
 "vn": "297092-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:297955-0000",
@@ -2717,12 +2817,13 @@
 "kv": 20.0,
 "ah": false,
 "kat": false,
-"p": 0.9259,
+"p": 0.9256,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9090864/general-info",
 "vn": "297955-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:297388-0000",
@@ -2740,12 +2841,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.9357,
+"p": 0.9365,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9033824/general-info",
 "vn": "297388-0000",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:295933-0000",
@@ -2762,12 +2864,13 @@
 "kv": 80.0,
 "ah": false,
 "kat": true,
-"p": 0.9161,
+"p": 0.9166,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8902704/general-info",
 "vn": "295933-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:294441-0000",
@@ -2786,12 +2889,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": true,
-"p": 0.1661,
+"p": 0.1642,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8765684/general-info",
 "vn": "294441-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:296052-0000",
@@ -2808,12 +2912,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.1856,
+"p": 0.1844,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8912744/general-info",
 "vn": "296052-0000",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:297589-0000",
@@ -2830,12 +2935,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.0564,
+"p": 0.056,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9052984/general-info",
 "vn": "297589-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:297398-0000",
@@ -2852,12 +2958,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9563,
+"p": 0.9558,
 "ai": false,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9035344/general-info",
 "vn": "297398-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:296941-0000",
@@ -2874,12 +2981,13 @@
 "kv": 100.0,
 "ah": false,
 "kat": null,
-"p": 0.9638,
+"p": 0.9636,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8988704/general-info",
 "vn": "296941-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:296201-0000",
@@ -2896,12 +3004,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.9257,
+"p": 0.927,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8925364/general-info",
 "vn": "296201-0000",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:295987-0000",
@@ -2918,12 +3027,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.9474,
+"p": 0.9479,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8908164/general-info",
 "vn": "295987-0000",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:296096-0000",
@@ -2940,12 +3050,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.9678,
+"p": 0.9676,
 "ai": false,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8916545/general-info",
 "vn": "296096-0000",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:292231-0000",
@@ -2962,12 +3073,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.8738,
+"p": 0.8754,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8569544/general-info",
 "vn": "292231-0000",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:294812-0000",
@@ -2984,12 +3096,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9569,
+"p": 0.9576,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8800044/general-info",
 "vn": "294812-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:294184-0000",
@@ -3012,7 +3125,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8743044/general-info",
 "vn": "294184-0000",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:291422-0000",
@@ -3029,12 +3143,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9123,
+"p": 0.9136,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8492444/general-info",
 "vn": "291422-0000",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:293663",
@@ -3052,12 +3167,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": null,
-"p": 0.963,
+"p": 0.9632,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8695284/general-info",
 "vn": "293663",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:293277",
@@ -3074,12 +3190,13 @@
 "kv": 20.0,
 "ah": false,
 "kat": null,
-"p": 0.9372,
+"p": 0.9387,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8660104/general-info",
 "vn": "293277",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:293493",
@@ -3096,12 +3213,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": null,
-"p": 0.9052,
+"p": 0.907,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8678684/general-info",
 "vn": "293493",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:291422",
@@ -3118,12 +3236,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": null,
-"p": 0.9123,
+"p": 0.9136,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8492444/general-info",
 "vn": "291422",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:288343",
@@ -3145,7 +3264,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8193504/general-info",
 "vn": "288343",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:284330",
@@ -3167,7 +3287,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7808426/general-info",
 "vn": "284330",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:292093",
@@ -3184,12 +3305,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9488,
+"p": 0.9489,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8557404/general-info",
 "vn": "292093",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:288292",
@@ -3206,12 +3328,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": null,
-"p": 0.985,
+"p": 0.9846,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8188704/general-info",
 "vn": "288292",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:291423",
@@ -3228,12 +3351,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.9753,
+"p": 0.9752,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8492544/general-info",
 "vn": "291423",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:291263",
@@ -3251,12 +3375,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": null,
-"p": 0.9463,
+"p": 0.9451,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8476324/general-info",
 "vn": "291263",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:290318",
@@ -3273,12 +3398,13 @@
 "kv": 90.0,
 "ah": false,
 "kat": false,
-"p": 0.9526,
+"p": 0.9529,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8393784/general-info",
 "vn": "290318",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:289109",
@@ -3295,12 +3421,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8599,
+"p": 0.8629,
 "ai": false,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8284424/general-info",
 "vn": "289109",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:289564",
@@ -3317,12 +3444,13 @@
 "kv": 39.0,
 "ah": false,
 "kat": false,
-"p": 0.9076,
+"p": 0.9079,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8329584/general-info",
 "vn": "289564",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:290035",
@@ -3341,12 +3469,13 @@
 "kv": 30.0,
 "ah": false,
 "kat": null,
-"p": 0.9279,
+"p": 0.9287,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8369324/general-info",
 "vn": "290035",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:289099",
@@ -3363,12 +3492,13 @@
 "kv": 48.0,
 "ah": false,
 "kat": false,
-"p": 0.9669,
+"p": 0.9667,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8282904/general-info",
 "vn": "289099",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:286114",
@@ -3385,12 +3515,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9331,
+"p": 0.9336,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7976224/general-info",
 "vn": "286114",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:287828",
@@ -3407,12 +3538,13 @@
 "kv": 100.0,
 "ah": false,
 "kat": false,
-"p": 0.9583,
+"p": 0.9582,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8141864/general-info",
 "vn": "287828",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:288703",
@@ -3429,12 +3561,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.0684,
+"p": 0.0682,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8234684/general-info",
 "vn": "288703",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:287807",
@@ -3451,12 +3584,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.1534,
+"p": 0.1535,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8139924/general-info",
 "vn": "287807",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:286404",
@@ -3473,12 +3607,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.9119,
+"p": 0.9113,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8001744/general-info",
 "vn": "286404",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:286632",
@@ -3495,12 +3630,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9451,
+"p": 0.9468,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8024865/general-info",
 "vn": "286632",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:285707",
@@ -3523,7 +3659,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7937504/general-info",
 "vn": "285707",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:285983",
@@ -3540,12 +3677,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9573,
+"p": 0.9578,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7962504/general-info",
 "vn": "285983",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:285860",
@@ -3564,12 +3702,13 @@
 "kv": 30.0,
 "ah": false,
 "kat": false,
-"p": 0.9671,
+"p": 0.9667,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7951644/general-info",
 "vn": "285860",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:285880",
@@ -3586,12 +3725,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.9649,
+"p": 0.965,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7952824/general-info",
 "vn": "285880",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:285826",
@@ -3608,12 +3748,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.9209,
+"p": 0.9223,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7947964/general-info",
 "vn": "285826",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:286105",
@@ -3630,12 +3771,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9581,
+"p": 0.9577,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7975184/general-info",
 "vn": "286105",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:285121",
@@ -3652,12 +3794,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9871,
+"p": 0.9863,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7880524/general-info",
 "vn": "285121",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:285028",
@@ -3675,12 +3818,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": null,
-"p": 0.86,
+"p": 0.8599,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7872004/general-info",
 "vn": "285028",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:284103",
@@ -3697,12 +3841,13 @@
 "kv": 30.0,
 "ah": false,
 "kat": false,
-"p": 0.9667,
+"p": 0.9677,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7784944/general-info",
 "vn": "284103",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:283999",
@@ -3721,12 +3866,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.0832,
+"p": 0.083,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7776724/general-info",
 "vn": "283999",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:284605",
@@ -3749,7 +3895,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7834384/general-info",
 "vn": "284605",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:283271",
@@ -3766,12 +3913,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.1936,
+"p": 0.1945,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7701845/general-info",
 "vn": "283271",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:282546",
@@ -3793,7 +3941,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7624384/general-info",
 "vn": "282546",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:283007",
@@ -3810,12 +3959,13 @@
 "kv": 75.0,
 "ah": false,
 "kat": false,
-"p": 0.9224,
+"p": 0.9233,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7674224/general-info",
 "vn": "283007",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:282515",
@@ -3839,7 +3989,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7620384/general-info",
 "vn": "282515",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:281898",
@@ -3856,12 +4007,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.2499,
+"p": 0.2485,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7554384/general-info",
 "vn": "281898",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:283104",
@@ -3879,12 +4031,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.922,
+"p": 0.9223,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7685604/general-info",
 "vn": "283104",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:283039",
@@ -3903,12 +4056,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8984,
+"p": 0.8996,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7678404/general-info",
 "vn": "283039",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:282588",
@@ -3931,7 +4085,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7628444/general-info",
 "vn": "282588",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:279292",
@@ -3949,12 +4104,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": true,
-"p": 0.9201,
+"p": 0.9219,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7309804/general-info",
 "vn": "279292",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:281513",
@@ -3972,12 +4128,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.8756,
+"p": 0.8759,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7513804/general-info",
 "vn": "281513",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:281771",
@@ -3994,12 +4151,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9814,
+"p": 0.9815,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7539804/general-info",
 "vn": "281771",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:281023",
@@ -4016,12 +4174,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9669,
+"p": 0.9667,
 "ai": false,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7466264/general-info",
 "vn": "281023",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:273311",
@@ -4039,12 +4198,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.8973,
+"p": 0.8968,
 "ai": false,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6721448/general-info",
 "vn": "273311",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:279628",
@@ -4062,12 +4222,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.1386,
+"p": 0.1381,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7341704/general-info",
 "vn": "279628",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:279622",
@@ -4084,12 +4245,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.2181,
+"p": 0.2173,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7341224/general-info",
 "vn": "279622",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:278270",
@@ -4107,12 +4269,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9424,
+"p": 0.942,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7216444/general-info",
 "vn": "278270",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:279243",
@@ -4129,12 +4292,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8336,
+"p": 0.8388,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7304804/general-info",
 "vn": "279243",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:278659",
@@ -4156,7 +4320,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7245404/general-info",
 "vn": "278659",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:275263",
@@ -4173,12 +4338,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": true,
-"p": 0.2697,
+"p": 0.2708,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6934872/general-info",
 "vn": "275263",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:277982",
@@ -4195,12 +4361,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.8907,
+"p": 0.891,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7191164/general-info",
 "vn": "277982",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:278369",
@@ -4217,12 +4384,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9684,
+"p": 0.9692,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7222824/general-info",
 "vn": "278369",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:278280",
@@ -4239,12 +4407,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9752,
+"p": 0.9751,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7217004/general-info",
 "vn": "278280",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:275678",
@@ -4262,12 +4431,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.9404,
+"p": 0.9411,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6975094/general-info",
 "vn": "275678",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:275850",
@@ -4284,12 +4454,13 @@
 "kv": 35.0,
 "ah": false,
 "kat": false,
-"p": 0.8576,
+"p": 0.8592,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6990613/general-info",
 "vn": "275850",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:276495",
@@ -4311,7 +4482,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7052554/general-info",
 "vn": "276495",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:266901",
@@ -4330,12 +4502,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": null,
-"p": 0.2804,
+"p": 0.2784,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6116780/general-info",
 "vn": "266901",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:273283",
@@ -4352,12 +4525,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9869,
+"p": 0.9865,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6718648/general-info",
 "vn": "273283",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:274551",
@@ -4374,12 +4548,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.9169,
+"p": 0.9176,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6874009/general-info",
 "vn": "274551",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:268902",
@@ -4396,12 +4571,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.8806,
+"p": 0.882,
 "ai": true,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6304996/general-info",
 "vn": "268902",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:271639",
@@ -4418,12 +4594,13 @@
 "kv": 75.0,
 "ah": false,
 "kat": false,
-"p": 0.2772,
+"p": 0.2751,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6557628/general-info",
 "vn": "271639",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:273917",
@@ -4440,12 +4617,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9473,
+"p": 0.9484,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6794428/general-info",
 "vn": "273917",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:272429",
@@ -4462,12 +4640,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.9684,
+"p": 0.9685,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6634228/general-info",
 "vn": "272429",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:272854",
@@ -4484,12 +4663,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.2806,
+"p": 0.2803,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6675848/general-info",
 "vn": "272854",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:268338",
@@ -4506,12 +4686,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.8868,
+"p": 0.891,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6261508/general-info",
 "vn": "268338",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:273081",
@@ -4528,12 +4709,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9412,
+"p": 0.9434,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6698010/general-info",
 "vn": "273081",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:272320",
@@ -4551,12 +4733,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.1561,
+"p": 0.1565,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6623448/general-info",
 "vn": "272320",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:271662",
@@ -4575,12 +4758,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9289,
+"p": 0.9293,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6559048/general-info",
 "vn": "271662",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:271083",
@@ -4597,12 +4781,13 @@
 "kv": 5.0,
 "ah": false,
 "kat": false,
-"p": 0.2383,
+"p": 0.2363,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6501508/general-info",
 "vn": "271083",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:271433",
@@ -4619,12 +4804,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9597,
+"p": 0.9602,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6533728/general-info",
 "vn": "271433",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:270720",
@@ -4641,12 +4827,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.97,
+"p": 0.9697,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6465988/general-info",
 "vn": "270720",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:269912",
@@ -4668,7 +4855,8 @@
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6388396/general-info",
 "vn": "269912",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:270954",
@@ -4685,12 +4873,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8803,
+"p": 0.8812,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6489448/general-info",
 "vn": "270954",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:269680",
@@ -4707,12 +4896,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": true,
-"p": 0.1677,
+"p": 0.1691,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6370405/general-info",
 "vn": "269680",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:269364",
@@ -4729,12 +4919,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9894,
+"p": 0.9888,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6340232/general-info",
 "vn": "269364",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:269610",
@@ -4751,12 +4942,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.9503,
+"p": 0.9515,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6363345/general-info",
 "vn": "269610",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:266181",
@@ -4775,12 +4967,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.0655,
+"p": 0.0656,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6046260/general-info",
 "vn": "266181",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:263753",
@@ -4797,12 +4990,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9166,
+"p": 0.9173,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5825900/general-info",
 "vn": "263753",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:267206",
@@ -4819,12 +5013,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.9192,
+"p": 0.9209,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6145860/general-info",
 "vn": "267206",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:266540",
@@ -4841,12 +5036,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9705,
+"p": 0.9703,
 "ai": false,
 "inn": true,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6081000/general-info",
 "vn": "266540",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:265990",
@@ -4865,12 +5061,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9425,
+"p": 0.9429,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6027800/general-info",
 "vn": "265990",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:265817",
@@ -4887,12 +5084,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9566,
+"p": 0.9562,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6011840/general-info",
 "vn": "265817",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:264799",
@@ -4909,12 +5107,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.9068,
+"p": 0.9069,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5922300/general-info",
 "vn": "264799",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:261972",
@@ -4931,12 +5130,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9099,
+"p": 0.9094,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5666400/general-info",
 "vn": "261972",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "eforms:264963",
@@ -4953,12 +5153,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": true,
-"p": 0.1707,
+"p": 0.1721,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5933620/general-info",
 "vn": "264963",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "eforms:264448",
@@ -4977,12 +5178,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.9425,
+"p": 0.9429,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5887500/general-info",
 "vn": "264448",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:264856",
@@ -5001,12 +5203,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": null,
-"p": 0.0701,
+"p": 0.07,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5926280/general-info",
 "vn": "264856",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "eforms:261739",
@@ -5023,12 +5226,13 @@
 "kv": 85.0,
 "ah": false,
 "kat": false,
-"p": 0.9527,
+"p": 0.9525,
 "ai": true,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5646020/general-info",
 "vn": "261739",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:263932",
@@ -5045,12 +5249,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.8908,
+"p": 0.8905,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5843480/general-info",
 "vn": "263932",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "eforms:262877",
@@ -5067,12 +5272,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9357,
+"p": 0.9365,
 "ai": false,
 "inn": false,
 "url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5748040/general-info",
 "vn": "262877",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:264557",
@@ -5089,12 +5295,13 @@
 "kv": 42.0,
 "ah": false,
 "kat": null,
-"p": 0.9669,
+"p": 0.9667,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "264557",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:261739",
@@ -5111,12 +5318,13 @@
 "kv": 85.0,
 "ah": false,
 "kat": null,
-"p": 0.9527,
+"p": 0.9525,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "261739",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:263932",
@@ -5133,12 +5341,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": null,
-"p": 0.8908,
+"p": 0.8905,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "263932",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:262877",
@@ -5155,12 +5364,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": null,
-"p": 0.9467,
+"p": 0.9474,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "262877",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:260559",
@@ -5177,12 +5387,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": null,
-"p": 0.4532,
+"p": 0.4498,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "260559",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:258618",
@@ -5199,12 +5410,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": null,
-"p": 0.8412,
+"p": 0.839,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "258618",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:260014",
@@ -5221,12 +5433,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9293,
+"p": 0.9281,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "260014",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:260874",
@@ -5243,12 +5456,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8764,
+"p": 0.8773,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "260874",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:259703",
@@ -5265,12 +5479,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.294,
+"p": 0.2944,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "259703",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:259746",
@@ -5287,12 +5502,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.7289,
+"p": 0.7318,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "259746",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:258584",
@@ -5309,12 +5525,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.299,
+"p": 0.2985,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "258584",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:256637",
@@ -5336,7 +5553,8 @@
 "inn": false,
 "url": null,
 "vn": "256637",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:257231",
@@ -5353,12 +5571,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.1314,
+"p": 0.1318,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "257231",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:256902",
@@ -5376,12 +5595,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.9075,
+"p": 0.9073,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "256902",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:255111",
@@ -5398,12 +5618,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9691,
+"p": 0.9688,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "255111",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:256045",
@@ -5420,12 +5641,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.9371,
+"p": 0.9376,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "256045",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:254855",
@@ -5442,12 +5664,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9434,
+"p": 0.9433,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "254855",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:253613",
@@ -5464,12 +5687,13 @@
 "kv": 42.0,
 "ah": false,
 "kat": false,
-"p": 0.9708,
+"p": 0.9707,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "253613",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:250687",
@@ -5486,12 +5710,13 @@
 "kv": null,
 "ah": null,
 "kat": null,
-"p": 0.1343,
+"p": 0.1346,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "250687",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:251282",
@@ -5508,12 +5733,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9686,
+"p": 0.9684,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "251282",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:251471",
@@ -5530,12 +5756,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.4017,
+"p": 0.4014,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "251471",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:246028",
@@ -5553,12 +5780,13 @@
 "kv": null,
 "ah": null,
 "kat": null,
-"p": 0.3838,
+"p": 0.3823,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "246028",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:250583",
@@ -5576,12 +5804,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.4554,
+"p": 0.4552,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "250583",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:249095",
@@ -5598,12 +5827,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9633,
+"p": 0.9628,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "249095",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:249705",
@@ -5620,12 +5850,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.9136,
+"p": 0.915,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "249705",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:249187",
@@ -5642,12 +5873,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9492,
+"p": 0.9489,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "249187",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:247603",
@@ -5664,12 +5896,13 @@
 "kv": 85.0,
 "ah": false,
 "kat": false,
-"p": 0.6217,
+"p": 0.6216,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "247603",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:245825",
@@ -5687,12 +5920,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.6177,
+"p": 0.6169,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "245825",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:246339",
@@ -5709,12 +5943,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.4131,
+"p": 0.4136,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "246339",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:245908",
@@ -5731,12 +5966,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.2806,
+"p": 0.2803,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "245908",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:245713",
@@ -5753,12 +5989,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.844,
+"p": 0.8397,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "245713",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:244923",
@@ -5775,12 +6012,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.0751,
+"p": 0.075,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "244923",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:244860",
@@ -5797,12 +6035,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": null,
-"p": 0.1794,
+"p": 0.1796,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "244860",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:244018",
@@ -5819,12 +6058,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9691,
+"p": 0.9688,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "244018",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:243672",
@@ -5841,12 +6081,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.8765,
+"p": 0.8766,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "243672",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:242854",
@@ -5863,12 +6104,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.3907,
+"p": 0.3906,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "242854",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:242479",
@@ -5887,12 +6129,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.787,
+"p": 0.7858,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "242479",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:243145",
@@ -5909,12 +6152,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.9627,
+"p": 0.9625,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "243145",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:241706",
@@ -5931,12 +6175,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9323,
+"p": 0.9322,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "241706",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:242908",
@@ -5953,12 +6198,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.7112,
+"p": 0.7094,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "242908",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:241285",
@@ -5975,12 +6221,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.4693,
+"p": 0.4705,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "241285",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:241574",
@@ -5997,12 +6244,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.4038,
+"p": 0.4051,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "241574",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:240558",
@@ -6019,12 +6267,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.7554,
+"p": 0.7571,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "240558",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:241176",
@@ -6041,12 +6290,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.1332,
+"p": 0.1342,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "241176",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:238941",
@@ -6065,12 +6315,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.3418,
+"p": 0.3406,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "238941",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:240620",
@@ -6092,7 +6343,8 @@
 "inn": false,
 "url": null,
 "vn": "240620",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:240770",
@@ -6109,12 +6361,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9428,
+"p": 0.943,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "240770",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:240628",
@@ -6131,12 +6384,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.4516,
+"p": 0.4523,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "240628",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:239399",
@@ -6153,12 +6407,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": true,
-"p": 0.1332,
+"p": 0.1342,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "239399",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:239849",
@@ -6175,12 +6430,13 @@
 "kv": 100.0,
 "ah": false,
 "kat": false,
-"p": 0.6778,
+"p": 0.6782,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "239849",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:239503",
@@ -6197,12 +6453,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9791,
+"p": 0.979,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "239503",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:239245",
@@ -6220,12 +6477,13 @@
 "kv": 10.0,
 "ah": false,
 "kat": false,
-"p": 0.8528,
+"p": 0.8508,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "239245",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:239178",
@@ -6244,12 +6502,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.1832,
+"p": 0.1841,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "239178",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:238506",
@@ -6267,12 +6526,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9363,
+"p": 0.9354,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "238506",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:236840",
@@ -6291,12 +6551,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.5119,
+"p": 0.5107,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "236840",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:236859",
@@ -6314,12 +6575,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.8233,
+"p": 0.8247,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "236859",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:236657",
@@ -6341,7 +6603,8 @@
 "inn": false,
 "url": null,
 "vn": "236657",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:225134",
@@ -6358,12 +6621,13 @@
 "kv": 80.0,
 "ah": false,
 "kat": false,
-"p": 0.9786,
+"p": 0.9785,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "225134",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:233999",
@@ -6381,12 +6645,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.0812,
+"p": 0.0822,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "233999",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:233416",
@@ -6404,12 +6669,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.8554,
+"p": 0.8545,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "233416",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:234451",
@@ -6426,12 +6692,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.3629,
+"p": 0.3637,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "234451",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:234886",
@@ -6448,12 +6715,13 @@
 "kv": 35.0,
 "ah": false,
 "kat": false,
-"p": 0.7977,
+"p": 0.7952,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "234886",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:234106",
@@ -6470,12 +6738,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.9688,
+"p": 0.9692,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "234106",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:232154",
@@ -6492,12 +6761,13 @@
 "kv": 30.0,
 "ah": false,
 "kat": false,
-"p": 0.0975,
+"p": 0.0979,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "232154",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:233422",
@@ -6514,12 +6784,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.7538,
+"p": 0.7536,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "233422",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:232379",
@@ -6536,12 +6807,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.6218,
+"p": 0.6222,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "232379",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:231980",
@@ -6558,12 +6830,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.2927,
+"p": 0.2923,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "231980",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:232315",
@@ -6585,7 +6858,8 @@
 "inn": false,
 "url": null,
 "vn": "232315",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:232185",
@@ -6602,12 +6876,13 @@
 "kv": 90.0,
 "ah": false,
 "kat": false,
-"p": 0.5895,
+"p": 0.5909,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "232185",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:230859",
@@ -6624,12 +6899,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.8605,
+"p": 0.8602,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "230859",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:227131",
@@ -6646,12 +6922,13 @@
 "kv": 10.0,
 "ah": false,
 "kat": false,
-"p": 0.9866,
+"p": 0.9863,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "227131",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:230458",
@@ -6668,12 +6945,13 @@
 "kv": 42.0,
 "ah": false,
 "kat": false,
-"p": 0.9648,
+"p": 0.9647,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "230458",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:229991",
@@ -6690,12 +6968,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.3825,
+"p": 0.3837,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "229991",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:227352",
@@ -6713,12 +6992,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.0627,
+"p": 0.0635,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "227352",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:228533",
@@ -6735,12 +7015,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.3845,
+"p": 0.3804,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "228533",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:229245",
@@ -6757,12 +7038,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.9172,
+"p": 0.9177,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "229245",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:228253",
@@ -6779,12 +7061,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9206,
+"p": 0.9186,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "228253",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:227810",
@@ -6801,12 +7084,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.1219,
+"p": 0.1223,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "227810",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:216617",
@@ -6823,12 +7107,13 @@
 "kv": 20.0,
 "ah": false,
 "kat": true,
-"p": 0.8942,
+"p": 0.8949,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "216617",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:227367",
@@ -6845,12 +7130,13 @@
 "kv": null,
 "ah": null,
 "kat": null,
-"p": 0.1689,
+"p": 0.1687,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "227367",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:226413",
@@ -6867,12 +7153,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8924,
+"p": 0.8931,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "226413",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:226179",
@@ -6889,12 +7176,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9477,
+"p": 0.947,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "226179",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:226268",
@@ -6911,12 +7199,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9861,
+"p": 0.9859,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "226268",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:225024",
@@ -6933,12 +7222,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.9529,
+"p": 0.9522,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "225024",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:224293",
@@ -6955,12 +7245,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.2541,
+"p": 0.2535,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "224293",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:223660",
@@ -6977,12 +7268,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.4097,
+"p": 0.4127,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "223660",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:224119",
@@ -6999,12 +7291,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.3825,
+"p": 0.3837,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "224119",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:221246",
@@ -7021,12 +7314,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.9417,
+"p": 0.941,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "221246",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:222362",
@@ -7044,12 +7338,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.8349,
+"p": 0.8341,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "222362",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:222300",
@@ -7067,12 +7362,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": false,
-"p": 0.7101,
+"p": 0.7113,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "222300",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:222130",
@@ -7090,12 +7386,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.2069,
+"p": 0.2076,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "222130",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:220242",
@@ -7112,12 +7409,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.5596,
+"p": 0.5585,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "220242",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:220326",
@@ -7134,12 +7432,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.9196,
+"p": 0.9205,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "220326",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:218047",
@@ -7158,12 +7457,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": true,
-"p": 0.332,
+"p": 0.3334,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "218047",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:219390",
@@ -7180,12 +7480,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.4161,
+"p": 0.4152,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "219390",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:218637",
@@ -7202,12 +7503,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8348,
+"p": 0.8328,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "218637",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:218211",
@@ -7224,12 +7526,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.844,
+"p": 0.8397,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "218211",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:217821",
@@ -7252,7 +7555,8 @@
 "inn": false,
 "url": null,
 "vn": "217821",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:218014",
@@ -7269,12 +7573,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.6831,
+"p": 0.6852,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "218014",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:216837",
@@ -7291,12 +7596,13 @@
 "kv": 45.0,
 "ah": false,
 "kat": false,
-"p": 0.9552,
+"p": 0.9551,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "216837",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:217875",
@@ -7313,12 +7619,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.2458,
+"p": 0.247,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "217875",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:217068",
@@ -7335,12 +7642,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9841,
+"p": 0.9838,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "217068",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:217088",
@@ -7357,12 +7665,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.0821,
+"p": 0.0826,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "217088",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:216661",
@@ -7379,12 +7688,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.2466,
+"p": 0.2482,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "216661",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:216718",
@@ -7401,12 +7711,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.2123,
+"p": 0.2136,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "216718",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:216277",
@@ -7423,12 +7734,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8997,
+"p": 0.9,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "216277",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:214979",
@@ -7445,12 +7757,13 @@
 "kv": 30.0,
 "ah": false,
 "kat": true,
-"p": 0.6831,
+"p": 0.6852,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "214979",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:214848",
@@ -7468,12 +7781,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.847,
+"p": 0.8468,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "214848",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:213585",
@@ -7495,7 +7809,8 @@
 "inn": false,
 "url": null,
 "vn": "213585",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:214463",
@@ -7512,12 +7827,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.4688,
+"p": 0.4708,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "214463",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:211992",
@@ -7535,12 +7851,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.3639,
+"p": 0.3686,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "211992",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:212876",
@@ -7557,12 +7874,13 @@
 "kv": 35.0,
 "ah": false,
 "kat": false,
-"p": 0.427,
+"p": 0.4243,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "212876",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:213493",
@@ -7579,12 +7897,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": true,
-"p": 0.4688,
+"p": 0.4708,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "213493",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:211415",
@@ -7602,12 +7921,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.8526,
+"p": 0.8527,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "211415",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:212517",
@@ -7624,12 +7944,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9688,
+"p": 0.9687,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "212517",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:212782",
@@ -7646,12 +7967,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.69,
+"p": 0.6928,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "212782",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:212433",
@@ -7668,12 +7990,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": false,
-"p": 0.8013,
+"p": 0.8021,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "212433",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:212540",
@@ -7695,7 +8018,8 @@
 "inn": false,
 "url": null,
 "vn": "212540",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:210830",
@@ -7712,12 +8036,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.2909,
+"p": 0.2905,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "210830",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:211279",
@@ -7734,12 +8059,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.6831,
+"p": 0.6852,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "211279",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:211097",
@@ -7756,12 +8082,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.5582,
+"p": 0.5591,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "211097",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:210687",
@@ -7779,12 +8106,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8787,
+"p": 0.8785,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "210687",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:211170",
@@ -7801,12 +8129,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.3097,
+"p": 0.3107,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "211170",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:211099",
@@ -7828,7 +8157,8 @@
 "inn": false,
 "url": null,
 "vn": "211099",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:210550",
@@ -7845,12 +8175,13 @@
 "kv": 80.0,
 "ah": false,
 "kat": false,
-"p": 0.7027,
+"p": 0.7024,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "210550",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:210483",
@@ -7872,7 +8203,8 @@
 "inn": false,
 "url": null,
 "vn": "210483",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:210318",
@@ -7889,12 +8221,13 @@
 "kv": 60.0,
 "ah": false,
 "kat": true,
-"p": 0.8013,
+"p": 0.8021,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "210318",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:210260",
@@ -7911,12 +8244,13 @@
 "kv": 80.0,
 "ah": false,
 "kat": true,
-"p": 0.7027,
+"p": 0.7024,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "210260",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:209293",
@@ -7933,12 +8267,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": true,
-"p": 0.3097,
+"p": 0.3107,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "209293",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:209292",
@@ -7955,12 +8290,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.3184,
+"p": 0.3195,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "209292",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:210184",
@@ -7977,12 +8313,13 @@
 "kv": 80.0,
 "ah": false,
 "kat": true,
-"p": 0.7027,
+"p": 0.7024,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "210184",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:209832",
@@ -7999,12 +8336,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.8715,
+"p": 0.8721,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "209832",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:208942",
@@ -8021,12 +8359,13 @@
 "kv": 45.0,
 "ah": false,
 "kat": false,
-"p": 0.2414,
+"p": 0.2417,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "208942",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:208335",
@@ -8043,12 +8382,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.7519,
+"p": 0.7486,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "208335",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:208590",
@@ -8065,12 +8405,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.5946,
+"p": 0.5952,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "208590",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:207401",
@@ -8087,12 +8428,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.6503,
+"p": 0.651,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "207401",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:206751",
@@ -8109,12 +8451,13 @@
 "kv": 100.0,
 "ah": false,
 "kat": false,
-"p": 0.9295,
+"p": 0.9301,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "206751",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:206130",
@@ -8131,12 +8474,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": true,
-"p": 0.7205,
+"p": 0.7214,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "206130",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:204770",
@@ -8153,12 +8497,13 @@
 "kv": 65.0,
 "ah": false,
 "kat": false,
-"p": 0.477,
+"p": 0.4757,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "204770",
-"hea": 3
+"hea": 3,
+"ks": null
 },
 {
 "id": "ted_esender:204433",
@@ -8175,12 +8520,13 @@
 "kv": null,
 "ah": null,
 "kat": null,
-"p": 0.4669,
+"p": 0.4668,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "204433",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:203782",
@@ -8197,12 +8543,13 @@
 "kv": 70.0,
 "ah": false,
 "kat": false,
-"p": 0.2518,
+"p": 0.2525,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "203782",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:202810",
@@ -8220,12 +8567,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9494,
+"p": 0.9489,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "202810",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:201516",
@@ -8242,12 +8590,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.3643,
+"p": 0.3651,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "201516",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:201678",
@@ -8265,12 +8614,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.5355,
+"p": 0.5337,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "201678",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:201625",
@@ -8288,12 +8638,13 @@
 "kv": 20.0,
 "ah": false,
 "kat": false,
-"p": 0.5017,
+"p": 0.5,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "201625",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:201280",
@@ -8310,12 +8661,13 @@
 "kv": 50.0,
 "ah": false,
 "kat": true,
-"p": 0.8712,
+"p": 0.871,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "201280",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:200285",
@@ -8332,12 +8684,13 @@
 "kv": 0.0,
 "ah": true,
 "kat": false,
-"p": 0.9539,
+"p": 0.9523,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "200285",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:200737",
@@ -8354,12 +8707,13 @@
 "kv": 40.0,
 "ah": false,
 "kat": false,
-"p": 0.8503,
+"p": 0.85,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "200737",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:200482",
@@ -8377,12 +8731,13 @@
 "kv": null,
 "ah": null,
 "kat": false,
-"p": 0.8668,
+"p": 0.867,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "200482",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:199810",
@@ -8400,12 +8755,13 @@
 "kv": null,
 "ah": null,
 "kat": true,
-"p": 0.3198,
+"p": 0.3214,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "199810",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:199325",
@@ -8422,12 +8778,13 @@
 "kv": null,
 "ah": null,
 "kat": true,
-"p": 0.3799,
+"p": 0.3817,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "199325",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:199223",
@@ -8444,12 +8801,13 @@
 "kv": null,
 "ah": null,
 "kat": false,
-"p": 0.5132,
+"p": 0.5122,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "199223",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:198030",
@@ -8466,12 +8824,13 @@
 "kv": null,
 "ah": null,
 "kat": true,
-"p": 0.3264,
+"p": 0.3286,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "198030",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:197722",
@@ -8489,12 +8848,13 @@
 "kv": null,
 "ah": null,
 "kat": true,
-"p": 0.5127,
+"p": 0.511,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "197722",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:197335",
@@ -8511,12 +8871,13 @@
 "kv": null,
 "ah": null,
 "kat": false,
-"p": 0.1422,
+"p": 0.1423,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "197335",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:197238",
@@ -8533,12 +8894,13 @@
 "kv": null,
 "ah": null,
 "kat": true,
-"p": 0.4616,
+"p": 0.4602,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "197238",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:197049",
@@ -8555,12 +8917,13 @@
 "kv": null,
 "ah": null,
 "kat": true,
-"p": 0.1328,
+"p": 0.133,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "197049",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:193731",
@@ -8577,12 +8940,13 @@
 "kv": null,
 "ah": null,
 "kat": false,
-"p": 0.7632,
+"p": 0.7655,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "193731",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:195678",
@@ -8604,7 +8968,8 @@
 "inn": false,
 "url": null,
 "vn": "195678",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:193635",
@@ -8622,12 +8987,13 @@
 "kv": null,
 "ah": null,
 "kat": true,
-"p": 0.5127,
+"p": 0.511,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "193635",
-"hea": 0
+"hea": 0,
+"ks": null
 },
 {
 "id": "ted_esender:193996",
@@ -8645,12 +9011,13 @@
 "kv": null,
 "ah": null,
 "kat": false,
-"p": 0.9498,
+"p": 0.9499,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "193996",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:193551",
@@ -8667,12 +9034,13 @@
 "kv": null,
 "ah": null,
 "kat": false,
-"p": 0.6292,
+"p": 0.6278,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "193551",
-"hea": 2
+"hea": 2,
+"ks": null
 },
 {
 "id": "ted_esender:194144",
@@ -8691,12 +9059,13 @@
 "kv": null,
 "ah": null,
 "kat": false,
-"p": 0.3304,
+"p": 0.3315,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "194144",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:193976",
@@ -8713,12 +9082,13 @@
 "kv": null,
 "ah": null,
 "kat": false,
-"p": 0.0585,
+"p": 0.0587,
 "ai": true,
 "inn": false,
 "url": null,
 "vn": "193976",
-"hea": 1
+"hea": 1,
+"ks": null
 },
 {
 "id": "ted_esender:191769",
@@ -8735,16 +9105,2371 @@
 "kv": null,
 "ah": null,
 "kat": false,
-"p": 0.7829,
+"p": 0.7828,
 "ai": false,
 "inn": false,
 "url": null,
 "vn": "191769",
-"hea": 2
+"hea": 2,
+"ks": null
 }
 ],
+"moju": {
+"silt": "katseline",
+"aastad": [
+{
+"aasta": 2017,
+"kokku": 2,
+"tehisaru": 0,
+"digi_automatiseerimine": 2,
+"ai_tuvastuses": 0,
+"eeldatav_maksumus": 25000
+},
+{
+"aasta": 2018,
+"kokku": 5,
+"tehisaru": 0,
+"digi_automatiseerimine": 5,
+"ai_tuvastuses": 0,
+"eeldatav_maksumus": 94000
+},
+{
+"aasta": 2019,
+"kokku": 6,
+"tehisaru": 2,
+"digi_automatiseerimine": 4,
+"ai_tuvastuses": 2,
+"eeldatav_maksumus": 252000
+},
+{
+"aasta": 2020,
+"kokku": 8,
+"tehisaru": 0,
+"digi_automatiseerimine": 8,
+"ai_tuvastuses": 0,
+"eeldatav_maksumus": 1016900
+},
+{
+"aasta": 2021,
+"kokku": 10,
+"tehisaru": 0,
+"digi_automatiseerimine": 10,
+"ai_tuvastuses": 0,
+"eeldatav_maksumus": 2056567
+},
+{
+"aasta": 2022,
+"kokku": 11,
+"tehisaru": 2,
+"digi_automatiseerimine": 9,
+"ai_tuvastuses": 2,
+"eeldatav_maksumus": 23689990
+},
+{
+"aasta": 2023,
+"kokku": 11,
+"tehisaru": 3,
+"digi_automatiseerimine": 8,
+"ai_tuvastuses": 3,
+"eeldatav_maksumus": 3394856
+},
+{
+"aasta": 2024,
+"kokku": 15,
+"tehisaru": 1,
+"digi_automatiseerimine": 14,
+"ai_tuvastuses": 1,
+"eeldatav_maksumus": 3155200
+},
+{
+"aasta": 2025,
+"kokku": 20,
+"tehisaru": 4,
+"digi_automatiseerimine": 16,
+"ai_tuvastuses": 5,
+"eeldatav_maksumus": 2173900
+},
+{
+"aasta": 2026,
+"kokku": 12,
+"tehisaru": 5,
+"digi_automatiseerimine": 7,
+"ai_tuvastuses": 6,
+"eeldatav_maksumus": 4291300
+}
+],
+"loend": [
+{
+"id": "eforms:315437-0000",
+"a": 2026,
+"kp": "2026-09-14",
+"t": "Rakendusuuring andmepõhise riskihindamise ja ohuprognooside metoodika väljatöötamiseks",
+"korraldaja": "Tarbijakaitse ja Tehnilise Järelevalve Amet",
+"kelle_jaoks": "Tarbijakaitse ja Tehnilise Järelevalve Amet",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": 45000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10810864/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"uuring",
+"tehisintellekt",
+"automatiseeri"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:310983-0000",
+"a": 2026,
+"kp": "2026-08-21",
+"t": "OsKus ühtse infosüsteemi ja analüüsikeskkonna loomine",
+"korraldaja": "Sihtasutus Kutsekoda",
+"kelle_jaoks": "Sihtasutus Kutsekoda",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000"
+],
+"v": 1300000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10361264/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:313260-0000",
+"a": 2026,
+"kp": "2026-08-06",
+"t": "Avaliku sektori digipädevuse kompetentsimudeli ja digipädevuse hindamistööriistade väljatöötamine (Justiits- ja Digiministeerium)",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Justiits- ja Digiministeerium",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"73300000"
+],
+"v": 90000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10582645/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:312405-0000",
+"a": 2026,
+"kp": "2026-07-16",
+"t": "Dünaamiline hankesüsteem küberturbe ja digiturbe hindamisteenuste tellimiseks / Dynamic Purchasing System for Cybersecurity and Digital Security Assessment Services",
+"korraldaja": "MTÜ Nordic Institute for Interoperability Solutions",
+"kelle_jaoks": "MTÜ Nordic Institute for Interoperability Solutions",
+"kelle_allikas": "sama",
+"cpv": [
+"72810000"
+],
+"v": 180000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10490264/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"assessment",
+"hindami",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:313393-0000",
+"a": 2026,
+"kp": "2026-07-16",
+"t": "Advanced Entrepreneurship/Innovation Support Organisations (ESOs/ISOs) Ecosystem Mapping",
+"korraldaja": "Sihtasutus Eesti Rahvusvahelise Arengukoostöö Keskus",
+"kelle_jaoks": "Sihtasutus Eesti Rahvusvahelise Arengukoostöö Keskus",
+"kelle_allikas": "sama",
+"cpv": [
+"73200000"
+],
+"v": 120000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10594984/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"mõju",
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:301299-0000",
+"a": 2026,
+"kp": "2026-07-08",
+"t": "Rohefoori 2. etapp: põllumajanduse esmatootjate kestlikkuse hindamise tarkvaralahenduse väljatöötamine ja digitaalse tööriista prototüübi katsetamine (Riigikantselei)",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Riigikantselei",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"73100000",
+"72200000"
+],
+"v": 406500.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9416684/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:311689-0000",
+"a": 2026,
+"kp": "2026-06-15",
+"t": "Interlexi platvormi tarkvaraarendus ja analüüs",
+"korraldaja": "Interlex OÜ",
+"kelle_jaoks": "Interlex OÜ",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10428624/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"llm",
+"digi"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:309111-0000",
+"a": 2026,
+"kp": "2026-04-23",
+"t": "e-residentsuse strateegiline kommunikatsiooni- ja suhtekorraldusteenus",
+"korraldaja": "Ettevõtluse ja Innovatsiooni Sihtasutus",
+"kelle_jaoks": "Ettevõtluse ja Innovatsiooni Sihtasutus",
+"kelle_allikas": "sama",
+"cpv": [
+"79416000"
+],
+"v": 2000000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10180784/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"mõju",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:308151-0000",
+"a": 2026,
+"kp": "2026-04-02",
+"t": "Riigikontrolli tehisintellekti rakenduse analüüsi, disainimise, arendamise ja hooldamise teenuse tellimine",
+"korraldaja": "Riigikontroll",
+"kelle_jaoks": "Riigikontroll",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000"
+],
+"v": 40000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10099705/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"tehisintellekt"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:306408-0000",
+"a": 2026,
+"kp": "2026-03-20",
+"t": "\"Jäätmete digiandmestud\" - innovatsiooniprojekti „Jäätmeandmete tõesuse ning jäätmete kogumise ja käitlemisega seotud mõjude ja tulemuste hindamise mudeli loomine“ raames",
+"korraldaja": "Tartu Vallavalitsus",
+"kelle_jaoks": "Tartu Vallavalitsus",
+"kelle_allikas": "sama",
+"cpv": [
+"73200000"
+],
+"v": 29800.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9947884/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"mõju",
+"digi"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:307212-0000",
+"a": 2026,
+"kp": "2026-03-16",
+"t": "Eesti teadusbaromeetri 2026. aasta küsitlus ja analüüs",
+"korraldaja": "Sihtasutus Eesti Teadusagentuur",
+"kelle_jaoks": "Sihtasutus Eesti Teadusagentuur",
+"kelle_allikas": "sama",
+"cpv": [
+"79315000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/10021804/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"uuring",
+"ai"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:304428-0000",
+"a": 2026,
+"kp": "2026-01-08",
+"t": "Töövõime hindamise metoodika ja hindamissüsteemi uuring",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": 80000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9740584/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"uuring",
+"tehisintellekt",
+"automatiseeri"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:303880-0000",
+"a": 2025,
+"kp": "2025-12-12",
+"t": "Mentorlusteenused 2026-2027 inkubatsioonis osalevatele ettevõtetele",
+"korraldaja": "Sihtasutus Tallinna Ettevõtlusinkubaatorid",
+"kelle_jaoks": "Sihtasutus Tallinna Ettevõtlusinkubaatorid",
+"kelle_allikas": "sama",
+"cpv": [
+"79400000",
+"80590000"
+],
+"v": 60000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9678384/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:303879-0000",
+"a": 2025,
+"kp": "2025-12-12",
+"t": "Koolitusteenused 2026-2027 inkubatsioonis osalevatele ettevõtetele",
+"korraldaja": "Sihtasutus Tallinna Ettevõtlusinkubaatorid",
+"kelle_jaoks": "Sihtasutus Tallinna Ettevõtlusinkubaatorid",
+"kelle_allikas": "sama",
+"cpv": [
+"79400000",
+"80500000"
+],
+"v": 100000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9678324/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:301650-0000",
+"a": 2025,
+"kp": "2025-12-03",
+"t": "DNA ekspertiiside ja uuringute sündmuskohaproovide laboritöövoo digitaliseerimine - arendusressursi soetus",
+"korraldaja": "Registrite ja Infosüsteemide Keskus",
+"kelle_jaoks": "Justiits- ja Digiministeeriumi valitsemisala (pealkirjast ei selgu)",
+"kelle_allikas": "keskne",
+"cpv": [
+"72200000"
+],
+"v": 530000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9450984/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:302330-0000",
+"a": 2025,
+"kp": "2025-11-04",
+"t": "„Lääne-Harju, Saku ja Kiili valla kliima- ja energiakava täiendamine ja teavitustöö“ eksperditeenus",
+"korraldaja": "Lääne-Harju Vallavalitsus",
+"kelle_jaoks": "Lääne-Harju Vallavalitsus",
+"kelle_allikas": "sama",
+"cpv": [
+"73200000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9516404/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"hindami",
+"mõju",
+"tehisintellekt"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:300458-0000",
+"a": 2025,
+"kp": "2025-10-06",
+"t": "Töövõime hindamise metoodika ja hindamissüsteemi uuring",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": 80000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9333004/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"uuring",
+"tehisintellekt",
+"automatiseeri"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:299786-0000",
+"a": 2025,
+"kp": "2025-09-18",
+"t": "IKT kompetentside ja tööturu vajaduste võrdlev uuring Keenia, Nigeeria ja Armeenia kontekstis (kordushange)",
+"korraldaja": "Sihtasutus Eesti Rahvusvahelise Arengukoostöö Keskus",
+"kelle_jaoks": "Armeenia",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"72200000",
+"73200000"
+],
+"v": 60000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9275086/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:299357-0000",
+"a": 2025,
+"kp": "2025-09-10",
+"t": "Uuring \"Tehisaru kasutamisest tingitud uute küberohtude mõju minimeerimine\" (Justiits- ja Digiministeerium)",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Justiits- ja Digiministeerium",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"73200000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9231704/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"mõju",
+"uuring",
+"tehisaru"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:299595-0000",
+"a": 2025,
+"kp": "2025-08-29",
+"t": "Automatiseeritud liimühenduse hindamise süsteem",
+"korraldaja": "Tallinna Tehnikaülikool",
+"kelle_jaoks": "Tallinna Tehnikaülikool",
+"kelle_allikas": "sama",
+"cpv": [
+"38500000"
+],
+"v": 90000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9254484/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"automatiseeri"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:295933-0000",
+"a": 2025,
+"kp": "2025-07-08",
+"t": "Uuring \"Tehisaru kasutamisest tingitud uute küberohtude mõju minimeerimine\" (Justiits- ja Digiministeerium)",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Justiits- ja Digiministeerium",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"73200000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8902704/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"mõju",
+"uuring",
+"tehisaru"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:297206-0000",
+"a": 2025,
+"kp": "2025-07-03",
+"t": "IKT kompetentside ja tööturu vajaduste võrdlev uuring Keenia, Nigeeria ja Armeenia kontekstis",
+"korraldaja": "Sihtasutus Eesti Rahvusvahelise Arengukoostöö Keskus",
+"kelle_jaoks": "Armeenia",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"72200000"
+],
+"v": 40000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/9016004/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:295332-0000",
+"a": 2025,
+"kp": "2025-06-04",
+"t": "„Tulevikukindel andmemajanduse ökosüsteem ja taristulised lahendused: inimese digitaalse kaksiku kontseptsioon ja prototüüp“ loomine",
+"korraldaja": "Justiits- ja Digiministeerium",
+"kelle_jaoks": "Justiits- ja Digiministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": 142900.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8849884/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:295320-0000",
+"a": 2025,
+"kp": "2025-05-20",
+"t": "Haridus- ja Teadusministeeriumi teadus- ja arendustegevuse programmide „Eesti keeletehnoloogia 2018–2027“ ja „Eesti keel ja kultuur digiajastul 2019–2027“ vahehindamine",
+"korraldaja": "Sihtasutus Eesti Teadusagentuur",
+"kelle_jaoks": "Haridus- ja Teadusministeerium",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"79315000"
+],
+"v": 57000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8848924/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"hindami",
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:295512-0000",
+"a": 2025,
+"kp": "2025-05-19",
+"t": "Projekti kulude auditeerimine",
+"korraldaja": "Tartu Ülikool",
+"kelle_jaoks": "Tartu Ülikool",
+"kelle_allikas": "sama",
+"cpv": [
+"79212000"
+],
+"v": 500000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8864604/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"research",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:293677-0000",
+"a": 2025,
+"kp": "2025-05-09",
+"t": "Konsulaarteenuse uue digilahenduse analüüsitööde tellimine",
+"korraldaja": "Välisministeerium",
+"kelle_jaoks": "Välisministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000"
+],
+"v": 75000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8696404/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:293663",
+"a": 2025,
+"kp": "2025-04-10",
+"t": "Tervisestatistika andmekogumisel uuele metoodikale ülemineku analüüsi- ja arendustööd",
+"korraldaja": "Tervise Arengu Instituut",
+"kelle_jaoks": "Tervise Arengu Instituut",
+"kelle_allikas": "sama",
+"cpv": [
+"72221000",
+"72262000"
+],
+"v": 139000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8695284/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"automatiseeri",
+"digi"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:293677",
+"a": 2025,
+"kp": "2025-04-09",
+"t": "Konsulaarteenuse uue digilahenduse analüüsitööde tellimine",
+"korraldaja": "Välisministeerium",
+"kelle_jaoks": "Välisministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000"
+],
+"v": 75000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8696404/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:291654",
+"a": 2025,
+"kp": "2025-04-04",
+"t": "Konsulaarteenuse uue digilahenduse analüüsitööde tellimine",
+"korraldaja": "Välisministeerium",
+"kelle_jaoks": "Välisministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000"
+],
+"v": 75000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8515304/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:289273",
+"a": 2025,
+"kp": "2025-02-19",
+"t": "Elektroonilise puidumüügi ja enampakkumiste keskkonna ärianalüüs.",
+"korraldaja": "Riigimetsa Majandamise Keskus",
+"kelle_jaoks": "Riigimetsa Majandamise Keskus",
+"kelle_allikas": "sama",
+"cpv": [
+"73200000",
+"72200000"
+],
+"v": 50000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8300846/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:288695",
+"a": 2025,
+"kp": "2025-02-11",
+"t": "Reovee purgimise andmevoogude digilahenduse ärianalüüs",
+"korraldaja": "Sihtasutus Keskkonnainvesteeringute Keskus",
+"kelle_jaoks": "Sihtasutus Keskkonnainvesteeringute Keskus",
+"kelle_allikas": "sama",
+"cpv": [
+"73100000",
+"72221000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8233964/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:287462",
+"a": 2025,
+"kp": "2025-01-21",
+"t": "Hoonete energiamärgiste arvutamise ja energiatõhususe järelevalve automatiseerimine, 1. etapi analüüs (Riigikantselei)",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Riigikantselei",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"73200000"
+],
+"v": 100000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8105684/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"automatiseeri"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:285516",
+"a": 2024,
+"kp": "2024-11-25",
+"t": "Digitaalse õppevara ja teiste õppeotstarbeliste digitaalsete lahenduste soetamise platvormi prototüübi analüüsi tellimine (Riigikantselei)",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Riigikantselei",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"73200000"
+],
+"v": 160000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7919384/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:286441",
+"a": 2024,
+"kp": "2024-11-20",
+"t": "Transpordiameti hankeplaani ja teehoiukava objektide kulude (teeraha) tööprotsessi automatiseerimise analüüs ning lähteülesanne töövahendi arenduseks",
+"korraldaja": "Transpordiamet",
+"kelle_jaoks": "Transpordiamet",
+"kelle_allikas": "sama",
+"cpv": [
+"72240000",
+"72221000"
+],
+"v": 70000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8004364/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"automatiseeri"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:286409",
+"a": 2024,
+"kp": "2024-11-14",
+"t": "Trade Estonia turundus- ja meediateenus",
+"korraldaja": "Ettevõtluse ja Innovatsiooni Sihtasutus",
+"kelle_jaoks": "Ettevõtluse ja Innovatsiooni Sihtasutus",
+"kelle_allikas": "sama",
+"cpv": [
+"79340000"
+],
+"v": 1000000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/8002285/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"mõju",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:284988",
+"a": 2024,
+"kp": "2024-10-10",
+"t": "Riigiasutuste digiarhiivi vajalikkuse ja loomise võimalike variantide analüüs",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Teine riigiasutus (pealkirjast ei selgu)",
+"kelle_allikas": "keskne",
+"cpv": [
+"73110000"
+],
+"v": 45000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7866784/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:284263",
+"a": 2024,
+"kp": "2024-09-24",
+"t": "Eesti ja Ukraina terviseandmete andmevahetuse tehniline analüüs",
+"korraldaja": "Sihtasutus Eesti Rahvusvahelise Arengukoostöö Keskus",
+"kelle_jaoks": "Ukraina",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"72200000"
+],
+"v": 40000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7802445/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:284092",
+"a": 2024,
+"kp": "2024-09-05",
+"t": "Automatiseeritud vedelikujaotussüsteemi ostmine koos automatiseeritud analüüsiplatvormiga ravimite sõeluuringute võimekuse loomiseks",
+"korraldaja": "Tartu Ülikool",
+"kelle_jaoks": "Tartu Ülikool",
+"kelle_allikas": "sama",
+"cpv": [
+"38432000",
+"31213400",
+"38400000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7783824/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"automatiseeri"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:281470",
+"a": 2024,
+"kp": "2024-08-02",
+"t": "Eesti.ee ettevõtjale portaali sisuliste teemalehtede valik, töölaua edasiarendus ja seosed riigi mobiilirakendusega",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73200000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7509524/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:282788",
+"a": 2024,
+"kp": "2024-07-30",
+"t": "Eesti elanike küberturvalisuse teadlikkuse ja digitaalsete oskuste ülevaate uuring",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"79311300"
+],
+"v": 59000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7648044/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:281915",
+"a": 2024,
+"kp": "2024-07-30",
+"t": "Ettevõtja digivärava tulevikuvisiooni analüüs",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"72221000"
+],
+"v": 120000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7555764/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:282313",
+"a": 2024,
+"kp": "2024-07-18",
+"t": "Services of conformity assessment of the qualified trust service provider \"Diia\" with the requirements of the eIDAS Regulation",
+"korraldaja": "E-riigi Akadeemia Sihtasutus",
+"kelle_jaoks": "Partnerriik (pealkirjast ei selgu)",
+"kelle_allikas": "keskne",
+"cpv": [
+"79212200"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7601064/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"assessment",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:278979",
+"a": 2024,
+"kp": "2024-07-16",
+"t": "Meediavahendusteenus Baltikumi",
+"korraldaja": "Aktsiaselts Eesti Post",
+"kelle_jaoks": "Aktsiaselts Eesti Post",
+"kelle_allikas": "sama",
+"cpv": [
+"79340000"
+],
+"v": 1500000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7277724/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:276622",
+"a": 2024,
+"kp": "2024-04-04",
+"t": "Keskkonnamõju hindamise (KMH) digipöörde teenusedisain Kliimaministeeriumile",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Kliimaministeerium",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"73200000"
+],
+"v": 50000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7065292/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"mõju",
+"automatiseeri",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:276495",
+"a": 2024,
+"kp": "2024-03-11",
+"t": "Mentorteenused 2024-2025 inkubatsioonis osalevatele ettevõtetele",
+"korraldaja": "Sihtasutus Tallinna Ettevõtlusinkubaatorid",
+"kelle_jaoks": "Sihtasutus Tallinna Ettevõtlusinkubaatorid",
+"kelle_allikas": "sama",
+"cpv": [
+"79400000"
+],
+"v": 52500.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7052554/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"mõju",
+"uuring",
+"tehisintellekt",
+"digi"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:276494",
+"a": 2024,
+"kp": "2024-03-05",
+"t": "Koolitusteenused 2024-2025 inkubatsioonis osalevatele ettevõtetele",
+"korraldaja": "Sihtasutus Tallinna Ettevõtlusinkubaatorid",
+"kelle_jaoks": "Sihtasutus Tallinna Ettevõtlusinkubaatorid",
+"kelle_allikas": "sama",
+"cpv": [
+"79400000",
+"80500000"
+],
+"v": 58700.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/7052552/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"uuring",
+"automatiseeri",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:275744",
+"a": 2024,
+"kp": "2024-02-22",
+"t": "Toe vajadusega õppijale suunatud lõimitud aine- ja keeleõppe mudeli analüüs ja edasiarendus",
+"korraldaja": "Astangu Kutserehabilitatsiooni Keskus",
+"kelle_jaoks": "Astangu Kutserehabilitatsiooni Keskus",
+"kelle_allikas": "sama",
+"cpv": [
+"73300000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6979952/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"hindami",
+"hinnang",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:272687",
+"a": 2023,
+"kp": "2023-11-20",
+"t": "Digitaalse PCR instrumendi ostmine koos seadme tarkvara, hoolduse, tarvikute ja diagnostikumidega kimäärsuse analüüside teostamiseks",
+"korraldaja": "sihtasutus Tartu Ülikooli Kliinikum",
+"kelle_jaoks": "sihtasutus Tartu Ülikooli Kliinikum",
+"kelle_allikas": "sama",
+"cpv": [
+"38434500"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6661208/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:266643",
+"a": 2023,
+"kp": "2023-08-03",
+"t": "Euroopa ühtse digivärava (SDG) analüüs ja arendus",
+"korraldaja": "Riigi Infosüsteemi Amet",
+"kelle_jaoks": "Riigi Infosüsteemi Amet",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000"
+],
+"v": 3000000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6089900/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:267206",
+"a": 2023,
+"kp": "2023-07-10",
+"t": "Prototüübi loomine lumeolude hindamiseks tehisintellekti abil",
+"korraldaja": "Keskkonnaministeeriumi Infotehnoloogiakeskus",
+"kelle_jaoks": "Kliimaministeeriumi ja REM-i valitsemisala (pealkirjast ei selgu)",
+"kelle_allikas": "keskne",
+"cpv": [
+"72200000"
+],
+"v": 100000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/6145860/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"tehisintellekt"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:265708",
+"a": 2023,
+"kp": "2023-06-27",
+"t": "Kriminaalteabe analüüsi Magnet Forensic tarkvara litsentsid / Magnet Forensics digital investigation product licenses",
+"korraldaja": "Siseministeeriumi infotehnoloogia- ja arenduskeskus",
+"kelle_jaoks": "Siseministeeriumi valitsemisala (pealkirjast ei selgu)",
+"kelle_allikas": "keskne",
+"cpv": [
+"48900000"
+],
+"v": 47000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5999960/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:261705",
+"a": 2023,
+"kp": "2023-06-08",
+"t": "Eesti digikultuuri pakkumise ning Eesti elanike digikultuuris osalemise uuring (Kultuuriministeerium)",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Kultuuriministeerium",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"73200000"
+],
+"v": 47856.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5639701/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:264091",
+"a": 2023,
+"kp": "2023-05-17",
+"t": "Automatiseeritud süsteemide ja tehnoloogiate küberturvalisuse riskide ja maandamise võimaluste analüüs ning õppevideote loomine",
+"korraldaja": "Riigi Infosüsteemi Amet",
+"kelle_jaoks": "Riigi Infosüsteemi Amet",
+"kelle_allikas": "sama",
+"cpv": [
+"71620000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5857260/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"automatiseeri"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "eforms:261739",
+"a": 2023,
+"kp": "2023-05-15",
+"t": "Tehisintellekti ja masinõppe tehnoloogia riskide ja nende maandamise võimaluste analüüs ja õppevideote loomine",
+"korraldaja": "Riigi Infosüsteemi Amet",
+"kelle_jaoks": "Riigi Infosüsteemi Amet",
+"kelle_allikas": "sama",
+"cpv": [
+"71620000"
+],
+"v": null,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5646020/general-info",
+"tyyp": "tehisaru",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"masinõp",
+"tehisintellekt"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "eforms:264095",
+"a": 2023,
+"kp": "2023-05-15",
+"t": "Ehitussektori digitaliseerituse uuring",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": 80000.0,
+"url": "https://riigihanked.riik.ee/rhr-web/#/procurement/5857420/general-info",
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:261739",
+"a": 2023,
+"kp": "2023-04-28",
+"t": "Tehisintellekti ja masinõppe tehnoloogia riskide ja nende maandamise võimaluste analüüs ja õppevideote loomine",
+"korraldaja": "Riigi Infosüsteemi Amet",
+"kelle_jaoks": "Riigi Infosüsteemi Amet",
+"kelle_allikas": "sama",
+"cpv": [
+"71620000"
+],
+"v": null,
+"url": null,
+"tyyp": "tehisaru",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"masinõp",
+"tehisintellekt"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "ted_esender:261684",
+"a": 2023,
+"kp": "2023-04-24",
+"t": "Tallinna digiteenistuse kasutajakogemuse disaini teenuse tellimine",
+"korraldaja": "Tallinna Strateegiakeskus",
+"kelle_jaoks": "Tallinna Strateegiakeskus",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000",
+"73220000"
+],
+"v": 120000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:258748",
+"a": 2023,
+"kp": "2023-01-17",
+"t": "Liivi lahe keskkonnamõjude hindamise uuring linnustikule",
+"korraldaja": "Eesti Energia AS",
+"kelle_jaoks": "Eesti Energia AS",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:256902",
+"a": 2022,
+"kp": "2022-11-09",
+"t": "Tööstusettevõttes tehisintellekti rakendamise otstarbekuse hindamise nõustamisteenus",
+"korraldaja": "Sihtasutus Tallinna Teaduspark TEHNOPOL",
+"kelle_jaoks": "Sihtasutus Tallinna Teaduspark TEHNOPOL",
+"kelle_allikas": "sama",
+"cpv": [
+"79411100",
+"72221000"
+],
+"v": 210000.0,
+"url": null,
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"hindami",
+"ai",
+"tehisintellekt"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "ted_esender:256186",
+"a": 2022,
+"kp": "2022-11-08",
+"t": "Muutumatu diagnoosiga lapsele tugiteenuste proaktiivse pakkumise analüüs Sotsiaalkindlustusametile II",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Sotsiaalkindlustusamet",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"72221000"
+],
+"v": 80000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:255102",
+"a": 2022,
+"kp": "2022-10-25",
+"t": "Maaelu teenuste ühtse kliendiportaali analüüs",
+"korraldaja": "Põllumajanduse Registrite ja Informatsiooni Amet",
+"kelle_jaoks": "Põllumajanduse Registrite ja Informatsiooni Amet",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000",
+"73210000",
+"73220000"
+],
+"v": 41657.5,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"automatiseeri"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:253771",
+"a": 2022,
+"kp": "2022-09-30",
+"t": "E-Politsei teenuste ja MISX programmi raamhange (analüüsi- ja arendustööd)",
+"korraldaja": "Siseministeeriumi infotehnoloogia- ja arenduskeskus",
+"kelle_jaoks": "Siseministeeriumi valitsemisala (pealkirjast ei selgu)",
+"kelle_allikas": "keskne",
+"cpv": [
+"72200000"
+],
+"v": 8500000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:253957",
+"a": 2022,
+"kp": "2022-09-18",
+"t": "Muutumatu diagnoosiga lapsele tugiteenuste proaktiivse pakkumise analüüs Sotsiaalkindlustusametile",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Sotsiaalkindlustusamet",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"72221000"
+],
+"v": 80000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:251986",
+"a": 2022,
+"kp": "2022-07-20",
+"t": "Statistika andmetöötluse ja analüüsi süsteemi arendamine",
+"korraldaja": "Eesti Pank",
+"kelle_jaoks": "Eesti Pank",
+"kelle_allikas": "sama",
+"cpv": [
+"72262000",
+"72267000"
+],
+"v": 2500000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"automatiseeri"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:251703",
+"a": 2022,
+"kp": "2022-06-28",
+"t": "E-valitsemise alased digivalmiduse uuringud Djibouti ja Somaalia kohta",
+"korraldaja": "Riigi Tugiteenuste Keskus",
+"kelle_jaoks": "Teine riigiasutus (pealkirjast ei selgu)",
+"kelle_allikas": "keskne",
+"cpv": [
+"79311200",
+"79311300"
+],
+"v": 85000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:251157",
+"a": 2022,
+"kp": "2022-06-22",
+"t": "Rakendusuuring \"Algoritmi väljatöötamine elukohaandmete määramiseks ja selle rakendatavus praktikas“",
+"korraldaja": "Siseministeerium",
+"kelle_jaoks": "Siseministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73200000"
+],
+"v": 30000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"uuring",
+"automatiseeri",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:248956",
+"a": 2022,
+"kp": "2022-04-18",
+"t": "Eesti Kirjandusmuuseumi digitaalsete andmekogude ja nendega seotud infosüsteemide strateegiline analüüs",
+"korraldaja": "Eesti Kirjandusmuuseum",
+"kelle_jaoks": "Eesti Kirjandusmuuseum",
+"kelle_allikas": "sama",
+"cpv": [
+"72222000"
+],
+"v": 80000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:246831",
+"a": 2022,
+"kp": "2022-02-18",
+"t": "Analüüside ja uuringute läbiviimise ning prototüüpide ja pilootide loomise raamleping",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73200000"
+],
+"v": 12000000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:246339",
+"a": 2022,
+"kp": "2022-02-15",
+"t": "Ravimi nimede hindamise krati (INNA) rakendamine",
+"korraldaja": "Tervise ja Heaolu Infosüsteemide Keskus",
+"kelle_jaoks": "Sotsiaalministeeriumi valitsemisala (pealkirjast ei selgu)",
+"kelle_allikas": "keskne",
+"cpv": [
+"72200000"
+],
+"v": 83333.0,
+"url": null,
+"tyyp": "tehisaru",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"krati",
+"kratt"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "ted_esender:236948",
+"a": 2021,
+"kp": "2021-11-16",
+"t": "Haiglaravimite digiretsepti analüüs",
+"korraldaja": "Eesti Haigekassa",
+"kelle_jaoks": "Eesti Haigekassa",
+"kelle_allikas": "sama",
+"cpv": [
+"72221000"
+],
+"v": 59900.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"mõju",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:242512",
+"a": 2021,
+"kp": "2021-10-26",
+"t": "Eesti töötleva tööstuse ettevõtete protsessiinnovatsiooni võimekuse uuring",
+"korraldaja": "Ettevõtluse Arendamise Sihtasutus",
+"kelle_jaoks": "Ettevõtluse Arendamise Sihtasutus",
+"kelle_allikas": "sama",
+"cpv": [
+"79311200"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"automatiseeri",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:239748",
+"a": 2021,
+"kp": "2021-09-29",
+"t": "Euroopa Liidu ühtse digivärava statistika ja tagasiside lahenduste analüüs",
+"korraldaja": "Riigi Infosüsteemi Amet",
+"kelle_jaoks": "Riigi Infosüsteemi Amet",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:239376",
+"a": 2021,
+"kp": "2021-08-06",
+"t": "Digiriigi keskkonnasõbralikkuse hetkeolukorra ja võimaluste analüüs",
+"korraldaja": "Riigi Infosüsteemi Amet",
+"kelle_jaoks": "Riigi Infosüsteemi Amet",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": 50000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:239359",
+"a": 2021,
+"kp": "2021-07-19",
+"t": "Eesti riigi keskse elektroonilise maanteetranspordi veoselehe juurdepääsupunkti (NAP) toimimismudeli analüüs",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73200000"
+],
+"v": 100000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:239011",
+"a": 2021,
+"kp": "2021-07-09",
+"t": "Eesti.ee ettevõtjale digivärava analüüs ja arendus 2021-2022",
+"korraldaja": "Riigi Infosüsteemi Amet",
+"kelle_jaoks": "Riigi Infosüsteemi Amet",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000"
+],
+"v": 1666666.67,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"automatiseeri",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:235164",
+"a": 2021,
+"kp": "2021-04-23",
+"t": "Digitaalse kultuuripärandi kättesaadavaks tegemise analüüs",
+"korraldaja": "Eesti Rahvusraamatukogu",
+"kelle_jaoks": "Eesti Rahvusraamatukogu",
+"kelle_allikas": "sama",
+"cpv": [
+"73210000"
+],
+"v": 80000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:234531",
+"a": 2021,
+"kp": "2021-04-13",
+"t": "Riiklikes andmekogudes ja registrites olevate andmete ning nende masinloetava väljastamise võimekuse analüüs",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73200000"
+],
+"v": 100000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"automatiseeri"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:235300",
+"a": 2021,
+"kp": "2021-04-09",
+"t": "Eesti riigi keskse elektroonilise maanteetranspordi veoselehe juurdepääsupunkti (NAP) toimimismudeli analüüs",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73200000"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:231470",
+"a": 2021,
+"kp": "2021-02-01",
+"t": "Avalike teenuste inventuur ja ümberkujundamine Armeenia Vabariigis",
+"korraldaja": "E-riigi Akadeemia Sihtasutus",
+"kelle_jaoks": "Armeenia",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"79400000"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:229395",
+"a": 2020,
+"kp": "2020-12-10",
+"t": "EASi veebide ja infosüsteemide analüüsi, arendus- ning hooldustööde hange",
+"korraldaja": "Ettevõtluse Arendamise Sihtasutus",
+"kelle_jaoks": "Ettevõtluse Arendamise Sihtasutus",
+"kelle_allikas": "sama",
+"cpv": [
+"72262000",
+"72250000"
+],
+"v": 800000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:230381",
+"a": 2020,
+"kp": "2020-12-08",
+"t": "Analüüs Euroopa Liidu elektroonilist autentimisvahendit omava isiku ligipääsu tagamiseks Eesti avaliku sektori e-teenustele, läbi turvalise digitaalse suhtluse",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73220000"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:229322",
+"a": 2020,
+"kp": "2020-12-02",
+"t": "Digitaalse kultuuripärandi kättesaadavaks tegemise analüüs",
+"korraldaja": "Eesti Rahvusraamatukogu",
+"kelle_jaoks": "Eesti Rahvusraamatukogu",
+"kelle_allikas": "sama",
+"cpv": [
+"73210000"
+],
+"v": 80000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:228130",
+"a": 2020,
+"kp": "2020-10-08",
+"t": "Kaugtuvastamise võimalused e-residendi digi-ID väljaandmisel",
+"korraldaja": "Ettevõtluse Arendamise Sihtasutus",
+"kelle_jaoks": "Ettevõtluse Arendamise Sihtasutus",
+"kelle_allikas": "sama",
+"cpv": [
+"79311300"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:224830",
+"a": 2020,
+"kp": "2020-06-22",
+"t": "5G teenuste kasutusjuhtude tuvastamise uuring",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73220000"
+],
+"v": 59900.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"mõju",
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:223742",
+"a": 2020,
+"kp": "2020-06-04",
+"t": "Vaimse tervise teemalise näituse eksponaatide loomine",
+"korraldaja": "Sihtasutus Eesti Tervishoiu Muuseum",
+"kelle_jaoks": "Sihtasutus Eesti Tervishoiu Muuseum",
+"kelle_allikas": "sama",
+"cpv": [
+"72230000",
+"79930000",
+"51610000"
+],
+"v": 35000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:222636",
+"a": 2020,
+"kp": "2020-05-05",
+"t": "FMN automatiseerimise uuring",
+"korraldaja": "Riigi Kaitseinvesteeringute Keskus",
+"kelle_jaoks": "Kaitseministeeriumi valitsemisala (pealkirjast ei selgu)",
+"kelle_allikas": "keskne",
+"cpv": [
+"73200000"
+],
+"v": 42000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"automatiseeri"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:221745",
+"a": 2020,
+"kp": "2020-04-09",
+"t": "3D digitaalne pildi analüüsi süsteem (3D-DIC) deformatsioonide mõõtmiseks ja siirete analüüsiks",
+"korraldaja": "Tallinna Tehnikaülikool",
+"kelle_jaoks": "Tallinna Tehnikaülikool",
+"kelle_allikas": "sama",
+"cpv": [
+"38900000"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:217532",
+"a": 2019,
+"kp": "2019-12-10",
+"t": "Koolide digitaristu kaasajastamine: Üldhariduskoolide internetiühenduse võimaluste ja vajaduste uuring",
+"korraldaja": "Hariduse Infotehnoloogia Sihtasutus",
+"kelle_jaoks": "Hariduse Infotehnoloogia Sihtasutus",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": 20000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:214848",
+"a": 2019,
+"kp": "2019-11-06",
+"t": "Liiklusõnnetuste prognoosimudeli loomise eelanalüüs, sh prototüübi loomine ja loodava mudeli prognoosimisvõime hindamine",
+"korraldaja": "Maanteeamet",
+"kelle_jaoks": "Maanteeamet",
+"kelle_allikas": "sama",
+"cpv": [
+"73100000",
+"72200000"
+],
+"v": 72000.0,
+"url": null,
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"masinõp"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "ted_esender:215375",
+"a": 2019,
+"kp": "2019-11-01",
+"t": "Koolide digitaristu kaasajastamine: Üldhariduskoolide internetiühenduse võimaluste ja vajaduste uuring",
+"korraldaja": "Hariduse Infotehnoloogia Sihtasutus",
+"kelle_jaoks": "Hariduse Infotehnoloogia Sihtasutus",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": 20000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:214166",
+"a": 2019,
+"kp": "2019-10-09",
+"t": "Sotsiaalkindlustusameti kliendipöördumiste automatiseerimise analüüs ja prototüübi loomine",
+"korraldaja": "Tervise ja Heaolu Infosüsteemide Keskus",
+"kelle_jaoks": "Sotsiaalkindlustusamet",
+"kelle_allikas": "pealkiri",
+"cpv": [
+"72240000"
+],
+"v": 60000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"analüüs",
+"automatiseeri"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:212987",
+"a": 2019,
+"kp": "2019-08-28",
+"t": "Ehitise elukaare õigusruumi digitaliseerimiseks kohandamine",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"73210000"
+],
+"v": 80000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"mõju",
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:211099",
+"a": 2019,
+"kp": "2019-07-01",
+"t": "Tehisintellekt lahenduse „LEIA“ eeluuring",
+"korraldaja": "HealthCode AI OÜ",
+"kelle_jaoks": "HealthCode AI OÜ",
+"kelle_allikas": "sama",
+"cpv": [
+"73300000"
+],
+"v": null,
+"url": null,
+"tyyp": "tehisaru",
+"cpv_73_79": true,
+"uuring_pealkirjas": false,
+"sonad": [
+"analüüs",
+"hindami",
+"uuring",
+"ai",
+"masinõp",
+"tehisintellekt"
+],
+"ai_tuvastuses": true
+},
+{
+"id": "ted_esender:202061",
+"a": 2018,
+"kp": "2018-10-24",
+"t": "Eesti ehitatud keskkonna digitaalse kaksiku 3D visualiseerimise komponendi loomise uuring",
+"korraldaja": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_jaoks": "Majandus- ja Kommunikatsiooniministeerium",
+"kelle_allikas": "sama",
+"cpv": [
+"72200000"
+],
+"v": 55000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:201558",
+"a": 2018,
+"kp": "2018-10-05",
+"t": "Koolide digitaristu kaasajastamine: Üldhariduskoolide internetiühenduse võimaluste ja vajaduste uuring",
+"korraldaja": "Hariduse Infotehnoloogia Sihtasutus",
+"kelle_jaoks": "Hariduse Infotehnoloogia Sihtasutus",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": 20000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:201162",
+"a": 2018,
+"kp": "2018-09-21",
+"t": "Koolide digitaristu kaasajastamine: Üldhariduskoolide internetiühenduse võimaluste ja vajaduste uuring",
+"korraldaja": "Hariduse Infotehnoloogia Sihtasutus",
+"kelle_jaoks": "Hariduse Infotehnoloogia Sihtasutus",
+"kelle_allikas": "sama",
+"cpv": [
+"73110000"
+],
+"v": 19000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:200145",
+"a": 2018,
+"kp": "2018-09-05",
+"t": "Eesti Töötukassa uuringute läbiviimine",
+"korraldaja": "Eesti Töötukassa",
+"kelle_jaoks": "Eesti Töötukassa",
+"kelle_allikas": "sama",
+"cpv": [
+"79342311",
+"79342310",
+"79311200"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:193876",
+"a": 2018,
+"kp": "2018-01-09",
+"t": "Uurimisvahendite ostmine skeletilihassüsteemi funktsiooni lokaalseks hindamiseks",
+"korraldaja": "sihtasutus Tartu Ülikooli Kliinikum",
+"kelle_jaoks": "sihtasutus Tartu Ülikooli Kliinikum",
+"kelle_allikas": "sama",
+"cpv": [
+"33100000"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"hindami",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:193614",
+"a": 2017,
+"kp": "2017-12-25",
+"t": "Uuring – innovatsiooni vastuvõtuvõime parendamine avalikus sektoris",
+"korraldaja": "Smart City Lab",
+"kelle_jaoks": "Smart City Lab",
+"kelle_allikas": "sama",
+"cpv": [
+"79300000"
+],
+"v": 25000.0,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": true,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+},
+{
+"id": "ted_esender:193062",
+"a": 2017,
+"kp": "2017-12-01",
+"t": "Pärnu lennuvälja topo-geodeetiline uuring",
+"korraldaja": "Aktsiaselts Tallinna Lennujaam",
+"kelle_jaoks": "Aktsiaselts Tallinna Lennujaam",
+"kelle_allikas": "sama",
+"cpv": [
+"71351810"
+],
+"v": null,
+"url": null,
+"tyyp": "digi või automatiseerimine",
+"cpv_73_79": false,
+"uuring_pealkirjas": true,
+"sonad": [
+"uuring",
+"digi"
+],
+"ai_tuvastuses": false
+}
+]
+},
 "seis": {
-"run": "42762406046",
+"run": "42905935130",
 "kuupaev": "2026-11-10"
 }
 }

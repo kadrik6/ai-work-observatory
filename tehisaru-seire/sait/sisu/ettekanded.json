@@ -47,6 +47,12 @@
 "nimi": "Stanford HAI",
 "url": "https://hai.stanford.edu/",
 "miks": "Stanfordi inimkeskse tehisaru instituut; AI Index ja uuringud"
+},
+{
+"id": "kratid",
+"nimi": "Kratid avalikus sektoris",
+"url": "https://www.kratid.ee/uritused",
+"miks": "Justiits- ja Digiministeeriumi veebiürituste sari riigiasutuste tehisaruprojektidest; salvestised avalikud YouTube'is"
 }
 ],
 "ettekanded": [
@@ -258,6 +264,29 @@
 ],
 "kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); kaks väidet kontrollitud transkripti vastu.",
 "seire_kinnitatud": "2026-11-08"
+},
+{
+"id": "kratid-2026-10",
+"esineja": "Kaarel Sepp, Allar Laaneleht, Krister Kruusmaa jt",
+"amet": "Justiits- ja Digiministeerium, Eesti Keele Instituut, PRIA, Rahvusraamatukogu ja teised asutused",
+"pealkiri": "Kratid avalikus sektoris: keeletehnoloogia ja riigiasutuste tehisarukatsed",
+"allikas": "kratid",
+"uritus": "Veebiüritus „Kratid avalikus sektoris“",
+"uritus_url": "https://www.kratid.ee/uritused",
+"kuupaev": "2026-10-29",
+"video": "https://youtu.be/rZ5rcTjl3yA",
+"keel": "eesti",
+"teemad": [
+"avalik-sektor"
+],
+"kokkuvote": "Riigiasutused tutvustasid oma tehisaru katse- ja rakendusprojekte: eesti keele mõõdupuu keelemudelitele, geoloogiaaruannete otsingu prototüüp, toetustaotluste eelkontroll, põllumajandusandmete kontroll, digipärandi kirjeldamine ja raviarvete vigade tuvastus. Kokkuvõte põhineb ürituse avalikul kaval, sest salvestise tulemusi pole veel kontrollitud.",
+"mottes": [
+"Eesti Keele Instituudi mõõdupuu hindab sõltumatult, kui hästi suured keelemudelid eesti keelt oskavad (Krister Kruusmaa).",
+"PRIA projekt Varuaru katsetab tehisaru, mis kontrollib toetustaotluse sisu ja õiguslikku vastavust enne taotluse esitamist (Roland Kesküla).",
+"Rahvusraamatukogu uurib, kas avatud ja kohalikud keelemudelid suudavad digipärandile head kirjeldused luua (Urmas Sinisalu)."
+],
+"kontroll": "Kokkuvõte video kirjelduse kava põhjal (10.11.2026). Subtiitreid ei õnnestunud lugeda, seega ettekannete sisu ja numbreid pole salvestise vastu kontrollitud.",
+"seire_kinnitatud": "2026-11-10"
 }
 ]
 }
