@@ -26,6 +26,17 @@ UNE_URL = "https://ec.europa.eu/eurostat/databrowser/view/une_rt_m/default/table
 UNE_UUENDATUD = "2026-10-30"
 HANKED_URL = "https://riigihanked.riik.ee/"
 VOO_PAEVI, VOO_RIDU = 14, 8
+
+
+def voo_silt(kuupaev, liik, tana):
+    """„Mis muutus“ rea silt. Oranž „uus“ ainult siis, kui number on avaldatud viimase VOO_PAEVI päeva jooksul
+    (Kadri 10.11.2026: septembri ja oktoobri numbrid ei ole enam uued). Vanem number saab halli sildi „number“."""
+    from datetime import date
+    if liik != "uus number":
+        return f'<span class="t">{e(liik)}</span>'
+    if (tana - date.fromisoformat(kuupaev[:10])).days <= VOO_PAEVI:
+        return '<span class="t uus">uus</span>'
+    return '<span class="t">number</span>'
 NBSP = "\u00a0"
 
 
@@ -382,7 +393,8 @@ def avaleht(A, vaade, vaated):
     from datetime import date
     d = lambda iso: date.fromisoformat(iso[:10])  # noqa: E731
     uued = sum(1 for r in voog if (d(viimane) - d(r[0])).days <= VOO_PAEVI)
-    read = "".join(f'<li><span class="d">{kp(r[0])}</span><span class="t {r[2]}">{e("uus" if r[2] == "uus" else r[1])}</span>'
+    tana = date.today()
+    read = "".join(f'<li><span class="d">{kp(r[0])}</span>{voo_silt(r[0], r[1], tana)}'
                    f'<span>{f"<a href={chr(34)}{e(r[4])}{chr(34)}>{r[3]}</a>" if r[4] else r[3]}</span></li>' for r in voog[:VOO_RIDU])
     sec_voog = f"""
 <section class="pn sp5" id="muutus" aria-labelledby="h-muutus">
