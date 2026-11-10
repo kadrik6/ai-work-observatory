@@ -47,7 +47,7 @@ def kas_tosi_h1(A):
     if not all(i in ids for i in PEAMINE_LEID):
         raise AndmeViga("Väidete pealkiri räägib IMFi ja Goldman Sachsi pealkirjadest, aga neid väiteid pole enam loendis")
     lahti = sum(1 for l in A["lahknevused"] if l["staatus"] == "selgitamata")
-    return (f"IMFi ja Goldman Sachsi **„puudutab“ on pealkirjades muutunud sõnaks „kaob“**; "
+    return (f"IMFi ja Goldman Sachsi **„puudutab“ on pealkirjades muutunud sõnaks „kaob“** ¦ "
             f"{ARVSONAD[lahti]} Eurostati ja Statistikaameti lahknevust on selgitamata.")
 
 
@@ -114,7 +114,7 @@ def kas_tosi(A, vaade, vaated=None):
     sec_l = f"""
 <section class="jaotis" id="lahknevused" aria-labelledby="h-lahknevused">
   <header>
-    <h2 id="h-lahknevused">{ARVSONAD[len(lahti)].capitalize()} lahknevust on selgitamata: sama küsitluse kohta annavad Eurostat ja Statistikaamet <b>eri numbri</b></h2>
+    <h2 id="h-lahknevused">{ARVSONAD[len(lahti)].capitalize()} lahknevust on <b>selgitamata</b> ¦ sama küsitluse kohta annavad Eurostat ja Statistikaamet eri numbri</h2>
     <p class="alam">Lahknevus tähendab, et kaks allikat mõõdavad kataloogi järgi sama asja, aga numbrid erinevad rohkem kui ümardus. Kuni põhjus selgub, kasutab seire riikide võrdluseks Eurostati numbrit.</p>
   </header>
   <div class="kaks vordne">{"".join(l_kaardid)}</div>
@@ -169,7 +169,7 @@ def varskus_ja_muutused(A, vaated):
     sec_varskus = f"""
 <section class="jaotis" id="varskus" aria-labelledby="h-varskus">
   <header>
-    <h2 id="h-varskus">{("Kõik " + ARVSONAD[len(v_read)] + " näitajat <b>on Eurostatis ajakohased</b>") if koik_ajakohased else (SEESTYTLEV[len(v_read)].capitalize() + " näitajast <b>mõni on vananenud</b>")}; {f"{OMASTAV[uuem]} puhul on riiklikul statistikaametil juba uuem number" if uuem else "riiklikel statistikaametitel uuemat numbrit pole"}</h2>
+    <h2 id="h-varskus">{("Kõik " + ARVSONAD[len(v_read)] + " näitajat <b>on Eurostatis ajakohased</b>") if koik_ajakohased else (SEESTYTLEV[len(v_read)].capitalize() + " näitajast <b>mõni on vananenud</b>")} ¦ {f"{OMASTAV[uuem]} puhul on riiklikul statistikaametil juba uuem number" if uuem else "riiklikel statistikaametitel uuemat numbrit pole"}</h2>
     <p class="alam">Ajakohane tähendab, et allikas pole avaldanud uuemat aastat, kui seire näitab. Uuem riiklik number on lehel eraldi märgitud.</p>
   </header>
   {tabel(["Näitaja", "Allikas uuendas", "Järgmine oodatav", "Seis", "Uuem number"], v_read, numbrid=[], pealdis="Näitajate värskus")}
@@ -247,7 +247,7 @@ def avaleht(A, vaade, vaated):
         if not v["menuu"] or v["id"] == "avaleht":
             continue
         nimi = f'<a href="{v["fail"]}">{e(v["menuu"])}</a>' if v["olek"] == "valmis" else e(v["menuu"])
-        teemad.append(f'<li><h3>{nimi}</h3><p>{taida(v["h1"], A)}</p></li>')
+        teemad.append(f'<li><h3>{nimi}</h3><p>{taida(v["h1"], A).split(" ¦ ")[0]}</p></li>')
     sec_teemad = f"""
 <section class="jaotis" id="teemad" aria-labelledby="h-teemad">
   <header>
@@ -341,7 +341,7 @@ def _metoodika(A, vaated):
 </section>
 <section class="jaotis" id="avaliku-numbrid" aria-labelledby="h-avaliku-numbrid">
   <header>
-    <h2 id="h-avaliku-numbrid">Avaliku sektori tehisaru numbrid <b>ei ole omavahel võrreldavad</b>: üks loeb asutusi, teine innovaatorite uuendusi</h2>
+    <h2 id="h-avaliku-numbrid">Avaliku sektori tehisaru numbrid <b>ei ole omavahel võrreldavad</b> ¦ üks loeb asutusi, teine innovaatorite uuendusi</h2>
     <p class="alam">„Kasutamine“ on eri allikates määratletud eri moodi. Siht on oma mõõdiku kõrval, mitte teise allika numbri kõrval.</p>
   </header>
   {tabel(["Number", "Mida see loeb", "Allikas", "Kuidas kasutada"], a_read, numbrid=[], piir=True, pealdis="Mida iga avaliku sektori tehisaru number mõõdab")}
@@ -364,7 +364,7 @@ def kuidas(A, vaade, vaated=None):
     sec_a = f"""
 <section class="jaotis" id="allikad" aria-labelledby="h-allikad">
   <header>
-    <h2 id="h-allikad">Ametlik statistika tuleb <b>{len(Al)} allikast</b>: {riiklik} riiklikku statistikaametit ja {len(Al) - riiklik} rahvusvahelist organisatsiooni</h2>
+    <h2 id="h-allikad">Ametlik statistika tuleb <b>{len(Al)} allikast</b> ¦ {riiklik} riiklikku statistikaametit ja {len(Al) - riiklik} rahvusvahelist organisatsiooni</h2>
     <p class="alam">Uuringud ja raportid (OECD, Arenguseire, ülikoolid) on lisaks sellele loendile ja nende juures on alati link.</p>
   </header>
   {tabel(["Allikas", "Andmeliides", "Uuendab", "Viimane tehisaru avaldus"], a_read, numbrid=[], piir=True, pealdis="Allikate register")}
@@ -379,7 +379,7 @@ def kuidas(A, vaade, vaated=None):
     sec_m = f"""
 <section class="jaotis" id="margid" aria-labelledby="h-margid">
   <header>
-    <h2 id="h-margid">Kolm märki: kas numbrid on <b>võrreldavad</b>, kui tugev on uuring ja kas väide vastab allikale</h2>
+    <h2 id="h-margid">Kolm märki näitavad, <b>kui palju numbrit usaldada</b> ¦ kas numbrid on võrreldavad, kui tugev on uuring ja kas väide vastab allikale</h2>
   </header>
   <div class="kolm">
     <div class="plokk"><h3>Võrreldavus</h3><ul class="loend">{kl}</ul></div>
@@ -485,7 +485,7 @@ def _uuenemine(A):
     return f"""
 <section class="jaotis" id="uuendused" aria-labelledby="h-uuendused">
   <header>
-    <h2 id="h-uuendused">Saidi {sonaga(len(read), "seestytlev")} osast uueneb ise <b>{sonaga(ise)}</b>; {sonaga(pool, "omastav")} puhul otsib arvuti ise ja inimene kinnitab</h2>
+    <h2 id="h-uuendused">Saidi {sonaga(len(read), "seestytlev")} osast uueneb ise <b>{sonaga(ise)}</b> ¦ {sonaga(pool, "omastav")} puhul otsib arvuti ise ja inimene kinnitab</h2>
     <p class="alam">Sait ehitatakse uuesti kaks korda päevas (7.23 ja 17.53) ja avaldatakse ainult siis, kui kõik testid läbivad. Kuupäev on viimane kontroll või andmete seis.</p>
   </header>
   <div class="tbl"><table><thead><tr><th scope="col">Osa</th><th scope="col">Kuidas uueneb</th><th scope="col">Viimati</th><th scope="col">Mida on vaja käsitsi</th></tr></thead><tbody>{t}</tbody></table></div>
@@ -514,7 +514,7 @@ def saidist(A, vaade, vaated):
         f'<div class="plokk"><h3>{e(kes)}</h3><p>Leiab, {e(mida)}.</p><p class="vaikne">Alusta: '
         + ", ".join(link(vaated, vid, t, ank) for vid, t, ank in lingid) + "</p></div>"
         for kes, mida, lingid in SAIDIST_LUGEJAD)
-    t_read = [[link(vaated, v["id"], nimi[v["id"]]), e(v["kusimus"]), taida(v["h1"], A)] for v in teemad]
+    t_read = [[link(vaated, v["id"], nimi[v["id"]]), e(v["kusimus"]), taida(v["h1"], A).split(" ¦ ")[0]] for v in teemad]
     n_allikad = len(A["allikad"])
     return f"""
 <div class="pea yks">
@@ -544,7 +544,7 @@ def saidist(A, vaade, vaated):
   <p class="vaikne">Mõõdetud number ja uuringu tulemus kohtuvad sama küsimuse juures, aga mitte samal teljel. Võrreldavuse reeglid: {link(vaated, "kuidas", "Kuidas lugeda", "vorreldavus")}.</p>
 </section>
 <section class="jaotis" id="kuidas-tootab" aria-labelledby="h-kuidas-tootab">
-  <header><h2 id="h-kuidas-tootab">Sait <b>uueneb ise</b>, aga uued uuringud ja väited lähevad lehele alles pärast inimese kinnitust</h2></header>
+  <header><h2 id="h-kuidas-tootab">Sait <b>uueneb ise</b> ¦ uued uuringud ja väited lähevad lehele alles pärast inimese kinnitust</h2></header>
   <ul class="loend">
     <li>Statistika, uudised, koondamised, tööpakkumised ja hanked tulevad allikatest automaatselt. Mis ja kui tihti uueneb: {link(vaated, "kuidas", "Mis uueneb ise", "uuendused")}.</li>
     <li>Kui kaks allikat annavad sama asja kohta eri numbri, jääb lahknevus nähtavale ja seda ei peideta: {link(vaated, "kas-tosi", "Usaldus")}.</li>

@@ -85,7 +85,7 @@ def _kasutus(A):
     return f"""
 <section class="jaotis" id="kasutus" aria-labelledby="h-kasutus">
   <header>
-    <h2 id="h-kasutus">ELi skaalal on Eesti {len(el)} riigi seas <b>{koht}. kohal</b>: {pr(ee["vaartus"])}% ettevõtetest, EL {pr(eu["vaartus"])}%, Soome, Rootsi ja Taani {pr(min(pm), 0)}–{pr(max(pm), 0)}% ({y})</h2>
+    <h2 id="h-kasutus">ELi skaalal on Eesti {len(el)} riigi seas <b>{koht}. kohal</b> ¦ {pr(ee["vaartus"])}% ettevõtetest, EL {pr(eu["vaartus"])}%, Soome, Rootsi ja Taani {pr(min(pm), 0)}–{pr(max(pm), 0)}% ({y})</h2>
   </header>
   <div class="ruut3">
     <figure aria-labelledby="g-kasutus">
@@ -175,7 +175,7 @@ def _tootlikkus(A):
     return f"""
 <section class="jaotis" id="tootlikkus" aria-labelledby="h-tootlikkus">
   <header>
-    <h2 id="h-tootlikkus">Tehisaru kasutus oli seotud suurema tootlikkusega <b>ainult koos töökorralduse muutusega</b></h2>
+    <h2 id="h-tootlikkus">Tootlikkus oli suurem, kui tehisaruga <b>muutus ka töökorraldus</b></h2>
     {f'<p class="alam">Tõend: {e(vahter["silt"])}. Ettevõtete registriandmed on ulatuslikud, aga tulemus on nõrga statistilise olulisusega ja retsenseerimata.</p>' if vahter.get("silt") else ""}
     {vastavus("osaliselt", "Uuring kasutab Eesti ettevõtete andmeid kuni 2023. aastani, enne generatiivse tehisaru laia levikut.")}
   </header>
@@ -232,7 +232,7 @@ def _digi_ja_ta(A):
 <div class="kaks vordne paar">
 <section class="jaotis" id="digi" aria-labelledby="h-digi">
   <header>
-    <h2 id="h-digi">Vähemalt baastaseme digiintensiivsusega on <b>{pr(ee_d)}% Eesti VKEdest</b>, veidi alla ELi keskmise {pr(eu_d)}% (2024)</h2>
+    <h2 id="h-digi">Vähemalt baastaseme digiintensiivsusega on <b>{pr(ee_d)}% Eesti VKEdest</b> ¦ see on veidi alla ELi keskmise {pr(eu_d)}% (2024)</h2>
     <p class="alam">10–249 hõivatuga ettevõtted, mis täidavad vähemalt 4 tunnust 12-st (indeksi 4. versioon). Tehisaru on üks tunnustest.</p>
   </header>
   <figure aria-labelledby="g-digi">
@@ -248,7 +248,7 @@ def _digi_ja_ta(A):
 </section>
 <section class="jaotis" id="ta" aria-labelledby="h-ta">
   <header>
-    <h2 id="h-ta">Eesti teadus- ja arendustegevuse kulu kasvab, aga jääb <b>ELi keskmisest {pr(eu_t - ee_t, 2)} protsendipunkti alla</b> (2024)</h2>
+    <h2 id="h-ta">Eesti teadus- ja arendustegevuse kulu kasvab, aga jääb <b>ELi keskmisest alla</b> ¦ vahe oli {pr(eu_t - ee_t, 2)} protsendipunkti (2024)</h2>
     <p class="alam">Kõigi sektorite kulu kokku, % SKPst: ettevõtted, riik, kõrgharidus ja mittetulundussektor. Ei näita, kui palju läheb tehisarule.</p>
   </header>
   <figure aria-labelledby="g-ta">
@@ -380,7 +380,7 @@ def _pohjamaad(A):
     return f"""
 <section class="jaotis" id="pohjamaad" aria-labelledby="h-pohjamaad">
   <header>
-    <h2 id="h-pohjamaad">Üheksast näitajast on Eesti {arv(len(tasemel))} puhul Põhjamaade tasemel, <b>{arv(len(maas))} puhul jääb Põhjamaadest maha</b></h2>
+    <h2 id="h-pohjamaad">Üheksast näitajast on Eesti {arv(len(tasemel))} puhul Põhjamaade tasemel ¦ <b>{arv(len(maas))} puhul jääb Põhjamaadest maha</b></h2>
     <p class="alam">Seitse riiki igal näitajal: Eesti, Soome, Rootsi, Taani, Norra, Saksamaa ja Holland. Iga rida on oma skaalal, ridu omavahel ei võrrelda.</p>
     {vastavus("osaliselt", "Näitajad on samast küsimustikust kõigis riikides, aga need mõõdavad eri asju (inimesed, ettevõtted, kulud). Ühte koondnumbrit neist ei arvutata.")}
   </header>
@@ -416,7 +416,7 @@ def _arenguseire(A):
     return f"""
 <section class="jaotis" id="arenguseire" aria-labelledby="h-arenguseire">
   <header>
-    <h2 id="h-arenguseire">Arenguseire Keskuse järeldus: ettevõtteid tuleb toetada tervikuna, <b>mitte ainult tööriistade katsetamisel</b></h2>
+    <h2 id="h-arenguseire">Ettevõtteid tuleb toetada tervikuna, <b>mitte ainult tööriistade katsetamisel</b> ¦ nii järeldas Arenguseire Keskus</h2>
     <p class="alam">Soovitus · Arenguseire Keskus. {e(j[0]["markus"])}</p>
   </header>
   <ol class="sammud">{li}</ol>
@@ -507,7 +507,7 @@ def _ligipaas(A):
 
     osad = [f"{sonaga(len(rr))} {LIGIPAAS_TEGU[k]} ({aastad(rr)})" for k in LIGIPAAS_NIMI
             for rr in [[r for r in S if r["ligipaas"] == k]] if rr]
-    pealkiri = f"{sonaga(len(S), 'seestytlev').capitalize()} kogutud otsusest " + (", ".join(osad[:-1]) + " ja " + osad[-1] if len(osad) > 1 else osad[0])
+    pealkiri = f"{sonaga(len(S), 'seestytlev').capitalize()} kogutud otsusest " + osad[0] + (" ¦ " + (", ".join(osad[1:-1]) + " ja " if len(osad) > 2 else "") + osad[-1] if len(osad) > 1 else "")
     a0, a1 = int(min(r["kuupaev"] for r in S)[:4]), int(max(r["kuupaev"] for r in S)[:4])
     read_aastad = []
     for y in range(a1, a0 - 1, -1):
@@ -619,7 +619,7 @@ def ettevotted(A, vaade, vaated=None):
                   {"muutus": (f"{_p(vahe - vahe0)} protsendipunkti 2023. aastast", f"2023: {pr(vahe0)} · Soome, Rootsi, Taani")},
                   a("https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "Eurostat isoc_eb_ai")),
     )
-    lead = ("Kasutus kasvab kiiresti, aga vahe Põhjamaadega on punktides suurenenud. "
+    lead = ("Kasutus kasvab kiiresti, aga vahe Põhjamaadega on protsendipunktides suurenenud. "
             "Eesti andmetel on tehisaru seotud suurema tootlikkusega alles siis, kui muutub ka töökorraldus.")
     # Teemamall A (Kadri 8.11.2026): andmed sakkides, siis uuringud, väited, reeglid, allikad
     import teemamall as tm
@@ -676,7 +676,7 @@ def saidikaart(A, vaade, vaated):
         if v.get("alamlehed") and v["olek"] == "valmis":
             link += "<small>alamlehed: " + ", ".join(f'<a href="{s["fail"]}">{e(s["nimi"])}</a>' for s in v["alamlehed"]) + "</small>"
         read.append(f'<tr><td>{link}<small>{e(v["koht"])} · {e(v["kusimused"])}</small></td><td>{e(v["kusimus"])}</td>'
-                    f'<td class="h1">{taida(v["h1"], A)}</td><td>{e(v["osad"])}</td></tr>')
+                    f'<td class="h1">{taida(v["h1"], A).split(" ¦ ")[0]}</td><td>{e(v["osad"])}</td></tr>')
     pais = "".join(f'<th scope="col">{t}</th>' for t in ["Vaade", "Lugeja küsimus", "Pealkiri (vastus)", "Mis vaates on"])
     return f"""
 <div class="pea yks">

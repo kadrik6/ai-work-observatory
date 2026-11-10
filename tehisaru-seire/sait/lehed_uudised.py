@@ -226,8 +226,8 @@ def ettekanded(A, vaade):
     n = len(read)
     from abi import alam_h1
     alam_h1(vaade, "ettekanded.html",
-            f"Usaldatud seminaride ja konverentside ettekanded: **{n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'}** avalikest salvestistest"
-            if n else "Usaldatud seminaride ja konverentside ettekanded: **kokkuvõtted ootavad kinnitust**")
+            f"**{n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'}** usaldatud seminaride ja konverentside ettekannetest ¦ kokkuvõtted on tehtud avalikest salvestistest"
+            if n else "Usaldatud seminaride ja konverentside ettekanded ¦ **kokkuvõtted ootavad kinnitust**")
     sisu = (f'<ul class="u-voog ek" data-piir-li="12">{"".join(_ettekanne(r, allikad) for r in read)}</ul>' if read
             else f'<p class="ps">Ettekandeid pole veel kinnitatud{f" ({ootel} ootab)" if ootel else ""}.</p>')
     al = "".join(f'<li><a href="{e(a["url"])}">{e(a["nimi"])}</a>{" · " + e(a["miks"]) if a.get("miks") else ""}</li>' for a in allikad.values())
@@ -356,7 +356,7 @@ def hanked(A, vaade, vaated=None):
     u = aastad[-1]
     sec_aastad = f"""
 <section class="pn sp5" id="aastad" aria-labelledby="h-aastad">
-  <div class="pn-h"><h2 id="h-aastad">Klassifikaator leidis {u["aasta"]}. aastal{" (seisuga " + kp(seis) + ")" if poolik else ""} <b>{u["ai_andmed"]} tehisaru- ja andmehanget</b>, {pr(u["ai_andmed_osakaal"])}% kõigist</h2></div>
+  <div class="pn-h"><h2 id="h-aastad">Klassifikaator leidis {u["aasta"]}. aastal <b>{u["ai_andmed"]} tehisaru- ja andmehanget</b> ¦ {"seisuga " + kp(seis) + "; " if poolik else ""}see on {pr(u["ai_andmed_osakaal"])}% kõigist hangetest</h2></div>
   <p class="ps">Neist {u["ai_marksonaga"]} on tehisaru märksõnaga ja {u["ai_andmed"] - u["ai_marksonaga"]} andmehanked. Aastate võrdlust ei näidata enne, kui klassifikaator on uuendatud pärast seda, kui 100 hanget oli pimesi üle vaadatud.</p>
   {_viis_rida(f"Klassifikaatori leitud hanked {u['aasta']}, arv", [("tehisaru", u["ai_marksonaga"], True), ("andmed", u["ai_andmed"] - u["ai_marksonaga"], False)], uhik="", k=0)}
 </section>"""
@@ -369,7 +369,7 @@ def hanked(A, vaade, vaated=None):
         f'<span class="vr-v">{pr(r["innovatsioonimark_osakaal"])}%</span></div>' for r in inn)
     sec_inn = f"""
 <section class="pn sp7" id="innovatsioon" aria-labelledby="h-innovatsioon">
-  <div class="pn-h"><h2 id="h-innovatsioon">Innovatsioonimärgiga hankeid oli {inn[-1]["aasta"]}. aastal <b>{pr(inn[-1]["innovatsioonimark_osakaal"])}%</b>, siht on 2%; märgi määratlus on kontrollimata</h2></div>
+  <div class="pn-h"><h2 id="h-innovatsioon">Innovatsioonimärgiga hankeid oli {inn[-1]["aasta"]}. aastal <b>{pr(inn[-1]["innovatsioonimark_osakaal"])}%</b>, siht on 2% ¦ märgi määratlus on kontrollimata</h2></div>
   <p class="ps">Osa eForms-hangetest, millele hankija märkis innovatsiooni; * osaline aasta (eForms algas septembris 2023). Siht: {a(OECD_URL, "OECD 2026")}. Rahandusministeeriumi 0,2% (2023) võib olla teise määratlusega.</p>
   <div class="viis">{inn_read}</div>
   <p class="kr-leg"><span><i class="kr-t siht"></i>siht 2%</span></p>
@@ -617,7 +617,7 @@ def uuringud_too(A):
                      f'<span class="vr-v">{pr(t["osa2026"])}%</span></div>' for t in teemad)
     sec_a = f"""
 <section class="pn sp12" id="uuritakse" aria-labelledby="h-uuritakse">
-  <div class="pn-h"><h2 id="h-uuritakse">Tehisarust ja tööst ilmus {a1["aasta"]}. aastal <b>{_arv(a1["koik"])} publikatsiooni</b>, {pr(kord)} korda rohkem kui {a0["aasta"]}. aastal</h2></div>
+  <div class="pn-h"><h2 id="h-uuritakse">Tehisarust ja tööst ilmus {a1["aasta"]}. aastal <b>{_arv(a1["koik"])} publikatsiooni</b> ¦ see on {pr(kord)} korda rohkem kui {a0["aasta"]}. aastal</h2></div>
   <p class="ps">Teadusartiklid ja töödokumendid aastas ({a(OPENALEX_URL, "OpenAlex")}, otsing seisuga {kp(P["meta"]["aeg"][:10])}). * aasta pole läbi.</p>
   <div class="uu-kaks">
     <div><p class="gt">Publikatsioone aastas</p><div class="aastatulbad">{tulbad}</div></div>

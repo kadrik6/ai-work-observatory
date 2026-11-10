@@ -87,7 +87,9 @@ def test_h1_numbrid_on_samad_mis_andmetes(A, sait):
     for v in vaated:
         if v["olek"] != "valmis":
             continue
-        h1 = re.search(r"<h1>(.*?)</h1>", sait[v["fail"]], re.S).group(1)
+        # Kadri 10.11.2026: pikk mall jaguneb „ ¦ “ kohalt lühikeseks h1-ks ja lead-iks; numbrid peavad olema nende kahe sees
+        h1 = re.search(r'<h1>(.*?)</h1>(?:\s*<p class="lead">(.*?)</p>)?', sait[v["fail"]], re.S)
+        h1 = h1.group(1) + " " + (h1.group(2) or "")
         for naitaja, geo, aasta, vorm in pealkiri.viited(v["h1"]):
             oodatud = pealkiri.vaartus(A, naitaja, geo, aasta, vorm)
             assert oodatud in tekst(h1), f"{v['fail']}: {naitaja} {geo} {aasta} = {oodatud} puudub pealkirjast"
@@ -1268,3 +1270,16 @@ def test_ligipaasu_sundmused_votab_uudised_ja_tagasivaate():
     S = vota_kaasa.ligipaasu_sundmused(uud, tv)
     assert [r["ettevote"] for r in S] == ["A", "C"]
     assert all("kontroll" not in r for r in S)
+
+
+def test_pealkirjad_on_luhikesed(sait):
+    """Kadri 10.11.2026: pealkirjad olid liiga pikad ja lärmakad. h1 on lühike vastus, detail on lead-is või h2 all."""
+    for f, h in sait.items():
+        if not f.endswith(".html"):
+            continue
+        assert "¦" not in h, f
+        h1 = tekst(re.search(r"<h1>(.*?)</h1>", h, re.S).group(1)).strip()
+        assert len(h1) <= 80, (f, len(h1), h1)
+    import kest
+    proov = kest.lyhenda_pealkirjad('<h1>Lühike ¦ detail</h1>\n<p class="lead">Lead.</p><h2 id="x">Kaks ¦ <b>teine</b></h2>')
+    assert '<h1>Lühike</h1>\n<p class="lead">Detail. Lead.</p>' in proov and '<p class="h-lisa"><b>Teine</b>.</p>' in proov
