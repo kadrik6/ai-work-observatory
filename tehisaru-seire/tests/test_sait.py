@@ -219,9 +219,9 @@ def test_oecd_28_protsenti_on_48_170st(A):
 def test_tahtajad_loetakse_tanasest_paevast(A):
     v, vaated = _vaade("reeglid"), ehita.lae_vaated()
     nyyd = tekst(lehed_teemad.reeglid(A, v, vaated, tana="2026-11-05"))
-    assert "viis on kehtima hakanud, kolm on veel ees" in nyyd
+    assert "viis on möödas, kolm on veel ees" in nyyd
     hiljem = tekst(lehed_teemad.reeglid(A, v, vaated, tana="2028-12-01"))
-    assert "kaheksa on kehtima hakanud, null on veel ees" in hiljem
+    assert "kaheksa on möödas, null on veel ees" in hiljem
 
 
 def test_vaited_kuuluvad_valjaandele_mitte_inimesele(sait):
@@ -382,7 +382,7 @@ def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
     pohjus = sum(arv(r) for r in j if arv(r) and r["roll"] in ("otsene", "osaline"))
     kokku = sum(arv(r) for r in j if arv(r))
     h2 = sait["too.html"].split('id="h-koondamised-v">')[1].split("</h3>")[0]
-    assert f"<b>{pohjus} töökoha</b>" in h2 and f"{kokku}-st" in h2
+    assert f"<b>{pohjus} töökoha</b>" in h2 and f"{kokku} koondatud töökohast" in h2
 
 
 def test_iga_koondamine_on_tulbal_ja_tabelis_arvu_pohjuse_ja_lingiga(A, sait):
@@ -495,7 +495,7 @@ def test_palkamise_pealkiri_tuleb_andmetest(A, sait):
     k = [f for f in F.values() if f["otsib"].get("kontrollitud")]
     kuulutusi = sum(len(f["otsib"]["ametid"]) for f in k)
     h2 = sait["too.html"].split('id="h-palkamine">')[1].split("</h2>")[0]
-    assert f"(kokku {kuulutusi} kuulutust)" in h2
+    assert f"(kokku {abi.sonaga(kuulutusi)} kuulutust)" in h2
 
 
 def test_uudise_levik_on_valjaannete_arv(A):
@@ -696,7 +696,7 @@ def test_eli_jarjestus_vaikimisi_kumme_ja_kaardil_pole_tumeda_lauset(sait):
     # Kadri MKUS-i kommentaarid 7.11.2026 õhtul: „näita siin defaultina top kümmet“ ja „võta see lause maha“.
     # Hiljem samal õhtul sai loendist järjestuse muutuse graafik: vaikimisi Top 10, Eesti esile tõstetud.
     osa = _jaotis(sait["index.html"], "el")
-    assert re.search(r'<button type="button" data-n="10" aria-pressed="true">Top 10<', osa)
+    assert re.search(r'<button type="button" data-n="10" aria-pressed="true">esikümme<', osa)
     assert '<div class="bump-v" data-n="10">' in osa and "kõik (27)" in osa
     assert re.search(r'<g class="bs f" data-s="[^"]+" tabindex="0" role="button" aria-label="Eesti">', osa)
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
@@ -711,7 +711,7 @@ def test_vabad_kohad_jarjestuse_muutus_aastate_kaupa(sait):
     assert 'class="bump-k"' in osa and 'class="ribad lihtne"' not in osa.split('class="vk-kus"')[0]
     aastad = re.findall(r'<text class="bump-a"[^>]*>(\d{4})</text>', osa)
     assert len(set(aastad)) >= 8  # vähemalt 8 aastat, sama kvartal igal aastal
-    assert re.search(r'data-n="5"[^>]*>Top 5<', osa) and "kõik (" in osa
+    assert re.search(r'data-n="5"[^>]*>esiviisik<', osa) and "kõik (" in osa
     assert osa.count('class="bs f"') >= 1  # üks esiletõstetud tegevusala
     vaikimisi = re.search(r'<div class="bump-v" data-n="(\d+)">', osa).group(1)
     assert vaikimisi == "10"
@@ -833,7 +833,7 @@ def test_ai_kuulutused_filtreeritavad_ruhma_ja_maakonna_jargi(sait):
 def test_neli_vaiteparandust_8_11(sait):
     """Sisuloogika ülevaatus 8.11.2026: ELi kohtadel aasta, kasvu võrreldavus, Töö h1 USA kohta, hangete üks number."""
     h1 = lambda f: tekst(re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1))  # noqa: E731
-    assert re.search(r"ELis \d+\., ettevõtted \d+\. kohal \(20\d\d\)", h1("index.html"))  # ELi kohal on aasta
+    assert re.search(r"ELis \d+\. ja ettevõtted \d+\. kohal \(20\d\d\)", h1("index.html"))  # ELi kohal on aasta
     assert "aastaga" not in h1("inimesed.html")
     assert "küsimus võib erineda" in sait["inimesed.html"] and "küsimus võib erineda" in sait["index.html"]
     assert h1("too.html").startswith("Eesti andmetest")  # 8.11 õhtu: h1 algab Eestist (läbivaatus P4)
@@ -855,7 +855,7 @@ def test_avalehe_teematabel_naidis_c(sait):
     read = re.findall(r'<th scope="row"><a href="([^"#]+)', jao)
     assert read == ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"]
     tuhjad = jao.count('<span class="m-puud">hindamata</span>')
-    assert f"{tuhjad} lahtrit on veel hindamata" in jao
+    assert f"{abi.sonaga(tuhjad).capitalize()} lahtrit on veel hindamata" in jao
     assert len(re.findall(r"<td data-v=", jao)) == 5 * 5
 
 
@@ -890,7 +890,7 @@ def test_eli_jarjestuses_ainult_top10_ja_koik(sait):
     for f in ("index.html", "too.html"):
         for osa in re.findall(r'<div class="kogus bump-n"[^>]*>(.*?)</div>', sait[f], re.S):
             if "(27)" in osa:
-                assert re.findall(r">(Top \d+|kõik \(\d+\))<", osa) == ["Top 10", "kõik (27)"], (f, osa)
+                assert re.findall(r">(esikümme|esiviisik|esimesed \d+|kõik \(\d+\))<", osa) == ["esikümme", "kõik (27)"], (f, osa)
 
 
 def test_koik_teemalehed_jargivad_malli_a(sait):
@@ -1100,7 +1100,7 @@ def test_uuringutulemused_ja_metoodika_on_seire_saidil(sait):
     av = sait["avalik-sektor.html"]
     for i in ("etapid", "liigid", "moju", "oskused", "kupsus", "rahastus"):
         assert f'id="{i}"' in av, i
-    assert "22 punkti vähem" in tekst(av) and "83% uuendusrahast tuli ELilt" in tekst(av)
+    assert "22 protsendipunkti väiksem osa" in tekst(av) and "83% uuendusrahast tuli ELilt" in tekst(av)
     ev = sait["ettevotted-voimekus.html"]
     assert 'id="arenguseire"' in ev and 'id="pohjamaad"' in ev and "Arvutatud: indeks" in ev
     kl = sait["kuidas-lugeda.html"]
@@ -1117,7 +1117,7 @@ def test_a1_kujundus_kogu_saidil(sait):
     pehme = css.split(':root[data-seire-teema="soft"] {', 1)[1].split("}", 1)[0]
     assert "--page: #ffffff" in pehme and "--surface-2: #f9f9f9" in pehme
     h1 = re.search(r"<h1>(.*?)</h1>", sait["index.html"], re.S).group(1)
-    assert re.fullmatch(r"Tehisaru kasutuses on Eesti inimesed ELis \d+\., <b>ettevõtted \d+\. kohal</b> \(20\d\d\)", h1), h1
+    assert re.fullmatch(r"Tehisaru kasutuses on Eesti inimesed ELis \d+\. ja <b>ettevõtted \d+\. kohal</b> \(20\d\d\)", h1), h1
 
 
 def test_liikumine_l2_aeglane_ja_vahendatud_liikumise_austus():
@@ -1223,7 +1223,7 @@ def test_ai_tooriistade_ligipaas_ettevotete_lehel(sait, A):
     sec = h[h.index('id="ligipaas"'):]
     sec = sec[:sec.index("</section>")]
     assert "Töös: kogumine käib" in sec
-    assert f"Kogutud {len(S)} otsusest" in tekst(sec)
+    assert f"{abi.sonaga(len(S), 'seestytlev').capitalize()} kogutud otsusest" in tekst(sec)
     assert "Näitame arve, mitte osakaale" in sec
     assert "33 asutusel puudus asutusesisene kord" in tekst(sec)  # Riigikontroll 30.05.2025, p 58
     otsused = sec.split('class="lp-lisa"')[0]  # taustaplokkide tabelid ei ole otsused

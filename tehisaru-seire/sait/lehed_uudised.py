@@ -8,7 +8,7 @@ import collections
 import datetime
 import re
 
-from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, jaga, pea, seotud
+from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, jaga, pea, seotud, sonaga
 from andmekiht import AndmeViga
 from komponendid import e, kp, pr
 
@@ -356,8 +356,8 @@ def hanked(A, vaade, vaated=None):
     u = aastad[-1]
     sec_aastad = f"""
 <section class="pn sp5" id="aastad" aria-labelledby="h-aastad">
-  <div class="pn-h"><h2 id="h-aastad">Klassifikaator leidis {u["aasta"]}. aastal{" kuni " + kp(seis) if poolik else ""} <b>{u["ai_andmed"]} tehisaru- ja andmehanget</b>, {pr(u["ai_andmed_osakaal"])}% kõigist</h2></div>
-  <p class="ps">Neist {u["ai_marksonaga"]} on tehisaru märksõnaga ja {u["ai_andmed"] - u["ai_marksonaga"]} andmehanked. Aastate võrdlust ei näidata enne, kui klassifikaator on uuendatud pärast 100 hanke pimesi ülevaatust.</p>
+  <div class="pn-h"><h2 id="h-aastad">Klassifikaator leidis {u["aasta"]}. aastal{" (seisuga " + kp(seis) + ")" if poolik else ""} <b>{u["ai_andmed"]} tehisaru- ja andmehanget</b>, {pr(u["ai_andmed_osakaal"])}% kõigist</h2></div>
+  <p class="ps">Neist {u["ai_marksonaga"]} on tehisaru märksõnaga ja {u["ai_andmed"] - u["ai_marksonaga"]} andmehanked. Aastate võrdlust ei näidata enne, kui klassifikaator on uuendatud pärast seda, kui 100 hanget oli pimesi üle vaadatud.</p>
   {_viis_rida(f"Klassifikaatori leitud hanked {u['aasta']}, arv", [("tehisaru", u["ai_marksonaga"], True), ("andmed", u["ai_andmed"] - u["ai_marksonaga"], False)], uhik="", k=0)}
 </section>"""
 
@@ -370,7 +370,7 @@ def hanked(A, vaade, vaated=None):
     sec_inn = f"""
 <section class="pn sp7" id="innovatsioon" aria-labelledby="h-innovatsioon">
   <div class="pn-h"><h2 id="h-innovatsioon">Innovatsioonimärgiga hankeid oli {inn[-1]["aasta"]}. aastal <b>{pr(inn[-1]["innovatsioonimark_osakaal"])}%</b>, siht on 2%; märgi määratlus on kontrollimata</h2></div>
-  <p class="ps">Osa eForms-hangetest, millele hankija märkis innovatsiooni; * osaline aasta (eForms algas 09/2023). Siht: {a(OECD_URL, "OECD 2026")}. Rahandusministeeriumi 0,2% (2023) võib olla teise määratlusega.</p>
+  <p class="ps">Osa eForms-hangetest, millele hankija märkis innovatsiooni; * osaline aasta (eForms algas septembris 2023). Siht: {a(OECD_URL, "OECD 2026")}. Rahandusministeeriumi 0,2% (2023) võib olla teise määratlusega.</p>
   <div class="viis">{inn_read}</div>
   <p class="kr-leg"><span><i class="kr-t siht"></i>siht 2%</span></p>
 </section>"""
@@ -396,7 +396,7 @@ def hanked(A, vaade, vaated=None):
     t_read = "".join(f'<div class="vr"><span class="vr-n" title="{e(n)}">{e(n)}</span><span class="vr-r"><i style="width:{c / tmax * 100:.1f}%"></i></span><span class="vr-v">{c}</span></div>' for n, c in top)
     sec_hankijad = f"""
 <section class="pn sp4" id="hankijad" aria-labelledby="h-hankijad">
-  <div class="pn-h"><h2 id="h-hankijad">{K["top10_protsenti_hankijaid"]} hankijat {K["hankijaid"]}-st teevad <b>{pr(K["nende_osakaal"], 0)}%</b> tehisaru- ja andmehangetest</h2></div>
+  <div class="pn-h"><h2 id="h-hankijad">{sonaga(K["top10_protsenti_hankijaid"]).capitalize()} hankijat {K["hankijaid"]}-st teeb <b>{pr(K["nende_osakaal"], 0)}%</b> tehisaru- ja andmehangetest</h2></div>
   <p class="ps">{p0}–{p1}. {K["uks_hange_hankijaid"]} hankijat tegi ainult ühe sellise hanke. Kümme suurimat:</p>
   <div class="viis hk">{t_read}</div>
 </section>"""
@@ -560,7 +560,7 @@ def hanked(A, vaade, vaated=None):
     import teemamall as tm
     from lehed_ulevaade import vaite_teema
     sec_andmed = tm.andmesakid("hanked", "Uuri andmeid: aastad, hankimise viis, litsentsid ja head näited",
-                               "Riigihangete registri ja TED-i hanked, märgistatud masinaga; meetod ja täpsus on viimases sakis.", [
+                               "Riigihangete registri ja TEDi hanked, märgistatud masinaga; meetod ja täpsus on viimases sakis.", [
         ("aastad", "Aastad", '<div class="g12">' + sec_aastad + sec_inn + "</div>"),
         ("viis", "Kuidas hangitakse", '<div class="g12">' + sec_viis + sec_hankijad + "</div>"),
         ("litsentsid", "Litsentsid", sec_lits),
@@ -617,7 +617,7 @@ def uuringud_too(A):
                      f'<span class="vr-v">{pr(t["osa2026"])}%</span></div>' for t in teemad)
     sec_a = f"""
 <section class="pn sp12" id="uuritakse" aria-labelledby="h-uuritakse">
-  <div class="pn-h"><h2 id="h-uuritakse">Tehisarust ja tööst ilmus {a1["aasta"]}. aastal <b>{_arv(a1["koik"])} publikatsiooni</b>, {pr(kord)} korda rohkem kui {a0["aasta"]}</h2></div>
+  <div class="pn-h"><h2 id="h-uuritakse">Tehisarust ja tööst ilmus {a1["aasta"]}. aastal <b>{_arv(a1["koik"])} publikatsiooni</b>, {pr(kord)} korda rohkem kui {a0["aasta"]}. aastal</h2></div>
   <p class="ps">Teadusartiklid ja töödokumendid aastas ({a(OPENALEX_URL, "OpenAlex")}, otsing seisuga {kp(P["meta"]["aeg"][:10])}). * aasta pole läbi.</p>
   <div class="uu-kaks">
     <div><p class="gt">Publikatsioone aastas</p><div class="aastatulbad">{tulbad}</div></div>
@@ -745,7 +745,7 @@ def palkamine(A):
     return f"""
 <div class="g12">
 <section class="pn sp12" id="palkamine" aria-labelledby="h-palkamine">
-  <div class="pn-h"><h2 id="h-palkamine">{h2} otsib praegu Eestis töötajaid <b>{ARVSONAD.get(len(otsivad), len(otsivad))}</b> (kokku {kuulutusi} kuulutust){sama_t}</h2></div>
+  <div class="pn-h"><h2 id="h-palkamine">{h2} otsib praegu Eestis töötajaid <b>{ARVSONAD.get(len(otsivad), len(otsivad))}</b> (kokku {sonaga(kuulutusi)} kuulutust){sama_t}</h2></div>
   <p class="ps">Tööpakkumiste lehed on kontrollitud {kp(kp_min)}. Sinise äärega ametiliik on sama, mida koondatakse.</p>
   <div class="tbl"><table class="pk"><thead><tr><th scope="col">Ettevõte</th><th scope="col">Koondab Eestis</th><th scope="col">Põhjus ettevõtte sõnul</th><th scope="col">Kaotab</th><th scope="col">Otsib praegu Eestis</th></tr></thead>
   <tbody>{"".join(read)}</tbody></table></div>

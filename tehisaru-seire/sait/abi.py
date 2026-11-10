@@ -16,6 +16,18 @@ OMASTAV = {1: "ühe", 2: "kahe", 3: "kolme", 4: "nelja", 5: "viie", 6: "kuue", 7
 SEESTYTLEV = {2: "kahest", 3: "kolmest", 4: "neljast", 5: "viiest", 6: "kuuest", 7: "seitsmest", 8: "kaheksast",
               9: "üheksast", 10: "kümnest", 11: "üheteistkümnest", 12: "kaheteistkümnest",
               13: "kolmeteistkümnest", 14: "neljateistkümnest", 15: "viieteistkümnest"}
+ALALEYTLEV = {1: "ühel", 2: "kahel", 3: "kolmel", 4: "neljal", 5: "viiel", 6: "kuuel", 7: "seitsmel", 8: "kaheksal",
+              9: "üheksal", 10: "kümnel"}
+
+
+def sonaga(n, kaane=None):
+    """Väike arv tekstis sõnaga (EKI arvukirjutus; keeletoimetus 10.11.2026), suurem numbriga.
+    kaane: None = nimetav, "omastav", "seestytlev" või "alaleytlev"."""
+    tabel = {None: ARVSONAD, "omastav": OMASTAV, "seestytlev": SEESTYTLEV, "alaleytlev": ALALEYTLEV}[kaane]
+    if n in tabel:
+        return tabel[n]
+    lopp = {None: "", "omastav": "", "seestytlev": "-st", "alaleytlev": "-l"}[kaane]
+    return f"{n}{lopp}"
 
 
 def kontrolli(vaade, *jupid):

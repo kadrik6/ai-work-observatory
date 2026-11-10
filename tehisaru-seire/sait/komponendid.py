@@ -230,7 +230,7 @@ def ajajoon(sundmused, tana):
     moodas = [s for s in sundmused if s[0] < tana]
     if moodas:
         read = "".join(f"<tr><td>{e(s[1])}</td><td><b>{e(s[2])}</b><br>{s[3]}</td></tr>" for s in moodas)
-        out.append(f'<details class="lisa"><summary>Mida kehtima hakanud tähtajad tähendavad ({len(moodas)})</summary>'
+        out.append(f'<details class="lisa"><summary>Mida möödunud tähtajad tähendavad ({len(moodas)})</summary>'
                    f'<div class="tbl"><table><thead><tr><th scope="col">Kuupäev</th><th scope="col">Mida tähendab</th></tr></thead>'
                    f'<tbody>{read}</tbody></table></div></details>')
     return "".join(out)
@@ -466,6 +466,17 @@ def kaart(vaatlused, piirid, fookus="EE", viide=None, viite_nimi="", uhik="%", k
             f'{"".join(osad)}</svg>{silt}</div>{legend}</div>')
 
 
+def _esimesed(n, n_koik, nupp=False):
+    """Nupu ja aria nimi omasõnaga (keeletoimetus 10.11.2026): esiviisik, esikümme, esimesed 15, kõik (27)."""
+    if n >= n_koik:
+        return f"kõik ({n})" if nupp else f"kõik {n}"
+    return {5: "esiviisik", 10: "esikümme"}.get(n, f"esimesed {n}")
+
+
+def _allpool(n):
+    return {5: "esiviisikust allpool", 10: "esikümnest allpool"}.get(n, f"esimesest {n}-st allpool")
+
+
 def jarjestuse_muutus(seeriad, aastad, fookus, teine=None, piirid=(5, 10), silt="Järjestus", lai=(1040, 240, 260),
                       kitsas=(358, 24, 200), vaikimisi=10):
     """Järjestuse muutuse graafik (bump chart) aastate kaupa (Kadri 7.11.2026, näidise järgi).
@@ -487,11 +498,11 @@ def jarjestuse_muutus(seeriad, aastad, fookus, teine=None, piirid=(5, 10), silt=
         samm = (W - vasak - parem) / (len(aastad_v) - 1)
         X = lambda i: vasak + i * samm  # noqa: E731
         Y = lambda k: ulal + (k - 0.5) * rida if k <= N else all_y  # noqa: E731
-        o = [f'<svg class="bump {"lai" if on_lai else "kitsas"}" viewBox="0 0 {W} {H}" style="max-width:{W}px" role="img" aria-label="{e(silt)}, top {N}">']
+        o = [f'<svg class="bump {"lai" if on_lai else "kitsas"}" viewBox="0 0 {W} {H}" style="max-width:{W}px" role="img" aria-label="{e(silt)}, {_esimesed(N, n_koik)}">']
         for i, a in enumerate(aastad_v):
             o.append(f'<text class="bump-a" x="{X(i):.1f}" y="{ulal - 18}" text-anchor="middle">{a if on_lai else "’" + str(a)[2:]}</text>')
         o.append(f'<line class="bump-p" x1="{vasak - 8}" x2="{W - parem + 8}" y1="{all_y - 12}" y2="{all_y - 12}"/>')
-        o.append(f'<text class="bump-all" x="{vasak - 14}" y="{all_y + 4}" text-anchor="end">{"allpool top " + str(N) if on_lai else ""}</text>')
+        o.append(f'<text class="bump-all" x="{vasak - 14}" y="{all_y + 4}" text-anchor="end">{_allpool(N) if on_lai else ""}</text>')
         jrk = sorted(seeriad, key=lambda n: (n == fookus, n == teine))  # esiletõstetud joonistatakse viimasena (peal)
         for n in jrk:
             s = seeriad[n]
@@ -527,7 +538,7 @@ def jarjestuse_muutus(seeriad, aastad, fookus, teine=None, piirid=(5, 10), silt=
 
     vaike = vaikimisi if vaikimisi in tasemed else tasemed[-1]
     nupud = "".join(f'<button type="button" data-n="{N}" aria-pressed="{"true" if N == vaike else "false"}">'
-                    f'{"Top " + str(N) if N < n_koik else "kõik (" + str(N) + ")"}</button>' for N in tasemed)
+                    f'{_esimesed(N, n_koik, nupp=True)}</button>' for N in tasemed)
     vaated = "".join(f'<div class="bump-v" data-n="{N}"{"" if N == vaike else " hidden"}>{svg(N, True)}{svg(N, False)}</div>'
                      for N in tasemed)
     return f'<div class="bump-k"><div class="kogus bump-n" role="group" aria-label="Mitu rida näidata">Näita{nupud}</div>{vaated}</div>'

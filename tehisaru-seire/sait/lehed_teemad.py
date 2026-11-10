@@ -62,7 +62,7 @@ def inimesed(A, vaade, vaated=None):
                 if v["klass"] in andmed.VORRELDAVAD and v["aasta"] > too25["aasta"]]
     too = max(too_uued, key=lambda v: v["aasta"]) if too_uued else too25
     # Kasutuse lehe pealkiri räägib ainult sellest, mis sellel lehel on (Kadri 6.11.2026 22:27, ettepanek 5)
-    kontrolli(vaade, f"tööl kasutab seda {pr(too['vaartus'])}% neist")
+    kontrolli(vaade, f"tööl kasutab seda {pr(too['vaartus'])}% kõigist 16–74-aastastest")
 
     # Aasta jooksul: 2025 Eurostat → 2026 riiklik number, ainult kataloogi järgi sama mõõdikuga riigid
     paarid = []
@@ -98,7 +98,7 @@ def inimesed(A, vaade, vaated=None):
                         f'Siin on kõigi 16–74-aastaste protsent, sama mis Eurostatil ({a(it71["url"], "IT71")}).'),
         ("Kontrollimata", "risk", f'Kas {y + 1}. aasta küsimus on sõnastatud täpselt nagu {y}. aastal, ei ole veel '
                                   f'kontrollitud. Kood ja {y}. aasta number klapivad Eurostatiga: {pr(andmed.kataloogist(A, "sa-it71", "EE", y)["vaartus"])}% ja {pr(ee25["vaartus"], 2)}%.'),
-        ("Ümardus", "", f'Rootsi {y + 1}. aasta number on täisarvuni ümardatud ja SCB veapiir on ±2 punkti '
+        ("Ümardus", "", f'Rootsi {y + 1}. aasta number on täisarvuni ümardatud ja SCB veapiir on ±2 protsendipunkti '
                         f'({a(se["url"], "SCB, TAB6388")}).' if se else "Teiste riikide uued numbrid on riiklikest tabelitest."),
     ])
     sec_kasutus = f"""
@@ -189,7 +189,7 @@ def inimesed(A, vaade, vaated=None):
     sec_digi = f"""
 <section class="jaotis" id="digi" aria-labelledby="h-digi">
   <header>
-    <h2 id="h-digi">Vähemalt baastaseme digioskused on <b>{pr(ds["vaartus"])}% Eesti inimestest</b>, sama palju kui 2023; ELi 2030. aasta siht on {siht["siht"]}%</h2>
+    <h2 id="h-digi">Vähemalt baastaseme digioskused on <b>{pr(ds["vaartus"])}% Eesti 16–74-aastastest</b>, sama palju kui 2023; ELi 2030. aasta siht on {siht["siht"]}%</h2>
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-digi">
@@ -229,7 +229,7 @@ def inimesed(A, vaade, vaated=None):
     sec_os = f"""
 <section class="jaotis" id="ei-oska" aria-labelledby="h-ei-oska">
   <header>
-    <h2 id="h-ei-oska">Oskuse puudusel jätab tehisaru kasutamata <b>{pr(os_ee["vaartus"])}% Eesti inimestest</b>, ELis {pr(os_eu["vaartus"])}% ({y})</h2>
+    <h2 id="h-ei-oska">Oskuse puudusel jätab tehisaru kasutamata <b>{pr(os_ee["vaartus"])}% Eesti 16–74-aastastest</b>, ELis {pr(os_eu["vaartus"])}% ({y})</h2>
     <p class="alam">ELi 27 riigi seas on Eestis {k_os}. väikseim osakaal. Põhjus on osaliselt see, et rohkem inimesi juba kasutab tehisaru.</p>
   </header>
   <div class="kaks">
@@ -263,7 +263,7 @@ def inimesed(A, vaade, vaated=None):
         raise AndmeViga("Tööalase kasutuse plaadi muutus eeldab kahte järjestikust võrreldavat aastat")
     aside = kpi_pais(
         kpi_plaat("in-kasutus", "Kasutas tehisaru (16–74)", f'{pr(ee["vaartus"])}%', str(ee["aasta"]),
-                  {"muutus": (f"{_p(kasv)} punkti aastaga", f'{y}: {pr(ee25["vaartus"])}% · küsimus võib erineda'),
+                  {"muutus": (f"{_p(kasv)} protsendipunkti aastaga", f'{y}: {pr(ee25["vaartus"])}% · küsimus võib erineda'),
                    "riba": kpi_riba(ee["vaartus"], 100, fookus=True)},
                   a(ee["url"], "Statistikaamet " + ee["allikas"].split("tabel ")[-1]), fookus=True),
         kpi_plaat("in-koht", "Koht ELis", f"{koht}.", f"/ {len(el)} · {y}",
@@ -271,7 +271,7 @@ def inimesed(A, vaade, vaated=None):
                    "riba": kpi_riba(ee25["vaartus"], 100, vrd=eu["vaartus"])},
                   a(EUROSTAT.format("isoc_ai_iaiu"), "Eurostat isoc_ai_iaiu")),
         kpi_plaat("in-tool", "Kasutas tehisaru tööl", f'{pr(too["vaartus"])}%', str(too["aasta"]),
-                  {"muutus": (f'{_p(too["vaartus"] - too25["vaartus"])} punkti aastaga', f'{too25["aasta"]}: {pr(too25["vaartus"])}% · küsimus võib erineda'),
+                  {"muutus": (f'{_p(too["vaartus"] - too25["vaartus"])} protsendipunkti aastaga', f'{too25["aasta"]}: {pr(too25["vaartus"])}% · küsimus võib erineda'),
                    "tekst": "<b>kõigist</b> 16–74-aastastest"},
                   a(too["url"], "Statistikaamet " + too["allikas"].split("tabel ")[-1])),
     )
@@ -387,10 +387,10 @@ def too(A, vaade, vaated=None):
       {allikarida(allikad_maailm)}
     </figure>
     <div class="kulg">
-      {vastavus("osaliselt", "Tõendeid on veel vähe ja peaaegu kõik on USA-st, Taanist või vabakutseliste platvormidelt. Eesti kohta sellist uuringut seire ei ole leidnud.")}
+      {vastavus("osaliselt", "Tõendeid on veel vähe ja peaaegu kõik on USAst, Taanist või vabakutseliste platvormidelt. Eesti kohta sellist uuringut seire ei ole leidnud.")}
       {faktid([
           ("Kas vastuolu?", "", f'{e(noored["mis"])} {e(noored["miks"])}'),
-          ("Teade, mitte koondamine", "risk", f'USA-s nimetati {koond["periood"]} tehisaru {_tuh(ai_teated)} koondamisteates {_tuh(koond["kokku"])}-st, umbes {pr(ai_teated / koond["kokku"] * 100, 0)}%. Need on teated, mitte tegelikud koondamised ({a(ch["url"], ch["autorid"])}).'),
+          ("Teade, mitte koondamine", "risk", f'USAs nimetati {koond["periood"]} tehisaru {_tuh(ai_teated)} koondamisteates {_tuh(koond["kokku"])}-st, umbes {pr(ai_teated / koond["kokku"] * 100, 0)}%. Need on teated, mitte tegelikud koondamised ({a(ch["url"], ch["autorid"])}).'),
           ("Varasem automatiseerimine", "", f'Hollandis kaotasid automatiseerinud firmade töötajad viie aastaga umbes 8% ühe aasta palgast. See on automatiseerimine üldiselt, mitte tehisaru ({a(bes["url"], "Bessen jt " + str(bes["aasta"]))}).'),
       ])}
     </div>
@@ -483,7 +483,7 @@ def too(A, vaade, vaated=None):
     <div class="kulg">
       {vastavus("osaliselt", "Kokkupuude ei ole mõju: indeks ei ütle, kas töö kaob, muutub või jääb samaks.")}
       {faktid([
-          ("Mida uuringud näitavad", "", f'USA-s on 22–25-aastaste hõive avatud ametites {e(can_m)} võrreldes vähem avatud ametitega ({a(U["canaries2026"]["url"], "Brynjolfsson jt " + str(U["canaries2026"]["aasta"]))}). Taanis ei muutunud kogu tööturul tulu ega töötunnid ({a(hum["url"], "Humlum ja Vestergaard " + str(hum["aasta"]))}). Eesti kohta sellist uuringut pole.'),
+          ("Mida uuringud näitavad", "", f'USAs on 22–25-aastaste hõive avatud ametites {e(can_m)} võrreldes vähem avatud ametitega ({a(U["canaries2026"]["url"], "Brynjolfsson jt " + str(U["canaries2026"]["aasta"]))}). Taanis ei muutunud kogu tööturul tulu ega töötunnid ({a(hum["url"], "Humlum ja Vestergaard " + str(hum["aasta"]))}). Eesti kohta sellist uuringut pole.'),
           ("ELi võrdlus", "", f'Sama ligikaudne arvutus Eurostati 2025. aasta ametirühmade järgi annab Eestile {pr(ee_el["avatud"], 0)}% ja ELile {pr(el_el["avatud"], 0)}%. See on teine andmestik ja jämedam jaotus kui graafikul, seepärast eraldi. ILO enda hinnang kõrge sissetulekuga riikidele on {pr(ilo_korge, 0)}%.'),
           ("Tõlgendus", "s", f'Kõige avatumad on kontori-, raamatupidamise ja klienditeeninduse ametid ning tarkvaraarendus. ILO hinnangul on tõenäolisem, et töö muutub, kui et see kaob ({a(ilo["url"], "ILO " + str(ilo["aasta"]))}).'),
       ])}
@@ -493,7 +493,7 @@ def too(A, vaade, vaated=None):
     <summary>Kuidas astmed on arvutatud ja mida number ei kata</summary>
     <div>
       <p>ILO hindas iga ameti ülesanded skaalal 0–1: kui suure osa ülesandest saab generatiivne tehisaru ära teha. Ameti aste tuleb ülesannete keskmisest ja hajuvusest: astmes 4 on keskmine vähemalt 0,6 ja ka madalamad hinnangud on kõrged. {K["ilo_avatud_ameteid"]} ametit {K["ilo_ameteid"]}-st on astmetes 1–4. Ülesanded on kirjeldatud Poola ametiklassifikaatori järgi; Eesti ametite sisu võib erineda (<a href="{andmed.ILO_SKOORID_URL}">ILO ametite skoorid</a>, CC BY 4.0).</p>
-      <p>Eesti number on {_tuh(K["kokku"])} töötaja kohta, kes on taandatud täistööajale (Statistikaameti palgastruktuuri uuring, oktoober 2022). Ettevõtjad ja FIE-d ei ole sees. Väikeste ametite numbrid on osaliselt avaldamata, seepärast on ametite summa rühmade summast kuni 5% väiksem.</p>
+      <p>Eesti number on {_tuh(K["kokku"])} töötaja kohta, kes on taandatud täistööajale (Statistikaameti palgastruktuuri uuring, oktoober 2022). Ettevõtjad ja FIEd ei ole sees. Väikeste ametite numbrid on osaliselt avaldamata, seepärast on ametite summa rühmade summast kuni 5% väiksem.</p>
     </div>
   </details>
 </section>"""
@@ -531,7 +531,7 @@ def too(A, vaade, vaated=None):
     <div class="kulg">
       {vastavus("osaliselt", "See on kirjeldus, mitte põhjus. Eesti majandus oli 2023–2024 langusel ja see mõjutas harusid eri moodi. Eesti tööjõu-uuringu valim on väike: mõne tuhande inimese muutus võib olla juhuslik.")}
       {faktid([
-          ("Mida jälgida", "s", "Kui see erinevus püsib ka 2026. ja 2027. aastal ning on suurem noorte seas, on see märk, mida tasub uurida registriandmetega, nagu Taanis ja USA-s tehti."),
+          ("Mida jälgida", "s", "Kui see erinevus püsib ka 2026. ja 2027. aastal ning on suurem noorte seas, on see märk, mida tasub uurida registriandmetega, nagu Taanis ja USAs tehti."),
       ])}
     </div>
   </div>
@@ -582,7 +582,7 @@ def too(A, vaade, vaated=None):
   <details>
     <summary>Näita USA prognoosi ametite kaupa</summary>
     <div>
-      <p class="gt">Töökohtade muutus USA-s {bls["yhik"]}</p>
+      <p class="gt">Töökohtade muutus USAs {bls["yhik"]}</p>
       {muutus(b_read, -10, 15, 5, "%", fookus=b_fookus)}
       <p>{e(bls_u["leid"])}</p>
       {allikarida([(bls_u["autorid"], bls_u["url"], kp(bls_u["avaldatud"]))])}
@@ -599,7 +599,7 @@ def too(A, vaade, vaated=None):
                   {"tekst": "<b>muutust ei leitud</b> 2 aastat pärast ChatGPT-d"},
                   a(hum["url"], f'Humlum ja Vestergaard {hum["aasta"]}')),
         kpi_plaat("too-prognoos", "Eesti töötuse prognoos", f'{pr(t2030["protsent"])}%', "2030",
-                  {"muutus": (f'{_p(t2030["protsent"] - t_tegelik["protsent"])} punkti {t_tegelik["aasta"]}. aastast',
+                  {"muutus": (f'{_p(t2030["protsent"] - t_tegelik["protsent"])} protsendipunkti {t_tegelik["aasta"]}. aastast',
                               f'{t_tegelik["aasta"]}: {pr(t_tegelik["protsent"])}% · <b>tehisaru mõjuta</b>')},
                   a(rm["url"], f'Rahandusministeerium, {kp(rm["avaldatud"])}')),
     )
@@ -620,7 +620,7 @@ def too(A, vaade, vaated=None):
         ("palkamine", "Keda koondajad otsivad", sec_palk),
         ("vabad", "Vabad kohad", vabad_ametikohad()),
         ("portaalid", "Tööportaalid", toopakkumised(A)),
-        ("ai-tood", "AI-tööd", ai_kuulutused(A)),
+        ("ai-tood", "Tehisaru- ja andmetööd", ai_kuulutused(A)),
         ("prognoos", "Prognoos", sec_tulevik),
     ])
     lyh = lambda k: e(tm.esimene_lause(U[k]["leid"]))  # noqa: E731
@@ -653,7 +653,7 @@ def too(A, vaade, vaated=None):
         p0 = next(r for r in tais if r["aasta"] == p1["aasta"] - 2)
         alam_h1(vaade, "too-kirjandus.html",
                 f'Tehisarust ja tööst ilmus {p1["aasta"]}. aastal **{_arv(p1["koik"])} publikatsiooni**, '
-                f'{pr(p1["koik"] / p0["koik"])} korda rohkem kui {p0["aasta"]}.')
+                f'{pr(p1["koik"] / p0["koik"])} korda rohkem kui {p0["aasta"]}. aastal.')
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Andmed")], sec_andmed),
         ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
@@ -759,7 +759,7 @@ def avalik_sektor(A, vaade, vaated=None):
     sec_etapid = f"""
 <section class="jaotis" id="etapid" aria-labelledby="h-etapid">
   <header>
-    <h2 id="h-etapid">Uuendused jäävad toppama hindamise ja otsuse ees: prototüübist hindamiseni jõuab <b>{langus} punkti vähem</b> projekte</h2>
+    <h2 id="h-etapid">Uuendused jäävad pidama hindamise ja otsuse ees: hindamiseni jõuab <b>{langus} protsendipunkti</b> väiksem osa projektidest kui prototüübini</h2>
     <p class="alam">Uuendusprojektide osakaal, mis jõudis etapini (projekte {", ".join(_o(A, k)["lugeja"] for _, k in et)}).</p>
   </header>
   <div class="kaks">
@@ -806,7 +806,7 @@ def avalik_sektor(A, vaade, vaated=None):
 </section>
 <section class="jaotis" id="moju" aria-labelledby="h-moju">
   <header>
-    <h2 id="h-moju">Tahe ja oskused on olemas, aga uuenduste <b>mõju mõõdetakse vähe</b>: mõju skoor on kõigis valitsemisalades {ix("moju", "min")}–{ix("moju", "max")}</h2>
+    <h2 id="h-moju">Tahe ja oskused on olemas, aga uuenduste <b>mõju mõõdetakse vähe</b>: mõjuskoor on kõigis valitsemisalades {ix("moju", "min")}–{ix("moju", "max")}</h2>
     <p class="alam">OECD indeks 0–1 neljas mõõtmes, vastajate järgi valitsemisalas. Tabelis on madalaim ja kõrgeim valitsemisala.</p>
   </header>
   <div class="kaks">
@@ -887,7 +887,7 @@ def avalik_sektor(A, vaade, vaated=None):
     sec_kiirus = f"""
 <section class="jaotis" id="kiirused" aria-labelledby="h-kiirused">
   <header>
-    <h2 id="h-kiirused">OECD jagab {kokku} asutust kolme rühma: <b>{kl[1]["vaartus"]} on piiratud enamuses</b>, {kl[0]["vaartus"]} eestvedajad ja {kl[2]["vaartus"]} väikesed katsetajad</h2>
+    <h2 id="h-kiirused">OECD jagab {kokku} asutust kolme rühma: <b>{kl[1]["vaartus"]} kuulub rühma „piiratud enamus“</b>, {kl[0]["vaartus"]} eestvedajad ja {kl[2]["vaartus"]} väikesed katsetajad</h2>
     <p class="alam">Rühmad tulevad asutuste vastuste sarnasusest (k-keskmiste klasterdus). Iga rühm vajab OECD hinnangul eri tuge: eestvedajaid kasutada eeskujuna, väikeseid toetada ja piiratud enamusel avada võimalused.</p>
   </header>
   <figure aria-labelledby="g-kiirused">
@@ -984,8 +984,8 @@ def reeglid(A, vaade, vaated=None, tana=None):
     sec_aeg = f"""
 <section class="jaotis" id="tahtajad" aria-labelledby="h-tahtajad">
   <header>
-    <h2 id="h-tahtajad">Tehisaru määruse {SEESTYTLEV.get(len(O), str(len(O)))} tähtajast <b>{ARVSONAD.get(len(moodas), str(len(moodas)))} on kehtima hakanud</b>, {ARVSONAD.get(len(ees), str(len(ees)))} on veel ees</h2>
-    {vastavus("jah", f"Tähtajad on kontrollitud Euroopa Komisjoni tehisintellekti määruse lehelt {kp(kontroll)}.")}
+    <h2 id="h-tahtajad">Tehisaru määruse {SEESTYTLEV.get(len(O), str(len(O)))} tähtajast <b>{ARVSONAD.get(len(moodas), str(len(moodas)))} on möödas</b>, {ARVSONAD.get(len(ees), str(len(ees)))} on veel ees</h2>
+    {vastavus("jah", f"Määruse ametlik nimi on tehisintellekti määrus (EL) 2024/1689, siin nimetame seda lühidalt tehisaru määruseks. Tähtajad on kontrollitud Euroopa Komisjoni määruse lehelt {kp(kontroll)}.")}
   </header>
   <div class="kaks vordne">
     <div>
@@ -1012,8 +1012,8 @@ def reeglid(A, vaade, vaated=None, tana=None):
         kpi_plaat("ma-jargmine", "Järgmine tähtaeg" if jargmine else "Viimane tähtaeg", pl1[1], "",
                   {"muutus": (_kuud(pl1[0]), ""), "tekst": e(pl1[2])},
                   a(O[0]["url"], "Euroopa Komisjon"), fookus=True),
-        kpi_plaat("ma-korge", "Kõrge riskiga kasutus", kp(kr["kuupaev"]), "",
-                  {"muutus": (_kuud(kr["kuupaev"]), ""), "tekst": "nt <b>CV-de sorteerimine</b>, hindamine koolis"},
+        kpi_plaat("ma-korge", "Suure riskiga kasutus", kp(kr["kuupaev"]), "",
+                  {"muutus": (_kuud(kr["kuupaev"]), ""), "tekst": "nt <b>CVde sorteerimine</b>, hindamine koolis"},
                   a(kr["url"], "Euroopa Komisjon")),
         kpi_plaat("ma-osad", "Tähtajad 2024–2028", f"{len(moodas)}", f"/ {len(O)} möödas",
                   {"muutus": (f"{len(ees)} on veel ees", f"kehtib alates {kp(uld['kuupaev'])}"),
@@ -1093,7 +1093,7 @@ def siht_rida(A, sid):
         ee = andmed.leia(A, nid, "EE", p["aasta"])
         aastaks = f' aastaks {e(s["aasta"])}' if s["aasta"] else ""
         tekst = (f'<b>EL {pr(siht, 0)}{u}</b>{aastaks} ({kes}). '
-                 f'EL tervikuna {pr(p["vaartus"], k)}{u}, Eesti {pr(ee["vaartus"], k)}{u} ({p["aasta"]}); ELil puudu {pr(siht - p["vaartus"], k)} punkti.')
+                 f'EL tervikuna {pr(p["vaartus"], k)}{u}, Eesti {pr(ee["vaartus"], k)}{u} ({p["aasta"]}); ELil puudu {pr(siht - p["vaartus"], k)} protsendipunkti.')
     return (f'<div class="siht-rida"><p><span class="siht-silt">Siht</span> {tekst}</p>'
             f'{sihiriba(p["vaartus"], siht, lopp, "", fookus=(s["tase"] == "EE"))}</div>')
 

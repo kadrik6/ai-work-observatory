@@ -8,6 +8,7 @@ from andmekiht import EL, AndmeViga
 from komponendid import (allikarida, e, ei_naita, faktid, hantlid, jaga_klassid, kaart, kp, leiu_ribad, margend, pr,
                          riik, tabel, telg, vastavus)
 from pealkiri import taida
+from abi import sonaga
 
 POHJAMAAD = ["FI", "SE", "DK"]  # ELi Põhjamaad; Norra ei ole ELi skaalal
 EB = "ettevotete-tehisaru-kasutus"
@@ -124,7 +125,7 @@ def _kasutus(A):
 </section>
 <section class="jaotis" id="kasutus-uued" aria-labelledby="h-kasutus-uued">
   <header>
-    <h2 id="h-kasutus-uued">{muud[0]["aasta"]}. aasta numbrid on olemas {len(muud)} riigil, aga <b>ELi skaalale need ei sobi</b></h2>
+    <h2 id="h-kasutus-uued">{muud[0]["aasta"]}. aasta numbrid on olemas {sonaga(len(muud), "alaleytlev")} riigil, aga <b>ELi skaalale need ei sobi</b></h2>
     <p class="alam">Riikide statistikaametid avaldasid need enne Eurostati. Küsimustik või ettevõtete kogum erineb, seepärast ei ole need kaardil.</p>
   </header>
   {uued_tbl}
@@ -149,7 +150,7 @@ def _tootlikkus(A):
     palk = A["leiud"]["ars-oskused-palk"]
     fk = [
         ("Kui kindel", "", "Uuring, mitte statistika. 19% ja 23% on nõrga statistilise olulisusega (tärn). "
-                          "„Ei olnud oluline“ tähendab, et mõju ei leitud, mitte et see oli null."),
+                          "„Ei olnud oluline“ tähendab, et mõju ei leitud, mitte seda, et see oli null."),
         ("Sama muster", "",
          f'OECD 11 riigi andmetel jääb tehisaru kasutajate eelis väiksemaks või kaob, kui arvestada IT-oskusi ja muid '
          f'digitehnoloogiaid (<a href="{e(calvino.get("url", ""))}">Calvino ja Fontanelli 2023</a>). Arvutiajastul leiti '
@@ -247,7 +248,7 @@ def _digi_ja_ta(A):
 </section>
 <section class="jaotis" id="ta" aria-labelledby="h-ta">
   <header>
-    <h2 id="h-ta">Eesti teadus- ja arendustegevuse kulu kasvab, aga jääb <b>ELi keskmisest {pr(eu_t - ee_t, 2)} punkti alla</b> (2024)</h2>
+    <h2 id="h-ta">Eesti teadus- ja arendustegevuse kulu kasvab, aga jääb <b>ELi keskmisest {pr(eu_t - ee_t, 2)} protsendipunkti alla</b> (2024)</h2>
     <p class="alam">Kõigi sektorite kulu kokku, % SKPst: ettevõtted, riik, kõrgharidus ja mittetulundussektor. Ei näita, kui palju läheb tehisarule.</p>
   </header>
   <figure aria-labelledby="g-ta">
@@ -287,7 +288,7 @@ PP_NIMI = {"EE": "Eesti", "FI": "Soome", "SE": "Rootsi", "DK": "Taani", "NO": "N
 
 def pohjamaade_profiil(A):
     """Üheksa näitajat seitsmes riigis. Seire andmed, kui näitaja on seires; muidu kataloogi välisvaatlused
-    (kataloog/vaatlused-valis.csv), mida kataloog/lae_valis.py laeb iga päev otse Eurostati ja UNESCO UIS-i API-st."""
+    (kataloog/vaatlused-valis.csv), mida kataloog/lae_valis.py laeb iga päev otse Eurostati ja UNESCO UISi API-st."""
     from statistics import mean
     S = {}
     for r in A["valis_vaatlused"]:
@@ -348,7 +349,7 @@ def _pohjamaad(A):
     tasemel = [p for p in P if p["hinnang"] in ("yle", "vahemik")]
     maas = [p for p in P if p["hinnang"] not in ("yle", "vahemik")]
     from abi import OMASTAV
-    arv = lambda n: OMASTAV[n] + "s" if n in OMASTAV else "mitte ühe"  # noqa: E731  seesütlev: kolmes, viies
+    arv = lambda n: OMASTAV[n] if n in OMASTAV else "mitte ühe"  # noqa: E731  omastav: kolme puhul (keeletoimetus 10.11.2026)
     read = []
     for p in P:
         vv = list(p["v"].values())
@@ -379,7 +380,7 @@ def _pohjamaad(A):
     return f"""
 <section class="jaotis" id="pohjamaad" aria-labelledby="h-pohjamaad">
   <header>
-    <h2 id="h-pohjamaad">Üheksast näitajast on Eesti Põhjamaade tasemel {arv(len(tasemel))}, <b>{arv(len(maas))} jääb Põhjamaadest maha</b></h2>
+    <h2 id="h-pohjamaad">Üheksast näitajast on Eesti {arv(len(tasemel))} puhul Põhjamaade tasemel, <b>{arv(len(maas))} puhul jääb Põhjamaadest maha</b></h2>
     <p class="alam">Seitse riiki igal näitajal: Eesti, Soome, Rootsi, Taani, Norra, Saksamaa ja Holland. Iga rida on oma skaalal, ridu omavahel ei võrrelda.</p>
     {vastavus("osaliselt", "Näitajad on samast küsimustikust kõigis riikides, aga need mõõdavad eri asju (inimesed, ettevõtted, kulud). Ühte koondnumbrit neist ei arvutata.")}
   </header>
@@ -401,7 +402,7 @@ def _pohjamaad(A):
     <summary>Näita andmetabelit ja indeksit</summary>
     <div>{tabel(["Näitaja", "Eesti", "Põhjamaade keskmine", "Indeks (100 = Põhjamaad), arvutatud", "Hinnang", "Koht"], t_read,
                 pealdis="Eesti ja Põhjamaade keskmine üheksas näitajas")}
-      <p>Kuus näitajat tulevad seire enda Eurostati andmetest ja uuenevad iga päev. IKT-spetsialistid tulevad Eurostatist ning IKT lõpetajad ja teadlased UNESCO UIS-ist. Seire laeb need iga päev otse allika API-st.</p></div>
+      <p>Kuus näitajat tulevad seire enda Eurostati andmetest ja uuenevad iga päev. IKT-spetsialistid tulevad Eurostatist ning IKT lõpetajad ja teadlased UNESCO UISist. Seire laeb need iga päev otse allika API-st.</p></div>
   </details>
 </section>"""
 
@@ -425,12 +426,12 @@ def _arenguseire(A):
 
 
 def _gem(A, ee_el):
-    """Kadri 9.11.2026 („lisa“, kolleegi soovitus): GEM-i ekspertide hinnang Eurostati mõõdetud kasutuse kõrvale.
+    """Kadri 9.11.2026 („lisa“, kolleegi soovitus): GEMi ekspertide hinnang Eurostati mõõdetud kasutuse kõrvale.
     Eraldi sakk ja oma 0–10 skaala: hinnang ja ettevõtete osa ei ole võrreldavad, seega ei ole nad samal teljel."""
     L = A["leiud"]["gem-ai-teadlikkus"]
     v = float(next(r for r in A["leiud_arvud"] if r["leid"] == L["id"])["vaartus"])
     if not 0 <= v <= 10:
-        raise AndmeViga("GEM-i ekspertide hinnang peab olema skaalal 0–10")
+        raise AndmeViga("GEMi ekspertide hinnang peab olema skaalal 0–10")
     tase = "suurepärane" if v >= 7 else "piisav" if v >= 5 else "ebapiisav"
     x = lambda t: f"{t * 10:g}%"  # noqa: E731
     tsoonid = "".join(f'<span class="gem-tsoon {k}" style="left:{x(a)};width:{x(b - a)}"><small>{e(n)}</small></span>'
@@ -497,16 +498,16 @@ def _ligipaas(A):
     def kiip(r):
         eesti = " · Eesti" if r["piirkond"] == "EE" else ""
         return (f'<li class="lp-kiip{" ava" if avab(r) else ""}"><b>{e(lyh(r["ettevote"]))}</b> '
-                f'<small>{int(r["kuupaev"][5:7])}/{r["kuupaev"][:4]}{eesti}</small></li>')
+                f'<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}{eesti}</small></li>')
 
     def lahter(rr):
         if not rr:
             return '<span class="lp-tyhi">–</span>'
         return "<ul>" + "".join(kiip(r) for r in sorted(rr, key=lambda r: r["kuupaev"])) + "</ul>"
 
-    osad = [f"{len(rr)} {LIGIPAAS_TEGU[k]} ({aastad(rr)})" for k in LIGIPAAS_NIMI
+    osad = [f"{sonaga(len(rr))} {LIGIPAAS_TEGU[k]} ({aastad(rr)})" for k in LIGIPAAS_NIMI
             for rr in [[r for r in S if r["ligipaas"] == k]] if rr]
-    pealkiri = f"Kogutud {len(S)} otsusest " + (", ".join(osad[:-1]) + " ja " + osad[-1] if len(osad) > 1 else osad[0])
+    pealkiri = f"{sonaga(len(S), 'seestytlev').capitalize()} kogutud otsusest " + (", ".join(osad[:-1]) + " ja " + osad[-1] if len(osad) > 1 else osad[0])
     a0, a1 = int(min(r["kuupaev"] for r in S)[:4]), int(max(r["kuupaev"] for r in S)[:4])
     read_aastad = []
     for y in range(a1, a0 - 1, -1):
@@ -614,8 +615,8 @@ def ettevotted(A, vaade, vaated=None):
                   {"muutus": (f"{k_ee[y0] - koht} kohta üles", f'{y0}: {k_ee[y0]}. koht · Eesti {pr(ee_el["vaartus"])}%'),
                    "riba": kpi_riba(ee_el["vaartus"], 100, vrd=eu["vaartus"])},
                   a("https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "Eurostat isoc_eb_ai")),
-        kpi_plaat("ev-pohja", "Vahe Põhjamaade keskmisega", f"{pr(vahe)}", f"punkti · {y}",
-                  {"muutus": (f"{_p(vahe - vahe0)} punkti 2023. aastast", f"2023: {pr(vahe0)} · Soome, Rootsi, Taani")},
+        kpi_plaat("ev-pohja", "Vahe Põhjamaade keskmisega", f"{pr(vahe)}", f"protsendipunkti · {y}",
+                  {"muutus": (f"{_p(vahe - vahe0)} protsendipunkti 2023. aastast", f"2023: {pr(vahe0)} · Soome, Rootsi, Taani")},
                   a("https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "Eurostat isoc_eb_ai")),
     )
     lead = ("Kasutus kasvab kiiresti, aga vahe Põhjamaadega on punktides suurenenud. "
