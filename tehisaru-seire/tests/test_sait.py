@@ -520,7 +520,7 @@ def test_uus_margid_on_oranzid(sait):
     # Kadri 7.11.2026: „värvi kõik uus märgid oranziks“; „suur uudis“ jääb siniseks
     assert '<span class="u-l suur">uus</span>' not in sait["uudised.html"]
     assert '<span class="t s">uus number</span>' not in sait["index.html"]
-    assert sait["index.html"].count('<span class="t uus">uus</span>') >= 1  # Kadri 8.11: ainult „uus“
+    assert sait["index.html"].count('<span class="t uus">uus</span>') + sait["index.html"].count('<span class="t">number</span>') >= 1  # Kadri 8.11: ainult „uus“
     assert '<span class="t uus">uus number</span>' not in sait["index.html"]
     css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
     assert ".u-l.uus, .voog .t.uus { background: #f2a65e; color: #2b1a05; }" in css  # U8, Kadri 8.11.2026
@@ -1283,3 +1283,14 @@ def test_pealkirjad_on_luhikesed(sait):
     import kest
     proov = kest.lyhenda_pealkirjad('<h1>Lühike ¦ detail</h1>\n<p class="lead">Lead.</p><h2 id="x">Kaks ¦ <b>teine</b></h2>')
     assert '<h1>Lühike</h1>\n<p class="lead">Detail. Lead.</p>' in proov and '<p class="h-lisa"><b>Teine</b>.</p>' in proov
+
+
+def test_voo_silt_uus_ainult_14_paeva():
+    """Kadri 10.11.2026: üle 14 päeva vana number ei ole „uus“."""
+    from datetime import date
+    from lehed_ulevaade import voo_silt
+    tana = date(2026, 11, 10)
+    assert voo_silt("2026-10-30", "uus number", tana) == '<span class="t uus">uus</span>'
+    assert voo_silt("2026-10-21", "uus number", tana) == '<span class="t">number</span>'
+    assert voo_silt("2026-09-16", "uus number", tana) == '<span class="t">number</span>'
+    assert voo_silt("2026-11-05", "väide", tana) == '<span class="t">väide</span>'
