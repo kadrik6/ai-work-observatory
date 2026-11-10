@@ -1,5 +1,5 @@
 {
-  "viimane_kontroll": "2026-11-09T17:58:00+02:00",
+  "viimane_kontroll": "2026-11-10T07:45:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
@@ -12,12 +12,12 @@
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "17.53: uut koondamist ega Eesti Energia jätkulugu ei olnud; lisatud Natalie Metsa arvamus (ERR)"
+      "markus": "10.11: uut koondamist ei olnud; Eesti Energia jätkulugu (Delfi juhtkiri) lisatud"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "17.53: lisatud PhysicsWallah (tehisaru osaline põhjus); Heidi Health (tasuline, avamata), Bloomberg (blokeeritud) ja Filipiinide eelnõu kordus jäid välja"
+      "markus": "10.11: lisatud CNET-i 1,6 mln töökoha väide (eksitav, allikas nimetamata); Filipiinide eelnõu ja Challenger juba kajastatud"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -27,27 +27,27 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "17.53: uus postitus on lähisuhtevägivalla raport, teemaväline"
+      "markus": "10.11: uut teemakohast postitust pole"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "leht avaneb; Arunädal ja hange leitud"
+      "markus": "10.11: leht avaneb, uut tehisaru teadet pole"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "leht avaneb; rss.xml annab 404"
+      "markus": "10.11: leht avaneb, uut tehisaru teadet pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "17.53: site:-päringud uusi tulemusi ei andnud"
+      "markus": "10.11: lisatud Eesti–Austria memorandum (JDM 6.11, otsingu kokkuvõte); Digital Nations ja muud juba kajastatud"
     },
     {
       "nimi": "OECD uudised (otsing)",
       "ok": true,
-      "markus": "9.11: uut OECD tööturu ega tehisaru teadet ei leitud"
+      "markus": "10.11: uut OECD tööturu ega tehisaru teadet ei leitud"
     }
   ]
 }

@@ -1,9 +1,9 @@
 {
 "kirjeldus": "Tehisaru- ja andmetööde kuulutused CV.ee-s. Kolm rühma: ai_amet = pealkirjas on tehisaru (AI, ML, LLM, tehisintellekt, masinõpe, andmeteadlane jne); andmeamet = pealkirjas on andmed, data, BI, analytics, statistik või andmebaas; ai_oskus = muu amet, mille kuulutuse tekst mainib tehisaru või tehisaru tööriistu; ai_firma_noue = muu amet, kus tehisaru on ainult tööandja ühises lauses (sama lõik vähemalt kolmes selle firma kuulutuses, nt firma üldnõue). Rühmad ei kattu. Märksõnapõhine liigitus, mitte käsitsi kontrollitud.",
 "allikas": "CV.ee avalik otsing (https://www.cv.ee/et/search), kõik kuulutused",
-"uuendatud": "2026-11-09T07:31+02:00",
-"kuulutusi_kokku": 3179,
-"portaali_kokku": 3179,
+"uuendatud": "2026-11-10T07:28+02:00",
+"kuulutusi_kokku": 3298,
+"portaali_kokku": 3298,
 "uus_tahendab": "kuulutus, mida eelmisel kontrollil polnud",
 "ruhmad": {
 "ai_amet": {
@@ -79,12 +79,12 @@
 ]
 },
 "andmeamet": {
-"arv": 22,
-"uusi": 0,
+"arv": 24,
+"uusi": 4,
 "tooandjad": [
 {
 "nimi": "Bolt",
-"arv": 5
+"arv": 6
 },
 {
 "nimi": "Playtech Estonia OÜ",
@@ -97,6 +97,14 @@
 {
 "nimi": "Töötukassa vahendatud pakkumised",
 "arv": 2
+},
+{
+"nimi": "HHLA TK Estonia AS",
+"arv": 1
+},
+{
+"nimi": "ESTO AS",
+"arv": 1
 },
 {
 "nimi": "Brandem Baltic OÜ",
@@ -127,10 +135,6 @@
 "arv": 1
 },
 {
-"nimi": "Bi & Dwh Consult OÜ",
-"arv": 1
-},
-{
 "nimi": "JoinUP! Travel Services OÜ",
 "arv": 1
 }
@@ -138,7 +142,7 @@
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 16
+"arv": 18
 },
 {
 "nimi": "Eesti (täpsustamata)",
@@ -155,8 +159,8 @@
 ]
 },
 "ai_oskus": {
-"arv": 47,
-"uusi": 0,
+"arv": 45,
+"uusi": 3,
 "tooandjad": [
 {
 "nimi": "Bolt",
@@ -171,8 +175,12 @@
 "arv": 2
 },
 {
-"nimi": "Sisu Tech OÜ",
-"arv": 2
+"nimi": "PrismFP Analytics Ltd Eesti filiaal",
+"arv": 1
+},
+{
+"nimi": "Inbank",
+"arv": 1
 },
 {
 "nimi": "AS Mapon",
@@ -199,6 +207,10 @@
 "arv": 1
 },
 {
+"nimi": "Sisu Tech OÜ",
+"arv": 1
+},
+{
 "nimi": "Forecr",
 "arv": 1
 },
@@ -209,38 +221,30 @@
 {
 "nimi": "W.EG. Eesti OÜ",
 "arv": 1
-},
-{
-"nimi": "PrismFP Analytics Ltd Eesti filiaal",
-"arv": 1
-},
-{
-"nimi": "Techspinex OÜ",
-"arv": 1
 }
 ],
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 41
-},
-{
-"nimi": "Tartumaa",
-"arv": 3
+"arv": 39
 },
 {
 "nimi": "Ida-Virumaa",
+"arv": 3
+},
+{
+"nimi": "Tartumaa",
 "arv": 3
 }
 ]
 },
 "ai_firma_noue": {
-"arv": 41,
-"uusi": 0,
+"arv": 46,
+"uusi": 5,
 "tooandjad": [
 {
 "nimi": "Bolt",
-"arv": 38
+"arv": 43
 },
 {
 "nimi": "pawaTech OÜ",
@@ -250,12 +254,100 @@
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 41
+"arv": 46
 }
 ]
 }
 },
 "kuulutused": [
+{
+"id": 1678943,
+"ruhm": "andmeamet",
+"pealkiri": "Data Analytics Manager, Delivery Marketing",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "FULLY_REMOTE",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678943",
+"uus": true
+},
+{
+"id": 1678939,
+"ruhm": "andmeamet",
+"pealkiri": "Strategy & Analytics Lead, CEO Office",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "FULLY_REMOTE",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678939",
+"uus": true
+},
+{
+"id": 1678916,
+"ruhm": "andmeamet",
+"pealkiri": "Andmelao ja aruandluse spetsialist",
+"tooandja": "HHLA TK Estonia AS",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678916",
+"uus": true
+},
+{
+"id": 1676257,
+"ruhm": "andmeamet",
+"pealkiri": "Software Engineer (Data Delivery Team)",
+"tooandja": "Playtech Estonia OÜ",
+"maakond": "Tartumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1676257",
+"uus": false
+},
+{
+"id": 1676255,
+"ruhm": "andmeamet",
+"pealkiri": "Software Engineer (Data Delivery Team)",
+"tooandja": "Playtech Estonia OÜ",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1676255",
+"uus": false
+},
+{
+"id": 1676254,
+"ruhm": "andmeamet",
+"pealkiri": "Senior Database Administrator",
+"tooandja": "Playtech Estonia OÜ",
+"maakond": "Tartumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1676254",
+"uus": false
+},
+{
+"id": 1676252,
+"ruhm": "andmeamet",
+"pealkiri": "Senior Database Administrator",
+"tooandja": "Playtech Estonia OÜ",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1676252",
+"uus": false
+},
+{
+"id": 1678808,
+"ruhm": "andmeamet",
+"pealkiri": "Chief Data Officer",
+"tooandja": "ESTO AS",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678808",
+"uus": true
+},
 {
 "id": 1678252,
 "ruhm": "andmeamet",
@@ -303,7 +395,7 @@
 {
 "id": 1677276,
 "ruhm": "andmeamet",
-"pealkiri": "Data Analyst",
+"pealkiri": "Data Analyst, Rides Finance",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
 "kaugtoo": "ON_SITE",
@@ -334,67 +426,12 @@
 "uus": false
 },
 {
-"id": 1676257,
-"ruhm": "andmeamet",
-"pealkiri": "Software Engineer (Data Delivery Team)",
-"tooandja": "Playtech Estonia OÜ",
-"maakond": "Tartumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-02",
-"url": "https://www.cv.ee/et/vacancy/1676257",
-"uus": false
-},
-{
-"id": 1676255,
-"ruhm": "andmeamet",
-"pealkiri": "Software Engineer (Data Delivery Team)",
-"tooandja": "Playtech Estonia OÜ",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-02",
-"url": "https://www.cv.ee/et/vacancy/1676255",
-"uus": false
-},
-{
-"id": 1676254,
-"ruhm": "andmeamet",
-"pealkiri": "Senior Database Administrator",
-"tooandja": "Playtech Estonia OÜ",
-"maakond": "Tartumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-02",
-"url": "https://www.cv.ee/et/vacancy/1676254",
-"uus": false
-},
-{
-"id": 1676252,
-"ruhm": "andmeamet",
-"pealkiri": "Senior Database Administrator",
-"tooandja": "Playtech Estonia OÜ",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-02",
-"url": "https://www.cv.ee/et/vacancy/1676252",
-"uus": false
-},
-{
-"id": 1676220,
-"ruhm": "andmeamet",
-"pealkiri": "Head of Data Analytics",
-"tooandja": "Bolt",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-11-02",
-"url": "https://www.cv.ee/et/vacancy/1676220",
-"uus": false
-},
-{
 "id": 1675823,
 "ruhm": "andmeamet",
 "pealkiri": "Manager, Growth Analytics",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-10-30",
 "url": "https://www.cv.ee/et/vacancy/1675823",
 "uus": false
@@ -430,17 +467,6 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-10-26",
 "url": "https://www.cv.ee/et/vacancy/1673453",
-"uus": false
-},
-{
-"id": 1673011,
-"ruhm": "andmeamet",
-"pealkiri": "Andmeanalüütik/arendaja",
-"tooandja": "Bi & Dwh Consult OÜ",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-10-23",
-"url": "https://www.cv.ee/et/vacancy/1673011",
 "uus": false
 },
 {
@@ -490,13 +516,57 @@
 {
 "id": 1615643,
 "ruhm": "andmeamet",
-"pealkiri": "Senior Analytics Engineer",
+"pealkiri": "Senior Analytics Engineer (Maternity Cover)",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-07-13",
 "url": "https://www.cv.ee/et/vacancy/1615643",
 "uus": false
+},
+{
+"id": 1679067,
+"ruhm": "ai_oskus",
+"pealkiri": "Sekretär, assistent",
+"tooandja": "Töötukassa vahendatud pakkumised",
+"maakond": "Ida-Virumaa",
+"kaugtoo": "ON_SITE",
+"avaldatud": "2026-11-10",
+"url": "https://www.cv.ee/et/vacancy/1679067",
+"uus": true
+},
+{
+"id": 1678941,
+"ruhm": "ai_oskus",
+"pealkiri": "Lead GTM Engineer, B4B",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "FULLY_REMOTE",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678941",
+"uus": true
+},
+{
+"id": 1676060,
+"ruhm": "ai_oskus",
+"pealkiri": "Junior Analyst in Trading Operations",
+"tooandja": "PrismFP Analytics Ltd Eesti filiaal",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1676060",
+"uus": false
+},
+{
+"id": 1678562,
+"ruhm": "ai_oskus",
+"pealkiri": "Digital Content & Channel Specialist",
+"tooandja": "Inbank",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678562",
+"uus": true
 },
 {
 "id": 1678429,
@@ -741,17 +811,6 @@
 "uus": false
 },
 {
-"id": 1676060,
-"ruhm": "ai_oskus",
-"pealkiri": "Junior Analyst in Trading Operations",
-"tooandja": "PrismFP Analytics Ltd Eesti filiaal",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-02",
-"url": "https://www.cv.ee/et/vacancy/1676060",
-"uus": false
-},
-{
 "id": 1674978,
 "ruhm": "ai_oskus",
 "pealkiri": "IT kasutajatoe spetsialist",
@@ -856,7 +915,7 @@
 "pealkiri": "Head of Creative Studio",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-10-20",
 "url": "https://www.cv.ee/et/vacancy/1671288",
 "uus": false
@@ -884,23 +943,12 @@
 "uus": false
 },
 {
-"id": 1669290,
-"ruhm": "ai_oskus",
-"pealkiri": "Payments Operations & Fraud Analyst",
-"tooandja": "Sisu Tech OÜ",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-10-14",
-"url": "https://www.cv.ee/et/vacancy/1669290",
-"uus": false
-},
-{
 "id": 1668078,
 "ruhm": "ai_oskus",
-"pealkiri": "Senior Salesforce Developer",
+"pealkiri": "Senior Salesforce Developer, Bolt Food",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-10-12",
 "url": "https://www.cv.ee/et/vacancy/1668078",
 "uus": false
@@ -908,10 +956,10 @@
 {
 "id": 1668077,
 "ruhm": "ai_oskus",
-"pealkiri": "Head of CX - Delivery",
+"pealkiri": "Head of Customer Experience, Delivery",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-10-12",
 "url": "https://www.cv.ee/et/vacancy/1668077",
 "uus": false
@@ -925,39 +973,6 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-10-12",
 "url": "https://www.cv.ee/et/vacancy/1668076",
-"uus": false
-},
-{
-"id": 1666370,
-"ruhm": "ai_oskus",
-"pealkiri": "Graphic Designer",
-"tooandja": "Techspinex OÜ",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-10-09",
-"url": "https://www.cv.ee/et/vacancy/1666370",
-"uus": false
-},
-{
-"id": 1667309,
-"ruhm": "ai_oskus",
-"pealkiri": "Software Quality Analyst",
-"tooandja": "Games Global Estonia OÜ",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-10-09",
-"url": "https://www.cv.ee/et/vacancy/1667309",
-"uus": false
-},
-{
-"id": 1665459,
-"ruhm": "ai_oskus",
-"pealkiri": "Haridustehnoloog",
-"tooandja": "Töötukassa vahendatud pakkumised",
-"maakond": "Ida-Virumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-10-06",
-"url": "https://www.cv.ee/et/vacancy/1665459",
 "uus": false
 },
 {
@@ -983,17 +998,6 @@
 "uus": false
 },
 {
-"id": 1662506,
-"ruhm": "ai_oskus",
-"pealkiri": "Lead Engineer People Technology",
-"tooandja": "Bolt",
-"maakond": "Harjumaa",
-"kaugtoo": "FULLY_REMOTE",
-"avaldatud": "2026-09-28",
-"url": "https://www.cv.ee/et/vacancy/1662506",
-"uus": false
-},
-{
 "id": 1642550,
 "ruhm": "ai_oskus",
 "pealkiri": "Senior Integration / Automation Engineer",
@@ -1007,13 +1011,68 @@
 {
 "id": 1615575,
 "ruhm": "ai_oskus",
-"pealkiri": "Senior Product Manager-Supply Incentives",
+"pealkiri": "Senior Product Manager, Supply Incentives",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-07-13",
 "url": "https://www.cv.ee/et/vacancy/1615575",
 "uus": false
+},
+{
+"id": 1678946,
+"ruhm": "ai_firma_noue",
+"pealkiri": "People Business Partner",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "FULLY_REMOTE",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678946",
+"uus": true
+},
+{
+"id": 1678945,
+"ruhm": "ai_firma_noue",
+"pealkiri": "FP&A Analyst (Group Payroll)",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "ON_SITE",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678945",
+"uus": true
+},
+{
+"id": 1678944,
+"ruhm": "ai_firma_noue",
+"pealkiri": "Senior Finance Program Manager",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "FULLY_REMOTE",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678944",
+"uus": true
+},
+{
+"id": 1678942,
+"ruhm": "ai_firma_noue",
+"pealkiri": "Finance Systems & Program Manager",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "ON_SITE",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678942",
+"uus": true
+},
+{
+"id": 1678940,
+"ruhm": "ai_firma_noue",
+"pealkiri": "Staff Product Designer, Incentives",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "ON_SITE",
+"avaldatud": "2026-11-09",
+"url": "https://www.cv.ee/et/vacancy/1678940",
+"uus": true
 },
 {
 "id": 1678187,
@@ -1106,10 +1165,10 @@
 {
 "id": 1677357,
 "ruhm": "ai_firma_noue",
-"pealkiri": "Commercial Manager",
+"pealkiri": "Commercial Category Manager",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677357",
 "uus": false
@@ -1203,17 +1262,6 @@
 "uus": false
 },
 {
-"id": 1677201,
-"ruhm": "ai_firma_noue",
-"pealkiri": "(Senior) Compliance Officer, Commerce",
-"tooandja": "Bolt",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-11-04",
-"url": "https://www.cv.ee/et/vacancy/1677201",
-"uus": false
-},
-{
 "id": 1677205,
 "ruhm": "ai_firma_noue",
 "pealkiri": "Senior Backend Engineer",
@@ -1293,10 +1341,10 @@
 {
 "id": 1676801,
 "ruhm": "ai_firma_noue",
-"pealkiri": "Senior Performance Marketing Specialist",
+"pealkiri": "Senior Performance Marketing Specialist, Delivery",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-03",
 "url": "https://www.cv.ee/et/vacancy/1676801",
 "uus": false
@@ -1304,10 +1352,10 @@
 {
 "id": 1676304,
 "ruhm": "ai_firma_noue",
-"pealkiri": "Senior Performance Marketing Specialist",
+"pealkiri": "Senior Performance Marketing Specialist, Drivers",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-02",
 "url": "https://www.cv.ee/et/vacancy/1676304",
 "uus": false
@@ -1318,7 +1366,7 @@
 "pealkiri": "Tax Technology Manager",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-10-29",
 "url": "https://www.cv.ee/et/vacancy/1675339",
 "uus": false
@@ -1326,10 +1374,10 @@
 {
 "id": 1674648,
 "ruhm": "ai_firma_noue",
-"pealkiri": "Senior QA Engineer",
+"pealkiri": "Senior QA Engineer, Micromobility Rentals",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-10-28",
 "url": "https://www.cv.ee/et/vacancy/1674648",
 "uus": false
@@ -1340,7 +1388,7 @@
 "pealkiri": "Regional Manager, Stores",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-10-27",
 "url": "https://www.cv.ee/et/vacancy/1673969",
 "uus": false
@@ -1357,6 +1405,17 @@
 "uus": false
 },
 {
+"id": 1667123,
+"ruhm": "ai_firma_noue",
+"pealkiri": "Senior Manager, Employee Relations",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "FULLY_REMOTE",
+"avaldatud": "2026-10-08",
+"url": "https://www.cv.ee/et/vacancy/1667123",
+"uus": false
+},
+{
 "id": 1666557,
 "ruhm": "ai_firma_noue",
 "pealkiri": "Tax Manager, Micromobility",
@@ -1370,10 +1429,10 @@
 {
 "id": 1665389,
 "ruhm": "ai_firma_noue",
-"pealkiri": "Senior Program Manager, Category & Segments Supply Ops",
+"pealkiri": "Senior Program Manager, Category & Segments Supply Operations",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-10-05",
 "url": "https://www.cv.ee/et/vacancy/1665389",
 "uus": false
@@ -1381,10 +1440,10 @@
 {
 "id": 1664340,
 "ruhm": "ai_firma_noue",
-"pealkiri": "Marketing Manager",
+"pealkiri": "Marketing Manager, Bolt Drive",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-10-01",
 "url": "https://www.cv.ee/et/vacancy/1664340",
 "uus": false
@@ -1428,7 +1487,7 @@
 "pealkiri": "Performance Marketing Specialist",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-08-19",
 "url": "https://www.cv.ee/et/vacancy/1642315",
 "uus": false
@@ -1436,10 +1495,10 @@
 {
 "id": 1615602,
 "ruhm": "ai_firma_noue",
-"pealkiri": "Senior Program Manager, Driver & Marketplace Operations",
+"pealkiri": "Senior Program Manager - Driver & Marketplace Operations",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-07-13",
 "url": "https://www.cv.ee/et/vacancy/1615602",
 "uus": false
@@ -1634,7 +1693,7 @@
 {
 "id": 1644812,
 "ruhm": "ai_amet",
-"pealkiri": "Senior AI / Agent Developer",
+"pealkiri": "Senior AI / Agent Engineer",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
 "kaugtoo": "ON_SITE",
@@ -1645,10 +1704,10 @@
 {
 "id": 1643899,
 "ruhm": "ai_amet",
-"pealkiri": "AI Operations Lead",
+"pealkiri": "AI Operations Lead, CS Product",
 "tooandja": "Bolt",
 "maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
+"kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-08-21",
 "url": "https://www.cv.ee/et/vacancy/1643899",
 "uus": false
@@ -1670,6 +1729,14 @@
 "andmeamet": 22,
 "ai_oskus": 47,
 "ai_firma_noue": 41
+},
+{
+"kuupaev": "2026-11-10",
+"kuulutusi_kokku": 3298,
+"ai_amet": 17,
+"andmeamet": 24,
+"ai_oskus": 45,
+"ai_firma_noue": 46
 }
 ],
 "piirangud": "Ainult üks portaal (CV.ee); CV Keskuse otsing ei andnud automaatsel lugemisel tulemusi ja Töötukassa robots.txt keelab otsingulehed. Sama ametikoht võib olla mitmes portaalis. Pealkiri 'analüütik' ilma andmesõnata ei lähe andmeametite alla (äri-, finants- ja turbeanalüütikud)."
