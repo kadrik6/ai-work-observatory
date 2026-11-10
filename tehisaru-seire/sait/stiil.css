@@ -1272,7 +1272,8 @@ html[data-t] {
 html[data-t] body { font-size: 16.5px; line-height: 1.55; }
 html[data-t] .wrap { padding-left: max(16px, 3vw, env(safe-area-inset-left, 0px)); padding-right: max(16px, 3vw, env(safe-area-inset-right, 0px)); }
 html[data-t] .top { border-bottom: 1px solid var(--border); }
-html[data-t] h1 { font: 400 clamp(30px, 3.6vw, 46px)/1.12 var(--font-display); letter-spacing: -0.015em; }
+/* Kadri 10.11.2026: pealkirjad olid liiga suured ja pikad; h1 väiksem, detail on lead-is ja h2 all (p.h-lisa) */
+html[data-t] h1 { font: 400 clamp(26px, 2.5vw, 34px)/1.15 var(--font-display); letter-spacing: -0.01em; }
 html[data-t] h1 b { font-weight: 700; }
 html[data-t] .pea-rahu { padding-top: 40px; }
 html[data-t] .pea-rahu .alla { margin-top: 14px; }
@@ -1293,7 +1294,9 @@ html[data-t] .plaat .src { font-size: 13.5px; padding-top: 8px; }
 /* jaotised: ilma kastita, vaba ruum ümber */
 html[data-t] .g12 { gap: 56px 48px; margin-top: 56px; }
 html[data-t] .pn { background: transparent; border: 0; border-radius: 0; padding: 0; gap: 12px; }
-html[data-t] .pn-h h2, html[data-t] .pn h2 { font: 400 clamp(21px, 2vw, 26px)/1.25 var(--font-display); max-width: 48ch; }
+html[data-t] .pn-h h2, html[data-t] .pn h2 { font: 400 clamp(19px, 1.6vw, 22px)/1.25 var(--font-display); max-width: 52ch; }
+html[data-t] .h-lisa { margin: 4px 0 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); max-width: 80ch; }
+html[data-t] .h-lisa b { font-weight: 600; }
 html[data-t] .pn h2 b { font-weight: 700; }
 html[data-t] .pn-h + p, html[data-t] .pn > p { font-size: 15px; color: var(--ink-2); }
 html[data-t] .pn .gt { font-size: 15px; }

@@ -112,8 +112,41 @@ def _ploki_lopp(sisu, i):
     return i
 
 
+JAGA = " ¦ "
+
+
+def _lause(t):
+    """Teine pool algab suure tähega (ka siis, kui ees on silt) ja lõpeb punktiga."""
+    t = t.strip()
+    m = re.match(r"((?:<[^>]+>)*)(.)", t, re.S)
+    if m:
+        t = t[:m.start(2)] + m.group(2).upper() + t[m.end(2):]
+    return t if re.search(r"[.!?](?:</[^>]+>)*$", t) else t + "."
+
+
+def lyhenda_pealkirjad(sisu):
+    """Lühike pealkiri ja detail eraldi (Kadri 10.11.2026: pealkirjad olid liiga pikad ja lärmakad).
+
+    Mallis eraldab „ ¦ “ pealkirja (vastus lühidalt) ja detaili. h1 detail läheb sissejuhatuse (lead) algusesse,
+    h2 detail pealkirja alla eraldi reale (p.h-lisa). Nii jäävad andmetest arvutatud jupid alles, aga pealkiri on lühike.
+    """
+    def h1(m):
+        pais, lyhike, lisa, lopp, lead_ava, lead = m.groups()
+        if lead_ava:
+            return f"{pais}{lyhike}{lopp}{lead_ava}{_lause(lisa)} {lead}</p>"
+        return f'{pais}{lyhike}{lopp}\n    <p class="lead">{_lause(lisa)}</p>'
+    sisu = re.sub(r'(<h1[^>]*>)(.*?)' + re.escape(JAGA) + r'(.*?)(</h1>)(?:(\s*<p class="lead">)(.*?)</p>)?', h1, sisu, flags=re.S)
+    sisu = re.sub(r'(<h2[^>]*>)(.*?)' + re.escape(JAGA) + r'(.*?)(</h2>)',
+                  lambda m: f'{m.group(1)}{m.group(2)}{m.group(4)}<p class="h-lisa">{_lause(m.group(3))}</p>', sisu, flags=re.S)
+    if JAGA.strip() in sisu:
+        i = sisu.index(JAGA.strip())
+        raise ValueError("Pealkirja eraldaja „¦“ jäi lehele: " + sisu[max(0, i - 80):i + 80])
+    return sisu
+
+
 def leht(A, vaated, vaade, sisu, title, fail=None):
     fail = fail or vaade["fail"]
+    sisu = lyhenda_pealkirjad(sisu)
     # Navigatsioon B (Kadri 6.11.2026 22:51): päises teemad ja „Kõik teemad“; teema alamlehed sakkidena pealkirja all;
     # „Sellel lehel“ on igal ekraanil üks rida sakkide all, mis kerimisel jääb päise alla kleepuma
     # (Kadri lukustas 8.11.2026 21:24 R1; parem veerg kitsendas sisu).

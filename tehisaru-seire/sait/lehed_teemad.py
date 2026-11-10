@@ -104,7 +104,7 @@ def inimesed(A, vaade, vaated=None):
     sec_kasutus = f"""
 <section class="jaotis" id="kasutus" aria-labelledby="h-kasutus">
   <header>
-    <h2 id="h-kasutus">ELi skaalal oli Eesti {y}. aastal {len(el)} riigi seas <b>{koht}. kohal</b>: {pr(ee25["vaartus"])}% inimestest, EL {pr(eu["vaartus"])}%</h2>
+    <h2 id="h-kasutus">ELi skaalal oli Eesti {y}. aastal {len(el)} riigi seas <b>{koht}. kohal</b> ¦ {pr(ee25["vaartus"])}% inimestest, EL {pr(eu["vaartus"])}%</h2>
   </header>
   <div class="ruut3">
     <figure aria-labelledby="g-kasutus">
@@ -189,7 +189,7 @@ def inimesed(A, vaade, vaated=None):
     sec_digi = f"""
 <section class="jaotis" id="digi" aria-labelledby="h-digi">
   <header>
-    <h2 id="h-digi">Vähemalt baastaseme digioskused on <b>{pr(ds["vaartus"])}% Eesti 16–74-aastastest</b>, sama palju kui 2023; ELi 2030. aasta siht on {siht["siht"]}%</h2>
+    <h2 id="h-digi">Vähemalt baastaseme digioskused on <b>{pr(ds["vaartus"])}% Eesti 16–74-aastastest</b> ¦ sama palju kui 2023; ELi 2030. aasta siht on {siht["siht"]}%</h2>
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-digi">
@@ -229,7 +229,7 @@ def inimesed(A, vaade, vaated=None):
     sec_os = f"""
 <section class="jaotis" id="ei-oska" aria-labelledby="h-ei-oska">
   <header>
-    <h2 id="h-ei-oska">Oskuse puudusel jätab tehisaru kasutamata <b>{pr(os_ee["vaartus"])}% Eesti 16–74-aastastest</b>, ELis {pr(os_eu["vaartus"])}% ({y})</h2>
+    <h2 id="h-ei-oska">Oskuse puudusel jätab tehisaru kasutamata <b>{pr(os_ee["vaartus"])}% Eesti 16–74-aastastest</b> ¦ ELis {pr(os_eu["vaartus"])}% ({y})</h2>
     <p class="alam">ELi 27 riigi seas on Eestis {k_os}. väikseim osakaal. Põhjus on osaliselt see, et rohkem inimesi juba kasutab tehisaru.</p>
   </header>
   <div class="kaks">
@@ -377,7 +377,7 @@ def too(A, vaade, vaated=None):
     sec_maailm = f"""
 <section class="jaotis" id="maailm" aria-labelledby="h-maailm">
   <header>
-    <h2 id="h-maailm">USA ja Taani uuringutes pole kogu tööturul tehisaru mõju veel näha, <b>kitsastes rühmades</b> on tööd aga vähem</h2>
+    <h2 id="h-maailm">Kogu tööturul pole mõju veel näha, <b>kitsastes rühmades</b> on tööd vähem ¦ nii näitavad USA ja Taani uuringud</h2>
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-maailm">
@@ -407,7 +407,7 @@ def too(A, vaade, vaated=None):
     sec_kiirus = f"""
 <section class="jaotis" id="ulesanded" aria-labelledby="h-ulesanded">
   <header>
-    <h2 id="h-ulesanded">Katsetes tegi tehisaru ülesanded kuni {pr(max(r["kiiremini"] for r in kz), 0)}% kiiremaks, aga kogenud arendajad olid oma projektis <b>{pr(abs(kz[metr_i]["kiiremini"]), 0)}% aeglasemad</b></h2>
+    <h2 id="h-ulesanded">Katsetes kuni {pr(max(r["kiiremini"] for r in kz), 0)}% kiiremini, kogenud arendajad oma projektis aga <b>{pr(abs(kz[metr_i]["kiiremini"]), 0)}% aeglasemalt</b></h2>
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-ulesanded">
@@ -433,7 +433,7 @@ def too(A, vaade, vaated=None):
     sec_eesti = f"""
 <section class="jaotis" id="eesti" aria-labelledby="h-eesti">
   <header>
-    <h2 id="h-eesti">Eesti uuringud mõõdavad tootlikkust ja takistusi; <b>mõju töökohtadele</b> neis veel ei mõõdeta</h2>
+    <h2 id="h-eesti">Eesti uuringud ei mõõda veel <b>mõju töökohtadele</b> ¦ need mõõdavad tootlikkust ja takistusi</h2>
     <p class="alam">Seire kogus {len(ee_u)} Eesti uuringut tehisaru ja töö kohta (prognoosid allpool eraldi). Tootlikkuse leid on {link(vaated, "ettevotted", "vaates Ettevõtted", "tootlikkus")}.</p>
   </header>
   {vastavus("ei", "Eesti kohta pole seire leidnud uuringut, mis mõõdaks tehisaru mõju töökohtadele, palkadele või töötundidele. Taani registriandmete uuring on lähim võrdlus.")}
@@ -470,7 +470,7 @@ def too(A, vaade, vaated=None):
     sec_kokkupuude = f"""
 <section class="jaotis" id="kokkupuude" aria-labelledby="h-kokkupuude">
   <header>
-    <h2 id="h-kokkupuude">Eesti töötajatest {pr(K["avatud"], 0)}% on ametites, kus generatiivne tehisaru puudutab osa ülesandeid; <b>{pr(K["korge"], 0)}% kõige avatumates</b></h2>
+    <h2 id="h-kokkupuude">Eesti töötajatest {pr(K["avatud"], 0)}% on tehisarule avatud ametites, <b>{pr(K["korge"], 0)}% kõige avatumates</b> ¦ neis ametites puudutab generatiivne tehisaru osa ülesandeid</h2>
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-kokkupuude">
@@ -519,7 +519,7 @@ def too(A, vaade, vaated=None):
     sec_hoive = f"""
 <section class="jaotis" id="hoive" aria-labelledby="h-hoive">
   <header>
-    <h2 id="h-hoive">Aastatel {A0}–{A1} kasvas Eestis hõive tehisarule avatud ametites <b>vähem kui teistes ametites</b>; ELis oli vastupidi</h2>
+    <h2 id="h-hoive">Eestis kasvas hõive avatud ametites <b>vähem kui teistes</b> ¦ see kehtib aastate {A0}–{A1} kohta. ELis oli vastupidi</h2>
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-hoive">
@@ -644,7 +644,7 @@ def too(A, vaade, vaated=None):
          f'{KUUD[int(rm["avaldatud"][5:7]) - 1]} {rm["avaldatud"][:4]}' if len(rm["avaldatud"]) == 7 else None),
     ])
     alam_h1(vaade, "too-ametid.html",
-            f'Eesti töötajatest **{pr(K["avatud"], 0)}% on ametites**, mida generatiivne tehisaru puudutab; '
+            f'**{pr(K["avatud"], 0)}% Eesti töötajatest** on tehisarule avatud ametites ¦ neis puudutab generatiivne tehisaru osa ülesandeid; '
             f'nende hõive kasvas {A0}–{A1} vähem kui teistes ametites.')
     P = A.get("publikatsioonid")
     if P:
@@ -652,7 +652,7 @@ def too(A, vaade, vaated=None):
         p1 = tais[-1]
         p0 = next(r for r in tais if r["aasta"] == p1["aasta"] - 2)
         alam_h1(vaade, "too-kirjandus.html",
-                f'Tehisarust ja tööst ilmus {p1["aasta"]}. aastal **{_arv(p1["koik"])} publikatsiooni**, '
+                f'Tehisarust ja tööst ilmus {p1["aasta"]}. aastal **{_arv(p1["koik"])} publikatsiooni** ¦ see on '
                 f'{pr(p1["koik"] / p0["koik"])} korda rohkem kui {p0["aasta"]}. aastal.')
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Andmed")], sec_andmed),
@@ -696,7 +696,7 @@ def avalik_sektor(A, vaade, vaated=None):
     sec_lehter = f"""
 <section class="jaotis" id="lehter" aria-labelledby="h-lehter">
   <header>
-    <h2 id="h-lehter">Olulisimatest uuendustest jõuab rakendamiseni {pr(v("rakendati"), 0)}%, aga <b>laiendatakse {pr(v("laiendati"), 0)}%</b></h2>
+    <h2 id="h-lehter">Rakendamiseni jõuab {pr(v("rakendati"), 0)}%, <b>laiendatakse {pr(v("laiendati"), 0)}%</b> ¦ arvestatud on olulisimad uuendused</h2>
     <p class="alam">Avalikud teenistujad ja asutuste juhid nimetasid oma olulisima uuenduse ja etapi, kuhu see jõudis. Küsitlus oli detsember 2025 kuni veebruar 2026.</p>
   </header>
   <div class="kaks">
@@ -759,7 +759,7 @@ def avalik_sektor(A, vaade, vaated=None):
     sec_etapid = f"""
 <section class="jaotis" id="etapid" aria-labelledby="h-etapid">
   <header>
-    <h2 id="h-etapid">Uuendused jäävad pidama hindamise ja otsuse ees: hindamiseni jõuab <b>{langus} protsendipunkti</b> väiksem osa projektidest kui prototüübini</h2>
+    <h2 id="h-etapid">Uuendused jäävad pidama <b>hindamise ja otsuse ees</b> ¦ hindamiseni jõuab {langus} protsendipunkti väiksem osa projektidest kui prototüübini</h2>
     <p class="alam">Uuendusprojektide osakaal, mis jõudis etapini (projekte {", ".join(_o(A, k)["lugeja"] for _, k in et)}).</p>
   </header>
   <div class="kaks">
@@ -1039,7 +1039,7 @@ def eesti_otsused(A, vaade, vaated, tana):
     ees = sorted((r for r in U if r.get("tahtaeg") and r["tahtaeg"] >= tana), key=lambda r: r["tahtaeg"])
     fail = "eesti-otsused.html"
     if not U:
-        alam_h1(vaade, fail, "Eesti riigi otsused, eelnõud ja tähtajad tulevad siia **igapäevasest uudistekogumisest**.")
+        alam_h1(vaade, fail, "Eesti riigi otsused, eelnõud ja tähtajad ¦ need tulevad siia **igapäevasest uudistekogumisest**.")
         return f"""
 <section class="jaotis" id="eesti-otsused" aria-labelledby="h-eesti-otsused">
   <header>
@@ -1050,10 +1050,10 @@ def eesti_otsused(A, vaade, vaated, tana):
     loend = lambda rr: f'<ul class="u-voog" data-piir-li="12">{"".join(_uudis(r) for r in rr)}</ul>'  # noqa: E731
     if ees:
         j = ees[0]
-        alam_h1(vaade, fail, f'Kogumine on leidnud {len(U)} Eesti riigi otsust, eelnõu või tähtaega; '
-                             f'**järgmine tähtaeg on {kp(j["tahtaeg"])}**.')
+        alam_h1(vaade, fail, f'Eesti riigi **järgmine tähtaeg on {kp(j["tahtaeg"])}** ¦ '
+                             f'kogumine on leidnud {len(U)} Eesti riigi otsust, eelnõu või tähtaega.')
     else:
-        alam_h1(vaade, fail, f'Kogumine on leidnud {len(U)} Eesti riigi otsust või eelnõu; **eesolevaid tähtaegu neis pole**.')
+        alam_h1(vaade, fail, f'Eesolevaid Eesti tähtaegu **praegu pole** ¦ kogumine on leidnud {len(U)} Eesti riigi otsust või eelnõu.')
     liigid = {}
     for r in U:
         liigid[r.get("riigi_liik") or "muu"] = liigid.get(r.get("riigi_liik") or "muu", 0) + 1
@@ -1062,7 +1062,7 @@ def eesti_otsused(A, vaade, vaated, tana):
     return f"""
 <section class="jaotis" id="eesti-otsused" aria-labelledby="h-eesti-otsused">
   <header>
-    <h2 id="h-eesti-otsused">Riigi otsused, eelnõud ja tähtajad: <b>{len(U)} kirjet</b> ({e(kokku)})</h2>
+    <h2 id="h-eesti-otsused">Riigi otsused, eelnõud ja tähtajad: <b>{len(U)} kirjet</b> ¦ {e(kokku)}</h2>
     <p class="alam">Kirjed tulevad igapäevasest uudistekogumisest (riigi asutuste lehed ja uudisteotsing), mitte käsitsi. Iga kirje juures on algallika link.</p>
     {vastavus("osaliselt", "Kogumine leiab avalikult teatatud otsuseid. Eelnõude infosüsteemi kogumine ei loe, nii et kõik eelnõud ei pruugi siia jõuda.")}
   </header>

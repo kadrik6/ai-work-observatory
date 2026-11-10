@@ -314,7 +314,7 @@ def avaleht(A, vaade, vaated):
         # Kadri 7.11.2026: järjestuse muutus ajas loendi asemel (kaart jääb vasakule)
         b_g, b_k, b_a, b_tbl, _ = bump
         k0 = b_k.get(b_a[0])
-        h2_el = (f"Ettevõtete tehisaru kasutuses tõusis Eesti ELis {b_a[0]}. aasta {k0}. kohalt <b>{koht}. kohale</b> ({y})"
+        h2_el = (f"Ettevõtete tehisaru kasutuses tõusis Eesti ELis <b>{koht}. kohale</b> ¦ {b_a[0]}. aastal oli Eesti {k0}. kohal, uusim järjestus on {y}. aasta kohta"
                  if k0 and k0 > koht else f"Ettevõtete tehisaru kasutuses on Eesti ELis <b>{koht}. kohal</b> ({y})")
         ps_el = (f"Kaart: tehisaru kasutavate ettevõtete osakaal {y}, %. Paremal: koht ELis igal aastal"
                  f"{' (' + ', '.join(str(a) for a in range(b_a[0], b_a[-1]) if a not in b_a) + ' ei mõõdetud)' if len(b_a) < b_a[-1] - b_a[0] + 1 else ''}."
@@ -342,7 +342,7 @@ def avaleht(A, vaade, vaated):
                    x_silt=lambda i: viimased[int(i)][0][5:] + "." + viimased[int(i)][0][:4], silt="Töötus viimased 12 kuud")
     sec_prog = f"""
 <section class="pn sp7" id="tootus" aria-labelledby="h-tootus">
-  <div class="pn-h"><h2 id="h-tootus">Eesti töötus oli {kuu_seesytlev(kuu)} <b>{pr(t_ee)}%</b>; {p_aasta}. aasta keskmiseks prognoositakse {pr(prog[p_aasta]['protsent'])}%, mis on teine mõõdik ega ole kuunumbriga otse võrreldav</h2></div>
+  <div class="pn-h"><h2 id="h-tootus">Eesti töötus oli {kuu_seesytlev(kuu)} <b>{pr(t_ee)}%</b>, aasta keskmiseks prognoositakse {pr(prog[p_aasta]['protsent'])}% ¦ prognoos on {p_aasta}. aasta keskmine. See on teine mõõdik ega ole kuunumbriga otse võrreldav</h2></div>
   <div class="g2"><div><p class="gt">Aasta keskmine, tegelik ja prognoos</p>{aastatulbad([(r["aasta"], r["protsent"], r["tegelik"]) for r in prog.values()], 10, 2)}</div>
   <div><p class="gt">Kuu kaupa, sesoonselt tasandatud, {k0[5:]}.{k0[:4]}–{kuu[5:]}.{kuu[:4]}</p>{kuujoon}</div></div>
   <p class="drift">Prognoos on aasta keskmine, kuunumber sesoonselt tasandatud. Tehisaru mõju prognoos eraldi ei arvesta.</p>
@@ -402,7 +402,7 @@ def avaleht(A, vaade, vaated):
         f'{sihiriba(v["vaartus"], float(s_["siht"]), 100, "%", fookus=f)}</div>' for s_, v, f in sihid)
     sec_sihid = f"""
 <section class="pn sp3" id="sihid" aria-labelledby="h-sihid">
-  <div class="pn-h"><h2 id="h-sihid">Eesti ettevõtete tehisaru kasutus on <b>{pr(eeb["vaartus"])}%</b>, siht on {pr(float(sihid[0][0]["siht"]), 0)}% aastaks {sihid[0][0]["aasta"]}; ELi kaks sihti on ELi kui terviku kohta</h2></div>
+  <div class="pn-h"><h2 id="h-sihid">Ettevõtete tehisaru kasutus on <b>{pr(eeb["vaartus"])}%</b>, siht on {pr(float(sihid[0][0]["siht"]), 0)}% aastaks {sihid[0][0]["aasta"]} ¦ ELi kaks sihti on ELi kui terviku kohta</h2></div>
   <div class="sihid">{s_read}</div>
   <p class="allikas">Iga siht oma allika, skaala ja aastaga, seepärast neid omavahel ei järjestata. Üksikasjad: {menuu("ettevotted", "Ettevõtted", "kasutus")}, {menuu("inimesed", "Inimesed", "digi")}.</p>
 </section>"""
