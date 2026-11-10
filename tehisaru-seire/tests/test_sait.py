@@ -315,7 +315,7 @@ def test_ulevaade_on_toolaud_kaardi_ja_jarjestusega_samal_real(A, sait):
     # Kadri 7.11.2026: loendi asemel järjestuse muutus aastate kaupa; kaart jääb samale reale
     assert 'class="el-kaart"' in rida and 'class="bump-k"' in rida
     koik = re.search(r'<div class="bump-v" data-n="27".*?</div>', rida, re.S).group(0)
-    nimed = set(re.findall(r'<g class="bs[^"]*" data-s="[^"]+" tabindex="0" role="button" aria-label="([^"]+)"', koik))
+    nimed = set(re.findall(r'<g class="bs[^"]*" data-s="[^"]+" tabindex="-?[01]" role="button" aria-label="([^"]+)"', koik))
     assert len(nimed) == len(A["el_riigid"])
     for n in nimed:
         assert f'data-n="{n}"' in rida.split('class="el-bump"')[0]  # sama nimi ka kaardil
@@ -700,7 +700,7 @@ def test_eli_jarjestus_vaikimisi_kumme_ja_kaardil_pole_tumeda_lauset(sait):
     osa = _jaotis(sait["index.html"], "el")
     assert re.search(r'<button type="button" data-n="10" aria-pressed="true">esikümme<', osa)
     assert '<div class="bump-v" data-n="10">' in osa and "kõik (27)" in osa
-    assert re.search(r'<g class="bs f" data-s="[^"]+" tabindex="0" role="button" aria-label="Eesti">', osa)
+    assert re.search(r'<g class="bs f" data-s="[^"]+" tabindex="-?[01]" role="button" aria-label="Eesti">', osa)
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
     assert ".jrj[data-piir]" in js and "'kõik ('" in js
     for f, h in sait.items():
@@ -1294,3 +1294,21 @@ def test_voo_silt_uus_ainult_14_paeva():
     assert voo_silt("2026-10-21", "uus number", tana) == '<span class="t">number</span>'
     assert voo_silt("2026-09-16", "uus number", tana) == '<span class="t">number</span>'
     assert voo_silt("2026-11-05", "väide", tana) == '<span class="t">väide</span>'
+
+
+def test_kasutusloogika_klaviatuur_puude_jagatud_link(sait):
+    """Kasutusloogika 11.11.2026, uus nurk (klaviatuur, puude, jagatud link, tühi olek)."""
+    # 1. Järjestusgraafikus on üks Tab-peatus SVG kohta, mitte iga joon (enne 76 avalehel, 148 Töö lehel).
+    for leht in ("index.html", "too.html", "ettevotted.html"):
+        for svg in re.findall(r'<svg class="bump.*?</svg>', sait[leht], re.S):
+            assert svg.count('class="bs') > 1
+            assert svg.count('tabindex="0"') == 1, leht
+    js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
+    assert "ArrowDown" in js and "koik[j].focus()" in js  # nooled liiguvad joonte vahel
+    # 2. Kaart reageerib ka koputusele, mitte ainult hiirele.
+    kaart = js[js.index("document.querySelectorAll('.kaart')"):js.index("document.querySelectorAll('.el-rida')")]
+    assert "addEventListener('click'" in kaart
+    # 3. Filtri link saab jaotise ankru, et saadetud link avaneks filtri juures.
+    assert "function jaotis(el)" in js and "sea(k, v, el)" in js.replace("function sea(k, v, el)", "sea(k, v, el)")
+    # 4. Tühi otsing ütleb, mida teha.
+    assert "Ei leitud ühtegi" in js

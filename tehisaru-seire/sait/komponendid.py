@@ -504,13 +504,15 @@ def jarjestuse_muutus(seeriad, aastad, fookus, teine=None, piirid=(5, 10), silt=
         o.append(f'<line class="bump-p" x1="{vasak - 8}" x2="{W - parem + 8}" y1="{all_y - 12}" y2="{all_y - 12}"/>')
         o.append(f'<text class="bump-all" x="{vasak - 14}" y="{all_y + 4}" text-anchor="end">{_allpool(N) if on_lai else ""}</text>')
         jrk = sorted(seeriad, key=lambda n: (n == fookus, n == teine))  # esiletõstetud joonistatakse viimasena (peal)
+        esimene = True  # üks Tab-peatus SVG kohta (roving tabindex, kasutusloogika 11.11.2026); nooled liiguvad sait.js-is
         for n in jrk:
             s = seeriad[n]
             kl = "bs" + (" f" if n == fookus else "") + (" t" if n == teine else "")
-            g = [f'<g class="{kl}" data-s="{idd[n]}" tabindex="0" role="button" aria-label="{e(n)}">']
+            g = [f'<g class="{kl}" data-s="{idd[n]}" tabindex="{0 if esimene else -1}" role="button" aria-label="{e(n)}">']
             punktid = [(i, s[a]) for i, a in enumerate(aastad_v) if a in s]
             if not punktid or not any(k <= N for _, k in punktid):
                 continue
+            esimene = False
             for (i0, k0), (i1, k1) in zip(punktid, punktid[1:]):
                 if i1 != i0 + 1:
                     continue  # aasta puudub: joon katkeb

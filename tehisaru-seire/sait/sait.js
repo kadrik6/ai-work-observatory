@@ -81,6 +81,11 @@
         if (p) naita(p, ev.clientX, ev.clientY); else peida();
       });
       svg.addEventListener('pointerleave', peida);
+      // Puutel pointermove ei tule (kasutusloogika 11.11.2026: koputus kaardil ei näidanud midagi): koputus = sama mis hõljumine.
+      svg.addEventListener('click', function (ev) {
+        var p = ev.target.closest && ev.target.closest('path[data-n]');
+        if (p) naita(p, ev.clientX, ev.clientY); else peida();
+      });
     });
     // Kaart ja järjestus: üks riik esile mõlemas (data-n on sama nimi).
     document.querySelectorAll('.el-rida').forEach(function (rida) {
@@ -95,6 +100,10 @@
           vali(p ? p.getAttribute('data-n') : null);
         });
         svg.addEventListener('pointerleave', function () { vali(null); });
+        svg.addEventListener('click', function (ev) {
+          var p = ev.target.closest && ev.target.closest('path[data-n]');
+          vali(p ? p.getAttribute('data-n') : null);
+        });
       }
       read.forEach(function (r) {
         r.addEventListener('pointerenter', function () {
@@ -180,9 +189,24 @@
           if (on && g.parentNode) g.parentNode.appendChild(g);  // esiletõstetud joon teiste peale
         });
       }
+      // Kasutusloogika 11.11.2026: varem oli iga joon eraldi Tab-peatus (avalehel 76, Töö lehel 148), klaviatuuriga
+      // lugeja pidi kõik läbi käima. Nüüd on igas vaates üks peatus ja nooled liiguvad joonte vahel (roving tabindex).
+      k.querySelectorAll('svg.bump').forEach(function (sv) {  // igas SVG-s (lai ja kitsas) oma peatus
+        sv.querySelectorAll('.bs').forEach(function (g, i) { g.setAttribute('tabindex', i ? '-1' : '0'); });
+      });
       k.querySelectorAll('.bs').forEach(function (g) {
         g.addEventListener('click', function () { vali(g.getAttribute('data-s')); });
-        g.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); vali(g.getAttribute('data-s')); } });
+        g.addEventListener('keydown', function (ev) {
+          if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); vali(g.getAttribute('data-s')); g.focus(); return; }
+          var samm = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[ev.key];
+          if (!samm) return;
+          ev.preventDefault();
+          var koik = Array.prototype.slice.call(g.parentNode.querySelectorAll('.bs')).sort(function (a, b) {
+            return a.getBBox().y - b.getBBox().y; });
+          var j = (koik.indexOf(g) + samm + koik.length) % koik.length;
+          koik.forEach(function (x) { x.setAttribute('tabindex', x === koik[j] ? '0' : '-1'); });
+          koik[j].focus();
+        });
       });
     });
     // Uudiste teemafilter
@@ -241,7 +265,8 @@
         if (k) k.hidden = true;
         var n = 0;
         read.forEach(function (r) { var ok = sobib(r, q, ruhm, kus); r.hidden = !ok; if (ok) n++; });
-        loe.textContent = n + ' ' + uhik + (n < read.length ? ' ' + read.length + '-st' : '');
+        loe.textContent = n ? n + ' ' + uhik + (n < read.length ? ' ' + read.length + '-st' : '')
+          : 'Ei leitud ühtegi. Proovi lühemat sõna või vali rühmaks „kõik“.';  // tühi olek (kasutusloogika 11.11.2026)
       }
       sisend.addEventListener('input', filtreeri);
       if (valik) valik.addEventListener('change', function () { kus = valik.value; filtreeri(); });
@@ -362,10 +387,14 @@
 // et filtreeritud vaadet saaks saata ja värskendamisel valik ei kaoks. replaceState: tagasi-nupp viib eelmisele lehele,
 // mitte iga filtriklõpsu juurde tagasi.
 (function () {
-  function sea(k, v) {
+  // Kasutusloogika 11.11.2026 (uus nurk: lingiga saabuja): filtri valik lisab aadressi ka jaotise ankru (#loend jne),
+  // et saadetud link avaneks filtri juures, mitte lehe alguses 1–3 ekraani kõrgemal.
+  function jaotis(el) { var j = el && el.closest('section[id], .pn[id], .jaotis[id]'); return j ? j.id : ''; }
+  function sea(k, v, el) {
     try {
       var u = new URL(location.href);
       if (v) u.searchParams.set(k, v); else u.searchParams.delete(k);
+      if (v && !u.hash && jaotis(el)) u.hash = '#' + jaotis(el);
       history.replaceState(history.state, '', u.pathname + u.search + u.hash);
     } catch (e) { /* nt sandbox ei luba: valik töötab ikka, ainult aadressi ei jää */ }
   }
@@ -379,7 +408,7 @@
     ];
     paarid.forEach(function (p) {
       var nupud = document.querySelectorAll(p[1]);
-      nupud.forEach(function (b) { b.addEventListener('click', function () { sea(p[0], b.getAttribute(p[2])); }); });
+      nupud.forEach(function (b) { b.addEventListener('click', function () { sea(p[0], b.getAttribute(p[2]), b); }); });
       var v = q.get(p[0]);
       if (v) nupud.forEach(function (b) {
         if (b.getAttribute(p[2]) !== v) return;
@@ -389,7 +418,7 @@
       });
     });
     document.querySelectorAll('.h-otsing input').forEach(function (i) {
-      i.addEventListener('input', function () { sea('otsi', i.value.trim()); });
+      i.addEventListener('input', function () { sea('otsi', i.value.trim(), i); });
       var v = q.get('otsi');
       if (v) {
         i.value = v; i.dispatchEvent(new Event('input'));
@@ -398,6 +427,16 @@
         if (p && p.hidden) { var n = document.querySelector('[role="tab"][aria-controls="' + p.id + '"]'); if (n) n.click(); }
       }
     });
+    // Vana jagatud link ilma ankruta (?otsi=… või ?ruhm=…): keri filtri juurde ja lisa ankur aadressi.
+    if (!location.hash) {
+      var el = null;
+      if (q.get('otsi')) el = document.querySelector('.h-otsing input');
+      else paarid.some(function (p) { var v = q.get(p[0]); if (!v) return false;
+        el = Array.prototype.slice.call(document.querySelectorAll(p[1])).filter(function (b) { return b.getAttribute(p[2]) === v; })[0] || null; return !!el; });
+      var j = jaotis(el);
+      if (j) { try { history.replaceState(history.state, '', location.pathname + location.search + '#' + j); } catch (e) { /* sandbox */ }
+        document.getElementById(j).scrollIntoView(); }
+    }
   });
 })();
 
