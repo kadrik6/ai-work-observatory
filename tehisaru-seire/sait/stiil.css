@@ -1194,6 +1194,7 @@ th, td { padding: 6px 10px; }
 .u-voog .ek-kes { color: var(--ink-2); font-size: 13.5px; }
 .u-voog .ek-kes a.u-ur { font-weight: 400; color: var(--ink-2); }
 .u-voog .ek-m { margin: 4px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-2); }
+.u-voog .ek-algus { color: var(--ink-2); font-size: 13.5px; white-space: nowrap; }
 .u-voog .ek-m li { display: list-item; padding: 1px 0; border: 0; font-size: 13.5px; }
 /* Ettekannete rühmad (Kadri 11.11.2026) */
 .ek-valik { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
