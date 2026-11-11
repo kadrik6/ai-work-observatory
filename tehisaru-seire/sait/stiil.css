@@ -1484,3 +1484,6 @@ nav.alam { display: flex; align-items: baseline; gap: 4px 10px; margin: 6px 0 2p
 .ek-f button[aria-pressed="true"] .arv { color: inherit; }
 .ek-f + nav.ek-valik, .ek-f + .ek-f { margin-top: 0; }
 .ek-f:last-of-type { margin-bottom: 14px; }
+
+/* Tööportaalide valdkonna filter (Kadri 11.11.2026) */
+.tp-vk { align-items: center; margin: 4px 0 14px; }

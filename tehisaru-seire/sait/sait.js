@@ -243,6 +243,17 @@
         });
       });
     });
+    // Tööportaalide valdkonna filter (Kadri 11.11.2026): valitud valdkonna linnad ja tööandjad
+    document.querySelectorAll('.tp-vk').forEach(function (f) {
+      var paneel = f.parentNode;
+      f.querySelectorAll('button[data-vk]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var v = b.getAttribute('data-vk');
+          f.querySelectorAll('button[data-vk]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+          paneel.querySelectorAll('[data-vk-sisu]').forEach(function (d) { d.hidden = d.getAttribute('data-vk-sisu') !== v; });
+        });
+      });
+    });
     // Ettekannete filter liigi ja allika järgi (Kadri 11.11.2026). Valikud kehtivad koos; rühm, kuhu ühtki rida ei jää,
     // peidetakse ja rühmade arvud näitavad valikule vastavat arvu.
     document.querySelectorAll('#ettekanded').forEach(function (pn) {
@@ -460,6 +471,7 @@
     var paarid = [
       ['teema', '.u-f[aria-label="Vali teema"] button[data-f]', 'data-f'],
       ['ruhm', 'button[data-r]', 'data-r'],
+      ['valdkond', '.tp-vk button[data-vk]', 'data-vk'],
       ['liik', '.ek-f[data-k="liik"] button[data-v]', 'data-v'],
       ['allikas', '.ek-f[data-k="allikas"] button[data-v]', 'data-v'],
       ['sakk', '.p-tabs [role="tab"]', 'aria-controls'],
