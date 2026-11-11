@@ -130,14 +130,41 @@
     {
       "id": "avalik-sektor",
       "fail": "avalik-sektor.html",
-      "menuu": "Avalik sektor",
+      "menuu": "Riik",
       "koht": "menüü",
       "vanem": "avaleht",
       "kusimused": "K8",
       "olek": "valmis",
-      "kusimus": "Kuidas avalik sektor uuendusi ja tehisaru kasutab, avalike allikate järgi?",
+      "kusimus": "Kuidas riik tehisaru kasutab, mida ta ostab ja millised reeglid kehtivad?",
       "h1": "Iga neljas avaliku sektori uuendaja kasutas **generatiivset tehisaru** ¦ uuendustest jõuab laiendamiseni vaid kolmandik.",
-      "osad": "OECD avalik raport (doi 10.1787/c2c09a06-en): rakendamine ja laiendamine; tehisaru innovaatorite seas (48/170); kolm asutuste rühma; 8 soovitust. Hanked on oma menüüpunkt."
+      "osad": "OECD avalik raport (doi 10.1787/c2c09a06-en): rakendamine ja laiendamine; tehisaru innovaatorite seas (48/170); kolm asutuste rühma; 8 soovitust. Hanked on oma menüüpunkt.",
+      "alamlehed": [
+        {
+          "vaade": "avalik-sektor",
+          "fail": "avalik-sektor.html",
+          "nimi": "Avalik sektor"
+        },
+        {
+          "vaade": "hanked",
+          "fail": "hanked.html",
+          "nimi": "Hanked"
+        },
+        {
+          "vaade": "hanked",
+          "fail": "hanked-naited.html",
+          "nimi": "Hangete näited"
+        },
+        {
+          "vaade": "reeglid",
+          "fail": "tehisaru-maarus.html",
+          "nimi": "Tehisaru määrus"
+        },
+        {
+          "vaade": "reeglid",
+          "fail": "eesti-otsused.html",
+          "nimi": "Eesti otsused"
+        }
+      ]
     },
     {
       "id": "hanked",
@@ -149,7 +176,25 @@
       "olek": "valmis",
       "kusimus": "Mida riik tehisaru ja andmete kohta hangib ja kust leida häid näiteid?",
       "h1": "Tehisaru- ja andmehanked on **alla 1% riigihangetest** ¦ kvaliteeti hinnatakse neis sagedamini kui teistes IT-hangetes.",
-      "osad": "Aastad; innovatsioonimärk ja 2% siht; kuidas hangitakse; hankijad; litsentsid; otsitav loend headest näidetest; klassifikaatori täpsus"
+      "osad": "Aastad; innovatsioonimärk ja 2% siht; kuidas hangitakse; hankijad; litsentsid; otsitav loend headest näidetest; klassifikaatori täpsus",
+      "teema": "avalik-sektor",
+      "alamlehed": [
+        {
+          "fail": "hanked.html",
+          "nimi": "Hanked",
+          "jaotised": [
+            "andmed",
+            "lopp"
+          ]
+        },
+        {
+          "fail": "hanked-naited.html",
+          "nimi": "Hangete näited",
+          "jaotised": [
+            "naited"
+          ]
+        }
+      ]
     },
     {
       "id": "reeglid",
@@ -177,7 +222,8 @@
             "eesti"
           ]
         }
-      ]
+      ],
+      "teema": "avalik-sektor"
     },
     {
       "id": "uudised",

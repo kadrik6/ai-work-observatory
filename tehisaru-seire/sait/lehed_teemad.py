@@ -950,8 +950,7 @@ def avalik_sektor(A, vaade, vaated=None):
         (OECD_NIMI, OECD_URL, "2026-11-03", "CC BY 4.0; küsitlus 12.2025–02.2026"),
     ])
     return (pea(A, vaade, lead, [("andmed", "Andmed"), ("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")], ree, aside=aside)
-            + sec_andmed + tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)
-            + seotud(vaated, [("hanked", "Hanked: mida riik tehisaru ja andmete kohta ostab"), ("reeglid", "Tehisaru määrus: tähtajad")]))
+            + sec_andmed + tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad))  # „Seotud“ rida jäi ära: Riigi alamlehtede rida viib samadele lehtedele (Kadri 11.11.2026, D)
 
 
 # ---------------------------------------------------------------- Reeglid ja sihid
