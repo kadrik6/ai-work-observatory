@@ -1488,3 +1488,5 @@ nav.alam { display: flex; align-items: baseline; gap: 4px 10px; margin: 6px 0 2p
 
 /* Tööportaalide valdkonna filter (Kadri 11.11.2026) */
 .tp-vk { align-items: center; margin: 4px 0 14px; }
+.ek-f button:disabled { opacity: .4; cursor: default; }
+.ek-f button:disabled:hover { color: var(--ink-2); }

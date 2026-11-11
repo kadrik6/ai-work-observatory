@@ -894,7 +894,8 @@ def toopakkumised(A):
         v = p.get("ametivaldkond")
         return [r for r in v if r["nimi"] not in LISASILDID] if isinstance(v, list) else []
     suurim = [f'{valdkonnad(p)[0]["nimi"].lower()} ({e(p["portaal"])})' for p in P if valdkonnad(p)]
-    h2 = (f'{kp(kp_)} oli {loendid} <b>tööpakkumist</b>; suurim valdkond oli ' + " ja ".join(suurim))
+    h2 = (f'{kp(kp_)} oli {loendid} <b>tööpakkumist</b>; suurim valdkond oli '
+          + (", ".join(suurim[:-1]) + " ja " + suurim[-1] if len(suurim) > 1 else "".join(suurim)))
 
     def ribad(read, n=12):
         read = read[:n]
@@ -911,19 +912,24 @@ def toopakkumised(A):
         kaug = [r for r in p.get("asukoht_maakond") or [] if r["nimi"] in KAUGTOO] if isinstance(p.get("asukoht_maakond"), list) else []
         linn = p.get("asukoht_linn") if isinstance(p.get("asukoht_linn"), list) else []
         top = p.get("top_tooandjad") if isinstance(p.get("top_tooandjad"), list) else None
+        # Töötukassa jaotus tuleb CV.ee kaudu vahendatud kuulutustest (tööturu-uudiste kogumine 11.11.2026): link sinna
+        alus = p.get("jaotuse_allikas")
+        kat_l = a(p["ametivaldkond_url"], "portaali kategooriad") if p.get("ametivaldkond_url") else (a(alus.split(" ")[0], "CV.ee kaudu") if alus else "")
+        kus_l = a(p["asukoht_url"], "portaali asukohad") if p.get("asukoht_url") else (a(alus.split(" ")[0], "CV.ee kaudu") if alus else "")
+
         def kolm(fookus=0, vk=None):
             """Kolm veergu. vk = valitud valdkond (Kadri 11.11.2026: linnad ja tööandjad valdkonna järgi)."""
-            linn_v = vk["linnad"] if vk else (linn or mk)
-            top_v = vk["tooandjad"] if vk else top
+            linn_v = vk.get("linnad") if vk else (linn or mk)
+            top_v = vk.get("tooandjad") if vk else top
             kelle = f', valdkonnas {e(vk["nimi"].lower())}' if vk else ""
-            veerud = [f'<div><p class="gt">Mis ametivaldkonnas</p><p class="ps">{a(p["ametivaldkond_url"], "portaali kategooriad")}, 12 suuremat</p>{ribad(valdkonnad(p)) if not vk else lihtribad_v(valdkonnad(p), vk["nimi"])}</div>']
+            veerud = [f'<div><p class="gt">Mis ametivaldkonnas</p><p class="ps">{kat_l}, 12 suuremat</p>{ribad(valdkonnad(p)) if not vk else lihtribad_v(valdkonnad(p), vk["nimi"])}</div>']
             if linn_v:
                 kt = ("; " + ", ".join(f'{e(r["nimi"]).lower()} {_arvt(r["arv"])}' for r in kaug)) if kaug and not vk else ""
-                veerud.append(f'<div><p class="gt">Kus: linnad{kelle}</p><p class="ps">{a(p["asukoht_url"], "portaali asukohad")}{kt}</p>{ribad(linn_v, 10)}</div>')
+                veerud.append(f'<div><p class="gt">Kus: linnad{kelle}</p><p class="ps">{kus_l}{kt}</p>{ribad(linn_v, 10)}</div>')
             if top_v:
                 veerud.append(f'<div><p class="gt">Kes: enim kuulutusi avaldanud tööandjad{kelle}</p><p class="ps">{a(p["top_tooandjad_url"], "portaali tööandjad")}, 12 suuremat</p>{ribad(top_v)}</div>')
             else:
-                veerud.append('<div><p class="gt">Kes: tööandjad</p><p class="ps">Tööandjate arve ei õnnestunud lugeda.</p></div>')
+                veerud.append(f'<div><p class="gt">Kes: tööandjad</p><p class="ps">{e(p.get("top_tooandjad_pohjus") or "Tööandjate arve ei õnnestunud lugeda.")}</p></div>')
             return f'<div class="tp-kolm">{"".join(veerud)}</div>'
 
         def lihtribad_v(read, nimi):
@@ -944,11 +950,17 @@ def toopakkumised(A):
                     f'<button type="button" data-vk="" aria-pressed="true">kõik</button>'
                     + "".join(f'<button type="button" data-vk="{e(v["nimi"])}" aria-pressed="false">{e(v["nimi"])}</button>' for v in VK)
                     + '</div>')
+            vk_kp = f' ({kp(p["valdkonniti_kuupaev"])})' if p.get("valdkonniti_kuupaev") else ""
             sisu_ = (filt + f'<div data-vk-sisu="">{kolm()}</div>'
                      + "".join(f'<div data-vk-sisu="{e(v["nimi"])}" hidden>{kolm(vk=v)}</div>' for v in VK)
-                     + '<p class="ps">Valdkonna linnad ja tööandjad on loetud kuulutustest: üks kuulutus võib olla mitmes valdkonnas.</p>')
+                     + f'<p class="ps">Valdkonna linnad ja tööandjad on loetud kuulutustest{vk_kp}: üks kuulutus võib olla mitmes valdkonnas.</p>')
         else:
             sisu_ = kolm()
+        if p.get("jaotuse_kuulutusi"):
+            # Kogu arv ja jaotus mõõdavad eri asja; lugeja peab seda nägema enne graafikut
+            sisu_ = (f'<p class="ps tp-alus">Jaotused on {_arvt(p["jaotuse_kuulutusi"])} kuulutusest, mida {e(p["portaal"])} vahendas CV.ee kaudu'
+                     f'{" (" + kp(p["valdkonniti_kuupaev"]) + ")" if p.get("valdkonniti_kuupaev") else ""}; need on ka CV.ee arvudes. '
+                     f'{e(p["portaal"])} enda lehel oli {_arvt(p["kuulutusi_kokku"])} kuulutust. Need arvud mõõdavad eri asja ega pea klappima.</p>' + sisu_)
         mk_t = ""
         if mk:
             mk_t = ('<details><summary>Maakonnad</summary><div>' + "".join(f'<span class="tp-m">{e(r["nimi"])} <b>{_arvt(r["arv"])}</b></span>' for r in mk) + '</div></details>')

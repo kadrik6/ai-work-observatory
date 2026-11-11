@@ -301,6 +301,19 @@
           if (v) { v.hidden = n === 0; v.querySelector('.arv').textContent = n; }
         });
         var t = pn.querySelector('.ek-tyhi'); if (t) t.hidden = kokku > 0;
+        // Kadri 11.11.2026: kombinatsiooni, millega tulemusi pole, ei saa valida. Nupu arv näitab, mitu jääb
+        // teise filtri praeguse valikuga; null arvuga nupp on keelatud.
+        pn.querySelectorAll('.ek-f').forEach(function (f) {
+          var k = f.getAttribute('data-k'), teine = k === 'liik' ? 'allikas' : 'liik';
+          f.querySelectorAll('button[data-v]').forEach(function (b) {
+            var v = b.getAttribute('data-v'), n = 0;
+            ridu.forEach(function (l) {
+              if ((!valik[teine] || l.getAttribute('data-' + teine) === valik[teine]) && (!v || l.getAttribute('data-' + k) === v)) n++;
+            });
+            var a = b.querySelector('.arv'); if (a) a.textContent = n;
+            b.disabled = !!v && n === 0;
+          });
+        });
       }
       pn.querySelectorAll('.ek-f').forEach(function (f) {
         var k = f.getAttribute('data-k');
