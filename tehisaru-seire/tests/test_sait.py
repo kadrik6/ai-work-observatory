@@ -322,6 +322,18 @@ def test_ulevaade_on_toolaud_kaardi_ja_jarjestusega_samal_real(A, sait):
         assert f'data-n="{n}"' in rida.split('class="el-bump"')[0]  # sama nimi ka kaardil
 
 
+def test_teemalehel_on_kaart_ja_jarjestus_korvuti(sait):
+    # Kadri 11.11.2026: „kaart ja selle graafik peaks alati olema täpselt kõrvuti“. Mõlemad joonised on samas
+    # .kaart-paar reas ja muu sisu (vastavus, numbrid, usaldus) tuleb nende järel.
+    for leht in ("ettevotted.html", "inimesed.html"):
+        j = sait[leht].split('id="kasutus"')[1].split("</section>")[0]
+        paar = j.split('class="ruut3 kaart-paar"')[1].split('class="kulg-all"')[0]
+        assert paar.count("<figure") == 2, leht
+        assert 'id="g-kasutus"' in paar and 'id="g-jrj"' in paar, leht
+        assert paar.index('id="g-kasutus"') < paar.index('id="g-jrj"'), leht
+        assert paar.count('class="kp-sisu"') == 2, leht
+
+
 def test_ulevaate_tootuse_kuunumber_tuleb_failist(sait):
     kuu, v = lehed_ulevaade.tootus()["EE"][-1]
     assert f"töötus oli {lehed_ulevaade.kuu_seesytlev(kuu)} {komponendid.pr(v)}%" in tekst(sait["index.html"])

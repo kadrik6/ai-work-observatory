@@ -1492,3 +1492,15 @@ nav.alam { display: flex; align-items: baseline; gap: 4px 10px; margin: 6px 0 2p
 .tp-vk { align-items: center; margin: 4px 0 14px; }
 .ek-f button:disabled { opacity: .4; cursor: default; }
 .ek-f button:disabled:hover { color: var(--ink-2); }
+
+/* Kaart ja selle järjestuse graafik alati täpselt kõrvuti (Kadri 11.11.2026). Subgrid joondab pealdised ja graafikud
+   samale reale; kitsal ekraanil lähevad need üksteise alla. Muu (vastavus, numbrid, usaldus) on nende all. */
+.kaart-paar { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); grid-template-rows: auto auto; row-gap: 12px; }
+.kaart-paar > figure { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 12px; margin: 0; min-width: 0; }
+.kaart-paar > figure > figcaption { align-self: start; }
+.kp-sisu { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.kulg-all { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; margin-top: var(--gap-block, 24px); }
+@media (max-width: 1180px) { .kaart-paar { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); } }
+@media (max-width: 900px) { .kaart-paar { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .kaart-paar > figure { grid-row: auto; grid-template-rows: none; } .kaart-paar > figure:first-child { max-width: 360px; }
+  .kulg-all { grid-template-columns: minmax(0, 1fr); } }
