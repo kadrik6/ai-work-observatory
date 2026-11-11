@@ -210,6 +210,11 @@ ETTEKANDE_RUHM = {
 }
 
 
+# Ettekande liik (Kadri 11.11.2026: „ettekande meetod: podcastid, seminarid jms“). Liik tuleb allikast, sest sama sari
+# on alati sama vormiga. Järjekord on filtri järjekord, kui arvud on võrdsed.
+EK_LIIK = {"podcast": "podcast", "seminar": "seminar", "konverents": "konverents", "veebiseminar": "veebiseminar"}
+
+
 def _kp_osa(iso):
     """Kuupäev või ainult aasta (kui seminari täpne päev pole avalik)."""
     return kp(iso) if len(iso) == 10 else iso
@@ -226,16 +231,18 @@ def _ettekanne(r, allikad):
     teemad = "".join(f'<span class="u-t">{e(ETTEKANDE_TEEMA[t])}</span>' for t in r.get("teemad", []) if t in ETTEKANDE_TEEMA)
     uritus = (f'<a class="u-ur" href="{e(r["uritus_url"])}">{e(r["uritus"])}</a>' if r.get("uritus_url") else e(r.get("uritus", "")))
     mottes = "".join(f"<li>{e(m)}</li>" for m in r.get("mottes", []))
-    # Podcast (Kadri 11.11.2026): liik tuleb allikast; kui link viib saate lehele, ütleb „algus“, kust lõik algab
-    liik = "podcast" if allikad[r["allikas"]].get("liik") == "podcast" else "ettekanne"
+    # Liik tuleb allikast (EK_LIIK); kui link viib saate lehele, ütleb „algus“, kust lõik algab
+    liik = allikad[r["allikas"]].get("liik")
+    if liik not in EK_LIIK:
+        raise AndmeViga(f"ettekanded.json: allika {r['allikas']} liik {liik!r} pole lubatud ({', '.join(EK_LIIK)})")
     algus = f' <span class="ek-algus">lõik algab {e(r["algus"])}</span>' if r.get("algus") else ""
-    return (f'<li data-liik="{liik}">'
+    return (f'<li data-liik="{liik}" data-allikas="{e(r["allikas"])}">'
             f'<span class="d">{_kp_osa(r["kuupaev"])}</span>'
             f'<div><a href="{e(r["video"])}">{e(r["pealkiri"])}</a>{algus}'
             f'<p class="ek-kes"><b>{e(r["esineja"])}</b>{", " + e(r["amet"]) if r.get("amet") else ""} · {uritus}</p>'
             f'<p class="u-k">{e(r["kokkuvote"])}</p>'
             f'{f"<ul class=ek-m>{mottes}</ul>" if mottes else ""}'
-            f'<p class="u-m"><span class="u-l arv">{liik}</span>{teemad}'
+            f'<p class="u-m"><span class="u-l arv">{EK_LIIK[liik]}</span>{teemad}'
             f'<span class="u-a" title="{e(r.get("kontroll", ""))}">{e(allikad[r["allikas"]]["nimi"])}</span></p></div></li>')
 
 
@@ -251,12 +258,26 @@ def ettekanded(A, vaade):
             if n else "Usaldatud seminaride ja konverentside ettekanded ¦ **kokkuvõtted ootavad kinnitust**")
     ruhmad = {k: [r for r in read if (r.get("ruhm") if r.get("ruhm") in ETTEKANDE_RUHM else "muu") == k] for k in ETTEKANDE_RUHM}
     ruhmad = {k: v for k, v in ruhmad.items() if v}
-    valik = "".join(f'<a href="#ek-{k}">{e(ETTEKANDE_RUHM[k][0])} <span class="arv">{len(v)}</span></a>' for k, v in ruhmad.items())
+    valik = "".join(f'<a href="#ek-{k}" data-ruhm="{k}">{e(ETTEKANDE_RUHM[k][0])} <span class="arv">{len(v)}</span></a>' for k, v in ruhmad.items())
     plokid = "".join(
         f'<div class="ek-r" id="ek-{k}"><h3>{e(ETTEKANDE_RUHM[k][0])} <span class="arv">{len(v)}</span></h3>'
         f'<p class="ps">{e(ETTEKANDE_RUHM[k][1])}</p>'
         f'<ul class="u-voog ek">{"".join(_ettekanne(r, allikad) for r in v)}</ul></div>' for k, v in ruhmad.items())
-    sisu = (f'<nav class="ek-valik" aria-label="Valdkonnad">{valik}</nav>{plokid}' if read
+    # Filter liigi ja allika järgi (Kadri 11.11.2026). Rühmad jäävad; filter peidab read ja tühjaks jäänud rühmad (sait.js).
+    from collections import Counter
+    liigid = Counter(allikad[r["allikas"]].get("liik") for r in read)
+    sarjad = Counter(r["allikas"] for r in read)
+
+    def _rida(k, silt, loend):
+        nupud = "".join(f'<button type="button" data-v="{e(v)}" aria-pressed="false">{e(nimi)} <span class="arv">{n}</span></button>'
+                        for v, nimi, n in loend)
+        return (f'<div class="u-f ek-f" data-k="{k}" role="group" aria-label="Vali {silt.lower()}"><span class="ek-f-silt">{silt}</span>'
+                f'<button type="button" data-v="" aria-pressed="true">kõik <span class="arv">{len(read)}</span></button>{nupud}</div>')
+    jrk = list(EK_LIIK)
+    filter_ = (_rida("liik", "Liik", [(v, EK_LIIK[v], n) for v, n in sorted(liigid.items(), key=lambda x: (-x[1], jrk.index(x[0])))])
+               + _rida("allikas", "Allikas", [(v, allikad[v]["nimi"], n) for v, n in sorted(sarjad.items(), key=lambda x: (-x[1], allikad[x[0]]["nimi"]))]))
+    sisu = (f'{filter_}<nav class="ek-valik" aria-label="Valdkonnad">{valik}</nav>{plokid}'
+            f'<p class="ps ek-tyhi" hidden>Selle valikuga ettekandeid pole.</p>' if read
             else f'<p class="ps">Ettekandeid pole veel kinnitatud{f" ({ootel} ootab)" if ootel else ""}.</p>')
     al = "".join(f'<li><a href="{e(a["url"])}">{e(a["nimi"])}</a>{" · " + e(a["miks"]) if a.get("miks") else ""}</li>' for a in allikad.values())
     return f"""

@@ -1476,3 +1476,11 @@ nav.alam { display: flex; align-items: baseline; gap: 4px 10px; margin: 6px 0 2p
   .alamlehed li { flex: none; }
   .alamlehed a { min-height: 44px; padding: 0; }
 }
+
+/* Ettekannete filter liigi ja allika järgi (Kadri 11.11.2026): kaks rida, silt ees, arv nupu sees */
+.ek-f { align-items: center; margin: 0 0 6px; }
+.ek-f-silt { font: 600 13px var(--font-sans); color: var(--ink-3); min-width: 4.5em; }
+.ek-f .arv { color: var(--ink-3); font-weight: 400; }
+.ek-f button[aria-pressed="true"] .arv { color: inherit; }
+.ek-f + nav.ek-valik, .ek-f + .ek-f { margin-top: 0; }
+.ek-f:last-of-type { margin-bottom: 14px; }

@@ -1017,7 +1017,7 @@ def test_ettekanded_alamleht(A):
     from andmekiht import AndmeViga
     vaade = copy.deepcopy(next(v for v in json.loads((ehita.SIIN / "vaated.json").read_text(encoding="utf-8"))["vaated"] if v["id"] == "uudised"))
     assert [s["fail"] for s in vaade["alamlehed"]] == ["uudised.html", "ettekanded.html"]
-    E = {"allikad": [{"id": "ut-dss", "nimi": "TÜ seminar", "url": "https://cs.ut.ee/"}],
+    E = {"allikad": [{"id": "ut-dss", "nimi": "TÜ seminar", "url": "https://cs.ut.ee/", "liik": "seminar"}],
          "ettekanded": [{"id": "x", "esineja": "Mari Maasikas", "amet": "juht", "pealkiri": "Pealkiri", "allikas": "ut-dss",
                          "uritus": "Seminar", "kuupaev": "2025", "video": "https://youtu.be/abc?t=1", "kokkuvote": "Lühike.",
                          "mottes": ["üks", "kaks", "kolm"], "teemad": ["too"]},
@@ -1410,7 +1410,7 @@ def test_podcastid_ettekannete_lehel(sait):
     """Kadri 11.11.2026: Lex Fridmani ja Mindscape'i podcastid Ettekannete lehel, uus rühm „Taust“."""
     h = sait["ettekanded.html"]
     assert 'id="ek-taust"' in h and "Taust: mõistus ja informatsioon" in h
-    assert h.count('data-liik="podcast"') == 18 and h.count('data-liik="ettekanne"') == 10
+    assert h.count('data-liik="podcast"') == 18 and h.count('data-liik="seminar"') + h.count('data-liik="veebiseminar"') == 10
     assert '<span class="u-l arv">podcast</span>' in h and "lõik algab 0:15:28" in h
     assert "Lex Fridman Podcast" in h and "Mindscape (Sean Carroll)" in h
     assert "lex-452" not in h and "Dario Amodei" not in h  # aegunud osa jäeti välja (Kadri 11.11)
@@ -1434,3 +1434,27 @@ def test_koondamised_ei_ole_esikohal(sait):
         nupud = re.findall(r'<button type="button" data-f="([a-z_]*)"', osa[:osa.index("</div>")])
         assert nupud[0] == "" and nupud[-1] == "koondamine", (rid, nupud)
     assert "riigi otsus, statistika, üle 50 koondatu" in u
+
+
+def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
+    """Kadri 11.11.2026: „lisa allika põhine filtreerimine ettekannete juurde + ettekande meetod (podcastid, seminarid jms)“."""
+    h = sait["ettekanded.html"]
+    for k in ("liik", "allikas"):
+        osa = h[h.index(f'class="u-f ek-f" data-k="{k}"'):]
+        osa = osa[:osa.index("</div>")]
+        nupud = re.findall(r'data-v="([^"]*)" aria-pressed="(true|false)">([^<]+)<span class="arv">(\d+)</span>', osa)
+        assert nupud[0][:2] == ("", "true") and int(nupud[0][3]) == 28
+        assert sum(int(n) for _, _, _, n in nupud[1:]) == 28, k  # iga ettekanne on täpselt ühes nupus
+    assert 'data-v="podcast"' in h and 'data-v="seminar"' in h and 'data-v="mindscape"' in h
+    assert re.search(r'<li data-liik="podcast" data-allikas="lex-fridman">', h)
+    assert 'class="ps ek-tyhi" hidden' in h
+    # Allika liik peab olema lubatud
+    import copy
+    from andmekiht import AndmeViga
+    from sait import lehed_uudised
+    vaade = copy.deepcopy(next(v for v in json.loads((ehita.SIIN / "vaated.json").read_text(encoding="utf-8"))["vaated"] if v["id"] == "uudised"))
+    E = {"allikad": [{"id": "s", "nimi": "S", "url": "https://x.ee/", "liik": "raadio"}],
+         "ettekanded": [{"id": "y", "esineja": "J", "pealkiri": "P", "allikas": "s", "kuupaev": "2026-05-27",
+                         "video": "https://youtu.be/def", "kokkuvote": "T."}]}
+    with pytest.raises(AndmeViga):
+        lehed_uudised.ettekanded({**A, "ettekanded": E, "ootel": {"ettekanded": 0}}, vaade)
