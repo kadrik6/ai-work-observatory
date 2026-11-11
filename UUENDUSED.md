@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 11.11.2026 | Seire sait, Uudised: numbriplaatidelt on allikarida „Seire uudistekogumine“ ära, plaadid on tihedamad (kpi_pais tihe=True) ja „Maailma uudised ja uuringud“ lühem. Plaatide plokk on 216 asemel 139 px kõrge (1366 px), telefonis 726 asemel 455 px. Teiste lehtede plaatidel jääb allikas alles. (Kadri 11.11) |
 | 11.11.2026 | Seire sait, Uudised: teemafiltris pole enam nuppu „koondamine“. Koondamisuudised on teema „töö“ all ja nende tehisaru rolli märk jääb alles. (Kadri 11.11) |
 | 11.11.2026 | Seire sait, Töö › Tööportaalid: valdkonna nupurida on ära. Valdkonna tulbal klõpsates näeb selle valdkonna linnu ja tööandjaid; sama tulba uus klõps või „kõik valdkonnad“ viib tagasi. Tööandjate graafikus on Siseministeeriumi infotehnoloogia- ja arenduskeskus lühendina SMIT, täisnimi hõljutades. (Kadri 11.11) |
 | 11.11.2026 | Seire sait: Ettevõtete ja Inimeste lehel on ELi kaart ja koha muutuse graafik nüüd ühel real kõrvuti, graafikud algavad samal kõrgusel (subgrid). Vastavus, numbrid ja usaldusinfo on nende all. Kitsal ekraanil üksteise all. Test `test_teemalehel_on_kaart_ja_jarjestus_korvuti`. (Kadri 11.11) |

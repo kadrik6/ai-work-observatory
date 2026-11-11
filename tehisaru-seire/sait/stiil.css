@@ -1508,3 +1508,8 @@ nav.alam { display: flex; align-items: baseline; gap: 4px 10px; margin: 6px 0 2p
 @media (max-width: 900px) { .kaart-paar { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
   .kaart-paar > figure { grid-row: auto; grid-template-rows: none; } .kaart-paar > figure:first-child { max-width: 360px; }
   .kulg-all { grid-template-columns: minmax(0, 1fr); } }
+
+/* Tihedad numbriplaadid (uudiste leht, Kadri 11.11.2026): vähem sisevahet, väiksem number, kontekst ühel real */
+html[data-t] .kpi-pais.tihe .plaat { padding: 10px 14px; gap: 2px; }
+html[data-t] .kpi-pais.tihe .plaat .big { font-size: 28px; margin-top: 0; }
+.kpi-pais.tihe .plaat.kp .ctx { flex-direction: row; flex-wrap: wrap; column-gap: 8px; }

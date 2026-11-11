@@ -223,16 +223,18 @@ def uudised(A, vaade, vaated=None):
     from lehed_ulevaade import kpi_pais, kpi_plaat
     nadal = (vk.date() - datetime.timedelta(days=6)).isoformat()
     uusi = lambda read: sum(r["kuupaev"] >= nadal for r in read)  # noqa: E731
-    korjaja = "Seire uudistekogumine"
+    # Kadri 11.11.2026: allikarida „Seire uudistekogumine“ ei andnud infot ja võttis ruumi; plaadid on madalamad,
+    # et uudised paistaks kiiremini. Kust uudised tulevad, on jaotises „Allikad“.
     aside = kpi_pais(
         kpi_plaat("ud-ee", "Eesti uudised", str(len(ee)), "",
-                  {"muutus": (f"+{uusi(ee)} nädalaga", f'uusim {kp(ee[0]["kuupaev"])}' if ee else "")}, korjaja, fookus=True),
-        kpi_plaat("ud-maailm", "Maailma uudised, aruanded ja uuringud", str(len(m)), "",
-                  {"muutus": (f"+{uusi(m)} nädalaga", f'uusim {kp(m[0]["kuupaev"])}' if m else "")}, korjaja),
+                  {"muutus": (f"+{uusi(ee)} nädalaga", f'uusim {kp(ee[0]["kuupaev"])}' if ee else "")}, "", fookus=True),
+        kpi_plaat("ud-maailm", "Maailma uudised ja uuringud", str(len(m)), "",
+                  {"muutus": (f"+{uusi(m)} nädalaga", f'uusim {kp(m[0]["kuupaev"])}' if m else "")}, ""),
         kpi_plaat("ud-suured", "Suured uudised", str(len(suured)), "",
-                  {"tekst": f"riigi otsus, statistika, üle 50 koondatu · <b>{arvamusi} arvamuslugu</b>"}, korjaja),
+                  {"tekst": f"riigi otsus, statistika, üle 50 koondatu · <b>{arvamusi} arvamuslugu</b>"}, ""),
         kpi_plaat("ud-kontroll", "Viimane kontroll", f"{vk.day}.{vk.month:02d}", f"{vk:%H:%M}",
-                  {"tekst": f'<b>{korras}/{len(O["allikad"])}</b> allikat vastas · 7.23 ja 17.53'}, korjaja),
+                  {"tekst": f'<b>{korras}/{len(O["allikad"])}</b> allikat vastas · 7.23 ja 17.53'}, ""),
+        tihe=True,
     )
     lead = "Arvamus ei ole tõend."
 
