@@ -432,7 +432,9 @@ def test_uudised_eesti_ja_maailm_eraldi(A, sait):
     mm = h.split('id="maailma-uudised"')[1].split("</section>")[0]
     n_ee = sum(r["piirkond"] == "EE" for r in A["uudised"])
     assert ee.count("<li ") == n_ee and mm.count("<li ") == len(A["uudised"]) - n_ee
-    assert f"<b>{n_ee} uudist</b>" in ee
+    # Kadri 11.11.2026: Eesti ja maailm on sakkides, vaikimisi Eesti; arv on saki nupul
+    assert f'id="tab-eesti-uudised" aria-controls="eesti-uudised" aria-selected="true">Eesti <span class="arv">{n_ee}</span>' in h
+    assert 'id="maailma-uudised" aria-labelledby="tab-maailma-uudised" hidden>' in h
 
 
 def test_iga_uudis_on_liigiga_ja_arvamus_on_margitud(A, sait):
@@ -531,16 +533,50 @@ def test_uudiste_paneel_ytleb_kas_viimasel_kontrollil_lisandus(A, sait):
     from komponendid import kp
     h = sait["uudised.html"]
     paev = A["uudiste_olek"]["viimane_kontroll"][:10]
-    assert h.count('class="ps u-seis"') == 2
-    # Kadri 11.11.2026: „uus“ järgib avaldamise kuupäeva (kontrollipäev ja eelmine päev), mitte lisamise päeva
-    alates = lehed_uudised.uus_alates(A["uudiste_olek"]["viimane_kontroll"])
-    uued = sum(r["kuupaev"][:10] >= alates for r in A["uudised"])
-    assert h.count('<span class="u-l uus">uus</span>') == uued
-    assert "„Uus“ on " in h and f"–{kp(paev)} avaldatud uudis." in h
-    for li in re.findall(r'<li data-teema.*?</li>', h, re.S):
-        d = re.search(r'<span class="d">([^<]+)</span>', li).group(1)
-        on_uus = '<span class="u-l uus">uus</span>' in li
-        assert on_uus == (d in {kp(paev), kp(alates)}), (d, on_uus)
+    assert h.count('class="ps u-seis"') == 2 and f"Viimane kontroll {kp(paev)}" in h
+    # Kadri 11.11.2026: „uus“-märki uudistel pole („nobody does that“); värskust näitab ajajoon
+    assert 'class="u-l uus"' not in h and "„Uus“ on " not in h
+
+
+def test_uudised_on_ajajoonel_paevade_kaupa(A, sait):
+    """Kadri 11.11.2026: katsetest D1 ajajoon kompaktsena, samad nupud ja filtrid nagu teistel lehtedel."""
+    import datetime
+    h = sait["uudised.html"]
+    for rid, p in (("eesti-uudised", lambda r: r["piirkond"] == "EE"), ("maailma-uudised", lambda r: r["piirkond"] != "EE")):
+        osa = h.split(f'id="{rid}"')[1].split("</section>")[0]
+        read = [r for r in A["uudised"] if p(r)]
+        alg = datetime.date.fromisoformat(A["uudiste_olek"]["viimane_kontroll"][:10])
+        paevad = sorted({r["kuupaev"][:10] for r in read if (alg - datetime.date.fromisoformat(r["kuupaev"][:10])).days < lehed_uudised.PAEVI}, reverse=True)
+        assert re.findall(r'<div class="u-paev[^"]*" data-paev="([0-9-]+)"', osa) == paevad, rid
+        assert len(re.findall(r'class="u-paev[ "]', osa)) == len(paevad) + len({r["kuupaev"][:7] for r in read if r["kuupaev"][:10] not in paevad})
+        assert osa.count(" uusim") == 1  # ainult uusim nähtav päev on sinine
+        for alg_, sisu in re.findall(r'(<div class="u-paev[ "][^>]*>)(.*?)</ul></div>', osa, re.S):  # päev ilma nähtava uudiseta on peidus
+            assert alg_.endswith(" hidden>") == (re.search(r'<li (?![^>]*\bhidden\b)[^>]*>', sisu) is None), alg_
+    assert '<div class="p-tabs u-sakid" role="tablist" aria-label="Piirkond">' in h
+    assert 'href="ettekanded.html">Ettekanded ja üritused</a>' in h
+    js = (ehita.SIIN / "sait.js").read_text(encoding="utf-8")
+    assert "s.textContent = v === 0 ? 'täna' : 'eile'" in js  # täna/eile lugeja kuupäeva järgi, mitte ehitamise päeva järgi
+    assert "g.hidden = !g.querySelector('.u-voog li:not([hidden])')" in js
+
+
+def test_ettekanded_ja_tulevased_uritused_uhel_lehel(A, sait):
+    """Kadri 11.11.2026: ettekanded, podcastid ja muu eraldi lehel koos tulevaste üritustega, mitte uudiste voos."""
+    import copy
+    from komponendid import kp
+    h = sait["ettekanded.html"]
+    assert h.index('id="tulekul"') < h.index('id="ettekanded"')
+    assert ">Ettekanded ja üritused</a>" in h and 'href="eesti-otsused.html">Eesti otsused</a>' in h
+    vaade = copy.deepcopy(next(v for v in ehita.lae_vaated() if v["id"] == "uudised"))
+    B = copy.deepcopy(A)
+    B["uudised"] = [dict(A["uudised"][0], teema="riik", tahtaeg=t, pealkiri=f"Üritus {t}", url=f"https://n.ee/{t}")
+                    for t in ("2026-12-01", "2026-11-20", "2026-11-01")]
+    ees, sec = lehed_uudised.tulekul(B, "2026-11-11")
+    assert [r["tahtaeg"] for r in ees] == ["2026-11-20", "2026-12-01"]  # möödunud kaob, lähim eespool
+    assert sec.index("Üritus 2026-11-20") < sec.index("Üritus 2026-12-01") and f'<span class="d">{kp("2026-11-20")}</span>' in sec
+    lehed_uudised.ettekanded(B, vaade, "2026-11-11")
+    h1 = next(s for s in vaade["alamlehed"] if s["fail"] == "ettekanded.html")["h1"]
+    assert f"**{kp('2026-11-20')}**" in h1
+    assert "praegu pole" in lehed_uudised.tulekul({**B, "uudised": []}, "2026-11-11")[1]
 
 
 def test_uus_margid_on_oranzid(sait):

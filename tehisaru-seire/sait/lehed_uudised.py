@@ -94,7 +94,8 @@ def _allikas(r):
             f'<img src="pilt/logod/{e(fail)}" alt="{e(r["allikas"])}" width="18" height="18" loading="lazy"></span>')
 
 
-def _uudis(r, peida=""):
+def _uudis(r, peida="", kuup=None):
+    """kuup: mis kuupäev rea ees on (vaikimisi avaldamise päev; tulevaste ürituste loendis tähtaeg)."""
     liik, kl = LIIK.get(r.get("liik"), (r.get("liik", ""), ""))
     if r.get("liik") not in LIIK:
         raise AndmeViga(f"uudised.jsonl: tundmatu liik {r.get('liik')!r} ({r.get('pealkiri', '')[:40]})")
@@ -120,8 +121,6 @@ def _uudis(r, peida=""):
             sildid.append(f'<span class="u-t s">tähtaeg {e(kp(r["tahtaeg"]))}</span>')
     if jatk:
         sildid.append('<span class="u-t">jätkulugu</span>')
-    if r.get("_uus"):
-        sildid.insert(0, '<span class="u-l uus">uus</span>')  # oranž (Kadri 7.11.2026)
     if r.get("suur"):
         sildid.append('<span class="u-l suur">suur uudis</span>')
     lv = r.get("levik")
@@ -133,19 +132,15 @@ def _uudis(r, peida=""):
         sildid.append('<span class="u-t">loetud ainult pealkiri</span>')
     arv = f'<b>{e(arv_t)}.</b> ' if arv_t else ""
     return (f'<li data-teema="{e(TEEMA_FILTER.get(r.get("teema"), "muu"))}" data-vk="{valdkond(r)}" data-liik="{e(r["liik"])}"{peida}>'
-            f'<span class="d">{kp(r["kuupaev"])}</span>'
+            f'<span class="d">{kuup or kp(r["kuupaev"])}</span>'
             f'<div><a href="{e(r["url"])}">{e(r["pealkiri"])}</a>'
             f'<p class="u-k">{arv}{e(pohjus)}</p>'
             f'<p class="u-m">{"".join(sildid)}{_allikas(r)}</p></div></li>')
 
 
-# „uus“ = avaldatud viimase kontrolli päeval või sellele eelneval päeval (Kadri 11.11.2026: sildi järgi
-# lisamise päeva järgi ei klappinud kuupäevadega; täna leitud 9.11 uudis sai sildi, eilne 10.11 uudis mitte).
-UUS_PAEVI = 2
-
-
-def uus_alates(kontroll):
-    return (datetime.date.fromisoformat(kontroll[:10]) - datetime.timedelta(days=UUS_PAEVI - 1)).isoformat()
+# „Uus“-märki uudistel pole (Kadri 11.11.2026: „nobody does that“). Värskust näitab ajajoon: uusim päev on üleval ja
+# sinine, „täna“ ja „eile“ arvutab brauser lugeja kuupäeva järgi (sait.js), nii et silt ei vanane staatilisel lehel.
+PAEVI = 14  # nii mitu päeva näidatakse ajajoonel eraldi; vanemad uudised on kuu kaupa
 
 
 def _seis(read, kontroll):
@@ -154,12 +149,9 @@ def _seis(read, kontroll):
         return ""
     paev = kontroll[:10]
     uued = sum(1 for r in read if r.get("lisatud") == paev)
-    al = uus_alates(kontroll)
-    vahemik = f"{int(al[8:])}.–{kp(paev)}" if al[:7] == paev[:7] else f"{kp(al)}–{kp(paev)}"
-    silt = f'„Uus“ on {vahemik} avaldatud uudis.'
     if uued:
-        return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval lisandus <b>{uued}</b> {"uudis" if uued == 1 else "uudist"}. {silt}</p>'
-    return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval uusi uudiseid ei lisandunud. {silt}</p>'
+        return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval lisandus <b>{uued}</b> {"uudis" if uued == 1 else "uudist"}.</p>'
+    return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval uusi uudiseid ei lisandunud.</p>'
 
 
 # Filtrinuppude kindel järjekord (Kadri 11.11.2026: koondamised olid liiga suure fookuse all, kuigi neid uudiseid on harva).
@@ -169,7 +161,43 @@ assert set(TEEMA_JARJEKORD) == set(TEEMA) == set(TEEMA_FILTER.values())
 VK_VAIKIMISI = "tehisaru"
 
 
-def _uudiste_paneel(rid, pealkiri, read, sp, kontroll=None):
+KUUL = ("jaan", "veebr", "märts", "apr", "mai", "juuni", "juuli", "aug", "sept", "okt", "nov", "dets")
+NADALAPAEV = ("esmaspäev", "teisipäev", "kolmapäev", "neljapäev", "reede", "laupäev", "pühapäev")
+
+
+def _paevad(read, nahtav, kontroll):
+    """Ajajoon (Kadri 11.11.2026 valis katsetest D1, kompaktsena): viimased PAEVI päeva päevade kaupa, vanemad kuu kaupa.
+
+    nahtav: kas rida on vaikimisi näha (valdkonna filter). Päev, kus vaikimisi ühtki rida pole, on alguses peidus;
+    sait.js peidab ja näitab päevi filtri järgi ning märgib uusima nähtava päeva."""
+    if not read:
+        return ""
+    alg = datetime.date.fromisoformat((kontroll or read[0]["kuupaev"])[:10])
+    ruhmad = {}
+    for r, n in zip(read, nahtav):
+        d = datetime.date.fromisoformat(r["kuupaev"][:10])
+        k = r["kuupaev"][:10] if (alg - d).days < PAEVI else r["kuupaev"][:7]
+        ruhmad.setdefault(k, []).append((r, n))
+    osad, esimene = [], True
+    for k, rr in ruhmad.items():
+        nahtaval = any(n for _, n in rr)
+        if len(k) == 10:
+            d = datetime.date.fromisoformat(k)
+            pais = (f'<div class="u-pk"><b>{d.day}.</b><span class="u-pn">{NADALAPAEV[d.weekday()]}</span>'
+                    f'<span>{KUUL[d.month - 1]}{"" if d.year == alg.year else " " + str(d.year)}</span></div>')
+            kl, data = "u-paev", f' data-paev="{k}"'
+        else:
+            pais = (f'<div class="u-pk"><b>{KUUL[int(k[5:]) - 1]}</b><span>varem{"" if k[:4] == str(alg.year) else " " + k[:4]}</span></div>')
+            kl, data = "u-paev u-kuu", ""
+        if nahtaval and esimene:
+            kl, esimene = kl + " uusim", False
+        loend = "".join(_uudis(r, "" if n else " hidden") for r, n in rr)
+        osad.append(f'<div class="{kl}"{data}{"" if nahtaval else " hidden"}>{pais}<ul class="u-voog">{loend}</ul></div>')
+    return f'<div class="u-paevad">{"".join(osad)}</div>'
+
+
+def _uudiste_paneel(rid, read, kontroll=None, peidus=False):
+    """Üks piirkond (Eesti või maailm) saki paneelina: valdkonna ja teema filter ning ajajoon."""
     vk = [valdkond(r) for r in read]
     fk = [TEEMA_FILTER.get(r.get("teema"), "muu") for r in read]
     nupp = lambda attr, v, silt, n, valitud: (  # noqa: E731
@@ -181,16 +209,14 @@ def _uudiste_paneel(rid, pealkiri, read, sp, kontroll=None):
     olemas = set(fk)
     rida2 = nupp("data-f", "", "kõik", len(vaikimisi), True) + "".join(
         nupp("data-f", t, TEEMA[t], vaikimisi.count(t), False) for t in TEEMA_JARJEKORD if t in olemas)
-    loend = "".join(_uudis(r, "" if v == VK_VAIKIMISI else " hidden") for r, v in zip(read, vk))
     return f"""
-<section class="pn {sp}" id="{rid}" aria-labelledby="h-{rid}">
-  <div class="pn-h"><h2 id="h-{rid}">{pealkiri}</h2></div>
+  <section role="tabpanel" class="u-paneel" id="{rid}" aria-labelledby="tab-{rid}"{" hidden" if peidus else ""}>
   {_seis(read, kontroll)}
   <div class="u-f ek-f u-vk" role="group" aria-label="Vali valdkond"><span class="ek-f-silt">Valdkond</span>{rida1}</div>
   <div class="u-f ek-f" role="group" aria-label="Vali teema"><span class="ek-f-silt">Teema</span>{rida2}</div>
   <p class="ps u-tyhi" hidden>Selle valikuga uudiseid pole.</p>
-  <ul class="u-voog" data-piir-li="12">{loend}</ul>
-</section>"""
+  {_paevad(read, [v == VK_VAIKIMISI for v in vk], kontroll)}
+  </section>"""
 
 
 def uudised(A, vaade, vaated=None):
@@ -198,8 +224,7 @@ def uudised(A, vaade, vaated=None):
     V = _vaja(A, "uudiste_vaited", "uudiste-vaited.json")
     O = _vaja(A, "uudiste_olek", "uudiste-olek.json")
     kontrolli(vaade, "Eestist ja maailmast", "arvamus")
-    alates = uus_alates(O["viimane_kontroll"])
-    U = sorted((dict(r, _uus=r["kuupaev"][:10] >= alates) for r in U), key=lambda r: r["kuupaev"], reverse=True)
+    U = sorted((dict(r) for r in U), key=lambda r: r["kuupaev"], reverse=True)
     esimene = {}
     for r in U:  # jätkulugu: kogumine märkis nii või sama ettevõtte lugu on varasema kuupäevaga olemas
         if r.get("ettevote"):
@@ -250,15 +275,26 @@ def uudised(A, vaade, vaated=None):
   </div>
 </section>
 </div>"""
-    sec_u = ('<div class="g12">'
-             + _uudiste_paneel("eesti-uudised", f"Eesti: <b>{len(ee)} uudist</b>, neist {sum(r['liik'] == 'arvamus' for r in ee)} arvamust", ee, "sp6", viimane)
-             + _uudiste_paneel("maailma-uudised", f"Maailm: <b>{len(m)} uudist</b>, aruannet ja uuringut", m, "sp6", viimane)
-             + "</div>")
+    # Kadri 11.11.2026: Eesti ja maailm eraldi sakkides (vaikimisi Eesti), sama nupustiil nagu teistel lehtedel.
+    # Ettekanded, podcastid ja tulevased üritused on oma lehel, mitte uudiste voos.
+    sakk = lambda rid, nimi, n, valitud: (  # noqa: E731
+        f'<button type="button" role="tab" id="tab-{rid}" aria-controls="{rid}" aria-selected="{"true" if valitud else "false"}">'
+        f'{nimi} <span class="arv">{n}</span></button>')
+    sec_u = f"""
+<div class="g12">
+<section class="pn sp12 u-ajajoon" id="uudised-paevad" aria-labelledby="h-uudised-paevad">
+  <div class="pn-h"><h2 id="h-uudised-paevad">Uudised päevade kaupa, uusim üleval</h2></div>
+  <p class="ps">Podcastid, seminarid ja tulevased üritused on lehel <a href="ettekanded.html">Ettekanded ja üritused</a>.</p>
+  <div class="p-tabs u-sakid" role="tablist" aria-label="Piirkond">{sakk("eesti-uudised", "Eesti", len(ee), True)}{sakk("maailma-uudised", "Maailm", len(m), False)}</div>
+  {_uudiste_paneel("eesti-uudised", ee, viimane)}
+  {_uudiste_paneel("maailma-uudised", m, viimane, peidus=True)}
+</section>
+</div>"""
     sec_e = ettekanded(A, vaade)
     return jaga(A, vaade, lead, [], [
-        ("uudised", [("eesti-uudised", "Eesti"), ("maailma-uudised", "Maailm")], sec_u),
+        ("uudised", [("uudised-paevad", "Uudised")], sec_u),
         ("allikad", [("uudiste-allikad", "Allikad")], sec_k),
-        ("ettekanded", [("ettekanded", "Ettekanded"), ("ettekannete-allikad", "Üritused")], sec_e),
+        ("ettekanded", [("tulekul", "Tulekul"), ("ettekanded", "Ettekanded"), ("ettekannete-allikad", "Allikad")], sec_e),
     ], aside=aside)
 
 
@@ -318,16 +354,35 @@ def _ettekanne(r, allikad):
             f'<span class="u-a" title="{e(r.get("kontroll", ""))}">{e(allikad[r["allikas"]]["nimi"])}</span></p></div></li>')
 
 
-def ettekanded(A, vaade):
+def tulekul(A, tana):
+    """Tulevased Eesti riigi üritused ja tähtajad (Kadri 11.11.2026: ettekanded ja podcastid eraldi lehel koos tulevaste
+    üritustega). Tulevad igapäevasest uudistekogumisest (teema „riik“, väli tahtaeg), lähim eespool. Kõik riigi
+    otsused jäävad lehele Eesti otsused; siin on ainult see, mis on veel ees."""
+    ees = sorted((r for r in (A.get("uudised") or []) if r.get("teema") == "riik" and (r.get("tahtaeg") or "") >= tana),
+                 key=lambda r: r["tahtaeg"])
+    loend = (f'<ul class="u-voog ek-tulekul">{"".join(_uudis(r, kuup=kp(r["tahtaeg"])) for r in ees)}</ul>' if ees
+             else '<p class="ps">Tulevasi üritusi ega tähtaegu praegu pole.</p>')
+    return ees, f"""
+<section class="pn sp12" id="tulekul" aria-labelledby="h-tulekul">
+  <div class="pn-h"><h2 id="h-tulekul">Tulekul: {f"<b>{len(ees)} üritust või tähtaega</b>, lähim eespool" if ees else "üritusi ega tähtaegu praegu pole"}</h2></div>
+  {loend}
+  <p class="ps">Praegu tulevad siia Eesti riigi üritused ja tähtajad igapäevasest uudistekogumisest. Tulevaste seminaride ja veebiseminaride kava veel ei koguta. Kõik riigi otsused ja eelnõud on lehel <a href="eesti-otsused.html">Eesti otsused</a>.</p>
+</section>"""
+
+
+def ettekanded(A, vaade, tana=None):
+    tana = tana or datetime.date.today().isoformat()
+    ees, sec_tul = tulekul(A, tana)
     E = A.get("ettekanded") or {"allikad": [], "ettekanded": []}
     allikad = {a["id"]: a for a in E.get("allikad", [])}
     read = sorted(E.get("ettekanded", []), key=lambda r: r["kuupaev"], reverse=True)
     ootel = (A.get("ootel") or {}).get("ettekanded", 0)
     n = len(read)
     from abi import alam_h1
+    jargmine = f'järgmine üritus või tähtaeg on **{kp(ees[0]["tahtaeg"])}**' if ees else "tulevasi üritusi praegu pole"
     alam_h1(vaade, "ettekanded.html",
-            f"**{n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'}** seminaride, konverentside ja podcastide salvestistest ¦ kokkuvõtted on tehtud avalikest salvestistest usaldatud allikatelt"
-            if n else "Usaldatud seminaride ja konverentside ettekanded ¦ **kokkuvõtted ootavad kinnitust**")
+            f"Ettekanded ja üritused: {jargmine} ¦ {n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'} seminaride, konverentside ja podcastide salvestistest"
+            if n else f"Ettekanded ja üritused: {jargmine} ¦ ettekannete **kokkuvõtted ootavad kinnitust**")
     ruhmad = {k: [r for r in read if (r.get("ruhm") if r.get("ruhm") in ETTEKANDE_RUHM else "muu") == k] for k in ETTEKANDE_RUHM}
     ruhmad = {k: v for k, v in ruhmad.items() if v}
     valik = "".join(f'<a href="#ek-{k}" data-ruhm="{k}">{e(ETTEKANDE_RUHM[k][0])} <span class="arv">{len(v)}</span></a>' for k, v in ruhmad.items())
@@ -353,9 +408,9 @@ def ettekanded(A, vaade):
             else f'<p class="ps">Ettekandeid pole veel kinnitatud{f" ({ootel} ootab)" if ootel else ""}.</p>')
     al = "".join(f'<li><a href="{e(a["url"])}">{e(a["nimi"])}</a>{" · " + e(a["miks"]) if a.get("miks") else ""}</li>' for a in allikad.values())
     return f"""
-<div class="g12">
+<div class="g12">{sec_tul}
 <section class="pn sp12" id="ettekanded" aria-labelledby="h-ettekanded">
-  <div class="pn-h"><h2 id="h-ettekanded">Ettekanded valdkonna järgi, igas uuemad eespool{f", <b>{ootel} ootab kinnitust</b>" if ootel and read else ""}</h2></div>
+  <div class="pn-h"><h2 id="h-ettekanded">Kuula ja vaata: ettekanded valdkonna järgi, igas uuemad eespool{f", <b>{ootel} ootab kinnitust</b>" if ootel and read else ""}</h2></div>
   {sisu}
 </section>
 <section class="pn sp12" id="ettekannete-allikad" aria-labelledby="h-ettekannete-allikad">
