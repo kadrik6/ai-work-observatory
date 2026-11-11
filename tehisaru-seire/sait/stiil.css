@@ -1195,6 +1195,14 @@ th, td { padding: 6px 10px; }
 .u-voog .ek-kes a.u-ur { font-weight: 400; color: var(--ink-2); }
 .u-voog .ek-m { margin: 4px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-2); }
 .u-voog .ek-m li { display: list-item; padding: 1px 0; border: 0; font-size: 13.5px; }
+/* Ettekannete rühmad (Kadri 11.11.2026) */
+.ek-valik { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.ek-valik a { font: 600 13px var(--font-sans); color: var(--ink-2); text-decoration: none; border: 1px solid var(--border); border-radius: 100px; padding: 3px 10px; }
+.ek-valik a:hover, .ek-valik a:focus-visible { border-color: var(--signal); color: var(--signal); }
+.ek-valik .arv, .ek-r h3 .arv { color: var(--ink-3); font-weight: 400; }
+.ek-r { margin-top: 24px; scroll-margin-top: 96px; }
+.ek-r h3 { font-size: 17px; margin: 0 0 2px; }
+.ek-r > .ps { margin: 0 0 6px; }
 
 /* OECD lisatulemused: pikemad sildid (Tehisaru 2027 sisu, 8.11.2026) */
 @media (min-width: 681px) {

@@ -47,7 +47,7 @@ def kinnitatud_uuringud(read):
 
 
 ETTEKANDE_VALJAD = ("id", "esineja", "amet", "pealkiri", "allikas", "uritus", "uritus_url", "kuupaev", "video", "keel",
-                    "teemad", "kokkuvote", "mottes", "kontroll", "seire_kinnitatud")
+                    "teemad", "ruhm", "kokkuvote", "mottes", "kontroll", "seire_kinnitatud")
 
 
 def kinnitatud_ettekanded(d):

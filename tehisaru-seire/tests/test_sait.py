@@ -1334,3 +1334,16 @@ def test_innovatsioonimarge_on_hankija_oma(sait):
     h = sait["hanked.html"]
     assert '<span class="u-t">innovatsioon</span>' not in h
     assert "hankija märge: innovatsioon" in h
+
+
+def test_ettekanded_on_valdkonna_ruhmades(sait):
+    """Kadri 11.11.2026: ühes nimekirjas oli kõik segamini; ettekanded on valdkonna rühmades, igas uuemad eespool."""
+    from sait import lehed_uudised
+    h = sait["ettekanded.html"]
+    ruhmad = re.findall(r'<div class="ek-r" id="ek-([a-z-]+)">', h)
+    assert len(ruhmad) >= 2 and "muu" not in ruhmad  # igal kinnitatud kirjel on rühm
+    assert ruhmad == [k for k in lehed_uudised.ETTEKANDE_RUHM if k in ruhmad]  # kindel järjekord
+    for k in ruhmad:  # valikurea iga link viib olemasolevale rühmale
+        assert f'href="#ek-{k}"' in h
+    E = json.loads((ehita.SIIN / "sisu" / "ettekanded.json").read_text(encoding="utf-8"))
+    assert all(r.get("ruhm") in lehed_uudised.ETTEKANDE_RUHM for r in E["ettekanded"])
