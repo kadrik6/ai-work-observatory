@@ -93,6 +93,12 @@ def _lehel(nav, cls):
     return nav.replace('<nav aria-label="Sellel lehel">', f'<nav class="lehel {cls}" aria-label="Sellel lehel">', 1)
 
 
+def _olemasolevad(nav, sisu):
+    """„Sellel lehel“ reast välja lingid, mille plokki lehel pole (nt tühi uuringute plokk, Kadri 11.11.2026)."""
+    nav = re.sub(r'<li><a href="#([^"]+)">[^<]*</a></li>', lambda m: m.group(0) if f'id="{m.group(1)}"' in sisu else "", nav)
+    return "" if "<li>" not in nav else nav
+
+
 def _ploki_lopp(sisu, i):
     """Koht pärast välimist <div>-i, mille sees on indeks i (või i ise, kui see pole ühegi div-i sees)."""
     sugavus, algus = 0, None
@@ -153,7 +159,9 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
     teema = next((v for v in vaated if v["id"] == vaade["teema"]), None) if vaade.get("teema") else vaade
     sakid = alamlehed(teema, fail) if teema.get("alamlehed") else ""
     m = re.search(r'<nav aria-label="Sellel lehel">.*?</nav>', sisu, re.S)
-    lehel = m.group(0) if m else ""
+    lehel = _olemasolevad(m.group(0), sisu) if m else ""
+    if m and not lehel:
+        sisu = sisu[:m.start()] + sisu[m.end():]
     if lehel:
         # Kleepuv rida peab olema <main> otsene laps (sticky töötab ainult vanema piires), seega läheb see
         # pealkirjaploki (div.pea) järele; sakid jäävad oma kohale.

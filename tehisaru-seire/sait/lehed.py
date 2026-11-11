@@ -641,7 +641,7 @@ def ettevotted(A, vaade, vaated=None):
         ("Katse", f'Firmad, kes nägid teiste ümberkorraldatud töövooge, leidsid 44% rohkem kasutusviise ja teenisid 1,9 korda rohkem tulu (Kim jt {U["kim2026"]["aasta"]}).', "too", "ulesanded"),
     ], [("ettevotted", "Tootlikkus ja võimekus", "tootlikkus")])
     t_vaited = tm.vaidete_plokk(A, vaated, "ettevotted", vaite_teema)
-    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-uldkohaldamine", "ai-korge-risk-iii"])
+    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-uldkohaldamine"])  # läbipaistvus, nt klienditeeninduse vestlusrobot
     t_allikad = tm.allikate_plokk([
         (f"Kasutus, {ee['allikas']}", ee["url"], ee["avaldatud"], f"{ee['aasta']}, vähemalt 10 hõivatuga ettevõtted"),
         ("ELi võrdlus, Eurostat isoc_eb_ai", "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table",

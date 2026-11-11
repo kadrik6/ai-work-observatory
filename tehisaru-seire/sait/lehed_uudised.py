@@ -592,7 +592,7 @@ def hanked(A, vaade, vaated=None):
     ])
     t_uuringud = tm.uuringute_plokk(vaated, [], [("avalik-sektor", "Avalik sektor (OECD 2026)", "")])
     t_vaited = tm.vaidete_plokk(A, vaated, "hanked", vaite_teema)
-    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-uldkohaldamine", "ai-korge-risk-iii"])
+    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-uldkohaldamine"])  # kehtib juba ostetavatele süsteemidele
     t_allikad = tm.allikate_plokk([
         ("Riigihangete register ja TED", HANKED_URL, H["seis"]["kuupaev"], "uuendatakse GitHub Actionsiga"),
         ("Käsitsi pimeülevaatus, 100 hanget", "", KASITSI["kuupaev"], f'kokkulangevus {KASITSI["kokku"]}%, kappa {KASITSI["kappa"]}'),

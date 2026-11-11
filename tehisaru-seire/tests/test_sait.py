@@ -871,8 +871,9 @@ def test_iga_vaide_on_avalehe_tabelis_teemaga(A):
 def test_too_leht_teemamall_a(sait):
     """Kadri 8.11.2026: teemaleht A järgi: number, andmed sakkides, uuringud, väited, reeglid, allikad; vanad ankrud alles."""
     h = sait["too.html"]
-    jrk = [h.index(x) for x in ('class="vastus kpi-pais"', 'id="andmed"', 'id="t-uuringud"', 'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
+    jrk = [h.index(x) for x in ('class="vastus kpi-pais"', 'id="andmed"', 'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
     assert jrk == sorted(jrk)
+    assert 'id="t-uuringud"' not in h  # Kadri 11.11.2026: uuringud on alamlehel Töö › Uuringud
     for vana in ("tootus-kuud", "koondamised", "tootus-el", "palkamine", "vabad-kohad", "toopakkumised", "ai-kuulutused", "tulevik"):
         assert f'id="{vana}"' in h, vana
     sakid = re.findall(r'role="tab" id="sakk-([a-z-]+)-n" aria-controls="sakk-\1" aria-selected="(true|false)"', h)
@@ -901,7 +902,10 @@ def test_koik_teemalehed_jargivad_malli_a(sait):
     for f in ("inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"):
         h = sait[f]
         jrk = [h.find(x) for x in ('id="andmed"', 'id="t-uuringud"', 'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
-        assert -1 not in jrk and jrk == sorted(jrk), f
+        # Uuringud ja väited võivad puududa, kui teemal neid pole (Kadri 11.11.2026); olemasolevate järjekord on sama
+        assert jrk[0] != -1 and jrk[3] != -1 and jrk[4] != -1, f
+        jrk = [i for i in jrk if i != -1]
+        assert jrk == sorted(jrk), f
         assert len(re.findall(r'class="sakk-sisu">', h)) == 1, f
 
 
@@ -1336,6 +1340,17 @@ def test_innovatsioonimarge_on_hankija_oma(sait):
     assert "hankija märge: innovatsioon" in h
 
 
+def test_tuhja_uuringute_ja_vaidete_plokki_ei_naidata(sait):
+    """Kadri 11.11.2026: „pole veel hinnatud“ plokid ja nende nupud tegid navigatsiooni segaseks."""
+    import teemamall as tm
+    assert tm.uuringute_plokk([], [], [("x", "Mujal", "")]) == ""
+    for f, h in sait.items():
+        assert "pole veel hinnatud" not in h, f
+        m = re.search(r'<nav class="lehel[^"]*" aria-label="Sellel lehel">(.*?)</nav>', h, re.S)
+        for ank in re.findall(r'href="#([^"]+)"', m.group(1) if m else ""):
+            assert f'id="{ank}"' in h, (f, ank)  # „Sellel lehel“ ei viita puuduvale plokile
+    assert 'id="t-vaited"' not in sait["hanked.html"] and 'id="t-uuringud"' not in sait["hanked.html"]
+
 def test_ettekanded_on_valdkonna_ruhmades(sait):
     """Kadri 11.11.2026: ühes nimekirjas oli kõik segamini; ettekanded on valdkonna rühmades, igas uuemad eespool."""
     from sait import lehed_uudised
@@ -1347,3 +1362,13 @@ def test_ettekanded_on_valdkonna_ruhmades(sait):
         assert f'href="#ek-{k}"' in h
     E = json.loads((ehita.SIIN / "sisu" / "ettekanded.json").read_text(encoding="utf-8"))
     assert all(r.get("ruhm") in lehed_uudised.ETTEKANDE_RUHM for r in E["ettekanded"])
+
+
+def test_teemalehel_ainult_oma_reegel_ja_uuringud_ei_kordu(sait):
+    """Kadri 11.11.2026 („kõigiga nõus“): teemalehel üks reegel, tähtajad ühes kohas; uuringud ei kordu."""
+    for f in ("inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"):
+        r = re.search(r'<section class="pn" id="t-reeglid".*?</section>', sait[f], re.S).group(0)
+        assert r.count("<li>") == 1, f
+        assert 'href="tehisaru-maarus.html#tahtajad"' in r, f
+    inim = re.search(r'<section class="pn" id="t-uuringud".*?</section>', sait["inimesed.html"], re.S).group(0)
+    assert inim.count("<li>") == 1 and "GDS" not in inim and "veel pole" not in inim
