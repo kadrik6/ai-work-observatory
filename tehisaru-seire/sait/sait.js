@@ -232,16 +232,42 @@
         });
       });
     });
-    // Uudiste teemafilter
+    // Uudiste filter: valdkond (vaikimisi tehisaru) ja teema kehtivad koos (Kadri 11.11.2026). Iga nupu arv näitab,
+    // mitu uudist teise rea praeguse valikuga jääks; null arvuga nupp on keelatud, et tühja kombinatsiooni ei saaks valida.
     document.querySelectorAll('.pn .u-f[aria-label="Vali teema"]').forEach(function (f) {
-      var li = f.parentNode.querySelectorAll('.u-voog li');
-      f.querySelectorAll('button').forEach(function (b) {
-        b.addEventListener('click', function () {
-          var t = b.getAttribute('data-f');
-          f.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-          li.forEach(function (l) { l.hidden = !!t && l.getAttribute('data-teema') !== t; });
+      var pn = f.parentNode, vkf = pn.querySelector('.u-f[aria-label="Vali valdkond"]');
+      var li = pn.querySelectorAll('.u-voog li');
+      var valik = { u: '', f: '' };
+      if (vkf) { var p0 = vkf.querySelector('button[aria-pressed="true"]'); valik.u = p0 ? p0.getAttribute('data-u') : ''; }
+      function sobib(l, u, t) {
+        return (!u || u === 'koik' || l.getAttribute('data-vk') === u) && (!t || l.getAttribute('data-teema') === t);
+      }
+      function loe(u, t) { var n = 0; li.forEach(function (l) { if (sobib(l, u, t)) n++; }); return n; }
+      function rakenda() {
+        var n = 0;
+        li.forEach(function (l) { l.hidden = !sobib(l, valik.u, valik.f); if (!l.hidden) n++; });
+        [[vkf, 'data-u', 'u'], [f, 'data-f', 'f']].forEach(function (x) {
+          if (!x[0]) return;
+          x[0].querySelectorAll('button[' + x[1] + ']').forEach(function (b) {
+            var v = b.getAttribute(x[1]);
+            var k = x[2] === 'u' ? loe(v, valik.f) : loe(valik.u, v);
+            var a = b.querySelector('.arv'); if (a) a.textContent = k;
+            b.disabled = !!v && k === 0 && b.getAttribute('aria-pressed') !== 'true';
+          });
+        });
+        var t = pn.querySelector('.u-tyhi'); if (t) t.hidden = n > 0;
+      }
+      [[vkf, 'data-u', 'u'], [f, 'data-f', 'f']].forEach(function (x) {
+        if (!x[0]) return;
+        x[0].querySelectorAll('button[' + x[1] + ']').forEach(function (b) {
+          b.addEventListener('click', function () {
+            valik[x[2]] = b.getAttribute(x[1]);
+            x[0].querySelectorAll('button[' + x[1] + ']').forEach(function (y) { y.setAttribute('aria-pressed', y === b ? 'true' : 'false'); });
+            rakenda();
+          });
         });
       });
+      rakenda();
     });
     // Tööportaalide valdkonna filter (Kadri 11.11.2026): valitud valdkonna linnad ja tööandjad
     document.querySelectorAll('.tp-vk').forEach(function (f) {
@@ -469,6 +495,7 @@
     var q;
     try { q = new URLSearchParams(location.search); } catch (e) { q = { get: function () { return null; } }; }
     var paarid = [
+      ['ala', '.u-f[aria-label="Vali valdkond"] button[data-u]', 'data-u'],
       ['teema', '.u-f[aria-label="Vali teema"] button[data-f]', 'data-f'],
       ['ruhm', 'button[data-r]', 'data-r'],
       ['valdkond', '.tp-vk button[data-vk]', 'data-vk'],

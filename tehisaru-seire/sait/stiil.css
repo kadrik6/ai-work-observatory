@@ -1010,6 +1010,7 @@ th, td { padding: 6px 10px; }
 .u-f button, .p-tabs button, .kogus button { font: 500 14px/1 var(--font-sans); height: auto; min-height: 30px; padding: 6px 12px; background: none; color: var(--ink-2);
   border: 0; border-bottom: 2px solid transparent; border-radius: 0; margin-bottom: -1px; }
 .u-f button:hover, .p-tabs button:hover, .kogus button:hover { color: var(--signal); }
+.u-f button:disabled, .u-f button:disabled:hover { opacity: .4; cursor: default; color: var(--ink-2); }  /* tühi kombinatsioon (Kadri 11.11.2026) */
 .u-f button[aria-pressed="true"], .p-tabs button[aria-selected="true"], .kogus button[aria-pressed="true"] {
   background: none; color: var(--signal); border-bottom-color: var(--signal); font-weight: 600; }
 .kogus { border-bottom: 0; gap: 4px; }
