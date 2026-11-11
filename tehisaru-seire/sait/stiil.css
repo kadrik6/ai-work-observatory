@@ -1488,8 +1488,12 @@ nav.alam { display: flex; align-items: baseline; gap: 4px 10px; margin: 6px 0 2p
 .ek-f + nav.ek-valik, .ek-f + .ek-f { margin-top: 0; }
 .ek-f:last-of-type { margin-bottom: 14px; }
 
-/* Tööportaalide valdkonna filter (Kadri 11.11.2026) */
-.tp-vk { align-items: center; margin: 4px 0 14px; }
+/* Tööportaalide valdkonna filter (Kadri 11.11.2026): valdkonna tulp on ise nupp */
+.tp-vk .tp-v { cursor: pointer; border-radius: 4px; }
+.tp-vk .tp-v:hover .n, .tp-vk .tp-v:focus-visible .n { color: var(--signal); text-decoration: underline; text-underline-offset: 3px; }
+.tp-vk .tp-v:hover .tulp { filter: brightness(.9); }
+.tp-vk .tp-v:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.tp-koik { font: inherit; color: var(--signal); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .ek-f button:disabled { opacity: .4; cursor: default; }
 .ek-f button:disabled:hover { color: var(--ink-2); }
 

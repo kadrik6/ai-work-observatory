@@ -269,14 +269,25 @@
       });
       rakenda();
     });
-    // Tööportaalide valdkonna filter (Kadri 11.11.2026): valitud valdkonna linnad ja tööandjad
-    document.querySelectorAll('.tp-vk').forEach(function (f) {
-      var paneel = f.parentNode;
-      f.querySelectorAll('button[data-vk]').forEach(function (b) {
-        b.addEventListener('click', function () {
+    // Tööportaalide valdkonna filter (Kadri 11.11.2026): klõps valdkonna tulbal näitab selle valdkonna linnu ja
+    // tööandjaid; valitud tulba uus klõps või „kõik valdkonnad“ viib tagasi.
+    document.querySelectorAll('[role="tabpanel"]').forEach(function (paneel) {
+      var vaated = paneel.querySelectorAll('[data-vk-sisu]');
+      if (!vaated.length) return;
+      function vali(v) {
+        vaated.forEach(function (d) { d.hidden = d.getAttribute('data-vk-sisu') !== v; });
+      }
+      paneel.querySelectorAll('[data-vk]').forEach(function (b) {
+        function vajuta() {
           var v = b.getAttribute('data-vk');
-          f.querySelectorAll('button[data-vk]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-          paneel.querySelectorAll('[data-vk-sisu]').forEach(function (d) { d.hidden = d.getAttribute('data-vk-sisu') !== v; });
+          if (v && b.getAttribute('aria-pressed') === 'true') v = '';
+          vali(v);
+          var uus = paneel.querySelector('[data-vk-sisu="' + (window.CSS && CSS.escape ? CSS.escape(v) : v) + '"] [data-vk="' + (window.CSS && CSS.escape ? CSS.escape(b.getAttribute('data-vk')) : b.getAttribute('data-vk')) + '"]');
+          if (uus && uus !== b && document.activeElement === b) uus.focus();
+        }
+        b.addEventListener('click', vajuta);
+        if (b.tagName !== 'BUTTON') b.addEventListener('keydown', function (ev) {
+          if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); vajuta(); }
         });
       });
     });
@@ -511,7 +522,7 @@
       ['ala', '.u-f[aria-label="Vali valdkond"] button[data-u]', 'data-u'],
       ['teema', '.u-f[aria-label="Vali teema"] button[data-f]', 'data-f'],
       ['ruhm', 'button[data-r]', 'data-r'],
-      ['valdkond', '.tp-vk button[data-vk]', 'data-vk'],
+      ['valdkond', '[data-vk-sisu=""] .tp-vk [data-vk]', 'data-vk'],
       ['liik', '.ek-f[data-k="liik"] button[data-v]', 'data-v'],
       ['allikas', '.ek-f[data-k="allikas"] button[data-v]', 'data-v'],
       ['sakk', '.p-tabs [role="tab"]', 'aria-controls'],

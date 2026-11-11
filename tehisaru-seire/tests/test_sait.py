@@ -1571,14 +1571,20 @@ def test_tooportaalide_valdkonna_filter(A):
     cv["valdkonniti"] = [{"nimi": v0, "arv": 10, "linnad": [{"nimi": "Narva", "arv": 7}, {"nimi": "Tartu", "arv": 3}],
                           "tooandjad": [{"nimi": "Firma OÜ", "arv": 5}]},
                          {"nimi": "Pole kategooria", "arv": 1, "linnad": [{"nimi": "X", "arv": 1}], "tooandjad": []}]
+    cv["valdkonniti"][0]["tooandjad"].append({"nimi": "Siseministeeriumi infotehnoloogia- ja arenduskeskus", "arv": 2})
     h = lehed_uudised.toopakkumised(B)
-    filt = h[h.index('class="u-f tp-vk"'):]
-    filt = filt[:filt.index("</div>")]
-    assert re.findall(r'data-vk="([^"]*)"', filt) == ["", v0]  # tundmatu valdkond jääb välja
+    # Kadri 11.11.2026: eraldi nupurida raiskas ruumi; valdkonna tulp on ise filter
+    assert "u-f tp-vk" not in h and "ek-f-silt" not in h.split('data-vk-sisu=""')[1].split("</div>")[0]
+    vaikimisi = h[h.index('data-vk-sisu=""'):h.index(f'data-vk-sisu="{v0}"')]
+    assert re.findall(r'data-vk="([^"]*)" role="button"', vaikimisi) == [v0]  # tundmatu valdkond jääb välja
+    assert 'aria-pressed="true"' not in vaikimisi and "klõpsa valdkonnal" in vaikimisi
     osa = h[h.index(f'data-vk-sisu="{v0}" hidden'):]
     osa = osa[:osa.index('data-vk-sisu', 20) if 'data-vk-sisu' in osa[20:] else len(osa)]
     assert "Narva" in osa and "Firma OÜ" in osa and f"valdkonnas {v0.lower()}" in osa
-    assert re.search(r'<div class="rida fookus"><span class="n" title="' + re.escape(v0), osa)
+    assert re.search(r'<div class="rida fookus tp-v" data-vk="' + re.escape(v0) + '" role="button" tabindex="0" aria-pressed="true"', osa)
+    assert '<button type="button" class="tp-koik" data-vk="">kõik valdkonnad</button>' in osa
+    # Kadri 11.11.2026: pikk nimi lühendina, täisnimi hõljutades
+    assert '<abbr title="Siseministeeriumi infotehnoloogia- ja arenduskeskus">SMIT</abbr>' in osa
 
 
 
@@ -1591,4 +1597,4 @@ def test_tootukassa_oma_sakis_cv_ee_kaudu(A, sait):
     osa = _jaotis(sait["too.html"], "toopakkumised")
     assert 'aria-controls="tp-töötukassa"' in osa
     tk_osa = osa[osa.index('id="tp-töötukassa"'):]
-    assert "Jaotused on " in tk_osa and "mõõdavad eri asja" in tk_osa and 'class="u-f tp-vk"' in tk_osa
+    assert "Jaotused on " in tk_osa and "mõõdavad eri asja" in tk_osa and 'class="ribad lihtne tp-vk"' in tk_osa

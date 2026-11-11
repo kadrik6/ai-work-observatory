@@ -895,6 +895,17 @@ def _arvt(n):
     return f"{n:,}".replace(",", " ")
 
 
+# Pikad tööandjanimed lühendina, täisnimi hõljutades (Kadri 11.11.2026: SMIT)
+TOOANDJA_LYHEND = {"Siseministeeriumi infotehnoloogia- ja arenduskeskus": "SMIT"}
+
+
+def lyhenda(html):
+    for nimi, l in TOOANDJA_LYHEND.items():
+        html = html.replace(f'<span class="n" title="{e(nimi)}">{e(nimi)}</span>',
+                            f'<span class="n" title="{e(nimi)}"><abbr title="{e(nimi)}">{e(l)}</abbr></span>')
+    return html
+
+
 def toopakkumised(A):
     """Tööportaalide kuulutuste arv ning portaali enda jaotused ameti, asukoha ja tööandja järgi (Kadri 7.11.2026 09:38).
     Iga portaal eraldi; arve ei liideta, sest sama kuulutus võib olla mitmes portaalis. Tühi, kui andmeid pole."""
@@ -936,17 +947,24 @@ def toopakkumised(A):
         kat_l = a(p["ametivaldkond_url"], "portaali kategooriad") if p.get("ametivaldkond_url") else (a(alus.split(" ")[0], "CV.ee kaudu") if alus else "")
         kus_l = a(p["asukoht_url"], "portaali asukohad") if p.get("asukoht_url") else (a(alus.split(" ")[0], "CV.ee kaudu") if alus else "")
 
-        def kolm(fookus=0, vk=None):
-            """Kolm veergu. vk = valitud valdkond (Kadri 11.11.2026: linnad ja tööandjad valdkonna järgi)."""
+        def kolm(fookus=0, vk=None, valitav=()):
+            """Kolm veergu. vk = valitud valdkond (Kadri 11.11.2026: linnad ja tööandjad valdkonna järgi).
+            valitav = valdkonnad, mille tulbal klõpsates näeb selle valdkonna linnu ja tööandjaid."""
             linn_v = vk.get("linnad") if vk else (linn or mk)
             top_v = vk.get("tooandjad") if vk else top
             kelle = f', valdkonnas {e(vk["nimi"].lower())}' if vk else ""
-            veerud = [f'<div><p class="gt">Mis ametivaldkonnas</p><p class="ps">{kat_l}, 12 suuremat</p>{ribad(valdkonnad(p)) if not vk else lihtribad_v(valdkonnad(p), vk["nimi"])}</div>']
+            if valitav:
+                g = klikitav(lihtribad_v(valdkonnad(p), vk["nimi"] if vk else None), valitav, vk["nimi"] if vk else "")
+                vihje = (f'<button type="button" class="tp-koik" data-vk="">kõik valdkonnad</button>' if vk
+                         else "klõpsa valdkonnal, et filtreerida")
+                veerud = [f'<div><p class="gt">Mis ametivaldkonnas</p><p class="ps">{kat_l}, 12 suuremat; {vihje}</p>{g}</div>']
+            else:
+                veerud = [f'<div><p class="gt">Mis ametivaldkonnas</p><p class="ps">{kat_l}, 12 suuremat</p>{ribad(valdkonnad(p)) if not vk else lihtribad_v(valdkonnad(p), vk["nimi"])}</div>']
             if linn_v:
                 kt = ("; " + ", ".join(f'{e(r["nimi"]).lower()} {_arvt(r["arv"])}' for r in kaug)) if kaug and not vk else ""
                 veerud.append(f'<div><p class="gt">Kus: linnad{kelle}</p><p class="ps">{kus_l}{kt}</p>{ribad(linn_v, 10)}</div>')
             if top_v:
-                veerud.append(f'<div><p class="gt">Kes: enim kuulutusi avaldanud tööandjad{kelle}</p><p class="ps">{a(p["top_tooandjad_url"], "portaali tööandjad")}, 12 suuremat</p>{ribad(top_v)}</div>')
+                veerud.append(f'<div><p class="gt">Kes: enim kuulutusi avaldanud tööandjad{kelle}</p><p class="ps">{a(p["top_tooandjad_url"], "portaali tööandjad")}, 12 suuremat</p>{lyhenda(ribad(top_v))}</div>')
             else:
                 veerud.append(f'<div><p class="gt">Kes: tööandjad</p><p class="ps">{e(p.get("top_tooandjad_pohjus") or "Tööandjate arve ei õnnestunud lugeda.")}</p></div>')
             return f'<div class="tp-kolm">{"".join(veerud)}</div>'
@@ -958,6 +976,18 @@ def toopakkumised(A):
             lopp = -(-lopp // samm) * samm
             return lihtribad([(r["nimi"], r["arv"], _arvt(r["arv"])) for r in read], lopp, samm=samm, uhik="", fookus=nimi)
 
+        def klikitav(html, nimed, valitud):
+            """Valdkonna tulp on ise filter (Kadri 11.11.2026: „valdkonna visuaalile klikkides saab filtreid muuta“;
+            eraldi nupurida raiskas ruumi). Valitud tulba uus klõps viib tagasi kõigi valdkondade juurde."""
+            html = html.replace('<div class="ribad lihtne" aria-hidden="true">',
+                                '<div class="ribad lihtne tp-vk" role="group" aria-label="Vali valdkond">', 1)
+            for n in nimed:
+                vana = f'"><span class="n" title="{e(n)}">'
+                uus = (f' tp-v" data-vk="{e(n)}" role="button" tabindex="0" aria-pressed="{"true" if n == valitud else "false"}"'
+                       f' title="{e(n)}: näita linnu ja tööandjaid"><span class="n">')
+                html = html.replace(vana, uus, 1)
+            return html
+
         # Valdkonna filter (Kadri 11.11.2026): kui kogumine andis iga suurema valdkonna linnad ja tööandjad
         # (`valdkonniti`), saab valdkonna valida ja kõik kolm veergu näitavad selle valdkonna jaotust.
         VK = [v for v in (p.get("valdkonniti") or []) if v.get("linnad") or v.get("tooandjad")]
@@ -965,13 +995,10 @@ def toopakkumised(A):
             nimed = {r["nimi"] for r in valdkonnad(p)[:12]}
             VK = [v for v in VK if v["nimi"] in nimed]
         if VK:
-            filt = (f'<div class="u-f tp-vk" role="group" aria-label="Vali valdkond"><span class="ek-f-silt">Valdkond</span>'
-                    f'<button type="button" data-vk="" aria-pressed="true">kõik</button>'
-                    + "".join(f'<button type="button" data-vk="{e(v["nimi"])}" aria-pressed="false">{e(v["nimi"])}</button>' for v in VK)
-                    + '</div>')
+            vn = [v["nimi"] for v in VK]
             vk_kp = f' ({kp(p["valdkonniti_kuupaev"])})' if p.get("valdkonniti_kuupaev") else ""
-            sisu_ = (filt + f'<div data-vk-sisu="">{kolm()}</div>'
-                     + "".join(f'<div data-vk-sisu="{e(v["nimi"])}" hidden>{kolm(vk=v)}</div>' for v in VK)
+            sisu_ = (f'<div data-vk-sisu="">{kolm(valitav=vn)}</div>'
+                     + "".join(f'<div data-vk-sisu="{e(v["nimi"])}" hidden>{kolm(vk=v, valitav=vn)}</div>' for v in VK)
                      + f'<p class="ps">Valdkonna linnad ja tööandjad on loetud kuulutustest{vk_kp}: üks kuulutus võib olla mitmes valdkonnas.</p>')
         else:
             sisu_ = kolm()
