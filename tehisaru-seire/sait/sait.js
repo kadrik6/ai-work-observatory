@@ -40,7 +40,9 @@
       var svg = k.querySelector('svg');
       var fookus = svg && svg.querySelector('path.fookus');
       var praegu = null;
+      function teata(n) { k.dispatchEvent(new CustomEvent('seire-riik', {detail: n})); }
       function peida() {
+        if (praegu) teata(null);
         if (praegu) praegu.classList.remove('on');
         praegu = null;
         k.classList.remove('hoiab');
@@ -67,8 +69,10 @@
             vihje.appendChild(a);
           }
           vihje.hidden = false;
+          if (x !== null) teata(p.getAttribute('data-n'));
         }
         var r = k.getBoundingClientRect();
+        if (x === null) { var pb = p.getBoundingClientRect(); x = pb.right - 4; y = pb.top + pb.height / 2; }  // tabelist: silt riigi juurde
         var lx = x - r.left + 14, ly = y - r.top + 14;
         if (lx + vihje.offsetWidth > r.width) lx = x - r.left - vihje.offsetWidth - 14;
         if (ly + vihje.offsetHeight > r.height) ly = y - r.top - vihje.offsetHeight - 14;
@@ -76,6 +80,12 @@
         vihje.style.top = Math.max(0, ly) + 'px';
       }
       if (!svg || !vihje) return;
+      // Kõrvaltabel või -graafik kutsub seda: riik esile ja tema silt kaardile (null peidab).
+      k.seireRiik = function (n) {
+        var p = null;
+        if (n) svg.querySelectorAll('path[data-n]').forEach(function (x) { if (x.getAttribute('data-n') === n) p = x; });
+        if (p) naita(p, null, null); else if (praegu) { praegu.classList.remove('on'); praegu = null; k.classList.remove('hoiab'); vihje.hidden = true; if (fookus) svg.appendChild(fookus); }
+      };
       svg.addEventListener('pointermove', function (ev) {
         var p = ev.target.closest && ev.target.closest('path[data-n]');
         if (p) naita(p, ev.clientX, ev.clientY); else peida();
@@ -87,38 +97,51 @@
         if (p) naita(p, ev.clientX, ev.clientY); else peida();
       });
     });
-    // Kaart ja järjestus: üks riik esile mõlemas (data-n on sama nimi).
-    document.querySelectorAll('.el-rida').forEach(function (rida) {
-      var read = rida.querySelectorAll('.jrj-r[data-n]');
-      var svg = rida.querySelector('.kaart svg');
-      function vali(n) {
+    // Kaart ja kõrvaltabel (Kadri 11.11.2026): riigi peal hõljudes ükskõik kummal pool tuleb sama riik esile ka teisel pool.
+    // Partnerid on sama jaotise read .jrj-r[data-n] ja järjestusgraafiku jooned .bs (aria-label = riigi nimi).
+    document.querySelectorAll('.kaart').forEach(function (k) {
+      var jaotis = k.closest('section') || k.parentNode;
+      var read = jaotis.querySelectorAll('.jrj-r[data-n]');
+      var jooned = jaotis.querySelectorAll('.bs[aria-label]');
+      if (!read.length && !jooned.length) return;
+      function esile(n) {  // ainult partnerid; kaart teeb enda osa ise
         read.forEach(function (r) { r.classList.toggle('on', r.getAttribute('data-n') === n); });
-      }
-      if (svg) {
-        svg.addEventListener('pointermove', function (ev) {
-          var p = ev.target.closest && ev.target.closest('path[data-n]');
-          vali(p ? p.getAttribute('data-n') : null);
+        jooned.forEach(function (g) {
+          var on = g.getAttribute('aria-label') === n;
+          g.classList.toggle('hv', on);
+          if (on) g.parentNode.appendChild(g);
         });
-        svg.addEventListener('pointerleave', function () { vali(null); });
-        svg.addEventListener('click', function (ev) {
-          var p = ev.target.closest && ev.target.closest('path[data-n]');
-          vali(p ? p.getAttribute('data-n') : null);
+        jaotis.querySelectorAll('svg.bump').forEach(function (sv) {
+          sv.classList.toggle('hoiab', !!n && !!sv.querySelector('.bs.hv'));
+          if (!n) { var f = sv.querySelector('.bs.f'); if (f) sv.appendChild(f); }  // Eesti jälle peale
         });
       }
-      read.forEach(function (r) {
-        r.addEventListener('pointerenter', function () {
-          var n = r.getAttribute('data-n');
-          vali(n);
-          if (!svg) return;
-          svg.querySelectorAll('path[data-n]').forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-n') === n); });
-          svg.parentNode.classList.add('hoiab');
+      k.addEventListener('seire-riik', function (ev) { esile(ev.detail); });
+      function seo(el, n) {
+        function sisse() { esile(n); if (k.seireRiik) k.seireRiik(n); }
+        function valja() { esile(null); if (k.seireRiik) k.seireRiik(null); }
+        el.addEventListener('pointerenter', sisse);
+        el.addEventListener('pointerleave', valja);
+        el.addEventListener('focus', sisse);
+        el.addEventListener('blur', valja);
+      }
+      read.forEach(function (r) { seo(r, r.getAttribute('data-n')); });
+      // Graafiku joon tõstetakse teiste peale (DOM-is ümber), seepärast kuulab hõljumist SVG ise, mitte joon:
+      // ümber tõstetud elemendi pointerleave võib muidu kaduma minna ja esiletõst jääks külge.
+      jaotis.querySelectorAll('svg.bump').forEach(function (sv) {
+        var praegu = null;
+        sv.addEventListener('pointermove', function (ev) {
+          var g = ev.target.closest && ev.target.closest('.bs[aria-label]');
+          var n = g ? g.getAttribute('aria-label') : null;
+          if (n === praegu) return;
+          praegu = n; esile(n); if (k.seireRiik) k.seireRiik(n);
         });
-        r.addEventListener('pointerleave', function () {
-          vali(null);
-          if (!svg) return;
-          svg.querySelectorAll('path.on').forEach(function (p) { p.classList.remove('on'); });
-          svg.parentNode.classList.remove('hoiab');
-        });
+        sv.addEventListener('pointerleave', function () { praegu = null; esile(null); if (k.seireRiik) k.seireRiik(null); });
+      });
+      jooned.forEach(function (g) {  // klaviatuur
+        var n = g.getAttribute('aria-label');
+        g.addEventListener('focus', function () { esile(n); if (k.seireRiik) k.seireRiik(n); });
+        g.addEventListener('blur', function () { esile(null); if (k.seireRiik) k.seireRiik(null); });
       });
     });
     // Pikk tabel: vaikimisi 12 rida.

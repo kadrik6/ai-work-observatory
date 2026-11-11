@@ -400,18 +400,13 @@ def lae_kuju(fail=KUJU, tol=1.8):
     return _kuju
 
 
-def _kast(tee):
-    n = [float(x) for x in re.findall(r"-?\d+(?:\.\d+)?", tee)]
-    xs, ys = n[0::2], n[1::2]
-    return min(xs), min(ys), max(xs), max(ys)
-
-
 def kaart(vaatlused, piirid, fookus="EE", viide=None, viite_nimi="", uhik="%", kuju=None):
     """ELi riikide kaart, värv näitab suurust (üks toon, hele → tume). Kõik vaatlused ühes klassis.
 
     piirid: klasside alumised piirid, nt (0, 10, 20, 30, 40); viimane klass on „ja üle“.
-    Eesti silt ja legend on HTML-is, et tekst jääks päris suuruseks ka telefonis. Riigi nimi ja number on
-    hõljudes (title). Taustariikidel nime ei ole: need ei ole ELi skaalal.
+    Legend on HTML-is, et tekst jääks päris suuruseks ka telefonis. Eesti eraldi silti kaardil ei ole (Kadri 11.11.2026):
+    Eesti on piirjoonega ja legendil, riigi nimi ja number tulevad hõljudes või koputades, samuti kõrvalolevast tabelist
+    või graafikust (sait.js seob kaardi sama jaotise ridadega). Taustariikidel nime ei ole: need ei ole ELi skaalal.
     """
     uks_klass(vaatlused)
     kuju = kuju or lae_kuju()
@@ -422,7 +417,6 @@ def kaart(vaatlused, piirid, fookus="EE", viide=None, viite_nimi="", uhik="%", k
     if min(v["vaartus"] for v in vaatlused) < piirid[0]:
         raise AndmeViga("Kaardi klassid ei kata kõiki väärtusi")
     klass = lambda x: max(i for i, p in enumerate(piirid) if x >= p)  # noqa: E731
-    _, _, W, H = (float(x) for x in kuju["viewBox"].split())
     osad = [f'<path class="bg" d="{t}"/>' for _, t in sorted(kuju["taust"].items())]
     viimane = ""
     for g, tee in sorted(kuju["el"].items()):
@@ -439,11 +433,6 @@ def kaart(vaatlused, piirid, fookus="EE", viide=None, viite_nimi="", uhik="%", k
             osad.append(tk)
     osad.append(viimane)
 
-    silt = ""
-    if fookus in vv:
-        x0, y0, x1, y1 = _kast(kuju["el"][fookus])
-        silt = (f'<span class="kaart-silt" style="left:{x1 / W * 100:.2f}%;top:{(y0 + y1) / 2 / H * 100:.2f}%">'
-                f'<b>{e(riik(fookus))} {pr(vv[fookus]["vaartus"])}{uhik}</b></span>')
 
     # Legend: astmeline riba 0 … ülemine piir, peal ELi keskmine ja Eesti
     lopp = piirid[-1] + (piirid[-1] - piirid[-2])
@@ -463,7 +452,7 @@ def kaart(vaatlused, piirid, fookus="EE", viide=None, viite_nimi="", uhik="%", k
     legend = (f'<div class="kaart-legend" aria-hidden="true"><div class="riba">{lahtrid}{noolid}</div>'
               f'<div class="margid">{margid}</div></div>')
     return (f'<div class="kaart-ala"><div class="kaart"><div class="kaart-vihje" hidden></div><svg viewBox="{kuju["viewBox"]}" aria-hidden="true" focusable="false">'
-            f'{"".join(osad)}</svg>{silt}</div>{legend}</div>')
+            f'{"".join(osad)}</svg></div>{legend}</div>')
 
 
 def _esimesed(n, n_koik, nupp=False):

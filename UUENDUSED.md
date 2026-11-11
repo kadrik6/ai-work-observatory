@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 11.11.2026 | Sait, kaardid (Kadri 11.11 6.24): Eesti eraldi silt kaardilt ära (Eesti jääb piirjoonega ja legendile). Kaart on seotud sama jaotise tabeli ja järjestusgraafikuga: riigi peal hõljudes ükskõik kummal pool tuleb see riik esile ka teisel pool, kaardile tuleb riigi silt numbriga. Avaleht, Inimesed ja Ettevõtted. Test `test_kaart_ilma_eesti_sildita_ja_seotud_korvaltabeliga`. |
 | 11.11.2026 | Sait, kasutusloogika uue nurga alt: järjestusgraafikus üks Tab-peatus SVG kohta ja nooled joonte vahel (avalehel 190 → 118 Tab-peatust, Töö lehel 231 → 93); kaart näitab riiki ka koputusel; filtri link saab jaotise ankru ja avaneb tulemuste juures (enne 1–3 ekraani kõrgemal); tühi otsing ütleb, mida teha. Test `test_kasutusloogika_klaviatuur_puude_jagatud_link`. |
 | 10.11.2026 | Seire sait: avalehe „Mis muutus“ reas on oranž „uus“ ainult viimase 14 päeva numbritel, vanemad saavad halli sildi „number“ (Kadri 10.11). |
 | 10.11.2026 | Seire sait, lühemad pealkirjad (Kadri 19:51: pealkirjad liiga pikad ja suured). Pealkirja mallis eraldab „ ¦ “ lühikese vastuse ja detaili: h1 detail läheb sissejuhatusse, h2 detail pealkirja alla (`kest.lyhenda_pealkirjad`, `p.h-lisa`). Pikim h1 167 → 74 märki, h2 üle 70 märgi 39 → 4. h1 kiri 46 → 34 px, paneeli h2 26 → 22 px. Andmetest arvutatud jupid ja numbrid jäid samaks; uus test `test_pealkirjad_on_luhikesed`. |

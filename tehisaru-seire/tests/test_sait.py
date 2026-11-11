@@ -161,7 +161,8 @@ def test_kaardil_on_koik_27_riiki_oige_varviga(A, sait):
         k = max(i for i, p in enumerate((0, 10, 20, 30, 40)) if v["vaartus"] >= p)
         nimi = komponendid.riik(g)
         assert re.search(rf'<path class="k{k}( fookus)?" d="[^"]+" data-n="{nimi}" data-v="{komponendid.pr(v["vaartus"])}%"', graafik), g
-    assert 'class="k2 fookus"' in graafik and "Eesti 23,4%" in tekst(graafik)
+    # Kadri 11.11.2026: Eesti eraldi silti kaardil pole; number tuleb hõljudes ja kõrvaltabelist
+    assert 'class="k2 fookus"' in graafik and 'data-n="Eesti" data-v="23,4%"' in graafik and "kaart-silt" not in graafik
     assert "EL keskmine 20,0%" in tekst(graafik)
 
 
@@ -1306,9 +1307,25 @@ def test_kasutusloogika_klaviatuur_puude_jagatud_link(sait):
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
     assert "ArrowDown" in js and "koik[j].focus()" in js  # nooled liiguvad joonte vahel
     # 2. Kaart reageerib ka koputusele, mitte ainult hiirele.
-    kaart = js[js.index("document.querySelectorAll('.kaart')"):js.index("document.querySelectorAll('.el-rida')")]
+    kaart = js[js.index("document.querySelectorAll('.kaart')"):js.index("// Kaart ja kõrvaltabel")]
     assert "addEventListener('click'" in kaart
     # 3. Filtri link saab jaotise ankru, et saadetud link avaneks filtri juures.
     assert "function jaotis(el)" in js and "sea(k, v, el)" in js.replace("function sea(k, v, el)", "sea(k, v, el)")
     # 4. Tühi otsing ütleb, mida teha.
     assert "Ei leitud ühtegi" in js
+
+
+def test_kaart_ilma_eesti_sildita_ja_seotud_korvaltabeliga(sait):
+    """Kadri 11.11.2026: kaardil pole Eesti eraldi silti; riigi peal hõljudes tuleb sama riik esile ka teisel pool."""
+    js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
+    for leht in ("index.html", "inimesed.html", "ettevotted.html"):
+        h = sait[leht]
+        assert 'class="kaart"' in h and "kaart-silt" not in h, leht
+        jaotis = h[h.rindex("<section", 0, h.index('class="kaart"')):]
+        jaotis = jaotis[:jaotis.index("</section>")]
+        kaardil = set(re.findall(r'<path class="k\d[^"]*" d="[^"]*" data-n="([^"]+)"', jaotis))
+        teisel = set(re.findall(r'class="jrj-r[^"]*" role="listitem" data-n="([^"]+)"', jaotis)) | \
+            set(re.findall(r'<g class="bs[^"]*" data-s="[^"]+" tabindex="-?[01]" role="button" aria-label="([^"]+)"', jaotis))
+        assert teisel and teisel <= kaardil, leht  # nimed klapivad, muidu seos ei leia riiki
+    seos = js[js.index("// Kaart ja kõrvaltabel"):js.index("// Pikk tabel")]
+    assert "seire-riik" in js and "k.seireRiik" in seos and "'.bs[aria-label]'" in seos and "'.jrj-r[data-n]'" in seos
