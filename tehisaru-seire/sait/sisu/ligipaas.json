@@ -1,6 +1,34 @@
 {
 "sundmused": [
 {
+"kuupaev": "2026-11-09",
+"kuupaev_tapsus": "",
+"piirkond": "maailm",
+"ettevote": "Accenture",
+"sektor": "konsultatsioon",
+"ligipaas": "piirab_rolliga",
+"pohjus": "rollipõhine vajadus (spetsialiseeritud litsents ainult neile, kelle roll seda vajab); kulu",
+"tekst": "The New Corporate Status Symbol Is How Much AI Access You Have",
+"url": "https://www.bloomberg.com/news/articles/2026-11-09/ai-access-is-creating-a-new-corporate-hierarchy",
+"allikas": "Bloomberg (Carrier Management avaldas uuesti)",
+"lisaallikas": "https://www.carriermanagement.com/news/2026/11/10/294056.htm",
+"kust": "uudis"
+},
+{
+"kuupaev": "2026-11-09",
+"kuupaev_tapsus": "november 2026",
+"piirkond": "maailm",
+"ettevote": "JLL",
+"sektor": "kinnisvara",
+"ligipaas": "piirab_rolliga",
+"pohjus": "kulu ja kasu suhe pole veel selge; tulemushindamisel arvestatakse ligipääsu erinevust",
+"tekst": "JLL piirab kõige kallimate tehisaru tööriistade ligipääsu osale töötajatest, kuni kulu ja väärtuse suhe on selgem, ning juhendab juhte mitte karistama töötajaid, kel ligipääsu polnud.",
+"url": "https://www.bloomberg.com/news/articles/2026-11-09/ai-access-is-creating-a-new-corporate-hierarchy#jll",
+"allikas": "Bloomberg",
+"lisaallikas": "https://www.carriermanagement.com/news/2026/11/10/294056.htm",
+"kust": "tagasivaade"
+},
+{
 "kuupaev": "2026-11-05",
 "kuupaev_tapsus": "",
 "piirkond": "maailm",
@@ -15,6 +43,20 @@
 "kust": "uudis"
 },
 {
+"kuupaev": "2026-11-01",
+"kuupaev_tapsus": "november 2026 (Bloomberg teatas eelmisel nädalal)",
+"piirkond": "maailm",
+"ettevote": "Apple",
+"sektor": "tehnoloogia",
+"ligipaas": "piirab_rolliga",
+"pohjus": "kulu (kulude kärpimine); inseneridel suurem limiit kui teistel",
+"tekst": "Bloombergi andmetel vähendas Apple osa inseneride päevast tehisaru kululimiiti 300 dollarilt 200-le ja kavandab edasisi kärpeid; inseneriväliste töötajate limiit on 100 dollarit päevas, kaalutud on ka 25 dollarit. Apple ei kommenteerinud loos.",
+"url": "https://www.bloomberg.com/news/articles/2026-11-09/ai-access-is-creating-a-new-corporate-hierarchy#apple",
+"allikas": "Bloomberg",
+"lisaallikas": "https://www.carriermanagement.com/news/2026/11/10/294056.htm",
+"kust": "tagasivaade"
+},
+{
 "kuupaev": "2026-06-11",
 "kuupaev_tapsus": "",
 "piirkond": "maailm",
@@ -26,6 +68,20 @@
 "url": "https://www.cio.com/article/4184660/samsung-which-previously-blocked-chatgpt-is-now-fully-adopting-three-generative-ai-models-and-accelerating-its-ax-initiative.html",
 "allikas": "CIO",
 "lisaallikas": "",
+"kust": "tagasivaade"
+},
+{
+"kuupaev": "2026-05-01",
+"kuupaev_tapsus": "mai 2026",
+"piirkond": "maailm",
+"ettevote": "Match Group",
+"sektor": "tarkvara",
+"ligipaas": "avab_koigile",
+"pohjus": "tootlikkus; eelarve kahekordistati, inseneridel neli korda suurem eelarve",
+"tekst": "Match Groupi finantsjuhi sõnul alustati aastat 5 miljoni dollari tehisarueelarvega peamiselt inseneridele; mais tõsteti see 10 miljonini ja ligipääs laiendati kõigile 2300 töötajale.",
+"url": "https://www.bloomberg.com/news/articles/2026-11-09/ai-access-is-creating-a-new-corporate-hierarchy#match",
+"allikas": "Bloomberg",
+"lisaallikas": "https://www.carriermanagement.com/news/2026/11/10/294056.htm",
 "kust": "tagasivaade"
 },
 {
