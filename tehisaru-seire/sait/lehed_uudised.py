@@ -191,6 +191,19 @@ def uudised(A, vaade, vaated=None):
 
 ETTEKANDE_TEEMA = {"too": "Töö", "ettevotted": "Ettevõtted", "inimesed": "Inimesed", "avalik-sektor": "Avalik sektor"}
 
+# Kadri 11.11.2026: ühes nimekirjas olid hariduse, vähidiagnostika, akude ja kõnetuvastuse ettekanded segamini.
+# Rühm = valdkond, millest ettekanne räägib (lugeja küsimus „mida see minu valdkonnas tähendab“), mitte ürituse nimi.
+# Järjekord on lehe järjekord; tühja rühma ei näidata. Uus kirje saab ettekanded.json-is välja „ruhm“.
+ETTEKANDE_RUHM = {
+    "too": ("Töö ja organisatsioon", "Kuidas ettevõtted tehisaru kasutusele võtavad ja mida enne seda korda teha."),
+    "riik": ("Riik ja haridus", "Riigiasutuste tehisarukatsed ning tehisaru koht koolis."),
+    "tulevik": ("Tehisaru areng ja tulevik", "Pikemad vestlused sellest, kuhu tehisaru liigub ja mida see tähendab."),
+    "tervis": ("Tervishoid", "Tehisaru arsti abilisena: diagnostika ja selle kontroll."),
+    "energia": ("Energia", "Elektriturg, akud ja võrk: kus masinõpe teeb otsuseid iga 15 minuti järel."),
+    "kone-pilt": ("Kõne ja pilt", "Kõnetuvastus ja masinnägemine päris tingimustes."),
+    "muu": ("Muu", "Ettekanded, millele pole veel rühma määratud."),
+}
+
 
 def _kp_osa(iso):
     """Kuupäev või ainult aasta (kui seminari täpne päev pole avalik)."""
@@ -228,13 +241,20 @@ def ettekanded(A, vaade):
     alam_h1(vaade, "ettekanded.html",
             f"**{n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'}** usaldatud seminaride ja konverentside ettekannetest ¦ kokkuvõtted on tehtud avalikest salvestistest"
             if n else "Usaldatud seminaride ja konverentside ettekanded ¦ **kokkuvõtted ootavad kinnitust**")
-    sisu = (f'<ul class="u-voog ek" data-piir-li="12">{"".join(_ettekanne(r, allikad) for r in read)}</ul>' if read
+    ruhmad = {k: [r for r in read if (r.get("ruhm") if r.get("ruhm") in ETTEKANDE_RUHM else "muu") == k] for k in ETTEKANDE_RUHM}
+    ruhmad = {k: v for k, v in ruhmad.items() if v}
+    valik = "".join(f'<a href="#ek-{k}">{e(ETTEKANDE_RUHM[k][0])} <span class="arv">{len(v)}</span></a>' for k, v in ruhmad.items())
+    plokid = "".join(
+        f'<div class="ek-r" id="ek-{k}"><h3>{e(ETTEKANDE_RUHM[k][0])} <span class="arv">{len(v)}</span></h3>'
+        f'<p class="ps">{e(ETTEKANDE_RUHM[k][1])}</p>'
+        f'<ul class="u-voog ek">{"".join(_ettekanne(r, allikad) for r in v)}</ul></div>' for k, v in ruhmad.items())
+    sisu = (f'<nav class="ek-valik" aria-label="Valdkonnad">{valik}</nav>{plokid}' if read
             else f'<p class="ps">Ettekandeid pole veel kinnitatud{f" ({ootel} ootab)" if ootel else ""}.</p>')
     al = "".join(f'<li><a href="{e(a["url"])}">{e(a["nimi"])}</a>{" · " + e(a["miks"]) if a.get("miks") else ""}</li>' for a in allikad.values())
     return f"""
 <div class="g12">
 <section class="pn sp12" id="ettekanded" aria-labelledby="h-ettekanded">
-  <div class="pn-h"><h2 id="h-ettekanded">Ettekanded uuemad eespool{f", <b>{ootel} ootab kinnitust</b>" if ootel and read else ""}</h2></div>
+  <div class="pn-h"><h2 id="h-ettekanded">Ettekanded valdkonna järgi, igas uuemad eespool{f", <b>{ootel} ootab kinnitust</b>" if ootel and read else ""}</h2></div>
   {sisu}
 </section>
 <section class="pn sp12" id="ettekannete-allikad" aria-labelledby="h-ettekannete-allikad">
