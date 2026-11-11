@@ -516,11 +516,19 @@ def test_uudise_levik_on_valjaannete_arv(A):
 
 
 def test_uudiste_paneel_ytleb_kas_viimasel_kontrollil_lisandus(A, sait):
+    from komponendid import kp
     h = sait["uudised.html"]
     paev = A["uudiste_olek"]["viimane_kontroll"][:10]
-    uued = sum(r.get("lisatud") == paev for r in A["uudised"])
     assert h.count('class="ps u-seis"') == 2
+    # Kadri 11.11.2026: „uus“ järgib avaldamise kuupäeva (kontrollipäev ja eelmine päev), mitte lisamise päeva
+    alates = lehed_uudised.uus_alates(A["uudiste_olek"]["viimane_kontroll"])
+    uued = sum(r["kuupaev"][:10] >= alates for r in A["uudised"])
     assert h.count('<span class="u-l uus">uus</span>') == uued
+    assert "„Uus“ on " in h and f"–{kp(paev)} avaldatud uudis." in h
+    for li in re.findall(r'<li data-teema.*?</li>', h, re.S):
+        d = re.search(r'<span class="d">([^<]+)</span>', li).group(1)
+        on_uus = '<span class="u-l uus">uus</span>' in li
+        assert on_uus == (d in {kp(paev), kp(alates)}), (d, on_uus)
 
 
 def test_uus_margid_on_oranzid(sait):
@@ -1491,6 +1499,13 @@ def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
     with pytest.raises(AndmeViga):
         lehed_uudised.ettekanded({**A, "ettekanded": E, "ootel": {"ettekanded": 0}}, vaade)
 
+
+def test_tootukassa_pole_tooandja_tulp(sait):
+    """Kadri 11.11.2026: „Töötukassa kaudu“ tulp tööandjate graafikus pole kasulik; see on märkusena graafiku all."""
+    osa = _jaotis(sait["too.html"], "ai-kuulutused")
+    graafik = osa[osa.index("Kes otsib"):osa.index("Kus: maakond")]
+    assert "Töötukassa kaudu (eri" not in graafik.split('class="ps"')[0]
+    assert re.search(r"Lisaks \d+ kuulutust Töötukassa kaudu", graafik)
 
 
 def test_tooportaalide_valdkonna_filter(A):

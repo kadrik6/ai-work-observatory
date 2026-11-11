@@ -120,15 +120,27 @@ def _uudis(r, peida=""):
             f'<p class="u-m">{"".join(sildid)}<span class="u-a">{e(r["allikas"])}</span></p></div></li>')
 
 
+# „uus“ = avaldatud viimase kontrolli päeval või sellele eelneval päeval (Kadri 11.11.2026: sildi järgi
+# lisamise päeva järgi ei klappinud kuupäevadega; täna leitud 9.11 uudis sai sildi, eilne 10.11 uudis mitte).
+UUS_PAEVI = 2
+
+
+def uus_alates(kontroll):
+    return (datetime.date.fromisoformat(kontroll[:10]) - datetime.timedelta(days=UUS_PAEVI - 1)).isoformat()
+
+
 def _seis(read, kontroll):
     """Kas viimasel kontrollil lisandus selle piirkonna uudiseid (Kadri 6.11: tühi päev ei tohi paista nagu katkine leht)."""
     if not kontroll:
         return ""
     paev = kontroll[:10]
     uued = sum(1 for r in read if r.get("lisatud") == paev)
+    al = uus_alates(kontroll)
+    vahemik = f"{int(al[8:])}.–{kp(paev)}" if al[:7] == paev[:7] else f"{kp(al)}–{kp(paev)}"
+    silt = f'„Uus“ on {vahemik} avaldatud uudis.'
     if uued:
-        return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval lisandus <b>{uued}</b>, märgitud „uus“.</p>'
-    return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval uusi uudiseid ei lisandunud.</p>'
+        return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval lisandus <b>{uued}</b> {"uudis" if uued == 1 else "uudist"}. {silt}</p>'
+    return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval uusi uudiseid ei lisandunud. {silt}</p>'
 
 
 # Filtrinuppude kindel järjekord (Kadri 11.11.2026: koondamised olid liiga suure fookuse all, kuigi neid uudiseid on harva).
@@ -167,7 +179,8 @@ def uudised(A, vaade, vaated=None):
     V = _vaja(A, "uudiste_vaited", "uudiste-vaited.json")
     O = _vaja(A, "uudiste_olek", "uudiste-olek.json")
     kontrolli(vaade, "Eestist ja maailmast", "arvamus")
-    U = sorted((dict(r, _uus=r.get("lisatud") == O["viimane_kontroll"][:10]) for r in U), key=lambda r: r["kuupaev"], reverse=True)
+    alates = uus_alates(O["viimane_kontroll"])
+    U = sorted((dict(r, _uus=r["kuupaev"][:10] >= alates) for r in U), key=lambda r: r["kuupaev"], reverse=True)
     esimene = {}
     for r in U:  # jätkulugu: kogumine märkis nii või sama ettevõtte lugu on varasema kuupäevaga olemas
         if r.get("ettevote"):
@@ -1051,10 +1064,13 @@ def ai_kuulutused(A):
                   a(url, "CV.ee"), fookus=(g == "ai_oskus"))
         for g in pohi)
     tooandjad, maakonnad = {}, {}
+    n_tk = 0  # Kadri 11.11.2026: „Töötukassa kaudu“ ei ole tööandja ja tulp ei ütle midagi; see on graafiku all märkusena
     for g in pohi:
         for r in R[g].get("tooandjad", []):
-            nm = TK_TOOANDJA.get(r["nimi"], r["nimi"])
-            tooandjad[nm] = tooandjad.get(nm, 0) + r["arv"]
+            if r["nimi"] in TK_TOOANDJA:
+                n_tk += r["arv"]
+                continue
+            tooandjad[r["nimi"]] = tooandjad.get(r["nimi"], 0) + r["arv"]
         for r in R[g].get("maakonnad", []):
             maakonnad[r["nimi"]] = maakonnad.get(r["nimi"], 0) + r["arv"]
 
@@ -1095,7 +1111,7 @@ def ai_kuulutused(A):
   <p class="ps">CV.ee, {kp(kp_)}. „Uus“ = avaldatud viimase 7 päeva jooksul.</p>
   <div class="plaadid kaks">{plaadid}</div>
   <div class="kaks tk-ribad">
-    <div><p class="gt">Kes otsib: enim kuulutusi ({kokku3} kuulutust kolmes rühmas)</p>{ribad(tooandjad)}</div>
+    <div><p class="gt">Kes otsib: enim kuulutusi ({kokku3} kuulutust kolmes rühmas)</p>{ribad(tooandjad)}{f'<p class="ps">Lisaks {n_tk} kuulutust Töötukassa kaudu: CV.ee neis tööandjat ei nimeta, need on loendis allpool.</p>' if n_tk else ""}</div>
     <div><p class="gt">Kus: maakond</p>{ribad(maakonnad, 8)}</div>
   </div>
   <p class="gt">Kõik kuulutused</p>
