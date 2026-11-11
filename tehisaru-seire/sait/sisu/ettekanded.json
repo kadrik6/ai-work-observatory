@@ -71,6 +71,7 @@
 "too",
 "ettevotted"
 ],
+"ruhm": "too",
 "kokkuvote": "Pactum andis kõigile töötajatele tehisaruagendid ja tootlikkus kasvas kohe. Korjuse sõnul kaob aga ühine suund, kui igaüks ehitab: tekib liiga palju funktsioone, slaide ja dokumente ning tagasiside, mis töötab, katkeb.",
 "mottes": [
 "Igal töötajal on Claude Code; oskused ja ühendused haldab keskne meeskond, agent töötab töötaja enda õigustega.",
@@ -94,6 +95,7 @@
 "teemad": [
 "ettevotted"
 ],
+"ruhm": "energia",
 "kokkuvote": "Aku juhtimine elektriturul on järjestikune otsustamine ebakindlate hindade all. Eesti Energia alustas lihtsast lineaarsest optimeerimisest; stiimulõpe on paljulubav, aga praegu veel tootmiskõlbmatu.",
 "mottes": [
 "Elekter on eriline kaup: seda ei saa suures koguses hoida ja hind kõigub tunni kaupa.",
@@ -117,6 +119,7 @@
 "teemad": [
 "ettevotted"
 ],
+"ruhm": "energia",
 "kokkuvote": "Elektrihinnad kõiguvad nii palju, et kodude ja ettevõtete akude, päikesepaneelide ja soojuspumpade juhtimine on muutunud masinõppe ülesandeks. MarkeDroid teeb selliseid otsuseid miljoneid ja koondab väikesed seadmed üheks virtuaalseks elektrijaamaks.",
 "mottes": [
 "Planeerija kasutab kahte paralleelset mudelit: hinnaprognoos ja seadme juhtimine.",
@@ -140,6 +143,7 @@
 "teemad": [
 "ettevotted"
 ],
+"ruhm": "energia",
 "kokkuvote": "Elektriliini läbilaskevõime sõltub ilmast: tuul jahutab liini ja lubab rohkem voolu. GridRaven prognoosib seda tõenäosuslikult, sest liiga optimistlik viga on palju kallim kui liiga ettevaatlik.",
 "mottes": [
 "Asümmeetriline viga: ülehindamine on ohtlik, alahindamine ainult kulukas.",
@@ -163,6 +167,7 @@
 "teemad": [
 "ettevotted"
 ],
+"ruhm": "too",
 "kokkuvote": "Kliendile suunatud tehisaru on sama hea kui andmed selle all. Veriff lõi eraldi meeskonna, kes teeb kõigepealt korda andmetorud, usalduse ja ühe tõeallika ning alles siis rakendab uusi mudeleid.",
 "mottes": [
 "Viga, mis sisemises töölauas oli ebamugavus, muutub kliendile suunatud vestlusrobotis intsidendiks.",
@@ -186,6 +191,7 @@
 "teemad": [
 "ettevotted"
 ],
+"ruhm": "kone-pilt",
 "kokkuvote": "Kontaktikeskuste kõnede analüüs algab kõnetuvastusest, ja selle täpsus otsustab kõik järgnevad. Üldine veamäär ei ütle, kas ärile olulised sõnad tunti õigesti ära.",
 "mottes": [
 "Halb helikvaliteet ja keelte segunemine on igapäevane, mitte erand.",
@@ -210,6 +216,7 @@
 "ettevotted",
 "avalik-sektor"
 ],
+"ruhm": "tervis",
 "kokkuvote": "Radiolooge napib ja paljud vähid leitakse juhuslikult. Better Medicine'i BM Vision on radioloogi abiline, kuid enne kasutust peab see läbima kliinilise valideerimise ja meditsiiniseadme nõuded.",
 "mottes": [
 "Tehisaru on abiline, otsuse teeb radioloog.",
@@ -233,6 +240,7 @@
 "teemad": [
 "inimesed"
 ],
+"ruhm": "riik",
 "kokkuvote": "Isikupärastatud õpisüsteemid teevad tõhusamaks vana, ainepõhise õppe, aga kaasaegse hariduse eesmärgid on laiemad. Laagi hinnangul jääb suur osa klassis arendatavast ekraanist väljapoole.",
 "mottes": [
 "Põhjendus tuleb Bloomi „kahe sigma“ uuringust; hilisemad uuringud leidsid palju väiksema mõju.",
@@ -256,6 +264,7 @@
 "teemad": [
 "ettevotted"
 ],
+"ruhm": "kone-pilt",
 "kokkuvote": "Masinnägemise andmetest tekib väärtus siis, kui mõõdetakse kindlat protsessi, mitte ei koguta „kõike“. Pidev mõõtmine paljastab sageli müüte selle kohta, kuidas inimesed ruumi tegelikult kasutavad.",
 "mottes": [
 "„Kõik andmed kokku“ on esineja sõnul prügiandmed.",
@@ -279,6 +288,7 @@
 "teemad": [
 "avalik-sektor"
 ],
+"ruhm": "riik",
 "kokkuvote": "Riigiasutused tutvustasid oma tehisaru katse- ja rakendusprojekte: eesti keele mõõdupuu keelemudelitele, geoloogiaaruannete otsingu prototüüp, toetustaotluste eelkontroll, põllumajandusandmete kontroll, digipärandi kirjeldamine ja raviarvete vigade tuvastus. Kokkuvõte põhineb ürituse avalikul kaval, sest salvestise tulemusi pole veel kontrollitud.",
 "mottes": [
 "Eesti Keele Instituudi mõõdupuu hindab sõltumatult, kui hästi suured keelemudelid eesti keelt oskavad (Krister Kruusmaa).",
