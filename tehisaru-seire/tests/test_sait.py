@@ -1416,6 +1416,25 @@ def test_podcastid_ettekannete_lehel(sait):
     assert "lex-452" not in h and "Dario Amodei" not in h  # aegunud osa jäeti välja (Kadri 11.11)
 
 
+def test_koondamised_ei_ole_esikohal(sait):
+    """Kadri 11.11.2026: koondamised olid liiga suure fookuse all. Töö lehel on töötus esimene sakk üksi ja koondamised
+    oma sakis koos tabeliga „Keda koondajad otsivad“; uudiste filtris on koondamine viimane nupp."""
+    h = sait["too.html"]
+    sakid = re.findall(r'role="tab" id="sakk-([a-z-]+)-n"[^>]*>([^<]+)</button>', h)
+    assert [s for s, _ in sakid] == ["tootus", "tootus-el", "vabad", "portaalid", "ai-tood", "koondamised", "prognoos"]
+    assert dict(sakid)["tootus"] == "Töötus"
+    esimene = h[h.index('id="sakk-tootus"'):h.index('id="sakk-tootus-el"')]
+    assert 'id="tootus-kuud"' in esimene and 'id="koondamised"' not in esimene
+    koond = h[h.index('id="sakk-koondamised"'):h.index('id="sakk-prognoos"')]
+    assert 'id="koondamised"' in koond and 'id="palkamine"' in koond
+    u = sait["uudised.html"]
+    for rid in ("eesti-uudised", "maailma-uudised"):
+        osa = u[u.index(f'id="{rid}"'):]
+        osa = osa[osa.index('class="u-f"'):]
+        nupud = re.findall(r'<button type="button" data-f="([a-z_]*)"', osa[:osa.index("</div>")])
+        assert nupud[0] == "" and nupud[-1] == "koondamine", (rid, nupud)
+    assert "riigi otsus, statistika, üle 50 koondatu" in u
+
 
 def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
     """Kadri 11.11.2026: „lisa allika põhine filtreerimine ettekannete juurde + ettekande meetod (podcastid, seminarid jms)“."""

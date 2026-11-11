@@ -105,12 +105,15 @@ def _seis(read, kontroll):
     return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval uusi uudiseid ei lisandunud.</p>'
 
 
+# Filtrinuppude kindel järjekord (Kadri 11.11.2026: koondamised olid liiga suure fookuse all, kuigi neid uudiseid on harva).
+# Varem tuli järjekord uusima uudise teemast ja koondamine sattus sageli teiseks. Koondamine on nüüd viimane.
+TEEMA_JARJEKORD = ("ai_too", "riik", "uuring", "andmed", "ai_uldine", "eksitav", "koondamine")
+assert set(TEEMA_JARJEKORD) == set(TEEMA)
+
+
 def _uudiste_paneel(rid, pealkiri, read, sp, kontroll=None):
-    teemad = []
-    for r in read:
-        t = r.get("teema")
-        if t in TEEMA and t not in teemad:
-            teemad.append(t)
+    olemas = {r.get("teema") for r in read}
+    teemad = [t for t in TEEMA_JARJEKORD if t in olemas]
     filter_ = "".join(f'<button type="button" data-f="{e(t)}">{e(TEEMA[t])}</button>' for t in teemad)
     return f"""
 <section class="pn {sp}" id="{rid}" aria-labelledby="h-{rid}">
@@ -157,7 +160,7 @@ def uudised(A, vaade, vaated=None):
         kpi_plaat("ud-maailm", "Maailma uudised, aruanded ja uuringud", str(len(m)), "",
                   {"muutus": (f"+{uusi(m)} nädalaga", f'uusim {kp(m[0]["kuupaev"])}' if m else "")}, korjaja),
         kpi_plaat("ud-suured", "Suured uudised", str(len(suured)), "",
-                  {"tekst": f"üle 50 koondatu, riigi otsus, statistika · <b>{arvamusi} arvamuslugu</b>"}, korjaja),
+                  {"tekst": f"riigi otsus, statistika, üle 50 koondatu · <b>{arvamusi} arvamuslugu</b>"}, korjaja),
         kpi_plaat("ud-kontroll", "Viimane kontroll", f"{vk.day}.{vk.month:02d}", f"{vk:%H:%M}",
                   {"tekst": f'<b>{korras}/{len(O["allikad"])}</b> allikat vastas · 7.23 ja 17.53'}, korjaja),
     )
