@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 11.11.2026 | Sait, navigatsioon (Kadri 11.11: nuppe palju, tühjad Uuringud/Väited plokid): tühja uuringute või väidete plokki enam ei näidata ja „Sellel lehel“ rida näitab ainult lehel olemas olevaid plokke. Hangete lehelt kadusid tühjad Uuringud ja Väited, avaliku sektori lehelt tühjad Väited. Test kontrollib, et iga „Sellel lehel“ link viib olemasolevale plokile. |
 | 11.11.2026 | Sait, kaardid (Kadri 11.11 6.24): Eesti eraldi silt kaardilt ära (Eesti jääb piirjoonega ja legendile). Kaart on seotud sama jaotise tabeli ja järjestusgraafikuga: riigi peal hõljudes ükskõik kummal pool tuleb see riik esile ka teisel pool, kaardile tuleb riigi silt numbriga. Avaleht, Inimesed ja Ettevõtted. Test `test_kaart_ilma_eesti_sildita_ja_seotud_korvaltabeliga`. |
 | 11.11.2026 | Sait, kasutusloogika uue nurga alt: järjestusgraafikus üks Tab-peatus SVG kohta ja nooled joonte vahel (avalehel 190 → 118 Tab-peatust, Töö lehel 231 → 93); kaart näitab riiki ka koputusel; filtri link saab jaotise ankru ja avaneb tulemuste juures (enne 1–3 ekraani kõrgemal); tühi otsing ütleb, mida teha. Test `test_kasutusloogika_klaviatuur_puude_jagatud_link`. |
 | 11.11.2026 | Seire sait, hangete loend: silt „innovatsioon“ → „hankija märge: innovatsioon“ koos selgitusega, sest see on hankija linnuke eVormil, mitte sisuline hinnang (Kadri 11.11: Töötukassa Tableau litsentside ost oli märgitud innovatsiooniks). Numbrid ei muutunud. |

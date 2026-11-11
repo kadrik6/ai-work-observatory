@@ -39,9 +39,14 @@ def andmesakid(tid, pealkiri, alam, sakid):
 
 
 def uuringute_plokk(vaated, read, lingid):
-    """read: [(silt, tekst, vaate id, ankur)]; lingid: [(vaate id, tekst, ankur)] alamlehtedele."""
-    li = "".join(f'<li><span class="k">{e(s)}</span><span>{t} {link(vaated, vid, "Vaata", ank)}</span></li>'
-                 for s, t, vid, ank in read) or '<li class="tyhi"><span class="m-puud">Selle teema uuringuid pole veel hinnatud.</span></li>'
+    """read: [(silt, tekst, vaate id, ankur)]; lingid: [(vaate id, tekst, ankur)] alamlehtedele.
+
+    Tühja plokki ei näidata (Kadri 11.11.2026): „pole veel hinnatud“ + link mujale lisas ainult nuppe ja segadust.
+    „Sellel lehel“ rida jätab puuduva ploki lingi ise välja (kest.leht).
+    """
+    if not read:
+        return ""
+    li = "".join(f'<li><span class="k">{e(s)}</span><span>{t} {link(vaated, vid, "Vaata", ank)}</span></li>' for s, t, vid, ank in read)
     ll = " · ".join(link(vaated, vid, t, ank) for vid, t, ank in lingid)
     return f"""<section class="pn" id="t-uuringud" aria-labelledby="h-t-uuringud">
   <h2 id="h-t-uuringud">Uuringud</h2>
@@ -54,11 +59,7 @@ def vaidete_plokk(A, vaated, tid, teema_jargi, n=3):
     """Teema väited raskuse järgi (kõige eksitavam enne); kõik väited jäävad Usalduse alla."""
     vv = sorted((v for v in A["vaited"] if teema_jargi(v) == tid), key=lambda v: (_raskus(v), v["kuupaev"]))
     if not vv:
-        return f"""<section class="pn" id="t-vaited" aria-labelledby="h-t-vaited">
-  <h2 id="h-t-vaited">Väited</h2>
-  <p class="m-puud">Selle teema väiteid pole veel hinnatud.</p>
-  <p class="lingid">{link(vaated, "kas-tosi", "Kõik väited (Usaldus)")}</p>
-</section>"""
+        return ""  # tühja plokki ei näidata (Kadri 11.11.2026); kõik väited on Usalduse all
     muud = sum(_raskus(v) == 0 for v in vv)
     read = "".join(
         f'<li><span class="verd {RASKUS[_raskus(v)][1]}">{e(v["hinnang"])}</span>'

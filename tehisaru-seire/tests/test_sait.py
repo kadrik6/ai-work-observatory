@@ -901,7 +901,10 @@ def test_koik_teemalehed_jargivad_malli_a(sait):
     for f in ("inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"):
         h = sait[f]
         jrk = [h.find(x) for x in ('id="andmed"', 'id="t-uuringud"', 'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
-        assert -1 not in jrk and jrk == sorted(jrk), f
+        # Uuringud ja väited võivad puududa, kui teemal neid pole (Kadri 11.11.2026); olemasolevate järjekord on sama
+        assert jrk[0] != -1 and jrk[3] != -1 and jrk[4] != -1, f
+        jrk = [i for i in jrk if i != -1]
+        assert jrk == sorted(jrk), f
         assert len(re.findall(r'class="sakk-sisu">', h)) == 1, f
 
 
@@ -1334,3 +1337,15 @@ def test_innovatsioonimarge_on_hankija_oma(sait):
     h = sait["hanked.html"]
     assert '<span class="u-t">innovatsioon</span>' not in h
     assert "hankija märge: innovatsioon" in h
+
+
+def test_tuhja_uuringute_ja_vaidete_plokki_ei_naidata(sait):
+    """Kadri 11.11.2026: „pole veel hinnatud“ plokid ja nende nupud tegid navigatsiooni segaseks."""
+    import teemamall as tm
+    assert tm.uuringute_plokk([], [], [("x", "Mujal", "")]) == ""
+    for f, h in sait.items():
+        assert "pole veel hinnatud" not in h, f
+        m = re.search(r'<nav class="lehel[^"]*" aria-label="Sellel lehel">(.*?)</nav>', h, re.S)
+        for ank in re.findall(r'href="#([^"]+)"', m.group(1) if m else ""):
+            assert f'id="{ank}"' in h, (f, ank)  # „Sellel lehel“ ei viita puuduvale plokile
+    assert 'id="t-vaited"' not in sait["hanked.html"] and 'id="t-uuringud"' not in sait["hanked.html"]
