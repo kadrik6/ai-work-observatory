@@ -173,6 +173,10 @@ def ehita(valjund=VALJUND, A=None):
     # Kadri 9.11.2026 07:18: heledas ja pehmes teemas pilt B (avaleht.jpg), tumedas pilt A (avaleht-tume.jpg)
     for nimi in ("avaleht.jpg", "avaleht-tume.jpg"):
         shutil.copyfile(SIIN / "pilt" / nimi, valjund / "pilt" / nimi)
+    # Uudiste allikate logod (sait/lae_logod.py); kui kausta pole, on allikad tekstina
+    if (SIIN / "pilt" / "logod").is_dir():
+        shutil.copytree(SIIN / "pilt" / "logod", valjund / "pilt" / "logod", dirs_exist_ok=True,
+                        ignore=shutil.ignore_patterns("*.json"))
     # Veebis (Vercel) on sait esialgu link, mida otsingumootorid ei indekseeri (Kadri 8.11.2026).
     # Sama keeld on ka päises X-Robots-Tag (vercel.json). Avalikuks tegemine on Kadri otsus.
     (valjund / "robots.txt").write_text(ROBOTS, encoding="utf-8")

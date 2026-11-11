@@ -29,7 +29,11 @@ def test_robots_keelab_koik(tmp_path):
     # väljundis on ainult saidi failid: html, stiil, skript, robots.txt ja avalehe päise pilt
     lubatud = re.compile(r".+\.html$|^stiil\.css$|^sait\.js$|^robots\.txt$|^pilt$")
     assert all(lubatud.match(p.name) for p in tmp_path.iterdir()), sorted(p.name for p in tmp_path.iterdir())
-    assert sorted(p.name for p in (tmp_path / "pilt").iterdir()) == ["avaleht-tume.jpg", "avaleht.jpg"]
+    assert sorted(p.name for p in (tmp_path / "pilt").iterdir() if p.name != "logod") == ["avaleht-tume.jpg", "avaleht.jpg"]
+    # uudiste allikate logod (sait/lae_logod.py): ainult pildid, nimekiri logod.json jääb väljundist välja
+    lubatud_logo = re.compile(r"^[a-z0-9.-]+\.(png|ico|gif|webp)$")
+    logod = tmp_path / "pilt" / "logod"
+    assert not logod.exists() or all(lubatud_logo.match(p.name) for p in logod.iterdir())
 
 
 def test_kulastusloendur_ainult_vercelis():
