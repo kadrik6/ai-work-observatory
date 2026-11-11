@@ -65,12 +65,12 @@ def _kasutus(A):
     jrj_fig = ""
     if j_ev:
         b_g, b_k, b_a, _, b_uuend = j_ev
-        jrj_fig = f"""<figure class="plokk" aria-labelledby="g-jrj">
-        <figcaption><span class="gt" id="g-jrj">Eesti koht ELis aastate kaupa, {b_a[0]}–{b_a[-1]}: {b_k[b_a[0]]}. → {b_k[b_a[-1]]}.</span>
-          <span class="gs">Tehisaru kasutavad ettevõtted, % vähemalt 10 hõivatuga ettevõtetest. Klõpsa real, et see esile tõsta.</span></figcaption>
-        <div class="el-bump">{b_g}</div>
-        {allikarida([("Eurostat, isoc_eb_ai", "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "uuendatud " + kp(b_uuend))])}
-      </figure>"""
+        jrj_fig = f"""<figure aria-labelledby="g-jrj">
+      <figcaption><span class="gt" id="g-jrj">Eesti koht ELis aastate kaupa, {b_a[0]}–{b_a[-1]}: {b_k[b_a[0]]}. → {b_k[b_a[-1]]}.</span>
+        <span class="gs">Tehisaru kasutavad ettevõtted, % vähemalt 10 hõivatuga ettevõtetest. Klõpsa real, et see esile tõsta.</span></figcaption>
+      <div class="kp-sisu"><div class="el-bump">{b_g}</div>
+      {allikarida([("Eurostat, isoc_eb_ai", "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "uuendatud " + kp(b_uuend))])}</div>
+    </figure>"""
     aastad = sorted({v["aasta"] for v in andmed.vali(A, EB, "EE", klass="alus")})
     d_read = []
     for g in ["EE", "FI", "SE", "DK", "NO", "DE", "NL", EL]:
@@ -87,14 +87,17 @@ def _kasutus(A):
   <header>
     <h2 id="h-kasutus">ELi skaalal on Eesti {len(el)} riigi seas <b>{koht}. kohal</b> ¦ {pr(ee["vaartus"])}% ettevõtetest, EL {pr(eu["vaartus"])}%, Soome, Rootsi ja Taani {pr(min(pm), 0)}–{pr(max(pm), 0)}% ({y})</h2>
   </header>
-  <div class="ruut3">
+  <div class="ruut3 kaart-paar">
     <figure aria-labelledby="g-kasutus">
       <figcaption><span class="gt" id="g-kasutus">Tehisaru kasutavad ettevõtted ELi riikides, {y}, % ettevõtetest</span>
         <span class="gs">Vähemalt 10 hõivatuga ettevõtted, ilma põllumajanduse, kaevandamise ja finantssektorita.</span></figcaption>
-      {graafik}
+      <div class="kp-sisu">{graafik}
       <p class="peidus">Eesti on {koht}. kohal {pr(ee["vaartus"])}%-ga. Eespool on {", ".join(riik(v["geo"]) for v in jarjest[:koht - 1])}.</p>
-      {allikarida([("Eurostat, isoc_eb_ai", "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "uuendatud " + kp(m["allikas_uuendas"]))])}
+      {allikarida([("Eurostat, isoc_eb_ai", "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "uuendatud " + kp(m["allikas_uuendas"]))])}</div>
     </figure>
+    {jrj_fig}
+  </div>
+  <div class="kulg-all">
     <div class="kulg">
       {vastavus("osaliselt", "Suund on kindel, aga osa 2025. aasta tõusust tuleb küsimustiku muutusest ja Eesti uusim number on uue klassifikaatoriga.")}
       <div class="plokk">
@@ -105,9 +108,8 @@ def _kasutus(A):
         </div>
         <p class="gs">Eesti kasvab suhtes kiiremini, aga punktides aeglasemalt kui Põhjamaad.</p>
       </div>
-      {jrj_fig}
-      {usaldus}
     </div>
+    {usaldus}
   </div>
   <details>
     <summary>Näita andmetabelit ja määratlust</summary>

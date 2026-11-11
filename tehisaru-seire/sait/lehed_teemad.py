@@ -106,14 +106,22 @@ def inimesed(A, vaade, vaated=None):
   <header>
     <h2 id="h-kasutus">ELi skaalal oli Eesti {y}. aastal {len(el)} riigi seas <b>{koht}. kohal</b> ¦ {pr(ee25["vaartus"])}% inimestest, EL {pr(eu["vaartus"])}%</h2>
   </header>
-  <div class="ruut3">
+  <div class="ruut3 kaart-paar">
     <figure aria-labelledby="g-kasutus">
       <figcaption><span class="gt" id="g-kasutus">Tehisaru kasutanud inimesed ELi riikides, {y}, % 16–74-aastastest</span>
         <span class="gs">Generatiivse tehisaru tööriistad viimase 3 kuu jooksul, inimeste enda vastused.</span></figcaption>
-      {kaart(list(el.values()), (0, 10, 20, 30, 40), viide=eu["vaartus"], viite_nimi=f"EL keskmine {pr(eu['vaartus'])}%")}
+      <div class="kp-sisu">{kaart(list(el.values()), (0, 10, 20, 30, 40), viide=eu["vaartus"], viite_nimi=f"EL keskmine {pr(eu['vaartus'])}%")}
       <p class="peidus">Eesti on {koht}. kohal. Eespool on {", ".join(riik(v["geo"]) for v in jarjest[:koht - 1])}.</p>
-      {allikarida([("Eurostat, isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), "uuendatud " + kp(m_in["allikas_uuendas"]))])}
+      {allikarida([("Eurostat, isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), "uuendatud " + kp(m_in["allikas_uuendas"]))])}</div>
     </figure>
+    <figure aria-labelledby="g-jrj">
+      <figcaption><span class="gt" id="g-jrj">{gt_jrj}</span>
+        <span class="gs">{gs_jrj}</span></figcaption>
+      <div class="kp-sisu">{g_jrj}
+      {allikarida([("Eurostat, isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), "uuendatud " + kp(m_in["allikas_uuendas"]))])}</div>
+    </figure>
+  </div>
+  <div class="kulg-all">
     <div class="kulg">
       {vastavus("osaliselt", f"Eurostati uusim aasta on {y}. Eesti, Norra ja Rootsi {y + 1}. aasta numbrid on riiklikest tabelitest, aga sama küsimustikuga; ELi keskmist {y + 1}. aasta kohta veel pole.")}
       <figure class="plokk" aria-labelledby="g-aasta">
@@ -122,14 +130,8 @@ def inimesed(A, vaade, vaated=None):
         {g_aasta}
         {allikarida([(sa_m["nimi"], sa_m["url"], kp(ee["avaldatud"]))] + [(v1["allikas"], v1["url"], "") for _, v1 in paarid if v1["geo"] != "EE"])}
       </figure>
-      <figure class="plokk" aria-labelledby="g-jrj">
-        <figcaption><span class="gt" id="g-jrj">{gt_jrj}</span>
-          <span class="gs">{gs_jrj}</span></figcaption>
-        {g_jrj}
-        {allikarida([("Eurostat, isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), "uuendatud " + kp(m_in["allikas_uuendas"]))])}
-      </figure>
-      {usaldus}
     </div>
+    {usaldus}
   </div>
   <details>
     <summary>Näita andmetabelit ja määratlust</summary>
