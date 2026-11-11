@@ -33,7 +33,8 @@ KEELATUD_TUUBID = {".xlsx", ".xls", ".xlsm", ".csv.gz", ".pkl", ".pickle", ".zip
 # Pildid on lubatud ainult testide sünteetilise sisendina; muud pildid võivad olla isiklikud fotod.
 PILDID = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".heic", ".cr3", ".tif", ".tiff"}
 # Erandid (Kadri luba 8.11 ja 9.11.2026): seire saidi avalehe päise pildid, Kadri antud pildid (9.11 16:41: heledas H1 võrk, tumedas T2 lained), mitte isiklikud fotod.
-PILDID_LUBATUD = ["*/tests/*", "tehisaru-seire/sait/pilt/avaleht.jpg", "tehisaru-seire/sait/pilt/avaleht-tume.jpg"]
+PILDID_LUBATUD = ["*/tests/*", "tehisaru-seire/sait/pilt/avaleht.jpg", "tehisaru-seire/sait/pilt/avaleht-tume.jpg",
+                  "tehisaru-seire/sait/pilt/logod/*"]  # uudiste allikate avalikud ikoonid (sait/lae_logod.py)
 TEKST = {".py", ".md", ".csv", ".json", ".txt", ".html", ".css", ".js", ".ini", ".toml", ".yml", ".yaml", ".svg", ""}
 SUUR = 1_000_000
 VOTMED = [
