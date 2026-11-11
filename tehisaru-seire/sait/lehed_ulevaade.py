@@ -453,7 +453,7 @@ def avaleht(A, vaade, vaated):
     </div></details>
   </div>
 </div>
-<nav aria-label="Sellel lehel"><ul class="sellel"><li><a href="#teemad">Teemad</a></li><li><a href="#el">Eesti ELis</a></li><li><a href="#tootus">Töö ja töötus</a></li><li><a href="#trend">Ettevõtted</a></li><li><a href="#muutus">Mis muutus</a></li><li><a href="#sihid">Sihid</a></li><li><a href="#hanked">Hanked</a></li><li><a href="#vaited">Väited</a></li></ul></nav>
+<nav aria-label="Sellel lehel"><ul class="sellel"><li><a href="#teemad">Teemad</a></li><li><a href="#el">Eesti ELis</a></li><li><a href="#tootus">Töötus</a></li><li><a href="#trend">Ettevõtete trend</a></li><li><a href="#muutus">Mis muutus</a></li><li><a href="#sihid">Sihid</a></li><li><a href="#hanked">Hangete osa</a></li><li><a href="#vaited">Väidete kontroll</a></li></ul></nav>
 <div class="plaadid kaks" aria-label="Peamised numbrid">{plaadid}</div>"""
     sec_teemad, _ = teematabel(A, vaated, {"ein": ein, "eeb": eeb, "ds": ds, "t_ee": t_ee, "t_el": t_el, "kuu": kuu, "h_uus": h_uus})
     return (pea + '<div class="g12">' + sec_teemad + "</div>"

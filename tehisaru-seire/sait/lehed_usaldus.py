@@ -136,7 +136,9 @@ def kas_tosi(A, vaade, vaated=None):
                   {"tekst": "kontrollitud <b>algallika järgi</b>"},
                   "Seire uudiste kontroll"),
     )
-    lead = "Avalikud väited, ka uudistest, kontrollitud algallika järgi ühel skaalal."
+    # Kadri 11.11.2026 (ülesehituse kontroll E): menüüpunkt „Usaldus“ avab selle lehe, seega ütleb lead, mida osa tervikuna näitab
+    lead = (f"Usaldus kontrollib kolme asja: kas väide vastab allikale ({sonaga(n)} väidet), kus Eurostat ja Statistikaamet "
+            f"annavad eri numbri ja kui värsked on numbrid. Väited on kontrollitud algallika järgi ühel skaalal.")
     # Usaldus (Kadri 6.11.2026 22:27): väited, lahknevused ja värskus on üks teema kolmel alamlehel
     return jaga(A, vaade, lead, [], [
         ("vaited", [("vaited", "Väited")], sec_v),

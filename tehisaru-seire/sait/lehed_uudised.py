@@ -551,8 +551,7 @@ def hanked(A, vaade, vaated=None):
     sec_loend = f"""
 <div class="g12">
 <section class="pn sp12" id="loend" aria-labelledby="h-loend">
-  <div class="pn-h"><h2 id="h-loend">Leia sarnane hange, mida eeskujuks võtta: <b>{n_hea} head näidet</b> {len(loend)}-st</h2></div>
-  <p class="ps">Hea näide: kvaliteeti hinnati, pakkumusi oli vähemalt kaks ja hange ei katkenud.</p>
+  <div class="pn-h"><h2 id="h-loend">Otsi sarnast hanget: {len(loend)} tehisaru- ja andmehanget, uuemad eespool</h2></div>
   <div class="h-otsing"><input type="search" placeholder="nt andmeladu, kõnetuvastus, Tableau" aria-label="Otsi hangetest">
     <div class="u-f" role="group" aria-label="Rühm"><button type="button" data-r="" aria-pressed="true">kõik</button><button type="button" data-r="ai">tehisaru</button><button type="button" data-r="andmed">andmed</button><button type="button" data-r="hea">head näited</button></div>
     <span class="h-loe" aria-live="polite"></span></div>
@@ -587,12 +586,11 @@ def hanked(A, vaade, vaated=None):
     # Teemamall A (Kadri 8.11.2026): andmed sakkides, siis uuringud, väited, reeglid, allikad
     import teemamall as tm
     from lehed_ulevaade import vaite_teema
-    sec_andmed = tm.andmesakid("hanked", "Uuri andmeid: aastad, hankimise viis, litsentsid ja head näited",
+    sec_andmed = tm.andmesakid("hanked", "Uuri andmeid: aastad, hankimise viis ja litsentsid",
                                "Riigihangete registri ja TEDi hanked, märgistatud masinaga; meetod ja täpsus on viimases sakis.", [
         ("aastad", "Aastad", '<div class="g12">' + sec_aastad + sec_inn + "</div>"),
         ("viis", "Kuidas hangitakse", '<div class="g12">' + sec_viis + sec_hankijad + "</div>"),
         ("litsentsid", "Litsentsid", sec_lits),
-        ("naited", "Head näited", sec_loend),
         ("tapsus", "Täpsus", sec_tapsus),
     ])
     t_uuringud = tm.uuringute_plokk(vaated, [], [("avalik-sektor", "Avalik sektor (OECD 2026)", "")])
@@ -602,9 +600,17 @@ def hanked(A, vaade, vaated=None):
         ("Riigihangete register ja TED", HANKED_URL, H["seis"]["kuupaev"], "uuendatakse GitHub Actionsiga"),
         ("Käsitsi pimeülevaatus, 100 hanget", "", KASITSI["kuupaev"], f'kokkulangevus {KASITSI["kokku"]}%, kappa {KASITSI["kappa"]}'),
     ])
-    return (pea(A, vaade, lead, [("andmed", "Andmed"), ("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")], [], aside=aside) + markus
-            + sec_andmed + tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)
-            + seotud(vaated, [("avalik-sektor", "Avalik sektor: kas uuendused jõuavad laiendamiseni"), ("reeglid", "Tehisaru määrus: tähtajad")]))
+    # Kadri 11.11.2026 (ülesehituse kontroll F): head näited (pikk loend) on oma lehel „Riik › Hangete näited“.
+    # „Seotud“ rida jäi ära (D): Riigi alamlehtede rida viib samadele lehtedele.
+    from abi import alam_h1
+    alam_h1(vaade, "hanked-naited.html", f"Eeskujuks sobib **{n_hea} hanget {len(loend)}-st** ¦ "
+            "hea näide: kvaliteeti hinnati, pakkumusi oli vähemalt kaks ja hange ei katkenud")
+    return jaga(A, vaade, lead, [], [
+        ("andmed", [("andmed", "Andmed")], markus + sec_andmed),
+        ("lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
+         tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
+        ("naited", [("loend", "Näited")], sec_loend),
+    ], aside=aside)
 
 
 # ---------------------------------------------------------------- Töö: mida uuritakse

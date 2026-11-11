@@ -357,8 +357,13 @@ def test_hangete_aastaid_ei_vorrelda_enne_inimese_kontrolli(sait):
 def test_menuus_on_kaheksa_teemat_ja_usaldus_on_oma_teema(sait):
     # Kadri 6.11.2026 21:59: Hanked on oma menüüpunkt. 22:27 (paigutuse ettepanekud 1–3, 10): Usaldus oma menüükoht
     menuu = re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1)
-    assert re.findall(r">([^<>]+)</a>", menuu) == ["Avaleht", "Inimesed", "Ettevõtted", "Töö", "Avalik sektor", "Hanked", "Tehisaru määrus", "Uudised", "Usaldus"]
-    assert '<a href="hanked.html" aria-current="page">Hanked</a>' in sait["hanked.html"]
+    # Kadri 11.11.2026 (ülesehituse kontroll D): Avalik sektor, Hanked ja Tehisaru määrus on ühe punkti „Riik“ all
+    assert re.findall(r">([^<>]+)</a>", menuu) == ["Avaleht", "Inimesed", "Ettevõtted", "Töö", "Riik", "Uudised", "Usaldus"]
+    for f in ("avalik-sektor.html", "hanked.html", "hanked-naited.html", "tehisaru-maarus.html", "eesti-otsused.html"):
+        assert '<a href="avalik-sektor.html" aria-current="page">Riik</a>' in sait[f], f
+        alam = re.search(r'<ul class="alamlehed">(.*?)</ul>', sait[f]).group(1)
+        assert re.findall(r">([^<>]+)</a>", alam) == ["Avalik sektor", "Hanked", "Hangete näited", "Tehisaru määrus", "Eesti otsused"], f
+        assert alam.count('aria-current="page"') == 1 and f'href="{f}" aria-current="page"' in alam, f
     assert '<ul class="sellel"></ul>' not in "".join(sait.values())
     for f in ("kas-see-on-tosi.html", "lahknevused.html", "varskus.html"):
         assert '<a href="kas-see-on-tosi.html" aria-current="page">Usaldus</a>' in sait[f], f
@@ -440,12 +445,13 @@ def test_uudised_ja_hanked_vajavad_andmeid(A):
 
 
 def test_hangete_loend_on_taielik_ja_head_naited_tulevad_andmetest(A, sait):
-    h = sait["hanked.html"]
+    h = sait["hanked-naited.html"]  # Kadri 11.11.2026 (F): loend on oma lehel
+    assert 'class="h-tabel"' not in sait["hanked.html"]
     L = A["hanked_leht"]["loend"]
     tabel = h.split('class="h-tabel"')[1].split("</table>")[0]
     assert tabel.count("<tr data-hea") == len(L)
     assert tabel.count('data-hea="1"') == sum(r.get("hea") == 3 for r in L)
-    assert f'<b>{sum(r.get("hea") == 3 for r in L)} head näidet</b> {len(L)}-st' in h
+    assert f'<b>{sum(r.get("hea") == 3 for r in L)} hanget {len(L)}-st</b>' in h  # h1 (Kadri 11.11.2026, F)
     assert tabel.count("viitenumber") == sum(1 for r in L if not r.get("url"))
 
 
@@ -529,12 +535,14 @@ def test_uus_margid_on_oranzid(sait):
 
 def test_pikad_teemad_on_alamlehtedeks_jagatud(sait):
     # Kadri 6.11.2026: Töö, Inimesed ja Uudised eraldi alamlehtedeks; alamlehtede rida igal alamlehel
-    for v in ehita.lae_vaated():
+    vaated = ehita.lae_vaated()
+    for v in vaated:
+        t = next(x for x in vaated if x["id"] == v["teema"]) if v.get("teema") else v  # nt Hanked on Riigi all
         for s in v.get("alamlehed", []):
             h = sait[s["fail"]]
             assert f'<a href="{s["fail"]}" aria-current="page">' in h, s["fail"]
-            assert all(f'href="{t["fail"]}"' in h for t in v["alamlehed"])
-            assert f'<a href="{v["fail"]}" aria-current="page">{v["menuu"]}</a>' in h  # teema jääb menüüs valituks
+            assert all(f'href="{x["fail"]}"' in h for x in v["alamlehed"])
+            assert f'<a href="{t["fail"]}" aria-current="page">{t["menuu"]}</a>' in h  # teema jääb menüüs valituks
     assert 'id="hoive"' in sait["too-ametid.html"] and 'id="hoive"' not in sait["too.html"]
 
 
@@ -592,9 +600,10 @@ def test_kasutusloogika_kontroll_leiab_puuduva_oleku():
 
 
 def test_seotud_rida_avaliku_sektori_ja_hangete_vahel(sait):
-    # Kadri 6.11.2026 22:27, ettepanek 8
-    assert 'class="seotud"' in sait["avalik-sektor.html"] and 'href="hanked.html"' in _seotud(sait["avalik-sektor.html"])
-    assert 'href="avalik-sektor.html"' in _seotud(sait["hanked.html"])
+    # Kadri 6.11.2026 22:27, ettepanek 8. 11.11.2026 (D): Riigi alamlehtede rida viib samadele lehtedele, „Seotud“ rida jäi ära
+    for f, teine in (("avalik-sektor.html", "hanked.html"), ("hanked.html", "avalik-sektor.html")):
+        assert 'class="seotud"' not in sait[f]
+        assert f'href="{teine}"' in re.search(r'<ul class="alamlehed">(.*?)</ul>', sait[f]).group(1)
 
 
 def _seotud(h):
@@ -1335,7 +1344,7 @@ def test_kaart_ilma_eesti_sildita_ja_seotud_korvaltabeliga(sait):
     assert "seire-riik" in js and "k.seireRiik" in seos and "'.bs[aria-label]'" in seos and "'.jrj-r[data-n]'" in seos
 def test_innovatsioonimarge_on_hankija_oma(sait):
     """Kadri 11.11.2026: „innovatsioon“ silt on hankija märge, mitte meie hinnang."""
-    h = sait["hanked.html"]
+    h = sait["hanked-naited.html"]
     assert '<span class="u-t">innovatsioon</span>' not in h
     assert "hankija märge: innovatsioon" in h
 
@@ -1372,6 +1381,29 @@ def test_teemalehel_ainult_oma_reegel_ja_uuringud_ei_kordu(sait):
         assert 'href="tehisaru-maarus.html#tahtajad"' in r, f
     inim = re.search(r'<section class="pn" id="t-uuringud".*?</section>', sait["inimesed.html"], re.S).group(0)
     assert inim.count("<li>") == 1 and "GDS" not in inim and "veel pole" not in inim
+
+
+def test_ulesehituse_kontroll_a_b_c_e(sait):
+    """Kadri 11.11.2026 „kõigile jah“ (ülesehituse kontroll): vähem nupuridu ja selgem roll igal real."""
+    import kest
+    # A: „Sellel lehel“ rida ainult siis, kui linke on vähemalt neli
+    for f, h in sait.items():
+        m = re.search(r'aria-label="Sellel lehel">(.*?)</nav>', h, re.S)
+        if m:
+            assert m.group(1).count("<li>") >= kest.LEHEL_MIN, f
+    assert 'aria-label="Sellel lehel"' not in sait["ettekanded.html"] and 'aria-label="Valdkonnad"' in sait["ettekanded.html"]
+    # B: avalehe kiibid ei kanna teemalehtede nimesid
+    kiibid = re.findall(r">([^<>]+)</a>", re.search(r'aria-label="Sellel lehel">(.*?)</nav>', sait["index.html"], re.S).group(1))
+    menuu = re.findall(r">([^<>]+)</a>", re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1))
+    assert not set(kiibid) & set(menuu), set(kiibid) & set(menuu)
+    # C: alamlehtede rida on menüürida teema nimega, mitte sakk
+    assert '<span class="alam-silt">Töö:</span>' in sait["too-uuringud.html"]
+    css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8").split("Alamlehtede rida on menüü, mitte sakk")[1]
+    assert "border-bottom: 0" in css and "overflow-x: auto" in css
+    # E: Usalduse esimene leht ütleb, mida osa tervikuna näitab
+    assert "Usaldus kontrollib kolme asja" in sait["kas-see-on-tosi.html"]
+    # F: vanad lingid hangete loendile viivad uuele lehele
+    assert not any('href="hanked.html#loend"' in h for h in sait.values())
 
 
 def test_podcastid_ettekannete_lehel(sait):

@@ -64,7 +64,9 @@ def alamlehed(vaade, fail):
     """Teema alamlehed sakkidena pealkirja all (navigatsioon B, Kadri 6.11.2026 22:51)."""
     li = "".join(f'<li><a href="{s["fail"]}"{AKTIIVNE if s["fail"] == fail else ""}>{e(s["nimi"])}</a></li>'
                  for s in vaade["alamlehed"])
-    return f'<nav class="alam" aria-label="{e(vaade["menuu"])}: alamlehed"><ul class="alamlehed">{li}</ul></nav>'
+    # Kadri 11.11.2026 (C): alamlehtede rida on teine menüürida, mitte sakk; sakid on ainult andmevaadetel samal lehel
+    return (f'<nav class="alam" aria-label="{e(vaade["menuu"])}: alamlehed"><span class="alam-silt">{e(vaade["menuu"])}:</span>'
+            f'<ul class="alamlehed">{li}</ul></nav>')
 
 
 def mega(vaated, fail, kodu, teema_id=None):
@@ -93,10 +95,14 @@ def _lehel(nav, cls):
     return nav.replace('<nav aria-label="Sellel lehel">', f'<nav class="lehel {cls}" aria-label="Sellel lehel">', 1)
 
 
+LEHEL_MIN = 4  # Kadri 11.11.2026 (ülesehituse kontroll, A): alla nelja lingiga rida on lihtsalt üks nupurida rohkem
+
+
 def _olemasolevad(nav, sisu):
-    """„Sellel lehel“ reast välja lingid, mille plokki lehel pole (nt tühi uuringute plokk, Kadri 11.11.2026)."""
+    """„Sellel lehel“ reast välja lingid, mille plokki lehel pole (nt tühi uuringute plokk, Kadri 11.11.2026).
+    Kui linke jääb alla LEHEL_MIN, kaob kogu rida: lühikesel lehel leiab lugeja jaotised kerides."""
     nav = re.sub(r'<li><a href="#([^"]+)">[^<]*</a></li>', lambda m: m.group(0) if f'id="{m.group(1)}"' in sisu else "", nav)
-    return "" if "<li>" not in nav else nav
+    return "" if nav.count("<li>") < LEHEL_MIN else nav
 
 
 def _ploki_lopp(sisu, i):
