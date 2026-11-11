@@ -1476,6 +1476,40 @@ def test_uudiste_valdkond_ja_teema(sait, A):
     assert "b.disabled = !!v && k === 0" in js
 
 
+def test_uudiste_allika_logo(A, tmp_path, monkeypatch):
+    """Kadri 11.11.2026: allikad logodena uudise kõrval, nimi hõljudes; logota allikas jääb tekstiks."""
+    import json
+    import lae_logod
+    png = b"\x89PNG\r\n\x1a\n" + b"0" * 200
+    laetud = []
+
+    def laadija(url):
+        laetud.append(url)
+        if "news.err.ee" in url or "doi.org" in url:
+            raise OSError("pole")
+        if "err.ee" in url or "theguardian.com" in url:
+            return png
+        return b"<html>404</html>"
+    (tmp_path / "u.jsonl").write_text("\n".join(json.dumps({"url": u}) for u in (
+        "https://news.err.ee/1", "https://www.err.ee/2", "https://www.theguardian.com/x", "https://doi.org/10.1/x",
+        "https://tundmatu.example/y")), encoding="utf-8")
+    assert lae_logod.main(laadija, tmp_path / "logod", tmp_path / "u.jsonl") == 2
+    logod = json.loads((tmp_path / "logod" / "logod.json").read_text(encoding="utf-8"))
+    assert logod == {"err.ee": "err.ee.png", "theguardian.com": "theguardian.com.png"}  # news.err.ee → err.ee
+    assert not any("doi.org" in u for u in laetud)
+    assert lae_logod.main(laadija, tmp_path / "logod", tmp_path / "u.jsonl") == 0  # olemasolevat uuesti ei laeta
+    assert lae_logod.logo_fail(logod, "https://news.err.ee/a") == "err.ee.png"
+    assert lae_logod.logo_fail(logod, "https://tundmatu.example/y") is None
+    monkeypatch.setattr(lehed_uudised, "LOGOD", logod)
+    r = dict(A["uudised"][0], url="https://news.err.ee/1", allikas="ERR News")
+    h = lehed_uudised._uudis(r)
+    assert '<span class="u-a u-logo" title="ERR News"><img src="pilt/logod/err.ee.png" alt="ERR News"' in h
+    h = lehed_uudised._uudis(dict(r, url="https://tundmatu.example/y", allikas="Tundmatu"))
+    assert '<span class="u-a">Tundmatu</span>' in h
+    tk = (ehita.SIIN.parents[1] / "turvakontroll" / "kontrolli.py").read_text(encoding="utf-8")
+    assert '"tehisaru-seire/sait/pilt/logod/*"' in tk
+
+
 def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
     """Kadri 11.11.2026: „lisa allika põhine filtreerimine ettekannete juurde + ettekande meetod (podcastid, seminarid jms)“."""
     h = sait["ettekanded.html"]

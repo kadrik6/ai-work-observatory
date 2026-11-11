@@ -11,6 +11,10 @@ import re
 from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, jaga, pea, seotud, sonaga
 from andmekiht import AndmeViga
 from komponendid import e, kp, pr
+import json as _json
+from pathlib import Path as _Path
+
+import lae_logod
 
 HANKED_URL = "https://riigihanked.riik.ee/"
 OPENALEX_URL = "https://openalex.org/"
@@ -75,6 +79,19 @@ def _eur(v):
 
 # ---------------------------------------------------------------- Uudised
 
+# Allika logo (Kadri 11.11.2026): logo uudise kõrval, nimi hõljudes. Logod laeb sait/lae_logod.py (GitHub Actions).
+_LOGO_NIMEKIRI = _Path(__file__).resolve().parent / "pilt" / "logod" / "logod.json"
+LOGOD = _json.loads(_LOGO_NIMEKIRI.read_text(encoding="utf-8")) if _LOGO_NIMEKIRI.exists() else {}
+
+
+def _allikas(r):
+    fail = lae_logod.logo_fail(LOGOD, r["url"])
+    if not fail:
+        return f'<span class="u-a">{e(r["allikas"])}</span>'
+    return (f'<span class="u-a u-logo" title="{e(r["allikas"])}">'
+            f'<img src="pilt/logod/{e(fail)}" alt="{e(r["allikas"])}" width="18" height="18" loading="lazy"></span>')
+
+
 def _uudis(r, peida=""):
     liik, kl = LIIK.get(r.get("liik"), (r.get("liik", ""), ""))
     if r.get("liik") not in LIIK:
@@ -117,7 +134,7 @@ def _uudis(r, peida=""):
             f'<span class="d">{kp(r["kuupaev"])}</span>'
             f'<div><a href="{e(r["url"])}">{e(r["pealkiri"])}</a>'
             f'<p class="u-k">{arv}{e(pohjus)}</p>'
-            f'<p class="u-m">{"".join(sildid)}<span class="u-a">{e(r["allikas"])}</span></p></div></li>')
+            f'<p class="u-m">{"".join(sildid)}{_allikas(r)}</p></div></li>')
 
 
 # „uus“ = avaldatud viimase kontrolli päeval või sellele eelneval päeval (Kadri 11.11.2026: sildi järgi

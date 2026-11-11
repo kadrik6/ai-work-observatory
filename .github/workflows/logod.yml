@@ -1,0 +1,43 @@
+name: logod
+# Uudiste allikate logod (Kadri 11.11.2026: „allikad võiks olla seal kõrval logodena nähtavad, hoveril võiks nime näha“).
+# Laeb igale uudiste domeenile, millel logot veel pole, saidi enda ikooni (favicon) kausta tehisaru-seire/sait/pilt/logod/.
+# Claude'i pilvekeskkonnast on välisvõrk suletud, seepärast jookseb see siin. Kui uusi logosid pole, commit'i ei tule.
+on:
+  schedule:
+    - cron: "45 5 * * *"    # pärast hommikust uudistekogumist (07:23 Tallinna aja järgi)
+    - cron: "15 16 * * *"   # pärast õhtust kogumist (17:53)
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: main-andmed
+  cancel-in-progress: false
+jobs:
+  logod:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Lae puuduvad logod
+        working-directory: tehisaru-seire
+        run: python sait/lae_logod.py | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Sait ehitub ja testid läbivad
+        working-directory: tehisaru-seire
+        run: |
+          pip install -q -r requirements.txt
+          python sait/ehita.py > /dev/null
+          python -m pytest -q
+      - name: Commit, kui logosid lisandus
+        env:
+          KEELATUD_SONAD: ${{ secrets.KEELATUD_SONAD }}
+          KEELATUD_KAUSTAD: ${{ secrets.KEELATUD_KAUSTAD }}
+        run: |
+          git add tehisaru-seire/sait/pilt/logod
+          if git diff --cached --quiet; then echo "Uusi logosid pole"; exit 0; fi
+          python turvakontroll/kontrolli.py
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "Uudiste allikate logod $(date -u +%F)"
+          git pull --rebase -q origin main && git push
