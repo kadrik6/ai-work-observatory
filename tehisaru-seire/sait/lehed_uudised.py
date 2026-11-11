@@ -18,8 +18,34 @@ OECD_URL = "https://doi.org/10.1787/c2c09a06-en"
 
 LIIK = {"uudis": ("uudis", "vaikne"), "aruanne": ("aruanne", ""), "uuring": ("uuring", ""),
         "arvamus": ("arvamus", "arv"), "eksitav": ("eksitav", "risk")}
-TEEMA = {"koondamine": "koondamine", "ai_too": "tehisaru ja töö", "ai_uldine": "tehisaru", "andmed": "andmed",
-         "uuring": "uuring", "eksitav": "eksitav", "riik": "riigi otsused ja tähtajad"}
+# Teemafilter (Kadri 11.11.2026): „strateegia“ kuulub riigi alla, „tehisaru“ (ai_uldine) ja „andmed“ on teemana „muu“,
+# sest tehisaru ja andmed on nüüd eraldi valdkonnafilter. Tundmatu teema läheb „muu“ alla, et uus liik ei jääks filtrita.
+TEEMA = {"too": "töö", "riik": "riik", "uuring": "uuring", "muu": "muu", "eksitav": "eksitav", "koondamine": "koondamine"}
+TEEMA_FILTER = {"ai_too": "too", "riik": "riik", "strateegia": "riik", "uuring": "uuring", "ai_uldine": "muu",
+                "andmed": "muu", "eksitav": "eksitav", "koondamine": "koondamine"}
+# Valdkond (Kadri 11.11.2026: „andmed ja tehisaru võiks olla eraldatavad … default filter võiks olla tehisaru“).
+# Kogumise väli `valdkond` võidab; kui seda pole, tuletatakse see teemast, tehisaru rollist ja pealkirjast.
+VALDKOND = {"tehisaru": "tehisaru", "andmed": "andmed"}
+EI_AI = {"ei_mainita", "ei_pohjus", "statistika"}
+AI_SONA = re.compile(r"tehisaru|tehisintellekt|\bAI\b|\.ai\b|\bKI\b|\bkrat|agendi|agent|keelemudel|masinõpe", re.I)
+ANDME_SONA = re.compile(r"andme|open data|\bdata\b", re.I)
+
+
+def valdkond(r):
+    v = r.get("valdkond")
+    if v in ("tehisaru", "andmed", "muu"):
+        return v
+    t, tekst = r.get("teema"), f'{r.get("pealkiri", "")} {r.get("pohjus", "")}'
+    if t == "andmed":
+        return "andmed"
+    if t == "koondamine":
+        roll = r.get("ai_roll")
+        return "tehisaru" if (roll and roll not in EI_AI) or (not roll and AI_SONA.search(r.get("pealkiri", ""))) else "muu"
+    if t == "riik":
+        return "tehisaru" if AI_SONA.search(tekst) else "andmed" if ANDME_SONA.search(tekst) else "muu"
+    return "tehisaru"
+
+
 # Teema „riik“ (TOOELU kogumine alates 9.11.2026): riigi otsused, eelnõud, hanked, tähtajad, üritused ja aruanded
 RIIGI_LIIK = {"otsus": "otsus", "eelnõu": "eelnõu", "hange": "hange", "tähtaeg": "tähtaeg", "üritus": "üritus", "aruanne": "aruanne"}
 ROLL = {"otsene": "tehisaru otsene põhjus", "osaline": "tehisaru üks põhjus", "kaudne": "tehisaru kaudselt",
@@ -49,7 +75,7 @@ def _eur(v):
 
 # ---------------------------------------------------------------- Uudised
 
-def _uudis(r):
+def _uudis(r, peida=""):
     liik, kl = LIIK.get(r.get("liik"), (r.get("liik", ""), ""))
     if r.get("liik") not in LIIK:
         raise AndmeViga(f"uudised.jsonl: tundmatu liik {r.get('liik')!r} ({r.get('pealkiri', '')[:40]})")
@@ -87,7 +113,7 @@ def _uudis(r):
     if not r.get("kontrollitud"):
         sildid.append('<span class="u-t">loetud ainult pealkiri</span>')
     arv = f'<b>{e(arv_t)}.</b> ' if arv_t else ""
-    return (f'<li data-teema="{e(r.get("teema", ""))}" data-liik="{e(r["liik"])}">'
+    return (f'<li data-teema="{e(TEEMA_FILTER.get(r.get("teema"), "muu"))}" data-vk="{valdkond(r)}" data-liik="{e(r["liik"])}"{peida}>'
             f'<span class="d">{kp(r["kuupaev"])}</span>'
             f'<div><a href="{e(r["url"])}">{e(r["pealkiri"])}</a>'
             f'<p class="u-k">{arv}{e(pohjus)}</p>'
@@ -119,20 +145,32 @@ def _seis(read, kontroll):
 
 # Filtrinuppude kindel järjekord (Kadri 11.11.2026: koondamised olid liiga suure fookuse all, kuigi neid uudiseid on harva).
 # Varem tuli järjekord uusima uudise teemast ja koondamine sattus sageli teiseks. Koondamine on nüüd viimane.
-TEEMA_JARJEKORD = ("ai_too", "riik", "uuring", "andmed", "ai_uldine", "eksitav", "koondamine")
-assert set(TEEMA_JARJEKORD) == set(TEEMA)
+TEEMA_JARJEKORD = ("too", "riik", "uuring", "muu", "eksitav", "koondamine")
+assert set(TEEMA_JARJEKORD) == set(TEEMA) == set(TEEMA_FILTER.values())
+VK_VAIKIMISI = "tehisaru"
 
 
 def _uudiste_paneel(rid, pealkiri, read, sp, kontroll=None):
-    olemas = {r.get("teema") for r in read}
-    teemad = [t for t in TEEMA_JARJEKORD if t in olemas]
-    filter_ = "".join(f'<button type="button" data-f="{e(t)}">{e(TEEMA[t])}</button>' for t in teemad)
+    vk = [valdkond(r) for r in read]
+    fk = [TEEMA_FILTER.get(r.get("teema"), "muu") for r in read]
+    nupp = lambda attr, v, silt, n, valitud: (  # noqa: E731
+        f'<button type="button" {attr}="{e(v)}" aria-pressed="{"true" if valitud else "false"}"{" disabled" if not n and not valitud else ""}>'
+        f'{e(silt)} <span class="arv">{n}</span></button>')
+    rida1 = "".join(nupp("data-u", v, silt, vk.count(v), v == VK_VAIKIMISI) for v, silt in VALDKOND.items())
+    rida1 += nupp("data-u", "koik", "kõik", len(read), False)  # väärtusega, et jagatud link ?ala=koik töötaks
+    vaikimisi = [f for f, v in zip(fk, vk) if v == VK_VAIKIMISI]
+    olemas = set(fk)
+    rida2 = nupp("data-f", "", "kõik", len(vaikimisi), True) + "".join(
+        nupp("data-f", t, TEEMA[t], vaikimisi.count(t), False) for t in TEEMA_JARJEKORD if t in olemas)
+    loend = "".join(_uudis(r, "" if v == VK_VAIKIMISI else " hidden") for r, v in zip(read, vk))
     return f"""
 <section class="pn {sp}" id="{rid}" aria-labelledby="h-{rid}">
   <div class="pn-h"><h2 id="h-{rid}">{pealkiri}</h2></div>
   {_seis(read, kontroll)}
-  <div class="u-f" role="group" aria-label="Vali teema"><button type="button" data-f="" aria-pressed="true">kõik ({len(read)})</button>{filter_}</div>
-  <ul class="u-voog" data-piir-li="12">{"".join(_uudis(r) for r in read)}</ul>
+  <div class="u-f ek-f u-vk" role="group" aria-label="Vali valdkond"><span class="ek-f-silt">Valdkond</span>{rida1}</div>
+  <div class="u-f ek-f" role="group" aria-label="Vali teema"><span class="ek-f-silt">Teema</span>{rida2}</div>
+  <p class="ps u-tyhi" hidden>Selle valikuga uudiseid pole.</p>
+  <ul class="u-voog" data-piir-li="12">{loend}</ul>
 </section>"""
 
 

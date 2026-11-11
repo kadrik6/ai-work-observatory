@@ -1438,10 +1438,42 @@ def test_koondamised_ei_ole_esikohal(sait):
     u = sait["uudised.html"]
     for rid in ("eesti-uudised", "maailma-uudised"):
         osa = u[u.index(f'id="{rid}"'):]
-        osa = osa[osa.index('class="u-f"'):]
+        osa = osa[osa.index('aria-label="Vali teema"'):]
         nupud = re.findall(r'<button type="button" data-f="([a-z_]*)"', osa[:osa.index("</div>")])
         assert nupud[0] == "" and nupud[-1] == "koondamine", (rid, nupud)
     assert "riigi otsus, statistika, üle 50 koondatu" in u
+
+
+def test_uudiste_valdkond_ja_teema(sait, A):
+    """Kadri 11.11.2026: andmed ja tehisaru eraldi, riigi uudistel filter ka maailmas, vaikimisi tehisaru."""
+    import copy
+    assert lehed_uudised.valdkond({"teema": "andmed", "pealkiri": "x"}) == "andmed"
+    assert lehed_uudised.valdkond({"teema": "koondamine", "ai_roll": "ei_mainita", "pealkiri": "x"}) == "muu"
+    assert lehed_uudised.valdkond({"teema": "koondamine", "ai_roll": "osaline", "pealkiri": "x"}) == "tehisaru"
+    assert lehed_uudised.valdkond({"teema": "riik", "pealkiri": "Andmete teabevärav uueneb"}) == "andmed"
+    assert lehed_uudised.valdkond({"teema": "riik", "pealkiri": "Tehisaru koolitused raamatukogudes"}) == "tehisaru"
+    assert lehed_uudised.valdkond({"teema": "riik", "pealkiri": "Andmed", "valdkond": "tehisaru"}) == "tehisaru"  # väli võidab
+    B = copy.deepcopy(A)
+    B["uudised"] += [dict(B["uudised"][0], teema="strateegia", piirkond="maailm", pealkiri="Riigi tehisarustrateegia", url="https://n.ee/s"),
+                     dict(B["uudised"][0], teema="andmed", piirkond="maailm", pealkiri="Avaandmed", url="https://n.ee/a")]
+    h = lehed_uudised.uudised(B, next(v for v in ehita.lae_vaated() if v["id"] == "uudised"))
+    for rid in ("eesti-uudised", "maailma-uudised"):
+        osa = h[h.index(f'id="{rid}"'):]
+        osa = osa[:osa.index("</section>")]
+        vk = osa[osa.index('aria-label="Vali valdkond"'):]
+        vk = vk[:vk.index("</div>")]
+        assert re.findall(r'data-u="([a-z]*)" aria-pressed="(true|false)"', vk)[:1] == [("tehisaru", "true")]
+        assert 'data-u="andmed"' in vk and 'data-u="koik"' in vk
+        for li in re.findall(r'<li data-teema="[^"]*" data-vk="([a-z]+)"[^>]*?( hidden)?>', osa):
+            assert (li[0] == "tehisaru") == (li[1] == ""), li  # vaikimisi on näha ainult tehisaru
+    m = h[h.index('id="maailma-uudised"'):]
+    m = m[:m.index("</section>")]
+    assert 'data-f="riik"' in m and '<li data-teema="riik" data-vk="tehisaru"' in m  # strateegia on riigi all
+    assert '<li data-teema="muu" data-vk="andmed"' in m
+    assert ">tehisaru ja töö<" not in h and 'data-f="ai_uldine"' not in h
+    js = (ehita.SIIN / "sait.js").read_text(encoding="utf-8")
+    assert "['ala', '.u-f[aria-label=\"Vali valdkond\"] button[data-u]', 'data-u']" in js
+    assert "b.disabled = !!v && k === 0" in js
 
 
 def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
