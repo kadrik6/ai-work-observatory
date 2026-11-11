@@ -2,7 +2,7 @@
 
 > Kui suur osa Eesti ettevõtetest kasutab tehisaru võrreldes teiste riikidega?
 
-**Staatus:** ajakohane · **Allikas uuendas:** 2026-06-15 · **Kontrollitud:** 2026-11-10 · **Järgmine oodatav uuendus:** 2027-06-15
+**Staatus:** ajakohane · **Allikas uuendas:** 2026-06-15 · **Kontrollitud:** 2026-11-11 · **Järgmine oodatav uuendus:** 2027-06-15
 
 ## Number
 
@@ -32,7 +32,7 @@ Ametlik statistika (Eurostat, andmestik `isoc_eb_ai`).
 ## Piirangud ja riskid
 
 - Arvestab ainult 10 või enama hõivatuga ettevõtteid. Väikseimad ettevõtted jäävad välja.
-- Eurostati kogum jätab välja põllumajanduse, kaevandamise ja finantssektori (NACE C10-S951_X_K). Statistikaameti tabelite "kõik tegevusalad" ei ole sellega täpselt sama.
+- Eurostati kogum jätab välja põllumajanduse, kaevandamise ja finantssektori (NACE C10-S951_X_K). Statistikaameti tabelite „kõik tegevusalad“ ei ole sellega täpselt sama.
 - Mõõdab, kas ettevõte kasutab vähemalt üht tehisaru tehnoloogiat, mitte seda, kui palju või kui hästi.
 - Põhineb ettevõtete enda vastustel küsitluses.
 - **Hoiatus:** NL 2025: aegrea katkestus.
