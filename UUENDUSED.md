@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 11.11.2026 | Seire sait, Töö › Tööportaalid: valdkonna filter (Kadri). Kui `toopakkumised.json` portaalil on `valdkonniti` (iga suurema valdkonna linnad ja tööandjad), saab valdkonna valida ja linnade ning tööandjate graafik näitab selle valdkonna jaotust; valik jääb aadressi (`?valdkond=`). Andmeteta jääb vana vaade. Test `test_tooportaalide_valdkonna_filter`. |
 | 11.11.2026 | Seire sait, Töö › Tehisaru- ja andmetööd: „Töötukassa kaudu“ ei ole enam tulp tööandjate graafikus (Kadri: pole kasulik). Graafiku all on märkus, mitu kuulutust tuli Töötukassa kaudu; kuulutused jäävad loendisse. Test `test_tootukassa_pole_tooandja_tulp`. |
 | 11.11.2026 | Seire sait, Ettekanded: filter liigi (podcast, seminar, veebiseminar, konverents) ja allika järgi (Kadri). Liik tuleb allikast: igal `ettekanded.json` allikal on väli `liik`. Valik jääb aadressi (`?liik=…&allikas=…`); tühjaks jäänud valdkond peidetakse. Test `test_ettekannete_filter_liigi_ja_allika_jargi`. |
 | 11.11.2026 | Seire sait: koondamised ei ole enam esikohal (Kadri tagasiside). Töö lehel on esimene sakk „Töötus“ üksi; koondamised ja „Keda koondajad otsivad“ on ühes sakis „Koondamised“ prognoosi ees. Uudiste filtris on koondamine viimane nupp ja „Suured uudised“ kirjeldus algab riigi otsusest. Test `test_koondamised_ei_ole_esikohal`. |
