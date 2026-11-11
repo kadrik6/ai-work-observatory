@@ -816,7 +816,7 @@ def test_kpi_plaadid_jargivad_lukustatud_valikut_ver1(sait):
         # 8.11.2026: ver1 laiendati alamlehtede päisele; iga plaat on täpselt ühel lehel
         lehed = [f for f, s in sait.items() if f'data-kpi="{pid}"' in s]
         assert len(lehed) == 1, (pid, lehed)
-        pl = sait[lehed[0]].split(f'data-kpi="{pid}"')[1].split('<span class="src">')[0]
+        pl = sait[lehed[0]].split(f'data-kpi="{pid}"')[1].split('</div>')[0].split('<span class="src">')[0]
         assert ('class="muut"' in pl) == ("muutus" in osad), pid
         assert ('class="kriba' in pl) == ("riba" in osad), pid
         assert ('class="tekst"' in pl) == ("tekst" in osad), pid
@@ -1598,6 +1598,17 @@ def test_tootukassa_oma_sakis_cv_ee_kaudu(A, sait):
     assert 'aria-controls="tp-töötukassa"' in osa
     tk_osa = osa[osa.index('id="tp-töötukassa"'):]
     assert "Jaotused on " in tk_osa and "mõõdavad eri asja" in tk_osa and 'class="ribad lihtne tp-vk"' in tk_osa
+
+
+def test_uudiste_numbriplaadid_on_tihedad_ilma_allikareata(sait):
+    """Kadri 11.11.2026: „Seire uudistekogumine“ rida ei andnud infot ja võttis ruumi; plaadid väiksemaks."""
+    u = sait["uudised.html"]
+    pais = u[u.index('<aside class="vastus kpi-pais tihe"'):]
+    pais = pais[:pais.index("</aside>")]
+    assert pais.count('class="plaat kp"') == 4
+    assert "Seire uudistekogumine" not in u and 'class="src"' not in pais
+    # teiste lehtede plaatidel on allikas alles
+    assert 'class="src"' in sait["index.html"].split('class="plaadid kaks"')[1]
 
 
 def test_valislingid_avanevad_uues_vahelehes(sait):

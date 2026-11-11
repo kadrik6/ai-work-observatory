@@ -99,9 +99,11 @@ KPI_VER1 = {"inimesed": ("muutus", "riba"), "ettevotted": ("muutus", "riba"), "d
             "ud-ee": ("muutus",), "ud-maailm": ("muutus",), "ud-suured": ("tekst",), "ud-kontroll": ("tekst",)}
 
 
-def kpi_pais(*plaadid):
-    """Alamlehe päise numbriplaadid samas kujus nagu avalik sektor (ver1)."""
-    return '<aside class="vastus kpi-pais" aria-label="Peamised numbrid">' + "".join(plaadid) + "</aside>"
+def kpi_pais(*plaadid, tihe=False):
+    """Alamlehe päise numbriplaadid samas kujus nagu avalik sektor (ver1).
+    tihe: madalamad plaadid, kontekst ühel real (Kadri 11.11.2026 uudiste lehel: et uudised paistaks kiiremini)."""
+    return (f'<aside class="vastus kpi-pais{" tihe" if tihe else ""}" aria-label="Peamised numbrid">'
+            + "".join(plaadid) + "</aside>")
 
 
 def kpi_riba(v, lopp, siht=None, vrd=None, vrd_nimi="EL", fookus=False, siht_tekst=None):
@@ -135,7 +137,9 @@ def kpi_plaat(pid, lbl, big, per, kontekst, src, fookus=False, href=""):
             osad.append(f'<span class="tekst">{kontekst[k]}</span>' if k == "tekst" else kontekst[k])
     return (f'<div class="plaat kp" data-kpi="{pid}"><span class="lbl">{nimi}</span>'
             f'<span class="big{" s" if fookus else ""}">{big}{f"<small>{per}</small>" if per else ""}</span>'
-            f'<span class="ctx">{"".join(osad)}</span><span class="src">{src}{kopeeri_nupp(pid, lbl, big, per, src)}</span></div>')
+            f'<span class="ctx">{"".join(osad)}</span>'
+            # Allikarida ainult siis, kui allikas on (Kadri 11.11.2026: „Seire uudistekogumine“ ei andnud infot)
+            + (f'<span class="src">{src}{kopeeri_nupp(pid, lbl, big, per, src)}</span>' if src else "") + '</div>')
 
 
 # Esmakordsele lugejale (kolleeg, kes saab lingi): mis sait see on. Kadri 8.11.2026, enne kolleegidele näitamist.
