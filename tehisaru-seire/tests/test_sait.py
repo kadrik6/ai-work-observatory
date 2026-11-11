@@ -1460,6 +1460,13 @@ def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
         lehed_uudised.ettekanded({**A, "ettekanded": E, "ootel": {"ettekanded": 0}}, vaade)
 
 
+def test_tootukassa_pole_tooandja_tulp(sait):
+    """Kadri 11.11.2026: „Töötukassa kaudu“ tulp tööandjate graafikus pole kasulik; see on märkusena graafiku all."""
+    osa = _jaotis(sait["too.html"], "ai-kuulutused")
+    graafik = osa[osa.index("Kes otsib"):osa.index("Kus: maakond")]
+    assert "Töötukassa kaudu (eri" not in graafik.split('class="ps"')[0]
+    assert re.search(r"Lisaks \d+ kuulutust Töötukassa kaudu", graafik)
+
 
 def test_tooportaalide_valdkonna_filter(A):
     """Kadri 11.11.2026: „tahaks et teised väljad oleks valdkonna järgi filtreeritavad“. Kui kogumine annab
