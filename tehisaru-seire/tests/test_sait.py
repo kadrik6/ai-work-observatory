@@ -1483,6 +1483,8 @@ def test_tooportaalide_valdkonna_filter(A):
     from sait import lehed_uudised
     B = copy.deepcopy(A)
     cv = next(p for p in B["toopakkumised"]["portaalid"] if p["portaal"] == "CV.ee")
+    for p_ in B["toopakkumised"]["portaalid"]:
+        p_.pop("valdkonniti", None)
     assert "tp-vk" not in lehed_uudised.toopakkumised(B)  # andmeteta filtrit pole
     v0 = next(r["nimi"] for r in cv["ametivaldkond"] if r["nimi"] not in lehed_uudised.LISASILDID)
     cv["valdkonniti"] = [{"nimi": v0, "arv": 10, "linnad": [{"nimi": "Narva", "arv": 7}, {"nimi": "Tartu", "arv": 3}],
@@ -1496,3 +1498,16 @@ def test_tooportaalide_valdkonna_filter(A):
     osa = osa[:osa.index('data-vk-sisu', 20) if 'data-vk-sisu' in osa[20:] else len(osa)]
     assert "Narva" in osa and "Firma OÜ" in osa and f"valdkonnas {v0.lower()}" in osa
     assert re.search(r'<div class="rida fookus"><span class="n" title="' + re.escape(v0), osa)
+
+
+
+def test_tootukassa_oma_sakis_cv_ee_kaudu(A, sait):
+    """Kadri 11.11.2026: Töötukassa CV.ee ja CV Keskuse kõrval detailsema statistikaga. Jaotus tuleb CV.ee kaudu
+    vahendatud kuulutustest ja lugeja näeb, et see ei klapi Töötukassa kogu arvuga."""
+    tk = next((p for p in A["toopakkumised"]["portaalid"] if p["portaal"] == "Töötukassa"), None)
+    if not tk or not isinstance(tk.get("ametivaldkond"), list):
+        pytest.skip("Töötukassa jaotust pole andmetes")
+    osa = _jaotis(sait["too.html"], "toopakkumised")
+    assert 'aria-controls="tp-töötukassa"' in osa
+    tk_osa = osa[osa.index('id="tp-töötukassa"'):]
+    assert "Jaotused on " in tk_osa and "mõõdavad eri asja" in tk_osa and 'class="u-f tp-vk"' in tk_osa
