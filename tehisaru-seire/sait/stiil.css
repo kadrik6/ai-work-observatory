@@ -1352,7 +1352,7 @@ html[data-t] .pea-rahu.pilt::before {
 html[data-t] .pea-rahu.pilt h1 { max-width: 22ch; }
 html[data-t] .pea-rahu.pilt .alla { max-width: 56ch; }
 html[data-t] .pea-rahu.pilt + nav .sellel { margin-top: 24px; }
-/* Tume teema: oma pilt (Kadri 9.11.2026 16:41: tumedas T2 lained, heledas H1 võrk), sama üleminek, mustvalge, nähtavus 55% */
+/* Tume teema: oma pilt (Kadri 11.11.2026: tumedas kroomitud võrgustik hämaral pinnal; heledas H1 võrk), sama üleminek, mustvalge, nähtavus 55% */
 html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale(1); opacity: .55;
   background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
               linear-gradient(0deg, var(--page) 0%, transparent 30%),
