@@ -562,6 +562,7 @@ def saidist(A, vaade, vaated):
   <header><h2 id="h-autor">Saidi autor on <b>{e(AUTOR)}</b> ¦ viitamisel märgi autor ja link</h2></header>
   <ul class="loend">
     <li>Saidi tekstid, kokkuvõtted, sisu valik, ülesehitus ja kujundus on autori looming ning autoriõigusega kaitstud. © {autori_aastad()} {e(AUTOR)}.</li>
+    <li>Sait on tehtud tehisaru (Claude) abiga. Teemad, sisu valik, ülesehitus, kujundus ja see, mis lehele läheb, on autori otsused. Koodi, andmete kogumise ja kokkuvõtete mustandid tegi tehisaru; uued uuringud ja väited lähevad lehele alles pärast autori kinnitust.</li>
     <li>Tsiteerida ja viidata võib, kui märgid autori nime ja lingi saidile. Saidi või selle osade kopeerimiseks teisele saidile ja ärilistel eesmärkidel kasutamiseks küsi autorilt luba.</li>
     <li>Statistika, uuringud, väited ja uudised kuuluvad oma allikatele ning nende kasutustingimused kehtivad. Algallika link on iga numbri juures.</li>
   </ul>
