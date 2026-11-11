@@ -15,6 +15,18 @@ AKTIIVNE = ' aria-current="page"'
 MEGA_NIMI = ' class="mega-nimi"'
 
 
+
+# Autor (Kadri 11.11.2026: „lisa saidile minu kui autori info, et oleks mingigi autori kaitse olemas“).
+# Autoriõigus tekib teose loomisega ise; märge teeb autori ja kasutustingimused lugejale nähtavaks.
+AUTOR = "Kadri Kungla"
+AUTORI_ALGUS = 2026
+
+
+def autori_aastad(aasta=None):
+    import datetime as _dt
+    a = aasta or _dt.date.today().year
+    return str(AUTORI_ALGUS) if a <= AUTORI_ALGUS else f"{AUTORI_ALGUS}–{a}"
+
 def _v(nimi):
     """Faili sisu räsi lingi lõppu: muudetud stiil või skript ei tule brauseri vahemälust vanana."""
     return hashlib.sha1((_SIIN / nimi).read_bytes()).hexdigest()[:8]
@@ -200,6 +212,8 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="author" content="{e(AUTOR)}">
+<meta name="copyright" content="© {autori_aastad()} {e(AUTOR)}">
 <title>{e(title)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -229,6 +243,7 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
   <div class="wrap">
     <p>Tehisaru seire koondab avalikku statistikat ja uuringuid tehisaru kasutusest Eestis ja Euroopas. Iga number on avalikust allikast koos lingi ja kuupäevaga.</p>
     <p>{" · ".join(jalus_lingid)}</p>
+    <p class="autor">© {autori_aastad()} {e(AUTOR)}. Saidi tekstid, valik, ülesehitus ja kujundus on autori looming; viitamisel märgi autor ja link. Numbrid ja uuringud kuuluvad oma allikatele. <a href="saidist.html#autor">Autor ja kasutamine</a></p>
   </div>
 </footer>
 </body>
