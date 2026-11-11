@@ -672,7 +672,7 @@ def test_publikatsiooni_tsiteeringud_on_pealkirja_korval(A, sait):
     osa = _jaotis(sait["too-kirjandus.html"], "publikatsioonid")
     assert '<th scope="col" class="v">Tsiteeritud</th><th scope="col">Publikatsioon ja kanal</th>' in osa
     koik = max((r for r in lehed_uudised.alates_aastast(A["publikatsioonid"], lehed_uudised.TSIT_ALATES) if r.get("url")), key=lambda r: r["viiteid"])
-    rida = osa.split(f'<a href="{komponendid.e(koik["url"])}">')[0].rsplit("<tr>", 1)[1]
+    rida = osa.split(f'<a href="{komponendid.e(koik["url"])}"')[0].rsplit("<tr>", 1)[1]
     assert lehed_uudised._arv(koik["viiteid"]) in rida
 
 
@@ -1598,3 +1598,22 @@ def test_tootukassa_oma_sakis_cv_ee_kaudu(A, sait):
     assert 'aria-controls="tp-töötukassa"' in osa
     tk_osa = osa[osa.index('id="tp-töötukassa"'):]
     assert "Jaotused on " in tk_osa and "mõõdavad eri asja" in tk_osa and 'class="ribad lihtne tp-vk"' in tk_osa
+
+
+def test_valislingid_avanevad_uues_vahelehes(sait):
+    """Kadri 11.11.2026: uudis (ja iga välislink) avaneb uues vahelehes, et sait jääks lahti. Saidi enda lingid mitte."""
+    valis = sise = 0
+    for f, h in sait.items():
+        for a in re.findall(r"<a [^>]*>", h):
+            href = re.search(r'href="([^"]*)"', a)
+            if not href:
+                continue
+            if re.match(r"https?://", href.group(1)):
+                valis += 1
+                assert 'target="_blank"' in a and 'rel="noopener"' in a, (f, a)
+            else:
+                sise += 1
+                assert 'target="_blank"' not in a, (f, a)
+    assert valis > 100 and sise > 100
+    u = sait["uudised.html"]
+    assert re.search(r'<a [^>]*href="https?://[^"]*"[^>]*target="_blank"', u.split('id="eesti-uudised"')[1])

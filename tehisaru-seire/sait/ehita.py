@@ -78,6 +78,15 @@ def kontrolli(failinimi, html_tekst, olemas):
         raise EhitusViga(f"{failinimi}: lehel on täitmata mall")
 
 
+# Välislingid (uudised, allikad) avanevad uues vahelehes, et sait jääks lahti (Kadri 11.11.2026).
+# Saidi enda lingid jäävad samasse vahelehte.
+_VALISLINK = re.compile(r'<a (?![^>]*\btarget=)([^>]*\bhref="https?://[^"]*"[^>]*)>')
+
+
+def valislingid(html):
+    return _VALISLINK.sub(lambda m: f'<a {m.group(1)} target="_blank" rel="noopener">', html)
+
+
 def suuna_ankrud(lehed, vaated):
     """Link vaate põhilehe ankrule (too.html#hoive) suunatakse teema alamlehele, kus see ankur tegelikult on
     (too-ametid.html#hoive). Nii ei pea iga link teadma, millisele alamlehele jaotis jäi. Mitmeti mõistetav = viga."""
@@ -157,6 +166,7 @@ def ehita(valjund=VALJUND, A=None):
         else:
             kirjutatud[v["fail"]] = kest.leht(A, vaated, v, sisu, pealkiri_)
     kirjutatud = suuna_ankrud(kirjutatud, vaated)
+    kirjutatud = {f: valislingid(t) for f, t in kirjutatud.items()}
     for f, t in kirjutatud.items():
         kontrolli(f, t, olemas)
     kontrolli_ankrud(kirjutatud)
