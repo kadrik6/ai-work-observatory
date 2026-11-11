@@ -984,10 +984,13 @@ def ai_kuulutused(A):
                   a(url, "CV.ee"), fookus=(g == "ai_oskus"))
         for g in pohi)
     tooandjad, maakonnad = {}, {}
+    n_tk = 0  # Kadri 11.11.2026: „Töötukassa kaudu“ ei ole tööandja ja tulp ei ütle midagi; see on graafiku all märkusena
     for g in pohi:
         for r in R[g].get("tooandjad", []):
-            nm = TK_TOOANDJA.get(r["nimi"], r["nimi"])
-            tooandjad[nm] = tooandjad.get(nm, 0) + r["arv"]
+            if r["nimi"] in TK_TOOANDJA:
+                n_tk += r["arv"]
+                continue
+            tooandjad[r["nimi"]] = tooandjad.get(r["nimi"], 0) + r["arv"]
         for r in R[g].get("maakonnad", []):
             maakonnad[r["nimi"]] = maakonnad.get(r["nimi"], 0) + r["arv"]
 
@@ -1028,7 +1031,7 @@ def ai_kuulutused(A):
   <p class="ps">CV.ee, {kp(kp_)}. „Uus“ = avaldatud viimase 7 päeva jooksul.</p>
   <div class="plaadid kaks">{plaadid}</div>
   <div class="kaks tk-ribad">
-    <div><p class="gt">Kes otsib: enim kuulutusi ({kokku3} kuulutust kolmes rühmas)</p>{ribad(tooandjad)}</div>
+    <div><p class="gt">Kes otsib: enim kuulutusi ({kokku3} kuulutust kolmes rühmas)</p>{ribad(tooandjad)}{f'<p class="ps">Lisaks {n_tk} kuulutust Töötukassa kaudu: CV.ee neis tööandjat ei nimeta, need on loendis allpool.</p>' if n_tk else ""}</div>
     <div><p class="gt">Kus: maakond</p>{ribad(maakonnad, 8)}</div>
   </div>
   <p class="gt">Kõik kuulutused</p>
