@@ -274,9 +274,6 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
 .kaart-vihje b { display: block; font-size: 15px; }
 .kaart-vihje b span { color: var(--signal); margin-left: 6px; }
 .kaart-vihje small { color: var(--ink-3); font-size: 13.5px; }
-.kaart-silt { position: absolute; transform: translate(10px, -50%); font-size: 16px; line-height: 1.2; white-space: nowrap;
-  background: var(--surface); color: var(--signal); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); pointer-events: none; }
-.kaart-silt::before { content: ""; position: absolute; left: -10px; top: 50%; width: 10px; border-top: 1px solid var(--ink-2); }
 .kaart-legend { max-width: 420px; padding-top: 22px; font-size: 14px; color: var(--ink-3); }
 .kaart-legend .riba { position: relative; height: 12px; }
 .kaart-legend .riba i { position: absolute; top: 0; bottom: 0; border-right: 2px solid var(--surface); }
@@ -484,7 +481,6 @@ details > div, .vaikne, details ul { font-size: 14px; }
 .koht-rida { font-size: 14px; }
 .osad-selgitus { font-size: 14px; }
 .kaart-legend { font-size: 12.5px; }
-.kaart-silt { font-size: 13.5px; }
 .jalus { font-size: 13.5px; padding: 12px 0 24px; }
 .ruut3 { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 14px 24px; }
 @media (max-width: 680px) { body { font-size: 15px; } .jaotis { padding: 10px; } }
@@ -531,7 +527,6 @@ h3.veerg { font-size: 13.5px; }
 .el-rida { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; align-items: start; }
 .el-kaart .kaart-ala { grid-template-columns: minmax(0, 1fr); gap: 4px; }
 .el-kaart .kaart-legend { padding-top: 16px; }
-.el-kaart .kaart-silt { font-size: 12.5px; padding: 1px 4px; }
 .jrj { display: flex; flex-direction: column; }
 .jrj-r { display: grid; grid-template-columns: 10em minmax(0, 1fr) 3em; gap: 8px; align-items: center; height: 15px; font-size: 13.5px; line-height: 1; }
 .jrj-r .n { text-align: right; color: var(--ink-2); white-space: nowrap; }
@@ -1073,6 +1068,14 @@ th, td { padding: 6px 10px; }
 .bs.f .bk { display: inline; fill: var(--mark-signal); }
 .bs.f .bkn { fill: var(--on-signal); }
 .bs.f .bl { fill: var(--signal); font-weight: 700; }
+/* Kaardiga seotud esiletõst (Kadri 11.11.2026): kaardil hõljutud riik on graafikus tume ja teised tuhmid */
+.bump.hoiab .bs:not(.hv):not(.f) { opacity: .35; }
+.bs.hv .bj { stroke: var(--ink); stroke-width: 2.5; }
+.bs.hv .bp, .bs.hv .bp.v { display: inline; fill: var(--ink); }
+.bs.hv .bk { display: inline; fill: var(--ink); }
+.bs.hv .bkn { display: inline; font-size: 11.5px; font-weight: 700; fill: var(--surface); }
+.bs.hv .bl { fill: var(--ink); font-weight: 700; }
+.jrj-r[data-n] { cursor: default; }
 @media (prefers-reduced-motion: no-preference) { .bs .bj { transition: stroke .15s; } }
 
 /* Täpsustused klõpsu taga (Kadri 7.11.2026: vähem teksti ühel taustal) */
