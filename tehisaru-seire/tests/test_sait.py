@@ -1675,7 +1675,9 @@ def test_autor_on_igal_lehel(sait):
         if 'http-equiv="refresh"' in h:
             continue  # kolinud lehe suunamine
         assert '<meta name="author" content="Kadri Kungla">' in h, f
-        assert '<p class="autor">Koostanud Kadri Kungla, © ' in h and 'href="saidist.html#autor">Autor ja kasutamine</a>' in h, f
+        assert re.search(r'<p class="autor">© 20\d\d(–20\d\d)? <a href="saidist.html#autor">Kadri Kungla</a></p>', h), f
     s = sait["saidist.html"]
-    assert 'id="autor"' in s and "küsi autorilt luba" in s and "kuuluvad oma allikatele" in s
-    assert "tehtud tehisaru (Claude) abiga" in s and "on autori otsused" in s  # Kadri 12.11.2026: ava, mida tegi tehisaru
+    assert 'id="autor"' in s and "kuuluvad oma allikatele" in s
+    assert "tehisaru (Claude) abiga" in s and "on autori otsused" in s  # Kadri 12.11.2026: ava, mida tegi tehisaru
+    # Kadri 12.11.2026: märge lühike nagu teistel saitidel, ilma „küsi luba“ ja kordamiseta
+    assert "luba" not in s.split('id="autor"')[1].split("</section>")[0]
