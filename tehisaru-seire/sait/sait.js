@@ -243,6 +243,39 @@
         });
       });
     });
+    // Ettekannete filter liigi ja allika järgi (Kadri 11.11.2026). Valikud kehtivad koos; rühm, kuhu ühtki rida ei jää,
+    // peidetakse ja rühmade arvud näitavad valikule vastavat arvu.
+    document.querySelectorAll('#ettekanded').forEach(function (pn) {
+      var ridu = pn.querySelectorAll('.ek-r li[data-liik]');
+      if (!ridu.length) return;
+      var valik = { liik: '', allikas: '' };
+      function rakenda() {
+        ridu.forEach(function (l) {
+          l.hidden = (!!valik.liik && l.getAttribute('data-liik') !== valik.liik) ||
+            (!!valik.allikas && l.getAttribute('data-allikas') !== valik.allikas);
+        });
+        var kokku = 0;
+        pn.querySelectorAll('.ek-r').forEach(function (r) {
+          var n = r.querySelectorAll('li[data-liik]:not([hidden])').length;
+          kokku += n;
+          r.hidden = n === 0;
+          var a = r.querySelector('h3 .arv'); if (a) a.textContent = n;
+          var v = pn.querySelector('.ek-valik a[data-ruhm="' + r.id.slice(3) + '"]');
+          if (v) { v.hidden = n === 0; v.querySelector('.arv').textContent = n; }
+        });
+        var t = pn.querySelector('.ek-tyhi'); if (t) t.hidden = kokku > 0;
+      }
+      pn.querySelectorAll('.ek-f').forEach(function (f) {
+        var k = f.getAttribute('data-k');
+        f.querySelectorAll('button[data-v]').forEach(function (b) {
+          b.addEventListener('click', function () {
+            valik[k] = b.getAttribute('data-v');
+            f.querySelectorAll('button[data-v]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+            rakenda();
+          });
+        });
+      });
+    });
     // Hangete otsing ja rühmafilter; otsingu ajal näidatakse kõik sobivad read
     document.querySelectorAll('.h-otsing').forEach(function (o) {
       var tabel = o.parentNode.querySelector('table.h-tabel');
@@ -427,6 +460,8 @@
     var paarid = [
       ['teema', '.u-f[aria-label="Vali teema"] button[data-f]', 'data-f'],
       ['ruhm', 'button[data-r]', 'data-r'],
+      ['liik', '.ek-f[data-k="liik"] button[data-v]', 'data-v'],
+      ['allikas', '.ek-f[data-k="allikas"] button[data-v]', 'data-v'],
       ['sakk', '.p-tabs [role="tab"]', 'aria-controls'],
     ];
     paarid.forEach(function (p) {

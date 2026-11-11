@@ -4,55 +4,64 @@
 "id": "ut-dss",
 "nimi": "Tartu Ülikooli andmeteaduse seminar",
 "url": "https://cs.ut.ee/en/content/data-science-seminars",
-"miks": "TÜ arvutiteaduse instituudi seminarisari; salvestised avalikud YouTube'is"
+"miks": "TÜ arvutiteaduse instituudi seminarisari; salvestised avalikud YouTube'is",
+"liik": "seminar"
 },
 {
 "id": "latitude59",
 "nimi": "Latitude59",
 "url": "https://latitude59.ee/",
-"miks": "Eesti suurim tehnoloogia- ja idukonverents"
+"miks": "Eesti suurim tehnoloogia- ja idukonverents",
+"liik": "konverents"
 },
 {
 "id": "startup-day",
 "nimi": "sTARTUp Day",
 "url": "https://www.startupday.ee/",
-"miks": "Tartu ettevõtlusfestival; korraldajate seas Tartu Ülikool ja Tartu linn"
+"miks": "Tartu ettevõtlusfestival; korraldajate seas Tartu Ülikool ja Tartu linn",
+"liik": "konverents"
 },
 {
 "id": "arenguseire",
 "nimi": "Arenguseire Keskus",
 "url": "https://arenguseire.ee/",
-"miks": "Riigikogu juures tegutsev tulevikuuuringute keskus; tööturu ja tehnoloogia seminarid"
+"miks": "Riigikogu juures tegutsev tulevikuuuringute keskus; tööturu ja tehnoloogia seminarid",
+"liik": "seminar"
 },
 {
 "id": "oecd",
 "nimi": "OECD",
 "url": "https://www.oecd.org/",
-"miks": "Rahvusvaheline organisatsioon; tehisaru ja töö tuleviku poliitika"
+"miks": "Rahvusvaheline organisatsioon; tehisaru ja töö tuleviku poliitika",
+"liik": "veebiseminar"
 },
 {
 "id": "oecd-ai",
 "nimi": "OECD.AI",
 "url": "https://oecd.ai/",
-"miks": "OECD tehisaru poliitika vaatluskeskus, sh AI-WIPS (tehisaru töös, oskustes ja tootlikkuses)"
+"miks": "OECD tehisaru poliitika vaatluskeskus, sh AI-WIPS (tehisaru töös, oskustes ja tootlikkuses)",
+"liik": "veebiseminar"
 },
 {
 "id": "ilo",
 "nimi": "Rahvusvaheline Tööorganisatsioon (ILO)",
 "url": "https://www.ilo.org/",
-"miks": "ÜRO tööorganisatsioon; tehisaru ja töö globaalne vaade"
+"miks": "ÜRO tööorganisatsioon; tehisaru ja töö globaalne vaade",
+"liik": "veebiseminar"
 },
 {
 "id": "stanford-hai",
 "nimi": "Stanford HAI",
 "url": "https://hai.stanford.edu/",
-"miks": "Stanfordi inimkeskse tehisaru instituut; AI Index ja uuringud"
+"miks": "Stanfordi inimkeskse tehisaru instituut; AI Index ja uuringud",
+"liik": "seminar"
 },
 {
 "id": "kratid",
 "nimi": "Kratid avalikus sektoris",
 "url": "https://www.kratid.ee/uritused",
-"miks": "Justiits- ja Digiministeeriumi veebiürituste sari riigiasutuste tehisaruprojektidest; salvestised avalikud YouTube'is"
+"miks": "Justiits- ja Digiministeeriumi veebiürituste sari riigiasutuste tehisaruprojektidest; salvestised avalikud YouTube'is",
+"liik": "veebiseminar"
 },
 {
 "id": "lex-fridman",
