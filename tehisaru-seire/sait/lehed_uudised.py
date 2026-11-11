@@ -24,9 +24,11 @@ LIIK = {"uudis": ("uudis", "vaikne"), "aruanne": ("aruanne", ""), "uuring": ("uu
         "arvamus": ("arvamus", "arv"), "eksitav": ("eksitav", "risk")}
 # Teemafilter (Kadri 11.11.2026): „strateegia“ kuulub riigi alla, „tehisaru“ (ai_uldine) ja „andmed“ on teemana „muu“,
 # sest tehisaru ja andmed on nüüd eraldi valdkonnafilter. Tundmatu teema läheb „muu“ alla, et uus liik ei jääks filtrita.
-TEEMA = {"too": "töö", "riik": "riik", "uuring": "uuring", "muu": "muu", "eksitav": "eksitav", "koondamine": "koondamine"}
-TEEMA_FILTER = {"ai_too": "too", "riik": "riik", "strateegia": "riik", "uuring": "uuring", "ai_uldine": "muu",
-                "andmed": "muu", "eksitav": "eksitav", "koondamine": "koondamine"}
+# Koondamine on teema „töö“ all (Kadri 11.11.2026: „võta koondamine siit ära, see info peaks koonduma töö alla“).
+# Koondamisuudisel jääb alles tehisaru rolli märk, nii et töö all on koondamine endiselt äratuntav.
+TEEMA = {"too": "töö", "riik": "riik", "uuring": "uuring", "muu": "muu", "eksitav": "eksitav"}
+TEEMA_FILTER = {"ai_too": "too", "koondamine": "too", "riik": "riik", "strateegia": "riik", "uuring": "uuring",
+                "ai_uldine": "muu", "andmed": "muu", "eksitav": "eksitav"}
 # Valdkond (Kadri 11.11.2026: „andmed ja tehisaru võiks olla eraldatavad … default filter võiks olla tehisaru“).
 # Kogumise väli `valdkond` võidab; kui seda pole, tuletatakse see teemast, tehisaru rollist ja pealkirjast.
 VALDKOND = {"tehisaru": "tehisaru", "andmed": "andmed"}
@@ -161,8 +163,8 @@ def _seis(read, kontroll):
 
 
 # Filtrinuppude kindel järjekord (Kadri 11.11.2026: koondamised olid liiga suure fookuse all, kuigi neid uudiseid on harva).
-# Varem tuli järjekord uusima uudise teemast ja koondamine sattus sageli teiseks. Koondamine on nüüd viimane.
-TEEMA_JARJEKORD = ("too", "riik", "uuring", "muu", "eksitav", "koondamine")
+# Koondamisel pole enam oma nuppu, see on töö all.
+TEEMA_JARJEKORD = ("too", "riik", "uuring", "muu", "eksitav")
 assert set(TEEMA_JARJEKORD) == set(TEEMA) == set(TEEMA_FILTER.values())
 VK_VAIKIMISI = "tehisaru"
 

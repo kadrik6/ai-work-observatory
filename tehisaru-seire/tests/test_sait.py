@@ -1438,7 +1438,8 @@ def test_podcastid_ettekannete_lehel(sait):
 
 def test_koondamised_ei_ole_esikohal(sait):
     """Kadri 11.11.2026: koondamised olid liiga suure fookuse all. Töö lehel on töötus esimene sakk üksi ja koondamised
-    oma sakis koos tabeliga „Keda koondajad otsivad“; uudiste filtris on koondamine viimane nupp."""
+    oma sakis koos tabeliga „Keda koondajad otsivad“. Uudiste filtris pole koondamisel oma nuppu: see on töö all
+    (Kadri 11.11.2026: „võta koondamine siit ära, see info peaks koonduma töö alla“)."""
     h = sait["too.html"]
     sakid = re.findall(r'role="tab" id="sakk-([a-z-]+)-n"[^>]*>([^<]+)</button>', h)
     assert [s for s, _ in sakid] == ["tootus", "tootus-el", "vabad", "portaalid", "ai-tood", "koondamised", "prognoos"]
@@ -1452,7 +1453,9 @@ def test_koondamised_ei_ole_esikohal(sait):
         osa = u[u.index(f'id="{rid}"'):]
         osa = osa[osa.index('aria-label="Vali teema"'):]
         nupud = re.findall(r'<button type="button" data-f="([a-z_]*)"', osa[:osa.index("</div>")])
-        assert nupud[0] == "" and nupud[-1] == "koondamine", (rid, nupud)
+        assert nupud[0] == "" and "koondamine" not in nupud, (rid, nupud)
+    assert lehed_uudised.TEEMA_FILTER["koondamine"] == "too"
+    assert 'data-teema="koondamine"' not in u
     assert "riigi otsus, statistika, üle 50 koondatu" in u
 
 
