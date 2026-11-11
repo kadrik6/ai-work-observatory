@@ -247,8 +247,8 @@
         },
         {
           "fail": "ettekanded.html",
-          "nimi": "Ettekanded",
-          "h1": "Usaldatud seminaride ja konverentside ettekanded",
+          "nimi": "Ettekanded ja üritused",
+          "h1": "Ettekanded ja üritused",
           "lead": "Kokkuvõte on meie sõnadega, iga ettekanne on avalik salvestis. Esineja kogemus ja arvamus ei ole mõõtmistulemus.",
           "jaotised": [
             "ettekanded"

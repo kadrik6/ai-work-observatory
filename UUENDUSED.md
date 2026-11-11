@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 11.11.2026 | Seire sait, Uudised: uudised on ajajoonel päevade kaupa (katsetest D1, kompaktsena): kuupäev vasakul, uusim päev sinine, kokkuvõte ühel real. Eesti ja maailm on sakkides, vaikimisi Eesti; valdkonna ja teema filtrid on samad nupuread nagu teistel lehtedel. „Uus“-märki uudistel enam pole; „täna“ ja „eile“ arvutab brauser lugeja kuupäeva järgi. Alamleht „Ettekanded“ on nüüd „Ettekanded ja üritused“: üleval tulevad Eesti riigi üritused ja tähtajad (uudistekogumise väli `tahtaeg`), all ettekanded ja podcastid. Testid `test_uudised_on_ajajoonel_paevade_kaupa`, `test_ettekanded_ja_tulevased_uritused_uhel_lehel`. (Kadri 11.11) |
 | 11.11.2026 | Seire sait: kõik välislingid (uudised, allikad, uuringud) avanevad uues vahelehes (`target="_blank" rel="noopener"`, ehita.valislingid), sait jääb lahti. Saidi enda lingid jäävad samasse vahelehte. (Kadri 11.11) |
 | 11.11.2026 | Seire sait, Uudised: numbriplaatidelt on allikarida „Seire uudistekogumine“ ära, plaadid on tihedamad (kpi_pais tihe=True) ja „Maailma uudised ja uuringud“ lühem. Plaatide plokk on 216 asemel 139 px kõrge (1366 px), telefonis 726 asemel 455 px. Teiste lehtede plaatidel jääb allikas alles. (Kadri 11.11) |
 | 11.11.2026 | Seire sait, Uudised: teemafiltris pole enam nuppu „koondamine“. Koondamisuudised on teema „töö“ all ja nende tehisaru rolli märk jääb alles. (Kadri 11.11) |

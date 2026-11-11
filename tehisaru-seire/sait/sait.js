@@ -256,6 +256,13 @@
           });
         });
         var t = pn.querySelector('.u-tyhi'); if (t) t.hidden = n > 0;
+        // Ajajoon (Kadri 11.11.2026): päev, kuhu filtriga ühtki uudist ei jää, kaob; uusim nähtav päev on sinine.
+        var esim = null;
+        pn.querySelectorAll('.u-paev').forEach(function (g) {
+          g.hidden = !g.querySelector('.u-voog li:not([hidden])');
+          if (!g.hidden && !esim) esim = g;
+        });
+        pn.querySelectorAll('.u-paev').forEach(function (g) { g.classList.toggle('uusim', g === esim); });
       }
       [[vkf, 'data-u', 'u'], [f, 'data-f', 'f']].forEach(function (x) {
         if (!x[0]) return;
@@ -269,6 +276,15 @@
       });
       rakenda();
     });
+    // „Täna“ ja „eile“ lugeja enda kuupäeva järgi, mitte lehe ehitamise päeva järgi (silt ei vanane; Kadri 10.11.2026).
+    (function () {
+      var t = new Date(), tana = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+      document.querySelectorAll('.u-paev[data-paev]').forEach(function (g) {
+        var p = g.getAttribute('data-paev').split('-'), d = new Date(+p[0], +p[1] - 1, +p[2]);
+        var v = Math.round((tana - d) / 864e5), s = g.querySelector('.u-pn');
+        if (s && (v === 0 || v === 1)) { s.textContent = v === 0 ? 'täna' : 'eile'; g.classList.add(v === 0 ? 'tana' : 'eile'); }
+      });
+    })();
     // Tööportaalide valdkonna filter (Kadri 11.11.2026): klõps valdkonna tulbal näitab selle valdkonna linnu ja
     // tööandjaid; valitud tulba uus klõps või „kõik valdkonnad“ viib tagasi.
     document.querySelectorAll('[role="tabpanel"]').forEach(function (paneel) {
