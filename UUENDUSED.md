@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 11.11.2026 | Seire sait, Uudised: teemafiltris pole enam nuppu „koondamine“. Koondamisuudised on teema „töö“ all ja nende tehisaru rolli märk jääb alles. (Kadri 11.11) |
 | 11.11.2026 | Seire sait: Ettevõtete ja Inimeste lehel on ELi kaart ja koha muutuse graafik nüüd ühel real kõrvuti, graafikud algavad samal kõrgusel (subgrid). Vastavus, numbrid ja usaldusinfo on nende all. Kitsal ekraanil üksteise all. Test `test_teemalehel_on_kaart_ja_jarjestus_korvuti`. (Kadri 11.11) |
 | 11.11.2026 | Seire sait, Uudised: allikas on uudise kõrval logona, nimi hõljudes (title). Logod laeb `sait/lae_logod.py` uue töövooga `logod.yml` (kaks korda päevas pärast uudistekogumist) kausta `sait/pilt/logod/`, mis on turvakontrolli piltide lubatud nimekirjas. Logota allikas jääb tekstiks. Kadri soov. |
 | 11.11.2026 | Seire sait, avaleht: tumeda teema päisepilt on nüüd kroomitud võrgustik hämaral pinnal (`sait/pilt/avaleht-tume.jpg`, 2172×724, JPEG). Heleda teema pilt jäi samaks. Kadri valik. |
