@@ -1294,3 +1294,10 @@ def test_voo_silt_uus_ainult_14_paeva():
     assert voo_silt("2026-10-21", "uus number", tana) == '<span class="t">number</span>'
     assert voo_silt("2026-09-16", "uus number", tana) == '<span class="t">number</span>'
     assert voo_silt("2026-11-05", "väide", tana) == '<span class="t">väide</span>'
+
+
+def test_innovatsioonimarge_on_hankija_oma(sait):
+    """Kadri 11.11.2026: „innovatsioon“ silt on hankija märge, mitte meie hinnang."""
+    h = sait["hanked.html"]
+    assert '<span class="u-t">innovatsioon</span>' not in h
+    assert "hankija märge: innovatsioon" in h
