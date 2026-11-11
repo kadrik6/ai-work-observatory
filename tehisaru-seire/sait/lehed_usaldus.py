@@ -559,11 +559,6 @@ def saidist(A, vaade, vaated):
   <p>Sait näitab, mida allikad ütlevad, ja märgib, kui kindel see on. Kui number on oluline otsuse jaoks, ava allikas: link on iga numbri juures.</p>
 </section>
 <section class="jaotis" id="autor" aria-labelledby="h-autor">
-  <header><h2 id="h-autor">Saidi autor on <b>{e(AUTOR)}</b> ¦ viitamisel märgi autor ja link</h2></header>
-  <ul class="loend">
-    <li>Saidi tekstid, kokkuvõtted, sisu valik, ülesehitus ja kujundus on autori looming ning autoriõigusega kaitstud. © {autori_aastad()} {e(AUTOR)}.</li>
-    <li>Sait on tehtud tehisaru (Claude) abiga. Teemad, sisu valik, ülesehitus, kujundus ja see, mis lehele läheb, on autori otsused. Koodi, andmete kogumise ja kokkuvõtete mustandid tegi tehisaru; uued uuringud ja väited lähevad lehele alles pärast autori kinnitust.</li>
-    <li>Tsiteerida ja viidata võib, kui märgid autori nime ja lingi saidile. Saidi või selle osade kopeerimiseks teisele saidile ja ärilistel eesmärkidel kasutamiseks küsi autorilt luba.</li>
-    <li>Statistika, uuringud, väited ja uudised kuuluvad oma allikatele ning nende kasutustingimused kehtivad. Algallika link on iga numbri juures.</li>
-  </ul>
+  <header><h2 id="h-autor">Autor</h2></header>
+  <p>Saidi on koostanud {e(AUTOR)} tehisaru (Claude) abiga. Teemad, sisu valik, ülesehitus ja kujundus on autori otsused; koodi, andmete kogumise ja kokkuvõtete mustandid tegi tehisaru. Numbrid ja uuringud kuuluvad oma allikatele. © {autori_aastad()} {e(AUTOR)}.</p>
 </section>"""

@@ -17,6 +17,7 @@ MEGA_NIMI = ' class="mega-nimi"'
 
 
 # Autor (Kadri 11.11.2026: „lisa saidile minu kui autori info, et oleks mingigi autori kaitse olemas“).
+# Kadri 12.11.2026: märge on lühike nagu teistel saitidel; jaluses ainult „© aasta nimi“, ilma „küsi luba“ ja kordamiseta.
 # Autoriõigus tekib teose loomisega ise; märge teeb autori ja kasutustingimused lugejale nähtavaks.
 AUTOR = "Kadri Kungla"
 AUTORI_ALGUS = 2026
@@ -243,7 +244,7 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
   <div class="wrap">
     <p>Tehisaru seire koondab avalikku statistikat ja uuringuid tehisaru kasutusest Eestis ja Euroopas. Iga number on avalikust allikast koos lingi ja kuupäevaga.</p>
     <p>{" · ".join(jalus_lingid)}</p>
-    <p class="autor">Koostanud {e(AUTOR)}, © {autori_aastad()}. Viitamisel märgi autor ja link. Numbrid ja uuringud kuuluvad oma allikatele. <a href="saidist.html#autor">Autor ja kasutamine</a></p>
+    <p class="autor">© {autori_aastad()} <a href="saidist.html#autor">{e(AUTOR)}</a></p>
   </div>
 </footer>
 </body>
