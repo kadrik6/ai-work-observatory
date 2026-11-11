@@ -1329,3 +1329,8 @@ def test_kaart_ilma_eesti_sildita_ja_seotud_korvaltabeliga(sait):
         assert teisel and teisel <= kaardil, leht  # nimed klapivad, muidu seos ei leia riiki
     seos = js[js.index("// Kaart ja kõrvaltabel"):js.index("// Pikk tabel")]
     assert "seire-riik" in js and "k.seireRiik" in seos and "'.bs[aria-label]'" in seos and "'.jrj-r[data-n]'" in seos
+def test_innovatsioonimarge_on_hankija_oma(sait):
+    """Kadri 11.11.2026: „innovatsioon“ silt on hankija märge, mitte meie hinnang."""
+    h = sait["hanked.html"]
+    assert '<span class="u-t">innovatsioon</span>' not in h
+    assert "hankija märge: innovatsioon" in h

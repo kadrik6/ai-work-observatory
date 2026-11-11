@@ -509,7 +509,10 @@ def hanked(A, vaade, vaated=None):
         if r.get("hea") == 3:
             tunnused.append('<span class="u-t s">hea näide</span>')
         if r.get("inn"):
-            tunnused.append('<span class="u-t">innovatsioon</span>')
+            # Kadri 11.11.2026: märge on hankija enda linnuke eVormil (BT-06 'inn-pur' või BT-776), mitte meie hinnang;
+            # nt Töötukassa märgib igal aastal Tableau litsentside pikendamise innovatsiooniks.
+            tunnused.append('<span class="u-t" title="Hankija märkis eVormil innovatsiooni. Seda, kas hange on sisult uuenduslik, keegi ei kontrolli.">'
+                            'hankija märge: innovatsioon</span>')
         if r.get("pk") is not None:
             tunnused.append(f'<span class="u-t">{r["pk"]} pakkumust</span>')
         pealk = (f'<a href="{e(r["url"])}">{e(r["t"])}</a>' if r.get("url")
