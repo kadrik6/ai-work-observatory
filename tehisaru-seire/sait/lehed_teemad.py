@@ -612,14 +612,17 @@ def too(A, vaade, vaated=None):
     import teemamall as tm
     from komponendid import KUUD
     from lehed_ulevaade import PAV_URL, UNE_URL, UNE_UUENDATUD, _loe, _kv, vaite_teema
-    sec_andmed = tm.andmesakid("too", "Uuri andmeid: töötus, koondamised, palkamine ja tööpakkumised Eestis",
-                               "Iga sakk on üks andmestik. Kuunumbrid ja kuulutused ei ütle, kas põhjus on tehisaru; põhjuse kohta on uuringud allpool.", [
-        ("tootus", "Töötus ja koondamised", too_eesti(A)),
+    # Kadri 11.11.2026: koondamised olid liiga suure fookuse all; neid uudiseid on harva ja muu pole vähem tähtis.
+    # Töötus, vabad kohad ja kuulutused on eespool; koondamised ja „Keda koondajad otsivad“ on ühes sakis prognoosi ees.
+    sec_tootus, sec_koond = too_eesti(A)
+    sec_andmed = tm.andmesakid("too", "Uuri andmeid: töötus, vabad kohad, tööpakkumised ja koondamised Eestis",
+                               "Iga sakk on üks andmestik. Kuunumbrid ja kuulutused ei ütle, kas põhjus on tehisaru; põhjuse kohta on uuringud alamlehel Uuringud.", [
+        ("tootus", "Töötus", sec_tootus),
         ("tootus-el", "Töötus ELis", tootus_el()),
-        ("palkamine", "Keda koondajad otsivad", sec_palk),
         ("vabad", "Vabad kohad", vabad_ametikohad()),
         ("portaalid", "Tööportaalid", toopakkumised(A)),
         ("ai-tood", "Tehisaru- ja andmetööd", ai_kuulutused(A)),
+        ("koondamised", "Koondamised", sec_koond + sec_palk),
         ("prognoos", "Prognoos", sec_tulevik),
     ])
     t_uuringud = ""  # Kadri 11.11.2026: uuringud on ühes kohas, alamlehel Töö › Uuringud (teine rida)

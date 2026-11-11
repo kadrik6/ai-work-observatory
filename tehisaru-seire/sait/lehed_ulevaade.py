@@ -478,7 +478,10 @@ def koondamise_arv(r):
 
 
 def too_eesti(A):
-    """Töö vaate esimene rida: Eesti töötus kuu kaupa ja Eesti koondamised, kus küsiti tehisaru rolli."""
+    """Töö vaate andmed: (Eesti töötus kuu kaupa, Eesti koondamised, kus küsiti tehisaru rolli).
+
+    Kadri 11.11.2026: koondamised olid liiga suure fookuse all (esimese saki 3/4). Töötus on nüüd esimene sakk üksi,
+    koondamised on oma sakis koos tabeliga „Keda koondajad otsivad“."""
     T = tootus()
     K = A.get("koondamised") or {}
     juhtumid = sorted(K.get("juhtumid", []), key=lambda r: r["kuupaev"], reverse=True)
@@ -495,13 +498,13 @@ def too_eesti(A):
     margid = [i for i, (k, _) in enumerate(T["EE"]) if k[5:7] in ("01",)] + [0, n]
     joonis = joon([("Eesti", [(idx[k], v) for k, v in T["EE"]], "fookus"),
                    ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
-                  0, n, 10, 2, w=300, h=130, ml=4, mr=60, x_margid=[0, n], lihtne=True,
+                  0, n, 10, 2, w=440, h=150, ml=4, mr=60, x_margid=[0, n], lihtne=True,
                   x_silt=lambda i: T["EE"][int(i)][0][5:] + "." + T["EE"][int(i)][0][:4], silt="Töötuse määr kuu kaupa")
     aasta_tagasi = dict(T["EE"]).get(f"{int(kuu[:4]) - 1}{kuu[4:]}")
     muutus = "" if aasta_tagasi is None else (
         f"Aasta varem {pr(aasta_tagasi)}%, muutus {'+' if t_ee >= aasta_tagasi else '−'}{pr(abs(t_ee - aasta_tagasi))} protsendipunkti. ")
     sec_t = f"""
-<section class="pn sp3" id="tootus-kuud" aria-labelledby="h-tootus-kuud">
+<section class="pn sp12" id="tootus-kuud" aria-labelledby="h-tootus-kuud">
   <div class="pn-h"><h2 id="h-tootus-kuud">Eesti töötus oli {kuu_seesytlev(kuu)} {kuu[:4]} <b>{pr(t_ee)}%</b>, ELis {pr(t_el)}%</h2></div>
   <p class="ps">Töötuse määr, %, sesoonselt tasandatud, {k0[5:]}.{k0[:4]}–{kuu[5:]}.{kuu[:4]}. {muutus}Kuunumber ei ütle, kas põhjus on tehisaru.</p>
   {joonis}
@@ -551,11 +554,11 @@ def too_eesti(A):
 </div>"""
     # Kaardid võeti maha; arv, põhjus ja link on tabelis „Keda koondajad otsivad“ (Kadri MKUS-i kommentaar 7.11.2026 08:48)
     sec_kv = f"""
-<section class="pn sp9" id="koondamised" aria-labelledby="h-koondamised">
+<section class="pn sp12" id="koondamised" aria-labelledby="h-koondamised">
   {k_pea}
   {sec_v}
 </section>"""
-    return f'<div class="g12">{sec_t}{sec_kv}</div>'
+    return f'<div class="g12">{sec_t}</div>', f'<div class="g12">{sec_kv}</div>'
 
 
 # ---------------------------------------------------------------- Töö: kus ja mis valdkonnas palgatakse
