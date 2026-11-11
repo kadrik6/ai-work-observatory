@@ -46,7 +46,7 @@ def kinnitatud_uuringud(read):
     return [{k: u[k] for k in UURINGU_VALJAD if k in u} for u in read if u.get("seire_olek") == "kinnitatud"]
 
 
-ETTEKANDE_VALJAD = ("id", "esineja", "amet", "pealkiri", "allikas", "uritus", "uritus_url", "kuupaev", "video", "keel",
+ETTEKANDE_VALJAD = ("id", "esineja", "amet", "pealkiri", "allikas", "uritus", "uritus_url", "kuupaev", "video", "algus", "keel",
                     "teemad", "ruhm", "kokkuvote", "mottes", "kontroll", "seire_kinnitatud")
 
 

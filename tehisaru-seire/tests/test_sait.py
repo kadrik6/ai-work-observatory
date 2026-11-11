@@ -1372,3 +1372,13 @@ def test_teemalehel_ainult_oma_reegel_ja_uuringud_ei_kordu(sait):
         assert 'href="tehisaru-maarus.html#tahtajad"' in r, f
     inim = re.search(r'<section class="pn" id="t-uuringud".*?</section>', sait["inimesed.html"], re.S).group(0)
     assert inim.count("<li>") == 1 and "GDS" not in inim and "veel pole" not in inim
+
+
+def test_podcastid_ettekannete_lehel(sait):
+    """Kadri 11.11.2026: Lex Fridmani ja Mindscape'i podcastid Ettekannete lehel, uus rühm „Taust“."""
+    h = sait["ettekanded.html"]
+    assert 'id="ek-taust"' in h and "Taust: mõistus ja informatsioon" in h
+    assert h.count('data-liik="podcast"') == 18 and h.count('data-liik="ettekanne"') == 10
+    assert '<span class="u-l arv">podcast</span>' in h and "lõik algab 0:15:28" in h
+    assert "Lex Fridman Podcast" in h and "Mindscape (Sean Carroll)" in h
+    assert "lex-452" not in h and "Dario Amodei" not in h  # aegunud osa jäeti välja (Kadri 11.11)
