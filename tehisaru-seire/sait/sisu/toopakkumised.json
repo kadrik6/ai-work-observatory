@@ -3737,7 +3737,9 @@
       "valdkonniti_kuupaev": "2026-11-10",
       "top_tooandjad_pohjus": "CV.ee näitab Töötukassa vahendatud kuulutusi tööandja nimeta; Töötukassa enda otsingulehti robots.txt keelab.",
       "jaotuse_kuulutusi": 2082,
-      "jaotuse_allikas": "https://www.cv.ee/et/search (tööandja „Töötukassa vahendatud pakkumised“)"
+      "jaotuse_allikas": "https://www.cv.ee/et/search (tööandja „Töötukassa vahendatud pakkumised“)",
+      "ametivaldkond_url": "https://www.cv.ee/et/categories",
+      "asukoht_url": "https://www.cv.ee/et/locations"
     }
   ],
   "ajalugu": [
