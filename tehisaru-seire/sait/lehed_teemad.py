@@ -288,11 +288,10 @@ def inimesed(A, vaade, vaated=None):
     lyh = lambda k: e(tm.esimene_lause(U[k]["leid"]))  # noqa: E731
     t_uuringud = tm.uuringute_plokk(vaated, [
         ("USA", f'{lyh("bick2024")} ({e(U["bick2024"]["autorid"].split(",")[0])} jt {U["bick2024"]["aasta"]})', "too", "ulesanded"),
-        ("Suurbritannia", f'Avalikus sektoris hindasid kasutajad, et säästsid umbes 26 minutit päevas; seda, milleks aega kasutati, ei mõõdetud (GDS {U["gds2025"]["aasta"]}).', "too", "ulesanded"),
-        ("Eesti", "Inimeste kasutust mõõdab Statistikaamet; uuringut selle kohta, mida kasutus inimestele annab, Eestis veel pole.", "inimesed", "tool"),
     ], [("inimesed", "Oskused", "digi"), ("too", "Uuringud töö kohta", "maailm")])
     t_vaited = tm.vaidete_plokk(A, vaated, "inimesed", vaite_teema)
-    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-keelud-kirjaoskus", "ai-uldkohaldamine"])
+    # Kadri 11.11.2026: teemalehel ainult selle teema reegel, kõik tähtajad on Tehisaru määruse lehel
+    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-keelud-kirjaoskus"])
     t_allikad = tm.allikate_plokk([
         (f"Kasutus, {ee['allikas']}", ee["url"], ee["avaldatud"], f"{ee['aasta']}, 16–74-aastased"),
         (f"Tööl, {too['allikas']}", too["url"], too["avaldatud"], f"{too['aasta']}, kõigist 16–74-aastastest"),
@@ -623,15 +622,9 @@ def too(A, vaade, vaated=None):
         ("ai-tood", "Tehisaru- ja andmetööd", ai_kuulutused(A)),
         ("prognoos", "Prognoos", sec_tulevik),
     ])
-    lyh = lambda k: e(tm.esimene_lause(U[k]["leid"]))  # noqa: E731
-    t_uuringud = tm.uuringute_plokk(vaated, [
-        ("USA", f'{lyh("canaries2026")} ({e(U["canaries2026"]["autorid"].split(",")[0])} {U["canaries2026"]["aasta"]})', "too", "maailm"),
-        ("Taani", f'{lyh("humlum2025")} ({e(U["humlum2025"]["autorid"].split(",")[0])} {U["humlum2025"]["aasta"]})', "too", "maailm"),
-        ("Katsed", f'Katsetes kulus ülesandele kuni 40% vähem aega, aga kogenud arendajatel oma projektis 19% rohkem aega (Noy ja Zhang {U["noy2023"]["aasta"]}; METR {U["metr2025"]["aasta"]}).', "too", "ulesanded"),
-        ("Eesti", "Eesti uuringud mõõdavad kasutust, tootlikkust ja takistusi; mõju töökohtadele pole veel mõõdetud.", "too", "eesti"),
-    ], [("too", "Uuringud", "maailm"), ("too", "Kirjandus", "uuritakse"), ("too", "Ametid ja hõive", "kokkupuude")])
+    t_uuringud = ""  # Kadri 11.11.2026: uuringud on ühes kohas, alamlehel Töö › Uuringud (teine rida)
     t_vaited = tm.vaidete_plokk(A, vaated, "too", vaite_teema)
-    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-keelud-kirjaoskus", "ai-korge-risk-iii"])
+    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-korge-risk-iii"])  # värbamine ja töötajate juhtimine
     vabad = [r for r in _loe("vabad-ametikohad.csv") if r["tabel"] == "PAV011"] if (Path(__file__).resolve().parent / "sisu" / "vabad-ametikohad.csv").exists() else []
     kv_v = max((r["periood"] for r in vabad), key=_kv) if vabad else None
     t_allikad = tm.allikate_plokk([
@@ -952,7 +945,7 @@ def avalik_sektor(A, vaade, vaated=None):
         ("Suurbritannia", f'{e(tm.esimene_lause(U["gds2025"]["leid"]))} (GDS {U["gds2025"]["aasta"]})', "too", "ulesanded"),
     ], [("hanked", "Hanked: mida riik ostab", "")])
     t_vaited = tm.vaidete_plokk(A, vaated, "avalik-sektor", vaite_teema)
-    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-keelud-kirjaoskus", "ai-uldkohaldamine", "ai-korge-risk-iii"])
+    t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-korge-risk-iii"])  # otsused avaliku teenuse saamise kohta
     t_allikad = tm.allikate_plokk([
         (OECD_NIMI, OECD_URL, "2026-11-03", "CC BY 4.0; küsitlus 12.2025–02.2026"),
     ])
