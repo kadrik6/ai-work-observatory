@@ -198,6 +198,8 @@ ETTEKANDE_RUHM = {
     "too": ("Töö ja organisatsioon", "Kuidas ettevõtted tehisaru kasutusele võtavad ja mida enne seda korda teha."),
     "riik": ("Riik ja haridus", "Riigiasutuste tehisarukatsed ning tehisaru koht koolis."),
     "tulevik": ("Tehisaru areng ja tulevik", "Pikemad vestlused sellest, kuhu tehisaru liigub ja mida see tähendab."),
+    # Kadri 11.11.2026 kinnitas alapealkirja (podcastide lõim): teadlaste vestlused, mis aitavad tehisarust mõelda
+    "taust": ("Taust: mõistus ja informatsioon", "Teadlaste vestlused mõistusest, arutlemisest ja informatsioonist, mis aitavad tehisaru üle mõelda."),
     "tervis": ("Tervishoid", "Tehisaru arsti abilisena: diagnostika ja selle kontroll."),
     "energia": ("Energia", "Elektriturg, akud ja võrk: kus masinõpe teeb otsuseid iga 15 minuti järel."),
     "kone-pilt": ("Kõne ja pilt", "Kõnetuvastus ja masinnägemine päris tingimustes."),
@@ -221,13 +223,16 @@ def _ettekanne(r, allikad):
     teemad = "".join(f'<span class="u-t">{e(ETTEKANDE_TEEMA[t])}</span>' for t in r.get("teemad", []) if t in ETTEKANDE_TEEMA)
     uritus = (f'<a class="u-ur" href="{e(r["uritus_url"])}">{e(r["uritus"])}</a>' if r.get("uritus_url") else e(r.get("uritus", "")))
     mottes = "".join(f"<li>{e(m)}</li>" for m in r.get("mottes", []))
-    return (f'<li data-liik="ettekanne">'
+    # Podcast (Kadri 11.11.2026): liik tuleb allikast; kui link viib saate lehele, ütleb „algus“, kust lõik algab
+    liik = "podcast" if allikad[r["allikas"]].get("liik") == "podcast" else "ettekanne"
+    algus = f' <span class="ek-algus">lõik algab {e(r["algus"])}</span>' if r.get("algus") else ""
+    return (f'<li data-liik="{liik}">'
             f'<span class="d">{_kp_osa(r["kuupaev"])}</span>'
-            f'<div><a href="{e(r["video"])}">{e(r["pealkiri"])}</a>'
+            f'<div><a href="{e(r["video"])}">{e(r["pealkiri"])}</a>{algus}'
             f'<p class="ek-kes"><b>{e(r["esineja"])}</b>{", " + e(r["amet"]) if r.get("amet") else ""} · {uritus}</p>'
             f'<p class="u-k">{e(r["kokkuvote"])}</p>'
             f'{f"<ul class=ek-m>{mottes}</ul>" if mottes else ""}'
-            f'<p class="u-m"><span class="u-l arv">ettekanne</span>{teemad}'
+            f'<p class="u-m"><span class="u-l arv">{liik}</span>{teemad}'
             f'<span class="u-a" title="{e(r.get("kontroll", ""))}">{e(allikad[r["allikas"]]["nimi"])}</span></p></div></li>')
 
 
@@ -239,7 +244,7 @@ def ettekanded(A, vaade):
     n = len(read)
     from abi import alam_h1
     alam_h1(vaade, "ettekanded.html",
-            f"**{n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'}** usaldatud seminaride ja konverentside ettekannetest ¦ kokkuvõtted on tehtud avalikest salvestistest"
+            f"**{n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'}** seminaride, konverentside ja podcastide salvestistest ¦ kokkuvõtted on tehtud avalikest salvestistest usaldatud allikatelt"
             if n else "Usaldatud seminaride ja konverentside ettekanded ¦ **kokkuvõtted ootavad kinnitust**")
     ruhmad = {k: [r for r in read if (r.get("ruhm") if r.get("ruhm") in ETTEKANDE_RUHM else "muu") == k] for k in ETTEKANDE_RUHM}
     ruhmad = {k: v for k, v in ruhmad.items() if v}
@@ -258,9 +263,9 @@ def ettekanded(A, vaade):
   {sisu}
 </section>
 <section class="pn sp12" id="ettekannete-allikad" aria-labelledby="h-ettekannete-allikad">
-  <div class="pn-h"><h2 id="h-ettekannete-allikad">Usaldatud üritused</h2></div>
+  <div class="pn-h"><h2 id="h-ettekannete-allikad">Usaldatud üritused ja podcastid</h2></div>
   <ul class="u-allikad">{al}</ul>
-  <p class="ps">Kokkuvõte tehakse salvestise automaatsubtiitritest ja seda kontrollitakse paari väite kaupa; transkripti teksti saidil ei hoita. Uus ettekanne läheb saidile pärast kinnitamist.</p>
+  <p class="ps">Kokkuvõte tehakse salvestise subtiitritest või avalikust transkriptist ja seda kontrollitakse paari väite kaupa; transkripti teksti saidil ei hoita. Podcasti külalise arvamus on märgitud arvamusena. Uus ettekanne läheb saidile pärast kinnitamist.</p>
 </section>
 </div>"""
 

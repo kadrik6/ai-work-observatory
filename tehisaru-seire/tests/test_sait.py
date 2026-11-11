@@ -1404,3 +1404,13 @@ def test_ulesehituse_kontroll_a_b_c_e(sait):
     assert "Usaldus kontrollib kolme asja" in sait["kas-see-on-tosi.html"]
     # F: vanad lingid hangete loendile viivad uuele lehele
     assert not any('href="hanked.html#loend"' in h for h in sait.values())
+
+
+def test_podcastid_ettekannete_lehel(sait):
+    """Kadri 11.11.2026: Lex Fridmani ja Mindscape'i podcastid Ettekannete lehel, uus rühm „Taust“."""
+    h = sait["ettekanded.html"]
+    assert 'id="ek-taust"' in h and "Taust: mõistus ja informatsioon" in h
+    assert h.count('data-liik="podcast"') == 18 and h.count('data-liik="ettekanne"') == 10
+    assert '<span class="u-l arv">podcast</span>' in h and "lõik algab 0:15:28" in h
+    assert "Lex Fridman Podcast" in h and "Mindscape (Sean Carroll)" in h
+    assert "lex-452" not in h and "Dario Amodei" not in h  # aegunud osa jäeti välja (Kadri 11.11)

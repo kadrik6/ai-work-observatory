@@ -53,6 +53,20 @@
 "nimi": "Kratid avalikus sektoris",
 "url": "https://www.kratid.ee/uritused",
 "miks": "Justiits- ja Digiministeeriumi veebiürituste sari riigiasutuste tehisaruprojektidest; salvestised avalikud YouTube'is"
+},
+{
+"id": "lex-fridman",
+"nimi": "Lex Fridman Podcast",
+"url": "https://lexfridman.com/podcast/",
+"miks": "Pikad intervjuud tehisaru arendajate ja ettevõtete juhtidega; transkriptid on avalikud",
+"liik": "podcast"
+},
+{
+"id": "mindscape",
+"nimi": "Mindscape (Sean Carroll)",
+"url": "https://www.preposterousuniverse.com/podcast/",
+"miks": "Füüsik Sean Carrolli intervjuud teadlastega mõistuse, tehisaru ja ühiskonna teemal; transkriptid on avalikud",
+"liik": "podcast"
 }
 ],
 "ettekanded": [
@@ -297,6 +311,454 @@
 ],
 "kontroll": "Kokkuvõte video kirjelduse kava põhjal (10.11.2026). Subtiitreid ei õnnestunud lugeda, seega ettekannete sisu ja numbreid pole salvestise vastu kontrollitud.",
 "seire_kinnitatud": "2026-11-10"
+},
+{
+"id": "lex-503-2026-10",
+"esineja": "Ankur Moitra, Steven Brunton, Alex Kontorovich",
+"amet": "matemaatikud (MIT, Washingtoni Ülikool, Rutgers)",
+"pealkiri": "AI Crisis in Math: Navier-Stokes, Riemann Hypothesis & Complexity Theory",
+"allikas": "lex-fridman",
+"uritus": "Lex Fridman Podcast #503",
+"uritus_url": "https://lexfridman.com/math-ai-crisis/",
+"kuupaev": "2026-10-26",
+"video": "https://www.youtube.com/watch?v=ZAzWPE9CItg&t=116",
+"keel": "inglise",
+"teemad": [
+"too"
+],
+"ruhm": "too",
+"kokkuvote": "Kolm matemaatikut arutavad, mida tähendab nende tööle see, et tehisaru lahendas saatekirjelduse järgi mitu kaua lahtiseks jäänud ülesannet. Nende hinnangul avardab tööriist teadlase haaret, aga teeb doktorantide juhendamise ja oma karjääri kavandamise senisest raskemaks.",
+"mottes": [
+"Moitra sõnul on vana edu valem, mida noortele teadlastele ette anda, kadunud.",
+"Kontorovichi tähelepanek ülikoolist: hinded jagunevad kaheks rühmaks. Tehisaru abil õppijad saavad paremaid tulemusi kui need, kes lasevad tal vastused anda.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte transkripti põhjal (lexfridman.com/math-ai-crisis-transcript), loetud peatükk „Crisis moment in mathematics“; kuupäev RSS-voo järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "lex-501-2026-08",
+"esineja": "David Heinemeier Hansson (DHH)",
+"amet": "Ruby on Railsi looja, 37signalsi tehnoloogiajuht",
+"pealkiri": "DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding & Linux",
+"allikas": "lex-fridman",
+"uritus": "Lex Fridman Podcast #501",
+"uritus_url": "https://lexfridman.com/dhh-2/",
+"kuupaev": "2026-08-26",
+"video": "https://www.youtube.com/watch?v=NYFGCESmikA&t=4224",
+"keel": "inglise",
+"teemad": [
+"too"
+],
+"ruhm": "too",
+"kokkuvote": "DHH kirjutas veerand sajandit koodi käsitsi, nüüd teevad seda tema eest agendid. Tema sõnul kahaneb hoolikalt lihvitud koodi majanduslik tasuvus kiiresti. Programmeerijatele soovitab ta mitte ennustada, mis saab kahe aasta pärast, vaid õppida kohe selgeks, milleks tööriistad praegu võimelised on.",
+"mottes": [
+"Ohus on töö mehaaniline osa, mitte ehitamine. Odavam tarkvara võib tema sõnul suurendada nõudlust, nagu juhtus pangaautomaatidega (Jevonsi paradoks), kuid see pole kindel.",
+"Tootlikkus tähendab tema sõnul seda, et sama tööd teeb vähem inimesi. Üksikule koondatule on see raske, majandusele tervikuna kasulik.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte transkripti põhjal (lexfridman.com/dhh-2-transcript), loetud peatükk „Advice for programmers“; kuupäev RSS-voo järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "lex-494-2026-03",
+"esineja": "Jensen Huang",
+"amet": "NVIDIA kaasasutaja ja tegevjuht",
+"pealkiri": "Jensen Huang: NVIDIA – The $4 Trillion Company & the AI Revolution",
+"allikas": "lex-fridman",
+"uritus": "Lex Fridman Podcast #494",
+"uritus_url": "https://lexfridman.com/jensen-huang/",
+"kuupaev": "2026-03-23",
+"video": "https://www.youtube.com/watch?v=vif8NQcjVf0&t=7049",
+"keel": "inglise",
+"teemad": [
+"too",
+"ettevotted"
+],
+"ruhm": "too",
+"kokkuvote": "Huang eristab töö eesmärki ja selle tegemise tööriistu: tehisaru muudab ülesandeid, aga mitte seda, milleks ametit vaja on. Tema hinnangul kasvab NVIDIA tarkvarainseneride arv ning koodi kirjutamine muutub ülesande kirjeldamiseks, mida oskab palju rohkem inimesi.",
+"mottes": [
+"Näide radioloogiast: masinnägemine loeb pilte inimesest paremini, kuid Huangi väitel pole radioloogide vajadus vähenenud. Arvulist allikat ta ei too.",
+"Tema meelest võivad liialdatud hoiatused ameti kadumise kohta inimesi elukutsest eemale peletada ja sellega kahju teha.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte transkripti põhjal (lexfridman.com/jensen-huang-transcript), loetud peatükk „Future of programming“; kuupäev RSS-voo järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "lex-491-2026-02",
+"esineja": "Peter Steinberger",
+"amet": "OpenClaw'i looja",
+"pealkiri": "OpenClaw: The Viral AI Agent that Broke the Internet",
+"allikas": "lex-fridman",
+"uritus": "Lex Fridman Podcast #491",
+"uritus_url": "https://lexfridman.com/peter-steinberger/",
+"kuupaev": "2026-02-12",
+"video": "https://www.youtube.com/watch?v=YFjfBk8HI5o&t=10857",
+"keel": "inglise",
+"teemad": [
+"too",
+"ettevotted"
+],
+"ruhm": "too",
+"kokkuvote": "Avatud lähtekoodiga agendi looja arvab, et isiklik agent asendab suure osa praegustest rakendustest ja et paljud teenused muutuvad masinale mõeldud liidesteks. Programmeerimise suund on tema sõnul selge: koodi kirjutab üha enam masin, inimesele jääb otsustada, mida ehitada ja kuidas see peab töötama.",
+"mottes": [
+"Tarkvaraarendajate väga kõrge palk tulenes tema sõnul oskuste nappusest ja võib nüüd langeda, kuid ehitajaid on endiselt vaja.",
+"Soovitus: ära pea end kitsalt „iOS-i arendajaks“, vaid ehitajaks, kes kasutab oma oskusi laiemalt.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte transkripti põhjal (lexfridman.com/peter-steinberger-transcript), loetud peatükk „Will AI replace programmers?“; kuupäev RSS-voo järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "lex-490-2026-02",
+"esineja": "Nathan Lambert, Sebastian Raschka",
+"amet": "masinõppe teadlased (Ai2; raamatute „Build a Large Language Model“ autor)",
+"pealkiri": "State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI",
+"allikas": "lex-fridman",
+"uritus": "Lex Fridman Podcast #490",
+"uritus_url": "https://lexfridman.com/ai-sota-2026/",
+"kuupaev": "2026-02-01",
+"video": "https://www.youtube.com/watch?v=EV7WhVT270Q&t=11207",
+"keel": "inglise",
+"teemad": [
+"too"
+],
+"ruhm": "too",
+"kokkuvote": "Kaks masinõppe teadlast leiavad, et tarkvaraarendus nihkub süsteemide kavandamise ja tulemuste seadmise poole ning paljud arendajad töötavad tulevikus pigem disaineri või tootejuhina. Eraldi räägivad nad tehisarufirmade väga pikkadest töönädalatest ja läbipõlemisest.",
+"mottes": [
+"Raschka hinnangul teevad keelemudelid koodi kirjutamisega kunagi sedasama, mida kalkulaator tegi arvutamisega. Lahtine küsimus on, kes ülesande annab.",
+"Lambert: tihe konkurents tehisarulaborite vahel kiirendab arengut, aga selle hind on töötajate läbipõlemine.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte transkripti põhjal (lexfridman.com/ai-sota-2026-transcript), loetud peatükk „Will AI replace programmers?“; kuupäev RSS-voo järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "lex-475-2025-07",
+"esineja": "Demis Hassabis",
+"amet": "Google DeepMindi juht, Nobeli preemia laureaat",
+"pealkiri": "Demis Hassabis: Future of AI, Simulating Reality, Physics and Video Games",
+"allikas": "lex-fridman",
+"uritus": "Lex Fridman Podcast #475",
+"uritus_url": "https://lexfridman.com/demis-hassabis-2/",
+"kuupaev": "2025-07-23",
+"video": "https://www.youtube.com/watch?v=-HzgcbRXUK8&t=6147",
+"keel": "inglise",
+"teemad": [
+"too"
+],
+"ruhm": "too",
+"kokkuvote": "Hassabis ootab, et järgmise 5–10 aasta jooksul muutuvad tehisaru omaks võtnud inimesed nii tehnilistel kui ka loomealadel palju tootlikumaks. Tema hinnangul on muutus suurem ja kiirem kui tööstusrevolutsioon, nii et ühiskond peab juba praegu arutama, kuidas tootlikkuse kasvu jagada, näiteks mingi põhitoetuse kaudu.",
+"mottes": [
+"Programmeerimine ja matemaatika on tehisarule lihtsamad, sest neis saab tekitada palju kontrollitavaid treeningandmeid.",
+"Tippprogrammeerijate eelis jääb tema sõnul alles: nemad oskavad arhitektuuri ette anda ja masina loodud koodi hinnata.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte transkripti põhjal (lexfridman.com/demis-hassabis-2-transcript), loetud peatükk „Future of programming“; kuupäev RSS-voo järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-283-2024-07",
+"esineja": "Daron Acemoglu",
+"amet": "majandusteadlane (MIT), Nobeli preemia laureaat 2024",
+"pealkiri": "Daron Acemoglu on Technology, Inequality, and Power",
+"allikas": "mindscape",
+"uritus": "Mindscape #283",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2024/07/22/283-daron-acemoglu-on-technology-inequality-and-power/",
+"kuupaev": "2024-07-22",
+"video": "https://www.preposterousuniverse.com/podcast/2024/07/22/283-daron-acemoglu-on-technology-inequality-and-power/",
+"algus": "0:25:41",
+"keel": "inglise",
+"teemad": [
+"too",
+"inimesed"
+],
+"ruhm": "too",
+"kokkuvote": "Acemoglu sõnul ei ole tehnoloogia suund ette määratud: tehisaruga saab töötajaid asendada või neid tootlikumaks teha. Palgad tõusevad siis, kui kasvab töötaja enda panus (piirtootlikkus), mitte üksnes keskmine tootlikkus. Ka siis on vaja võimude tasakaalu: ametiühinguid, regulaatoreid ja töötajate häält.",
+"mottes": [
+"Tehisaru kui teabetööriist, mis annab näiteks elektrikule õigel hetkel usaldusväärset infot, võiks tema sõnul tõsta paljude töötajate tootlikkust.",
+"Ajaloo õppetund tööstusrevolutsioonist: tavainimese elu läks alguses halvemaks ja paranes alles siis, kui institutsioonid muutusid.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud lõigud 0:25–0:33 ja 1:00–1:07); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-363-2026-08",
+"esineja": "Chandra Sripada",
+"amet": "filosoofia ja psühhiaatria professor (Michigani Ülikool)",
+"pealkiri": "Chandra Sripada on How LLMs and Humans are Cognitive Cousins",
+"allikas": "mindscape",
+"uritus": "Mindscape #363",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2026/08/10/363-chandra-sripada-on-how-llms-and-humans-are-cognitive-cousins/",
+"kuupaev": "2026-08-10",
+"video": "https://www.preposterousuniverse.com/podcast/2026/08/10/363-chandra-sripada-on-how-llms-and-humans-are-cognitive-cousins/",
+"algus": "0:30:45",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"ruhm": "tulevik",
+"kokkuvote": "Sripada väidab, et keelemudelite mõtlemine on inimese omale lähemal, kui arvatakse. Kiire ja aeglase mõtlemise eristus, mida kognitiivteadus inimese juures kirjeldab, tekib tema sõnul ka mudelitesse ainuüksi ennustamise kaudu. Seepärast võivad mudelid aidata mõista inimese mõtlemist.",
+"mottes": [
+"Lähiaastad on tema sõnul õppijale parim aeg, sest mudel on kannatlik isiklik juhendaja.",
+"Pikemas plaanis muretseb ta, millist tööd jääb järgmisele põlvkonnale, kui masin lahendab keerulisi ülesandeid tasuta.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud lõigud 0:30–0:47 ja 1:36–1:44); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-343-2026-02",
+"esineja": "Tom Griffiths",
+"amet": "psühholoog ja arvutiteadlane (Princeton)",
+"pealkiri": "Tom Griffiths on the Laws of Thought",
+"allikas": "mindscape",
+"uritus": "Mindscape #343",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2026/02/09/343-tom-griffiths-on-the-laws-of-thought/",
+"kuupaev": "2026-02-09",
+"video": "https://www.preposterousuniverse.com/podcast/2026/02/09/343-tom-griffiths-on-the-laws-of-thought/",
+"algus": "0:59:49",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"ruhm": "tulevik",
+"kokkuvote": "Griffiths kirjeldab mõtlemist kui piiratud aja ja arvutusvõimsusega tehtavat järeldamist ning võrdleb inimest ja keelemudelit. Mudelid vajavad õppimiseks palju rohkem andmeid ja üldistavad halvemini. Nende vead tulenevad sellest, milleks neid treeniti, näiteks järgmise sõna ennustamisest.",
+"mottes": [
+"Tema eelistatud tulevik: tehisaru täiendab inimest seal, kus me oleme nõrgad, ning meie moodi õppivad mudelid oleksid ka arusaadavamad.",
+"Tema labori näide: tavaline keelemudel loendab tähti paremini siis, kui õige vastus on internetis sagedasem arv.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud lõigud 0:53–1:04); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-336-2025-11",
+"esineja": "Anil Ananthaswamy",
+"amet": "teadusajakirjanik, raamatu „Why Machines Learn“ autor",
+"pealkiri": "Anil Ananthaswamy on the Mathematics of Neural Nets and AI",
+"allikas": "mindscape",
+"uritus": "Mindscape #336",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2025/11/24/336-anil-ananthaswamy-on-the-mathematics-of-neural-nets-and-ai/",
+"kuupaev": "2025-11-24",
+"video": "https://www.preposterousuniverse.com/podcast/2025/11/24/336-anil-ananthaswamy-on-the-mathematics-of-neural-nets-and-ai/",
+"algus": "1:10:33",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"ruhm": "tulevik",
+"kokkuvote": "Ananthaswamy selgitab lihtsalt närvivõrkude matemaatikat alates perseptronist kuni transformerini. Tema hinnangul ei vii keelemudelite suurendamine üksi üldise tehisaruni, sest mudelid vajavad väga palju andmeid ja nende vastuste õigsust ei saa tagada.",
+"mottes": [
+"Hea sissejuhatus neile, kes tahavad aru saada, mis tehisaru sees toimub.",
+"Tema hinnangul vajab valdkond veel üht või kaht läbimurret, mis oleks sama suured kui transformer.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud lõigud 0:05–0:12 ja 1:10–1:13); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-330-2025-09",
+"esineja": "Petter Törnberg",
+"amet": "arvutuslik sotsiaalteadlane (Amsterdami Ülikool)",
+"pealkiri": "Petter Törnberg on the Dynamics of (Mis)Information",
+"allikas": "mindscape",
+"uritus": "Mindscape #330",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2025/09/29/330-petter-tornberg-on-the-dynamics-of-misinformation/",
+"kuupaev": "2025-09-29",
+"video": "https://www.preposterousuniverse.com/podcast/2025/09/29/330-petter-tornberg-on-the-dynamics-of-misinformation/",
+"algus": "1:00:04",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"ruhm": "tulevik",
+"kokkuvote": "Törnberg ehitas keelemudelitel põhinevatest agentidest tehissotsiaalvõrgustiku, et katsetada, kas mullid ja polariseerumine on parandatavad. Ükski proovitud lahendus neid ei kõrvaldanud, ka mitte postituste näitamine ajalises järjekorras või konstruktiivsete kommentaaride esiletõstmine. Mõni lahendus tegi olukorra hullemaks.",
+"mottes": [
+"Keelemudeliga agendid annavad sotsiaalteadusele uue katsevahendi, mida vaatlusandmetega teha ei saa.",
+"Tema järeldus: probleemid tekivad võrgustiku ülesehitusest endast, mitte ainult soovitusalgoritmist.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud lõigud 0:34–0:42 ja 1:00–1:02); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-347-2026-03",
+"esineja": "Andrew Guthrie Ferguson",
+"amet": "õigusteaduse professor (George Washingtoni Ülikool)",
+"pealkiri": "Andrew Guthrie Ferguson on How Your Data Will Be Used Against You",
+"allikas": "mindscape",
+"uritus": "Mindscape #347",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2026/03/16/347-andrew-guthrie-ferguson-on-how-your-data-will-be-used-against-you/",
+"kuupaev": "2026-03-16",
+"video": "https://www.preposterousuniverse.com/podcast/2026/03/16/347-andrew-guthrie-ferguson-on-how-your-data-will-be-used-against-you/",
+"algus": "0:06:05",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"ruhm": "tulevik",
+"kokkuvote": "Ferguson kirjeldab „enesejälgimise lõksu“: nutiseadmed, autod ja telefonid koguvad meist andmeid, mida politsei saab kasutada. Seadus kirjutati aga analoogmaailma jaoks. Tema sõnul liigub tehnoloogia tehisaru abil kiiremini, kui õigus järele jõuab.",
+"mottes": [
+"Arutelu käib USA õiguse (neljas parandus) näitel, Euroopa andmekaitse on teistsugune.",
+"Iga nutiseade on tema sõnul ühtlasi jälgimisseade.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud lõigud 0:04–0:19); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-242-2023-07",
+"esineja": "David Krakauer",
+"amet": "Santa Fe Instituudi president, keerukusteadlane",
+"pealkiri": "David Krakauer on Complexity, Agency, and Information",
+"allikas": "mindscape",
+"uritus": "Mindscape #242",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2023/07/10/242-david-krakauer-on-complexity-agency-and-information/",
+"kuupaev": "2023-07-10",
+"video": "https://www.preposterousuniverse.com/podcast/2023/07/10/242-david-krakauer-on-complexity-agency-and-information/",
+"algus": "1:22:17",
+"keel": "inglise",
+"teemad": [
+"inimesed",
+"too"
+],
+"ruhm": "tulevik",
+"kokkuvote": "Krakauer eristab kahte liiki mõttetööriistu. Täiendavad tööriistad, nagu kaart või arvelaud, õpetavad kasutajat, nii et oskus jääb alles ka siis, kui need ära võtta. Konkureerivad tööriistad, nagu GPS või keelemudel, teevad töö ära, kuid kasutaja ei õpi neist midagi juurde.",
+"mottes": [
+"Küsimus tööle: kas tehisaru kasutamine arendab oskusi või asendab neid?",
+"Saade on salvestatud 2023. aastal, aga see eristus ei sõltu mudelite tasemest.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud lõik 1:22–1:27); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-286-2024-08",
+"esineja": "Blaise Agüera y Arcas",
+"amet": "Google'i inseneeria asepresident, rühm Paradigms of Intelligence",
+"pealkiri": "Blaise Agüera y Arcas on the Emergence of Replication and Computation",
+"allikas": "mindscape",
+"uritus": "Mindscape #286",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2024/08/19/286-blaise-aguera-y-arcas-on-the-emergence-of-replication-and-computation/",
+"kuupaev": "2024-08-19",
+"video": "https://www.preposterousuniverse.com/podcast/2024/08/19/286-blaise-aguera-y-arcas-on-the-emergence-of-replication-and-computation/",
+"algus": "0:11:29",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"ruhm": "taust",
+"kokkuvote": "Agüera y Arcas räägib katsest, kus juhuslikest koodijuppidest tekkisid iseenesest isepaljunevad programmid. Sellest lähtudes arutletakse, kas arvutus on looduses paratamatu suund ja mida see ütleb elu ning intelligentsuse tekke kohta.",
+"mottes": [
+"Taustateadmine: intelligentsust ja elu vaadeldakse arvutusena, mis ei sõltu konkreetsest keemiast.",
+"Arutelu on alusteaduslik, mitte tööturu kohta.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud saate kirjeldus ja lõigud 0:07–0:13); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-266-2024-02",
+"esineja": "Christoph Adami",
+"amet": "mikrobioloogia ja füüsika professor (Michigani Osariigi Ülikool)",
+"pealkiri": "Christoph Adami on How Information Makes Sense of Biology",
+"allikas": "mindscape",
+"uritus": "Mindscape #266",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2024/02/19/266-christoph-adami-on-how-information-makes-sense-of-biology/",
+"kuupaev": "2024-02-19",
+"video": "https://www.preposterousuniverse.com/podcast/2024/02/19/266-christoph-adami-on-how-information-makes-sense-of-biology/",
+"algus": "0:51:20",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"ruhm": "taust",
+"kokkuvote": "Adami väidab, et bioloogia muutub mõistetavaks informatsiooni kaudu: evolutsioon talletab teavet selle kohta, kuidas ellu jääda. Digitaalse elu katsetes saab seda teavet otse mõõta ja näha, kuidas see kohasusega koos kasvab.",
+"mottes": [
+"Taustateadmine informatsiooniteooriast, mis on ka masinõppe aluseks.",
+"Saade ei räägi tehisarust ega tööst.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud saate kirjeldus ja lõigud 0:33 ja 0:51); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-249-2023-09",
+"esineja": "Peter Godfrey-Smith",
+"amet": "teadusfilosoof (Sydney Ülikool)",
+"pealkiri": "Peter Godfrey-Smith on Sentience and Octopus Minds",
+"allikas": "mindscape",
+"uritus": "Mindscape #249",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2023/09/11/249-peter-godfrey-smith-on-sentience-and-octopus-minds/",
+"kuupaev": "2023-09-11",
+"video": "https://www.preposterousuniverse.com/podcast/2023/09/11/249-peter-godfrey-smith-on-sentience-and-octopus-minds/",
+"algus": "0:55:29",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"ruhm": "taust",
+"kokkuvote": "Godfrey-Smith uurib kaheksajalgade kaudu, kuidas mõistus võib tekkida väga erineva närvisüsteemiga. Ta kahtleb levinud arusaamas, et õigesti programmeeritud arvutil võiks olla teadvus. Tema arvates on selles oma roll ka aju bioloogilistel rütmidel, mitte ainult närvirakkude võrgustikul.",
+"mottes": [
+"Vastukaal väitele, et teadvus on ainult õige võrgustiku küsimus.",
+"Seisukoht ei sõltu mudelite tasemest, vaid sellest, mis on teadvus.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud lõik 0:55–1:02); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-240-2023-06",
+"esineja": "Andrew Pontzen",
+"amet": "kosmoloog (University College London)",
+"pealkiri": "Andrew Pontzen on Simulations and the Universe",
+"allikas": "mindscape",
+"uritus": "Mindscape #240",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2023/06/19/240-andrew-pontzen-on-simulations-and-the-universe/",
+"kuupaev": "2023-06-19",
+"video": "https://www.preposterousuniverse.com/podcast/2023/06/19/240-andrew-pontzen-on-simulations-and-the-universe/",
+"algus": "1:04:16",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"ruhm": "taust",
+"kokkuvote": "Pontzen selgitab, kuidas arvutisimulatsioonid aitavad universumit mõista, ja kirjeldab ka tehisaru kui mõtlemise simulatsiooni. Tema sõnul hakkab masinõpe teaduses asendama osa kulukatest simulatsioonidest.",
+"mottes": [
+"Ta kirjeldab tulevikku, kus mudel ei ennusta lihtsalt tulemusi, vaid selgitab, mida ta simulatsioonist õppis, ning lisab, et see võib teadlased töölt kõrvale tõrjuda.",
+"Taustateadmine sellest, mida simulatsioon ja mudel teaduses tähendavad.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud lõik 1:04–1:08); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "ms-233-2023-04",
+"esineja": "Hugo Mercier",
+"amet": "kognitiivteadlane (CNRS), raamatu „Not Born Yesterday“ autor",
+"pealkiri": "Hugo Mercier on Reasoning and Skepticism",
+"allikas": "mindscape",
+"uritus": "Mindscape #233",
+"uritus_url": "https://www.preposterousuniverse.com/podcast/2023/04/17/233-hugo-mercier-on-reasoning-and-skepticism/",
+"kuupaev": "2023-04-17",
+"video": "https://www.preposterousuniverse.com/podcast/2023/04/17/233-hugo-mercier-on-reasoning-and-skepticism/",
+"algus": "0:15:28",
+"keel": "inglise",
+"teemad": [
+"inimesed"
+],
+"ruhm": "taust",
+"kokkuvote": "Mercier väidab, et inimeste põhiline nõrkus ei ole kergeusklikkus radikaalsete väidete suhtes. Pigem oleme liiga skeptilised väidete suhtes, mis meie vaadetesse ei sobi. Arutlemine on tema sõnul eelkõige oskus põhjendusi esitada ja teisi veenda.",
+"mottes": [
+"Taust usalduse ja väärinfo teemale.",
+"Võrdlus: keelemudel annab vastuse, aga ei esita iseenesest põhjendusi, nagu inimene seda teeb.",
+"Külalise arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud saate kirjeldus ja lõigud 0:09–0:16); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
+"seire_kinnitatud": "2026-11-11"
 }
 ]
 }
