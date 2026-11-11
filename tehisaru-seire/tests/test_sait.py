@@ -1002,7 +1002,8 @@ def test_labivaatus_8_11_parandused(sait):
         assert h1(f) != nimi and len(h1(f)) > len(nimi) and "<b>" in re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1), f
     assert re.search(r"digioskused on \d+,\d% Eesti 16–74-aastastest", h1("inimesed-oskused.html"))
     # P5: saidikaardil pole sisemärkmeid ega olekuveergu
-    assert "Kadri" not in sait["saidikaart.html"] and "Eelvaate" not in sait["saidikaart.html"]
+    # Autori nimi on saidil teadlikult (Kadri 11.11.2026); sisemärkmeid („Kadri 8.11 …“) ei tohi olla
+    assert "Kadri" not in sait["saidikaart.html"].replace("Kadri Kungla", "") and "Eelvaate" not in sait["saidikaart.html"]
     assert ">Olek<" not in sait["saidikaart.html"]
     # P6, P7, P8
     assert h2("hanked.html", "tapsus").endswith("masinmärgendite järgi")
@@ -1210,7 +1211,7 @@ def test_tutvustuse_leht_uuele_lugejale(A, sait):
         assert f'href="{f}"' in h
     assert 'href="saidist.html">Mis see sait on?</a>' in sait["index.html"]  # avalehelt leitav
     assert 'href="saidist.html">Mis see sait on</a>' in sait["inimesed.html"]  # jaluses igal lehel
-    assert "Kadri" not in h
+    assert "Kadri" not in h.replace("Kadri Kungla", "")  # autori nimi on teadlikult (11.11.2026), sisemärkmeid pole
 
 
 def test_avatumad_ametid_on_tulpdiagramm(A, sait):
@@ -1664,3 +1665,16 @@ def test_valislingid_avanevad_uues_vahelehes(sait):
     assert valis > 100 and sise > 100
     u = sait["uudised.html"]
     assert re.search(r'<a [^>]*href="https?://[^"]*"[^>]*target="_blank"', u.split('id="eesti-uudised"')[1])
+
+
+def test_autor_on_igal_lehel(sait):
+    """Kadri 11.11.2026: autoriinfo saidile, et oleks autori kaitse. Jalus, meta ja „Mis see sait on“ lõik."""
+    import kest
+    assert kest.AUTOR == "Kadri Kungla" and kest.autori_aastad(2026) == "2026" and kest.autori_aastad(2028) == "2026–2028"
+    for f, h in sait.items():
+        if 'http-equiv="refresh"' in h:
+            continue  # kolinud lehe suunamine
+        assert '<meta name="author" content="Kadri Kungla">' in h, f
+        assert '<p class="autor">© ' in h and 'href="saidist.html#autor">Autor ja kasutamine</a>' in h, f
+    s = sait["saidist.html"]
+    assert 'id="autor"' in s and "küsi autorilt luba" in s and "kuuluvad oma allikatele" in s
