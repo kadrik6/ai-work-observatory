@@ -1681,3 +1681,19 @@ def test_autor_on_igal_lehel(sait):
     assert "tehisaru (Claude) abiga" in s and "on autori otsused" in s  # Kadri 12.11.2026: ava, mida tegi tehisaru
     # Kadri 12.11.2026: märge lühike nagu teistel saitidel, ilma „küsi luba“ ja kordamiseta
     assert "luba" not in s.split('id="autor"')[1].split("</section>")[0]
+
+
+def test_aripaeva_logo_on_kadri_antud():
+    """Kadri 12.11.2026: Äripäeva uudistel on tema antud logo (punane Ä), mitte automaatselt laetud ikoon."""
+    import lae_logod
+    logod = json.loads((JUUR / "sait" / "pilt" / "logod" / "logod.json").read_text(encoding="utf-8"))
+    assert lae_logod.logo_fail(logod, "https://www.aripaev.ee/uudised/2026/11/06/x") == "aripaev.ee.png"
+    assert (JUUR / "sait" / "pilt" / "logod" / "aripaev.ee.png").read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
+
+
+def test_statistikaameti_logo_on_kadri_antud():
+    """Kadri 12.11.2026: Statistikaameti uudistel on Eesti Statistika logo märk (9 punkti), mitte tekstina allikas."""
+    import lae_logod
+    logod = json.loads((JUUR / "sait" / "pilt" / "logod" / "logod.json").read_text(encoding="utf-8"))
+    assert lae_logod.logo_fail(logod, "https://stat.ee/et/uudised/x") == "stat.ee.png"
+    assert (JUUR / "sait" / "pilt" / "logod" / "stat.ee.png").read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
