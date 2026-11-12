@@ -1057,6 +1057,8 @@ th, td { padding: 6px 10px; }
 .bump-p { stroke: var(--border); stroke-width: 1; }
 .bs { cursor: pointer; outline: none; }
 .bs .bj { fill: none; stroke: var(--context); stroke-width: 1.5; }
+.bs .bh { fill: none; stroke: transparent; stroke-width: 18px; pointer-events: stroke; }  /* hõljumise ala joonest laiem, ridade vahe 28 (Kadri 12.11.2026) */
+.bs .bp { pointer-events: none; }
 .bs .bj.v { stroke-dasharray: 2 4; opacity: .7; }
 .bs .bp { fill: var(--mark-ctx); }
 .bs .bk, .bs .bkn { display: none; }

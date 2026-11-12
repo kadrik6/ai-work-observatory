@@ -1689,6 +1689,17 @@ def test_autor_on_igal_lehel(sait):
     assert "luba" not in s.split('id="autor"')[1].split("</section>")[0]
 
 
+def test_jarjestuse_joon_on_lihtne_tabada_ja_kaardi_vihje_luhike(sait):
+    """Kadri 12.11.2026: järjestusgraafiku joont oli raske hõljudes tabada; kaardi vihje lõpus olev allikas kordus igal riigil."""
+    h = sait["ettevotted.html"]
+    assert h.count('<path class="bh"') == h.count('<path class="bj')
+    css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
+    m = re.search(r"\.bs \.bh \{[^}]*stroke-width: (\d+)px; pointer-events: stroke; \}", css)
+    assert m and 12 <= int(m.group(1)) < 28  # laiem kui joon, kitsam kui ridade vahe
+    vihjed = re.findall(r' data-a="([^"]*)"', h)
+    assert vihjed and all(re.fullmatch(r"(20\d\d)?", v) for v in vihjed), set(vihjed)
+
+
 def test_podcastide_kaaned_ja_ettekannete_logod(tmp_path):
     """Kadri 12.11.2026: „lisa podcastidele ka logod, otsi veebist“. Kaas tuleb saate RSS-voost, vähendatakse 64 px PNG-ks;
     ettekannete sarjade domeenid saavad logo samamoodi nagu uudiste allikad."""
