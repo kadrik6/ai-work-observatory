@@ -75,7 +75,7 @@ def siht(p):
 
 def osade_tabel(hanked):
     """Hanke read → (osade read, ainult tulemusteates olevate osade arv (aasta, allikas) kaupa)."""
-    read, ainult_can = [], Counter()
+    read, ainult_can, naited = [], Counter(), defaultdict(list)
     for h in hanked:
         info = h.get("osade_info") or []
         if not info:
@@ -84,19 +84,33 @@ def osade_tabel(hanked):
         for k, n in (h.get("osade_pakkumusi") or {}).items():
             kk = osa_voti(k)
             can[kk] = max(can.get(kk, 0), n)
+        tul = {}
+        for k, t in (h.get("osade_tulemus") or {}).items():
+            if tul.get(osa_voti(k)) != "selec-w":
+                tul[osa_voti(k)] = t
         uks = len(info) == 1
-        kasutatud = set()
+        hm = h.get("eeldatav_maksumus")
+        kasutatud, seostamata = set(), []
         for o in info:
             k = osa_voti(o.get("osa"))
+            osa_tul = tul.get(k) or (next(iter(tul.values())) if uks and len(tul) == 1 else None)
             if k in can:
                 p, sid = can[k], "seotud"
                 kasutatud.add(k)
             elif uks and can:
                 p, sid = max(can.values()), "üks osa"
                 kasutatud.update(can)
+            elif osa_tul:
+                p, sid = None, "tulemus olemas, arv puudub"
+                kasutatud.add(k)
             else:
                 p, sid = None, "ainult hanketeates" if h.get("tulemus_olemas") else "tulemus puudub"
+                if h.get("tulemus_olemas"):
+                    seostamata.append(o.get("osa"))
             cpv_h = (h.get("cpv") or [None])[0]
+            m, tuletatud = o.get("maksumus"), False
+            if m is None and hm:
+                m, tuletatud = hm / len(info), not uks
             read.append({
                 "hange": f'{h.get("allikas")}:{hanke_voti(h)}',
                 "allikas": h.get("allikas"),
@@ -105,9 +119,11 @@ def osade_tabel(hanked):
                 "osa": o.get("osa"),
                 "osade_arv": len(info),
                 "cpv": o.get("cpv") or cpv_h,
-                "maksumus": o.get("maksumus") if o.get("maksumus") is not None else (
-                    h.get("eeldatav_maksumus") if uks else None),
+                "maksumus": m,
+                "maksumus_tuletatud": tuletatud,
                 "kriteeriumid": o.get("kriteeriumid") or (h.get("kriteeriumid") if uks else []) or [],
+                "kriteeriumid_dokumendis": bool(o.get("kriteeriumid_dokumendis")),
+                "osa_tulemus": osa_tul,
                 "tahtaeg": o.get("tahtaeg"),
                 "menetlus": h.get("menetlus"),
                 "liik": h.get("liik"),
@@ -116,7 +132,16 @@ def osade_tabel(hanked):
                 "pakkumusi": p,
                 "siht": siht(p),
             })
-        ainult_can[(h.get("aasta"), h.get("allikas"))] += len(set(can) - kasutatud)
+        v = (h.get("aasta"), h.get("allikas"))
+        if uks and (can or tul) and read[-1]["sidumine"] != "ainult hanketeates":
+            kasutatud |= set(can) | set(tul)
+        yle = sorted((set(can) | set(tul)) - kasutatud)
+        ainult_can[v] += len(yle)
+        if (seostamata or yle) and len(naited[v]) < 4:
+            naited[v].append({"hange": hanke_voti(h), "hanketeate_osad": [o.get("osa") for o in info][:8],
+                              "tulemuse_osad": sorted(set(h.get("osade_pakkumusi") or {}) | set(h.get("osade_tulemus") or {}))[:8],
+                              "seostamata": seostamata[:8]})
+    osade_tabel.naited = dict(naited)
     return read, ainult_can
 
 
@@ -127,9 +152,10 @@ def sidumise_kontroll(read, ainult_can):
         c[(r["aasta"], r["allikas"])][r["sidumine"]] += 1
     valja = {}
     for v, k in c.items():
-        tulemusega = k["seotud"] + k["üks osa"] + k["ainult hanketeates"]
+        tulemusega = k["seotud"] + k["üks osa"] + k["tulemus olemas, arv puudub"] + k["ainult hanketeates"]
         valja[v] = {**dict(k), "ainult tulemusteates": ainult_can.get(v, 0),
-                    "seotud_osakaal": round((k["seotud"] + k["üks osa"]) / tulemusega, 3) if tulemusega else None}
+                    "seotud_osakaal": round((k["seotud"] + k["üks osa"] + k["tulemus olemas, arv puudub"]) / tulemusega, 3)
+                    if tulemusega else None}
     return valja
 
 
@@ -142,12 +168,30 @@ def _paevi(algus, lopp):
         return None
 
 
-def tunnused(r, ylesehitus=True, aasta=True):
-    """Ainult hanketeate väljad. Turg: CPV-grupp, maksumus, aasta. Ülesehitus: tähtaeg, osade arv, kriteeriumid, menetlus."""
-    t = {"cpv2=" + ((r.get("cpv") or "")[:2] or "puudub"): 1.0}
+def _vahemik(x, piirid):
+    """Väärtuse vahemiku nimi, nt piirid (10, 20) → "≤10", "≤20", ">20"."""
+    for p in piirid:
+        if x <= p:
+            return f"≤{p}"
+    return f">{piirid[-1]}"
+
+
+def tunnused(r, ylesehitus=True, aasta=True, paindlik=True):
+    """Ainult hanketeate väljad. Turg: CPV-grupp, maksumus, aasta. Ülesehitus: tähtaeg, osade arv, kriteeriumid, menetlus.
+
+    paindlik=True (samm 1b) lisab CPV 3 numbri täpsusega ning maksumuse ja tähtaja vahemikud, sest seos ei pruugi olla sirge.
+    """
+    cpv = r.get("cpv") or ""
+    t = {"cpv2=" + (cpv[:2] or "puudub"): 1.0}
+    if paindlik and cpv:
+        t["cpv3=" + cpv[:3]] = 1.0
     m = r.get("maksumus")
     if m is not None and m > 0:
         t["log_maksumus"] = math.log10(m)
+        if paindlik:
+            t["maksumus=" + _vahemik(m, (10000, 30000, 60000, 140000, 500000, 2000000))] = 1.0
+            if r.get("maksumus_tuletatud"):
+                t["maksumus_tuletatud"] = 1.0
     else:
         t["maksumus_puudub"] = 1.0
     if aasta:
@@ -157,11 +201,15 @@ def tunnused(r, ylesehitus=True, aasta=True):
     p = _paevi(r.get("kuupaev"), r.get("tahtaeg"))
     if p is not None and 0 <= p <= 365:
         t["tahtaeg_paevi"] = float(min(p, 90))
+        if paindlik:
+            t["tahtaeg=" + _vahemik(p, (7, 10, 14, 21, 30, 45))] = 1.0
     else:
         t["tahtaeg_puudub"] = 1.0
     t["log_osade_arv"] = math.log(r.get("osade_arv") or 1)
     kr = r.get("kriteeriumid") or []
-    if not kr:
+    if not kr and paindlik and r.get("kriteeriumid_dokumendis"):
+        t["kriteeriumid_dokumendis"] = 1.0
+    elif not kr:
         t["kriteeriumid_puuduvad"] = 1.0
     elif all(k[0] == "price" for k in kr):
         t["ainult_hind"] = 1.0
@@ -251,7 +299,8 @@ def hinda(y, ennustused, grupid, kordi=1000, seeme=1):
         tulemus[k] = {"pr_auc": round(float(average_precision_score(y, p)), 3),
                       "roc_auc": round(float(roc_auc_score(y, p)), 3),
                       "brier": round(float(brier_score_loss(y, p)), 4),
-                      "kalibreeritus_pp": kalibreeritus(list(y), list(p))}
+                      "kalibreeritus_pp": kalibreeritus(list(y), list(p)),
+                      "keskmine_ennustus": round(float(p.mean()), 3)}
     idx = defaultdict(list)
     for i, g in enumerate(grupid):
         idx[g].append(i)
@@ -297,14 +346,41 @@ def mudelid(read, test=False):
     hh = list(hinnata.values())
     m1 = logreg(treening, hh, ylesehitus=False)
     m2 = logreg(treening, hh, ylesehitus=True)
-    m2_ilma_aastata = logreg(treening, hh, ylesehitus=True, aasta=False)
-    valja = {"treening": {"n": len(treening), "uks_pakkumus": sum(r["siht"] for r in treening), "yldmaar": round(yld, 3)}}
+    # võrdlused ainult punkthinnanguna (valideerimisel valiku tegemiseks, mitte järelduseks)
+    lisad = {"M2_ilma_aastata": logreg(treening, hh, aasta=False),
+             "M2_samm1_tunnused": logreg(treening, hh, paindlik=False)}
+    eforms = [r for r in treening if r["allikas"] == "eforms"]
+    if len({r["siht"] for r in eforms}) == 2:
+        lisad["M2_ainult_evormid"] = logreg(eforms, hh, aasta=False)
+    valja = {"treening": {"n": len(treening), "uks_pakkumus": sum(r["siht"] for r in treening), "yldmaar": round(yld, 3),
+                          "evormides": len(eforms)}}
     for j, (nimi, h) in enumerate(hinnata.items()):
         e = {"M0": m0_ennusta(maarad, yld, h), "M1": m1[j], "M2": m2[j]}
         valja[nimi] = hinda([r["siht"] for r in h], e, [r["hange"] for r in h])
-        valja[nimi]["M2_ilma_aastata"] = hinda([r["siht"] for r in h], {"M2": m2_ilma_aastata[j]},
-                                               [r["hange"] for r in h], kordi=0)["M2"]
+        for k, pp in lisad.items():
+            valja[nimi][k] = hinda([r["siht"] for r in h], {k: pp[j]}, [r["hange"] for r in h], kordi=0)[k]
     return valja
+
+
+def skeemi_kontroll(read):
+    """Skeemi vahetus: ühe pakkumuse määr aasta ja skeemi kaupa ning tunnused, mille osakaal erineb treeningu
+    TED-osade ja valideerimisaasta vahel kõige rohkem."""
+    sobiv = [r for r in read if r["siht"] in (0, 1)]
+    maarad = defaultdict(lambda: [0, 0])
+    for r in sobiv:
+        maarad[(r["aasta"], r["allikas"])][0] += r["siht"]
+        maarad[(r["aasta"], r["allikas"])][1] += 1
+    def keskm(g):
+        """Iga tunnuse osakaal ridadest, kus see on olemas (arvtunnusel: kus väärtus on teada)."""
+        c = Counter(k for r in g for k in tunnused(r) if not k.startswith("cpv3="))
+        return {k: x / max(len(g), 1) for k, x in c.items()}
+    ted = keskm([r for r in sobiv if r["aasta"] in TREENING and r["allikas"] == "ted_esender"])
+    val = keskm([r for r in sobiv if r["aasta"] == VALIDEERIMINE])
+    vahe = sorted(set(ted) | set(val), key=lambda k: -abs(ted.get(k, 0) - val.get(k, 0)))[:15]
+    return {"uks_pakkumus": {f"{a} {s}": [k, n, round(k / n, 3)] for (a, s), (k, n) in sorted(maarad.items())},
+            "suurimad_erinevused": {k: [round(ted.get(k, 0), 3), round(val.get(k, 0), 3)] for k in vahe},
+            "menetlus": {s: dict(Counter(r.get("menetlus") for r in sobiv if r["allikas"] == s).most_common(12))
+                         for s in ("ted_esender", "eforms")}}
 
 
 # ---------------------------------------------------------------- käivitus
@@ -321,16 +397,25 @@ def main():
             aastad=dict(sorted(Counter(r["aasta"] for r in read).items())))
     for (aasta, allikas), c in sorted(sidumise_kontroll(read, ainult_can).items()):
         kirjuta("riski-sidumine", aasta=aasta, allikas=allikas, **c)
+    for (aasta, allikas), n in sorted(getattr(osade_tabel, "naited", {}).items()):
+        kirjuta("riski-sidumine-naide", aasta=aasta, allikas=allikas, naited=n)
+    tul = defaultdict(Counter)
+    for r in read:
+        if r["sidumine"] in ("tulemus olemas, arv puudub", "seotud", "üks osa"):
+            tul[(r["aasta"], r["allikas"])][f'{r["sidumine"]}: {r.get("osa_tulemus")}'] += 1
+    for (aasta, allikas), c in sorted(tul.items()):
+        kirjuta("riski-osa-tulemus", aasta=aasta, allikas=allikas, **dict(c.most_common(8)))
     for aasta, c in puuduvuse_vordlus(read).items():
         kirjuta("riski-puuduvus", aasta=aasta, **c)
     tt = defaultdict(Counter)
     for r in read:
         t = tunnused(r)
         tt[r["aasta"]]["osi"] += 1
-        for k in ("tahtaeg_puudub", "maksumus_puudub", "kriteeriumid_puuduvad"):
+        for k in ("tahtaeg_puudub", "maksumus_puudub", "maksumus_tuletatud", "kriteeriumid_puuduvad", "kriteeriumid_dokumendis"):
             tt[r["aasta"]][k] += k in t
     for aasta, c in sorted(tt.items()):
         kirjuta("riski-tunnuste-taitumus", aasta=aasta, **c)
+    kirjuta("riski-skeem", **skeemi_kontroll(read))
     kirjuta("riski-mudelid", test=a.test, **mudelid(read, test=a.test))
 
 

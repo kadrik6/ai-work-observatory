@@ -183,10 +183,11 @@ def eforms_tulemus(teade, kuu=None):
     """eVormide lepingu sõlmimise teade (ContractAwardNotice) → pakkumuste arv ja tulemus."""
     org = _eforms_organisatsioonid(teade)
     projekt = _laps(teade, "ProcurementProject")
-    pakkumusi, tulemused, voitjad, osad = [], [], [], {}
+    pakkumusi, tulemused, voitjad, osad, osade_tulemus = [], [], [], {}, {}
     for i, lr in enumerate(_koik(teade, "LotResult")):
         tulemused.append(_tekst(lr, "TenderResultCode"))
         osa = _tekst(lr, "TenderLot", "ID") or f"#{i + 1}"
+        osade_tulemus[osa] = _tekst(lr, "TenderResultCode") or "?"
         for s in _koik(lr, "ReceivedSubmissionsStatistics"):
             kood = _tekst(s, "StatisticsCode")
             DIAG["statistika:" + str(kood)] += 1
@@ -219,6 +220,7 @@ def eforms_tulemus(teade, kuu=None):
         "viitenumber": _tekst(projekt, "ID"),
         "pakkumusi": max(pakk) if pakk else None,
         "osade_pakkumusi": osad,
+        "osade_tulemus": osade_tulemus,
         "tulemused": _uniq(tulemused),
         "voitjad": _uniq(voitjad),
         "lepingu_summa": summa,
@@ -265,9 +267,13 @@ def ted_teade(teade, kuu=None):
     if vorm in ("F03_2014", "F06_2014", "F15_2014"):
         pakk = [_arv(e.text) for e in f.iter() if _l(e.tag) == "NB_TENDERS_RECEIVED"]
         pakk = [p for p in pakk if p is not None]
-        osad = {}
+        osad, osade_tulemus = {}, {}
         for i, ac in enumerate(e for e in f.iter() if _l(e.tag) == "AWARD_CONTRACT"):
             osa = _tekst(ac, "LOT_NO") or f"#{i + 1}"
+            if _laps(ac, "AWARDED_CONTRACT") is not None:
+                osade_tulemus[osa] = "selec-w"
+            elif osade_tulemus.get(osa) != "selec-w":
+                osade_tulemus[osa] = "clos-nw"
             n = [_arv(e.text) for e in ac.iter() if _l(e.tag) == "NB_TENDERS_RECEIVED"]
             n = [x for x in n if x is not None]
             if n:
@@ -277,7 +283,7 @@ def ted_teade(teade, kuu=None):
         summa = [s for s in summa if s is not None]
         mitte = any(_l(e.tag) == "NO_AWARDED_CONTRACT" for e in f.iter())
         return {**rida_yld, "teade": "CAN", "pakkumusi": max(pakk) if pakk else None, "osade_pakkumusi": osad,
-                "tulemused": ["clos-nw"] if mitte and not pakk else (["selec-w"] if pakk else []),
+                "osade_tulemus": osade_tulemus, "tulemused": ["clos-nw"] if mitte and not pakk else (["selec-w"] if pakk else []),
                 "voitjad": _uniq(voitjad), "lepingu_summa": sum(summa) if summa else None}
     if vorm not in ("F02_2014", "F05_2014", "F21_2014", "F22_2014", "F24_2014", "F17_2014"):
         return None
@@ -298,9 +304,11 @@ def ted_teade(teade, kuu=None):
         kriteeriumid.extend(osa_kr)
         cpv_osa = next((e.get("CODE") for e in od.iter() if _l(e.tag) == "CPV_CODE"), None)
         val = _laps(od, "VAL_OBJECT")
+        dokumendis = ac is not None and _laps(ac, "AC_PROCUREMENT_DOC") is not None
+        DIAG["ted_ac:" + ("puudub" if ac is None else "dokumendis" if dokumendis else "teates" if osa_kr else "muu")] += 1
         osade_info.append({"osa": _tekst(od, "LOT_NO") or f"#{i + 1}", "cpv": cpv_osa,
                            "maksumus": _arv(val.text) if val is not None else None,
-                           "kriteeriumid": osa_kr, "tahtaeg": tahtaeg})
+                           "kriteeriumid": osa_kr, "kriteeriumid_dokumendis": dokumendis, "tahtaeg": tahtaeg})
     menetlus = None
     if proc is not None:
         menetlus = next((_l(k.tag) for k in proc if _l(k.tag).startswith("PT_")), None)

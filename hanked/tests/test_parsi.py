@@ -155,4 +155,23 @@ def test_ted_osade_info():
                         "<PROCEDURE><PT_OPEN/><DATE_RECEIPT_TENDERS>2019-06-10</DATE_RECEIPT_TENDERS></PROCEDURE>", 1)
     cn, can, vahele = parsi_fail(sisu.encode(), "2019-05")
     assert cn[0]["osade_info"] == [{"osa": "1", "cpv": "72300000", "maksumus": 40000.0,
-                                    "kriteeriumid": [("quality", 30.0), ("price", 70.0)], "tahtaeg": "2019-06-10"}]
+                                    "kriteeriumid": [("quality", 30.0), ("price", 70.0)], "kriteeriumid_dokumendis": False,
+                                    "tahtaeg": "2019-06-10"}]
+
+
+def test_ted_kriteeriumid_dokumendis():
+    sisu = TED.replace("<AC><AC_QUALITY><AC_CRITERION>Kvaliteet</AC_CRITERION><AC_WEIGHTING>30</AC_WEIGHTING></AC_QUALITY>"
+                       "<AC_PRICE><AC_WEIGHTING>70</AC_WEIGHTING></AC_PRICE></AC>", "<AC><AC_PROCUREMENT_DOC/></AC>", 1)
+    cn, can, vahele = parsi_fail(sisu.encode(), "2017-10")
+    o = cn[0]["osade_info"][0]
+    assert o["kriteeriumid"] == [] and o["kriteeriumid_dokumendis"] is True
+
+
+def test_osade_tulemus():
+    """Iga osa tulemus (ka siis, kui pakkumuste arv puudub): eVormides TenderResultCode, TED-is NO_AWARDED_CONTRACT."""
+    cn, can, vahele = parsi_fail(CAN.encode(), "2025-05")
+    assert can[0]["osade_tulemus"] == {"LOT-0001": "selec-w", "LOT-0002": "selec-w"}
+    katk = "<AWARD_CONTRACT><LOT_NO>2</LOT_NO><NO_AWARDED_CONTRACT><PROCUREMENT_UNSUCCESSFUL/></NO_AWARDED_CONTRACT></AWARD_CONTRACT></F03_2014>"
+    sisu = TED.replace("<AWARD_CONTRACT><AWARDED", "<AWARD_CONTRACT><LOT_NO>1</LOT_NO><AWARDED", 1).replace("</F03_2014>", katk, 1)
+    cn, can, vahele = parsi_fail(sisu.encode(), "2019-05")
+    assert can[0]["osade_tulemus"] == {"1": "selec-w", "2": "clos-nw"} and can[0]["osade_pakkumusi"] == {"1": 3}

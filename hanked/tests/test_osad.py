@@ -51,7 +51,9 @@ def test_tunnused_ainult_hanketeatest():
     t = O.tunnused(r)
     assert not any(s in k for k in t for s in ("pakk", "voit", "lepingu", "siht", "tulemus"))
     assert t["tahtaeg_paevi"] == 20.0 and t["ainult_hind"] == 1.0 and t["menetlus=avatud"] == 1.0
-    assert set(O.tunnused(r, ylesehitus=False)) == {"cpv2=72", "log_maksumus", "aasta"}
+    assert set(O.tunnused(r, ylesehitus=False, paindlik=False)) == {"cpv2=72", "log_maksumus", "aasta"}
+    assert set(O.tunnused(r, ylesehitus=False)) == {"cpv2=72", "cpv3=720", "log_maksumus", "maksumus=≤10000", "aasta"}
+    assert t["tahtaeg=≤21"] == 1.0
     assert "aasta" not in O.tunnused(r, aasta=False)
 
 
@@ -90,3 +92,30 @@ def test_mudelid_ja_testilukk():
     assert h["M2"]["pr_auc"] > h["M1"]["pr_auc"] + 0.1
     assert h["M2-M1"]["jareldus"] == "suurem" and h["bootstrap"]["kordi"] > 900
     assert "test_2025" in O.mudelid(read, test=True)
+
+
+def test_osa_tulemus_ja_tuletatud_maksumus():
+    """Osa, mille tulemus on olemas, aga pakkumuste arv puudub, ei ole sidumise viga. Puuduv osa maksumus = hanke / osade arv."""
+    info = [_osa("1"), _osa("2", maksumus=None)]
+    h = _hange("A", 2024, info, {"LOT-0001": 2}, osade_tulemus={"LOT-0001": "selec-w", "LOT-0002": "clos-nw"})
+    read, ainult = O.osade_tabel([h])
+    assert [r["sidumine"] for r in read] == ["seotud", "tulemus olemas, arv puudub"]
+    assert read[1]["osa_tulemus"] == "clos-nw" and read[1]["maksumus"] == 25000.0 and read[1]["maksumus_tuletatud"]
+    assert ainult[(2024, "eforms")] == 0
+    assert O.sidumise_kontroll(read, ainult)[(2024, "eforms")]["seotud_osakaal"] == 1.0
+    assert "maksumus_tuletatud" in O.tunnused(read[1])
+
+
+def test_kriteeriumid_dokumendis_on_eraldi_tunnus():
+    r = {"cpv": "45", "maksumus": None, "aasta": 2017, "kuupaev": None, "tahtaeg": None, "osade_arv": 1,
+         "kriteeriumid": [], "kriteeriumid_dokumendis": True, "menetlus": "PT_OPEN"}
+    assert "kriteeriumid_dokumendis" in O.tunnused(r) and "kriteeriumid_puuduvad" not in O.tunnused(r)
+    assert "kriteeriumid_puuduvad" in O.tunnused(r, paindlik=False)
+
+
+def test_skeemi_kontroll():
+    read, _ = O.osade_tabel([_hange(f"T{i}", 2020, [_osa("1")], {"1": 1 + i % 2}, allikas="ted_esender", menetlus="PT_OPEN")
+                             for i in range(10)] +
+                            [_hange(f"E{i}", 2024, [_osa("1")], {"1": 2}) for i in range(10)])
+    k = O.skeemi_kontroll(read)
+    assert k["uks_pakkumus"]["2020 ted_esender"] == [5, 10, 0.5] and k["menetlus"]["eforms"] == {"open": 10}

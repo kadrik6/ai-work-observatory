@@ -86,11 +86,14 @@ def pohitabel(cn, can):
     tulemus = {}
     for r in can:
         v = (r["allikas"], hanke_voti(r))
-        t = tulemus.setdefault(v, {"pakkumusi": None, "osade_pakkumusi": {}, "tulemused": [], "voitjad": [], "lepingu_summa": None})
+        t = tulemus.setdefault(v, {"pakkumusi": None, "osade_pakkumusi": {}, "osade_tulemus": {}, "tulemused": [], "voitjad": [], "lepingu_summa": None})
         if r.get("pakkumusi") is not None:
             t["pakkumusi"] = max(t["pakkumusi"] or 0, r["pakkumusi"])
         for osa, n in (r.get("osade_pakkumusi") or {}).items():
             t["osade_pakkumusi"][osa] = max(t["osade_pakkumusi"].get(osa, 0), n)
+        for osa, k in (r.get("osade_tulemus") or {}).items():
+            if t["osade_tulemus"].get(osa) != "selec-w":
+                t["osade_tulemus"][osa] = k
         t["tulemused"] = sorted(set(t["tulemused"]) | set(x for x in r.get("tulemused", []) if x))
         t["voitjad"] = sorted(set(t["voitjad"]) | set(x for x in r.get("voitjad", []) if x))
         if r.get("lepingu_summa") is not None:
@@ -100,7 +103,7 @@ def pohitabel(cn, can):
         t = tulemus.get(v)
         r = dict(r)
         r["tulemus_olemas"] = t is not None
-        r.update(t or {"pakkumusi": None, "osade_pakkumusi": {}, "tulemused": [], "voitjad": [], "lepingu_summa": None})
+        r.update(t or {"pakkumusi": None, "osade_pakkumusi": {}, "osade_tulemus": {}, "tulemused": [], "voitjad": [], "lepingu_summa": None})
         r["aasta"] = int((r.get("esimene_kuupaev") or r["kuu"])[:4])
         valja.append(r)
     return valja
