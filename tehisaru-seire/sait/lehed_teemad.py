@@ -1020,10 +1020,76 @@ def reeglid(A, vaade, vaated=None, tana=None):
     j_tekst = f'Järgmine tähtaeg on {jargmine[1]}: {e(jargmine[2].lower())}.' if jargmine else ""
     lead = j_tekst
     sec_ee = eesti_otsused(A, vaade, vaated, tana)
+    sec_st = riikide_strateegiad(A, vaade)
     return jaga(A, vaade, lead, [], [
         ("tahtajad", [("tahtajad", "ELi tähtajad")], sec_aeg),
         ("eesti", [("eesti-otsused", "Eesti otsused")], sec_ee),
+        ("strateegiad", [("strateegiad", "Riikide strateegiad")], sec_st),
     ], aside=aside)
+
+
+SIHI_JARJEKORD = ("kasutus", "oskused", "majandus", "avalik", "arvamus")  # peamised sihid: kasutus enne hoiakuid
+
+
+def _sihi_rida(t):
+    lk = f", lk {t['lk']}" if t.get("lk") else ""
+    return f'<li><b>{e(t["vaartus"])}</b> {e(t.get("eesti") or t["siht"])} <span class="lk">({e(t.get("aasta") or "tähtajata")}{lk})</span></li>'
+
+
+def riikide_strateegiad(A, vaade):
+    """Teiste riikide ametlikud tehisarustrateegiad ja nende arvulised sihid (Kadri „jah kõik“ 12.11.2026, ettepanek sp-2026-11-11-1).
+
+    Andmed: tooelu-uudised/strateegiad.json (hommikune kogumine) → sait/vota_kaasa.py → sisu/strateegiad.json.
+    Sihid on riikide poliitilised eesmärgid ja mõõdetakse erinevalt: ainult tabel, ei ühist graafikut ega järjestust."""
+    fail = "riikide-strateegiad.html"
+    S = list(((A.get("strateegiad") or {}).get("strateegiad")) or [])
+    if not S:
+        alam_h1(vaade, fail, "Teiste riikide tehisarustrateegiad ¦ need tulevad siia **igapäevasest uudistekogumisest**.")
+        return """
+<section class="jaotis" id="strateegiad" aria-labelledby="h-strateegiad">
+  <header>
+    <h2 id="h-strateegiad">Riikide strateegiaid pole kogumine veel siia toonud</h2>
+    <p class="alam">Hommikune kogumine lisab riikide ametlikke tehisarustrateegiaid koos sihtidega algdokumendist.</p>
+  </header>
+</section>"""
+    S.sort(key=lambda s: s.get("kuupaev") or "", reverse=True)
+    read = []
+    for s in S:
+        sihid = sorted(s.get("sihid") or [], key=lambda t: SIHI_JARJEKORD.index(t["liik"]) if t.get("liik") in SIHI_JARJEKORD else 9)
+        peamised = "".join(_sihi_rida(t) for t in sihid[:3])
+        rohkem = (f'<details class="strat-koik"><summary>Veel {len(sihid) - 3} sihti</summary><ul class="strat-sihid">'
+                  f'{"".join(_sihi_rida(t) for t in sihid[3:])}</ul></details>') if len(sihid) > 3 else ""
+        read.append([
+            f'<b>{e(s["riik"])}</b><small>{e(kp(s["kuupaev"]))}</small>',
+            f'{a(s["url"], s["pealkiri"])}<small>{e(s.get("asutus", ""))}</small>',
+            e(s.get("tahtaeg") or "puudub"),
+            f'<ul class="strat-sihid">{peamised}</ul>{rohkem}' if peamised else "arvulisi sihte pole",
+            e(s.get("markus", "")),
+        ])
+    ee = (A.get("sihid") or {}).get("ee-ettevotted-75")
+    if ee:
+        read.append([
+            '<b>Eesti</b><small>võrdluseks</small>',
+            f'{a(ee["url"], ee["allikas"])}<small>Vabariigi Valitsus</small>',
+            e(ee["aasta"]),
+            f'<ul class="strat-sihid"><li><b>{e(ee["siht"])}%</b> {e(ee["nimi"].lower())} <span class="lk">({e(ee["aasta"])})</span></li></ul>',
+            e(ee.get("markus", "")),
+        ])
+    n = len(S)
+    sihte = sum(len(s.get("sihid") or []) for s in S)
+    riike = ", ".join(s["riik"] for s in S)
+    alam_h1(vaade, fail, f"**{n} riigi** tehisarustrateegial on arvulised sihid ¦ sihid on poliitilised eesmärgid, mitte mõõtmised.")
+    uusim = max(s.get("kontrollitud") or s.get("lisatud") or "" for s in S)
+    return f"""
+<section class="jaotis" id="strateegiad" aria-labelledby="h-strateegiad">
+  <header>
+    <h2 id="h-strateegiad">Riikide tehisarustrateegiad: <b>{n} riiki, {sihte} arvulist sihti</b> ¦ {e(riike)}</h2>
+    <p class="alam">Iga rida on riigi ametlik strateegia. Sihid on võetud algdokumendist koos leheküljega. Uusim dokument on eespool.</p>
+    {vastavus("osaliselt", "Riigid mõõdavad sarnaseid sihte erinevalt (riigi statistika, küsitlus või määramata). Seepärast ei ole siin ühist graafikut ega järjestust ning sihte ei võrrelda omavahel.")}
+  </header>
+  {tabel(["Riik", "Strateegia", "Tähtaeg", "Peamised sihid", "Kuidas mõõdetakse"], read, piir=True, numbrid=set(), pealdis="Riikide tehisarustrateegiad ja nende arvulised sihid")}
+  <p class="allikas">Allikas: iga riigi strateegiadokument (link tabelis); kogumine kontrollis viimati {e(kp(uusim)) if uusim else "–"}.</p>
+</section>"""
 
 
 def eesti_otsused(A, vaade, vaated, tana):
