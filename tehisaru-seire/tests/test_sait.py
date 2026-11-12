@@ -1702,6 +1702,14 @@ def test_statistikaameti_logo_on_kadri_antud():
     assert (JUUR / "sait" / "pilt" / "logod" / "stat.ee.png").read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
 
 
+def test_kuu_ruhmas_on_lyhike_kuupaev(sait):
+    """Kadri 12.11.2026: vanemate kuude real kattus täiskuupäev pealkirjaga. Kuu rühmas on real ainult päev ja kuu."""
+    kuud = re.findall(r'<div class="u-paev u-kuu[^"]*"[^>]*>.*?</ul>', sait["uudised.html"], re.S)
+    assert kuud, "kuu rühmi pole"
+    for g in kuud:
+        for d in re.findall(r'class="d">([^<]*)<', g):
+            assert re.fullmatch(r"\d{1,2}\.\d{2}\.", d), d
+
 def test_riikide_strateegiad_tabelina(A):
     """Kadri „jah kõik“ 12.11.2026 (sp-2026-11-11-1): riikide sihid ainult tabelis, ei ühist graafikut ega järjestust."""
     import vota_kaasa
