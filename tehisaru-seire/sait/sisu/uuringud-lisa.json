@@ -46,5 +46,50 @@
 "leid": "Laialdast tõendit ei ole, et tehisaru oleks pärast ChatGPT tulekut (nov 2022) vähendanud värbamist või suurendanud töölt lahkumist; määrad on ajaloolises vahemikus. Noorte (15–29) värbamine langes ka ametites, mida tehisaru vähe puudutab (4,0% → 3,3%), tehisarule avatud ametites 3,2% → 3,0%. Autorid nimetavad tulemusi varaseks.",
 "lisatud": "2026-11-06",
 "seire_kinnitatud": "2026-11-08"
+},
+{
+"id": "rba2026",
+"autorid": "Reserve Bank of Australia (RBA Insight)",
+"aasta": 2026,
+"pealkiri": "Monitoring Early Effects of AI on the Labour Market",
+"kanal": "keskpanga analüüs (RBA Insight 2026-09)",
+"retsenseeritud": false,
+"url": "https://www.rba.gov.au/publications/insights/australian-economy/2026/monitoring-early-effects-of-ai-on-the-labour-market.html",
+"avaldatud": "2026-11-09",
+"meetod": "kirjeldav",
+"kus": "Austraalia",
+"valim": "Austraalia tööturu andmed (töökuulutused, hõive, töötunnid, töö leidmine); ametid jaotatud tehisaru kokkupuute järgi",
+"leid": "Keskpanga järgi on vähe tõendeid, et tehisaru oleks Austraalia tööturgu seni oluliselt häirinud. Tehisarule enim avatud ametites on uute töökuulutuste voog aeglustunud veidi rohkem ning hõive ja töötunnid kasvanud veidi aeglasemalt, eriti noortel; töö leidmise määras erinevust ei ole. Analüüs on kirjeldav, mitte põhjuslik, ja erinevus võib peegeldada ka majandustsüklit.",
+"lisatud": "2026-11-09"
+},
+{
+"id": "zhao2026",
+"autorid": "Dora Zhao, Lin Ai, Pranav Khadpe, Siddharth Suri, Scott Counts",
+"aasta": 2026,
+"pealkiri": "AI Exposure and the Changing Responsibilities in Job Postings",
+"kanal": "arXiv (cs.CY), eeltrükk",
+"retsenseeritud": false,
+"url": "https://arxiv.org/abs/2611.09870",
+"avaldatud": "2026-11-06",
+"meetod": "kirjeldav",
+"kus": "33 ettevõtet (riiki kokkuvõte ei nimeta)",
+"valim": "50 000 töökuulutust 33 ettevõttelt aastatel 2023–2025; ülesanded seotud O*NET-i tööülesannetega ja Copiloti ning Claude'i kasutusest tuletatud tehisaru kokkupuutega",
+"leid": "Tehisaru otsene mainimine töökuulutustes kasvas 66%, kuid suur osa sellest kasvust on väljaspool tööülesannete kirjeldust. Tehisarule enam avatud tööülesanded on kuulutustes veidi harvemad, kuid osakaaluna kõigist ülesannetest langus on väike. Samas seotakse just neid ülesandeid üha sagedamini otsese tehisaru kasutamisega. Uuring on kirjeldav eeltrükk ja kuulutused näitavad tööandja soovi, mitte tegelikku tööd.",
+"lisatud": "2026-11-10"
+},
+{
+"id": "bok2026",
+"autorid": "Oh Sam-il jt (Korea Pank, uurimisosakond)",
+"aasta": 2026,
+"pealkiri": "Korea Panga aruanne noorte hõivest tehisaru suure mõjuga harudes (august 2026)",
+"kanal": "Korea Panga aruanne (Yonhapi kokkuvõtte järgi; aruannet ennast ei avanud)",
+"retsenseeritud": false,
+"url": "https://en.yna.co.kr/view/AEN20260818005100320",
+"avaldatud": "2026-08-18",
+"meetod": "kirjeldav",
+"kus": "Lõuna-Korea",
+"valim": "15–29-aastaste ja 50-ndates töötajate töökohad harude kaupa juunist 2022 juunini 2026 (Chosun Ilbo järgi pensioniameti registriandmed)",
+"leid": "Noorte töökohti oli neli aastat hiljem 285 000 võrra vähem ja 94% sellest langusest oli tehisaru suure mõjuga harudes, näiteks IT-teenustes (−31,4%) ja programmeerimises (−16,6%). Samal ajal kasvas 50-ndates töötajate töökohtade arv 230 000 võrra. Aruanne ei väida, et põhjus on ainult tehisaru: osa mõjust võib tulla rahvastiku vähenemisest, ja autori sõnul tehisaru kiirendab noorte karjääriredeli kahanemist. Korea Tööinstituudi teine analüüs ei leidnud tehisaruga kattuvates ametites olulist töökohtade kadu.",
+"lisatud": "2026-11-12"
 }
 ]

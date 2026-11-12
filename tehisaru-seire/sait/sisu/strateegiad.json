@@ -1,0 +1,253 @@
+{
+"strateegiad": [
+{
+"id": "de-ki-nation-2030",
+"riik": "Saksamaa",
+"riik_kood": "DE",
+"pealkiri": "Deutschland als KI-Nation 2030 (KI-Taskforce Ergebnisbericht)",
+"asutus": "Bundesministerium für Digitales und Staatsmodernisierung (BMDS), föderaalvalitsuse ühisaruanne",
+"kuupaev": "2026-11-02",
+"url": "https://bmds.bund.de/fileadmin/BMDS/Dokumente/Publikationen/Deutschland_als_KI-Nation_2030_barrierefrei-Nov2026.pdf",
+"tahtaeg": "2030",
+"sihid": [
+{
+"siht": "Erwerbstätige, die für ihren Beruf einen Nutzen von KI sehen",
+"eesti": "töötajad, kes näevad tehisarul oma töös kasu",
+"vaartus": "≥ 55%",
+"aasta": 2030,
+"id": "G.4",
+"lk": 15,
+"liik": "arvamus"
+},
+{
+"siht": "Erwachsene ab 16, die sich sicher im Umgang mit KI-Tools fühlen",
+"eesti": "täiskasvanud, kes tunnevad end tehisaru tööriistadega kindlalt",
+"vaartus": "≥ 60%",
+"aasta": 2030,
+"id": "G.3",
+"lk": 15,
+"liik": "arvamus"
+},
+{
+"siht": "Bevölkerung, die KI-Anwendungen aktiv nutzt",
+"eesti": "elanikud, kes kasutavad tehisaru eraelus või tööl",
+"vaartus": "≥ 80%",
+"aasta": 2030,
+"id": "A.9",
+"lk": 20,
+"liik": "kasutus"
+},
+{
+"siht": "Großunternehmen, die KI einsetzen",
+"eesti": "suurettevõtted, mis kasutavad tehisaru",
+"vaartus": "≥ 80%",
+"aasta": 2030,
+"id": "A.2",
+"lk": 20,
+"liik": "kasutus"
+},
+{
+"siht": "KMU, die KI einsetzen",
+"eesti": "väikesed ja keskmised ettevõtted, mis kasutavad tehisaru",
+"vaartus": "≥ 55%",
+"aasta": 2030,
+"id": "A.3",
+"lk": 20,
+"liik": "kasutus"
+},
+{
+"siht": "Bundesbehörden mit mindestens einer produktiven KI-Anwendung",
+"eesti": "föderaalasutused, kus on vähemalt üks töös olev tehisarulahendus",
+"vaartus": "≥ 90%",
+"aasta": 2030,
+"id": "A.8",
+"lk": 20,
+"liik": "kasutus"
+},
+{
+"siht": "Beschäftigte mit regelmäßigen KI-Weiterbildungsangeboten des Arbeitgebers",
+"eesti": "töötajad, kellele tööandja pakub regulaarselt tehisaru koolitust",
+"vaartus": "≥ 65%",
+"aasta": 2030,
+"id": "T.1",
+"lk": 27,
+"liik": "oskused"
+},
+{
+"siht": "Anteil der Wirtschaftsleistung, der KI-basiert erwirtschaftet wird",
+"eesti": "tehisarul põhinev osa majandusest",
+"vaartus": "≥ 10%",
+"aasta": 2030,
+"id": "A.4",
+"lk": 20,
+"liik": "majandus"
+}
+],
+"markus": "Paljud sihid on küsitluse põhised hoiakud (nt kas töötaja näeb kasu), mitte kasutuse mõõtmine. Kasutuse sihid (A.2, A.3, A.9) ei ole otse võrreldavad Eurostati ettevõtete tehisaru kasutusega, sest mõõtmisviis pole dokumendis määratud.",
+"kontrollitud": "2026-11-10",
+"lisatud": "2026-11-10"
+},
+{
+"id": "cy-ai-2032",
+"riik": "Küpros",
+"riik_kood": "CY",
+"pealkiri": "Cyprus National AI Strategy 2032: A Strategic Blueprint (riiklik tehisarustrateegia 2026–2032)",
+"asutus": "Küprose teadus-, innovatsiooni- ja digipoliitika aseministeerium; valitsus kiitis heaks 10.11.2026",
+"kuupaev": "2026-11-10",
+"url": "https://e-consultation.gov.cy/wp-content/uploads/2026/07/National_AI_Strategy_Cyprus_2032_Final.pdf",
+"tahtaeg": "2032",
+"sihid": [
+{
+"siht": "reach 75% AI adoption by 2032, in line with the Digital Decade target",
+"eesti": "tehisaru kasutus 75% (2025. aastal ettevõtetes 9,3%)",
+"vaartus": "75%",
+"aasta": 2032,
+"id": "avalik sektor, strateegiline siht",
+"lk": 61,
+"liik": "kasutus"
+},
+{
+"siht": "3,000+ AI professionals in the market",
+"eesti": "vähemalt 3000 tehisaru spetsialisti",
+"vaartus": "≥ 3000",
+"aasta": 2032,
+"id": "1.5 edukuse mõõdikud",
+"lk": 6,
+"liik": "oskused"
+},
+{
+"siht": "increase AI adoption across education and labour from 13% to 75%",
+"eesti": "tehisaru kasutus hariduses ja töös 13% → 75%",
+"vaartus": "75%",
+"aasta": 2032,
+"id": "haridus ja tööjõud, 2032 siht",
+"lk": 35,
+"liik": "kasutus"
+},
+{
+"siht": "50% of its medical workforce to be trained in AI-enabled practices",
+"eesti": "pool meditsiinitöötajatest on saanud tehisaru koolituse",
+"vaartus": "50%",
+"aasta": 2032,
+"id": "tervis, siht",
+"lk": 33,
+"liik": "oskused"
+},
+{
+"siht": "Recommended 15% productivity improvement relative to baseline trajectory",
+"eesti": "tootlikkus 15% üle baastrajektoori (soovituslik stsenaarium)",
+"vaartus": "+15%",
+"aasta": 2032,
+"id": "1.5 edukuse mõõdikud",
+"lk": 6,
+"liik": "majandus"
+}
+],
+"markus": "Lehekülgede numbrid on juuli 2026 konsultatsiooniversiooni järgi; valitsuse 10.11 kinnitatud versioon (120 lk) on mustandist pikem ja selle tähtajad on hilisemad. 75% siht on seotud ELi digikümnendi sihiga, aga mõõtmisviis pole täpsustatud.",
+"kontrollitud": "2026-11-11",
+"lisatud": "2026-11-11"
+},
+{
+"id": "se-ai-2026",
+"riik": "Rootsi",
+"riik_kood": "SE",
+"pealkiri": "Sweden's AI Strategy (Sveriges AI-strategi) koos tegevuskavaga",
+"asutus": "Rootsi valitsus, rahandusministeerium (avaliku halduse minister Erik Slottner)",
+"kuupaev": "2026-02-25",
+"url": "https://www.government.se/contentassets/4e6b2d34f81048d688c35c831065395f/swedens-ai-strategy.pdf",
+"tahtaeg": "",
+"sihid": [
+{
+"siht": "Sweden aims to be among the top ten AI nations in the world",
+"eesti": "Rootsi on maailma kümne parima tehisarumaa hulgas",
+"vaartus": "top 10",
+"aasta": null,
+"id": "poliitika eesmärk",
+"lk": 7,
+"liik": "koht edetabelis"
+},
+{
+"siht": "AI workshop for public administration ... fully operational in 2030",
+"eesti": "avaliku halduse ühine tehisaru töökoda (taristu ja pädevuskeskus) töötab täielikult",
+"vaartus": "täielikult töös",
+"aasta": 2030,
+"id": "avalik sektor (Fi2026/00018)",
+"lk": 13,
+"liik": "taristu"
+}
+],
+"markus": "Strateegias pole arvulisi kasutuse ega oskuste sihte; „top 10“ mõõdikut (millise edetabeli järgi) dokument ei nimeta. Ülevaatus kord aastas koos digistrateegia 2025–2030 seirega; meetmed on eraldi tegevuskavas.",
+"kontrollitud": "2026-11-11",
+"lisatud": "2026-11-11"
+},
+{
+"id": "lt-di-gaires-2035",
+"riik": "Leedu",
+"riik_kood": "LT",
+"pealkiri": "2026–2035 metų nacionalinės dirbtinio intelekto strateginės gairės",
+"asutus": "Leedu majandus- ja innovatsiooniministeerium (EIMIN) koos Innovatsiooniagentuuri ja riigi digilahenduste agentuuriga; kinnitatud ministri käskkirjaga",
+"kuupaev": "2026-04-23",
+"url": "https://inovacijuagentura.lt/site/binaries/content/assets/analitika/inovacijos-new/nacionalines_di_strategines_gaires.pdf",
+"tahtaeg": "2035",
+"sihid": [
+{
+"siht": "įmonės, naudojančios DI technologijas",
+"eesti": "tehisaru kasutavad ettevõtted (2025: 21,3%)",
+"vaartus": "75%",
+"aasta": 2030,
+"id": "4.1",
+"lk": 33,
+"liik": "kasutus"
+},
+{
+"siht": "įmonės, naudojančios DI technologijas",
+"eesti": "tehisaru kasutavad ettevõtted",
+"vaartus": "91%",
+"aasta": 2035,
+"id": "4.1",
+"lk": 33,
+"liik": "kasutus"
+},
+{
+"siht": "gyventojų, turinčių bent bazinius skaitmeninius įgūdžius, dalis",
+"eesti": "elanikud, kel on vähemalt baasilised digioskused (2025: 53%)",
+"vaartus": "80%",
+"aasta": 2030,
+"id": "1.1",
+"lk": 10,
+"liik": "oskused"
+},
+{
+"siht": "IRT specialistų darbo rinkoje dalis",
+"eesti": "IKT spetsialistide osa tööturul (2025: 5,3%)",
+"vaartus": "6,9%",
+"aasta": 2030,
+"id": "1.2",
+"lk": 11,
+"liik": "oskused"
+},
+{
+"siht": "viešojo sektoriaus darbuotojų, turinčių bent bazines DI kompetencijas (AI Awareness), dalis",
+"eesti": "avaliku sektori töötajad, kel on vähemalt baasilised tehisaruoskused",
+"vaartus": "60%",
+"aasta": 2030,
+"id": "3.x (lk 27)",
+"lk": 27,
+"liik": "oskused"
+},
+{
+"siht": "DI produktų vertės dalis nuo bendros viešųjų pirkimų vertės",
+"eesti": "tehisarutoodete osa riigihangete koguväärtusest",
+"vaartus": "0,5%",
+"aasta": 2030,
+"id": "3.3",
+"lk": 28,
+"liik": "hanked"
+}
+],
+"markus": "Ettevõtete siht viitab Leedu riigi andmeagentuurile ja ELi digikümnendi 75% sihile; 2025 baas 21,3% erineb dokumendis samal leheküljel toodud 2024. aasta 8,76%-st, seega mõõtmisviis on ilmselt muutunud (dokument ei selgita). Mitu sihti on Oxford Insightsi indeksi osad (% G7 keskmisest) ega ole Eurostatiga võrreldavad. Leheküljed PDF-i tekstist, võivad ±1 erineda.",
+"kontrollitud": "2026-11-11",
+"lisatud": "2026-11-11"
+}
+]
+}

@@ -5,6 +5,15 @@
 "nimi": "Tartu Ülikooli andmeteaduse seminar",
 "url": "https://cs.ut.ee/en/content/data-science-seminars",
 "miks": "TÜ arvutiteaduse instituudi seminarisari; salvestised avalikud YouTube'is",
+"liik": "seminar",
+"korraldaja": "Tartu Ülikool"
+},
+{
+"id": "uttv",
+"nimi": "Tartu Ülikooli videoportaal UTTV",
+"url": "https://uttv.ee/",
+"korraldaja": "Tartu Ülikool",
+"miks": "Tartu Ülikooli avalikud loengud, inauguratsiooniloengud, konverentsid ja seminarid kõigist valdkondadest; salvestised avalikud",
 "liik": "seminar"
 },
 {
@@ -12,70 +21,80 @@
 "nimi": "Latitude59",
 "url": "https://latitude59.ee/",
 "miks": "Eesti suurim tehnoloogia- ja idukonverents",
-"liik": "konverents"
+"liik": "konverents",
+"korraldaja": "Latitude59"
 },
 {
 "id": "startup-day",
 "nimi": "sTARTUp Day",
 "url": "https://www.startupday.ee/",
 "miks": "Tartu ettevõtlusfestival; korraldajate seas Tartu Ülikool ja Tartu linn",
-"liik": "konverents"
+"liik": "konverents",
+"korraldaja": "sTARTUp Day"
 },
 {
 "id": "arenguseire",
 "nimi": "Arenguseire Keskus",
 "url": "https://arenguseire.ee/",
 "miks": "Riigikogu juures tegutsev tulevikuuuringute keskus; tööturu ja tehnoloogia seminarid",
-"liik": "seminar"
+"liik": "seminar",
+"korraldaja": "Arenguseire Keskus"
 },
 {
 "id": "oecd",
 "nimi": "OECD",
 "url": "https://www.oecd.org/",
 "miks": "Rahvusvaheline organisatsioon; tehisaru ja töö tuleviku poliitika",
-"liik": "veebiseminar"
+"liik": "veebiseminar",
+"korraldaja": "OECD"
 },
 {
 "id": "oecd-ai",
 "nimi": "OECD.AI",
 "url": "https://oecd.ai/",
 "miks": "OECD tehisaru poliitika vaatluskeskus, sh AI-WIPS (tehisaru töös, oskustes ja tootlikkuses)",
-"liik": "veebiseminar"
+"liik": "veebiseminar",
+"korraldaja": "OECD"
 },
 {
 "id": "ilo",
 "nimi": "Rahvusvaheline Tööorganisatsioon (ILO)",
 "url": "https://www.ilo.org/",
 "miks": "ÜRO tööorganisatsioon; tehisaru ja töö globaalne vaade",
-"liik": "veebiseminar"
+"liik": "veebiseminar",
+"korraldaja": "ILO"
 },
 {
 "id": "stanford-hai",
 "nimi": "Stanford HAI",
 "url": "https://hai.stanford.edu/",
 "miks": "Stanfordi inimkeskse tehisaru instituut; AI Index ja uuringud",
-"liik": "seminar"
+"liik": "seminar",
+"korraldaja": "Stanford HAI"
 },
 {
 "id": "kratid",
 "nimi": "Kratid avalikus sektoris",
 "url": "https://www.kratid.ee/uritused",
 "miks": "Justiits- ja Digiministeeriumi veebiürituste sari riigiasutuste tehisaruprojektidest; salvestised avalikud YouTube'is",
-"liik": "veebiseminar"
+"liik": "veebiseminar",
+"korraldaja": "Justiits- ja Digiministeerium"
 },
 {
 "id": "lex-fridman",
 "nimi": "Lex Fridman Podcast",
 "url": "https://lexfridman.com/podcast/",
 "miks": "Pikad intervjuud tehisaru arendajate ja ettevõtete juhtidega; transkriptid on avalikud",
-"liik": "podcast"
+"liik": "podcast",
+"korraldaja": "Lex Fridman"
 },
 {
 "id": "mindscape",
 "nimi": "Mindscape (Sean Carroll)",
 "url": "https://www.preposterousuniverse.com/podcast/",
 "miks": "Füüsik Sean Carrolli intervjuud teadlastega mõistuse, tehisaru ja ühiskonna teemal; transkriptid on avalikud",
-"liik": "podcast"
+"liik": "podcast",
+"korraldaja": "Sean Carroll"
 }
 ],
 "ettekanded": [
@@ -102,7 +121,8 @@
 "Ettevõtte kogemus, mitte mõõtmine: esineja ütles ise, et nähtus võib olla ajutine."
 ],
 "kontroll": "Kokkuvõte puhastatud automaatsubtiitrite põhjal (Kadri CLI, 8.11.2026); kuupäev ja kava cs.ut.ee järgi.",
-"seire_kinnitatud": "2026-11-08"
+"seire_kinnitatud": "2026-11-08",
+"tegija": "TÜ arvutiteaduse instituut"
 },
 {
 "id": "scellier-2026-09",
@@ -126,7 +146,8 @@
 "Stiimulõpe vajab rohkem andmeid ja usaldust, enne kui sellele raha otsuseid usaldada."
 ],
 "kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); väide kontrollitud transkripti vastu.",
-"seire_kinnitatud": "2026-11-08"
+"seire_kinnitatud": "2026-11-08",
+"tegija": "TÜ arvutiteaduse instituut"
 },
 {
 "id": "braziulis-2026-09",
@@ -150,7 +171,8 @@
 "Rasked kohad on andmete kvaliteet ja seadmete erinev käitumine."
 ],
 "kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); „3,5 miljonit otsust“ kontrollitud transkripti vastu.",
-"seire_kinnitatud": "2026-11-08"
+"seire_kinnitatud": "2026-11-08",
+"tegija": "TÜ arvutiteaduse instituut"
 },
 {
 "id": "lippus-2026-09",
@@ -174,7 +196,8 @@
 "Mudeliks on tingimuslik normaliseeriv voog, mis annab terve tõenäosusjaotuse, mitte ühe numbri."
 ],
 "kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); kaks väidet kontrollitud transkripti vastu.",
-"seire_kinnitatud": "2026-11-08"
+"seire_kinnitatud": "2026-11-08",
+"tegija": "TÜ arvutiteaduse instituut"
 },
 {
 "id": "grono-2025-12",
@@ -198,7 +221,8 @@
 "„Walk before you can run“: modelleerimine on väike osa masinõppesüsteemi tööst."
 ],
 "kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); pealkiri moderaatori sõnastuse järgi, ametlikku pealkirja pole.",
-"seire_kinnitatud": "2026-11-08"
+"seire_kinnitatud": "2026-11-08",
+"tegija": "TÜ arvutiteaduse instituut"
 },
 {
 "id": "hinno-2025",
@@ -222,7 +246,8 @@
 "Täpsust tuleb mõõta ärikriitiliste sõnade järgi, mitte ainult keskmise veamäära järgi."
 ],
 "kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); täpne kuupäev seminari lehel puudub.",
-"seire_kinnitatud": "2026-11-08"
+"seire_kinnitatud": "2026-11-08",
+"tegija": "TÜ arvutiteaduse instituut"
 },
 {
 "id": "fishman-2024-09",
@@ -247,7 +272,8 @@
 "Andmete nappust leevendatakse nutikalt, aga see jääb peamiseks piiranguks."
 ],
 "kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); kolm arvu kontrollitud transkripti vastu.",
-"seire_kinnitatud": "2026-11-08"
+"seire_kinnitatud": "2026-11-08",
+"tegija": "TÜ arvutiteaduse instituut"
 },
 {
 "id": "laak-2024-01",
@@ -271,7 +297,8 @@
 "Avalik sektor peab haridustehnoloogia uuringutesse ise panustama, sest Eesti turg on väike."
 ],
 "kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); kolm väidet kontrollitud transkripti vastu.",
-"seire_kinnitatud": "2026-11-08"
+"seire_kinnitatud": "2026-11-08",
+"tegija": "TÜ arvutiteaduse instituut"
 },
 {
 "id": "tammiste-2023-11",
@@ -295,7 +322,8 @@
 "Sünteetilised andmed aitavad, aga nende mudel jäi päris andmetel treenitust nõrgemaks."
 ],
 "kontroll": "Kokkuvõte automaatsubtiitrite põhjal (31.10.2026); kaks väidet kontrollitud transkripti vastu.",
-"seire_kinnitatud": "2026-11-08"
+"seire_kinnitatud": "2026-11-08",
+"tegija": "TÜ arvutiteaduse instituut"
 },
 {
 "id": "kratid-2026-10",

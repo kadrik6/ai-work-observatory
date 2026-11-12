@@ -1,10 +1,10 @@
 {
-  "viimane_kontroll": "2026-11-12T08:30:00+02:00",
+  "viimane_kontroll": "2026-11-12T18:05:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "12.11 7.23: tehisaru ja töö kohta uut pole; CSC Telecomi leke (andmed) lisatud"
+      "markus": "17.53: lisatud sideandmete kohtuotsus (ERR News)"
     },
     {
       "nimi": "ERR News (RSS)",
@@ -14,12 +14,12 @@
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "12.11 7.23: uut Eesti koondamist pole; agendikood valitsuse istungil, gigatehaste hanke tähtaeg"
+      "markus": "17.53: agendikood kiideti heaks (suur); Eesti Energia 2 jätkulugu; sideandmete kohtuotsus"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "12.11 7.23: lisatud ANZ, Korea Panga analüüs, digiõigluse määrus, ligipääsu lugu (Business Insider), Austraalia AI washing"
+      "markus": "17.53: Nvidia juhi tagasiastumine; Baini töökuulutuste analüüs"
     },
     {
       "nimi": "Challenger kuuaruanne",
