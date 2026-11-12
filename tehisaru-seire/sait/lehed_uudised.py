@@ -191,7 +191,8 @@ def _paevad(read, nahtav, kontroll):
             kl, data = "u-paev u-kuu", ""
         if nahtaval and esimene:
             kl, esimene = kl + " uusim", False
-        loend = "".join(_uudis(r, "" if n else " hidden") for r, n in rr)
+        # Kuu rühmas on kuu ja aasta päises, real ainult päev ja kuu: täiskuupäev ei mahu veergu (Kadri 12.11.2026)
+        loend = "".join(_uudis(r, "" if n else " hidden", None if len(k) == 10 else kp(r["kuupaev"]).rsplit(".", 1)[0] + ".") for r, n in rr)
         osad.append(f'<div class="{kl}"{data}{"" if nahtaval else " hidden"}>{pais}<ul class="u-voog">{loend}</ul></div>')
     return f'<div class="u-paevad">{"".join(osad)}</div>'
 
