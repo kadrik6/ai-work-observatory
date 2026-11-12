@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 12.11.2026 | Ettekannete otsing: uus kanal Tallinn Digital Summit (`tds`, YouTube UC9ptGynkOPe3vFRW6otoI3g) failis `kataloog/ettekannete-kanalid.json`. Igapäevane otsing leiab summiti tehisaru ja töö teemalised salvestised; kokkuvõte läheb saidile pärast Kadri kinnitust. (Kadri 12.11) |
 | 12.11.2026 | Seire sait, autoriinfo lühemaks: jaluses ainult „© 2026 Kadri Kungla“ (nimi viib lõigule „Autor“), lõik „Autor“ on üks lause tehisaru abist ja allikatest. „Küsi luba“ ja kordused on ära. (Kadri 12.11) |
 | 12.11.2026 | Seire sait, autoriinfo: jaluses „Koostanud Kadri Kungla, © 2026“ (pehmem kui „autori looming“). Lõigus „Autor“ on lause, et sait on tehtud tehisaru (Claude) abiga: mis on autori otsused ja mida tegi tehisaru. (Kadri 12.11) |
 | 11.11.2026 | Seire sait: autoriinfo. Iga lehe jaluses on „© 2026 Kadri Kungla“ koos kasutamise lausega ja lingiga, päises `meta author` ja `meta copyright`. Lehel „Mis see sait on“ on uus lõik „Autor“: mis on autori looming, kuidas viidata, millal küsida luba ja et numbrid kuuluvad oma allikatele. Aastavahemik uueneb ise (kest.autori_aastad). Test `test_autor_on_igal_lehel`. (Kadri 11.11) |

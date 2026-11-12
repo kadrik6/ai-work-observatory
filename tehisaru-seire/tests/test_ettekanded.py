@@ -23,7 +23,7 @@ RSS = """<?xml version="1.0" encoding="UTF-8"?>
 def test_kanalite_loend_on_kadri_valik():
     K = json.loads((JUUR / "kataloog" / "ettekannete-kanalid.json").read_text(encoding="utf-8"))
     ids = [k["id"] for k in K["kanalid"]]
-    assert ids == ["ut-dss", "latitude59", "startup-day", "arenguseire", "oecd", "oecd-ai", "ilo", "stanford-hai"]
+    assert ids == ["ut-dss", "latitude59", "startup-day", "arenguseire", "oecd", "oecd-ai", "ilo", "stanford-hai", "tds"]
     for k in K["kanalid"]:
         allikaid = [x for x in ("leht", "kanal", "esitusloend", "kasutaja") if k.get(x)]
         assert len(allikaid) == 1, k["id"]
