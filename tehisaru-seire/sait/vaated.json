@@ -163,6 +163,11 @@
           "vaade": "reeglid",
           "fail": "eesti-otsused.html",
           "nimi": "Eesti otsused"
+        },
+        {
+          "vaade": "reeglid",
+          "fail": "riikide-strateegiad.html",
+          "nimi": "Riikide strateegiad"
         }
       ]
     },
@@ -206,7 +211,7 @@
       "olek": "valmis",
       "kusimus": "Millal ELi tehisaru määruse osad kehtima hakkavad?",
       "h1": "Värbamise ja hariduse suure riskiga reeglid kehtivad alates **2.12.2027** ¦ ELi tehisaru määrus kehtib üldiselt alates 2.08.2026.",
-      "osad": "Kaks alamlehte: ELi tehisaru määruse tähtajad; Eesti otsused ja tähtajad igapäevasest uudistekogumisest. Sihid on oma teema juures (Inimesed › Oskused, Ettevõtted, Hanked).",
+      "osad": "Kolm alamlehte: ELi tehisaru määruse tähtajad; Eesti otsused ja tähtajad igapäevasest uudistekogumisest; teiste riikide tehisarustrateegiad ja sihid (ainult tabel, sihte ei võrrelda). Sihid on oma teema juures (Inimesed › Oskused, Ettevõtted, Hanked).",
       "alamlehed": [
         {
           "fail": "tehisaru-maarus.html",
@@ -220,6 +225,13 @@
           "nimi": "Eesti otsused ja tähtajad",
           "jaotised": [
             "eesti"
+          ]
+        },
+        {
+          "fail": "riikide-strateegiad.html",
+          "nimi": "Riikide strateegiad",
+          "jaotised": [
+            "strateegiad"
           ]
         }
       ],

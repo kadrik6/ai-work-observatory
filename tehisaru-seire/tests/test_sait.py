@@ -371,10 +371,13 @@ def test_menuus_on_kaheksa_teemat_ja_usaldus_on_oma_teema(sait):
     menuu = re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1)
     # Kadri 11.11.2026 (ülesehituse kontroll D): Avalik sektor, Hanked ja Tehisaru määrus on ühe punkti „Riik“ all
     assert re.findall(r">([^<>]+)</a>", menuu) == ["Avaleht", "Inimesed", "Ettevõtted", "Töö", "Riik", "Uudised", "Usaldus"]
-    for f in ("avalik-sektor.html", "hanked.html", "hanked-naited.html", "tehisaru-maarus.html", "eesti-otsused.html"):
+    # Kadri 12.11.2026 („jah kõik“, ettepanek sp-2026-11-11-1): Riik › Riikide strateegiad
+    for f in ("avalik-sektor.html", "hanked.html", "hanked-naited.html", "tehisaru-maarus.html", "eesti-otsused.html",
+              "riikide-strateegiad.html"):
         assert '<a href="avalik-sektor.html" aria-current="page">Riik</a>' in sait[f], f
         alam = re.search(r'<ul class="alamlehed">(.*?)</ul>', sait[f]).group(1)
-        assert re.findall(r">([^<>]+)</a>", alam) == ["Avalik sektor", "Hanked", "Hangete näited", "Tehisaru määrus", "Eesti otsused"], f
+        assert re.findall(r">([^<>]+)</a>", alam) == ["Avalik sektor", "Hanked", "Hangete näited", "Tehisaru määrus", "Eesti otsused",
+                                                      "Riikide strateegiad"], f
         assert alam.count('aria-current="page"') == 1 and f'href="{f}" aria-current="page"' in alam, f
     assert '<ul class="sellel"></ul>' not in "".join(sait.values())
     for f in ("kas-see-on-tosi.html", "lahknevused.html", "varskus.html"):
@@ -1116,7 +1119,7 @@ def test_eesti_otsused_tulevad_kogumisest(A):
     # Kadri 8.11.2026 23:02: riigi otsused ja tähtajad leiab kogumine ise (teema „riik“), käsitsi neid ei kanta
     from andmekiht import AndmeViga
     vaade = _vaade("reeglid")
-    assert [s["fail"] for s in vaade["alamlehed"]] == ["tehisaru-maarus.html", "eesti-otsused.html"]
+    assert [s["fail"] for s in vaade["alamlehed"]] == ["tehisaru-maarus.html", "eesti-otsused.html", "riikide-strateegiad.html"]
     alam = lambda: next(s for s in vaade["alamlehed"] if s["fail"] == "eesti-otsused.html")  # noqa: E731
     h = lehed_teemad.eesti_otsused({**A, "uudised": []}, vaade, None, "2026-11-09")
     assert "pole kogumine veel leidnud" in h and "igapäevasest uudistekogumisest" in alam()["h1"]
@@ -1697,3 +1700,30 @@ def test_statistikaameti_logo_on_kadri_antud():
     logod = json.loads((JUUR / "sait" / "pilt" / "logod" / "logod.json").read_text(encoding="utf-8"))
     assert lae_logod.logo_fail(logod, "https://stat.ee/et/uudised/x") == "stat.ee.png"
     assert (JUUR / "sait" / "pilt" / "logod" / "stat.ee.png").read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
+
+
+def test_riikide_strateegiad_tabelina(A):
+    """Kadri „jah kõik“ 12.11.2026 (sp-2026-11-11-1): riikide sihid ainult tabelis, ei ühist graafikut ega järjestust."""
+    import vota_kaasa
+    vaade = _vaade("reeglid")
+    alam = lambda: next(s for s in vaade["alamlehed"] if s["fail"] == "riikide-strateegiad.html")  # noqa: E731
+    h = lehed_teemad.riikide_strateegiad({**A, "strateegiad": None}, vaade)
+    assert "pole kogumine veel siia toonud" in h and "igapäevasest uudistekogumisest" in alam()["h1"]
+    sisend = {"kirjeldus": "x", "strateegiad": [
+        {"id": "de", "riik": "Saksamaa", "riik_kood": "DE", "pealkiri": "KI-Nation 2030", "asutus": "BMDS", "kuupaev": "2026-11-02",
+         "url": "https://bmds.bund.de/a.pdf", "tahtaeg": "2030", "kokkuvote": "sisemine", "markus": "Mõõtmisviis määramata.",
+         "kontrollitud": "2026-11-10", "sihid": [
+             {"siht": "KMU", "eesti": "VKEd, mis kasutavad tehisaru", "vaartus": "≥ 55%", "aasta": 2030, "lk": 20, "liik": "kasutus"},
+             {"siht": "a", "eesti": "hoiak", "vaartus": "≥ 60%", "aasta": 2030, "lk": 15, "liik": "arvamus"},
+             {"siht": "b", "eesti": "koolitus", "vaartus": "≥ 65%", "aasta": 2030, "lk": 27, "liik": "oskused"},
+             {"siht": "c", "eesti": "majandus", "vaartus": "≥ 10%", "aasta": 2030, "lk": 20, "liik": "majandus"}]},
+        {"id": "se", "riik": "Rootsi", "riik_kood": "SE", "pealkiri": "Sweden's AI Strategy", "kuupaev": "2026-02-25",
+         "url": "https://government.se/s.pdf", "tahtaeg": "", "markus": "", "sihid": []}]}
+    S = vota_kaasa.strateegiad_saidile(sisend)
+    assert "kokkuvote" not in S["strateegiad"][0] and "kirjeldus" not in S
+    h = lehed_teemad.riikide_strateegiad({**A, "strateegiad": S}, vaade)
+    assert "<b>2 riigi</b>" in alam()["h1"].replace("**2 riigi**", "<b>2 riigi</b>") and "mitte mõõtmised" in alam()["h1"]
+    assert "4 arvulist sihti" in h and h.index("Saksamaa") < h.index("Rootsi")  # uusim dokument eespool
+    assert h.index("VKEd, mis kasutavad") < h.index("koolitus") < h.index("hoiak")  # kasutus enne hoiakuid
+    assert "Veel 1 sihti" in h and "lk 20" in h and "arvulisi sihte pole" in h and "puudub" in h
+    assert "<svg" not in h and "<b>Eesti</b>" in h  # Eesti oma siht võrdluseks, ilma graafikuta
