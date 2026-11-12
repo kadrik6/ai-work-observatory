@@ -282,17 +282,19 @@ def uudised(A, vaade, vaated=None):
 <div class="g12">
 <section class="pn sp12 u-ajajoon" id="uudised-paevad" aria-labelledby="h-uudised-paevad">
   <div class="pn-h"><h2 id="h-uudised-paevad">Uudised päevade kaupa, uusim üleval</h2></div>
-  <p class="ps">Podcastid, seminarid ja tulevased üritused on lehel <a href="ettekanded.html">Ettekanded ja üritused</a>.</p>
   <div class="p-tabs u-sakid" role="tablist" aria-label="Piirkond">{sakk("eesti-uudised", "Eesti", len(ee), True)}{sakk("maailma-uudised", "Maailm", len(m), False)}</div>
   {_uudiste_paneel("eesti-uudised", ee, viimane)}
   {_uudiste_paneel("maailma-uudised", m, viimane, peidus=True)}
 </section>
 </div>"""
-    sec_e = ettekanded(A, vaade)
+    # Kadri 12.11.2026: „löö ettekanded, üritused ja podcastid uudiste kõrvale lahku“ – igaüks oma alamleht
+    osad = ettekannete_osad(A, vaade)
     return jaga(A, vaade, lead, [], [
         ("uudised", [("uudised-paevad", "Uudised")], sec_u),
         ("allikad", [("uudiste-allikad", "Allikad")], sec_k),
-        ("ettekanded", [("tulekul", "Tulekul"), ("ettekanded", "Ettekanded"), ("ettekannete-allikad", "Allikad")], sec_e),
+        ("ettekanded", [("ettekanded", "Ettekanded"), ("ettekannete-allikad", "Allikad")], osad["ettekanded"]),
+        ("uritused", [("tulekul", "Tulekul")], osad["uritused"]),
+        ("podcastid", [("podcastid", "Podcastid"), ("podcastide-allikad", "Allikad")], osad["podcastid"]),
     ], aside=aside)
 
 
@@ -349,7 +351,17 @@ def _ettekanne(r, allikad):
             f'<p class="u-k">{e(r["kokkuvote"])}</p>'
             f'{f"<ul class=ek-m>{mottes}</ul>" if mottes else ""}'
             f'<p class="u-m"><span class="u-l arv">{EK_LIIK[liik]}</span>{teemad}'
-            f'<span class="u-a" title="{e(r.get("kontroll", ""))}">{e(allikad[r["allikas"]]["nimi"])}</span></p></div></li>')
+            f'{_ek_allikas(allikad[r["allikas"]], r.get("kontroll", ""))}</p></div></li>')
+
+
+def _ek_allikas(a, kontroll):
+    """Ettekande sari logona, kui logo on olemas (Kadri 12.11.2026: „lisa podcastidele ka logod“); nimi on title-is."""
+    fail = lae_logod.logo_fail(LOGOD, a["url"])
+    title = a["nimi"] + (" · " + kontroll if kontroll else "")
+    if not fail:
+        return f'<span class="u-a" title="{e(kontroll)}">{e(a["nimi"])}</span>'
+    return (f'<span class="u-a u-logo" title="{e(title)}">'
+            f'<img src="pilt/logod/{e(fail)}" alt="{e(a["nimi"])}" width="18" height="18" loading="lazy"></span>')
 
 
 def tulekul(A, tana):
@@ -369,18 +381,13 @@ def tulekul(A, tana):
 
 
 def ettekanded(A, vaade, tana=None):
-    tana = tana or datetime.date.today().isoformat()
-    ees, sec_tul = tulekul(A, tana)
-    E = A.get("ettekanded") or {"allikad": [], "ettekanded": []}
-    allikad = {a["id"]: a for a in E.get("allikad", [])}
-    read = sorted(E.get("ettekanded", []), key=lambda r: r["kuupaev"], reverse=True)
-    ootel = (A.get("ootel") or {}).get("ettekanded", 0)
-    n = len(read)
-    from abi import alam_h1
-    jargmine = f'järgmine üritus või tähtaeg on **{kp(ees[0]["tahtaeg"])}**' if ees else "tulevasi üritusi praegu pole"
-    alam_h1(vaade, "ettekanded.html",
-            f"Ettekanded ja üritused: {jargmine} ¦ {n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'} seminaride, konverentside ja podcastide salvestistest"
-            if n else f"Ettekanded ja üritused: {jargmine} ¦ ettekannete **kokkuvõtted ootavad kinnitust**")
+    """Kõik kolm alamlehe osa ühes tekstis (testidele ja vanadele kutsujatele)."""
+    return "".join(ettekannete_osad(A, vaade, tana).values())
+
+
+def _ek_loend(sid, read, allikad, pealkiri, tuhi):
+    """Ettekannete või podcastide loend valdkonna rühmades koos liigi- ja allikafiltriga (Kadri 11.11.2026)."""
+    from collections import Counter
     ruhmad = {k: [r for r in read if (r.get("ruhm") if r.get("ruhm") in ETTEKANDE_RUHM else "muu") == k] for k in ETTEKANDE_RUHM}
     ruhmad = {k: v for k, v in ruhmad.items() if v}
     valik = "".join(f'<a href="#ek-{k}" data-ruhm="{k}">{e(ETTEKANDE_RUHM[k][0])} <span class="arv">{len(v)}</span></a>' for k, v in ruhmad.items())
@@ -388,8 +395,6 @@ def ettekanded(A, vaade, tana=None):
         f'<div class="ek-r" id="ek-{k}"><h3>{e(ETTEKANDE_RUHM[k][0])} <span class="arv">{len(v)}</span></h3>'
         f'<p class="ps">{e(ETTEKANDE_RUHM[k][1])}</p>'
         f'<ul class="u-voog ek">{"".join(_ettekanne(r, allikad) for r in v)}</ul></div>' for k, v in ruhmad.items())
-    # Filter liigi ja allika järgi (Kadri 11.11.2026). Rühmad jäävad; filter peidab read ja tühjaks jäänud rühmad (sait.js).
-    from collections import Counter
     liigid = Counter(allikad[r["allikas"]].get("liik") for r in read)
     sarjad = Counter(r["allikas"] for r in read)
 
@@ -399,24 +404,71 @@ def ettekanded(A, vaade, tana=None):
         return (f'<div class="u-f ek-f" data-k="{k}" role="group" aria-label="Vali {silt.lower()}"><span class="ek-f-silt">{silt}</span>'
                 f'<button type="button" data-v="" aria-pressed="true">kõik <span class="arv">{len(read)}</span></button>{nupud}</div>')
     jrk = list(EK_LIIK)
-    filter_ = (_rida("liik", "Liik", [(v, EK_LIIK[v], n) for v, n in sorted(liigid.items(), key=lambda x: (-x[1], jrk.index(x[0])))])
-               + _rida("allikas", "Allikas", [(v, allikad[v]["nimi"], n) for v, n in sorted(sarjad.items(), key=lambda x: (-x[1], allikad[x[0]]["nimi"]))]))
+    # Rida, kus oleks ainult üks valik (nt podcastide lehel liik), jääb ära
+    filter_ = ((_rida("liik", "Liik", [(v, EK_LIIK[v], n) for v, n in sorted(liigid.items(), key=lambda x: (-x[1], jrk.index(x[0])))])
+                if len(liigid) > 1 else "")
+               + (_rida("allikas", "Allikas", [(v, allikad[v]["nimi"], n) for v, n in sorted(sarjad.items(), key=lambda x: (-x[1], allikad[x[0]]["nimi"]))])
+                  if len(sarjad) > 1 else ""))
     sisu = (f'{filter_}<nav class="ek-valik" aria-label="Valdkonnad">{valik}</nav>{plokid}'
-            f'<p class="ps ek-tyhi" hidden>Selle valikuga ettekandeid pole.</p>' if read
-            else f'<p class="ps">Ettekandeid pole veel kinnitatud{f" ({ootel} ootab)" if ootel else ""}.</p>')
-    al = "".join(f'<li><a href="{e(a["url"])}">{e(a["nimi"])}</a>{" · " + e(a["miks"]) if a.get("miks") else ""}</li>' for a in allikad.values())
+            f'<p class="ps ek-tyhi" hidden>Selle valikuga ettekandeid pole.</p>' if read else f'<p class="ps">{tuhi}</p>')
     return f"""
-<div class="g12">{sec_tul}
-<section class="pn sp12" id="ettekanded" aria-labelledby="h-ettekanded">
-  <div class="pn-h"><h2 id="h-ettekanded">Kuula ja vaata: ettekanded valdkonna järgi, igas uuemad eespool{f", <b>{ootel} ootab kinnitust</b>" if ootel and read else ""}</h2></div>
+<section class="pn sp12" id="{sid}" aria-labelledby="h-{sid}">
+  <div class="pn-h"><h2 id="h-{sid}">{pealkiri}</h2></div>
   {sisu}
-</section>
-<section class="pn sp12" id="ettekannete-allikad" aria-labelledby="h-ettekannete-allikad">
-  <div class="pn-h"><h2 id="h-ettekannete-allikad">Usaldatud üritused ja podcastid</h2></div>
+</section>"""
+
+
+def _ek_allikad(sid, allikad, pealkiri, markus):
+    al = "".join(f'<li><a href="{e(a["url"])}">{e(a["nimi"])}</a>{" · " + e(a["miks"]) if a.get("miks") else ""}</li>' for a in allikad)
+    return f"""
+<section class="pn sp12" id="{sid}" aria-labelledby="h-{sid}">
+  <div class="pn-h"><h2 id="h-{sid}">{pealkiri}</h2></div>
   <ul class="u-allikad">{al}</ul>
-  <p class="ps">Kokkuvõte tehakse salvestise subtiitritest või avalikust transkriptist ja seda kontrollitakse paari väite kaupa; transkripti teksti saidil ei hoita. Podcasti külalise arvamus on märgitud arvamusena. Uus ettekanne läheb saidile pärast kinnitamist.</p>
-</section>
-</div>"""
+  <p class="ps">{markus}</p>
+</section>"""
+
+
+def ettekannete_osad(A, vaade, tana=None):
+    """Kolm alamlehte (Kadri 12.11.2026: „löö ettekanded, üritused ja podcastid uudiste kõrvale lahku“):
+    ettekanded (seminarid, konverentsid, veebiseminarid), tulevased üritused ja podcastid. Liik tuleb allikast."""
+    tana = tana or datetime.date.today().isoformat()
+    ees, sec_tul = tulekul(A, tana)
+    E = A.get("ettekanded") or {"allikad": [], "ettekanded": []}
+    allikad = {a["id"]: a for a in E.get("allikad", [])}
+    read = sorted(E.get("ettekanded", []), key=lambda r: r["kuupaev"], reverse=True)
+    on_pod = lambda r: allikad.get(r.get("allikas"), {}).get("liik") == "podcast"  # noqa: E731
+    tk, pod = [r for r in read if not on_pod(r)], [r for r in read if on_pod(r)]
+    ootel = (A.get("ootel") or {}).get("ettekanded", 0)
+    from abi import alam_h1
+    n, m = len(tk), len(pod)
+    alam_h1(vaade, "ettekanded.html",
+            f"Ettekanded: **{n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'}** seminaride ja konverentside salvestistest"
+            " ¦ kokkuvõte on meie sõnadega, esineja kogemus ei ole mõõtmistulemus" if n
+            else "Ettekanded: **kokkuvõtted ootavad kinnitust**")
+    alam_h1(vaade, "uritused.html",
+            f"Tulekul: järgmine üritus või tähtaeg on **{kp(ees[0]['tahtaeg'])}** ¦ lähim eespool" if ees
+            else "Tulekul: **tulevasi üritusi praegu pole**")
+    alam_h1(vaade, "podcastid.html",
+            f"Podcastid: **{m} {'vestlus' if m == 1 else 'vestlust'}** tehisaru arengust, tööst ja mõistusest"
+            " ¦ külalise arvamus on arvamus, mitte mõõtmine" if m else "Podcastid: **kokkuvõtted ootavad kinnitust**")
+    oot = f", <b>{ootel} ootab kinnitust</b>" if ootel and read else ""
+    pod_al = [a for a in allikad.values() if a.get("liik") == "podcast"]
+    tk_al = [a for a in allikad.values() if a.get("liik") != "podcast"]
+    return {
+        "ettekanded": '<div class="g12">' + _ek_loend(
+            "ettekanded", tk, allikad, f"Kuula ja vaata: ettekanded valdkonna järgi, igas uuemad eespool{oot}",
+            f"Ettekandeid pole veel kinnitatud{f' ({ootel} ootab)' if ootel else ''}.") + _ek_allikad(
+            "ettekannete-allikad", tk_al, "Usaldatud seminarid ja konverentsid",
+            "Kokkuvõte tehakse salvestise subtiitritest ja seda kontrollitakse paari väite kaupa; subtiitrite teksti saidil ei hoita. "
+            "Uus ettekanne läheb saidile pärast kinnitamist.") + "</div>",
+        "uritused": '<div class="g12">' + sec_tul + "</div>",
+        "podcastid": '<div class="g12">' + _ek_loend(
+            "podcastid", pod, allikad, "Kuula: podcastid valdkonna järgi, igas uuemad eespool",
+            "Podcaste pole veel kinnitatud.") + _ek_allikad(
+            "podcastide-allikad", pod_al, "Usaldatud podcastid",
+            "Kokkuvõte tehakse avalikust transkriptist valitud lõigu kohta; transkripti teksti saidil ei hoita. "
+            "Külalise arvamus on märgitud arvamusena. Uus osa läheb saidile pärast kinnitamist.") + "</div>",
+    }
 
 
 # ---------------------------------------------------------------- Hanked: litsentsid (Kadri 8.11.2026)

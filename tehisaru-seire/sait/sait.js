@@ -310,7 +310,7 @@
     });
     // Ettekannete filter liigi ja allika järgi (Kadri 11.11.2026). Valikud kehtivad koos; rühm, kuhu ühtki rida ei jää,
     // peidetakse ja rühmade arvud näitavad valikule vastavat arvu.
-    document.querySelectorAll('#ettekanded').forEach(function (pn) {
+    document.querySelectorAll('#ettekanded, #podcastid').forEach(function (pn) {
       var ridu = pn.querySelectorAll('.ek-r li[data-liik]');
       if (!ridu.length) return;
       var valik = { liik: '', allikas: '' };

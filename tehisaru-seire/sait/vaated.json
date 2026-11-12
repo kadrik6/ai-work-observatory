@@ -259,11 +259,29 @@
         },
         {
           "fail": "ettekanded.html",
-          "nimi": "Ettekanded ja üritused",
-          "h1": "Ettekanded ja üritused",
-          "lead": "Kokkuvõte on meie sõnadega, iga ettekanne on avalik salvestis. Esineja kogemus ja arvamus ei ole mõõtmistulemus.",
+          "nimi": "Ettekanded",
+          "h1": "Ettekanded",
+          "lead": "Iga ettekanne on avalik salvestis seminarilt, konverentsilt või veebiseminarilt.",
           "jaotised": [
             "ettekanded"
+          ]
+        },
+        {
+          "fail": "uritused.html",
+          "nimi": "Üritused",
+          "h1": "Üritused",
+          "lead": "Eesti riigi tulevased üritused ja tähtajad igapäevasest uudistekogumisest.",
+          "jaotised": [
+            "uritused"
+          ]
+        },
+        {
+          "fail": "podcastid.html",
+          "nimi": "Podcastid",
+          "h1": "Podcastid",
+          "lead": "Valitud lõigud pikkadest vestlustest, kokkuvõte on meie sõnadega.",
+          "jaotised": [
+            "podcastid"
           ]
         }
       ]

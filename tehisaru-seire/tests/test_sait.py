@@ -382,8 +382,8 @@ def test_menuus_on_kaheksa_teemat_ja_usaldus_on_oma_teema(sait):
     assert '<ul class="sellel"></ul>' not in "".join(sait.values())
     for f in ("kas-see-on-tosi.html", "lahknevused.html", "varskus.html"):
         assert '<a href="kas-see-on-tosi.html" aria-current="page">Usaldus</a>' in sait[f], f
-    # Kadri 8.11.2026 valis „Uudised › Ettekanded“: uudistel on nüüd kaks alamlehte
-    assert re.findall(r'<ul class="alamlehed">(.*?)</ul>', sait["uudised.html"])[0].count("<li>") == 2
+    # Kadri 12.11.2026: ettekanded, üritused ja podcastid on uudiste kõrval eraldi alamlehed
+    assert re.findall(r'<ul class="alamlehed">(.*?)</ul>', sait["uudised.html"])[0].count("<li>") == 4
 
 
 def test_lahknevused_ja_varskus_on_usalduse_all_nahtaval(sait):
@@ -556,19 +556,21 @@ def test_uudised_on_ajajoonel_paevade_kaupa(A, sait):
         for alg_, sisu in re.findall(r'(<div class="u-paev[ "][^>]*>)(.*?)</ul></div>', osa, re.S):  # päev ilma nähtava uudiseta on peidus
             assert alg_.endswith(" hidden>") == (re.search(r'<li (?![^>]*\bhidden\b)[^>]*>', sisu) is None), alg_
     assert '<div class="p-tabs u-sakid" role="tablist" aria-label="Piirkond">' in h
-    assert 'href="ettekanded.html">Ettekanded ja üritused</a>' in h
+    assert 'href="ettekanded.html">Ettekanded</a>' in h and 'href="podcastid.html">Podcastid</a>' in h
     js = (ehita.SIIN / "sait.js").read_text(encoding="utf-8")
     assert "s.textContent = v === 0 ? 'täna' : 'eile'" in js  # täna/eile lugeja kuupäeva järgi, mitte ehitamise päeva järgi
     assert "g.hidden = !g.querySelector('.u-voog li:not([hidden])')" in js
 
 
-def test_ettekanded_ja_tulevased_uritused_uhel_lehel(A, sait):
-    """Kadri 11.11.2026: ettekanded, podcastid ja muu eraldi lehel koos tulevaste üritustega, mitte uudiste voos."""
+def test_ettekanded_uritused_ja_podcastid_eraldi_lehtedel(A, sait):
+    """Kadri 12.11.2026: „löö ettekanded, üritused ja podcastid uudiste kõrvale lahku“."""
     import copy
     from komponendid import kp
-    h = sait["ettekanded.html"]
-    assert h.index('id="tulekul"') < h.index('id="ettekanded"')
-    assert ">Ettekanded ja üritused</a>" in h and 'href="eesti-otsused.html">Eesti otsused</a>' in h
+    assert 'id="tulekul"' in sait["uritused.html"] and 'id="tulekul"' not in sait["ettekanded.html"]
+    assert 'href="eesti-otsused.html">Eesti otsused</a>' in sait["uritused.html"]
+    assert 'data-liik="podcast"' not in sait["ettekanded.html"] and 'data-liik="podcast"' in sait["podcastid.html"]
+    assert 'data-liik="seminar"' not in sait["podcastid.html"]
+    assert 'data-k="liik"' not in sait["podcastid.html"]  # ühe valikuga liigirida jääb ära
     vaade = copy.deepcopy(next(v for v in ehita.lae_vaated() if v["id"] == "uudised"))
     B = copy.deepcopy(A)
     B["uudised"] = [dict(A["uudised"][0], teema="riik", tahtaeg=t, pealkiri=f"Üritus {t}", url=f"https://n.ee/{t}")
@@ -577,7 +579,7 @@ def test_ettekanded_ja_tulevased_uritused_uhel_lehel(A, sait):
     assert [r["tahtaeg"] for r in ees] == ["2026-11-20", "2026-12-01"]  # möödunud kaob, lähim eespool
     assert sec.index("Üritus 2026-11-20") < sec.index("Üritus 2026-12-01") and f'<span class="d">{kp("2026-11-20")}</span>' in sec
     lehed_uudised.ettekanded(B, vaade, "2026-11-11")
-    h1 = next(s for s in vaade["alamlehed"] if s["fail"] == "ettekanded.html")["h1"]
+    h1 = next(s for s in vaade["alamlehed"] if s["fail"] == "uritused.html")["h1"]
     assert f"**{kp('2026-11-20')}**" in h1
     assert "praegu pole" in lehed_uudised.tulekul({**B, "uudised": []}, "2026-11-11")[1]
 
@@ -1076,7 +1078,7 @@ def test_ettekanded_alamleht(A):
     from sait import lehed_uudised
     from andmekiht import AndmeViga
     vaade = copy.deepcopy(next(v for v in json.loads((ehita.SIIN / "vaated.json").read_text(encoding="utf-8"))["vaated"] if v["id"] == "uudised"))
-    assert [s["fail"] for s in vaade["alamlehed"]] == ["uudised.html", "ettekanded.html"]
+    assert [s["fail"] for s in vaade["alamlehed"]] == ["uudised.html", "ettekanded.html", "uritused.html", "podcastid.html"]
     E = {"allikad": [{"id": "ut-dss", "nimi": "TÜ seminar", "url": "https://cs.ut.ee/", "liik": "seminar"}],
          "ettekanded": [{"id": "x", "esineja": "Mari Maasikas", "amet": "juht", "pealkiri": "Pealkiri", "allikas": "ut-dss",
                          "uritus": "Seminar", "kuupaev": "2025", "video": "https://youtu.be/abc?t=1", "kokkuvote": "Lühike.",
@@ -1468,9 +1470,11 @@ def test_ulesehituse_kontroll_a_b_c_e(sait):
 
 def test_podcastid_ettekannete_lehel(sait):
     """Kadri 11.11.2026: Lex Fridmani ja Mindscape'i podcastid Ettekannete lehel, uus rühm „Taust“."""
-    h = sait["ettekanded.html"]
+    h = sait["podcastid.html"]
     assert 'id="ek-taust"' in h and "Taust: mõistus ja informatsioon" in h
-    assert h.count('data-liik="podcast"') == 18 and h.count('data-liik="seminar"') + h.count('data-liik="veebiseminar"') == 10
+    assert h.count('data-liik="podcast"') == 18
+    k = sait["ettekanded.html"]
+    assert k.count('data-liik="seminar"') + k.count('data-liik="veebiseminar"') == 10
     assert '<span class="u-l arv">podcast</span>' in h and "lõik algab 0:15:28" in h
     assert "Lex Fridman Podcast" in h and "Mindscape (Sean Carroll)" in h
     assert "lex-452" not in h and "Dario Amodei" not in h  # aegunud osa jäeti välja (Kadri 11.11)
@@ -1564,14 +1568,16 @@ def test_uudiste_allika_logo(A, tmp_path, monkeypatch):
 
 def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
     """Kadri 11.11.2026: „lisa allika põhine filtreerimine ettekannete juurde + ettekande meetod (podcastid, seminarid jms)“."""
-    h = sait["ettekanded.html"]
-    for k in ("liik", "allikas"):
-        osa = h[h.index(f'class="u-f ek-f" data-k="{k}"'):]
-        osa = osa[:osa.index("</div>")]
-        nupud = re.findall(r'data-v="([^"]*)" aria-pressed="(true|false)">([^<]+)<span class="arv">(\d+)</span>', osa)
-        assert nupud[0][:2] == ("", "true") and int(nupud[0][3]) == 28
-        assert sum(int(n) for _, _, _, n in nupud[1:]) == 28, k  # iga ettekanne on täpselt ühes nupus
-    assert 'data-v="podcast"' in h and 'data-v="seminar"' in h and 'data-v="mindscape"' in h
+    for f, kk, kokku in (("ettekanded.html", ("liik", "allikas"), 10), ("podcastid.html", ("allikas",), 18)):
+        h = sait[f]
+        for k in kk:
+            osa = h[h.index(f'class="u-f ek-f" data-k="{k}"'):]
+            osa = osa[:osa.index("</div>")]
+            nupud = re.findall(r'data-v="([^"]*)" aria-pressed="(true|false)">([^<]+)<span class="arv">(\d+)</span>', osa)
+            assert nupud[0][:2] == ("", "true") and int(nupud[0][3]) == kokku
+            assert sum(int(n) for _, _, _, n in nupud[1:]) == kokku, k  # iga ettekanne on täpselt ühes nupus
+    h = sait["podcastid.html"]
+    assert 'data-v="seminar"' in sait["ettekanded.html"] and 'data-v="mindscape"' in h
     assert re.search(r'<li data-liik="podcast" data-allikas="lex-fridman">', h)
     assert 'class="ps ek-tyhi" hidden' in h
     # Allika liik peab olema lubatud
@@ -1681,6 +1687,30 @@ def test_autor_on_igal_lehel(sait):
     assert "tehisaru (Claude) abiga" in s and "on autori otsused" in s  # Kadri 12.11.2026: ava, mida tegi tehisaru
     # Kadri 12.11.2026: märge lühike nagu teistel saitidel, ilma „küsi luba“ ja kordamiseta
     assert "luba" not in s.split('id="autor"')[1].split("</section>")[0]
+
+
+def test_podcastide_kaaned_ja_ettekannete_logod(tmp_path):
+    """Kadri 12.11.2026: „lisa podcastidele ka logod, otsi veebist“. Kaas tuleb saate RSS-voost, vähendatakse 64 px PNG-ks;
+    ettekannete sarjade domeenid saavad logo samamoodi nagu uudiste allikad."""
+    import io
+    import lae_logod
+    from PIL import Image
+    v = io.BytesIO()
+    Image.new("RGB", (300, 300), (20, 20, 20)).save(v, "JPEG")
+    (tmp_path / "u.jsonl").write_text("", encoding="utf-8")
+    (tmp_path / "e.json").write_text(json.dumps({"allikad": [{"id": "s", "url": "https://cs.ut.ee/x"}]}), encoding="utf-8")
+    ico = b"\x00\x00\x01\x00" + b"0" * 200
+    n = lae_logod.main(lambda u: ico, tmp_path / "logod", tmp_path / "u.jsonl", tmp_path / "e.json",
+                       {"lexfridman.com": "https://x/kaas.jpg"}, lambda u: v.getvalue())
+    logod = json.loads((tmp_path / "logod" / "logod.json").read_text(encoding="utf-8"))
+    assert n == 2 and logod["lexfridman.com"] == "lexfridman.com.png" and "cs.ut.ee" in logod
+    assert Image.open(tmp_path / "logod" / "lexfridman.com.png").size == (64, 64)
+    assert set(lae_logod.KAANED) == {"lexfridman.com", "preposterousuniverse.com"}
+    # Ettekande rida näitab sarja logo, kui see on olemas
+    from sait import lehed_uudised
+    rida = lehed_uudised._ek_allikas({"nimi": "Lex Fridman Podcast", "url": "https://lexfridman.com/podcast/"}, "")
+    assert ('u-logo' in rida) == bool(lae_logod.logo_fail(lehed_uudised.LOGOD, "https://lexfridman.com/podcast/"))
+    assert "Lex Fridman Podcast" in rida
 
 
 def test_aripaeva_logo_on_kadri_antud():
