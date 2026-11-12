@@ -1696,6 +1696,14 @@ def test_aripaeva_logo_on_kadri_antud():
     assert (JUUR / "sait" / "pilt" / "logod" / "aripaev.ee.png").read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
 
 
+def test_uudiste_rida_ei_veni_ule_ekraani():
+    """Kadri 12.11.2026: uudiste read ei veni laial ekraanil üle kogu lehe; pikem tekst jääb klõpsuga avatavaks."""
+    css = (JUUR / "sait" / "stiil.css").read_text(encoding="utf-8")
+    m = re.search(r"\.u-voog li > div \{ max-width: (\d+)ch; \}", css)
+    assert m and int(m.group(1)) <= 100
+    assert ".u-paev .u-k.kinni { -webkit-line-clamp: 1; }" in css
+
+
 def test_postimehe_logo_on_kadri_antud():
     """Kadri 12.11.2026: Postimehe uudistel (ka majandus.postimees.ee) on tema antud logo (sinine Pm)."""
     import lae_logod

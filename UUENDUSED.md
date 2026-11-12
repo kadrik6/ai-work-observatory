@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 12.11.2026 | Seire sait, Uudised ja Ettekanded: uudise rida (pealkiri, kokkuvõte, sildid ja logo) on kuni 92 märki lai ega veni laial ekraanil üle kogu lehe (1920 px juures 1377 → 813 px). Kokkuvõte on endiselt ühel real ja avaneb klõpsuga. Test `test_uudiste_rida_ei_veni_ule_ekraani`. (Kadri 12.11) |
 | 12.11.2026 | Seire sait, Uudised: Postimehe uudistel (ka majandus.postimees.ee) on Kadri antud logo (sinine Pm, `sait/pilt/logod/postimees.ee.png`, 64×64). Test `test_postimehe_logo_on_kadri_antud`. (Kadri 12.11) |
 | 12.11.2026 | Seire sait, Uudised: Äritehnoloogia (aritehnoloogia.ee, Äripäeva väljaanne) uudistel on samuti Äripäeva logo (`logod.json` viitab failile `aripaev.ee.png`). (Kadri 12.11) |
 | 12.11.2026 | Seire sait, Uudised: vanemate kuude rühmas kattus täiskuupäev (nt „28.10.2026“) pealkirjaga, sest veerg oli kitsas. Nüüd on kuu rühma real ainult päev ja kuu („28.10.“), kuu ja aasta on rühma päises. Kuupäev ei murdu enam ega lähe üle veeru. Mõõdetud 1280, 1366 ja 390 px: kattuvusi 11 → 0. Test `test_kuu_ruhmas_on_lyhike_kuupaev`. (Kadri 12.11) |
