@@ -17,6 +17,7 @@ Ainult avalikud andmed: riigihangete registri avaandmed (CC BY-SA 3.0 EE). Isiku
 | 5 | `mudel.py` | TF-IDF ja logistiline regressioon. Ajapõhine test (treening kuni 2023, test 2024–2026). Kaalutud täpsus ja saagis bootstrap-vahemikuga. Võrdleb nelja reeglit ja valib lehe reegli. Annab ka levimuse hinnangu valimi põhjal. |
 | 6 | `koonda.py` | Aastanäitajad, hankimise viis, hankijate koondumine ja otsingu loend (`leht.json`). |
 | 7 | `leht/ehita.py`, `leht/mall.html` | Tulemuste leht Sinine Fookus stiilis: ülevaade, sarnaste hangete otsing, hankimise viis ja täpsus. |
+| 8 | `osad.py` | Ühe pakkumuse riskimudel (kursus, 1. samm): osa tasemel tabel, osade sidumise ja puuduvate pakkumuste kontroll, mudelid M0–M2. Treening 2017–2023, valideerimine 2024. Test 2025 arvutatakse ainult lipuga `--test`. |
 
 Andmed laaditakse GitHub Actionsis (`.github/workflows/hanked.yml`), sest registri aadress ei ole igast
 keskkonnast kättesaadav. Töövoog käivitub haru `hanked/**` tõukega. Tulemused jäävad 30 päevaks artefakti ja
@@ -28,6 +29,7 @@ python hanked/lae.py --valjund valjund
 python hanked/kirjelda.py --valjund valjund
 python hanked/mudel.py --valjund valjund
 python hanked/koonda.py --valjund valjund
+python hanked/osad.py --valjund valjund
 python hanked/leht/ehita.py valjund/leht.json valjund/ai-hanked.html
 cd hanked && python -m pytest -q -p no:cacheprovider
 ```

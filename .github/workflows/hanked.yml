@@ -54,6 +54,8 @@ jobs:
           for i, t in enumerate(tykid):
               print(f"LEHT {i} {len(tykid)} {t}")
           PY
+      - name: Ühe pakkumuse riskimudel, 1. samm (osa tase, andmekontrollid, M0–M2; test 2025 ainult lipuga --test)
+        run: python hanked/osad.py --valjund valjund
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -130,3 +130,29 @@ def test_osade_koond():
     assert c["hankeid"] == 3 and c["mitme_osaga"] == 1 and c["osi"] == 4
     assert c["osi_pakkumustega"] == 3 and c["osi_1_pakkumus"] == 2
     assert c["hankeid_pakkumustega"] == 2 and c["hankeid_1_pakkumus"] == 1
+
+
+def test_eforms_osade_info():
+    """Hanketeate iga osa: tunnus, CPV, eeldatav maksumus, kriteeriumid ja pakkumuste esitamise tähtaeg."""
+    osa = ('<cac:TenderingProcess><cac:TenderSubmissionDeadlinePeriod><cbc:EndDate>2024-04-04+03:00</cbc:EndDate>'
+           '</cac:TenderSubmissionDeadlinePeriod></cac:TenderingProcess>'
+           '<cac:ProcurementProject><cbc:Name languageID="EST">Osa 1')
+    lisa = ('<cac:RequestedTenderTotal><cbc:EstimatedOverallContractAmount currencyID="EUR">80000</cbc:EstimatedOverallContractAmount>'
+            '</cac:RequestedTenderTotal><cac:MainCommodityClassification><cbc:ItemClassificationCode listName="cpv">72212000')
+    sisu = CN.replace('<cac:ProcurementProject><cbc:Name languageID="EST">Osa 1', osa, 1)
+    sisu = sisu.replace('</cac:ProcurementAdditionalType>\n<cac:MainCommodityClassification><cbc:ItemClassificationCode listName="cpv">72212000',
+                        '</cac:ProcurementAdditionalType>\n' + lisa, 1)
+    cn, can, vahele = parsi_fail(sisu.encode(), "2024-03")
+    o = cn[0]["osade_info"]
+    assert o == [{"osa": "LOT-0001", "cpv": "72212000", "maksumus": 80000.0,
+                  "kriteeriumid": [("price", 60.0), ("quality", 40.0)], "tahtaeg": "2024-04-04"}]
+
+
+def test_ted_osade_info():
+    sisu = TED.replace("<OBJECT_DESCR><SHORT_DESCR>", '<OBJECT_DESCR><LOT_NO>1</LOT_NO><CPV_ADDITIONAL><CPV_CODE CODE="72300000"/>'
+                       '</CPV_ADDITIONAL><VAL_OBJECT CURRENCY="EUR">40000</VAL_OBJECT><SHORT_DESCR>', 1)
+    sisu = sisu.replace("<PROCEDURE><PT_OPEN/></PROCEDURE>",
+                        "<PROCEDURE><PT_OPEN/><DATE_RECEIPT_TENDERS>2019-06-10</DATE_RECEIPT_TENDERS></PROCEDURE>", 1)
+    cn, can, vahele = parsi_fail(sisu.encode(), "2019-05")
+    assert cn[0]["osade_info"] == [{"osa": "1", "cpv": "72300000", "maksumus": 40000.0,
+                                    "kriteeriumid": [("quality", 30.0), ("price", 70.0)], "tahtaeg": "2019-06-10"}]

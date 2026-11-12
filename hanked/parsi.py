@@ -121,8 +121,16 @@ def eforms_hanketeade(teade, kuu=None):
     cpv.append(_tekst(projekt, "MainCommodityClassification", "ItemClassificationCode"))
     for a in _lapsed(projekt, "AdditionalCommodityClassification") if projekt is not None else []:
         cpv.append(_tekst(a, "ItemClassificationCode"))
-    for lot in osad:
+    osade_info = []
+    for i, lot in enumerate(osad):
         lp = _laps(lot, "ProcurementProject")
+        osade_info.append({
+            "osa": _tekst(lot, "ID") or f"#{i + 1}",
+            "cpv": _tekst(lp, "MainCommodityClassification", "ItemClassificationCode"),
+            "maksumus": _arv(_tekst(lp, "RequestedTenderTotal", "EstimatedOverallContractAmount")),
+            "kriteeriumid": _eforms_kriteeriumid(lot),
+            "tahtaeg": (_tekst(lot, "TenderingProcess", "TenderSubmissionDeadlinePeriod", "EndDate") or "")[:10] or None,
+        })
         osa_nimed.append(_tekst(lp, "Name"))
         osa_kirjeldused.append(_tekst(lp, "Description"))
         cpv.append(_tekst(lp, "MainCommodityClassification", "ItemClassificationCode"))
@@ -155,6 +163,7 @@ def eforms_hanketeade(teade, kuu=None):
         "osade_nimed": _uniq(osa_nimed),
         "osade_kirjeldused": _uniq(osa_kirjeldused),
         "osade_arv": len(osad),
+        "osade_info": osade_info,
         "cpv": _uniq(cpv),
         "liik": _tekst(projekt, "ProcurementTypeCode"),
         "menetlus": _tekst(teade, "TenderingProcess", "ProcedureCode"),
@@ -274,19 +283,25 @@ def ted_teade(teade, kuu=None):
         return None
     cpv = [e.get("CODE") for e in oc.iter() if _l(e.tag) == "CPV_CODE"]
     osad = [e for e in oc if _l(e.tag) == "OBJECT_DESCR"]
-    kriteeriumid = []
-    for od in osad:
+    kriteeriumid, osade_info = [], []
+    proc = next((e for e in f.iter() if _l(e.tag) == "PROCEDURE"), None)
+    tahtaeg = (_tekst(proc, "DATE_RECEIPT_TENDERS") or "")[:10] or None
+    for i, od in enumerate(osad):
         ac = _laps(od, "AC")
-        if ac is None:
-            continue
-        for k in ac:
+        osa_kr = []
+        for k in ac if ac is not None else []:
             nimi = _l(k.tag)
             tyyp = {"AC_QUALITY": "quality", "AC_COST": "cost", "AC_PRICE": "price"}.get(nimi)
             if tyyp:
                 kaal = _arv(re.sub(r"[^0-9.,]", "", _tekst(k, "AC_WEIGHTING") or "") or None)
-                kriteeriumid.append((tyyp, kaal))
+                osa_kr.append((tyyp, kaal))
+        kriteeriumid.extend(osa_kr)
+        cpv_osa = next((e.get("CODE") for e in od.iter() if _l(e.tag) == "CPV_CODE"), None)
+        val = _laps(od, "VAL_OBJECT")
+        osade_info.append({"osa": _tekst(od, "LOT_NO") or f"#{i + 1}", "cpv": cpv_osa,
+                           "maksumus": _arv(val.text) if val is not None else None,
+                           "kriteeriumid": osa_kr, "tahtaeg": tahtaeg})
     menetlus = None
-    proc = next((e for e in f.iter() if _l(e.tag) == "PROCEDURE"), None)
     if proc is not None:
         menetlus = next((_l(k.tag) for k in proc if _l(k.tag).startswith("PT_")), None)
     liik = _laps(oc, "TYPE_CONTRACT")
@@ -302,6 +317,7 @@ def ted_teade(teade, kuu=None):
         "osade_nimed": _uniq([_p(_laps(od, "TITLE")) for od in osad]),
         "osade_kirjeldused": _uniq([_p(_laps(od, "SHORT_DESCR")) for od in osad]),
         "osade_arv": len(osad),
+        "osade_info": osade_info,
         "cpv": _uniq(cpv),
         "liik": {"SERVICES": "services", "SUPPLIES": "supplies", "WORKS": "works"}.get(
             liik.get("CTYPE") if liik is not None else None),
