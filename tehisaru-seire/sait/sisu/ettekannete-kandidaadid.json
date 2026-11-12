@@ -1,6 +1,56 @@
 {
  "kandidaadid": [
   {
+   "id": "mc4ZgXRRKRQ",
+   "allikas": "ilo",
+   "pealkiri": "Assessing the impact of foreign direct investment (FDI) on decent work",
+   "avaldatud": "2026-11-11",
+   "url": "https://www.youtube.com/watch?v=mc4ZgXRRKRQ",
+   "leitud": "2026-11-12",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "-bF-QDISIKY",
+   "allikas": "ilo",
+   "pealkiri": "The ILO MNE Declaration: FDI and decent work",
+   "avaldatud": "2026-11-11",
+   "url": "https://www.youtube.com/watch?v=-bF-QDISIKY",
+   "leitud": "2026-11-12",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "j7yShk0yD2s",
+   "allikas": "stanford-hai",
+   "pealkiri": "Confronting Our AI Future: Stanford HAI’s Next Chapter with James Landay",
+   "avaldatud": "2026-11-11",
+   "url": "https://www.youtube.com/watch?v=j7yShk0yD2s",
+   "leitud": "2026-11-12",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "akFQ_9xepJs",
+   "allikas": "stanford-hai",
+   "pealkiri": "Confronting Our AI Future: Why Universities Matter for AI with Stanford Provost Jenny Martinez",
+   "avaldatud": "2026-11-11",
+   "url": "https://www.youtube.com/watch?v=akFQ_9xepJs",
+   "leitud": "2026-11-12",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "rfqUQ_pSj8o",
+   "allikas": "stanford-hai",
+   "pealkiri": "Confronting Our AI Future: Welcome from Russell Wald",
+   "avaldatud": "2026-11-11",
+   "url": "https://www.youtube.com/watch?v=rfqUQ_pSj8o",
+   "leitud": "2026-11-12",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
    "id": "CL79jkDRazs",
    "allikas": "ilo",
    "pealkiri": "What workers' organizations can do to support quality apprenticeships",
@@ -1239,6 +1289,6 @@
   "ilo": "UCrlcu5KChYyHwXlIeD7oLUg",
   "stanford-hai": "UChugFTK0KyrES9terTid8vA"
  },
- "uuendatud": "2026-11-11",
+ "uuendatud": "2026-11-12",
  "vead": []
 }
