@@ -1,6 +1,20 @@
 {
 "sundmused": [
 {
+"kuupaev": "2026-11-11",
+"kuupaev_tapsus": "",
+"piirkond": "maailm",
+"ettevote": "Goldman Sachs, Cisco, JPMorgan",
+"sektor": "pangandus ja tehnoloogia",
+"ligipaas": "piirab_rolliga",
+"pohjus": "kulu, tootlikkus ja turvarisk (ettevõtete endi sõnul)",
+"tekst": "JPMorgan: osal inseneridel Claude Code'i kulupiir 2000 $ kuus; Cisco: juhid saavad tokenite eelarved",
+"url": "https://www.businessinsider.com/cisco-goldman-jpmorgan-reconsidering-ai-access-work-2026-11",
+"allikas": "Business Insider",
+"lisaallikas": "",
+"kust": "uudis"
+},
+{
 "kuupaev": "2026-11-09",
 "kuupaev_tapsus": "",
 "piirkond": "maailm",
