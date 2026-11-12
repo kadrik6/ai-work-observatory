@@ -313,11 +313,14 @@
     document.querySelectorAll('#ettekanded, #podcastid').forEach(function (pn) {
       var ridu = pn.querySelectorAll('.ek-r li[data-liik]');
       if (!ridu.length) return;
-      var valik = { liik: '', allikas: '' };
+      var valik = {};  // filtrid: liik, kes teeb (korraldaja), üksus; kõik kehtivad koos (Kadri 11.–12.11.2026)
+      pn.querySelectorAll('.ek-f').forEach(function (f) { valik[f.getAttribute('data-k')] = ''; });
+      function sobib(l, v2) {
+        return Object.keys(v2).every(function (k) { return !v2[k] || l.getAttribute('data-' + k) === v2[k]; });
+      }
       function rakenda() {
         ridu.forEach(function (l) {
-          l.hidden = (!!valik.liik && l.getAttribute('data-liik') !== valik.liik) ||
-            (!!valik.allikas && l.getAttribute('data-allikas') !== valik.allikas);
+          l.hidden = !sobib(l, valik);
         });
         var kokku = 0;
         pn.querySelectorAll('.ek-r').forEach(function (r) {
@@ -332,12 +335,11 @@
         // Kadri 11.11.2026: kombinatsiooni, millega tulemusi pole, ei saa valida. Nupu arv näitab, mitu jääb
         // teise filtri praeguse valikuga; null arvuga nupp on keelatud.
         pn.querySelectorAll('.ek-f').forEach(function (f) {
-          var k = f.getAttribute('data-k'), teine = k === 'liik' ? 'allikas' : 'liik';
+          var k = f.getAttribute('data-k');
           f.querySelectorAll('button[data-v]').forEach(function (b) {
-            var v = b.getAttribute('data-v'), n = 0;
-            ridu.forEach(function (l) {
-              if ((!valik[teine] || l.getAttribute('data-' + teine) === valik[teine]) && (!v || l.getAttribute('data-' + k) === v)) n++;
-            });
+            var v = b.getAttribute('data-v'), n = 0, v2 = Object.assign({}, valik);
+            v2[k] = v;
+            ridu.forEach(function (l) { if (sobib(l, v2)) n++; });
             var a = b.querySelector('.arv'); if (a) a.textContent = n;
             b.disabled = !!v && n === 0;
           });
@@ -540,7 +542,8 @@
       ['ruhm', 'button[data-r]', 'data-r'],
       ['valdkond', '[data-vk-sisu=""] .tp-vk [data-vk]', 'data-vk'],
       ['liik', '.ek-f[data-k="liik"] button[data-v]', 'data-v'],
-      ['allikas', '.ek-f[data-k="allikas"] button[data-v]', 'data-v'],
+      ['kes', '.ek-f[data-k="kes"] button[data-v]', 'data-v'],
+      ['uksus', '.ek-f[data-k="uksus"] button[data-v]', 'data-v'],
       ['sakk', '.p-tabs [role="tab"]', 'aria-controls'],
     ];
     paarid.forEach(function (p) {

@@ -1568,7 +1568,7 @@ def test_uudiste_allika_logo(A, tmp_path, monkeypatch):
 
 def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
     """Kadri 11.11.2026: „lisa allika põhine filtreerimine ettekannete juurde + ettekande meetod (podcastid, seminarid jms)“."""
-    for f, kk, kokku in (("ettekanded.html", ("liik", "allikas"), 10), ("podcastid.html", ("allikas",), 18)):
+    for f, kk, kokku in (("ettekanded.html", ("liik", "kes"), 10), ("podcastid.html", ("kes",), 18)):
         h = sait[f]
         for k in kk:
             osa = h[h.index(f'class="u-f ek-f" data-k="{k}"'):]
@@ -1577,8 +1577,8 @@ def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
             assert nupud[0][:2] == ("", "true") and int(nupud[0][3]) == kokku
             assert sum(int(n) for _, _, _, n in nupud[1:]) == kokku, k  # iga ettekanne on täpselt ühes nupus
     h = sait["podcastid.html"]
-    assert 'data-v="seminar"' in sait["ettekanded.html"] and 'data-v="mindscape"' in h
-    assert re.search(r'<li data-liik="podcast" data-allikas="lex-fridman">', h)
+    assert 'data-v="seminar"' in sait["ettekanded.html"] and re.search(r'<li [^>]*data-kes="[a-z0-9-]+"', h)
+    assert re.search(r'<li data-liik="podcast" data-allikas="lex-fridman" data-kes="', h)
     assert 'class="ps ek-tyhi" hidden' in h
     # Allika liik peab olema lubatud
     import copy
@@ -1590,6 +1590,27 @@ def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
                          "video": "https://youtu.be/def", "kokkuvote": "T."}]}
     with pytest.raises(AndmeViga):
         lehed_uudised.ettekanded({**A, "ettekanded": E, "ootel": {"ettekanded": 0}}, vaade)
+
+
+def test_ettekannete_kes_teeb_ja_uksus(A):
+    """Kadri 12.11.2026 (UTTV): filter selle järgi, kes sisu teeb; Tartu Ülikooli sarjad on ühe korraldaja all, üksus eraldi."""
+    import copy
+    from sait import lehed_uudised
+    vaade = copy.deepcopy(next(v for v in json.loads((ehita.SIIN / "vaated.json").read_text(encoding="utf-8"))["vaated"] if v["id"] == "uudised"))
+    E = {"allikad": [{"id": "ut-dss", "nimi": "TÜ seminar", "url": "https://cs.ut.ee/", "liik": "seminar", "korraldaja": "Tartu Ülikool"},
+                     {"id": "uttv", "nimi": "UTTV", "url": "https://uttv.ee/", "liik": "seminar", "korraldaja": "Tartu Ülikool"},
+                     {"id": "kratid", "nimi": "Kratid", "url": "https://www.kratid.ee/", "liik": "veebiseminar"}],
+         "ettekanded": [dict(id=f"x{i}", esineja="E", pealkiri=f"P{i}", allikas=a, kuupaev="2026-05-27", video="https://youtu.be/def",
+                             kokkuvote="K.", ruhm="too", **({"tegija": t} if t else {}))
+                        for i, (a, t) in enumerate([("ut-dss", "TÜ arvutiteaduse instituut"), ("uttv", "TÜ majandusteaduskond"),
+                                                    ("uttv", "TÜ majandusteaduskond"), ("kratid", None)])]}
+    h = lehed_uudised.ettekannete_osad({**A, "ettekanded": E, "ootel": {"ettekanded": 0}}, vaade)["ettekanded"]
+    kes = re.findall(r'data-v="([a-z0-9-]+)" aria-pressed="false">([^<]+)<span class="arv">(\d+)', h[h.index('data-k="kes"'):h.index('data-k="uksus"')])
+    assert kes == [("tartu-ulikool", "Tartu Ülikool ", "3"), ("kratid", "Kratid ", "1")]
+    assert 'data-v="tu-majandusteaduskond"' in h and h.count('data-uksus="tu-majandusteaduskond"') == 2
+    assert "· TÜ majandusteaduskond</p>" in h  # üksus on näha ka ettekande real
+    js = (ehita.SIIN / "sait.js").read_text(encoding="utf-8")
+    assert "['kes', '.ek-f[data-k=\"kes\"] button[data-v]', 'data-v']" in js and "function sobib(l, v2)" in js
 
 
 def test_tootukassa_pole_tooandja_tulp(sait):

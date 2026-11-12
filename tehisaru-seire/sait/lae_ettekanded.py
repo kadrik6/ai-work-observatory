@@ -31,6 +31,11 @@ TEEMA = re.compile(r"\b(AI|A\.I\.|GenAI|LLMs?|AGI|agents?|agentic|artificial int
                    r"skills?|productivity|employment|tehisaru\w*|tehisintellekt\w*|masinõpe\w*|andme\w*|tööturu\w*|"
                    r"tööl\w*|töö|oskus\w*|automatiseeri\w*|digi\w*)\b", re.I)
 VANUS_PAEVI = 120  # vanemad videod ei ole uued kandidaadid
+# Tartu Ülikooli videoportaal UTTV (Kadri 12.11.2026). RSS-i pole ja otsing laeb tulemused skriptiga, seepärast loeb
+# otsing video lehti id järgi: alates viimasest nähtud id-st kuni UTTV_SAMM lehte või UTTV_TUHI järjestikust tühja lehte.
+UTTV_LEHT = "https://uttv.ee/pls/uttv/naita?id={}"
+UTTV_SAMM = 80
+UTTV_TUHI = 20
 
 
 def _get(url, timeout=30):
@@ -71,6 +76,39 @@ def lehe_videod(html, allikas):
         if m.group(1) not in ids:
             ids.append(m.group(1))
     return [{"id": i, "allikas": allikas, "pealkiri": "", "avaldatud": "", "url": f"https://www.youtube.com/watch?v={i}", "kirjeldus": ""} for i in ids]
+
+
+def uttv_video(html, vid, allikas="uttv"):
+    """UTTV video leht → kandidaat või None (lehte pole või kuupäeva ei leitud)."""
+    keha = re.sub(r"<(script|style)\b.*?</\1>", " ", html, flags=re.S | re.I)
+    m_kp = re.search(r"\b(\d{2})\.(\d{2})\.(\d{4})\b", re.sub(r"<[^>]+>", " ", keha))
+    if not m_kp:
+        return None
+    m_p = re.search(r"<h4[^>]*>(.*?)</h4>", keha, re.S | re.I)
+    tekst = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", keha)).strip()
+    pealkiri = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", m_p.group(1))).strip() if m_p else ""
+    if not pealkiri or pealkiri.lower().startswith("otsingu"):
+        pealkiri = tekst.split(" Embed ")[0].replace("Avaleht Videod Fotod Teenused", "").strip()[:160]
+    return {"id": f"uttv-{vid}", "allikas": allikas, "pealkiri": pealkiri,
+            "avaldatud": f"{m_kp.group(3)}-{m_kp.group(2)}-{m_kp.group(1)}", "url": UTTV_LEHT.format(vid), "kirjeldus": tekst[:1500]}
+
+
+def uttv_uued(alates, get=_get, samm=UTTV_SAMM, tuhi=UTTV_TUHI, allikas="uttv"):
+    """Uued UTTV videod alates id-st `alates` (välja arvatud). Tagastab (videod, suurim leitud id)."""
+    read, suurim, tyhju = [], alates, 0
+    for vid in range(alates + 1, alates + 1 + samm):
+        try:
+            r = uttv_video(get(UTTV_LEHT.format(vid)), vid, allikas)
+        except Exception:  # noqa: BLE001 — puuduv leht või võrguviga loeb tühjaks
+            r = None
+        if r is None:
+            tyhju += 1
+            if tyhju >= tuhi:
+                break
+            continue
+        tyhju, suurim = 0, vid
+        read.append(r)
+    return read, suurim
 
 
 def teemas(r):
@@ -128,7 +166,10 @@ def main(argv):
     leitud, vead = [], []
     for k in K["kanalid"]:
         try:
-            if k.get("leht"):
+            if k.get("uttv_alates"):
+                rr, suurim = uttv_uued(int(olek["kanalid"].get(k["id"]) or k["uttv_alates"]), allikas=k["id"])
+                olek["kanalid"][k["id"]] = suurim
+            elif k.get("leht"):
                 rr = lehe_videod(_get(k["leht"]), k["id"])
             else:
                 if k.get("esitusloend"):

@@ -344,14 +344,26 @@ def _ettekanne(r, allikad):
     if liik not in EK_LIIK:
         raise AndmeViga(f"ettekanded.json: allika {r['allikas']} liik {liik!r} pole lubatud ({', '.join(EK_LIIK)})")
     algus = f' <span class="ek-algus">lõik algab {e(r["algus"])}</span>' if r.get("algus") else ""
-    return (f'<li data-liik="{liik}" data-allikas="{e(r["allikas"])}">'
+    tegija = f' · {e(r["tegija"])}' if r.get("tegija") and r["tegija"] != r.get("uritus") else ""
+    a = allikad[r["allikas"]]
+    kes = f' data-kes="{_tunnus(_korraldaja(a))}"' + (f' data-uksus="{_tunnus(r["tegija"])}"' if r.get("tegija") else "")
+    return (f'<li data-liik="{liik}" data-allikas="{e(r["allikas"])}"{kes}>'
             f'<span class="d">{_kp_osa(r["kuupaev"])}</span>'
             f'<div><a href="{e(r["video"])}">{e(r["pealkiri"])}</a>{algus}'
-            f'<p class="ek-kes"><b>{e(r["esineja"])}</b>{", " + e(r["amet"]) if r.get("amet") else ""} · {uritus}</p>'
+            f'<p class="ek-kes"><b>{e(r["esineja"])}</b>{", " + e(r["amet"]) if r.get("amet") else ""} · {uritus}{tegija}</p>'
             f'<p class="u-k">{e(r["kokkuvote"])}</p>'
             f'{f"<ul class=ek-m>{mottes}</ul>" if mottes else ""}'
             f'<p class="u-m"><span class="u-l arv">{EK_LIIK[liik]}</span>{teemad}'
             f'{_ek_allikas(allikad[r["allikas"]], r.get("kontroll", ""))}</p></div></li>')
+
+
+def _korraldaja(a):
+    """Kes sisu teeb (Kadri 12.11.2026): sarja korraldaja, nt Tartu Ülikool nii UTTV kui andmeteaduse seminari puhul."""
+    return a.get("korraldaja") or a["nimi"]
+
+
+def _tunnus(t):
+    return re.sub(r"[^a-z0-9]+", "-", t.lower().translate(str.maketrans("äöüõšž", "aouosz"))).strip("-")
 
 
 def _ek_allikas(a, kontroll):
@@ -396,7 +408,8 @@ def _ek_loend(sid, read, allikad, pealkiri, tuhi):
         f'<p class="ps">{e(ETTEKANDE_RUHM[k][1])}</p>'
         f'<ul class="u-voog ek">{"".join(_ettekanne(r, allikad) for r in v)}</ul></div>' for k, v in ruhmad.items())
     liigid = Counter(allikad[r["allikas"]].get("liik") for r in read)
-    sarjad = Counter(r["allikas"] for r in read)
+    kes = Counter(_korraldaja(allikad[r["allikas"]]) for r in read)
+    uksused = Counter(r["tegija"] for r in read if r.get("tegija"))
 
     def _rida(k, silt, loend):
         nupud = "".join(f'<button type="button" data-v="{e(v)}" aria-pressed="false">{e(nimi)} <span class="arv">{n}</span></button>'
@@ -407,8 +420,11 @@ def _ek_loend(sid, read, allikad, pealkiri, tuhi):
     # Rida, kus oleks ainult üks valik (nt podcastide lehel liik), jääb ära
     filter_ = ((_rida("liik", "Liik", [(v, EK_LIIK[v], n) for v, n in sorted(liigid.items(), key=lambda x: (-x[1], jrk.index(x[0])))])
                 if len(liigid) > 1 else "")
-               + (_rida("allikas", "Allikas", [(v, allikad[v]["nimi"], n) for v, n in sorted(sarjad.items(), key=lambda x: (-x[1], allikad[x[0]]["nimi"]))])
-                  if len(sarjad) > 1 else ""))
+               + (_rida("kes", "Kes teeb", [(_tunnus(v), v, n) for v, n in sorted(kes.items(), key=lambda x: (-x[1], x[0]))])
+                  if len(kes) > 1 else "")
+               # Üksus (instituut, teaduskond) on kirjas UTTV ja TÜ seminaride juures; rida tuleb, kui üksusi on vähemalt kaks
+               + (_rida("uksus", "Üksus", [(_tunnus(v), v, n) for v, n in sorted(uksused.items(), key=lambda x: (-x[1], x[0]))])
+                  if len(uksused) > 1 else ""))
     sisu = (f'{filter_}<nav class="ek-valik" aria-label="Valdkonnad">{valik}</nav>{plokid}'
             f'<p class="ps ek-tyhi" hidden>Selle valikuga ettekandeid pole.</p>' if read else f'<p class="ps">{tuhi}</p>')
     return f"""
