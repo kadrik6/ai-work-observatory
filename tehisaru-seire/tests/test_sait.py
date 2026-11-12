@@ -1691,6 +1691,8 @@ def test_aripaeva_logo_on_kadri_antud():
     import lae_logod
     logod = json.loads((JUUR / "sait" / "pilt" / "logod" / "logod.json").read_text(encoding="utf-8"))
     assert lae_logod.logo_fail(logod, "https://www.aripaev.ee/uudised/2026/11/06/x") == "aripaev.ee.png"
+    # Kadri 12.11.2026: Äritehnoloogia on Äripäeva väljaanne, sama logo
+    assert lae_logod.logo_fail(logod, "https://www.aritehnoloogia.ee/uudised/2026/11/10/x") == "aripaev.ee.png"
     assert (JUUR / "sait" / "pilt" / "logod" / "aripaev.ee.png").read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
 
 
