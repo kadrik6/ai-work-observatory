@@ -232,15 +232,16 @@
         });
       });
     });
-    // Uudiste filter: valdkond (vaikimisi tehisaru) ja teema kehtivad koos (Kadri 11.11.2026). Iga nupu arv näitab,
-    // mitu uudist teise rea praeguse valikuga jääks; null arvuga nupp on keelatud, et tühja kombinatsiooni ei saaks valida.
+    // Uudiste teemafilter (valdkonna rida võeti ära 12.11.2026). Täpsem teema (data-alam) on läbiv: uudis võib olla mitme
+    // nupu all. Null arvuga nupp on keelatud, et tühja valikut ei saaks valida.
     document.querySelectorAll('.pn .u-f[aria-label="Vali teema"]').forEach(function (f) {
       var pn = f.parentNode, vkf = pn.querySelector('.u-f[aria-label="Vali valdkond"]');
       var li = pn.querySelectorAll('.u-voog li');
       var valik = { u: '', f: '' };
       if (vkf) { var p0 = vkf.querySelector('button[aria-pressed="true"]'); valik.u = p0 ? p0.getAttribute('data-u') : ''; }
       function sobib(l, u, t) {
-        return (!u || u === 'koik' || l.getAttribute('data-vk') === u) && (!t || l.getAttribute('data-teema') === t);
+        return (!u || u === 'koik' || l.getAttribute('data-vk') === u) &&
+          (!t || l.getAttribute('data-teema') === t || (' ' + (l.getAttribute('data-alam') || '') + ' ').indexOf(' ' + t + ' ') >= 0);
       }
       function loe(u, t) { var n = 0; li.forEach(function (l) { if (sobib(l, u, t)) n++; }); return n; }
       function rakenda() {
@@ -535,7 +536,6 @@
     var q;
     try { q = new URLSearchParams(location.search); } catch (e) { q = { get: function () { return null; } }; }
     var paarid = [
-      ['ala', '.u-f[aria-label="Vali valdkond"] button[data-u]', 'data-u'],
       ['teema', '.u-f[aria-label="Vali teema"] button[data-f]', 'data-f'],
       ['ruhm', 'button[data-r]', 'data-r'],
       ['valdkond', '[data-vk-sisu=""] .tp-vk [data-vk]', 'data-vk'],
