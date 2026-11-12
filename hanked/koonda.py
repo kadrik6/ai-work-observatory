@@ -23,6 +23,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import reeglid as R  # noqa: E402
 import tellija as T  # noqa: E402
+from lae import osade_koond  # noqa: E402
 
 RHR_LEHT = "https://riigihanked.riik.ee/rhr-web/#/procurement/{}/general-info"
 
@@ -197,6 +198,8 @@ def main():
     kirjuta("koond-kontsentratsioon", **kontsentratsioon, top=jarjest[:15])
     kirjuta("koond-loend", n=len(loend))
     kirjuta("moju-aastad", silt="katseline", read=moju_aastad)
+    for (aasta, allikas), c in sorted(osade_koond([r for r in hanked if r["_silt"]]).items()):
+        kirjuta("osad-ai", aasta=aasta, allikas=allikas, **c)
     # diagnostika: otsi registrist sõnu failist otsi.txt (üks sõna real), et näha, miks hange tuvastusest välja jäi
     otsi_fail = Path(__file__).with_name("otsi.txt")
     sonad = [s.strip().lower() for s in otsi_fail.read_text(encoding="utf-8").splitlines()

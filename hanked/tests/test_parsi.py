@@ -89,3 +89,44 @@ def test_ted_vorm_ei_ole_esimene_laps():
     sisu = TED.replace("<FORM_SECTION><F02_2014>", "<FORM_SECTION><NOTICE_UUID>u-0</NOTICE_UUID><F02_2014>", 1)
     cn, can, vahele = parsi_fail(sisu.encode(), "2019-05")
     assert len(cn) == 1 and cn[0]["pealkiri"] == "Andmelao arendus"
+
+
+CAN = f"""<?xml version="1.0" encoding="UTF-8"?><OPEN-DATA><ContractAwardNotice {NS.replace('ContractNotice-2', 'ContractAwardNotice-2')}>
+<ext:UBLExtensions><ext:UBLExtension><ext:ExtensionContent><efext:EformsExtension><efac:NoticeResult>
+<efac:LotResult><cbc:TenderResultCode listName="winner-selection-status">selec-w</cbc:TenderResultCode>
+<efac:ReceivedSubmissionsStatistics><efbc:StatisticsCode listName="received-submission-type">tenders</efbc:StatisticsCode><efbc:StatisticsNumeric>1</efbc:StatisticsNumeric></efac:ReceivedSubmissionsStatistics>
+<efac:TenderLot><cbc:ID schemeName="Lot">LOT-0001</cbc:ID></efac:TenderLot></efac:LotResult>
+<efac:LotResult><cbc:TenderResultCode listName="winner-selection-status">selec-w</cbc:TenderResultCode>
+<efac:ReceivedSubmissionsStatistics><efbc:StatisticsCode listName="received-submission-type">tenders</efbc:StatisticsCode><efbc:StatisticsNumeric>4</efbc:StatisticsNumeric></efac:ReceivedSubmissionsStatistics>
+<efac:TenderLot><cbc:ID schemeName="Lot">LOT-0002</cbc:ID></efac:TenderLot></efac:LotResult>
+</efac:NoticeResult></efext:EformsExtension></ext:ExtensionContent></ext:UBLExtension></ext:UBLExtensions>
+<cbc:ID schemeName="notice-id">a-1</cbc:ID><cbc:IssueDate>2025-05-05+02:00</cbc:IssueDate>
+<cac:ProcurementProject><cbc:ID>270001</cbc:ID></cac:ProcurementProject>
+</ContractAwardNotice></OPEN-DATA>"""
+
+
+def test_eforms_osade_pakkumused():
+    """Hanke tase võtab suurima osa pakkumuste arvu; osade tase hoiab iga osa eraldi."""
+    cn, can, vahele = parsi_fail(CAN.encode(), "2025-05")
+    assert vahele == 0 and len(can) == 1
+    assert can[0]["pakkumusi"] == 4
+    assert can[0]["osade_pakkumusi"] == {"LOT-0001": 1, "LOT-0002": 4}
+
+
+def test_ted_osade_pakkumused():
+    teine = ("<AWARD_CONTRACT><LOT_NO>2</LOT_NO><AWARDED_CONTRACT><TENDERS><NB_TENDERS_RECEIVED>1</NB_TENDERS_RECEIVED>"
+             "</TENDERS></AWARDED_CONTRACT></AWARD_CONTRACT></F03_2014>")
+    sisu = TED.replace("<AWARD_CONTRACT><AWARDED", "<AWARD_CONTRACT><LOT_NO>1</LOT_NO><AWARDED", 1).replace("</F03_2014>", teine, 1)
+    cn, can, vahele = parsi_fail(sisu.encode(), "2019-05")
+    assert can[0]["pakkumusi"] == 3 and can[0]["osade_pakkumusi"] == {"1": 3, "2": 1}
+
+
+def test_osade_koond():
+    from lae import osade_koond
+    rid = [{"aasta": 2025, "allikas": "eforms", "osade_arv": 2, "pakkumusi": 4, "osade_pakkumusi": {"A": 1, "B": 4}},
+           {"aasta": 2025, "allikas": "eforms", "osade_arv": 1, "pakkumusi": 1, "osade_pakkumusi": {"A": 1}},
+           {"aasta": 2025, "allikas": "eforms", "osade_arv": 1, "pakkumusi": None, "osade_pakkumusi": {}}]
+    c = osade_koond(rid)[(2025, "eforms")]
+    assert c["hankeid"] == 3 and c["mitme_osaga"] == 1 and c["osi"] == 4
+    assert c["osi_pakkumustega"] == 3 and c["osi_1_pakkumus"] == 2
+    assert c["hankeid_pakkumustega"] == 2 and c["hankeid_1_pakkumus"] == 1

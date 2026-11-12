@@ -86,9 +86,11 @@ def pohitabel(cn, can):
     tulemus = {}
     for r in can:
         v = (r["allikas"], hanke_voti(r))
-        t = tulemus.setdefault(v, {"pakkumusi": None, "tulemused": [], "voitjad": [], "lepingu_summa": None})
+        t = tulemus.setdefault(v, {"pakkumusi": None, "osade_pakkumusi": {}, "tulemused": [], "voitjad": [], "lepingu_summa": None})
         if r.get("pakkumusi") is not None:
             t["pakkumusi"] = max(t["pakkumusi"] or 0, r["pakkumusi"])
+        for osa, n in (r.get("osade_pakkumusi") or {}).items():
+            t["osade_pakkumusi"][osa] = max(t["osade_pakkumusi"].get(osa, 0), n)
         t["tulemused"] = sorted(set(t["tulemused"]) | set(x for x in r.get("tulemused", []) if x))
         t["voitjad"] = sorted(set(t["voitjad"]) | set(x for x in r.get("voitjad", []) if x))
         if r.get("lepingu_summa") is not None:
@@ -98,10 +100,33 @@ def pohitabel(cn, can):
         t = tulemus.get(v)
         r = dict(r)
         r["tulemus_olemas"] = t is not None
-        r.update(t or {"pakkumusi": None, "tulemused": [], "voitjad": [], "lepingu_summa": None})
+        r.update(t or {"pakkumusi": None, "osade_pakkumusi": {}, "tulemused": [], "voitjad": [], "lepingu_summa": None})
         r["aasta"] = int((r.get("esimene_kuupaev") or r["kuu"])[:4])
         valja.append(r)
     return valja
+
+
+def osade_koond(rid):
+    """Hanke osade (lot) ülevaade aasta ja allika kaupa: mitme osaga hanked ja osade tasemel pakkumuste arv."""
+    koond = {}
+    for r in rid:
+        c = koond.setdefault((r["aasta"], r.get("allikas")), {
+            "hankeid": 0, "osade_arv_teada": 0, "mitme_osaga": 0, "osi": 0,
+            "hankeid_pakkumustega": 0, "osi_pakkumustega": 0, "osi_1_pakkumus": 0, "osi_0_pakkumust": 0,
+            "hankeid_1_pakkumus": 0})
+        c["hankeid"] += 1
+        if r.get("osade_arv"):
+            c["osade_arv_teada"] += 1
+            c["osi"] += r["osade_arv"]
+            c["mitme_osaga"] += r["osade_arv"] >= 2
+        op = r.get("osade_pakkumusi") or {}
+        c["osi_pakkumustega"] += len(op)
+        c["osi_1_pakkumus"] += sum(n == 1 for n in op.values())
+        c["osi_0_pakkumust"] += sum(n == 0 for n in op.values())
+        if r.get("pakkumusi") is not None:
+            c["hankeid_pakkumustega"] += 1
+            c["hankeid_1_pakkumus"] += r["pakkumusi"] == 1
+    return koond
 
 
 def main():
@@ -153,6 +178,8 @@ def main():
         c["tulemus"] += bool(r.get("tulemus_olemas"))
         c["pakkumusi"] += r.get("pakkumusi") is not None
     kirjuta("tulemuste_taitumus", **{str(k): v for k, v in sorted(pakk.items())})
+    for (aasta, allikas), c in sorted(osade_koond(hanked).items()):
+        kirjuta("osad", aasta=aasta, allikas=allikas, **c)
     kirjuta("kokku", hanketeateid=len(cn), tulemusteateid=len(can), hankeid=len(hanked),
             aastad=dict(sorted(aastad.items())))
 

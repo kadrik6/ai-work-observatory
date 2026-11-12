@@ -174,16 +174,20 @@ def eforms_tulemus(teade, kuu=None):
     """eVormide lepingu sõlmimise teade (ContractAwardNotice) → pakkumuste arv ja tulemus."""
     org = _eforms_organisatsioonid(teade)
     projekt = _laps(teade, "ProcurementProject")
-    pakkumusi, tulemused, voitjad = [], [], []
-    for lr in _koik(teade, "LotResult"):
+    pakkumusi, tulemused, voitjad, osad = [], [], [], {}
+    for i, lr in enumerate(_koik(teade, "LotResult")):
         tulemused.append(_tekst(lr, "TenderResultCode"))
+        osa = _tekst(lr, "TenderLot", "ID") or f"#{i + 1}"
         for s in _koik(lr, "ReceivedSubmissionsStatistics"):
             kood = _tekst(s, "StatisticsCode")
             DIAG["statistika:" + str(kood)] += 1
             if kood is None:
                 _naide("statistika_ilma_koodita", s)
             if kood == "tenders":
-                pakkumusi.append(_arv(_tekst(s, "StatisticsNumeric")))
+                n = _arv(_tekst(s, "StatisticsNumeric"))
+                pakkumusi.append(n)
+                if n is not None:
+                    osad[osa] = max(osad.get(osa, 0), n)
     for tp in _koik(teade, "TenderingParty"):
         for t in _lapsed(tp, "Tenderer"):
             o = org.get(_tekst(t, "ID"), {})
@@ -205,6 +209,7 @@ def eforms_tulemus(teade, kuu=None):
         "kuupaev": (_tekst(teade, "IssueDate") or "")[:10] or None,
         "viitenumber": _tekst(projekt, "ID"),
         "pakkumusi": max(pakk) if pakk else None,
+        "osade_pakkumusi": osad,
         "tulemused": _uniq(tulemused),
         "voitjad": _uniq(voitjad),
         "lepingu_summa": summa,
@@ -251,11 +256,18 @@ def ted_teade(teade, kuu=None):
     if vorm in ("F03_2014", "F06_2014", "F15_2014"):
         pakk = [_arv(e.text) for e in f.iter() if _l(e.tag) == "NB_TENDERS_RECEIVED"]
         pakk = [p for p in pakk if p is not None]
+        osad = {}
+        for i, ac in enumerate(e for e in f.iter() if _l(e.tag) == "AWARD_CONTRACT"):
+            osa = _tekst(ac, "LOT_NO") or f"#{i + 1}"
+            n = [_arv(e.text) for e in ac.iter() if _l(e.tag) == "NB_TENDERS_RECEIVED"]
+            n = [x for x in n if x is not None]
+            if n:
+                osad[osa] = max(osad.get(osa, 0), max(n))
         voitjad = [_tekst(e, "OFFICIALNAME") for e in f.iter() if _l(e.tag) == "ADDRESS_CONTRACTOR"]
         summa = [_arv(e.text) for e in f.iter() if _l(e.tag) == "VAL_TOTAL"]
         summa = [s for s in summa if s is not None]
         mitte = any(_l(e.tag) == "NO_AWARDED_CONTRACT" for e in f.iter())
-        return {**rida_yld, "teade": "CAN", "pakkumusi": max(pakk) if pakk else None,
+        return {**rida_yld, "teade": "CAN", "pakkumusi": max(pakk) if pakk else None, "osade_pakkumusi": osad,
                 "tulemused": ["clos-nw"] if mitte and not pakk else (["selec-w"] if pakk else []),
                 "voitjad": _uniq(voitjad), "lepingu_summa": sum(summa) if summa else None}
     if vorm not in ("F02_2014", "F05_2014", "F21_2014", "F22_2014", "F24_2014", "F17_2014"):
