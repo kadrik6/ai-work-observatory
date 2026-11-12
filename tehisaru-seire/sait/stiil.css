@@ -1275,6 +1275,24 @@ ol.sammud p { margin: 0; max-width: 72ch; }
   .u-paev .u-voog { padding-top: 0 !important; }
 }
 
+/* Riikide strateegiad (Kadri 12.11.2026): sihid loendina tabeli lahtris, ülejäänud klõpsu taga */
+.strat-sihid { margin: 0; padding-left: 16px; }
+.strat-sihid li { margin: 0 0 3px; }
+.strat-sihid .lk { color: var(--ink-3); font-size: 12.5px; white-space: nowrap; }
+.strat-koik summary { cursor: pointer; color: var(--ink-2); font-size: 13px; margin-top: 2px; }
+#strateegiad td small { display: block; font-size: 12.5px; color: var(--ink-3); margin-top: 2px; }
+#strateegiad th:nth-child(2) { width: 22%; }
+#strateegiad th:nth-child(4) { width: 34%; }
+#strateegiad td:nth-child(5) { font-size: 13px; color: var(--ink-2); }
+@media (max-width: 640px) {  /* telefonis iga riik oma plokina, mitte kitsas kerimistabel */
+  #strateegiad .tbl { overflow: visible; }
+  #strateegiad table, #strateegiad tbody, #strateegiad tr, #strateegiad td { display: block; width: auto; }
+  #strateegiad thead { display: none; }
+  #strateegiad tr { border-top: 1px solid var(--line); padding: 10px 0; }
+  #strateegiad td { border: 0; padding: 3px 0; }
+  #strateegiad td:nth-child(3)::before { content: "Tähtaeg: "; color: var(--ink-3); }
+}
+
 /* Põhimenüü M2 „Üks rida, tugev“ (Kadri 8.11.2026 22:50 „kasuta M2 riba“; labor kirjeldused/stiilid/taustalabor/menuu_labor.py):
    saidi nimi vasakul, teemad päise keskel paksult, ilma halli püst- ja alumise jooneta (22:45 ja 22:49). */
 @media (min-width: 681px) {

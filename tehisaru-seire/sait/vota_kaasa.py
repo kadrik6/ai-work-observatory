@@ -27,6 +27,15 @@ def _loe(p):
     return json.loads(Path(p).read_text(encoding="utf-8"))
 
 
+STRATEEGIA_VALJAD = ("id", "riik", "riik_kood", "pealkiri", "asutus", "kuupaev", "url", "tahtaeg", "sihid", "markus",
+                     "kontrollitud", "lisatud")
+
+
+def strateegiad_saidile(d):
+    """Ainult saidil näidatavad väljad; kogumise sisemised märkmed jäävad projekti kausta."""
+    return {"strateegiad": [{k: s[k] for k in STRATEEGIA_VALJAD if k in s} for s in d.get("strateegiad", [])]}
+
+
 def _kirjuta(nimi, andmed):
     (SISU / nimi).write_text(json.dumps(andmed, ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
 
@@ -101,6 +110,8 @@ def vota(proj):
         k = _loe(uu / "ai_tookuulutused.json")
         k.pop("nahtud_id", None)  # kogumise sisemine olek, saidil pole vaja
         _kirjuta("ai-tookuulutused.json", k)
+    if (uu / "strateegiad.json").exists():  # riikide tehisarustrateegiad ja sihid (Kadri „jah kõik“ 12.11.2026)
+        _kirjuta("strateegiad.json", strateegiad_saidile(_loe(uu / "strateegiad.json")))
 
     lisa_p = proj / "tooelu-leht-andmed" / "leiud-lisa.json"
     koik_uu = _loe(lisa_p).get("uuringud", []) if lisa_p.exists() else []
