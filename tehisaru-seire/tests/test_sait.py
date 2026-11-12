@@ -1696,6 +1696,15 @@ def test_aripaeva_logo_on_kadri_antud():
     assert (JUUR / "sait" / "pilt" / "logod" / "aripaev.ee.png").read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
 
 
+def test_postimehe_logo_on_kadri_antud():
+    """Kadri 12.11.2026: Postimehe uudistel (ka majandus.postimees.ee) on tema antud logo (sinine Pm)."""
+    import lae_logod
+    logod = json.loads((JUUR / "sait" / "pilt" / "logod" / "logod.json").read_text(encoding="utf-8"))
+    assert lae_logod.logo_fail(logod, "https://majandus.postimees.ee/8412345/x") == "postimees.ee.png"
+    assert lae_logod.logo_fail(logod, "https://www.postimees.ee/8412345/x") == "postimees.ee.png"
+    assert (JUUR / "sait" / "pilt" / "logod" / "postimees.ee.png").read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
+
+
 def test_statistikaameti_logo_on_kadri_antud():
     """Kadri 12.11.2026: Statistikaameti uudistel on Eesti Statistika logo märk (9 punkti), mitte tekstina allikas."""
     import lae_logod

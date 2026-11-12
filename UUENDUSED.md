@@ -4,6 +4,7 @@ Uuemad üleval. Varasem ajalugu (26.–30.10.2026) on algses projekti kaustas.
 
 | Aeg | Mis muutus |
 |---|---|
+| 12.11.2026 | Seire sait, Uudised: Postimehe uudistel (ka majandus.postimees.ee) on Kadri antud logo (sinine Pm, `sait/pilt/logod/postimees.ee.png`, 64×64). Test `test_postimehe_logo_on_kadri_antud`. (Kadri 12.11) |
 | 12.11.2026 | Seire sait, Uudised: Äritehnoloogia (aritehnoloogia.ee, Äripäeva väljaanne) uudistel on samuti Äripäeva logo (`logod.json` viitab failile `aripaev.ee.png`). (Kadri 12.11) |
 | 12.11.2026 | Seire sait, Uudised: vanemate kuude rühmas kattus täiskuupäev (nt „28.10.2026“) pealkirjaga, sest veerg oli kitsas. Nüüd on kuu rühma real ainult päev ja kuu („28.10.“), kuu ja aasta on rühma päises. Kuupäev ei murdu enam ega lähe üle veeru. Mõõdetud 1280, 1366 ja 390 px: kattuvusi 11 → 0. Test `test_kuu_ruhmas_on_lyhike_kuupaev`. (Kadri 12.11) |
 | 12.11.2026 | Seire sait, Riik: uus alamleht „Riikide strateegiad“ (`riikide-strateegiad.html`). Tabelis on teiste riikide ametlikud tehisarustrateegiad (praegu DE, CY, SE, LT): dokument, tähtaeg, kuni 3 peamist sihti koos leheküljega (ülejäänud klõpsu taga) ja kuidas mõõdetakse. Eesti 75% siht on rida võrdluseks. Ühist graafikut ega järjestust pole, sest riigid mõõdavad sihte erinevalt. Andmed: `tooelu-uudised/strateegiad.json` → `vota_kaasa.py` → `sisu/strateegiad.json` (ainult saidi väljad). Test `test_riikide_strateegiad_tabelina`. (Kadri „jah kõik“ 12.11, ettepanek sp-2026-11-11-1) |
