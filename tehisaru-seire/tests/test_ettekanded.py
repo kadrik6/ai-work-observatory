@@ -23,9 +23,9 @@ RSS = """<?xml version="1.0" encoding="UTF-8"?>
 def test_kanalite_loend_on_kadri_valik():
     K = json.loads((JUUR / "kataloog" / "ettekannete-kanalid.json").read_text(encoding="utf-8"))
     ids = [k["id"] for k in K["kanalid"]]
-    assert ids == ["ut-dss", "latitude59", "startup-day", "arenguseire", "oecd", "oecd-ai", "ilo", "stanford-hai", "tds"]
+    assert ids == ["ut-dss", "latitude59", "startup-day", "arenguseire", "oecd", "oecd-ai", "ilo", "stanford-hai", "uttv", "tds"]
     for k in K["kanalid"]:
-        allikaid = [x for x in ("leht", "kanal", "esitusloend", "kasutaja") if k.get(x)]
+        allikaid = [x for x in ("leht", "kanal", "esitusloend", "kasutaja", "uttv_alates") if k.get(x)]
         assert len(allikaid) == 1, k["id"]
         assert k.get("miks") and k.get("nimi")
         if k.get("kanal"):
@@ -65,3 +65,18 @@ def test_tuntud_ettekanded_ei_tule_kandidaadiks(tmp_path, monkeypatch):
     f.write_text(json.dumps({"ettekanded": [{"video": "https://youtu.be/V9qubnxvJV0?t=1076"}]}), encoding="utf-8")
     monkeypatch.setattr(L, "TUNTUD", f)
     assert L.tuntud_videod() == {"V9qubnxvJV0"}
+
+
+UTTV_LEHT = """<html><body><ul><li>Avaleht</li><li>Videod</li></ul><h4>Eesti Õigusteadlaste päevad 39 | Tehisintellekt juristi töölaual</h4>
+<p>Klipi teostus: UTTV<br>24.09.2026<br>176 vaatamist</p><p>Juristid tegutsevad üha enam keskkonnas, kus tehisintellekt ...</p></body></html>"""
+
+
+def test_uttv_video_ja_uued():
+    """Kadri 12.11.2026: Tartu Ülikooli UTTV videod ettekannete otsingusse (RSS-i pole, loeme video lehti id järgi)."""
+    r = L.uttv_video(UTTV_LEHT, 43702)
+    assert r["id"] == "uttv-43702" and r["avaldatud"] == "2026-09-24" and r["url"].endswith("naita?id=43702")
+    assert r["pealkiri"].startswith("Eesti Õigusteadlaste päevad 39") and L.teemas(r)
+    assert L.uttv_video("<html><body>Otsingu tulemused</body></html>", 1) is None
+    lehed = {43703: UTTV_LEHT, 43705: UTTV_LEHT}
+    read, suurim = L.uttv_uued(43702, get=lambda u: lehed[int(u.rsplit("=", 1)[1])], samm=10, tuhi=3)
+    assert [x["id"] for x in read] == ["uttv-43703", "uttv-43705"] and suurim == 43705  # tühjad lehed vahel ei peata kohe

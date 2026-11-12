@@ -424,9 +424,10 @@ def kaart(vaatlused, piirid, fookus="EE", viide=None, viite_nimi="", uhik="%", k
         if v is None:
             osad.append(f'<path class="na" d="{tee}" data-n="{e(riik(g))}" data-v="andmeid pole" data-a=""/>')
             continue
-        # Hõljuksilt (sait.js): riik ja number suurelt, aasta ja allikas väikselt. Ilma JS-ita on number tabelis.
+        # Hõljuksilt (sait.js): riik ja number suurelt, aasta väikselt. Allikat siin pole: see on kõigil riikidel sama ja
+        # on graafiku all allikareal (Kadri 12.11.2026: „it does not give any information there, and it wastes space“).
         tk = (f'<path class="k{klass(v["vaartus"])}{" fookus" if g == fookus else ""}" d="{tee}" data-n="{e(riik(g))}" '
-              f'data-v="{pr(v["vaartus"])}{e(uhik)}" data-a="{v["aasta"]} · {e(v["allikas"])}"/>')
+              f'data-v="{pr(v["vaartus"])}{e(uhik)}" data-a="{v["aasta"]}"/>')
         if g == fookus:
             viimane = tk  # Eesti viimasena, et piirjoon jääks peale
         else:
@@ -508,7 +509,10 @@ def jarjestuse_muutus(seeriad, aastad, fookus, teine=None, piirid=(5, 10), silt=
                 x0, y0, x1, y1 = X(i0), Y(k0), X(i1), Y(k1)
                 m = (x0 + x1) / 2
                 valjas = " v" if k0 > N or k1 > N else ""
-                g.append(f'<path class="bj{valjas}" d="M{x0:.1f},{y0:.1f} C{m:.1f},{y0:.1f} {m:.1f},{y1:.1f} {x1:.1f},{y1:.1f}"/>')
+                tee = f"M{x0:.1f},{y0:.1f} C{m:.1f},{y0:.1f} {m:.1f},{y1:.1f} {x1:.1f},{y1:.1f}"
+                g.append(f'<path class="bj{valjas}" d="{tee}"/>')
+                # Nähtamatu lai joon hõljumiseks (Kadri 12.11.2026: peenikest joont oli raske tabada)
+                g.append(f'<path class="bh" d="{tee}"/>')
             for i, k in punktid:
                 y = Y(k)
                 g.append(f'<circle class="bp{" v" if k > N else ""}" cx="{X(i):.1f}" cy="{y:.1f}" r="3.5"/>')

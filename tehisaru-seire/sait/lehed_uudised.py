@@ -29,27 +29,22 @@ LIIK = {"uudis": ("uudis", "vaikne"), "aruanne": ("aruanne", ""), "uuring": ("uu
 TEEMA = {"too": "töö", "riik": "riik", "uuring": "uuring", "muu": "muu", "eksitav": "eksitav"}
 TEEMA_FILTER = {"ai_too": "too", "koondamine": "too", "riik": "riik", "strateegia": "riik", "uuring": "uuring",
                 "ai_uldine": "muu", "andmed": "muu", "eksitav": "eksitav"}
-# Valdkond (Kadri 11.11.2026: „andmed ja tehisaru võiks olla eraldatavad … default filter võiks olla tehisaru“).
-# Kogumise väli `valdkond` võidab; kui seda pole, tuletatakse see teemast, tehisaru rollist ja pealkirjast.
-VALDKOND = {"tehisaru": "tehisaru", "andmed": "andmed"}
-EI_AI = {"ei_mainita", "ei_pohjus", "statistika"}
-AI_SONA = re.compile(r"tehisaru|tehisintellekt|\bAI\b|\.ai\b|\bKI\b|\bkrat|agendi|agent|keelemudel|masinõpe", re.I)
-ANDME_SONA = re.compile(r"andme|open data|\bdata\b", re.I)
+# Valdkonna filtrit pole (Kadri 12.11.2026: „võta valdkondade filter maha, nagunii kõik tehisaruga seonduv“).
+# Täpsemad teemad (Kadri 12.11.2026: „teemadesse äkki annab midagi täpsemat juurde lisada“) on läbivad: üks uudis võib olla
+# korraga nt „töö“ ja „noored“. Need tulevad märksõnadest (masinmärgistus), nupu title ütleb seda.
+ALAMTEEMA = {
+    "noored": ("noored", re.compile(r"\bnoor|young|youth|first job|esimes\w* töö|job seekers|graduate|lõpetaja|entry-level", re.I), True),
+    "oskused": ("oskused ja koolitus", re.compile(r"oskus|koolitus|õpitegevus|\bskill|training|reskill|upskill|haridus|education|coding school", re.I), False),
+    "agendid": ("AI-agendid", re.compile(r"\bagent|agendi|kratt|krati|\bMCP\b|AI-isikukood", re.I), True),
+}
+
+TITLE_ALAM = ' title="Täpsem teema märksõnade järgi; uudis võib olla mitme teema all"'
 
 
-def valdkond(r):
-    v = r.get("valdkond")
-    if v in ("tehisaru", "andmed", "muu"):
-        return v
-    t, tekst = r.get("teema"), f'{r.get("pealkiri", "")} {r.get("pohjus", "")}'
-    if t == "andmed":
-        return "andmed"
-    if t == "koondamine":
-        roll = r.get("ai_roll")
-        return "tehisaru" if (roll and roll not in EI_AI) or (not roll and AI_SONA.search(r.get("pealkiri", ""))) else "muu"
-    if t == "riik":
-        return "tehisaru" if AI_SONA.search(tekst) else "andmed" if ANDME_SONA.search(tekst) else "muu"
-    return "tehisaru"
+def alamteemad(r):
+    """Läbivad täpsemad teemad: pealkirjast; noored ja agendid ka kokkuvõttest (oskused ainult pealkirjast, muidu liiga lai)."""
+    pk, kogu = r.get("pealkiri", ""), f'{r.get("pealkiri", "")} {r.get("pohjus", "")} {r.get("arv_tekst", "")}'
+    return [k for k, (_, m, laiem) in ALAMTEEMA.items() if m.search(kogu if laiem else pk)]
 
 
 # Teema „riik“ (TOOELU kogumine alates 9.11.2026): riigi otsused, eelnõud, hanked, tähtajad, üritused ja aruanded
@@ -131,7 +126,9 @@ def _uudis(r, peida="", kuup=None):
     if not r.get("kontrollitud"):
         sildid.append('<span class="u-t">loetud ainult pealkiri</span>')
     arv = f'<b>{e(arv_t)}.</b> ' if arv_t else ""
-    return (f'<li data-teema="{e(TEEMA_FILTER.get(r.get("teema"), "muu"))}" data-vk="{valdkond(r)}" data-liik="{e(r["liik"])}"{peida}>'
+    alam = " ".join(alamteemad(r))
+    alam = ' data-alam="' + alam + '"' if alam else ""
+    return (f'<li data-teema="{e(TEEMA_FILTER.get(r.get("teema"), "muu"))}"{alam} data-liik="{e(r["liik"])}"{peida}>'
             f'<span class="d">{kuup or kp(r["kuupaev"])}</span>'
             f'<div><a href="{e(r["url"])}">{e(r["pealkiri"])}</a>'
             f'<p class="u-k">{arv}{e(pohjus)}</p>'
@@ -158,7 +155,8 @@ def _seis(read, kontroll):
 # Koondamisel pole enam oma nuppu, see on töö all.
 TEEMA_JARJEKORD = ("too", "riik", "uuring", "muu", "eksitav")
 assert set(TEEMA_JARJEKORD) == set(TEEMA) == set(TEEMA_FILTER.values())
-VK_VAIKIMISI = "tehisaru"
+# Nuppude järjekord: põhiteema ja selle täpsem teema kõrvuti
+NUPPUDE_JARJEKORD = ("too", "noored", "oskused", "riik", "agendid", "uuring", "muu", "eksitav")
 
 
 KUUL = ("jaan", "veebr", "märts", "apr", "mai", "juuni", "juuli", "aug", "sept", "okt", "nov", "dets")
@@ -199,24 +197,23 @@ def _paevad(read, nahtav, kontroll):
 
 def _uudiste_paneel(rid, read, kontroll=None, peidus=False):
     """Üks piirkond (Eesti või maailm) saki paneelina: valdkonna ja teema filter ning ajajoon."""
-    vk = [valdkond(r) for r in read]
     fk = [TEEMA_FILTER.get(r.get("teema"), "muu") for r in read]
-    nupp = lambda attr, v, silt, n, valitud: (  # noqa: E731
-        f'<button type="button" {attr}="{e(v)}" aria-pressed="{"true" if valitud else "false"}"{" disabled" if not n and not valitud else ""}>'
+    ak = [alamteemad(r) for r in read]
+    nupp = lambda v, silt, n, valitud, title="": (  # noqa: E731
+        f'<button type="button" data-f="{e(v)}" aria-pressed="{"true" if valitud else "false"}"{TITLE_ALAM if title else ""}>'
         f'{e(silt)} <span class="arv">{n}</span></button>')
-    rida1 = "".join(nupp("data-u", v, silt, vk.count(v), v == VK_VAIKIMISI) for v, silt in VALDKOND.items())
-    rida1 += nupp("data-u", "koik", "kõik", len(read), False)  # väärtusega, et jagatud link ?ala=koik töötaks
-    vaikimisi = [f for f, v in zip(fk, vk) if v == VK_VAIKIMISI]
-    olemas = set(fk)
-    rida2 = nupp("data-f", "", "kõik", len(vaikimisi), True) + "".join(
-        nupp("data-f", t, TEEMA[t], vaikimisi.count(t), False) for t in TEEMA_JARJEKORD if t in olemas)
+    rida = nupp("", "kõik", len(read), True)
+    for t in NUPPUDE_JARJEKORD:
+        if t in TEEMA and t in fk:
+            rida += nupp(t, TEEMA[t], fk.count(t), False)
+        elif t in ALAMTEEMA and any(t in a for a in ak):
+            rida += nupp(t, ALAMTEEMA[t][0], sum(t in a for a in ak), False, True)
     return f"""
   <section role="tabpanel" class="u-paneel" id="{rid}" aria-labelledby="tab-{rid}"{" hidden" if peidus else ""}>
   {_seis(read, kontroll)}
-  <div class="u-f ek-f u-vk" role="group" aria-label="Vali valdkond"><span class="ek-f-silt">Valdkond</span>{rida1}</div>
-  <div class="u-f ek-f" role="group" aria-label="Vali teema"><span class="ek-f-silt">Teema</span>{rida2}</div>
+  <div class="u-f ek-f" role="group" aria-label="Vali teema"><span class="ek-f-silt">Teema</span>{rida}</div>
   <p class="ps u-tyhi" hidden>Selle valikuga uudiseid pole.</p>
-  {_paevad(read, [v == VK_VAIKIMISI for v in vk], kontroll)}
+  {_paevad(read, [True] * len(read), kontroll)}
   </section>"""
 
 
@@ -285,17 +282,19 @@ def uudised(A, vaade, vaated=None):
 <div class="g12">
 <section class="pn sp12 u-ajajoon" id="uudised-paevad" aria-labelledby="h-uudised-paevad">
   <div class="pn-h"><h2 id="h-uudised-paevad">Uudised päevade kaupa, uusim üleval</h2></div>
-  <p class="ps">Podcastid, seminarid ja tulevased üritused on lehel <a href="ettekanded.html">Ettekanded ja üritused</a>.</p>
   <div class="p-tabs u-sakid" role="tablist" aria-label="Piirkond">{sakk("eesti-uudised", "Eesti", len(ee), True)}{sakk("maailma-uudised", "Maailm", len(m), False)}</div>
   {_uudiste_paneel("eesti-uudised", ee, viimane)}
   {_uudiste_paneel("maailma-uudised", m, viimane, peidus=True)}
 </section>
 </div>"""
-    sec_e = ettekanded(A, vaade)
+    # Kadri 12.11.2026: „löö ettekanded, üritused ja podcastid uudiste kõrvale lahku“ – igaüks oma alamleht
+    osad = ettekannete_osad(A, vaade)
     return jaga(A, vaade, lead, [], [
         ("uudised", [("uudised-paevad", "Uudised")], sec_u),
         ("allikad", [("uudiste-allikad", "Allikad")], sec_k),
-        ("ettekanded", [("tulekul", "Tulekul"), ("ettekanded", "Ettekanded"), ("ettekannete-allikad", "Allikad")], sec_e),
+        ("ettekanded", [("ettekanded", "Ettekanded"), ("ettekannete-allikad", "Allikad")], osad["ettekanded"]),
+        ("uritused", [("tulekul", "Tulekul")], osad["uritused"]),
+        ("podcastid", [("podcastid", "Podcastid"), ("podcastide-allikad", "Allikad")], osad["podcastid"]),
     ], aside=aside)
 
 
@@ -345,14 +344,36 @@ def _ettekanne(r, allikad):
     if liik not in EK_LIIK:
         raise AndmeViga(f"ettekanded.json: allika {r['allikas']} liik {liik!r} pole lubatud ({', '.join(EK_LIIK)})")
     algus = f' <span class="ek-algus">lõik algab {e(r["algus"])}</span>' if r.get("algus") else ""
-    return (f'<li data-liik="{liik}" data-allikas="{e(r["allikas"])}">'
+    tegija = f' · {e(r["tegija"])}' if r.get("tegija") and r["tegija"] != r.get("uritus") else ""
+    a = allikad[r["allikas"]]
+    kes = f' data-kes="{_tunnus(_korraldaja(a))}"' + (f' data-uksus="{_tunnus(r["tegija"])}"' if r.get("tegija") else "")
+    return (f'<li data-liik="{liik}" data-allikas="{e(r["allikas"])}"{kes}>'
             f'<span class="d">{_kp_osa(r["kuupaev"])}</span>'
             f'<div><a href="{e(r["video"])}">{e(r["pealkiri"])}</a>{algus}'
-            f'<p class="ek-kes"><b>{e(r["esineja"])}</b>{", " + e(r["amet"]) if r.get("amet") else ""} · {uritus}</p>'
+            f'<p class="ek-kes"><b>{e(r["esineja"])}</b>{", " + e(r["amet"]) if r.get("amet") else ""} · {uritus}{tegija}</p>'
             f'<p class="u-k">{e(r["kokkuvote"])}</p>'
             f'{f"<ul class=ek-m>{mottes}</ul>" if mottes else ""}'
             f'<p class="u-m"><span class="u-l arv">{EK_LIIK[liik]}</span>{teemad}'
-            f'<span class="u-a" title="{e(r.get("kontroll", ""))}">{e(allikad[r["allikas"]]["nimi"])}</span></p></div></li>')
+            f'{_ek_allikas(allikad[r["allikas"]], r.get("kontroll", ""))}</p></div></li>')
+
+
+def _korraldaja(a):
+    """Kes sisu teeb (Kadri 12.11.2026): sarja korraldaja, nt Tartu Ülikool nii UTTV kui andmeteaduse seminari puhul."""
+    return a.get("korraldaja") or a["nimi"]
+
+
+def _tunnus(t):
+    return re.sub(r"[^a-z0-9]+", "-", t.lower().translate(str.maketrans("äöüõšž", "aouosz"))).strip("-")
+
+
+def _ek_allikas(a, kontroll):
+    """Ettekande sari logona, kui logo on olemas (Kadri 12.11.2026: „lisa podcastidele ka logod“); nimi on title-is."""
+    fail = lae_logod.logo_fail(LOGOD, a["url"])
+    title = a["nimi"] + (" · " + kontroll if kontroll else "")
+    if not fail:
+        return f'<span class="u-a" title="{e(kontroll)}">{e(a["nimi"])}</span>'
+    return (f'<span class="u-a u-logo" title="{e(title)}">'
+            f'<img src="pilt/logod/{e(fail)}" alt="{e(a["nimi"])}" width="18" height="18" loading="lazy"></span>')
 
 
 def tulekul(A, tana):
@@ -372,18 +393,13 @@ def tulekul(A, tana):
 
 
 def ettekanded(A, vaade, tana=None):
-    tana = tana or datetime.date.today().isoformat()
-    ees, sec_tul = tulekul(A, tana)
-    E = A.get("ettekanded") or {"allikad": [], "ettekanded": []}
-    allikad = {a["id"]: a for a in E.get("allikad", [])}
-    read = sorted(E.get("ettekanded", []), key=lambda r: r["kuupaev"], reverse=True)
-    ootel = (A.get("ootel") or {}).get("ettekanded", 0)
-    n = len(read)
-    from abi import alam_h1
-    jargmine = f'järgmine üritus või tähtaeg on **{kp(ees[0]["tahtaeg"])}**' if ees else "tulevasi üritusi praegu pole"
-    alam_h1(vaade, "ettekanded.html",
-            f"Ettekanded ja üritused: {jargmine} ¦ {n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'} seminaride, konverentside ja podcastide salvestistest"
-            if n else f"Ettekanded ja üritused: {jargmine} ¦ ettekannete **kokkuvõtted ootavad kinnitust**")
+    """Kõik kolm alamlehe osa ühes tekstis (testidele ja vanadele kutsujatele)."""
+    return "".join(ettekannete_osad(A, vaade, tana).values())
+
+
+def _ek_loend(sid, read, allikad, pealkiri, tuhi):
+    """Ettekannete või podcastide loend valdkonna rühmades koos liigi- ja allikafiltriga (Kadri 11.11.2026)."""
+    from collections import Counter
     ruhmad = {k: [r for r in read if (r.get("ruhm") if r.get("ruhm") in ETTEKANDE_RUHM else "muu") == k] for k in ETTEKANDE_RUHM}
     ruhmad = {k: v for k, v in ruhmad.items() if v}
     valik = "".join(f'<a href="#ek-{k}" data-ruhm="{k}">{e(ETTEKANDE_RUHM[k][0])} <span class="arv">{len(v)}</span></a>' for k, v in ruhmad.items())
@@ -391,10 +407,9 @@ def ettekanded(A, vaade, tana=None):
         f'<div class="ek-r" id="ek-{k}"><h3>{e(ETTEKANDE_RUHM[k][0])} <span class="arv">{len(v)}</span></h3>'
         f'<p class="ps">{e(ETTEKANDE_RUHM[k][1])}</p>'
         f'<ul class="u-voog ek">{"".join(_ettekanne(r, allikad) for r in v)}</ul></div>' for k, v in ruhmad.items())
-    # Filter liigi ja allika järgi (Kadri 11.11.2026). Rühmad jäävad; filter peidab read ja tühjaks jäänud rühmad (sait.js).
-    from collections import Counter
     liigid = Counter(allikad[r["allikas"]].get("liik") for r in read)
-    sarjad = Counter(r["allikas"] for r in read)
+    kes = Counter(_korraldaja(allikad[r["allikas"]]) for r in read)
+    uksused = Counter(r["tegija"] for r in read if r.get("tegija"))
 
     def _rida(k, silt, loend):
         nupud = "".join(f'<button type="button" data-v="{e(v)}" aria-pressed="false">{e(nimi)} <span class="arv">{n}</span></button>'
@@ -402,24 +417,74 @@ def ettekanded(A, vaade, tana=None):
         return (f'<div class="u-f ek-f" data-k="{k}" role="group" aria-label="Vali {silt.lower()}"><span class="ek-f-silt">{silt}</span>'
                 f'<button type="button" data-v="" aria-pressed="true">kõik <span class="arv">{len(read)}</span></button>{nupud}</div>')
     jrk = list(EK_LIIK)
-    filter_ = (_rida("liik", "Liik", [(v, EK_LIIK[v], n) for v, n in sorted(liigid.items(), key=lambda x: (-x[1], jrk.index(x[0])))])
-               + _rida("allikas", "Allikas", [(v, allikad[v]["nimi"], n) for v, n in sorted(sarjad.items(), key=lambda x: (-x[1], allikad[x[0]]["nimi"]))]))
+    # Rida, kus oleks ainult üks valik (nt podcastide lehel liik), jääb ära
+    filter_ = ((_rida("liik", "Liik", [(v, EK_LIIK[v], n) for v, n in sorted(liigid.items(), key=lambda x: (-x[1], jrk.index(x[0])))])
+                if len(liigid) > 1 else "")
+               + (_rida("kes", "Kes teeb", [(_tunnus(v), v, n) for v, n in sorted(kes.items(), key=lambda x: (-x[1], x[0]))])
+                  if len(kes) > 1 else "")
+               # Üksus (instituut, teaduskond) on kirjas UTTV ja TÜ seminaride juures; rida tuleb, kui üksusi on vähemalt kaks
+               + (_rida("uksus", "Üksus", [(_tunnus(v), v, n) for v, n in sorted(uksused.items(), key=lambda x: (-x[1], x[0]))])
+                  if len(uksused) > 1 else ""))
     sisu = (f'{filter_}<nav class="ek-valik" aria-label="Valdkonnad">{valik}</nav>{plokid}'
-            f'<p class="ps ek-tyhi" hidden>Selle valikuga ettekandeid pole.</p>' if read
-            else f'<p class="ps">Ettekandeid pole veel kinnitatud{f" ({ootel} ootab)" if ootel else ""}.</p>')
-    al = "".join(f'<li><a href="{e(a["url"])}">{e(a["nimi"])}</a>{" · " + e(a["miks"]) if a.get("miks") else ""}</li>' for a in allikad.values())
+            f'<p class="ps ek-tyhi" hidden>Selle valikuga ettekandeid pole.</p>' if read else f'<p class="ps">{tuhi}</p>')
     return f"""
-<div class="g12">{sec_tul}
-<section class="pn sp12" id="ettekanded" aria-labelledby="h-ettekanded">
-  <div class="pn-h"><h2 id="h-ettekanded">Kuula ja vaata: ettekanded valdkonna järgi, igas uuemad eespool{f", <b>{ootel} ootab kinnitust</b>" if ootel and read else ""}</h2></div>
+<section class="pn sp12" id="{sid}" aria-labelledby="h-{sid}">
+  <div class="pn-h"><h2 id="h-{sid}">{pealkiri}</h2></div>
   {sisu}
-</section>
-<section class="pn sp12" id="ettekannete-allikad" aria-labelledby="h-ettekannete-allikad">
-  <div class="pn-h"><h2 id="h-ettekannete-allikad">Usaldatud üritused ja podcastid</h2></div>
+</section>"""
+
+
+def _ek_allikad(sid, allikad, pealkiri, markus):
+    al = "".join(f'<li><a href="{e(a["url"])}">{e(a["nimi"])}</a>{" · " + e(a["miks"]) if a.get("miks") else ""}</li>' for a in allikad)
+    return f"""
+<section class="pn sp12" id="{sid}" aria-labelledby="h-{sid}">
+  <div class="pn-h"><h2 id="h-{sid}">{pealkiri}</h2></div>
   <ul class="u-allikad">{al}</ul>
-  <p class="ps">Kokkuvõte tehakse salvestise subtiitritest või avalikust transkriptist ja seda kontrollitakse paari väite kaupa; transkripti teksti saidil ei hoita. Podcasti külalise arvamus on märgitud arvamusena. Uus ettekanne läheb saidile pärast kinnitamist.</p>
-</section>
-</div>"""
+  <p class="ps">{markus}</p>
+</section>"""
+
+
+def ettekannete_osad(A, vaade, tana=None):
+    """Kolm alamlehte (Kadri 12.11.2026: „löö ettekanded, üritused ja podcastid uudiste kõrvale lahku“):
+    ettekanded (seminarid, konverentsid, veebiseminarid), tulevased üritused ja podcastid. Liik tuleb allikast."""
+    tana = tana or datetime.date.today().isoformat()
+    ees, sec_tul = tulekul(A, tana)
+    E = A.get("ettekanded") or {"allikad": [], "ettekanded": []}
+    allikad = {a["id"]: a for a in E.get("allikad", [])}
+    read = sorted(E.get("ettekanded", []), key=lambda r: r["kuupaev"], reverse=True)
+    on_pod = lambda r: allikad.get(r.get("allikas"), {}).get("liik") == "podcast"  # noqa: E731
+    tk, pod = [r for r in read if not on_pod(r)], [r for r in read if on_pod(r)]
+    ootel = (A.get("ootel") or {}).get("ettekanded", 0)
+    from abi import alam_h1
+    n, m = len(tk), len(pod)
+    alam_h1(vaade, "ettekanded.html",
+            f"Ettekanded: **{n} {'kokkuvõte' if n == 1 else 'kokkuvõtet'}** seminaride ja konverentside salvestistest"
+            " ¦ kokkuvõte on meie sõnadega, esineja kogemus ei ole mõõtmistulemus" if n
+            else "Ettekanded: **kokkuvõtted ootavad kinnitust**")
+    alam_h1(vaade, "uritused.html",
+            f"Tulekul: järgmine üritus või tähtaeg on **{kp(ees[0]['tahtaeg'])}** ¦ lähim eespool" if ees
+            else "Tulekul: **tulevasi üritusi praegu pole**")
+    alam_h1(vaade, "podcastid.html",
+            f"Podcastid: **{m} {'vestlus' if m == 1 else 'vestlust'}** tehisaru arengust, tööst ja mõistusest"
+            " ¦ külalise arvamus on arvamus, mitte mõõtmine" if m else "Podcastid: **kokkuvõtted ootavad kinnitust**")
+    oot = f", <b>{ootel} ootab kinnitust</b>" if ootel and read else ""
+    pod_al = [a for a in allikad.values() if a.get("liik") == "podcast"]
+    tk_al = [a for a in allikad.values() if a.get("liik") != "podcast"]
+    return {
+        "ettekanded": '<div class="g12">' + _ek_loend(
+            "ettekanded", tk, allikad, f"Kuula ja vaata: ettekanded valdkonna järgi, igas uuemad eespool{oot}",
+            f"Ettekandeid pole veel kinnitatud{f' ({ootel} ootab)' if ootel else ''}.") + _ek_allikad(
+            "ettekannete-allikad", tk_al, "Usaldatud seminarid ja konverentsid",
+            "Kokkuvõte tehakse salvestise subtiitritest ja seda kontrollitakse paari väite kaupa; subtiitrite teksti saidil ei hoita. "
+            "Uus ettekanne läheb saidile pärast kinnitamist.") + "</div>",
+        "uritused": '<div class="g12">' + sec_tul + "</div>",
+        "podcastid": '<div class="g12">' + _ek_loend(
+            "podcastid", pod, allikad, "Kuula: podcastid valdkonna järgi, igas uuemad eespool",
+            "Podcaste pole veel kinnitatud.") + _ek_allikad(
+            "podcastide-allikad", pod_al, "Usaldatud podcastid",
+            "Kokkuvõte tehakse avalikust transkriptist valitud lõigu kohta; transkripti teksti saidil ei hoita. "
+            "Külalise arvamus on märgitud arvamusena. Uus osa läheb saidile pärast kinnitamist.") + "</div>",
+    }
 
 
 # ---------------------------------------------------------------- Hanked: litsentsid (Kadri 8.11.2026)

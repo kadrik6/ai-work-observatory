@@ -23,7 +23,9 @@ jobs:
           python-version: "3.12"
       - name: Lae puuduvad logod
         working-directory: tehisaru-seire
-        run: python sait/lae_logod.py | tee -a "$GITHUB_STEP_SUMMARY"
+        run: |
+          pip install -q pillow  # podcastide kaanepiltide vähendamiseks (Kadri 12.11.2026)
+          python sait/lae_logod.py | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Sait ehitub ja testid läbivad
         working-directory: tehisaru-seire
         run: |

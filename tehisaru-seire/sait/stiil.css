@@ -698,6 +698,7 @@ h3.veerg { font-size: 13.5px; }
 .u-voog .d { color: var(--ink-3); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .u-voog a { font-weight: 600; color: var(--ink); }
 .u-voog p { margin: 2px 0 0; color: var(--ink-2); font-size: 13.5px; }
+.u-voog li > div { max-width: 92ch; }  /* rida ei veni üle laia ekraani; pikem tekst avaneb klõpsuga (Kadri 12.11.2026) */
 .u-m { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; }
 .u-l, .u-t { font-size: 12px; line-height: 16px; padding: 0 6px; border-radius: 100px; white-space: nowrap; }
 .u-l { font-weight: 700; background: var(--brand-soft); color: var(--signal-strong); }
@@ -1056,6 +1057,8 @@ th, td { padding: 6px 10px; }
 .bump-p { stroke: var(--border); stroke-width: 1; }
 .bs { cursor: pointer; outline: none; }
 .bs .bj { fill: none; stroke: var(--context); stroke-width: 1.5; }
+.bs .bh { fill: none; stroke: transparent; stroke-width: 18px; pointer-events: stroke; }  /* hõljumise ala joonest laiem, ridade vahe 28 (Kadri 12.11.2026) */
+.bs .bp { pointer-events: none; }
 .bs .bj.v { stroke-dasharray: 2 4; opacity: .7; }
 .bs .bp { fill: var(--mark-ctx); }
 .bs .bk, .bs .bkn { display: none; }

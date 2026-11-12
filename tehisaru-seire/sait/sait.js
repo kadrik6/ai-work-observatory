@@ -232,15 +232,16 @@
         });
       });
     });
-    // Uudiste filter: valdkond (vaikimisi tehisaru) ja teema kehtivad koos (Kadri 11.11.2026). Iga nupu arv näitab,
-    // mitu uudist teise rea praeguse valikuga jääks; null arvuga nupp on keelatud, et tühja kombinatsiooni ei saaks valida.
+    // Uudiste teemafilter (valdkonna rida võeti ära 12.11.2026). Täpsem teema (data-alam) on läbiv: uudis võib olla mitme
+    // nupu all. Null arvuga nupp on keelatud, et tühja valikut ei saaks valida.
     document.querySelectorAll('.pn .u-f[aria-label="Vali teema"]').forEach(function (f) {
       var pn = f.parentNode, vkf = pn.querySelector('.u-f[aria-label="Vali valdkond"]');
       var li = pn.querySelectorAll('.u-voog li');
       var valik = { u: '', f: '' };
       if (vkf) { var p0 = vkf.querySelector('button[aria-pressed="true"]'); valik.u = p0 ? p0.getAttribute('data-u') : ''; }
       function sobib(l, u, t) {
-        return (!u || u === 'koik' || l.getAttribute('data-vk') === u) && (!t || l.getAttribute('data-teema') === t);
+        return (!u || u === 'koik' || l.getAttribute('data-vk') === u) &&
+          (!t || l.getAttribute('data-teema') === t || (' ' + (l.getAttribute('data-alam') || '') + ' ').indexOf(' ' + t + ' ') >= 0);
       }
       function loe(u, t) { var n = 0; li.forEach(function (l) { if (sobib(l, u, t)) n++; }); return n; }
       function rakenda() {
@@ -309,14 +310,17 @@
     });
     // Ettekannete filter liigi ja allika järgi (Kadri 11.11.2026). Valikud kehtivad koos; rühm, kuhu ühtki rida ei jää,
     // peidetakse ja rühmade arvud näitavad valikule vastavat arvu.
-    document.querySelectorAll('#ettekanded').forEach(function (pn) {
+    document.querySelectorAll('#ettekanded, #podcastid').forEach(function (pn) {
       var ridu = pn.querySelectorAll('.ek-r li[data-liik]');
       if (!ridu.length) return;
-      var valik = { liik: '', allikas: '' };
+      var valik = {};  // filtrid: liik, kes teeb (korraldaja), üksus; kõik kehtivad koos (Kadri 11.–12.11.2026)
+      pn.querySelectorAll('.ek-f').forEach(function (f) { valik[f.getAttribute('data-k')] = ''; });
+      function sobib(l, v2) {
+        return Object.keys(v2).every(function (k) { return !v2[k] || l.getAttribute('data-' + k) === v2[k]; });
+      }
       function rakenda() {
         ridu.forEach(function (l) {
-          l.hidden = (!!valik.liik && l.getAttribute('data-liik') !== valik.liik) ||
-            (!!valik.allikas && l.getAttribute('data-allikas') !== valik.allikas);
+          l.hidden = !sobib(l, valik);
         });
         var kokku = 0;
         pn.querySelectorAll('.ek-r').forEach(function (r) {
@@ -331,12 +335,11 @@
         // Kadri 11.11.2026: kombinatsiooni, millega tulemusi pole, ei saa valida. Nupu arv näitab, mitu jääb
         // teise filtri praeguse valikuga; null arvuga nupp on keelatud.
         pn.querySelectorAll('.ek-f').forEach(function (f) {
-          var k = f.getAttribute('data-k'), teine = k === 'liik' ? 'allikas' : 'liik';
+          var k = f.getAttribute('data-k');
           f.querySelectorAll('button[data-v]').forEach(function (b) {
-            var v = b.getAttribute('data-v'), n = 0;
-            ridu.forEach(function (l) {
-              if ((!valik[teine] || l.getAttribute('data-' + teine) === valik[teine]) && (!v || l.getAttribute('data-' + k) === v)) n++;
-            });
+            var v = b.getAttribute('data-v'), n = 0, v2 = Object.assign({}, valik);
+            v2[k] = v;
+            ridu.forEach(function (l) { if (sobib(l, v2)) n++; });
             var a = b.querySelector('.arv'); if (a) a.textContent = n;
             b.disabled = !!v && n === 0;
           });
@@ -535,12 +538,12 @@
     var q;
     try { q = new URLSearchParams(location.search); } catch (e) { q = { get: function () { return null; } }; }
     var paarid = [
-      ['ala', '.u-f[aria-label="Vali valdkond"] button[data-u]', 'data-u'],
       ['teema', '.u-f[aria-label="Vali teema"] button[data-f]', 'data-f'],
       ['ruhm', 'button[data-r]', 'data-r'],
       ['valdkond', '[data-vk-sisu=""] .tp-vk [data-vk]', 'data-vk'],
       ['liik', '.ek-f[data-k="liik"] button[data-v]', 'data-v'],
-      ['allikas', '.ek-f[data-k="allikas"] button[data-v]', 'data-v'],
+      ['kes', '.ek-f[data-k="kes"] button[data-v]', 'data-v'],
+      ['uksus', '.ek-f[data-k="uksus"] button[data-v]', 'data-v'],
       ['sakk', '.p-tabs [role="tab"]', 'aria-controls'],
     ];
     paarid.forEach(function (p) {
