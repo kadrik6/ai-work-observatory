@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-12T18:05:00+02:00",
+  "viimane_kontroll": "2026-11-13T08:40:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "17.53: lisatud sideandmete kohtuotsus (ERR News)"
+      "markus": "13.11 7.23: uut asjakohast pole (CSC andmeleke juba sees)"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "12.11 7.23: uut asjakohast pole"
+      "markus": "13.11 7.23: uut asjakohast pole"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "17.53: agendikood kiideti heaks (suur); Eesti Energia 2 jätkulugu; sideandmete kohtuotsus"
+      "markus": "13.11 7.23: SEB finantsjuhtide uuring; EKI keelemudelite mõõdupuu (Sirp); Kulli arvamus; Eesti Energia uut pole"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "17.53: Nvidia juhi tagasiastumine; Baini töökuulutuste analüüs"
+      "markus": "13.11 7.23: ELi juhtide tehisaru arutelu Dublinis; GDC küsitlus; HR Software uuring"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -29,37 +29,37 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "12.11: uut asjakohast postitust pole"
+      "markus": "13.11: uut asjakohast postitust pole"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "12.11: avanes; uut pole (Arunädal juba kajastatud)"
+      "markus": "13.11: avanes; uut pole (viimane 7.10 Arunädal)"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "12.11: avanes; tehisaru või IKT uudist pole"
+      "markus": "13.11: avanes; tehisaru või IKT uudist pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "12.11: valitsuse istungi päevakord (agendikood, Riigi Digikeskuse Nõukogu); gigatehaste hange leiti päringuga „tehisaru gigatehas ühishange“"
+      "markus": "13.11: uut riigi otsust pole; RIA 45. nädala tehisaru ülevaade (küberturve, ei lisatud)"
     },
     {
       "nimi": "OECD uudised (otsing)",
       "ok": true,
-      "markus": "12.11: uut OECD teadet pole (OECD oskuste aruanne on 5.6.2026, vana)"
+      "markus": "13.11: uut OECD teadet pole"
     },
     {
       "nimi": "Riikide strateegiad",
       "ok": true,
-      "markus": "12.11: Küprose kinnitatud strateegia uudis; tagasivaade ei edenenud"
+      "markus": "13.11: uut kinnitatud strateegiat pole; tagasivaade ei edenenud"
     },
     {
       "nimi": "DataCite 10.58009 (TÜ repositoorium)",
       "ok": true,
-      "markus": "12.11: uus on ainult „Kratt Nation“ (Krattidega riik ingliskeelne versioon, juba kajastatud)"
+      "markus": "13.11: uut DOI-d pole"
     }
   ]
 }
