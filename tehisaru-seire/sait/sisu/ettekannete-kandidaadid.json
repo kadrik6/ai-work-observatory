@@ -1,6 +1,231 @@
 {
  "kandidaadid": [
   {
+   "id": "WbZVqid5O18",
+   "allikas": "oecd",
+   "pealkiri": "Perspectives des migrations internationales 2026 - Jean-Christophe Dumont",
+   "avaldatud": "2026-11-13",
+   "url": "https://www.youtube.com/watch?v=WbZVqid5O18",
+   "leitud": "2026-11-13",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "eao4uDKw4tc",
+   "allikas": "ilo",
+   "pealkiri": "Meaningful Youth Engagement for Decent Work | Training Workshop Highlights – Uganda 2026",
+   "avaldatud": "2026-11-13",
+   "url": "https://www.youtube.com/watch?v=eao4uDKw4tc",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "gvzUhp0O0q4",
+   "allikas": "oecd",
+   "pealkiri": "Behind the scenes - Why languages matter at the OECD (Deutsch)",
+   "avaldatud": "2026-11-12",
+   "url": "https://www.youtube.com/watch?v=gvzUhp0O0q4",
+   "leitud": "2026-11-13",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "9eGQPeJTE6k",
+   "allikas": "oecd",
+   "pealkiri": "Behind the scenes - Why languages matter at the OECD (Italiano)",
+   "avaldatud": "2026-11-12",
+   "url": "https://www.youtube.com/watch?v=9eGQPeJTE6k",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "q1S6S2iIH94",
+   "allikas": "oecd",
+   "pealkiri": "Behind the scenes - Why languages matter at the OECD (Français)",
+   "avaldatud": "2026-11-12",
+   "url": "https://www.youtube.com/watch?v=q1S6S2iIH94",
+   "leitud": "2026-11-13",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "FJEMxIzWGS4",
+   "allikas": "oecd",
+   "pealkiri": "Migration in OECD countries: what do the latest trends really show?",
+   "avaldatud": "2026-11-12",
+   "url": "https://www.youtube.com/watch?v=FJEMxIzWGS4",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "mee91ifUqC0",
+   "allikas": "oecd",
+   "pealkiri": "Behind the scenes - Why languages matter at the OECD (English)",
+   "avaldatud": "2026-11-12",
+   "url": "https://www.youtube.com/watch?v=mee91ifUqC0",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "uttv-43960",
+   "allikas": "uttv",
+   "pealkiri": "Tulevikumõtte professori Martin Heremi avalik loeng &bdquo;Millised on väljakutsed Kaitseväe isikkoosseisu ettevalmistamisel sõjaks?&ldquo;.",
+   "avaldatud": "2026-11-12",
+   "url": "https://uttv.ee/pls/uttv/naita?id=43960",
+   "leitud": "2026-11-13",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "JMw4WSis80k",
+   "allikas": "tds",
+   "pealkiri": "TDS2026 - Whose history will AI tell? Trust, truth and tomorrow's knowledge",
+   "avaldatud": "2026-11-10",
+   "url": "https://www.youtube.com/watch?v=JMw4WSis80k",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "lDdSNIL5YnM",
+   "allikas": "tds",
+   "pealkiri": "Best Bits from the Tallinn Digital Summit | TDS 2026",
+   "avaldatud": "2026-11-10",
+   "url": "https://www.youtube.com/watch?v=lDdSNIL5YnM",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "erD5HFFknPI",
+   "allikas": "tds",
+   "pealkiri": "TDS2026 - Building the agentic nation: what governments need to get right first",
+   "avaldatud": "2026-11-10",
+   "url": "https://www.youtube.com/watch?v=erD5HFFknPI",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "eHkrxi5S3Zw",
+   "allikas": "tds",
+   "pealkiri": "Fix the Process, Not Just the Chatbot | TDS 2026",
+   "avaldatud": "2026-11-09",
+   "url": "https://www.youtube.com/watch?v=eHkrxi5S3Zw",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "aIYR-76GYQ4",
+   "allikas": "tds",
+   "pealkiri": "Rules and innovation | TDS 2026",
+   "avaldatud": "2026-11-09",
+   "url": "https://www.youtube.com/watch?v=aIYR-76GYQ4",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "w5RpJJi4seM",
+   "allikas": "tds",
+   "pealkiri": "Teachers and technology | TDS 2026",
+   "avaldatud": "2026-11-09",
+   "url": "https://www.youtube.com/watch?v=w5RpJJi4seM",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "nIVw0bI_Mwg",
+   "allikas": "tds",
+   "pealkiri": "When AI Models Start Sharing Exploits: Fascinating or Frightening? | TDS 2026",
+   "avaldatud": "2026-11-08",
+   "url": "https://www.youtube.com/watch?v=nIVw0bI_Mwg",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "hbBR9obuIu4",
+   "allikas": "tds",
+   "pealkiri": "EU Strategic Autonomy: An Illusion Without Independence? | TDS 2026",
+   "avaldatud": "2026-11-08",
+   "url": "https://www.youtube.com/watch?v=hbBR9obuIu4",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "DRxvEK4VVfk",
+   "allikas": "tds",
+   "pealkiri": "Humans or AI overlords? | TDS 2026",
+   "avaldatud": "2026-11-08",
+   "url": "https://www.youtube.com/watch?v=DRxvEK4VVfk",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "Ubpd9nXa-GA",
+   "allikas": "tds",
+   "pealkiri": "Dependency and capital | TDS 2026",
+   "avaldatud": "2026-11-08",
+   "url": "https://www.youtube.com/watch?v=Ubpd9nXa-GA",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "QJTUdqMTojg",
+   "allikas": "tds",
+   "pealkiri": "TDS2026 - Closing Ceremony",
+   "avaldatud": "2026-11-07",
+   "url": "https://www.youtube.com/watch?v=QJTUdqMTojg",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "aVqd0K_M_SI",
+   "allikas": "tds",
+   "pealkiri": "TDS2026 - Mines, chips, and megawatts: critical resources for Europe’s tech resilience",
+   "avaldatud": "2026-11-07",
+   "url": "https://www.youtube.com/watch?v=aVqd0K_M_SI",
+   "leitud": "2026-11-13",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "Sr8NNJ2tJgI",
+   "allikas": "tds",
+   "pealkiri": "TDS2026 - Case studies from GovTech AI in action",
+   "avaldatud": "2026-11-07",
+   "url": "https://www.youtube.com/watch?v=Sr8NNJ2tJgI",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "Fxk_RRVupPA",
+   "allikas": "tds",
+   "pealkiri": "TDS2026 - How will Europe pay for its innovation during polycrisis?",
+   "avaldatud": "2026-11-07",
+   "url": "https://www.youtube.com/watch?v=Fxk_RRVupPA",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
+   "id": "kfwSmb3bLtc",
+   "allikas": "tds",
+   "pealkiri": "TDS2026 - AI and the new economics of competitiveness",
+   "avaldatud": "2026-11-07",
+   "url": "https://www.youtube.com/watch?v=kfwSmb3bLtc",
+   "leitud": "2026-11-13",
+   "olek": "uus",
+   "subtiitrid": false
+  },
+  {
    "id": "mc4ZgXRRKRQ",
    "allikas": "ilo",
    "pealkiri": "Assessing the impact of foreign direct investment (FDI) on decent work",
@@ -1287,8 +1512,10 @@
   "oecd": "UCR-Ja1yBcjkhuQblxnroZJg",
   "oecd-ai": "UCl4praikeBNNxiSVpAvxwkA",
   "ilo": "UCrlcu5KChYyHwXlIeD7oLUg",
-  "stanford-hai": "UChugFTK0KyrES9terTid8vA"
+  "stanford-hai": "UChugFTK0KyrES9terTid8vA",
+  "uttv": 43960,
+  "tds": "UC9ptGynkOPe3vFRW6otoI3g"
  },
- "uuendatud": "2026-11-12",
+ "uuendatud": "2026-11-13",
  "vead": []
 }
