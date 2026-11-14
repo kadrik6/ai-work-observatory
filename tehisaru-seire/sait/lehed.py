@@ -89,11 +89,15 @@ def _kasutus(A, pais=True):
     jarjest = sorted(el.values(), key=lambda v: -v["vaartus"])
     el_read = [[e(riik(v["geo"])), pr(v["vaartus"]) + margend(v["margend"])] for v in jarjest]
 
+    # Python 3.10 ei luba sama jutumärgiga pesastatud f-stringi, seega päis eraldi.
+    pais_html = (
+        f'<header>\n    <h2 id="h-kasutus">ELi skaalal on Eesti {len(el)} riigi seas <b>{koht}. kohal</b> ¦ '
+        f'{pr(ee["vaartus"])}% ettevõtetest, EL {pr(eu["vaartus"])}%, Soome, Rootsi ja Taani '
+        f'{pr(min(pm), 0)}–{pr(max(pm), 0)}% ({y})</h2>\n  </header>'
+    ) if pais else ""
     return f"""
 <section class="jaotis" id="kasutus"{' aria-labelledby="h-kasutus"' if pais else ' aria-label="Kasutus ELis"'}>
-  {f"""<header>
-    <h2 id="h-kasutus">ELi skaalal on Eesti {len(el)} riigi seas <b>{koht}. kohal</b> ¦ {pr(ee["vaartus"])}% ettevõtetest, EL {pr(eu["vaartus"])}%, Soome, Rootsi ja Taani {pr(min(pm), 0)}–{pr(max(pm), 0)}% ({y})</h2>
-  </header>""" if pais else ""}
+  {pais_html}
   <div class="ruut3 kaart-paar">
     <figure aria-labelledby="g-kasutus">
       <figcaption><span class="gt" id="g-kasutus">Tehisaru kasutavad ettevõtted ELi riikides, {y}, % ettevõtetest</span>
