@@ -22,6 +22,7 @@ from pealkiri import taida
 
 SISU = Path(__file__).resolve().parent / "sisu"
 IN, EB, DS = "inimeste-tehisaru-kasutus", "ettevotete-tehisaru-kasutus", "inimeste-digioskused"
+EUROSTAT = "https://ec.europa.eu/eurostat/databrowser/view/{}/default/table"
 UNE_URL = "https://ec.europa.eu/eurostat/databrowser/view/une_rt_m/default/table"
 UNE_UUENDATUD = "2026-10-30"
 HANKED_URL = "https://riigihanked.riik.ee/"
@@ -211,11 +212,13 @@ def _svg_tekst(x, y, t, kl="", ankur="start"):
 
 
 def joon(seeriad, x0, x1, y1, samm, w=440, h=170, ml=26, mr=86, mt=10, mb=22, x_margid=None, x_silt=str, silt="",
-         lihtne=False):
+         lihtne=False, y_skaala=False):
     """Joondiagramm SVG-na. seeriad: [(nimi, [(x, y)], liik)], liik ∈ {"fookus", "ref", ""}. Otsasildid paremal.
 
     lihtne=True: ruudustikku ega y-telge pole, ainult jooned, lõppväärtused ja esimene ning viimane kuu (Kadri 5.11 22:49).
-    Siis algab y vahemik andmete miinimumi lähedalt, sest telge ega tulpa, mille pikkust lugeda, pole."""
+    Siis algab y vahemik andmete miinimumi lähedalt, sest telge ega tulpa, mille pikkust lugeda, pole.
+    y_skaala=True (lihtne vaade): heledad abijooned iga täisprotsendi kohal koos väärtusega vasakul, et lugeja näeks,
+    kui suur muutus on (disainikriitika 14.11.2026, soovitus 2)."""
     import math
     y0 = 0
     if lihtne:
@@ -225,6 +228,12 @@ def joon(seeriad, x0, x1, y1, samm, w=440, h=170, ml=26, mr=86, mt=10, mb=22, x_
     Y = lambda y: mt + (1 - (y - y0) / (y1 - y0)) * (h - mt - mb)  # noqa: E731
     osad = []
     y = 0
+    if lihtne and y_skaala:
+        yy = y0
+        while yy <= y1 + 1e-9:
+            osad.append(f'<line class="v" x1="{ml}" x2="{w - mr}" y1="{Y(yy):.1f}" y2="{Y(yy):.1f}"/>')
+            osad.append(_svg_tekst(ml - 6, Y(yy) + 4, pr(yy, 0), "t", "end"))
+            yy += 1 if y1 - y0 <= 6 else 2
     while not lihtne and y <= y1 + 1e-9:
         osad.append(f'<line class="v" x1="{ml}" x2="{w - mr}" y1="{Y(y):.1f}" y2="{Y(y):.1f}"/>')
         osad.append(_svg_tekst(ml - 6, Y(y) + 4, pr(y, 0), "t", "end"))
@@ -296,17 +305,18 @@ def avaleht(A, vaade, vaated):
     plaadid = "".join([
         kpi_plaat("inimesed", "Inimesed, kes kasutasid tehisaru (16–74)", f"{pr(ein['vaartus'])}%", str(ein["aasta"]),
                   {"muutus": (f"{_p(ein['vaartus'] - ein25['vaartus'])} protsendipunkti aastaga", f"{ein25['aasta']}: {pr(ein25['vaartus'])}% · küsimus võib erineda"),
-                   "riba": kpi_riba(ein["vaartus"], 100, fookus=True)},
-                  a(ein["url"], "Statistikaamet " + ein["allikas"].split("tabel ")[-1]), fookus=True, href="inimesed.html#kasutus"),
+                   "riba": kpi_riba(ein["vaartus"], 100)},
+                  a(ein["url"], "Statistikaamet " + ein["allikas"].split("tabel ")[-1]), href="inimesed.html#kasutus"),
         kpi_plaat("ettevotted", "Ettevõtted, kes kasutavad tehisaru, ja riigi siht", f"{pr(eeb['vaartus'])}%",
                   f"{eeb['aasta']} · siht {pr(float(siht['siht']), 0)}%",
                   {"muutus": (f"{eeb['aasta'] - 1}. aastaga ei võrrelda", "uus tegevusalade klassifikaator (EMTAK 2025)"),
-                   "riba": kpi_riba(eeb["vaartus"], 100, siht=float(siht["siht"]), siht_tekst=f"siht {pr(float(siht['siht']), 0)}% ({siht['aasta']})")},
-                  a(eeb["url"], "Statistikaamet " + eeb["allikas"].split("tabel ")[-1]), href="ettevotted.html#kasutus"),
+                   "riba": kpi_riba(eeb["vaartus"], 100, siht=float(siht["siht"]), fookus=True, siht_tekst=f"siht {pr(float(siht['siht']), 0)}% ({siht['aasta']})")},
+                  # sinine on see kaart, millest räägib avalehe pealkirja sinine fraas (disainikriitika 14.11.2026, soovitus 1)
+                  a(eeb["url"], "Statistikaamet " + eeb["allikas"].split("tabel ")[-1]), fookus=True, href="ettevotted.html#kasutus"),
         kpi_plaat("digi", "Vähemalt baastaseme digioskused", f"{pr(ds['vaartus'])}%", str(ds["aasta"]),
                   {"muutus": (f"{_p(ds['vaartus'] - ds23['vaartus'])} protsendipunkti {ds23['aasta']}. aastast", f"EL {pr(ds_el['vaartus'])}%"),
                    "riba": kpi_riba(ds["vaartus"], 100, siht=float(A["sihid"]["el-digioskused-80"]["siht"]), vrd=ds_el["vaartus"], siht_tekst=f"ELi siht {pr(float(A['sihid']['el-digioskused-80']['siht']), 0)}% ({A['sihid']['el-digioskused-80']['aasta']})")},
-                  "Eurostat", href="inimesed.html#digi"),
+                  a(EUROSTAT.format("isoc_sk_dskl_i21"), "Eurostat isoc_sk_dskl_i21"), href="inimesed.html#digi"),  # link ja kopeerimine nagu teistel (14.11)
         kpi_plaat("tootus", "Töötuse määr, sesoonselt tasandatud", f"{pr(t_ee)}%", f"{KUUD[int(kuu[5:]) - 1]} {kuu[:4]}",
                   {"muutus": (f"{_p(t_ee - t_aasta_eest)} protsendipunkti aastaga", f"{KUUD[int(kuu[5:]) - 1]} {int(kuu[:4]) - 1}: {pr(t_aasta_eest)}% · EL {pr(t_el)}%")},
                   a(UNE_URL, "Eurostat une_rt_m"), href="too.html#tootus-kuud"),
@@ -353,7 +363,7 @@ def avaleht(A, vaade, vaated):
     idx = {k: i for i, (k, _) in enumerate(viimased)}
     kuujoon = joon([("Eesti", [(idx[k], v) for k, v in viimased], "fookus"),
                     ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
-                   0, 11, 10, 2, w=340, h=90, ml=4, mr=60, x_margid=[0, 11], lihtne=True,
+                   0, 11, 10, 2, w=340, h=120, ml=24, mr=60, x_margid=[0, 11], lihtne=True, y_skaala=True,
                    x_silt=lambda i: viimased[int(i)][0][5:] + "." + viimased[int(i)][0][:4], silt="Töötus viimased 12 kuud")
     sec_prog = f"""
 <section class="pn sp7" id="tootus" aria-labelledby="h-tootus">
@@ -502,7 +512,7 @@ def too_eesti(A):
     margid = [i for i, (k, _) in enumerate(T["EE"]) if k[5:7] in ("01",)] + [0, n]
     joonis = joon([("Eesti", [(idx[k], v) for k, v in T["EE"]], "fookus"),
                    ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
-                  0, n, 10, 2, w=440, h=150, ml=4, mr=60, x_margid=[0, n], lihtne=True,
+                  0, n, 10, 2, w=720, h=220, ml=30, mr=64, x_margid=sorted(set(margid)), lihtne=True, y_skaala=True,
                   x_silt=lambda i: T["EE"][int(i)][0][5:] + "." + T["EE"][int(i)][0][:4], silt="Töötuse määr kuu kaupa")
     aasta_tagasi = dict(T["EE"]).get(f"{int(kuu[:4]) - 1}{kuu[4:]}")
     muutus = "" if aasta_tagasi is None else (
