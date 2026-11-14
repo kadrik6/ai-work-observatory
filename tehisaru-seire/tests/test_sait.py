@@ -316,17 +316,28 @@ def test_hoive_muutuse_jaotis_on_kirjeldus_mitte_pohjus(A, sait):
 import lehed_ulevaade  # noqa: E402
 
 
-def test_ulevaade_on_toolaud_kaardi_ja_jarjestusega_samal_real(A, sait):
+def test_avaleht_on_signaalitahvel(A, sait):
+    """Kadri 14.11.2026 valis avalehe näidise C: teemade tahvel ja ajajoon; telefonis neli veergu ja avanev rida."""
     h = sait["index.html"]
-    assert h.count('class="plaat') == 6
-    rida = h.split('class="el-rida"')[1].split("</section>")[0]
-    # Kadri 7.11.2026: loendi asemel järjestuse muutus aastate kaupa; kaart jääb samale reale
-    assert 'class="el-kaart"' in rida and 'class="bump-k"' in rida
-    koik = re.search(r'<div class="bump-v" data-n="27".*?</div>', rida, re.S).group(0)
-    nimed = set(re.findall(r'<g class="bs[^"]*" data-s="[^"]+" tabindex="-?[01]" role="button" aria-label="([^"]+)"', koik))
-    assert len(nimed) == len(A["el_riigid"])
-    for n in nimed:
-        assert f'data-n="{n}"' in rida.split('class="el-bump"')[0]  # sama nimi ka kaardil
+    main = h[h.index("<main"):h.index("</main>")]
+    assert main.index('id="teemad"') < main.index('id="muutus"')
+    assert 'class="plaadid' not in main and 'id="el"' not in main and 'aria-label="Sellel lehel"' not in h
+    jao = _jaotis(h, "teemad")
+    laud = jao[jao.index('class="tbl tv-laud"'):jao.index('class="tv-tel"')]
+    assert re.findall(r'<th scope="col">([^<]+)</th>', laud) == ["Teema", "Praegu", "Kulg", "Muutus", "Koht ELis", "Väited", "Siht ja reeglid", "Värskus"]
+    read = re.findall(r'<th scope="row"><a href="([^"#]+)', laud)
+    assert read == ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"]
+    assert laud.count("<tr>") == 6 and laud.count('class="tv-riba"') == 2  # ELi koht ainult seal, kus on 27 riigi andmed
+    tel = jao[jao.index('class="tv-tel"'):]
+    assert tel.count('<details class="tv-r">') == 5 and tel.count("<summary>") == 5
+    assert all(f'href="{f}">Ava teema' in tel for f in read)
+    css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
+    assert ".tv-laud, .tv-aeg-lai { display: none; }" in css and ".tv-tel { display: block; }" in css
+    assert "min-height: 56px" in css.split("Avalehe signaalitahvel")[1]
+    aeg = _jaotis(h, "muutus")
+    assert 'class="tv-aeg"' in aeg and "<h3>Mis muutus (30 päeva)</h3>" in aeg and "<h3>Mis tuleb</h3>" in aeg
+    assert re.search(r'id="h-muutus"><span class="kys">Mis muutus ja mis tuleb\?</span> <b>\d+ kannet? 30 päevaga', aeg)
+
 
 
 def test_teemalehel_on_kaart_ja_jarjestus_korvuti(sait):
@@ -343,7 +354,8 @@ def test_teemalehel_on_kaart_ja_jarjestus_korvuti(sait):
 
 def test_ulevaate_tootuse_kuunumber_tuleb_failist(sait):
     kuu, v = lehed_ulevaade.tootus()["EE"][-1]
-    assert f"töötus oli {lehed_ulevaade.kuu_seesytlev(kuu)} {komponendid.pr(v)}%" in tekst(sait["index.html"])
+    rida = tekst(_jaotis(sait["index.html"], "teemad").split('href="too.html"')[1].split("</tr>")[0])
+    assert f"{komponendid.pr(v)}%" in rida and f"töötus · {komponendid.KUUD[int(kuu[5:]) - 1]} {kuu[:4]}" in rida
     # 5.11 sisuloogika: töötus ei ole avalehe h1-s tehisaru kasutuse kõrval
     assert "töötus" not in re.search(r"<h1>(.*?)</h1>", sait["index.html"], re.S).group(1)
 
@@ -369,7 +381,8 @@ def test_hangete_aastaid_ei_vorrelda_enne_inimese_kontrolli(sait):
     osa = _jaotis(sait["hanked.html"], "aastad")
     # Kadri 8.11.2026 16:29: pimeülevaatus tehtud, „katseline“ ära; aastaid ikka ei võrrelda enne klassifikaatori uuendust
     assert "katseline" not in osa and "pimesi" in osa and "tulbad2" not in osa
-    assert "pimesi" in _jaotis(sait["index.html"], "hanked") and "aastatulbad" not in _jaotis(sait["index.html"], "hanked")
+    rida = _jaotis(sait["index.html"], "teemad").split('href="hanked.html"')[1].split("</tr>")[0]
+    assert "aastaid veel ei võrrelda" in rida and "aastatulbad" not in sait["index.html"]
     assert 'id="hanked"' not in sait["avalik-sektor.html"]
 
 
@@ -595,9 +608,7 @@ def test_ettekanded_uritused_ja_podcastid_eraldi_lehtedel(A, sait):
 def test_uus_margid_on_oranzid(sait):
     # Kadri 7.11.2026: „värvi kõik uus märgid oranziks“; „suur uudis“ jääb siniseks
     assert '<span class="u-l suur">uus</span>' not in sait["uudised.html"]
-    assert '<span class="t s">uus number</span>' not in sait["index.html"]
-    assert sait["index.html"].count('<span class="t uus">uus</span>') + sait["index.html"].count('<span class="t">number</span>') >= 1  # Kadri 8.11: ainult „uus“
-    assert '<span class="t uus">uus number</span>' not in sait["index.html"]
+    assert '<span class="t uus">uus number</span>' not in "".join(sait.values())  # Kadri 8.11: ainult „uus“
     css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
     assert ".u-l.uus, .voog .t.uus { background: #f2a65e; color: #2b1a05; }" in css  # U8, Kadri 8.11.2026
 
@@ -652,7 +663,6 @@ def test_vana_aadress_suunab_uuele(tmp_path, A):
 def test_avaleht_viib_lahknevusteni_ja_plaadid_on_lingid(sait):
     h = sait["index.html"]
     assert 'href="lahknevused.html#lahknevused"' in h
-    assert re.findall(r'<span class="lbl"><a href="', h).__len__() == 6
     assert 'href="lahknevused.html#lahknevused"' in sait["ettevotted.html"]
     assert ">Allikas</a>" not in sait["kuidas-lugeda.html"]
 
@@ -776,7 +786,9 @@ def test_tooportaalid_iga_portaal_eraldi(A, sait):
 def test_eli_jarjestus_vaikimisi_kumme_ja_kaardil_pole_tumeda_lauset(sait):
     # Kadri MKUS-i kommentaarid 7.11.2026 õhtul: „näita siin defaultina top kümmet“ ja „võta see lause maha“.
     # Hiljem samal õhtul sai loendist järjestuse muutuse graafik: vaikimisi Top 10, Eesti esile tõstetud.
-    osa = _jaotis(sait["index.html"], "el")
+    ev = sait["ettevotted.html"]  # 14.11.2026: avalehelt läks järjestus teemalehele (avaleht on signaalitahvel)
+    osa = ev[ev.rindex("<section", 0, ev.index(">esikümme<")):]
+    osa = osa[:osa.index("</section>")]
     assert re.search(r'<button type="button" data-n="10" aria-pressed="true">esikümme<', osa)
     assert '<div class="bump-v" data-n="10">' in osa and "kõik (27)" in osa
     assert re.search(r'<g class="bs f" data-s="[^"]+" tabindex="-?[01]" role="button" aria-label="Eesti">', osa)
@@ -860,7 +872,7 @@ def test_kpi_plaadid_jargivad_lukustatud_valikut_ver1(sait):
     # Kadri 7.11.2026 21:46 „lukusta ver1“ (KPI-labor): kontekst plaatide kaupa, lugeja seda ei muuda
     import lehed_ulevaade
     h = sait["index.html"]
-    assert '<div class="plaadid kaks"' in h and "data-kiht" not in h and "pl-lyl" not in h
+    assert "data-kiht" not in h and "pl-lyl" not in h  # 14.11.2026: avalehel plaate pole (signaalitahvel)
     for pid, osad in lehed_ulevaade.KPI_VER1.items():
         # 8.11.2026: ver1 laiendati alamlehtede päisele; iga plaat on täpselt ühel lehel
         lehed = [f for f, s in sait.items() if f'data-kpi="{pid}"' in s]
@@ -870,7 +882,7 @@ def test_kpi_plaadid_jargivad_lukustatud_valikut_ver1(sait):
         assert ('class="kriba' in pl) == ("riba" in osad), pid
         assert ('class="tekst"' in pl) == ("tekst" in osad), pid
     # 8.11.2026 (Kadri: vähem teksti): legend on märk + sõna, mitte „oranž/tume kriips:“
-    assert '<i class="lg s"></i>siht 75% (2030)' in h and "ELi siht 80% (2030)" in h
+    assert "ELi siht 80% (2030)" in h  # tahvli siht
     assert '<i class="lg v"></i>omavalitsused 27%' in sait["avalik-sektor.html"]
     assert "kriips:" not in "".join(sait.values())
 
@@ -918,26 +930,25 @@ def test_neli_vaiteparandust_8_11(sait):
     assert "aastaga" not in h1("inimesed.html")
     assert "küsimus võib erineda" in sait["inimesed.html"] and "küsimus võib erineda" in sait["index.html"]
     assert h1("too.html").startswith("Eesti andmetest")  # 8.11 õhtu: h1 algab Eestist (läbivaatus P4)
-    plaat = lambda f, pid: re.search(rf'data-kpi="{pid}">(.*?)</div>', sait[f], re.S).group(1)  # noqa: E731
-    avaleht, hanked = plaat("index.html", "hanked"), plaat("hanked.html", "hk-arv")
-    suur = lambda h: re.search(r'class="big[^"]*">(\d+)<', h).group(1)  # noqa: E731
-    assert suur(avaleht) == suur(hanked), (avaleht, hanked)
+    hanked = re.search(r'data-kpi="hk-arv">(.*?)</div>', sait["hanked.html"], re.S).group(1)
+    avaleht = _jaotis(sait["index.html"], "teemad").split('href="hanked.html"')[1].split("</tr>")[0]
+    assert re.search(r'class="tv-arv"[^>]*>(\d+)<', avaleht).group(1) == re.search(r'class="big[^"]*">(\d+)<', hanked).group(1)
     assert "jaan" not in avaleht
 
 
-def test_avalehe_teematabel_naidis_c(sait):
-    """Kadri 8.11.2026: avalehel KPI-plaatide all tabel, read on teemad, tühi lahter = „hindamata“."""
-    h = sait["index.html"]
-    assert h.index('class="plaadid kaks"') < h.index('id="teemad"') < h.index('id="el"')
-    jao = h[h.index('id="teemad"'):]
-    jao = jao[:jao.index("</section>")]
-    veerud = re.findall(r'<th scope="col">([^<]+)</th>', jao)
-    assert veerud == ["Teema", "Mõõdetud", "Uuritud", "Väidetud", "Sihid ja reeglid", "Värskus"]
-    read = re.findall(r'<th scope="row"><a href="([^"#]+)', jao)
-    assert read == ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"]
-    tuhjad = jao.count('<span class="m-puud">hindamata</span>')
-    assert f"{abi.sonaga(tuhjad).capitalize()} lahtrit on veel hindamata" in jao
-    assert len(re.findall(r"<td data-v=", jao)) == 5 * 5
+def test_avalehe_tahvel_numbrid_ja_skaalad(A, sait):
+    """Kadri 14.11.2026 (näidis C): iga rida on oma skaalal; ettevõtete kulg on Eurostati rida ja öeldakse nii."""
+    jao = _jaotis(sait["index.html"], "teemad")
+    rida = lambda f: jao.split(f'<th scope="row"><a href="{f}"')[1].split("</tr>")[0]  # noqa: E731
+    assert "Iga rida on oma skaalal" in jao and "ELi keskmine" in jao
+    assert "Eurostat" in rida("ettevotted.html") and "aastaga ei võrrelda" in rida("ettevotted.html")
+    assert "küsimus võib erineda" in rida("inimesed.html") and "ELi siht 80%" in rida("inimesed.html")
+    assert "siht 75%" in rida("ettevotted.html") and 'class="tv-siht"' in rida("ettevotted.html")
+    assert "kõrgeim töötus" in rida("too.html") and "põhjust kuunumber ei ütle" in rida("too.html")
+    assert "esimene mõõtmine" in rida("avalik-sektor.html") and "100 ruutu = kõik hanked" in rida("hanked.html")
+    for f in ("inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"):
+        assert 'class="v-tapp' in rida(f), f
+
 
 
 def test_iga_vaide_on_avalehe_tabelis_teemaga(A):
@@ -1003,9 +1014,9 @@ def test_labivaatus_8_11_parandused(sait):
     h1 = lambda f: tekst(re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1))  # noqa: E731
     h2 = lambda f, i: tekst(re.search(rf'id="h-{i}">(.*?)</h2>', sait[f], re.S).group(1))  # noqa: E731
     # P1: sihte ei järjestata
-    assert "kõige kaugemal" not in sait["index.html"] and "siht on 75% aastaks 2030" in h2("index.html", "sihid")
+    assert "kõige kaugemal" not in sait["index.html"]
     # P2: iga „viimati“ ütleb, mille kohta see on
-    assert h2("index.html", "muutus").startswith("Mis muutus: uus number viimati ")
+    assert h2("index.html", "muutus").startswith("Mis muutus ja mis tuleb? ")
     assert h2("lahknevused.html", "muutused").startswith("Mis allikates viimati muutus? Logi viimane kanne on")
     # P3: alamlehtede h1 on vastus, mitte teema nimi
     for f, nimi in [("too-kirjandus.html", "Mida maailmas ja Eestis tehisarust ja tööst kirjutatakse")]:
@@ -1017,7 +1028,7 @@ def test_labivaatus_8_11_parandused(sait):
     # P6, P7, P8
     assert h2("hanked.html", "tapsus").endswith("masinmärgendite järgi")
     assert "hindamata" not in h2("index.html", "teemad")
-    assert "kolm puhul" not in sait["lahknevused.html"] and "korra" not in h2("index.html", "trend")
+    assert "kolm puhul" not in sait["lahknevused.html"]
     # Kopeeritav fakt: ainult välise allika lingiga plaatidel, lause sisaldab allika lingi
     for f, h in sait.items():
         for m in re.finditer(r'<div class="plaat kp" data-kpi="([^"]+)">(.*?)</div>', h, re.S):
@@ -1283,7 +1294,7 @@ def test_sait_ei_tee_ise_vigu_mille_eest_hoiatab(sait):
     # Sisuloogika läbivaatus 9.11.2026 (Kadri „jah“): sait ei tohi teha samu vigu, mida ta väidete kontrollis parandab
     avaleht, ettevotted = (tekst(sait[f]) for f in ("index.html", "ettevotted.html"))
     # 2025 ja 2026 on eri klassifikaatoriga: ettevõtete kasvu ei arvutata
-    assert "aastaga ei võrrelda" in avaleht.split("Ettevõtted, kes kasutavad tehisaru")[1][:200]
+    assert "aastaga ei võrrelda" in tekst(_jaotis(sait["index.html"], "teemad").split('href="ettevotted.html"')[1].split("</tr>")[0])
     assert "aastaga ei võrrelda" in ettevotted.split("Kasutab tehisaru (10+ hõivatut)")[1][:200]
     # number on vähemalt 10 hõivatuga ettevõtete kohta
     assert "vähemalt 10 hõivatuga Eesti ettevõtetest" in tekst(re.search(r"<h1[^>]*>(.*?)</h1>", sait["ettevotted.html"], re.S).group(1))
@@ -1400,7 +1411,7 @@ def test_kasutusloogika_klaviatuur_puude_jagatud_link(sait):
 def test_kaart_ilma_eesti_sildita_ja_seotud_korvaltabeliga(sait):
     """Kadri 11.11.2026: kaardil pole Eesti eraldi silti; riigi peal hõljudes tuleb sama riik esile ka teisel pool."""
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
-    for leht in ("index.html", "inimesed.html", "ettevotted.html"):
+    for leht in ("inimesed.html", "ettevotted.html"):  # 14.11.2026: avalehel kaarti pole (signaalitahvel)
         h = sait[leht]
         assert 'class="kaart"' in h and "kaart-silt" not in h, leht
         jaotis = h[h.rindex("<section", 0, h.index('class="kaart"')):]
@@ -1462,9 +1473,11 @@ def test_ulesehituse_kontroll_a_b_c_e(sait):
             assert m.group(1).count("<li>") >= kest.LEHEL_MIN, f
     assert 'aria-label="Sellel lehel"' not in sait["ettekanded.html"] and 'aria-label="Valdkonnad"' in sait["ettekanded.html"]
     # B: avalehe kiibid ei kanna teemalehtede nimesid
-    kiibid = re.findall(r">([^<>]+)</a>", re.search(r'aria-label="Sellel lehel">(.*?)</nav>', sait["index.html"], re.S).group(1))
-    menuu = re.findall(r">([^<>]+)</a>", re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1))
-    assert not set(kiibid) & set(menuu), set(kiibid) & set(menuu)
+    m = re.search(r'aria-label="Sellel lehel">(.*?)</nav>', sait["index.html"], re.S)  # 14.11.2026: avalehel kaks plokki, rida puudub
+    if m:
+        kiibid = re.findall(r">([^<>]+)</a>", m.group(1))
+        menuu = re.findall(r">([^<>]+)</a>", re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1))
+        assert not set(kiibid) & set(menuu), set(kiibid) & set(menuu)
     # C: alamlehtede rida on menüürida teema nimega, mitte sakk
     assert '<span class="alam-silt">Töö:</span>' in sait["too-kirjandus.html"]
     css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8").split("Alamlehtede rida on menüü, mitte sakk")[1]
@@ -1689,7 +1702,7 @@ def test_uudiste_numbriplaadid_on_tihedad_ilma_allikareata(sait):
     assert pais.count('class="plaat kp"') == 4
     assert "Seire uudistekogumine" not in u and 'class="src"' not in pais
     # teiste lehtede plaatidel on allikas alles
-    assert 'class="src"' in sait["index.html"].split('class="plaadid kaks"')[1]
+    assert 'class="src"' in sait["inimesed.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]
 
 
 def test_valislingid_avanevad_uues_vahelehes(sait):
@@ -1880,8 +1893,7 @@ def test_disainikriitika_fookus_skaala_ja_lehel_rida(sait):
     """Disainikriitika 14.11.2026 (Kadri: „tee soovituste põhjal before and after vaade“)."""
     css = (JUUR / "sait" / "stiil.css").read_text(encoding="utf-8")
     # 1. Sinine kaardinumber on ainult pealkirja fookus: avalehel ettevõtted, Töö lehel mitte ükski.
-    assert re.search(r'data-kpi="ettevotted">.*?<span class="big s"', sait["index.html"], re.S)
-    assert re.search(r'data-kpi="inimesed">.*?<span class="big"', sait["index.html"], re.S)
+    assert '<span class="big s"' not in sait["index.html"]  # 14.11.2026: avalehel plaate pole, tahvli numbrid on tumedad
     assert '<span class="big s"' not in sait["too.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]
     assert ".vastus.kpi-pais > .plaat:first-child .big:not(.s) { color: var(--ink); }" in css
     # 2. Töötuse kuugraafikul on abijooned koos väärtustega (y-skaala).
