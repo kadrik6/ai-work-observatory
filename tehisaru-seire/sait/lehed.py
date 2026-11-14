@@ -16,7 +16,8 @@ EB = "ettevotete-tehisaru-kasutus"
 
 # ---------------------------------------------------------------- Ettevõtted
 
-def _kasutus(A):
+def _kasutus(A, pais=True):
+    """pais=False: teemalehel on ploki küsimus ja vastus andmesakkide pealkirjas (Kadri 14.11.2026), siin seda ei korrata."""
     n = A["naitajad"][EB]
     m = A["meta"][EB]
     ee = andmed.leia(A, EB, "EE", "uusim:alus")
@@ -47,16 +48,22 @@ def _kasutus(A):
     sa25 = next(t for t in n["teised_allikad"] if t["allikas"].startswith("Statistikaamet, tabel IT149"))
     piirang = next(r for r in A["riskid"] if r["liik"] == "piirang" and r["naitaja"] == EB)
     vaide = next(v for v in A["vaited"] if v["naitaja"] == EB and "1,5 korda" in v["vaide"])
+    siht = A["sihid"]["ee-ettevotted-75"]
+    ee_uus = andmed.leia(A, EB, "EE", "uusim")
     usaldus = faktid([
-        ("Lahknevus C5", "risk",
+        ("Küsimustik muutus", "risk",
+         f'Osa 2024–2025 kasvust tuleb sellest, et küsimustikku lisandus piltide, video ja heli genereerimine '
+         f'(<a href="{e(piirang["url"])}">Eurostat, {e(kp(piirang["kuupaev"]))}</a>). Suund on kindel, aga osa tõusust tuleb sellest.'),
+        ("Lahknevus", "risk",
          f'Sama {y}. aasta küsitluse kohta annab Statistikaamet {pr(sa25["vaartus"])}% '
          f'(<a href="{e(sa25["url"])}">IT149</a>) ja Eurostat {pr(ee["vaartus"])}%. Põhjus on {e(lahk["staatus"])}. <a href="kas-see-on-tosi.html#lahknevused">Kõik lahknevused</a>.'),
-        ("Piirang", "",
-         f'Osa 2024–2025 kasvust tuleb sellest, et küsimustikku lisandus piltide, video ja heli genereerimine '
-         f'(<a href="{e(piirang["url"])}">Eurostat, {e(kp(piirang["kuupaev"]))}</a>).'),
         ("Väide", "risk",
          f'Statistikaameti uudis ütles, et kasutus kasvas aastaga 1,5 korda. Suurus on ebakindel, sest 2025 ja 2026 '
          f'on eri klassifikaatoriga (<a href="{e(vaide["url"])}">Statistikaamet, {e(kp(vaide["kuupaev"]))}</a>).'),
+        ("Siht", "s",
+         f'Eesti {pr(float(siht["siht"]), 0)}% aastaks {siht["aasta"]} (<a href="{e(siht["url"])}">{e(siht["allikas"])}</a>). '
+         f'Vahet praeguse {pr(ee_uus["vaartus"])}%-ga ei arvuta: pole kontrollitud, kas sihti mõõdetakse vana (EMTAK 2008) '
+         'või uue (EMTAK 2025) klassifikaatori järgi.'),
     ])
 
     # Koha muutus ELis aastate kaupa, sama graafik nagu avalehel (Kadri 9.11.2026: „I really like these visuals“)
@@ -82,11 +89,15 @@ def _kasutus(A):
     jarjest = sorted(el.values(), key=lambda v: -v["vaartus"])
     el_read = [[e(riik(v["geo"])), pr(v["vaartus"]) + margend(v["margend"])] for v in jarjest]
 
+    # Python 3.10 ei luba sama jutumärgiga pesastatud f-stringi, seega päis eraldi.
+    pais_html = (
+        f'<header>\n    <h2 id="h-kasutus">ELi skaalal on Eesti {len(el)} riigi seas <b>{koht}. kohal</b> ¦ '
+        f'{pr(ee["vaartus"])}% ettevõtetest, EL {pr(eu["vaartus"])}%, Soome, Rootsi ja Taani '
+        f'{pr(min(pm), 0)}–{pr(max(pm), 0)}% ({y})</h2>\n  </header>'
+    ) if pais else ""
     return f"""
-<section class="jaotis" id="kasutus" aria-labelledby="h-kasutus">
-  <header>
-    <h2 id="h-kasutus">ELi skaalal on Eesti {len(el)} riigi seas <b>{koht}. kohal</b> ¦ {pr(ee["vaartus"])}% ettevõtetest, EL {pr(eu["vaartus"])}%, Soome, Rootsi ja Taani {pr(min(pm), 0)}–{pr(max(pm), 0)}% ({y})</h2>
-  </header>
+<section class="jaotis" id="kasutus"{' aria-labelledby="h-kasutus"' if pais else ' aria-label="Kasutus ELis"'}>
+  {pais_html}
   <div class="ruut3 kaart-paar">
     <figure aria-labelledby="g-kasutus">
       <figcaption><span class="gt" id="g-kasutus">Tehisaru kasutavad ettevõtted ELi riikides, {y}, % ettevõtetest</span>
@@ -97,20 +108,9 @@ def _kasutus(A):
     </figure>
     {jrj_fig}
   </div>
-  <div class="kulg-all">
-    <div class="kulg">
-      {vastavus("osaliselt", "Suund on kindel, aga osa 2025. aasta tõusust tuleb küsimustiku muutusest ja Eesti uusim number on uue klassifikaatoriga.")}
-      <div class="plokk">
-        <h3>Vahe Soome, Rootsi ja Taaniga kasvas {pr(vahe23)} punktilt {pr(vahe)} punktini</h3>
-        <div class="vahe">
-          <div><span class="big s">{pr(ee23)} → {pr(ee["vaartus"])}%</span><p>Eesti, 2023 → {y}</p></div>
-          <div><span class="big">{pr(eu23)} → {pr(eu["vaartus"])}%</span><p>ELi keskmine, 2023 → {y}</p></div>
-        </div>
-        <p class="gs">Eesti kasvab suhtes kiiremini, aga punktides aeglasemalt kui Põhjamaad.</p>
-      </div>
-    </div>
-    {usaldus}
-  </div>
+  <p class="kulg2"><b>2023 → {y}:</b> Eesti {pr(ee23)}% → {pr(ee["vaartus"])}%, ELi keskmine {pr(eu23)}% → {pr(eu["vaartus"])}%.
+    Vahe Soome, Rootsi ja Taaniga kasvas {pr(vahe23)} punktilt {pr(vahe)} punktini: Eesti kasvab suhtes kiiremini, aga punktides aeglasemalt kui Põhjamaad.</p>
+  {usaldus}
   <details>
     <summary>Näita andmetabelit ja määratlust</summary>
     <div>
@@ -174,10 +174,16 @@ def _tootlikkus(A):
                          ("ei olnud oluline" if not r["vaartus"] else "+" + pr(float(r["vaartus"])))
                          + (" (nõrk olulisus)" if r["olulisus"] == "nõrk" else "")] for r in arvud],
                        pealdis="Tootlikkuse muutus tehnoloogia ja töökorralduse järgi", numbrid=[])
+    # h1 ütleb järelduse; h2 ütleb suuruse, et pealkirjad ei korduks (Kadri 14.11.2026)
+    kv = sorted(round(float(r["vaartus"])) for r in arvud if r["silt"] == "Tehisaru + töökorralduse muutus" and r["vaartus"])
+    if not kv:
+        raise AndmeViga("ars-tootlikkus: puudub rida „Tehisaru + töökorralduse muutus“")
+    koos = f"{kv[0]}–{kv[-1]}" if kv[0] != kv[-1] else str(kv[0])
+    yksi = " ¦ tehisaru üksi mõju ei leitud" if all(not r["vaartus"] for r in arvud if r["silt"] == "Tehisaru üksi") else ""
     return f"""
 <section class="jaotis" id="tootlikkus" aria-labelledby="h-tootlikkus">
   <header>
-    <h2 id="h-tootlikkus">Tootlikkus oli suurem, kui tehisaruga <b>muutus ka töökorraldus</b></h2>
+    <h2 id="h-tootlikkus"><span class="kys">Kui palju tootlikkus kasvas?</span> <b>{koos}%, kui muutus ka töökorraldus</b>{yksi}</h2>
     {f'<p class="alam">Tõend: {e(vahter["silt"])}. Ettevõtete registriandmed on ulatuslikud, aga tulemus on nõrga statistilise olulisusega ja retsenseerimata.</p>' if vahter.get("silt") else ""}
     {vastavus("osaliselt", "Uuring kasutab Eesti ettevõtete andmeid kuni 2023. aastani, enne generatiivse tehisaru laia levikut.")}
   </header>
@@ -234,7 +240,7 @@ def _digi_ja_ta(A):
 <div class="kaks vordne paar">
 <section class="jaotis" id="digi" aria-labelledby="h-digi">
   <header>
-    <h2 id="h-digi">Vähemalt baastaseme digiintensiivsusega on <b>{pr(ee_d)}% Eesti VKEdest</b> ¦ see on veidi alla ELi keskmise {pr(eu_d)}% (2024)</h2>
+    <h2 id="h-digi"><span class="kys">Kui digitaalsed on Eesti VKEd?</span> Vähemalt baastaseme digiintensiivsusega on <b>{pr(ee_d)}% Eesti VKEdest</b> ¦ see on veidi alla ELi keskmise {pr(eu_d)}% (2024)</h2>
     <p class="alam">10–249 hõivatuga ettevõtted, mis täidavad vähemalt 4 tunnust 12-st (indeksi 4. versioon). Tehisaru on üks tunnustest.</p>
   </header>
   <figure aria-labelledby="g-digi">
@@ -250,7 +256,7 @@ def _digi_ja_ta(A):
 </section>
 <section class="jaotis" id="ta" aria-labelledby="h-ta">
   <header>
-    <h2 id="h-ta">Eesti teadus- ja arendustegevuse kulu kasvab, aga jääb <b>ELi keskmisest alla</b> ¦ vahe oli {pr(eu_t - ee_t, 2)} protsendipunkti (2024)</h2>
+    <h2 id="h-ta"><span class="kys">Kui palju kulub teadus- ja arendustööle?</span> Eesti teadus- ja arendustegevuse kulu kasvab, aga jääb <b>ELi keskmisest alla</b> ¦ vahe oli {pr(eu_t - ee_t, 2)} protsendipunkti (2024)</h2>
     <p class="alam">Kõigi sektorite kulu kokku, % SKPst: ettevõtted, riik, kõrgharidus ja mittetulundussektor. Ei näita, kui palju läheb tehisarule.</p>
   </header>
   <figure aria-labelledby="g-ta">
@@ -382,7 +388,7 @@ def _pohjamaad(A):
     return f"""
 <section class="jaotis" id="pohjamaad" aria-labelledby="h-pohjamaad">
   <header>
-    <h2 id="h-pohjamaad">Üheksast näitajast on Eesti {arv(len(tasemel))} puhul Põhjamaade tasemel ¦ <b>{arv(len(maas))} puhul jääb Põhjamaadest maha</b></h2>
+    <h2 id="h-pohjamaad"><span class="kys">Kus jääb Eesti Põhjamaadest maha?</span> Üheksast näitajast on Eesti {arv(len(tasemel))} puhul Põhjamaade tasemel ¦ <b>{arv(len(maas))} puhul jääb Põhjamaadest maha</b></h2>
     <p class="alam">Seitse riiki igal näitajal: Eesti, Soome, Rootsi, Taani, Norra, Saksamaa ja Holland. Iga rida on oma skaalal, ridu omavahel ei võrrelda.</p>
     {vastavus("osaliselt", "Näitajad on samast küsimustikust kõigis riikides, aga need mõõdavad eri asju (inimesed, ettevõtted, kulud). Ühte koondnumbrit neist ei arvutata.")}
   </header>
@@ -418,7 +424,7 @@ def _arenguseire(A):
     return f"""
 <section class="jaotis" id="arenguseire" aria-labelledby="h-arenguseire">
   <header>
-    <h2 id="h-arenguseire">Ettevõtteid tuleb toetada tervikuna, <b>mitte ainult tööriistade katsetamisel</b> ¦ nii järeldas Arenguseire Keskus</h2>
+    <h2 id="h-arenguseire"><span class="kys">Mida soovitab Arenguseire Keskus?</span> Ettevõtteid tuleb toetada tervikuna, <b>mitte ainult tööriistade katsetamisel</b> ¦ nii järeldas Arenguseire Keskus</h2>
     <p class="alam">Soovitus · Arenguseire Keskus. {e(j[0]["markus"])}</p>
   </header>
   <ol class="sammud">{li}</ol>
@@ -509,22 +515,15 @@ def _ligipaas(A):
 
     osad = [f"{sonaga(len(rr))} {LIGIPAAS_TEGU[k]} ({aastad(rr)})" for k in LIGIPAAS_NIMI
             for rr in [[r for r in S if r["ligipaas"] == k]] if rr]
-    pealkiri = f"{sonaga(len(S), 'seestytlev').capitalize()} kogutud otsusest " + osad[0] + (" ¦ " + (", ".join(osad[1:-1]) + " ja " if len(osad) > 2 else "") + osad[-1] if len(osad) > 1 else "")
+    import teemamall as tm
+    pealkiri = tm.kys("Mida firmad töötajatele lubavad?", e(f"{sonaga(len(S), 'seestytlev').capitalize()} kogutud otsusest " + osad[0])) + (
+        e(" ¦ " + (", ".join(osad[1:-1]) + " ja " if len(osad) > 2 else "") + osad[-1]) if len(osad) > 1 else "")
     a0, a1 = int(min(r["kuupaev"] for r in S)[:4]), int(max(r["kuupaev"] for r in S)[:4])
     read_aastad = []
     for y in range(a1, a0 - 1, -1):
         yy = [r for r in S if r["kuupaev"][:4] == str(y)]
         read_aastad.append(f'<div class="lp-rida" role="listitem"><span class="lp-aasta">{y}</span>'
                            f'<div>{lahter([r for r in yy if avab(r)])}</div><div>{lahter([r for r in yy if not avab(r)])}</div></div>')
-    # Eesti avaliku sektori number otse Riigikontrolli ülevaatest (TOOELU ligipääsu lõime tekst 9.11.2026, algallikast kontrollitud)
-    rk = A["leiud"].get("rk-ai-kord")
-    eesti = []
-    if rk:
-        n = {r["ruhm"]: int(r["vaartus"]) for r in A["leiud_arvud"] if r["leid"] == "rk-ai-kord"}
-        eesti = [("Eesti asutused", "s", f'Riigikontrolli küsitluses ({rk["aasta"]}) kasutas {n["kasutab"]} vastanud asutust {n["vastas"]}-st '
-                  f'välismaiseid tehisaru valmislahendusi, aga <b>{n["korrata"]} asutusel puudus asutusesisene kord</b>, kuidas neid '
-                  f'korrektselt ja turvaliselt kasutada ({a_(rk["url"], "Riigikontroll " + kp(rk["avaldatud"]))}, {e(rk["koht"].split(";")[0])}). '
-                  "See on avalik sektor, mitte ettevõtted, ja ainult küsitlusele vastanud asutused.")]
     tabel_read = []
     for r in S:
         kus = "Eesti" if r["piirkond"] == "EE" else "maailm"
@@ -534,37 +533,10 @@ def _ligipaas(A):
                            f'<span class="lp-kiip{" ava" if avab(r) else ""}">{e(LIGIPAAS_NIMI[r["ligipaas"]])}</span>',
                            e(r["tekst"]), e(r["pohjus"]) or "ettevõte ei kommenteerinud",
                            f'<a href="{e(r["url"])}">{e(r["allikas"] or "allikas")}</a>'])
-    K = A.get("ligipaas_kontekst") or {}
-    for r in (K.get("riigid") or []) + (K.get("uuringud") or []):
-        if not str(r.get("url", "")).startswith("https://"):
-            raise AndmeViga(f"ligipaas-kontekst.json: real puudub https-link ({r.get('riik') or r.get('uuring')})")
-    kontekst = ""
-    if K.get("riigid"):
-        # Kadri „jah, avalda“ 9.11.2026 19:59 (ligipääsu lõime LISA 9.11 õhtu); read algallikast üle kontrollitud
-        kontekst += f"""
-  <div class="lp-lisa" id="ligipaas-riigid">
-    <h3>Soome, Holland, Ühendkuningriik ja USA lubavad ametnikel tehisaru kasutada tingimustega</h3>
-    <p>Piirid tulevad peamiselt andmetest ja mõjust. Üksikuid tööriistu on keelatud turvariski tõttu: näiteks Austraalia keelas 4.02.2025 DeepSeeki kõigis riigiasutuste süsteemides ja seadmetes (<a href="https://www.protectivesecurity.gov.au/publications-library/direction-001-2025-deepseek-products-applications-and-web-services">PSPF Direction 001-2025</a>).</p>
-    {tabel(["Riik", "Mida juhend ütleb", "Allikas"],
-           [[f"<b>{e(r['riik'])}</b>", e(r["tekst"]), f'<a href="{e(r["url"])}">{e(r["allikas"])}</a>'] for r in K["riigid"]],
-           pealdis="Kuidas teised riigid ametnike tehisaru kasutust korraldavad", numbrid=[])}
-    {faktid([("Kuidas lugeda", "", "Neli riiki on valik, mitte kõigi riikide ülevaade. Juhendid on võrdlusmaterjal, Eestile mitte siduvad. "
-              "Soome juhendi lehte ei saanud otse avada, rida põhineb OECD.AI kirjeldusel.")])}
-  </div>"""
-    if K.get("uuringud"):
-        kontekst += f"""
-  <div class="lp-lisa" id="ligipaas-uuringud">
-    <h3>Kasu on päris, aga mitte igas ülesandes, ja kasutaja hinnang võib eksida</h3>
-    <p>Katsetes tegid tehisaru kasutajad tööd rohkem ja kiiremini. Ühes katses said nad tehisarule sobimatus ülesandes vähem õigeid lahendusi, teises hindasid kogenud arendajad oma kiirust valesti.</p>
-    {tabel(["Leid", "Uuring", "Tõendi liik"],
-           [[e(r["leid"]), f'<a href="{e(r["url"])}">{e(r["uuring"])}</a>', e(r["liik"])] for r in K["uuringud"]],
-           pealdis="Uuringud tehisaru mõjust töö tulemusele", numbrid=[])}
-    {faktid([("Mida see ei näita", "risk", "Neli uuringut on valik, mitte süstemaatiline ülevaade. Need kasutasid 2022–2025 tööriistu ja erasektori töötajaid, mitte riigiametnikke ega tänaseid agente.")])}
-  </div>"""
     return f"""
 <section class="jaotis" id="ligipaas" aria-labelledby="h-ligipaas">
   <header>
-    <h2 id="h-ligipaas">{e(pealkiri)}</h2>
+    <h2 id="h-ligipaas">{pealkiri}</h2>
     <p class="alam"><span class="lp-toos">Töös: kogumine käib</span> Kes tohib ettevõttes tehisaru tööriistu ja agente kasutada?
       Kogume ettevõtete otsuseid uudistest ja ettevõtete endi teadetest iga päev. Põhjus on ettevõtte enda sõnadega, mitte seire hinnang.</p>
   </header>
@@ -576,17 +548,97 @@ def _ligipaas(A):
       {"".join(read_aastad)}
     </div>
   </figure>
-  {faktid(eesti + [("Valim on kallutatud", "risk", "Otsused tulevad uudistest, seepärast on neis rohkem suuri ja tuntud ettevõtteid. "
-            "Näitame arve, mitte osakaale: see ei ütle, kui suur osa ettevõtetest tööriistu lubab või keelab.")])}
+  <details class="kokku"><summary>Näita kõiki {len(S)} otsust koos põhjuse ja allikaga</summary>
   {tabel(["Kuupäev", "Ettevõte", "Otsus", "Mida otsustati", "Põhjus ettevõtte sõnul", "Allikas"], tabel_read,
          pealdis="Ettevõtete otsused tehisaru tööriistade kasutamise kohta, uuemad eespool", numbrid=[])}
-  {kontekst}
+  </details>
+  {faktid([("Valim", "risk", "Otsused tulevad uudistest, seepärast on neis rohkem suuri ja tuntud ettevõtteid. "
+            "Näitame arve, mitte osakaale: see ei ütle, kui suur osa ettevõtetest tööriistu lubab või keelab.")])}
+  <p class="viide">Mida riigid ametnikele lubavad ja kas Eesti asutustel on tehisaru kasutamise kord: <a href="avalik-sektor.html#ametnikud">Avalik sektor</a>.</p>
+</section>"""
+
+
+def _ligipaasu_kontekst(A):
+    K = A.get("ligipaas_kontekst") or {}
+    for r in (K.get("riigid") or []) + (K.get("uuringud") or []):
+        if not str(r.get("url", "")).startswith("https://"):
+            raise AndmeViga(f"ligipaas-kontekst.json: real puudub https-link ({r.get('riik') or r.get('uuring')})")
+    return K
+
+
+def ametnike_juhendid(A):
+    """Mida riigid ametnikele lubavad + Riigikontrolli küsitlus Eesti asutustest. Oli Ettevõtete lehel; avalik sektor,
+    seega Avaliku sektori lehel (Kadri 14.11.2026: iga plokk vastab oma lehe küsimusele)."""
+    from abi import a as a_
+    import teemamall as tm
+    K = _ligipaasu_kontekst(A)
+    rk = A["leiud"].get("rk-ai-kord")
+    if not K.get("riigid") and not rk:
+        return ""
+    eesti, vastus = [], []
+    if K.get("riigid"):
+        vastus.append(f"{sonaga(len(K['riigid'])).capitalize()} riiki lubavad tingimustega")
+    if rk:
+        n = {r["ruhm"]: int(r["vaartus"]) for r in A["leiud_arvud"] if r["leid"] == "rk-ai-kord"}
+        eesti = [("Eesti asutused", "s", f'Riigikontrolli küsitluses ({rk["aasta"]}) kasutas {n["kasutab"]} vastanud asutust {n["vastas"]}-st '
+                  f'välismaiseid tehisaru valmislahendusi, aga <b>{n["korrata"]} asutusel puudus asutusesisene kord</b>, kuidas neid '
+                  f'korrektselt ja turvaliselt kasutada ({a_(rk["url"], "Riigikontroll " + kp(rk["avaldatud"]))}, {e(rk["koht"].split(";")[0])}). '
+                  "Arvud on küsitlusele vastanud asutuste kohta.")]
+        vastus.append(f"{n['korrata']} Eesti asutusel {n['vastas']}-st puudus kord")
+    riigid = ""
+    if K.get("riigid"):
+        # Kadri „jah, avalda“ 9.11.2026 19:59 (ligipääsu lõime LISA 9.11 õhtu); read algallikast üle kontrollitud
+        riigid = f"""
+  <div class="lp-lisa" id="ligipaas-riigid">
+    <p>Soome, Holland, Ühendkuningriik ja USA lubavad ametnikel tehisaru kasutada tingimustega. Piirid tulevad peamiselt andmetest ja mõjust. Üksikuid tööriistu on keelatud turvariski tõttu: näiteks Austraalia keelas 4.02.2025 DeepSeeki kõigis riigiasutuste süsteemides ja seadmetes (<a href="https://www.protectivesecurity.gov.au/publications-library/direction-001-2025-deepseek-products-applications-and-web-services">PSPF Direction 001-2025</a>).</p>
+    {tabel(["Riik", "Mida juhend ütleb", "Allikas"],
+           [[f"<b>{e(r['riik'])}</b>", e(r["tekst"]), f'<a href="{e(r["url"])}">{e(r["allikas"])}</a>'] for r in K["riigid"]],
+           pealdis="Kuidas teised riigid ametnike tehisaru kasutust korraldavad", numbrid=[])}
+  </div>"""
+    return f"""
+<section class="jaotis" id="ametnikud" aria-labelledby="h-ametnikud">
+  <header>
+    <h2 id="h-ametnikud">{tm.kys("Mida ametnikud tohivad kasutada?", e(", ".join(vastus)))}</h2>
+  </header>
+  {riigid}
+  {faktid(eesti + ([("Valik", "", "Neli riiki on valik, mitte kõigi riikide ülevaade. Juhendid on võrdlusmaterjal, Eestile mitte siduvad. "
+          "Soome juhendi lehte ei saanud otse avada, rida põhineb OECD.AI kirjeldusel.")] if riigid else []), koik_lahti=True)}
+</section>"""
+
+
+def _kasu(A, vaated, uuringud, lingid):
+    """Kas tehisaru tõstab tootlikkust: katsed + Eesti ja OECD uuringud ühes plokis (oli kahes kohas, Kadri 14.11.2026)."""
+    from abi import link
+    import teemamall as tm
+    K = _ligipaasu_kontekst(A)
+    if not K.get("uuringud") and not uuringud:
+        return ""
+    katsed = ""
+    if K.get("uuringud"):
+        katsed = f"""
+  <div class="lp-lisa" id="ligipaas-uuringud">
+    {tabel(["Leid", "Uuring", "Tõendi liik"],
+           [[e(r["leid"]), f'<a href="{e(r["url"])}">{e(r["uuring"])}</a>', e(r["liik"])] for r in K["uuringud"]],
+           pealdis="Uuringud tehisaru mõjust töö tulemusele", numbrid=[])}
+  </div>"""
+    li = "".join(f'<li><span class="k">{e(s_)}</span><span>{t} {link(vaated, vid, "Vaata", ank)}</span></li>' for s_, t, vid, ank in uuringud)
+    return f"""
+<section class="jaotis" id="kasu" aria-labelledby="h-kasu">
+  <header>
+    <h2 id="h-kasu">{tm.kys("Kas tehisaru tõstab tootlikkust?", "Kasu on päris, aga mitte igas ülesandes")}</h2>
+    <p class="alam">Katsetes tegid tehisaru kasutajad tööd rohkem ja kiiremini. Ühes katses said nad tehisarule sobimatus ülesandes vähem õigeid lahendusi, teises hindasid kogenud arendajad oma kiirust valesti.</p>
+  </header>
+  {katsed}
+  {f'<p class="gt">Eesti ja OECD uuringud</p><ul class="t-loend">{li}</ul>' if li else ""}
+  {faktid([("Valik", "risk", "Katsete neli uuringut on valik, mitte süstemaatiline ülevaade. Need kasutasid 2022–2025 tööriistu ja erasektori töötajaid, mitte riigiametnikke ega tänaseid agente.")])}
+  <p class="lingid">{lingid}</p>
 </section>"""
 
 
 def ettevotted(A, vaade, vaated=None):
-    """Kaks alamlehte (sisuloogika 6.11.2026, Kadri otsus 6): Kasutus | Tootlikkus ja võimekus."""
-    from abi import jaga
+    """Kaks alamlehte (sisuloogika 6.11.2026, Kadri otsus 6): Kasutus | Tootlikkus ja võimekus.
+    Sisu korrastus (Kadri 14.11.2026): iga plokk vastab ühele küsimusele, iga number on lehel üks kord."""
+    from abi import jaga, link
     from lehed_teemad import lisa_sihid
     ee = andmed.leia(A, EB, "EE", "uusim")
     ee_el = andmed.leia(A, EB, "EE", "uusim:alus")
@@ -627,21 +679,24 @@ def ettevotted(A, vaade, vaated=None):
     import teemamall as tm
     from lehed_ulevaade import vaite_teema
     U = A["uuringud"]
-    kas = lisa_sihid(A, _kasutus(A), "kasutus", "ee-ettevotted-75")
+    # Siht on päise plaadi ribal ja „Kuidas lugeda“ loendis; eraldi sihirida kordaks sama numbrit (Kadri 14.11.2026)
+    kas = _kasutus(A, pais=False)
     jagu = kas.index('<section class="jaotis" id="kasutus-uued"')
-    sec_andmed = tm.andmesakid("ettevotted", "Uuri andmeid: kasutus ELis ja teiste riikide 2026. aasta numbrid",
-                               "ELi võrdlus on Eurostati aasta; riikide uued numbrid ja ekspertide hinnang on eraldi, sest need ei sobi ELi skaalale.", [
+    pm_ = [andmed.leia(A, EB, g, y)["vaartus"] for g in POHJAMAAD]
+    sec_andmed = tm.andmesakid("ettevotted", tm.kys("Kus on Eesti ELis?", f"{koht}. kohal, Põhjamaadest {pr(vahe)} punkti taga"),
+                               f'{pr(ee_el["vaartus"])}% ettevõtetest, EL {pr(eu["vaartus"])}%, Soome, Rootsi ja Taani {pr(min(pm_), 0)}–{pr(max(pm_), 0)}% ({y}). '
+                               "Riikide uued numbrid ja ekspertide hinnang on eraldi sakkides, sest need ei sobi ELi skaalale.", [
         ("kasutus", "Kasutus ELis", kas[:jagu]),
         ("uued", "Riikide 2026. aasta numbrid", kas[jagu:]),
         ("gem", "Ekspertide hinnang (GEM)", _gem(A, ee_el)),
     ])
     lyh = lambda k: e(tm.esimene_lause(U[k]["leid"]))  # noqa: E731
-    t_uuringud = tm.uuringute_plokk(vaated, [
+    kasu = _kasu(A, vaated, [
         ("Eesti", f'{lyh("vahter2026")} ({e(U["vahter2026"]["autorid"].split(",")[0])} {U["vahter2026"]["aasta"]})', "ettevotted", "tootlikkus"),
         ("Eesti", f'{lyh("oska2025")} (OSKA {U["oska2025"]["aasta"]})', "ettevotted", "tootlikkus"),
         ("OECD", f'{lyh("calvino2023")} (Calvino ja Fontanelli {U["calvino2023"]["aasta"]})', "ettevotted", "tootlikkus"),
         ("Katse", f'Firmad, kes nägid teiste ümberkorraldatud töövooge, leidsid 44% rohkem kasutusviise ja teenisid 1,9 korda rohkem tulu (Kim jt {U["kim2026"]["aasta"]}).', "too", "ulesanded"),
-    ], [("ettevotted", "Tootlikkus ja võimekus", "tootlikkus")])
+    ], link(vaated, "ettevotted", "Tootlikkus ja võimekus", "tootlikkus"))
     t_vaited = tm.vaidete_plokk(A, vaated, "ettevotted", vaite_teema)
     t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-uldkohaldamine"])  # läbipaistvus, nt klienditeeninduse vestlusrobot
     t_allikad = tm.allikate_plokk([
@@ -652,14 +707,12 @@ def ettevotted(A, vaade, vaated=None):
          A["leiud"]["gem-ai-teadlikkus"]["avaldatud"], "2025, eksperthinnang 0–10, mitte mõõtmine",
          kp(A["leiud"]["gem-ai-teadlikkus"]["avaldatud"])),
         (f"Siht, {siht['allikas']}", siht["url"], siht["kontrollitud"], f"{pr(sv, 0)}% aastaks {siht['aasta']}; kontrollitud"),
-        ("Asutuste tehisaru kord, Riigikontroll", A["leiud"]["rk-ai-kord"]["url"], A["leiud"]["rk-ai-kord"]["avaldatud"],
-         "2025, küsitlusele vastanud 48 asutust"),
     ])
     return jaga(A, vaade, lead, [], [
-        ("andmed", [("andmed", "Andmed")], sec_andmed),
-        ("ligipaas", [("ligipaas", "Kes tohib tööriistu kasutada")], _ligipaas(A)),
-        ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
-         tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
+        ("andmed", [("andmed", "Kus ELis?")], sec_andmed),
+        ("ligipaas", [("ligipaas", "Mida firmad lubavad?"), ("kasu", "Kas tasub?")], _ligipaas(A) + kasu),
+        ("teema-lopp", [("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
+         tm.teema_lopp("", t_vaited, t_reeglid, t_allikad)),
         ("tootlikkus", [("tootlikkus", "Tootlikkus")], _tootlikkus(A)),
         ("voimekus", [("digi", "Digiintensiivsus"), ("ta", "Teadus ja arendus")],
          lisa_sihid(A, lisa_sihid(A, _digi_ja_ta(A), "digi", "el-digiintensiivsus-90"), "ta", "el-ta-3")),

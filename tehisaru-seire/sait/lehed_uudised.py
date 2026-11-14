@@ -10,7 +10,7 @@ import re
 
 from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, jaga, pea, seotud, sonaga
 from andmekiht import AndmeViga
-from komponendid import e, kp, pr
+from komponendid import e, faktid, kp, pr
 import json as _json
 from pathlib import Path as _Path
 
@@ -798,13 +798,13 @@ def hanked(A, vaade, vaated=None):
     # Kadri otsus 6.11.2026 22:11: Hanked jääb menüüsse, aga selge hoiatussildiga, kuni 100 hanget on käsitsi kontrollitud
     # Kadri 8.11.2026 (kommentaar lehel): „käsitsi ülevaatus on tehtud, uuenda lehte“
     # Kadri 8.11.2026 16:29: pimeülevaatus tehtud, katselisusele viitav ära; meetodi lause jääb tavalise märkusena
-    markus = ('<p class="ps meetod">' + e(KASITSI_LAUSE)
-              + ' Aastaid võrreldakse pärast klassifikaatori uuendamist.</p>')
+    # Kadri 14.11.2026: meetodi märkus on ploki all samas „Kuidas lugeda“ vormis nagu teised hoiatused
+    markus = faktid([("Meetod", "", e(KASITSI_LAUSE) + " Aastaid võrreldakse pärast klassifikaatori uuendamist.")])
     # Teemamall A (Kadri 8.11.2026): andmed sakkides, siis uuringud, väited, reeglid, allikad
     import teemamall as tm
     from lehed_ulevaade import vaite_teema
-    sec_andmed = tm.andmesakid("hanked", "Uuri andmeid: aastad, hankimise viis ja litsentsid",
-                               "Riigihangete registri ja TEDi hanked, märgistatud masinaga; meetod ja täpsus on viimases sakis.", [
+    sec_andmed = tm.andmesakid("hanked", tm.kys("Kuidas riik tehisaru ostab?", "Kvaliteeti hinnatakse sagedamini kui teistes IT-hangetes"),
+                               "Riigihangete registri ja TEDi hanked, märgistatud masinaga. Sakkides on aastad, hankimise viis, litsentsid ja klassifikaatori täpsus.", [
         ("aastad", "Aastad", '<div class="g12">' + sec_aastad + sec_inn + "</div>"),
         ("viis", "Kuidas hangitakse", '<div class="g12">' + sec_viis + sec_hankijad + "</div>"),
         ("litsentsid", "Litsentsid", sec_lits),
@@ -823,7 +823,7 @@ def hanked(A, vaade, vaated=None):
     alam_h1(vaade, "hanked-naited.html", f"Eeskujuks sobib **{n_hea} hanget {len(loend)}-st** ¦ "
             "hea näide: kvaliteeti hinnati, pakkumusi oli vähemalt kaks ja hange ei katkenud")
     return jaga(A, vaade, lead, [], [
-        ("andmed", [("andmed", "Andmed")], markus + sec_andmed),
+        ("andmed", [("andmed", "Kuidas ostab?")], sec_andmed + markus),
         ("lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
          tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
         ("naited", [("loend", "Näited")], sec_loend),
@@ -868,7 +868,7 @@ def uuringud_too(A):
                      f'<span class="vr-v">{pr(t["osa2026"])}%</span></div>' for t in teemad)
     sec_a = f"""
 <section class="pn sp12" id="uuritakse" aria-labelledby="h-uuritakse">
-  <div class="pn-h"><h2 id="h-uuritakse">Tehisarust ja tööst ilmus {a1["aasta"]}. aastal <b>{_arv(a1["koik"])} publikatsiooni</b> ¦ see on {pr(kord)} korda rohkem kui {a0["aasta"]}. aastal</h2></div>
+  <div class="pn-h"><h2 id="h-uuritakse"><span class="kys">Millest kirjutatakse?</span> <b>Suurim teema on „{e(teemad[0]["nimi"])}“, {pr(teemad[0]["osa2026"])}% {aastad[-1]["aasta"]}. aasta töödest</b></h2></div>
   <p class="ps">Teadusartiklid ja töödokumendid aastas ({a(OPENALEX_URL, "OpenAlex")}, otsing seisuga {kp(P["meta"]["aeg"][:10])}). * aasta pole läbi.</p>
   <div class="uu-kaks">
     <div><p class="gt">Publikatsioone aastas</p><div class="aastatulbad">{tulbad}</div></div>
@@ -892,7 +892,7 @@ def uuringud_too(A):
         osad.append(f'<div role="tabpanel" id="pub-{g}" aria-labelledby="tab-{g}"{"" if i == 0 else " hidden"}><div class="tbl"><table data-piir><thead><tr><th scope="col">Avaldatud</th><th scope="col" class="v">Tsiteeritud</th><th scope="col">Publikatsioon ja kanal</th></tr></thead><tbody>{li}</tbody></table></div></div>')
     sec_t = f"""
 <section class="pn sp12" id="publikatsioonid" aria-labelledby="h-publikatsioonid">
-  <div class="pn-h"><h2 id="h-publikatsioonid">Mida maailmas ja Eestis uuritakse: uusimad ja enim tsiteeritud tööd</h2></div>
+  <div class="pn-h"><h2 id="h-publikatsioonid"><span class="kys">Mida tasub lugeda?</span> <b>Uusimad ja enim tsiteeritud tööd</b></h2></div>
   <div class="p-tabs" role="tablist" aria-label="Publikatsioonide valik">{"".join(nupud)}</div>
   <p class="ps">Tsiteeringud: {a(OPENALEX_URL, "OpenAlex")}, seisuga {kp(P["meta"]["aeg"][:10])}.</p>
   {"".join(osad)}
@@ -930,7 +930,7 @@ def uuringud_too(A):
     sec_e = f"""
 <div class="g12">
 <section class="pn sp12" id="eesti-allikad" aria-labelledby="h-eesti-allikad">
-  <div class="pn-h"><h2 id="h-eesti-allikad">Eesti uuringud ja raportid tehisarust ja tööst: <b>{len(ee)}</b></h2></div>
+  <div class="pn-h"><h2 id="h-eesti-allikad"><span class="kys">Mida on Eestis uuritud?</span> <b>{len(ee)} uuringut ja raportit</b></h2></div>
   <p class="ps">Arenguseire Keskuse, OSKA ja teiste Eesti allikate tööd, mis käsitlevad tehisaru, tootlikkust või oskusi.{kpi_t or " Uusimad eespool."}</p>
   <div class="tbl"><table data-piir class="ee-tbl"><thead><tr><th scope="col">Avaldatud</th><th scope="col">Töö</th><th scope="col">Põhinumbrid</th><th scope="col">Allikas</th></tr></thead><tbody>{e_read}</tbody></table></div>
 </section>

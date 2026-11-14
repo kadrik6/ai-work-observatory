@@ -7,12 +7,18 @@ jääb Usalduse ja Tehisaru määruse alla. Vanad ankrud jäävad sakkide sisse 
 import datetime
 import re
 
-from abi import link
+from abi import link, sonaga
 from andmekiht import AndmeViga
 from komponendid import e, kp
 from lehed_usaldus import RASKUS, _raskus
 
 VARSKE_PAEVI = 92
+
+
+def kys(kysimus, vastus):
+    """Ploki pealkiri: lugeja küsimus ja vastus (Kadri 14.11.2026: iga plokk vastab ühele küsimusele).
+    Küsimus on tavakirjas, vastus paksus. Mõlemad on HTML, kutsuja vastutab e() eest."""
+    return f'<span class="kys">{kysimus}</span> <b>{vastus}</b>'
 
 
 def andmesakid(tid, pealkiri, alam, sakid):
@@ -38,7 +44,7 @@ def andmesakid(tid, pealkiri, alam, sakid):
 </section>"""
 
 
-def uuringute_plokk(vaated, read, lingid):
+def uuringute_plokk(vaated, read, lingid, vastus=None):
     """read: [(silt, tekst, vaate id, ankur)]; lingid: [(vaate id, tekst, ankur)] alamlehtedele.
 
     Tühja plokki ei näidata (Kadri 11.11.2026): „pole veel hinnatud“ + link mujale lisas ainult nuppe ja segadust.
@@ -49,7 +55,7 @@ def uuringute_plokk(vaated, read, lingid):
     li = "".join(f'<li><span class="k">{e(s)}</span><span>{t} {link(vaated, vid, "Vaata", ank)}</span></li>' for s, t, vid, ank in read)
     ll = " · ".join(link(vaated, vid, t, ank) for vid, t, ank in lingid)
     return f"""<section class="pn" id="t-uuringud" aria-labelledby="h-t-uuringud">
-  <h2 id="h-t-uuringud">Uuringud</h2>
+  <h2 id="h-t-uuringud">{kys("Mida uuringud leidsid?", vastus or (f"{sonaga(len(read)).capitalize()} uuring" + ("ut" if len(read) != 1 else "") + ", igaüks ühe lausega"))}</h2>
   <ul class="t-loend">{li}</ul>
   <p class="lingid">{ll}</p>
 </section>"""
@@ -67,10 +73,17 @@ def vaidete_plokk(A, vaated, tid, teema_jargi, n=3):
         f'<small class="oige">{e(v["oige_lause"] or v["selgitus"])}</small></span></li>'
         for v in vv[:n])
     return f"""<section class="pn" id="t-vaited" aria-labelledby="h-t-vaited">
-  <h2 id="h-t-vaited">Väited: {len(vv)} kontrollitud, {f"<b>{muud} ütleb muud kui allikas</b>" if muud else "ükski ei ütle muud kui allikas"}</h2>
+  <h2 id="h-t-vaited">{kys("Mida meedias väidetakse?", f"{len(vv)} kontrollitud, " + (f"{muud} ütleb muud kui allikas" if muud else "ükski ei ütle muud kui allikas"))}</h2>
   <ul class="t-vaited">{read}</ul>
   <p class="lingid">{link(vaated, "kas-tosi", "Kõik väited ja hinnangute selgitus (Usaldus)")}</p>
 </section>"""
+
+
+def _reeglite_vastus(kehtib, ees):
+    r = lambda n: f"{sonaga(n)} {'reegel' if n == 1 else 'reeglit'}"  # noqa: E731
+    osad = ([f"{r(kehtib)} kehtib juba"] if kehtib else []) + ([f"{r(ees)} jõustub hiljem"] if ees else [])
+    t = " ja ".join(osad)
+    return t[:1].upper() + t[1:]
 
 
 def reeglite_plokk(A, vaated, ids, tana=None):
@@ -79,16 +92,17 @@ def reeglite_plokk(A, vaated, ids, tana=None):
     puudu = [i for i in ids if i not in O]
     if puudu:
         raise AndmeViga(f"Teemaploki reeglid puuduvad: {puudu}")
-    read = []
+    read, n_kehtib = [], 0
     for i in ids:
         o = O[i]
         kuup = o["kuupaev"] + ("-01" if o.get("tapsus") == "kuu" else "")
         kehtib = kuup < tana
+        n_kehtib += kehtib
         read.append(f'<li><span class="k">{kp(o["kuupaev"]) if len(o["kuupaev"]) == 10 else e(o["kuupaev"])}</span>'
                     f'<span><b>{e(o["nimi"])}</b> <span class="chip{"" if kehtib else " exp"}">{"kehtib" if kehtib else "ees"}</span>'
                     f'<small>{e(o["mida_tahendab"])}</small></span></li>')
     return f"""<section class="pn" id="t-reeglid" aria-labelledby="h-t-reeglid">
-  <h2 id="h-t-reeglid">Reeglid</h2>
+  <h2 id="h-t-reeglid">{kys("Mis reeglid kehtivad?", _reeglite_vastus(n_kehtib, len(ids) - n_kehtib))}</h2>
   <ul class="t-loend">{"".join(read)}</ul>
   <p class="lingid">{link(vaated, "reeglid", f"Kõik {len(O)} tähtaega (Tehisaru määrus)", "tahtajad")}</p>
 </section>"""
@@ -112,7 +126,7 @@ def allikate_plokk(read):
         nimi_h = f'<a href="{e(url)}">{e(nimi)}</a>' if url else e(nimi)
         ridu.append(f'<tr><td>{nimi_h}{f"<small>{e(markus)}</small>" if markus else ""}</td><td class="n"><span class="kpv">{tapp}</span></td></tr>')
     return f"""<section class="pn" id="t-allikad" aria-labelledby="h-t-allikad">
-  <h2 id="h-t-allikad">Allikad ja värskus</h2>
+  <h2 id="h-t-allikad">{kys("Kust numbrid tulevad?", f"{len(read)} allikat, uusim {kp(max(kuupaevad))}")}</h2>
   <div class="tbl"><table><thead><tr><th scope="col">Andmed</th><th scope="col">Uuendatud</th></tr></thead>
   <tbody>{"".join(ridu)}</tbody></table></div>
   <p class="allikas">Täis ring = uuendatud viimase {VARSKE_PAEVI} päeva jooksul; tühi ring = vanem.</p>

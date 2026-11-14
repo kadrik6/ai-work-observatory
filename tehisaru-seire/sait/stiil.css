@@ -1614,3 +1614,25 @@ html[data-t] .pea + .g12 { margin-top: 40px; }
 @media (max-width: 680px) {  /* Kadri 14.11 telefonireegel: iga juhtelement vähemalt 44 px */
   nav[aria-label="Sellel lehel"] .sellel a { min-height: 44px; display: inline-flex; align-items: center; }
 }
+
+/* Teemalehtede sisu korrastus (Kadri 14.11.2026, Ettevõtete näidis „see töötab hästi“):
+   pealkiri = lugeja küsimus tavakirjas + vastus paksus tumedas kirjas; hoiatused on ühes vormis „Kuidas lugeda“ loendis. */
+html[data-t] h2 .kys { font-weight: 400; color: var(--ink-2); }
+html[data-t] h2 .kys + b { font-weight: 700; color: var(--ink); }
+html[data-t] .faktid { display: block; margin: 16px 0 0; padding: 12px 0 0; border-top: 1px solid var(--border); font-size: 14px; line-height: 1.5; max-width: 96ch; }
+html[data-t] .faktid::before { content: "Kuidas lugeda"; display: block; margin-bottom: 4px; color: var(--ink-3); font-size: 13px; }
+html[data-t] .faktid li { display: list-item; list-style: disc; margin: 0 0 3px 18px; color: var(--ink-2); }
+html[data-t] .faktid .mark-l { display: inline; font-size: inherit; line-height: inherit; font-weight: 700; color: var(--ink); }
+html[data-t] .faktid .mark-l::after { content: "."; }
+html[data-t] .faktid li > span + span { display: inline; margin-left: 0.3em; }
+html[data-t] .faktid-lisa > .faktid { border-top: 0; padding-top: 0; margin-top: 6px; }
+html[data-t] .faktid-lisa > .faktid::before { content: none; }
+html[data-t] .usaldus3 .faktid { display: grid; }
+html[data-t] .usaldus3 .faktid::before { grid-column: 1 / -1; }
+html[data-t] .usaldus3 .faktid li { margin-left: 0; list-style: none; }
+details.kokku { margin-top: 12px; }
+details.kokku > summary { cursor: pointer; color: var(--signal); font-weight: 600; padding: 8px 0; }
+@media (max-width: 680px) { details.kokku > summary { min-height: 44px; display: flex; align-items: center; } }
+html[data-t] h2:has(> .kys) { font: 400 clamp(19px, 1.6vw, 22px)/1.3 var(--font-display); max-width: 60ch; }
+html[data-t] .kpv { white-space: nowrap; }
+html[data-t] h2:has(> .kys) { max-width: 76ch; }
