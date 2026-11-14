@@ -415,10 +415,10 @@ def test_lahknevused_ja_varskus_on_usalduse_all_nahtaval(sait):
 
 
 def test_igas_teemavaates_on_numbriplaadid(sait):
-    for f in ["inimesed.html", "too.html", "avalik-sektor.html", "tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
+    for f in ["too.html", "avalik-sektor.html", "tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
         assert 'class="vastus' in sait[f], f  # Avalik sektor: „vastus kpi-pais“ (KPI ver1)
-    # 14.11.2026: Ettevõtete numbrid on tahvli ridadel (Kadri valis „B koos C maatriksiga“)
-    assert 'class="tv-arv"' in sait["ettevotted.html"]
+    # 14.11.2026: Ettevõtete ja Inimeste numbrid on tahvli ridadel (Kadri valis „B koos C maatriksiga“ ja „A ja B koos“)
+    assert 'class="tv-arv"' in sait["ettevotted.html"] and 'class="tv-arv"' in sait["inimesed.html"]
 
 
 def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
@@ -1705,7 +1705,7 @@ def test_uudiste_numbriplaadid_on_tihedad_ilma_allikareata(sait):
     assert pais.count('class="plaat kp"') == 4
     assert "Seire uudistekogumine" not in u and 'class="src"' not in pais
     # teiste lehtede plaatidel on allikas alles
-    assert 'class="src"' in sait["inimesed.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]
+    assert 'class="src"' in sait["too.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]  # 14.11.2026: Inimestel on tahvel
 
 
 def test_valislingid_avanevad_uues_vahelehes(sait):
@@ -1963,3 +1963,38 @@ def test_struktuur_ei_loe_telefonikoopiat_ega_kokkupandud_ploki_sisu():
     n = struktuur.nahtav(s)
     assert "koopia" not in n and "peidus" not in n and "Sees" not in n
     assert "Plokk" in n and "Näha" in n and "pärast" in n
+
+
+def test_inimesed_on_tahvel_sada_inimest_ja_kasutus_oskused(A, sait):
+    """Kadri 14.11.2026 valis Inimeste lehele „A ja B koos“: tahvel, sada inimest, kasutus × digioskused, siis plokid kokku pandud."""
+    h = sait["inimesed.html"]
+    main = re.search(r"<main.*?</main>", h, re.S).group(0)
+    assert main.index("</h1>") < main.index('id="tahvel"') < main.index('id="sada"') < main.index('id="kasutus-oskused"') < main.index('id="h-uksikasjad"')
+    assert 'data-kpi="in-' not in h and '<aside class="vastus"' not in h
+    tv = _jaotis(h, "tahvel")
+    read = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">(.*?)</a>', tv)
+    assert len(read) >= 5 and all(f'id="{a}"' in h for a, _ in read)
+    assert tv.count('<details class="tv-r">') == len(read)
+    assert "küsimus võib erineda" in tv and "kontrollimata" in tv
+    # sada inimest: 100 ruutu Eesti ja ELi kohta; rühmad samast küsitlusest ega kattu
+    sada = _jaotis(h, "sada")
+    assert sada.count('<rect class="tt-w ') == 200
+    y = andmekiht.leia(A, "inimeste-tehisaru-kasutus", "EE", "uusim:alus")["aasta"]
+    k, t, o = (andmekiht.leia(A, n, "EE", y)["vaartus"] for n in ("inimeste-tehisaru-kasutus", "tooalane-tehisaru-kasutus", "tehisaru-oskuse-puudus"))
+    vahvel = sada.split("<svg")[1].split("</svg>")[0]
+    assert vahvel.count("tt-w tool") == sum(j + 0.5 <= t for j in range(100))
+    assert vahvel.count("tt-w muu") == sum(j + 0.5 > k + o for j in range(100))
+    # hajuvusgraafik: 27 riiki, Eesti esile tõstetud, seos ei näita põhjust
+    sk = _jaotis(h, "kasutus-oskused")
+    for svg in sk.split('class="tt-sc-')[1:]:  # lai ja telefoni kitsas joonis, samad punktid
+        svg = svg.split("</svg>")[0]
+        assert svg.count('<circle class="tv-c"') + svg.count('<circle class="tv-ee"') == 27 and svg.count('<circle class="tv-ee"') == 1
+    assert "ei näita põhjust" in sk and "neid ei liideta" in sk
+    for sid in ("andmed", "digi", "ei-oska", "lopp"):
+        assert f'<details class="tt-pl" id="d-{sid}">' in h, sid
+
+
+def test_vahvel_ei_luba_ule_saja_protsendi():
+    import teema_tahvel
+    with pytest.raises(andmekiht.AndmeViga):
+        teema_tahvel.vahvel([("tool", 60), ("oska", 50)], "x")

@@ -256,24 +256,8 @@ def inimesed(A, vaade, vaated=None):
   </details>
 </section>"""
 
-    # Päise plaadid käsitsi valitud kontekstiga (ver1 laiendus, Kadri 8.11.2026)
-    from lehed_ulevaade import _p, kpi_pais, kpi_plaat, kpi_riba
     if too["aasta"] != too25["aasta"] + 1:
-        raise AndmeViga("Tööalase kasutuse plaadi muutus eeldab kahte järjestikust võrreldavat aastat")
-    aside = kpi_pais(
-        kpi_plaat("in-kasutus", "Kasutas tehisaru (16–74)", f'{pr(ee["vaartus"])}%', str(ee["aasta"]),
-                  {"muutus": (f"{_p(kasv)} protsendipunkti aastaga", f'{y}: {pr(ee25["vaartus"])}% · küsimus võib erineda'),
-                   "riba": kpi_riba(ee["vaartus"], 100, fookus=True)},
-                  a(ee["url"], "Statistikaamet " + ee["allikas"].split("tabel ")[-1]), fookus=True),
-        kpi_plaat("in-koht", "Koht ELis", f"{koht}.", f"/ {len(el)} · {y}",
-                  {"tekst": f'Eesti <b>{pr(ee25["vaartus"])}%</b>',
-                   "riba": kpi_riba(ee25["vaartus"], 100, vrd=eu["vaartus"])},
-                  a(EUROSTAT.format("isoc_ai_iaiu"), "Eurostat isoc_ai_iaiu")),
-        kpi_plaat("in-tool", "Kasutas tehisaru tööl", f'{pr(too["vaartus"])}%', str(too["aasta"]),
-                  {"muutus": (f'{_p(too["vaartus"] - too25["vaartus"])} protsendipunkti aastaga', f'{too25["aasta"]}: {pr(too25["vaartus"])}% · küsimus võib erineda'),
-                   "tekst": "<b>kõigist</b> 16–74-aastastest"},
-                  a(too["url"], "Statistikaamet " + too["allikas"].split("tabel ")[-1])),
-    )
+        raise AndmeViga("Tööalase kasutuse muutus eeldab kahte järjestikust võrreldavat aastat")
     lead = (f"Kasutajaid on aastaga {pr(kasv / ee25['vaartus'] * 100, 0)}% rohkem, kui {ee['aasta']}. aasta küsimus on sama mis {y}. aastal; seda pole veel kontrollitud.")
     # Teemamall A (Kadri 8.11.2026, Töö järel teine teema)
     import teemamall as tm
@@ -297,14 +281,102 @@ def inimesed(A, vaade, vaated=None):
         (f"Tööl, {too['allikas']}", too["url"], too["avaldatud"], f"{too['aasta']}, kõigist 16–74-aastastest"),
         ("ELi võrdlus, Eurostat isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), eu.get("avaldatud") or None, f"{y}, ELi riigid"),
     ])
-    # Kadri 14.11.2026 („Jah, kõigil teemadel“): alamleht Oskused on selle lehe plokid.
-    return jaga(A, vaade, lead, [], [
-        ("andmed", [("andmed", "Kus ELis?")], sec_andmed),
-        ("digi", [("digi", "Kas oskused on olemas?")], lisa_sihid(A, sec_digi, "digi", *SIHI_TEEMA["inimesed"])),
-        ("ei-oska", [("ei-oska", "Oskuste puudus")], sec_os),
-        ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
+    # ---- Töölaud (Kadri 14.11.2026 valis „A ja B koos“): tahvel, sada inimest, kasutus × digioskused, siis plokid kokku pandud
+    import teema_tahvel as tt
+    from avaleht_tahvel import el_jaotus, osariba, ribarida
+    from lehed_usaldus import _raskus
+    J_IN, J_TOO, J_OS, J_DS = el_jaotus(A, IN), el_jaotus(A, TOO), el_jaotus(A, OS, vaiksem_parem=True), el_jaotus(A, DS)
+    if {J["y"] for J in (J_IN, J_TOO, J_OS, J_DS)} != {y} or J_IN["koht"] != koht:
+        raise AndmeViga("Inimeste tahvli ELi aastad või koht ei klapi ploki „Kus on Eesti ELis?“ numbritega")
+    pp = sorted(paarid, key=lambda p: -(p[1]["vaartus"] - p[0]["vaartus"]))
+    teised = ", ".join(f'{riik(v1["geo"])} +{tt.p1(v1["vaartus"] - v0["vaartus"])}' for v0, v1 in pp if v1["geo"] != "EE")
+    read = [
+        dict(kys="Kui paljud kasutavad?", ank="kasutus", arv=f'{tt.p1(ee["vaartus"])}%', all=f'{ee["aasta"]}, 16–74-aastased',
+             pilt=osariba(ee["vaartus"], 100, silt=f'{tt.p1(ee["vaartus"])}%'),
+             mrk=f'{y}: {pr(ee25["vaartus"])}% (Eurostat), küsimus võib erineda; seda pole veel kontrollitud.',
+             liik="mõõdetud", allikas="Statistikaamet " + ee["allikas"].split("tabel ")[-1], kuup=kp(ee["avaldatud"])),
+        dict(kys="Kus on Eesti ELis?", ank="kasutus", arv=f"{koht}.", all=f'{J_IN["n"]} riigist, {y}', pilt=ribarida(J_IN),
+             mrk=f'Eesti {pr(J_IN["ee"])}%, <span class="tv-lg eu"></span>EL {pr(J_IN["eu"])}%. Eurostat mõõtis seda esimest korda {y}. aastal.',
+             liik="mõõdetud", allikas="Eurostat isoc_ai_iaiu", kuup=str(y)),
+    ]
+    if len(pp) > 1:
+        read.append(dict(kys="Kas naabrid kasvavad sama kiiresti?", ank="kasutus", arv=f'+{tt.p1(kasv)} p', all=f"Eesti, {y} → {y + 1}",
+                         pilt=tt.mini_hantlid(pp, riik), mrk=f"{teised}. {y} Eurostat, {y + 1} riiklik statistika; küsimuse samasus kontrollimata.",
+                         liik="arvutatud", allikas="riiklikud statistikaametid", kuup=f"{y} ja {y + 1}"))
+    read += [
+        dict(kys="Kui paljud kasutavad tööl?", ank="tool", arv=f'{tt.p1(too["vaartus"])}%', all=f'{too["aasta"]}, kõigist 16–74-aastastest',
+             pilt=ribarida(J_TOO), mrk=f'Arvus on ka töötud, õpilased ja pensionärid. ELi skaalal {J_TOO["koht"]}. koht ({y}: Eesti {pr(J_TOO["ee"])}%, EL {pr(J_TOO["eu"])}%).',
+             liik="mõõdetud", allikas="Statistikaamet " + too["allikas"].split("tabel ")[-1], kuup=kp(too["avaldatud"]) if too.get("avaldatud") else str(too["aasta"])),
+        dict(kys="Kas digioskused paranevad?", ank="digi", arv=f'{tt.p1(ds["vaartus"])}%', all=f'{ds["aasta"]}, vähemalt baastase',
+             pilt=osariba(ds["vaartus"], 100, float(siht["siht"]), silt=f'{pr(ds["vaartus"])}%, ELi siht {siht["siht"]}%'),
+             mrk=f'Ei: 2023 oli {pr(ds23["vaartus"])}%. <span class="tv-lg siht"></span>ELi siht {siht["siht"]}% ({siht["aasta"]}) on kogu ELi kohta.',
+             liik="mõõdetud", allikas="Eurostat isoc_sk_dskl_i21", kuup=str(ds["aasta"])),
+        dict(kys="Kui paljusid takistab oskuste puudus?", ank="ei-oska", arv=f'{pr(J_OS["ee"])}%', all=f"{y}, ei kasutanud, sest ei osanud",
+             pilt=ribarida(J_OS), mrk=f'ELis {J_OS["koht"]}. väikseim, EL {pr(J_OS["eu"])}%. Statistikaamet annab {pr(it72["vaartus"])}%, sest seal võib inimesel olla mitu põhjust (lahknevus C6).',
+             liik="mõõdetud", allikas="Eurostat isoc_ai_iaiuxr", kuup=str(y)),
+    ]
+    vv = [v for v in A["vaited"] if vaite_teema(v) == "inimesed"]
+    O = {o["id"]: o for o in A["otsused"]}
+    tana = datetime.date.today().isoformat()
+    reeglid = [(O[i]["nimi"], (O[i]["kuupaev"] + ("-01" if O[i].get("tapsus") == "kuu" else "")) < tana) for i in ["ai-keelud-kirjaoskus"]]
+    allikad = [d for d in (ee["avaldatud"], too.get("avaldatud"), eu.get("avaldatud")) if d]
+    us = tt.usaldusriba(len(vv), sum(_raskus(v) == 0 for v in vv), reeglid, 3, max(allikad))
+    sec_tahvel = tt.tahvel("tahvel", "Mis on inimeste seis?", f"{len(read)} küsimust, iga rida üks pilk",
+                           "Iga rida on oma skaalal; eri ridade numbreid ei võrrelda. Rida viib oma plokki.", read, us)
+    # Sada inimest: neli rühma samast Eurostati küsitlusest (mittekasutaja on ühe põhjuse all), seepärast tohib neid ühte pilti panna
+    def ruhmad(g):
+        k, t, o = (andmed.leia(A, n, g, y)["vaartus"] for n in (IN, TOO, OS))
+        if t > k or k + o > 100:
+            raise AndmeViga(f"Sada inimest: rühmad ei sobi kokku ({g}: {k}, {t}, {o})")
+        return k, {"tool": t, "kas": k - t, "oska": o, "muu": 100 - k - o}
+    k_ee, r_ee = ruhmad("EE")
+    k_eu, r_eu = ruhmad(EL)
+    vah = lambda nimi, k, r: (f'<figure><figcaption><span class="gt">{nimi}</span></figcaption>'  # noqa: E731
+                              f'{tt.vahvel([(x, r[x]) for x in ("tool", "kas", "oska")], f"{nimi} {y}: " + ", ".join(f"{pr(r[x], 0)} {tt.VAHVLI_RUHM[x]}" for x in tt.VAHVLI_RUHM))}'
+                              f'{tt.vahvli_legend(r)}</figure>')
+    sec_sada = f"""
+<section class="jaotis" id="sada" aria-labelledby="h-sada">
+  <header>
+    <h2 id="h-sada"><span class="kys">Kui sada 16–74-aastast eestlast ritta panna?</span> <b>{pr(k_ee, 0)} kasutas tehisaru, ELis {pr(k_eu, 0)}</b></h2>
+    <p class="alam">Üks ruut on 1% 16–74-aastastest, {y}, Eurostat. Kõik neli rühma on samast küsitlusest, seepärast saab need ühte pilti panna. Uusim Eesti number ({ee["aasta"]}: {tt.p1(ee["vaartus"])}%) on tahvlil.</p>
+  </header>
+  <div class="tt-wpaar">{vah("Eesti", k_ee, r_ee)}{vah("ELi keskmine", k_eu, r_eu)}</div>
+  {allikarida([("Eurostat, isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), str(y)), ("Eurostat, isoc_ai_iaiuxr", EUROSTAT.format("isoc_ai_iaiuxr"), str(y))])}
+  <p class="allikas">Mittekasutaja on ühe põhjuse all. Numbrid on ümardatud, seepärast võib summa olla 99 või 101.</p>
+</section>"""
+    pts = [(g, J_DS["v"][g], J_IN["v"][g]) for g in J_IN["v"] if g in J_DS["v"]]
+    svg_sk, kaugus = tt.hajuvus(pts, J_DS["eu"], J_IN["eu"], "vähemalt baastaseme digioskused", "kasutas tehisaru", riik,
+                                {"EE", "FI", "DK", "NL", "SE", "RO", "BG", "MT", "CY", "PL", "DE"})
+    # Telefonis kitsam joonis (sama andmestik), et kiri jääks loetavaks; lai on telefonis peidus ja vastupidi
+    svg_tel, _ = tt.hajuvus(pts, J_DS["eu"], J_IN["eu"], "digioskused", "kasutas tehisaru", riik, {"EE", "DK", "RO"}, w=360, h=320)
+    vastus_sk = ("Eestis kasutatakse tehisaru rohkem, kui digioskuste põhjal võiks oodata" if kaugus >= 2 else
+                 "Eestis kasutatakse tehisaru vähem, kui digioskuste põhjal võiks oodata" if kaugus <= -2 else
+                 "Eesti kasutus vastab digioskuste tasemele")
+    sec_sk = f"""
+<section class="jaotis" id="kasutus-oskused" aria-labelledby="h-kasutus-oskused">
+  <header>
+    <h2 id="h-kasutus-oskused"><span class="kys">Kas kasutus käib oskustega kaasas?</span> <b>{vastus_sk}</b></h2>
+    <p class="alam">ELi {len(pts)} riiki, {y}, % 16–74-aastastest. Kaks eri mõõdikut kahel teljel; neid ei liideta. Katkendjoon on riikide üldine seos:
+      Eesti on sellest {pr(abs(kaugus), 0)} punkti {"kõrgemal" if kaugus >= 0 else "madalamal"}. Eesti digioskused on {pr(J_DS["ee"])}% (EL {pr(J_DS["eu"])}%), kasutus on ELis {koht}. kohal.</p>
+  </header>
+  <figure class="tt-scfig"><div class="tt-sc-lai">{svg_sk}</div><div class="tt-sc-kitsas" aria-hidden="true">{svg_tel}</div></figure>
+  {allikarida([("Eurostat, isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), str(y)), ("Eurostat, isoc_sk_dskl_i21", EUROSTAT.format("isoc_sk_dskl_i21"), str(y))])}
+  <p class="allikas">Seos riikide vahel ei näita põhjust.</p>
+</section>"""
+    uks = tt.uksikasjad([
+        ("andmed", "Kus on Eesti ELis?", "kaart, järjestus, kasv aastaga, tööalane kasutus", sec_andmed),
+        ("digi", "Kas digioskused paranevad?", "riigid 2023 → " + str(ds["aasta"]) + ", ELi siht", lisa_sihid(A, sec_digi, "digi", *SIHI_TEEMA["inimesed"])),
+        ("ei-oska", "Kui paljusid takistab oskuste puudus?", "ELi riigid, lahknevus C6", sec_os),
+        ("lopp", "Uuringud, väited, reeglid ja allikad", f'{len(vv)} {"väide" if len(vv) == 1 else "väidet"} · {len(reeglid)} reegel · 3 allikat',
          tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
-    ], aside=aside)
+    ])
+    # Kadri 14.11.2026 („Jah, kõigil teemadel“): alamleht Oskused on selle lehe plokid; kokkupandud plokk avaneb ankrult (sait.js avaAnkur)
+    return jaga(A, vaade, lead, [], [
+        ("tahvel", [("tahvel", "Ülevaade")], sec_tahvel),
+        ("sada", [("sada", "Sada inimest")], sec_sada),
+        ("kasutus-oskused", [("kasutus-oskused", "Kasutus ja oskused")], sec_sk),
+        ("uksikasjad", [("andmed", "Kus ELis?"), ("digi", "Oskused"), ("ei-oska", "Oskuste puudus"), ("t-vaited", "Väited"), ("t-allikad", "Allikad")], uks),
+    ])
 
 
 # ---------------------------------------------------------------- Töö

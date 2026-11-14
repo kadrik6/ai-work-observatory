@@ -1752,6 +1752,17 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
 .tt-pl > summary b { font: 600 17px var(--font-display); color: var(--ink); } .tt-pl > summary span { color: var(--ink-3); font-size: 14px; }
 .tt-pl > summary:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
 .tt-pl > section, .tt-pl > .teema-lopp { margin: 0 0 24px; }
+/* Inimesed (Kadri 14.11.2026 „A ja B koos“): sada inimest ja kasutus × digioskused */
+.tt-t.f { fill: var(--signal); }
+.tt-w.tool { fill: var(--signal); background: var(--signal); } .tt-w.kas { fill: color-mix(in srgb, var(--signal) 40%, var(--panel)); background: color-mix(in srgb, var(--signal) 40%, var(--panel)); }
+.tt-w.oska { fill: var(--accent); background: var(--accent); } .tt-w.muu { fill: var(--surface-3); background: var(--surface-3); }
+.tt-wpaar { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 820px; margin-top: 24px; }
+.tt-wpaar figure { margin: 0; } .tt-wpaar .gt { font: 600 17px var(--font-display); display: block; margin-bottom: 8px; color: var(--ink); }
+.tt-wleg { list-style: none; padding: 0; margin: 12px 0 0; font-size: 14px; color: var(--ink-2); }
+.tt-wleg li { display: flex; gap: 8px; align-items: center; padding: 2px 0; } .tt-wleg b { color: var(--ink); min-width: 22px; text-align: right; }
+.tt-wleg i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; flex: none; }
+.tt-elk { stroke: var(--ink-3); stroke-width: 1; opacity: .6; }
+.tt-scfig { max-width: 760px; margin: 24px 0 0; } .tt-sc-kitsas { display: none; }
 @media (max-width: 640px) {
   .tt-tel .tv-pea, .tt-tel summary { grid-template-columns: 120px minmax(0, 1fr) 96px; }
   .tt-tel .tv-t { hyphens: auto; overflow-wrap: anywhere; }
@@ -1759,6 +1770,8 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
   .tt-tvis svg { width: 100px; height: auto; } .tt-tvis .tt-kiibid { display: none; }
   .tt-mx thead th:not(:first-child):not(.ee):not(:last-child), .tt-mx tbody td:not(.ee):not(.tt-h) { display: none; }
   .tt-pl > summary { flex-direction: column; gap: 2px; padding-left: 0; }
+  .tt-sc-lai { display: none; } .tt-sc-kitsas { display: block; }
+  .tt-wpaar { gap: 16px; } .tt-wpaar svg { width: 100%; height: auto; } .tt-wleg { font-size: 13px; }
   .tt-pl > summary::before { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .tt-pl > summary::before { transition: none; } }
