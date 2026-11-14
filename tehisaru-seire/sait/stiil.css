@@ -1576,3 +1576,11 @@ html[data-t] .vastus.kpi-pais.tihe { padding-left: 0; padding-right: 0; }
   html[data-t] .kpi-pais.tihe .plaat { padding: 8px 10px; }
   html[data-t] .kpi-pais.tihe .plaat .big { font-size: 24px; }
 }
+
+/* Kadri 14.11.2026 „muuda“: telefonis on alamlehtede rida murduv (kõik alamlehed nähtaval, mitte keritav)
+   ja iga nupp vähemalt 44 px kõrge puudutuseks. */
+@media (max-width: 680px) {
+  html[data-t] .alamlehed { flex-wrap: wrap; overflow-x: visible; gap: 0 16px; }
+  html[data-t] .u-f button, html[data-t] .p-tabs button, html[data-t] .kogus button,
+  html[data-t] .src button.kopeeri, html[data-t] summary { min-height: 44px; }
+}

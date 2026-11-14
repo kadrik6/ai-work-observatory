@@ -1832,3 +1832,11 @@ def test_uritused_ja_uudiste_plaadid_ilma_korduseta(sait):
     assert not re.search(r'<h2 id="h-tulekul">Tulekul', h)
     p = sait["podcastid.html"]
     assert "Kuidas ettevõtted tehisaru kasutusele võtavad" not in p
+
+
+def test_telefonis_alamlehed_murduvad_ja_nupud_44px():
+    """Kadri 14.11.2026 „muuda“: alamlehtede rida murdub telefonis ja nupud on puudutuseks vähemalt 44 px."""
+    css = (JUUR / "sait" / "stiil.css").read_text(encoding="utf-8")
+    osa = css[css.index("Kadri 14.11.2026 „muuda“"):]
+    assert "html[data-t] .alamlehed { flex-wrap: wrap; overflow-x: visible;" in osa
+    assert "html[data-t] .u-f button" in osa and "min-height: 44px" in osa
