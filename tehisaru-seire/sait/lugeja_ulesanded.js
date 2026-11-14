@@ -6,12 +6,12 @@ const D = 'file://' + path.resolve(process.argv[2] || path.join(__dirname, '..',
 const PILDID = process.argv[3] || null;
 // Iga ülesanne: algus, klikid (lingi tekst päises/sisus), siht (CSS), mida peab nägema
 const U = [
-  {nimi: 'Ajakirjanik: Eesti inimeste tehisaru kasutus ja allikas', klikid: [], siht: '.plaat, .vastus div', tekst: /65/},
+  {nimi: 'Ajakirjanik: Eesti inimeste tehisaru kasutus ja allikas', klikid: [], siht: '#teemad .tv-arv:visible, #teemad .tv-n b:visible', tekst: /65/},
   {nimi: 'Kodanik: kas tehisaru võtab töökohti', klikid: ['Töö'], siht: 'h1'},
   {nimi: 'Analüütik: kas Eurostat ja Statistikaamet lahknevad', klikid: ['Usaldus', 'Lahknevused'], siht: '#lahknevused'},
   {nimi: 'Hankija: hea näide tehisaruhankest', klikid: ['Hanked', 'Leia hea näide'], siht: '#loend'},
   {nimi: 'Otsustaja: ettevõtete siht ja kaugus', klikid: ['Ettevõtted'], siht: '#kasutus .siht-rida'},
-  {nimi: 'Kadri: mis täna muutus', klikid: ['Mis muutus'], siht: '#muutus'},
+  {nimi: 'Kadri: mis täna muutus', klikid: [], siht: '#muutus'},
 ];
 (async () => {
   const b = await chromium.launch();
