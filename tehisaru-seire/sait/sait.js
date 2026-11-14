@@ -432,6 +432,8 @@
       var el = id && document.getElementById(id);
       if (!el) return;
       var paneel = el.closest('[role="tabpanel"]'), oli = false;
+      // Teemalehe tahvel (14.11.2026): plokid on kokkupandud <details> sees; ankur avab need
+      for (var d = el.closest('details:not([open])'); d; d = d.parentElement && d.parentElement.closest('details:not([open])')) { d.open = true; oli = true; }
       for (var p = paneel; p; p = p.parentElement && p.parentElement.closest('[role="tabpanel"]')) {
         if (p.hidden) {
           var nupp = document.querySelector('[role="tab"][aria-controls="' + p.id + '"]');

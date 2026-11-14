@@ -249,10 +249,11 @@ def _jaotis(h, ank):
 def test_sihid_on_oma_teema_juures_ja_eesti_siht_on_fookuses(sait):
     # Sisuloogika 6.11.2026, Kadri otsus 4: sihid teemade juurde, määruse lehel ainult tähtajad.
     # Paigutus 6.11.2026 22:27 (ettepanek 4): siht on üks rida näitaja enda plokis, mitte eraldi plokk
-    # Kadri 14.11.2026: Ettevõtete siht on päise plaadi ribal ja „Kuidas lugeda“ loendis, mitte kolmandat korda sihireal
+    # Kadri 14.11.2026: Ettevõtete siht on tahvli esimesel real ja „Kuidas lugeda“ loendis, mitte kolmandat korda sihireal
     kas = _jaotis(sait["ettevotted.html"], "kasutus")
     assert 'class="siht-rida"' not in kas and '<span class="mark-l s">Siht</span>' in kas
-    assert "siht 75% (2030)" in tekst(sait["ettevotted.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0])
+    rida1 = _jaotis(sait["ettevotted.html"], "tahvel").split("<tbody>")[1].split("</tr>")[0]
+    assert "siht 75% (2030)" in tekst(rida1) and 'class="tv-siht"' in rida1
     # Kadri 14.11.2026: endised alamlehed on teemalehe plokid
     assert _jaotis(sait["ettevotted.html"], "digi").count('class="siht-rida"') == 1
     assert _jaotis(sait["ettevotted.html"], "ta").count('class="siht-rida"') == 1
@@ -414,8 +415,10 @@ def test_lahknevused_ja_varskus_on_usalduse_all_nahtaval(sait):
 
 
 def test_igas_teemavaates_on_numbriplaadid(sait):
-    for f in ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
+    for f in ["inimesed.html", "too.html", "avalik-sektor.html", "tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
         assert 'class="vastus' in sait[f], f  # Avalik sektor: „vastus kpi-pais“ (KPI ver1)
+    # 14.11.2026: Ettevõtete numbrid on tahvli ridadel (Kadri valis „B koos C maatriksiga“)
+    assert 'class="tv-arv"' in sait["ettevotted.html"]
 
 
 def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
@@ -1295,7 +1298,7 @@ def test_sait_ei_tee_ise_vigu_mille_eest_hoiatab(sait):
     avaleht, ettevotted = (tekst(sait[f]) for f in ("index.html", "ettevotted.html"))
     # 2025 ja 2026 on eri klassifikaatoriga: ettevõtete kasvu ei arvutata
     assert "aastaga ei võrrelda" in tekst(_jaotis(sait["index.html"], "teemad").split('href="ettevotted.html"')[1].split("</tr>")[0])
-    assert "aastaga ei võrrelda" in ettevotted.split("Kasutab tehisaru (10+ hõivatut)")[1][:200]
+    assert "aastaga ei võrrelda" in tekst(_jaotis(sait["ettevotted.html"], "tahvel").split("Kui paljud kasutavad?")[1].split("</tr>")[0])
     # number on vähemalt 10 hõivatuga ettevõtete kohta
     assert "vähemalt 10 hõivatuga Eesti ettevõtetest" in tekst(re.search(r"<h1[^>]*>(.*?)</h1>", sait["ettevotted.html"], re.S).group(1))
     # registriandmete seos, mitte põhjus
@@ -1918,3 +1921,45 @@ def test_vaikesed_alamlehed_on_teemalehe_plokid_ja_vanad_aadressid_suunavad(sait
                  "eesti-otsused.html", "riikide-strateegiad.html", "varskus.html"):
         uus = ehita.VANAD_AADRESSID[vana]
         assert f'url={uus}"' in (tmp_path / vana).read_text(encoding="utf-8"), vana
+
+
+def test_ettevotted_on_tahvel_maatriks_ja_kokkupandud_plokid(A, sait):
+    """Kadri 14.11.2026 valis Ettevõtete lehele „B koos C maatriksiga“: tahvel, Põhjamaade maatriks, siis plokid kokku pandud."""
+    import lehed
+    h = sait["ettevotted.html"]
+    main = re.search(r"<main.*?</main>", h, re.S).group(0)
+    # järjekord: h1, tahvel, maatriks, üksikasjad; päises pole numbriplaate ega tühja kõrvalkasti
+    assert main.index("</h1>") < main.index('id="tahvel"') < main.index('id="pohjamaad"') < main.index('id="h-uksikasjad"')
+    assert 'data-kpi="ev-' not in h and '<aside class="vastus"' not in h
+    tv = _jaotis(h, "tahvel")
+    read = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">(.*?)</a>', tv)
+    assert [r[1] for r in read] == ["Kui paljud kasutavad?", "Kus on Eesti ELis?", "Kas vahe Põhjamaadega kahaneb?",
+                                    "Mida firmad töötajatele lubavad?", "Kas tehisaru tõstab tootlikkust?", "Kas võimekus on Põhjamaade tasemel?"]
+    assert all(f'id="{a}"' in h for a, _ in read)
+    # telefonivaade: samad read puudutusega avanevana
+    assert tv.count('<details class="tv-r">') == len(read)
+    # iga rida ütleb tõendi liigi; katsete numbreid ei liideta (iga katse oma kiip)
+    assert tv.count('class="tt-liik ') == 2 * len(read)
+    K = lehed._ligipaasu_kontekst(A)["uuringud"]
+    assert tv.split("Kas tehisaru tõstab tootlikkust?")[1].split("</tr>")[0].count("<li ") == len(K)
+    # maatriks: 9 näitajat × 7 riiki, Eesti veerg raamitud; Põhjamaade võrdlus ei ole enam Võimekuse sakk
+    mx = _jaotis(h, "pohjamaad")
+    P = lehed.pohjamaade_profiil(A)
+    assert mx.count('<td class="ee"') == len(P) == 9 and mx.split("</thead>")[0].count('<th scope="col"') == 9
+    tasemel = sum(p["hinnang"] in ("yle", "vahemik") for p in P)
+    assert mx.count('class="tt-h ok"') == tasemel and f"{tasemel}/{len(P)}" in tv
+    assert 'id="sakk-pm"' not in h
+    # plokid on kokkupandult, ankur avab ploki (sait.js avaAnkur)
+    for sid in ("andmed", "ligipaas", "kasu", "voimekus", "lopp"):
+        assert f'<details class="tt-pl" id="d-{sid}">' in h, sid
+    js = (Path(ehita.__file__).parent / "sait.js").read_text(encoding="utf-8")
+    assert "details:not([open])" in js
+
+
+def test_struktuur_ei_loe_telefonikoopiat_ega_kokkupandud_ploki_sisu():
+    import struktuur
+    s = ('<div class="tv-tel"><p>koopia koopia</p></div><details class="tt-pl" id="d-x"><summary><b>Plokk</b></summary>'
+         '<section><h2>Sees</h2><p>peidus sõnad</p></section></details><details class="tt-pl" open><summary>Lahti</summary><h2>Näha</h2></details><p>pärast</p>')
+    n = struktuur.nahtav(s)
+    assert "koopia" not in n and "peidus" not in n and "Sees" not in n
+    assert "Plokk" in n and "Näha" in n and "pärast" in n

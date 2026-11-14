@@ -353,27 +353,13 @@ def _arvt(x, k):
 
 
 def _pohjamaad(A):
+    """Põhjamaade maatriks (Kadri 14.11.2026 valis Ettevõtete lehele „B koos C maatriksiga“): näitaja × riik, iga rida oma skaalal."""
+    from teema_tahvel import maatriks
     P = pohjamaade_profiil(A)
     tasemel = [p for p in P if p["hinnang"] in ("yle", "vahemik")]
     maas = [p for p in P if p["hinnang"] not in ("yle", "vahemik")]
     from abi import OMASTAV
     arv = lambda n: OMASTAV[n] if n in OMASTAV else "mitte ühe"  # noqa: E731  omastav: kolme puhul (keeletoimetus 10.11.2026)
-    read = []
-    for p in P:
-        vv = list(p["v"].values())
-        lo, hi = min(vv), max(vv)
-        pad = (hi - lo) * 0.08 or 1
-        lo, hi = max(0, lo - pad), hi + pad
-        x = lambda z: (z - lo) / (hi - lo) * 100  # noqa: E731
-        punktid = "".join(f'<i class="pp-p" style="left:{x(z):.2f}%" title="{e(PP_NIMI[g])} {pr(z, p["k"])}"></i>'
-                          for g, z in p["v"].items() if g not in ("EE", EL))
-        ala = f'<span class="pp-ala" style="left:{x(min(p["po"])):.2f}%;width:{x(max(p["po"])) - x(min(p["po"])):.2f}%"></span>'
-        el = f'<i class="pp-el" style="left:{x(p["el"]):.2f}%" title="EL {pr(p["el"], p["k"])}"></i>' if p["el"] is not None else ""
-        ee = f'<i class="pp-ee" style="left:{x(p["ee"]):.2f}%"></i>'
-        u = "%" if p["uhik"].startswith("%") else ""
-        read.append(f'<div class="pp-rida"><span class="n">{e(p["nimi"])}<small>{e(p["uhik"])} · {p["a"]}</small></span>'
-                    f'<span class="pp-rada" aria-hidden="true">{ala}{punktid}{el}{ee}</span>'
-                    f'<span class="v"><b>{_arvt(p["ee"], p["k"])}{u}</b> {p["koht"]}./{p["n"]}</span></div>')
     t_read = [[f'<b>{e(p["nimi"])}</b><small>{e(p["uhik"])}, {p["a"]}</small>', _arvt(p["ee"], p["k"]),
                _arvt(p["pk"], p["k"]), f'{pr(p["indeks"], 0)}', e(PP_HINNANG[p["hinnang"]]),
                f'{p["koht"]}./{p["n"]}'] for p in P]
@@ -394,8 +380,8 @@ def _pohjamaad(A):
   </header>
   <figure aria-labelledby="g-pohjamaad">
     <figcaption><span class="gt" id="g-pohjamaad">Eesti seitsme riigi seas, iga näitaja oma skaalal</span>
-      <span class="gs"><i class="pp-leg ala"></i> Põhjamaade vahemik (Soome, Rootsi, Taani, Norra) · <i class="pp-leg el"></i> ELi keskmine · <i class="pp-leg ee"></i> Eesti · paremal Eesti väärtus ja koht.</span></figcaption>
-    <div class="pp">{"".join(read)}</div>
+      <span class="gs">Tumedam lahter = selles reas parem. Eesti veerg on raamitud. Hinnang: tasemel = Põhjamaade (Soome, Rootsi, Taani, Norra) vahemikus või üle selle; maas = alla kõigi Põhjamaade.</span></figcaption>
+    {maatriks(P, RIIGID7, PP_NIMI, _arvt)}
     {allikarida(allikad)}
   </figure>
   <div class="kulg">{faktid([
@@ -645,19 +631,18 @@ def _kasu(A, vaated, uuringud, lingid, pais=True):
 
 def ettevotted(A, vaade, vaated=None):
     """Üks leht (Kadri 14.11.2026; enne kaks alamlehte Kasutus | Tootlikkus ja võimekus).
-    Sisu korrastus (Kadri 14.11.2026): iga plokk vastab ühele küsimusele, iga number on lehel üks kord."""
+    Sisu korrastus (Kadri 14.11.2026): iga plokk vastab ühele küsimusele, iga number on lehel üks kord.
+    Töölaud (Kadri 14.11.2026 valis näidise „B koos C maatriksiga“): tahvel, Põhjamaade maatriks, siis plokid kokkupandult."""
     from abi import jaga, link
     from lehed_teemad import lisa_sihid
+    import teema_tahvel as tt
+    from avaleht_tahvel import el_jaotus, kulujoon, osariba, ribarida
     ee = andmed.leia(A, EB, "EE", "uusim")
     ee_el = andmed.leia(A, EB, "EE", "uusim:alus")
     eu = andmed.leia(A, EB, EL, ee_el["aasta"])
     koht = andmed.koht(A, EB, "EE", ee_el["aasta"])
-    n_el = len(A["el_riigid"])
     siht = A["sihid"]["ee-ettevotted-75"]
-    # Päise plaadid käsitsi valitud kontekstiga (ver1 laiendus, Kadri 8.11.2026). Siht on esimese plaadi ribal,
-    # kolmas plaat näitab vahet Põhjamaadega, millest räägib ka lead.
-    from abi import a
-    from lehed_ulevaade import _p, el_jarjestus, kpi_pais, kpi_plaat, kpi_riba
+    from lehed_ulevaade import el_jarjestus
     y = ee_el["aasta"]
     j = el_jarjestus(EB, koht_praegu=koht, aasta_praegu=y)
     if not j:
@@ -668,19 +653,6 @@ def ettevotted(A, vaade, vaated=None):
     pm0 = sum(andmed.leia(A, EB, g, 2023)["vaartus"] for g in POHJAMAAD) / len(POHJAMAAD)
     vahe, vahe0 = pm - ee_el["vaartus"], pm0 - andmed.leia(A, EB, "EE", 2023)["vaartus"]
     sv = float(siht["siht"])
-    aside = kpi_pais(
-        kpi_plaat("ev-kasutus", "Kasutab tehisaru (10+ hõivatut)", f'{pr(ee["vaartus"])}%', f'{ee["aasta"]} · siht {pr(sv, 0)}%',
-                  {"muutus": (f'{ee["aasta"] - 1}. aastaga ei võrrelda', "uus tegevusalade klassifikaator (EMTAK 2025)"),
-                   "riba": kpi_riba(ee["vaartus"], 100, siht=sv, fookus=True, siht_tekst=f'siht {pr(sv, 0)}% ({siht["aasta"]})')},
-                  a(ee["url"], "Statistikaamet " + ee["allikas"].split("tabel ")[-1]), fookus=True),
-        kpi_plaat("ev-koht", "Koht ELis", f"{koht}.", f"/ {n_el} · {y}",
-                  {"muutus": (f"{k_ee[y0] - koht} kohta üles", f'{y0}: {k_ee[y0]}. koht · Eesti {pr(ee_el["vaartus"])}%'),
-                   "riba": kpi_riba(ee_el["vaartus"], 100, vrd=eu["vaartus"])},
-                  a("https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "Eurostat isoc_eb_ai")),
-        kpi_plaat("ev-pohja", "Vahe Põhjamaade keskmisega", f"{pr(vahe)}", f"protsendipunkti · {y}",
-                  {"muutus": (f"{_p(vahe - vahe0)} protsendipunkti 2023. aastast", f"2023: {pr(vahe0)} · Soome, Rootsi, Taani")},
-                  a("https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table", "Eurostat isoc_eb_ai")),
-    )
     lead = ("Kasutus kasvab kiiresti, aga vahe Põhjamaadega on protsendipunktides suurenenud. "
             "Eesti andmetel on tehisaru seotud suurema tootlikkusega alles siis, kui muutub ka töökorraldus.")
     # Teemamall A (Kadri 8.11.2026): andmed sakkides, siis uuringud, väited, reeglid, allikad
@@ -723,26 +695,82 @@ def ettevotted(A, vaade, vaated=None):
             if andmed.leia(A, nid, "EE", 2024)["vaartus"] < andmed.leia(A, nid, EL, 2024)["vaartus"]]
     vastus = (f'{" ja ".join(alla).capitalize()} jääb Eesti ELi keskmisest alla' if alla else "Digis ja teadus- ja arendustöös on Eesti ELi keskmisel tasemel") + " (2024)"
     voimekus = tm.andmesakid("ettevotted", tm.kys("Kas ettevõtetel on võimekust kasvada?", vastus),
-                             "Iga sakk on üks vaade: Põhjamaade võrdlus üheksas näitajas, digiintensiivsus ja teadus- ja arendustöö, Arenguseire Keskuse soovitused.", [
-        ("pm", "Põhjamaad", _pohjamaad(A)),
+                             "Esimene sakk on digiintensiivsus ja teadus- ja arendustöö, teine Arenguseire Keskuse soovitused. Põhjamaade võrdlus on lehe ülaosas.", [
         ("digi-ta", "Digi ja T&A", lisa_sihid(A, lisa_sihid(A, _digi_ja_ta(A), "digi", "el-digiintensiivsus-90"), "ta", "el-ta-3")),
         ("soovitused", "Soovitused", _arenguseire(A)),
     ], jid="voimekus", silt="Võimekus")
-    # Kadri 14.11.2026 („Jah, kõigil teemadel“): alamleht Tootlikkus ja võimekus on selle lehe plokid.
-    # Kleepuvas reas on üks link küsimuse kohta; alamplokid (tootlikkus, T&A) on sama küsimuse all.
-    return jaga(A, vaade, lead, [], [
-        ("andmed", [("andmed", "Kus ELis?")], sec_andmed),
-        ("ligipaas", [("ligipaas", "Mida firmad lubavad?")], _ligipaas(A)),
-        ("kasu", [("kasu", "Kas tasub?")], tm.andmesakid(
-            "ettevotted", tm.kys("Kas tehisaru tõstab tootlikkust?", "Kasu on päris, aga mitte igas ülesandes"),
-            "Esimene sakk on katsed ja teised uuringud, teine Eesti ettevõtete tootlikkuse uuring.", [
-                ("katsed", "Katsed ja uuringud", kasu),
-                ("eesti-firmad", "Eesti ettevõtted", _tootlikkus(A)),
-            ], jid="kasu", silt="Kas tasub?")),
-        ("voimekus", [("voimekus", "Võimekus")], voimekus),
-        ("teema-lopp", [("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
+    sec_kasu = tm.andmesakid(
+        "ettevotted", tm.kys("Kas tehisaru tõstab tootlikkust?", "Kasu on päris, aga mitte igas ülesandes"),
+        "Esimene sakk on katsed ja teised uuringud, teine Eesti ettevõtete tootlikkuse uuring.", [
+            ("katsed", "Katsed ja uuringud", kasu),
+            ("eesti-firmad", "Eesti ettevõtted", _tootlikkus(A)),
+        ], jid="kasu", silt="Kas tasub?")
+
+    # ---- Tahvel (näidis B): iga rida on küsimus, oma skaalal; rida viib plokki
+    J = el_jaotus(A, EB)
+    if (J["y"], J["koht"]) != (y, koht):
+        raise AndmeViga("Tahvli ELi koht ja ploki „Kus on Eesti ELis?“ koht erinevad")
+    ts = {g: sorted((int(v["aasta"]), v["vaartus"]) for v in andmed.vali(A, EB, geo=g, klass="alus")) for g in ["EE"] + POHJAMAAD}
+    pm_ts = [(a_, sum(dict(ts[g])[a_] for g in POHJAMAAD) / len(POHJAMAAD)) for a_, _ in ts["EE"] if all(a_ in dict(ts[g]) for g in POHJAMAAD)]
+    ee_ts = [(a_, v) for a_, v in ts["EE"] if a_ >= pm_ts[0][0]]
+    S = (A.get("ligipaas") or {}).get("sundmused") or []
+    KU = _ligipaasu_kontekst(A).get("uuringud") or []
+    P = pohjamaade_profiil(A)
+    tasemel = [p for p in P if p["hinnang"] in ("yle", "vahemik")]
+    maas = [p for p in P if p not in tasemel]
+    eb_url = "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+    read = [
+        dict(kys="Kui paljud kasutavad?", ank="andmed", arv=f'{pr(ee["vaartus"])}%', all=f'{ee["aasta"]}, vähemalt 10 hõivatuga ettevõtted',
+             pilt=osariba(ee["vaartus"], 100, sv, silt=f'{pr(ee["vaartus"])}%, siht {pr(sv, 0)}%'),
+             mrk=f'<span class="tv-lg siht"></span>siht {pr(sv, 0)}% ({siht["aasta"]}). {ee["aasta"] - 1}. aastaga ei võrrelda (uus tegevusalade klassifikaator EMTAK 2025).',
+             liik="mõõdetud", allikas="Statistikaamet " + ee["allikas"].split("tabel ")[-1], kuup=kp(ee["avaldatud"])),
+        dict(kys="Kus on Eesti ELis?", ank="andmed", arv=f"{koht}.", all=f'{J["n"]} riigist, {y}', pilt=ribarida(J),
+             mrk=f'{y0}: {k_ee[y0]}. koht. Eesti {pr(ee_el["vaartus"])}%, <span class="tv-lg eu"></span>EL {pr(eu["vaartus"])}%.',
+             liik="mõõdetud", allikas="Eurostat isoc_eb_ai", kuup=kp(ee_el["avaldatud"]) if ee_el.get("avaldatud") else str(y)),
+        dict(kys="Kas vahe Põhjamaadega kahaneb?", ank="andmed", arv=f"{pr(vahe)} p", all=f"{y}, Soome, Rootsi ja Taani keskmine",
+             pilt=kulujoon([(pm_ts, "r"), (ee_ts, "f")], 0, max(v for _, v in pm_ts) * 1.05, "Eesti ja Põhjamaade keskmine " + f"{pm_ts[0][0]}–{pm_ts[-1][0]}"),
+             mrk=f'Ei: 2023 oli vahe {pr(vahe0)} p. <span class="tv-lg ee"></span>Eesti, <span class="tt-lg kr"></span>Põhjamaad.',
+             liik="arvutatud", allikas="Eurostat isoc_eb_ai", kuup=kp(ee_el["avaldatud"]) if ee_el.get("avaldatud") else str(y)),
+    ]
+    if S:
+        read.append(dict(kys="Mida firmad töötajatele lubavad?", ank="ligipaas", arv=str(len(S)),
+                         all=f'kogutud otsust {min(r["kuupaev"] for r in S)[:4]}–{max(r["kuupaev"] for r in S)[:4]}',
+                         pilt=tt.otsuste_aeg(S, LIGIPAAS_NIMI), mrk=tt.otsuste_legend(S) + ". Valim on uudistest, mitte kõigi firmade ülevaade.",
+                         liik="uudised", allikas="ettevõtete teated", kuup="viimane " + kp(max(r["kuupaev"] for r in S))))
+    if KU:
+        read.append(dict(kys="Kas tehisaru tõstab tootlikkust?", ank="kasu", arv=str(len(KU)), all="katset, igaüks eri ülesandes",
+                         pilt=tt.katse_kiibid(KU), mrk="Kasu on päris, aga mitte igas ülesandes. Katsete numbreid ei liideta.",
+                         liik="katse", allikas=f"{len(KU)} uuringut", kuup="avaldatud " + "–".join(sorted({min(map(tt.aasta, KU)), max(map(tt.aasta, KU))}))))
+    read.append(dict(kys="Kas võimekus on Põhjamaade tasemel?", ank="pohjamaad", arv=f"{len(tasemel)}/{len(P)}", all="näitajat Põhjamaade tasemel",
+                     pilt=tt.ruudud(P), mrk="Maas: " + e(", ".join(p["nimi"][:1].lower() + p["nimi"][1:] if not p["nimi"][1:2].isupper() else p["nimi"] for p in maas)) + "." if maas else "Üheski näitajas pole maas.",
+                     liik="mõõdetud", allikas="Eurostat, UNESCO UIS", kuup=f'andmeaastad {min(p["a"] for p in P)}–{max(p["a"] for p in P)}'))
+    vv = [v for v in A["vaited"] if vaite_teema(v) == "ettevotted"]
+    from lehed_usaldus import _raskus
+    allikad = [ee["avaldatud"], ee_el.get("avaldatud"), A["leiud"]["gem-ai-teadlikkus"]["avaldatud"], siht["kontrollitud"]]
+    allikad = [d + "-01" if d and len(d) == 7 else d for d in allikad]
+    O = {o["id"]: o for o in A["otsused"]}
+    import datetime as _dt
+    tana = _dt.date.today().isoformat()
+    reeglid = [(O[i]["nimi"], (O[i]["kuupaev"] + ("-01" if O[i].get("tapsus") == "kuu" else "")) < tana) for i in ["ai-uldkohaldamine"]]
+    us = tt.usaldusriba(len(vv), sum(_raskus(v) == 0 for v in vv), reeglid, len(allikad), max(d for d in allikad if d))
+    sec_tahvel = tt.tahvel("tahvel", "Mis on ettevõtete seis?", f"{len(read)} küsimust, iga rida üks pilk",
+                           "Iga rida on oma skaalal; eri ridade numbreid ei võrrelda. Rida viib oma plokki. „Tõend“ ütleb, kas number on mõõdetud, arvutatud, katsest või uudistest.",
+                           read, us)
+    uks = tt.uksikasjad([
+        ("andmed", "Kus on Eesti ELis?", "kaart, järjestus, riikide 2026. aasta numbrid, ekspertide hinnang", sec_andmed),
+        ("ligipaas", "Mida firmad töötajatele lubavad?", f"{len(S)} otsust ja põhjused", _ligipaas(A)),
+        ("kasu", "Kas tehisaru tõstab tootlikkust?", "katsed, Eesti ja OECD uuringud", sec_kasu),
+        ("voimekus", "Kas ettevõtetel on võimekust kasvada?", "digi, teadus- ja arendustöö, soovitused", voimekus),
+        ("lopp", "Väited, reeglid ja allikad", f"{len(vv)} väidet · {len(reeglid)} reegel · {len(allikad)} allikat",
          tm.teema_lopp("", t_vaited, t_reeglid, t_allikad)),
-    ], aside=aside)
+    ])
+    # Kleepuvas reas on üks link küsimuse kohta; kokkupandud plokk avaneb, kui ankur on selle sees (sait.js avaAnkur).
+    return jaga(A, vaade, lead, [], [
+        ("tahvel", [("tahvel", "Ülevaade")], sec_tahvel),
+        ("pohjamaad", [("pohjamaad", "Põhjamaad")], _pohjamaad(A)),
+        ("uksikasjad", [("andmed", "Kus ELis?"), ("ligipaas", "Mida firmad lubavad?"), ("kasu", "Kas tasub?"), ("voimekus", "Võimekus"),
+                        ("t-vaited", "Väited"), ("t-allikad", "Allikad")], uks),
+    ])
 
 
 # ---------------------------------------------------------------- Saidikaart
