@@ -1823,3 +1823,12 @@ def test_riikide_strateegiad_tabelina(A):
     assert h.index("VKEd, mis kasutavad") < h.index("koolitus") < h.index("hoiak")  # kasutus enne hoiakuid
     assert "Veel 1 sihti" in h and "lk 20" in h and "arvulisi sihte pole" in h and "puudub" in h
     assert "<svg" not in h and "<b>Eesti</b>" in h  # Eesti oma siht võrdluseks, ilma graafikuta
+
+
+def test_uritused_ja_uudiste_plaadid_ilma_korduseta(sait):
+    """No UI slop läbivaatus 14.11.2026: ürituste lehel ei korda pealkirjad sama lauset; rühma kirjeldus sobib ka podcastidele."""
+    h = sait["uritused.html"]
+    assert h.count("lähim eespool") <= 1 and "Praegu tulevad siia" not in h
+    assert not re.search(r'<h2 id="h-tulekul">Tulekul', h)
+    p = sait["podcastid.html"]
+    assert "Kuidas ettevõtted tehisaru kasutusele võtavad" not in p

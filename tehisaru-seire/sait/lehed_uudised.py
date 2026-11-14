@@ -306,7 +306,7 @@ ETTEKANDE_TEEMA = {"too": "Töö", "ettevotted": "Ettevõtted", "inimesed": "Ini
 # Rühm = valdkond, millest ettekanne räägib (lugeja küsimus „mida see minu valdkonnas tähendab“), mitte ürituse nimi.
 # Järjekord on lehe järjekord; tühja rühma ei näidata. Uus kirje saab ettekanded.json-is välja „ruhm“.
 ETTEKANDE_RUHM = {
-    "too": ("Töö ja organisatsioon", "Kuidas ettevõtted tehisaru kasutusele võtavad ja mida enne seda korda teha."),
+    "too": ("Töö ja organisatsioon", "Kuidas tehisaru muudab tööd, ameteid ja ettevõtete tööviisi."),
     "riik": ("Riik ja haridus", "Riigiasutuste tehisarukatsed ning tehisaru koht koolis."),
     "tulevik": ("Tehisaru areng ja tulevik", "Pikemad vestlused sellest, kuhu tehisaru liigub ja mida see tähendab."),
     # Kadri 11.11.2026 kinnitas alapealkirja (podcastide lõim): teadlaste vestlused, mis aitavad tehisarust mõelda
@@ -386,9 +386,9 @@ def tulekul(A, tana):
              else '<p class="ps">Tulevasi üritusi ega tähtaegu praegu pole.</p>')
     return ees, f"""
 <section class="pn sp12" id="tulekul" aria-labelledby="h-tulekul">
-  <div class="pn-h"><h2 id="h-tulekul">Tulekul: {f"<b>{len(ees)} üritust või tähtaega</b>, lähim eespool" if ees else "üritusi ega tähtaegu praegu pole"}</h2></div>
+  <div class="pn-h"><h2 id="h-tulekul">{f"<b>{len(ees)} üritust või tähtaega</b>, lähim eespool" if ees else "Üritusi ega tähtaegu praegu pole"}</h2></div>
   {loend}
-  <p class="ps">Praegu tulevad siia Eesti riigi üritused ja tähtajad igapäevasest uudistekogumisest. Tulevaste seminaride ja veebiseminaride kava veel ei koguta. Kõik riigi otsused ja eelnõud on lehel <a href="eesti-otsused.html">Eesti otsused</a>.</p>
+  <p class="ps">Tulevaste seminaride ja veebiseminaride kava veel ei koguta. Kõik riigi otsused ja eelnõud on lehel <a href="eesti-otsused.html">Eesti otsused</a>.</p>
 </section>"""
 
 
@@ -462,7 +462,7 @@ def ettekannete_osad(A, vaade, tana=None):
             " ¦ kokkuvõte on meie sõnadega, esineja kogemus ei ole mõõtmistulemus" if n
             else "Ettekanded: **kokkuvõtted ootavad kinnitust**")
     alam_h1(vaade, "uritused.html",
-            f"Tulekul: järgmine üritus või tähtaeg on **{kp(ees[0]['tahtaeg'])}** ¦ lähim eespool" if ees
+            f"Tulekul: järgmine üritus või tähtaeg on **{kp(ees[0]['tahtaeg'])}**" if ees
             else "Tulekul: **tulevasi üritusi praegu pole**")
     alam_h1(vaade, "podcastid.html",
             f"Podcastid: **{m} {'vestlus' if m == 1 else 'vestlust'}** tehisaru arengust, tööst ja mõistusest"
