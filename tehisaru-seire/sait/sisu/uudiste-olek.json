@@ -1,65 +1,65 @@
 {
- "viimane_kontroll": "2026-11-14T07:55:00+02:00",
- "allikad": [
-  {
-   "nimi": "ERR uudised (RSS)",
-   "ok": true,
-   "markus": "14.11: Jagomägi intervjuu (tehisaru ja tarkvaratöö)"
-  },
-  {
-   "nimi": "ERR News (RSS)",
-   "ok": true,
-   "markus": "14.11: uut tehisaru lugu pole"
-  },
-  {
-   "nimi": "Uudisteotsing (Eesti)",
-   "ok": true,
-   "markus": "14.11: Jagomägi (ERR), LHV tehisaru kulud (Äritehnoloogia); agendikoodi levik +TV3"
-  },
-  {
-   "nimi": "Uudisteotsing (maailm)",
-   "ok": true,
-   "markus": "14.11: Fedi Barr tehisaru tööturuhäiretest; USA avaliku sektori ametiühingud; Microsofti tõrge ja koondamised"
-  },
-  {
-   "nimi": "Challenger kuuaruanne",
-   "ok": true,
-   "markus": "kuuaruanne; järgmine detsembri alguses"
-  },
-  {
-   "nimi": "Arenguseire Keskus (RSS)",
-   "ok": true,
-   "markus": "14.11: uut asjakohast postitust pole"
-  },
-  {
-   "nimi": "Eesti.ai uudised",
-   "ok": true,
-   "markus": "14.11: avanes; uut pole (viimane 7.10 Arunädal)"
-  },
-  {
-   "nimi": "Statistikaamet uudised",
-   "ok": true,
-   "markus": "14.11: avanes; tehisaru või IKT uudist pole"
-  },
-  {
-   "nimi": "Riigi otsingud (site: ja uudised)",
-   "ok": true,
-   "markus": "14.11: uut riigi otsust pole; T2027 kontroll 4/7"
-  },
-  {
-   "nimi": "OECD uudised (otsing)",
-   "ok": true,
-   "markus": "14.11: uut OECD tehisaru teadet pole"
-  },
-  {
-   "nimi": "Riikide strateegiad",
-   "ok": true,
-   "markus": "14.11: uut strateegiat pole; tagasivaade ei edenenud (UK PDF ei avanenud)"
-  },
-  {
-   "nimi": "DataCite 10.58009 (TÜ repositoorium)",
-   "ok": true,
-   "markus": "14.11: uut DOI-d pole"
-  }
- ]
+  "viimane_kontroll": "2026-11-14T18:20:00+02:00",
+  "allikad": [
+    {
+      "nimi": "ERR uudised (RSS)",
+      "ok": true,
+      "markus": "14.11: Jagomägi intervjuu (tehisaru ja tarkvaratöö)"
+    },
+    {
+      "nimi": "ERR News (RSS)",
+      "ok": true,
+      "markus": "14.11: uut tehisaru lugu pole"
+    },
+    {
+      "nimi": "Uudisteotsing (Eesti)",
+      "ok": true,
+      "markus": "14.11: Jagomägi (ERR), LHV tehisaru kulud (Äritehnoloogia); agendikoodi levik +TV3"
+    },
+    {
+      "nimi": "Uudisteotsing (maailm)",
+      "ok": true,
+      "markus": "14.11: Fedi Barr tehisaru tööturuhäiretest; USA avaliku sektori ametiühingud; Microsofti tõrge ja koondamised; 12.53: Skydance kulukärped ja tehisaru"
+    },
+    {
+      "nimi": "Challenger kuuaruanne",
+      "ok": true,
+      "markus": "kuuaruanne; järgmine detsembri alguses"
+    },
+    {
+      "nimi": "Arenguseire Keskus (RSS)",
+      "ok": true,
+      "markus": "14.11: uut asjakohast postitust pole"
+    },
+    {
+      "nimi": "Eesti.ai uudised",
+      "ok": true,
+      "markus": "14.11: avanes; uut pole (viimane 7.10 Arunädal)"
+    },
+    {
+      "nimi": "Statistikaamet uudised",
+      "ok": true,
+      "markus": "14.11: avanes; tehisaru või IKT uudist pole"
+    },
+    {
+      "nimi": "Riigi otsingud (site: ja uudised)",
+      "ok": true,
+      "markus": "14.11: uut riigi otsust pole; T2027 kontroll 4/7"
+    },
+    {
+      "nimi": "OECD uudised (otsing)",
+      "ok": true,
+      "markus": "14.11: uut OECD tehisaru teadet pole"
+    },
+    {
+      "nimi": "Riikide strateegiad",
+      "ok": true,
+      "markus": "14.11: uut strateegiat pole; tagasivaade ei edenenud (UK PDF ei avanenud)"
+    },
+    {
+      "nimi": "DataCite 10.58009 (TÜ repositoorium)",
+      "ok": true,
+      "markus": "14.11: uut DOI-d pole"
+    }
+  ]
 }
