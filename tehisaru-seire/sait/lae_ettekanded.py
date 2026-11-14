@@ -8,6 +8,8 @@ ja saidile läheb see alles pärast Kadri kinnitust (sait/ootel.py).
   python3 sait/lae_ettekanded.py [--subtiitrid KAUST]
 
 --subtiitrid: proovib uutele kandidaatidele yt-dlp-ga automaatsubtiitreid (ainult tööks, mitte repo ega saidi jaoks).
+Kui subtiitreid ei saanud (pilves tavaline) või video on UTTV-s, saab kandidaat märke „vajab_teksti“ ja töö annab
+hoiatuse; tekst tehakse siis Kadri arvutis skriptiga sait/tee_tekstid.py (ADR-1, 14.11.2026).
 Esimesel korral (kandidaatide faili pole) märgib kõik leitud videod „vana“, et vanad salvestised ei tuleks korraga.
 """
 import datetime as dt
@@ -157,6 +159,16 @@ def subtiitrid(vid, kaust):
     return r.returncode == 0 and any(kaust.glob(f"{vid}*.vtt"))
 
 
+def vajab_teksti_teade(kandidaadid):
+    """Valju teade, kui ootel kandidaatidel pole teksti (ADR-1). GitHub näitab ::warning:: rida töö kokkuvõttes."""
+    n = sum(1 for k in kandidaadid if k.get("olek") == "uus" and (
+        k.get("vajab_teksti") or k.get("subtiitrid") is False or k["id"].startswith("uttv-")))
+    if not n:
+        return "Kõigil uutel kandidaatidel on tekst või neid pole"
+    return (f"::warning::{n} ootel ettekandel pole teksti (pilv ei saa YouTube'i subtiitreid, UTTV-l neid pole). "
+            "Tee tekstid oma arvutis: python3 tehisaru-seire/sait/tee_tekstid.py")
+
+
 def main(argv):
     sub = Path(argv[argv.index("--subtiitrid") + 1]) if "--subtiitrid" in argv else None
     tana = dt.date.today()
@@ -195,10 +207,13 @@ def main(argv):
                 k["subtiitrid"] = subtiitrid(k["id"], sub)
             except Exception:
                 k["subtiitrid"] = False
+        if k["id"] in uued and (k.get("subtiitrid") is False or k["id"].startswith("uttv-")):
+            k["vajab_teksti"] = True  # ADR-1: tekst tehakse Kadri arvutis (sait/tee_tekstid.py)
     olek["kandidaadid"] = sorted(olek["kandidaadid"], key=lambda k: (k["leitud"], k["avaldatud"]), reverse=True)[:500]
     olek.update({"uuendatud": tana.isoformat(), "vead": vead})
     KANDIDAADID.write_text(json.dumps(olek, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"UUSI KANDIDAATE {len(uued)}" + (" (esimene jooks: kõik märgiti vanaks)" if esimene else ""))
+    print(vajab_teksti_teade(olek["kandidaadid"]))
     for k in olek["kandidaadid"]:
         if k["id"] in uued:
             print(f"UUS {k['allikas']} {k['avaldatud']} {k['url']} {k['pealkiri'][:100]}")
