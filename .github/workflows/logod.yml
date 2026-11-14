@@ -4,8 +4,8 @@ name: logod
 # Claude'i pilvekeskkonnast on välisvõrk suletud, seepärast jookseb see siin. Kui uusi logosid pole, commit'i ei tule.
 on:
   schedule:
-    - cron: "45 5 * * *"    # pärast hommikust uudistekogumist (07:23 Tallinna aja järgi)
-    - cron: "15 16 * * *"   # pärast õhtust kogumist (17:53)
+    - cron: "45 5 * * *"    # kaks korda päevas; GitHub käivitab ajastatud töid tunde hiljem, järjekorda ei eelda
+    - cron: "15 16 * * *"
   workflow_dispatch:
 permissions:
   contents: write
@@ -37,9 +37,10 @@ jobs:
           KEELATUD_SONAD: ${{ secrets.KEELATUD_SONAD }}
           KEELATUD_KAUSTAD: ${{ secrets.KEELATUD_KAUSTAD }}
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tehisaru-seire/sait/pilt/logod
           if git diff --cached --quiet; then echo "Uusi logosid pole"; exit 0; fi
           python turvakontroll/kontrolli.py
-          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-              commit -m "Uudiste allikate logod $(date -u +%F)"
+          git commit -m "Uudiste allikate logod $(date -u +%F)"
           git pull --rebase -q origin main && git push
