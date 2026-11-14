@@ -171,3 +171,89 @@ def ruudud(P, r=12):
     return (f'<svg class="tt-svg" viewBox="0 0 {len(P) * (r + 4)} {r + 2}" width="{len(P) * (r + 4)}" height="{r + 2}" role="img" '
             f'aria-label="{n} näitajat {len(P)}-st Põhjamaade tasemel">{"".join(out)}</svg>')
 
+
+
+# ---------------------------------------------------------------- inimeste joonised (Kadri 14.11.2026 valis „A ja B koos“)
+
+def p1(v):
+    """Täisarv ilma komakohata (65%), muidu üks koht (36,9%): ümardus ei tohi muuta võrdlust märkusega."""
+    return pr(v, 0) if round(v, 1) == round(v) else pr(v)
+
+
+def mini_hantlid(paarid, riik, lo=30, hi=80, w=200, h=50):
+    """Kasv aastaga riikide kaupa: [(vana, uus)] vaatlused; joon vanast uueni, Eesti sinine."""
+    X = lambda v: 4 + (v - lo) / (hi - lo) * (w - 40)  # noqa: E731
+    out = []
+    for i, (v0, v1) in enumerate(paarid):
+        yy = 8 + i * (h - 12) / max(1, len(paarid) - 1)
+        k = "f" if v1["geo"] == "EE" else "r"
+        out.append(f'<line class="tv-l{k}" x1="{X(v0["vaartus"]):.1f}" x2="{X(v1["vaartus"]):.1f}" y1="{yy:.1f}" y2="{yy:.1f}" stroke-width="2"/>'
+                   f'<circle class="tv-p{k}" cx="{X(v1["vaartus"]):.1f}" cy="{yy:.1f}" r="3"/>'
+                   f'<text class="tt-t{" b" if k == "f" else ""}" x="{X(v1["vaartus"]) + 6:.1f}" y="{yy + 4:.1f}">{v1["geo"]}</text>')
+    silt = ", ".join(f'{riik(v1["geo"])} {pr(v0["vaartus"], 0)} → {pr(v1["vaartus"], 0)}' for v0, v1 in paarid)
+    return f'<svg class="tt-svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="{e(silt)}">{"".join(out)}</svg>'
+
+
+VAHVLI_RUHM = {"tool": "kasutas tööl", "kas": "kasutas, aga mitte tööl", "oska": "ei kasutanud, sest ei osanud", "muu": "ei kasutanud muul põhjusel"}
+
+
+def vahvel(osad, silt, n=10, r=14, g=3):
+    """osad: [(rühm, osakaal %)] järjekorras; ruut = 1%; ülejäänu on rühm „muu“.
+    Kasuta ainult rühmade puhul, mis on samast küsitlusest ja ei kattu (osad kokku ≤ 100)."""
+    if sum(v for _, v in osad) > 100.5:
+        raise AndmeViga(f"Vahvli osad on kokku üle 100%: {osad}")
+    piirid, s = [], 0
+    for k, v in osad:
+        s += v
+        piirid.append((k, s))
+    out = []
+    for j in range(100):
+        k = next((k for k, p in piirid if j + 0.5 <= p), "muu")
+        out.append(f'<rect class="tt-w {k}" x="{(j % n) * (r + g)}" y="{(j // n) * (r + g)}" width="{r}" height="{r}" rx="2"/>')
+    w = n * (r + g) - g
+    return f'<svg class="tt-svg" viewBox="0 0 {w} {w}" width="{w}" height="{w}" role="img" aria-label="{e(silt)}">{"".join(out)}</svg>'
+
+
+def vahvli_legend(arvud):
+    """arvud: {rühm: osakaal %}; ümardatud täisarvuni."""
+    return ('<ul class="tt-wleg">' + "".join(f'<li><i class="tt-w {k}"></i><b>{pr(arvud[k], 0)}</b> {e(VAHVLI_RUHM[k])}</li>'
+                                              for k in VAHVLI_RUHM if k in arvud) + "</ul>")
+
+
+def hajuvus(pts, eu_x, eu_y, x_silt, y_silt, nimi, sildid, x0=30, x1=90, y0=10, y1=60, w=640, h=380):
+    """ELi riigid kahel teljel (kaks eri mõõdikut, neid ei liideta). pts: [(geo, x, y)].
+    Tagastab (svg, Eesti kaugus riikide üldisest seosest punktides). Seos (vähimruutude joon) ei näita põhjust."""
+    if not all(x0 <= x <= x1 and y0 <= y <= y1 for _, x, y in pts):
+        raise AndmeViga("Hajuvusgraafiku punkt on teljest väljas")
+    n = len(pts)
+    mx, my = sum(p[1] for p in pts) / n, sum(p[2] for p in pts) / n
+    b = sum((p[1] - mx) * (p[2] - my) for p in pts) / sum((p[1] - mx) ** 2 for p in pts)
+    c = my - b * mx
+    X = lambda v: 50 + (v - x0) / (x1 - x0) * (w - 80)  # noqa: E731
+    Y = lambda v: h - 36 - (v - y0) / (y1 - y0) * (h - 60)  # noqa: E731
+    o = []
+    for v in range(x0, x1 + 1, 10):
+        o.append(f'<line class="tv-ax" x1="{X(v):.1f}" x2="{X(v):.1f}" y1="{Y(y0):.1f}" y2="{Y(y1):.1f}" opacity=".5"/>'
+                 f'<text class="tt-t" x="{X(v):.1f}" y="{h - 18}" text-anchor="middle">{v}%</text>')
+    for v in range(y0, y1 + 1, 10):
+        o.append(f'<line class="tv-ax" x1="{X(x0):.1f}" x2="{X(x1):.1f}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" opacity=".5"/>'
+                 f'<text class="tt-t" x="44" y="{Y(v) + 4:.1f}" text-anchor="end">{v}%</text>')
+    o.append(f'<line class="tt-elk" x1="{X(eu_x):.1f}" x2="{X(eu_x):.1f}" y1="{Y(y0):.1f}" y2="{Y(y1):.1f}"/>'
+             f'<line class="tt-elk" x1="{X(x0):.1f}" x2="{X(x1):.1f}" y1="{Y(eu_y):.1f}" y2="{Y(eu_y):.1f}"/>'
+             f'<text class="tt-t" x="{X(eu_x) + 4:.1f}" y="{Y(y1) + 10:.1f}">ELi keskmine</text>')
+    xa, xb = min(p[1] for p in pts), max(p[1] for p in pts)
+    o.append(f'<line class="tv-lr" x1="{X(xa):.1f}" x2="{X(xb):.1f}" y1="{Y(c + b * xa):.1f}" y2="{Y(c + b * xb):.1f}" stroke-width="1.5"/>'
+             f'<text class="tt-t" x="{X(xa) + 4:.1f}" y="{Y(c + b * xa) + 18:.1f}">riikide üldine seos</text>')
+    for g, xv, yv in sorted(pts, key=lambda p: p[0] == "EE"):
+        ee = g == "EE"
+        o.append(f'<circle class="{"tv-ee" if ee else "tv-c"}" cx="{X(xv):.1f}" cy="{Y(yv):.1f}" r="{6 if ee else 4.5}">'
+                 f'<title>{e(nimi(g))}: {e(y_silt)} {pr(yv)}%, {e(x_silt)} {pr(xv)}%</title></circle>')
+        if g in sildid:
+            o.append(f'<text class="tt-t{" b f" if ee else ""}" x="{X(xv) + 8:.1f}" y="{Y(yv) + 4:.1f}">{e(nimi(g)) if ee else g}</text>')
+    o.append(f'<text class="tt-t" x="{X(x1):.1f}" y="{h - 2}" text-anchor="end">{e(x_silt)} →</text>'
+             f'<text class="tt-t" x="6" y="12">↑ {e(y_silt)}</text>')
+    ee = next(p for p in pts if p[0] == "EE")
+    kaugus = ee[2] - (c + b * ee[1])
+    suund = "kõrgemal" if kaugus >= 0 else "madalamal"
+    silt = f"ELi {n} riiki: {y_silt} ja {x_silt}; Eesti {pr(ee[2])}% ja {pr(ee[1])}%, riikide üldisest seosest {pr(abs(kaugus), 0)} punkti {suund}"
+    return f'<svg class="tt-svg tt-sc" viewBox="0 0 {w} {h}" width="100%" role="img" aria-label="{e(silt)}">{"".join(o)}</svg>', kaugus
