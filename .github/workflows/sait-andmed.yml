@@ -46,6 +46,8 @@ jobs:
           KEELATUD_SONAD: ${{ secrets.KEELATUD_SONAD }}
           KEELATUD_KAUSTAD: ${{ secrets.KEELATUD_KAUSTAD }}
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tehisaru-seire/andmed tehisaru-seire/kaardid tehisaru-seire/kataloog/vaatlused-valis.csv \
                   tehisaru-seire/kataloog/valis-olek.csv tehisaru-seire/sait/sisu/vabad-ametikohad.csv \
                   tehisaru-seire/sait/sisu/vabad-jarjestus.csv tehisaru-seire/sait/sisu/el-jarjestus.csv \
@@ -53,6 +55,5 @@ jobs:
           if git diff --cached --quiet; then echo "Uusi numbreid pole"; exit 0; fi
           python turvakontroll/kontrolli.py
           git diff --cached --stat >> "$GITHUB_STEP_SUMMARY"
-          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-              commit -m "Andmed: ametliku statistika värskendus $(date -u +%F)"
-          git push
+          git commit -m "Andmed: ametliku statistika värskendus $(date -u +%F)"
+          git pull --rebase -q origin main && git push
