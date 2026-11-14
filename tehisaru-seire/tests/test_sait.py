@@ -1841,3 +1841,32 @@ def test_telefonis_alamlehed_murduvad_ja_nupud_44px():
     osa = css[css.index("Kadri 14.11.2026 „muuda“"):]
     assert "html[data-t] .alamlehed { flex-wrap: wrap; overflow-x: visible;" in osa
     assert "html[data-t] .u-f button" in osa and "min-height: 44px" in osa
+
+
+def _kontrast(a, b):
+    def hel(h):
+        k = [int(h[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+        k = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in k]
+        return 0.2126 * k[0] + 0.7152 * k[1] + 0.0722 * k[2]
+    x, y = sorted((hel(a), hel(b)), reverse=True)
+    return (x + 0.05) / (y + 0.05)
+
+
+def test_ligipaasetavus_abitekst_graafik_ja_klopsualad(sait):
+    """Ligipääsetavuse ülevaatus 14.11.2026 (Kadri „Jah, kõik viis“): WCAG 2.1 AA 1.4.3, 4.1.2 ja 2.5.8."""
+    css = (JUUR / "sait" / "stiil.css").read_text(encoding="utf-8")
+    # 1. Abitekst (--ink-3) on igas teemas igal taustal vähemalt 4,5:1.
+    plokid = re.findall(r"\{([^{}]*--ink-3:[^{}]*)\}", css)
+    assert len(plokid) == 4
+    for plokk in plokid:
+        t = dict(re.findall(r"--([\w-]+):\s*(#[0-9a-fA-F]{6})", plokk))
+        for taust in ("surface", "surface-2", "brand-soft", "panel", "page"):
+            if taust in t:
+                assert _kontrast(t["ink-3"], t[taust]) >= 4.5, (t["ink-3"], taust, t[taust])
+    # 2. Järjestusgraafiku SVG sees on fookustatav joon, seega on SVG rühm, mitte pilt (pilt ei tohi sisaldada nuppe).
+    for leht in ("index.html", "too.html"):
+        for svg in re.findall(r'<svg class="bump[^>]*>', sait[leht]):
+            assert 'role="group"' in svg and 'role="img"' not in svg
+    # 3. Puuteala vähemalt 24 px: graafiku joone nähtamatu ala ja uudise kokkuvõte.
+    assert int(re.search(r"\.bs \.bh \{[^}]*stroke-width: (\d+)px", css).group(1)) >= 24
+    assert re.search(r"\.u-k\.voib \{[^}]*line-height: max\(1.5em, 24px\)", css)

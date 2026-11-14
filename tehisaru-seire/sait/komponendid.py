@@ -488,7 +488,7 @@ def jarjestuse_muutus(seeriad, aastad, fookus, teine=None, piirid=(5, 10), silt=
         samm = (W - vasak - parem) / (len(aastad_v) - 1)
         X = lambda i: vasak + i * samm  # noqa: E731
         Y = lambda k: ulal + (k - 0.5) * rida if k <= N else all_y  # noqa: E731
-        o = [f'<svg class="bump {"lai" if on_lai else "kitsas"}" viewBox="0 0 {W} {H}" style="max-width:{W}px" role="img" aria-label="{e(silt)}, {_esimesed(N, n_koik)}">']
+        o = [f'<svg class="bump {"lai" if on_lai else "kitsas"}" viewBox="0 0 {W} {H}" style="max-width:{W}px" role="group" aria-label="{e(silt)}, {_esimesed(N, n_koik)}">']
         for i, a in enumerate(aastad_v):
             o.append(f'<text class="bump-a" x="{X(i):.1f}" y="{ulal - 18}" text-anchor="middle">{a if on_lai else "’" + str(a)[2:]}</text>')
         o.append(f'<line class="bump-p" x1="{vasak - 8}" x2="{W - parem + 8}" y1="{all_y - 12}" y2="{all_y - 12}"/>')

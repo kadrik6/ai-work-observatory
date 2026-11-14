@@ -5,7 +5,7 @@
 
 :root {
   --surface: #ffffff; --surface-2: #f9f9f9; --surface-3: #f0f0f2; --brand-soft: #e6eafc;
-  --ink: #151926; --ink-2: #4b4e62; --ink-3: #737482;
+  --ink: #151926; --ink-2: #4b4e62; --ink-3: #666774;
   --signal: #0030de; --signal-strong: #0024a8; --on-signal: #ffffff;
   --context: #d2d3d8; --context-strong: #34394c;
   --border: #e1e2e5; --grid: #f0f0f2; --control: #838494;
@@ -46,7 +46,7 @@
    asendab 21:01 lukustatud Helehalli. Valge leht, helehallid numbrikaardid, jaotised ilma kastita. */
 :root[data-seire-teema="soft"] {
   --surface: #ffffff; --surface-2: #f9f9f9; --surface-3: #f0f0f2; --brand-soft: #e6eafc;
-  --ink: #151926; --ink-2: #4b4e62; --ink-3: #737482;
+  --ink: #151926; --ink-2: #4b4e62; --ink-3: #666774;
   --context: #d2d3d8; --context-strong: #34394c;
   --border: #e1e2e5; --grid: #f0f0f2; --control: #838494;
   --mark-ctx: #8b8d99; --panel: #ffffff; --page: #ffffff;
@@ -1052,12 +1052,13 @@ th, td { padding: 6px 10px; }
 .bump.kitsas .bl { font-size: 12.5px; }
 .bump.kitsas { display: none; }
 @media (max-width: 700px) { .bump.lai { display: none; } .bump.kitsas { display: block; } }
+.bump.kitsas .bs .bh { stroke-width: 28px; }  /* telefonis on SVG kitsam kui viewBox, nii jääb puuteala ka 360 px ekraanil umbes 24 px */
 .bump-a { font-size: 14px; font-weight: 700; fill: var(--ink); }
 .bump-all { font-size: 13px; fill: var(--ink-3); }
 .bump-p { stroke: var(--border); stroke-width: 1; }
 .bs { cursor: pointer; outline: none; }
 .bs .bj { fill: none; stroke: var(--context); stroke-width: 1.5; }
-.bs .bh { fill: none; stroke: transparent; stroke-width: 18px; pointer-events: stroke; }  /* hõljumise ala joonest laiem, ridade vahe 28 (Kadri 12.11.2026) */
+.bs .bh { fill: none; stroke: transparent; stroke-width: 24px; pointer-events: stroke; }  /* hõljumise ja puute ala 24 px (WCAG 2.5.8), ridade vahe 26–28 (Kadri 12.11 ja 14.11.2026) */
 .bs .bp { pointer-events: none; }
 .bs .bj.v { stroke-dasharray: 2 4; opacity: .7; }
 .bs .bp { fill: var(--mark-ctx); }
@@ -1094,7 +1095,7 @@ th, td { padding: 6px 10px; }
 
 /* Uudise kokkuvõte: kaks rida, klõps avab (Kadri 7.11.2026: teksti on liiga palju). Klass tuleb sait.js-ist, ilma JS-ita on kogu tekst näha. */
 .u-k.kinni { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
-.u-k.voib { cursor: pointer; }
+.u-k.voib { cursor: pointer; line-height: max(1.5em, 24px); }  /* klõpsuala vähemalt 24 px kõrge ka ühel real (WCAG 2.5.8, Kadri 14.11.2026); min-height näitaks järgmise rea ülaosa */
 .u-k.voib:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
 
 /* Kast ei ole kasti sees: vahe numbrid ilma raamita (Kadri 7.11.2026: liiga palju ühel taustal) */
