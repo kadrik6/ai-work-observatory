@@ -804,6 +804,81 @@
 ],
 "kontroll": "Kokkuvõte saate lehel oleva transkripti põhjal (loetud saate kirjeldus ja lõigud 0:09–0:16); kuupäev saate lehe järgi. Kontrollitud 11.11.2026.",
 "seire_kinnitatud": "2026-11-11"
+},
+{
+"id": "uttv-43702",
+"esineja": "Age Värv (juht), Kai Härmand, Tiina Karm, Sten Tikerpe, Julia Maal",
+"amet": "Paneel: TÜ võlaõiguse kaasprofessor, Harju Maakohtu kohtunik, TÜ tsiviilõiguse lektor, NOVE vandeadvokaat, Bolti juhtivjurist",
+"pealkiri": "Tehisintellekt juristi töölaual ja õigushariduses",
+"allikas": "uttv",
+"uritus": "Eesti Õigusteadlaste päevad 39",
+"uritus_url": "https://uttv.ee/naita?id=43702",
+"kuupaev": "2026-09-24",
+"video": "https://uttv.ee/naita?id=43702",
+"keel": "eesti",
+"teemad": [
+"too",
+"avalik-sektor"
+],
+"ruhm": "too",
+"kokkuvote": "Kohtunik, Bolti jurist, advokaat ja kaks õppejõudu arutasid, kuidas tehisaru juristi tööd juba muudab ja mida peaks õigusharidus teisiti tegema. Enamiku panelistide arvates pole eraldi tehisaru ainet vaja: kriitiline kasutus tuleb põimida igasse ainesse ja osa tööst peab algaja jurist tegema ise läbi, muidu ei oska ta hiljem tehisaru tööd kontrollida.",
+"mottes": [
+"Osal kohtunikel on Copiloti litsents ja digitoimikul tehisaruabiline. Boltis vaatab tehisaru korduvaid lepinguid üle varem kokku lepitud reeglite järgi ja asendab mõnikord uue turu õigusanalüüsi, mida varem telliti advokaadibüroolt.",
+"TÜ õigusõppe katses lahendasid üliõpilased ülesande kõigepealt ise ja seejärel tehisaruga. Nende tagasiside järgi on tehisaru vigu lihtsam leida, kui teema on enne selge.",
+"Advokaadi sõnul teeb tehisaru juba hästi praktikandi tavatöid, nagu kohtupraktika otsing ja mustandid, kuid õppimiseks peab osa tööst tegema käsitsi: kes pole olnud algaja, ei saa kogenud juristiks. Esinejate kogemus ja arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte transkriptsiooni põhjal (Kadri CLI, 12.11.2026); esinejad ja ametid UTTV lehelt.",
+"seire_kinnitatud": "2026-11-13"
+},
+{
+"id": "uttv-43714",
+"esineja": "Indrek Niklus (juht), Kaupo Paal, Ruth Prigoda, Martin Raude, Priit Kaasik",
+"amet": "Paneel: NOVE nõunik, Riigikohtu kohtunik, Tallinna Halduskohtu kohtunik, vandeadvokaat, tehnoloogiaettevõtja",
+"pealkiri": "Tsiviilkohtumenetluse lihtsustamine, eelkõige tehisaru abil",
+"allikas": "uttv",
+"uritus": "Eesti Õigusteadlaste päevad 39",
+"uritus_url": "https://uttv.ee/naita?id=43714",
+"kuupaev": "2026-09-25",
+"video": "https://uttv.ee/naita?id=43714",
+"keel": "eesti",
+"teemad": [
+"avalik-sektor",
+"too"
+],
+"ruhm": "riik",
+"kokkuvote": "Kohtunikud, advokaat ja tehnoloogiaettevõtja arutasid, kas tehisaru saaks pikenevaid kohtumenetlusi kiirendada. Suurimat võitu nähti menetluse juhtimises ja rutiinis, mitte otsustamises: tõendite hindamist ja lahendi sisu ei tohi panelistide sõnul masinale anda.",
+"mottes": [
+"Halduskohtu kohtuniku sõnul aitab digitoimiku tehisaruabiline leida õige koha väga pikas toimikus ja kohtutes katsetatakse Copilotit. Istungite automaatne transkriptsioon pole veel kasutuskõlblik.",
+"Hagi puuduste kõrvaldamine (nt riigilõiv, ebaselge nõue) võtab praegu kuid. Kui tehisaru juhiks neile tähelepanu juba hagi esitamisel, lüheneks menetlus. Enne automatiseerimist tuleks menetlusseadused läbi vaadata, et mitte digitaliseerida paberiaja samme.",
+"Riskina nähti tehisaruga koostatud üha pikemaid menetlusdokumente. Panelistid nõudsid läbipaistvust: kohus ja pooled peaksid ütlema, kus nad tehisaru kasutasid. Panelistide arvamus, mitte mõõtmine."
+],
+"kontroll": "Kokkuvõte transkriptsiooni põhjal (Kadri CLI, 12.11.2026); esinejad ja ametid UTTV lehelt.",
+"seire_kinnitatud": "2026-11-13"
+},
+{
+"id": "uttv-43100",
+"esineja": "Arun Kumar Singh",
+"amet": "TÜ autonoomse robootika professor",
+"pealkiri": "Beyond Scaling: Building Safe and Data-efficient Learning Robots",
+"allikas": "uttv",
+"uritus": "Inauguratsiooniloeng",
+"uritus_url": "https://uttv.ee/naita?id=43100",
+"kuupaev": "2026-09-16",
+"video": "https://uttv.ee/naita?id=43100",
+"keel": "inglise",
+"teemad": [
+"too"
+],
+"ruhm": "tulevik",
+"kokkuvote": "Singh vaidleb vastu ootusele, et robootikas lahendavad kõik probleemid suuremad andmed ja mudelid. Tema sõnul ei saa ohutust õpetada ainult andmete pealt, sest ohuolukordi on raske ja ohtlik salvestada. Seepärast ühendab tema töörühm masinõppe füüsikaliste mudelite ja selgete ohutuspiirangutega.",
+"mottes": [
+"Robot peab reageerima millisekunditega ja olema töökindel ka harvades olukordades. Pilves töötav suur mudel on selleks sageli liiga aeglane ning hea keskmine edukus ei ole kodus ega teel piisav.",
+"Projektis XSCAVE arendab töörühm tehisaru rasketehnikale, kus vigu teha ei tohi ja treeningandmeid peaaegu pole.",
+"Õpetamises ei kontrolli ta enam, kas üliõpilane oskab algoritmi programmeerida, sest seda teeb tehisaru; nüüd annab ta keerukamaid probleemülesandeid. Professori seisukoht ja töörühma tulemused, mitte sõltumatu võrdlus."
+],
+"kontroll": "Kokkuvõte transkriptsiooni põhjal (Kadri CLI, 12.11.2026); loengu kirjeldus UTTV lehelt.",
+"seire_kinnitatud": "2026-11-13",
+"tegija": "TÜ tehnoloogiainstituut"
 }
 ]
 }

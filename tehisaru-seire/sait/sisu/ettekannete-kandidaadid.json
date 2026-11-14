@@ -1,6 +1,50 @@
 {
  "kandidaadid": [
   {
+   "id": "LOVROnbxcvw",
+   "allikas": "oecd-ai",
+   "pealkiri": "OECD.AI Index",
+   "avaldatud": "2026-11-13",
+   "url": "https://www.youtube.com/watch?v=LOVROnbxcvw",
+   "leitud": "2026-11-14",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "ijKPPi8h4ug",
+   "allikas": "ilo",
+   "pealkiri": "Giving Young People a Voice in Employment Programmes | Uganda 2026",
+   "avaldatud": "2026-11-13",
+   "url": "https://www.youtube.com/watch?v=ijKPPi8h4ug",
+   "leitud": "2026-11-14",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "UggJMQskOj8",
+   "allikas": "stanford-hai",
+   "pealkiri": "A Conversation with Jacob Coxon & Rob Reich",
+   "avaldatud": "2026-11-13",
+   "url": "https://www.youtube.com/watch?v=UggJMQskOj8",
+   "leitud": "2026-11-14",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-43980",
+   "allikas": "uttv",
+   "pealkiri": "A&amp;A Tasemetöö 2 kordamine",
+   "avaldatud": "2026-11-13",
+   "url": "https://uttv.ee/pls/uttv/naita?id=43980",
+   "leitud": "2026-11-14",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
    "id": "WbZVqid5O18",
    "allikas": "oecd",
    "pealkiri": "Perspectives des migrations internationales 2026 - Jean-Christophe Dumont",
@@ -1513,9 +1557,9 @@
   "oecd-ai": "UCl4praikeBNNxiSVpAvxwkA",
   "ilo": "UCrlcu5KChYyHwXlIeD7oLUg",
   "stanford-hai": "UChugFTK0KyrES9terTid8vA",
-  "uttv": 43960,
+  "uttv": 43980,
   "tds": "UC9ptGynkOPe3vFRW6otoI3g"
  },
- "uuendatud": "2026-11-13",
+ "uuendatud": "2026-11-14",
  "vead": []
 }
