@@ -4,7 +4,7 @@
   "naitaja_nimi": "Annual; Use of generative AI tools: for professional (work) purposes; Percentage of individuals; All individuals",
   "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_ai_iaiu?format=JSON&lang=EN&freq=A&indic_is=I_IUAIWP&unit=PC_IND&ind_type=IND_TOTAL&geo=EE&geo=FI&geo=SE&geo=DK&geo=NO&geo=DE&geo=NL&geo=EU27_2020",
   "allikas_uuendas": "2026-06-05",
-  "kontrollitud": "2026-11-13",
+  "kontrollitud": "2026-11-14",
   "varskus": {
     "staatus": "ajakohane",
     "jargmine_oodatav": "2027-06-05"

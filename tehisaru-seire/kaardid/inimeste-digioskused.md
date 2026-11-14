@@ -2,7 +2,7 @@
 
 > Kui suurel osal Eesti inimestest on vähemalt baastasemel digioskused võrreldes teiste riikidega?
 
-**Staatus:** ajakohane · **Allikas uuendas:** 2026-04-17 · **Kontrollitud:** 2026-11-13 · **Järgmine oodatav uuendus:** 2028-04-17
+**Staatus:** ajakohane · **Allikas uuendas:** 2026-04-17 · **Kontrollitud:** 2026-11-14 · **Järgmine oodatav uuendus:** 2028-04-17
 
 ## Number
 
