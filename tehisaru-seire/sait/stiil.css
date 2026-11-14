@@ -1568,3 +1568,19 @@ html[data-t] .kpi-pais.tihe .plaat { padding: 10px 14px; gap: 2px; }
 html[data-t] .kpi-pais.tihe .plaat .big { font-size: 28px; margin-top: 0; }
 .kpi-pais.tihe .plaat.kp .ctx { flex-direction: row; flex-wrap: wrap; column-gap: 8px; }
 
+
+/* No UI slop läbivaatus 14.11.2026: uudiste numbriplaadid samal joonel tekstiga; telefonis 2 × 2, et uudised algaksid varem */
+html[data-t] .vastus.kpi-pais.tihe { padding-left: 0; padding-right: 0; }
+@media (max-width: 600px) {
+  html[data-t] .vastus.kpi-pais.tihe { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  html[data-t] .kpi-pais.tihe .plaat { padding: 8px 10px; }
+  html[data-t] .kpi-pais.tihe .plaat .big { font-size: 24px; }
+}
+
+/* Kadri 14.11.2026 „muuda“: telefonis on alamlehtede rida murduv (kõik alamlehed nähtaval, mitte keritav)
+   ja iga nupp vähemalt 44 px kõrge puudutuseks. */
+@media (max-width: 680px) {
+  html[data-t] .alamlehed { flex-wrap: wrap; overflow-x: visible; gap: 0 16px; }
+  html[data-t] .u-f button, html[data-t] .p-tabs button, html[data-t] .kogus button,
+  html[data-t] .src button.kopeeri, html[data-t] summary { min-height: 44px; }
+}

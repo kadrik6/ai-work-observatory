@@ -1468,13 +1468,22 @@ def test_ulesehituse_kontroll_a_b_c_e(sait):
     assert not any('href="hanked.html#loend"' in h for h in sait.values())
 
 
+def _ettekannete_arv():
+    """Kinnitatud ettekannete arv saidi sisus: (ettekanded ja seminarid, podcastid). Uued kinnitused ei murra teste."""
+    d = json.loads((JUUR / "sait" / "sisu" / "ettekanded.json").read_text(encoding="utf-8"))
+    pod = {a["id"] for a in d["allikad"] if a.get("liik") == "podcast"}
+    p = sum(1 for e in d["ettekanded"] if e["allikas"] in pod)
+    return len(d["ettekanded"]) - p, p
+
+
 def test_podcastid_ettekannete_lehel(sait):
     """Kadri 11.11.2026: Lex Fridmani ja Mindscape'i podcastid Ettekannete lehel, uus rühm „Taust“."""
     h = sait["podcastid.html"]
     assert 'id="ek-taust"' in h and "Taust: mõistus ja informatsioon" in h
-    assert h.count('data-liik="podcast"') == 18
+    n_ek, n_pod = _ettekannete_arv()
+    assert n_pod >= 18 and h.count('data-liik="podcast"') == n_pod
     k = sait["ettekanded.html"]
-    assert k.count('data-liik="seminar"') + k.count('data-liik="veebiseminar"') == 10
+    assert n_ek >= 10 and k.count('data-liik="seminar"') + k.count('data-liik="veebiseminar"') == n_ek
     assert '<span class="u-l arv">podcast</span>' in h and "lõik algab 0:15:28" in h
     assert "Lex Fridman Podcast" in h and "Mindscape (Sean Carroll)" in h
     assert "lex-452" not in h and "Dario Amodei" not in h  # aegunud osa jäeti välja (Kadri 11.11)
@@ -1568,7 +1577,8 @@ def test_uudiste_allika_logo(A, tmp_path, monkeypatch):
 
 def test_ettekannete_filter_liigi_ja_allika_jargi(sait, A):
     """Kadri 11.11.2026: „lisa allika põhine filtreerimine ettekannete juurde + ettekande meetod (podcastid, seminarid jms)“."""
-    for f, kk, kokku in (("ettekanded.html", ("liik", "kes"), 10), ("podcastid.html", ("kes",), 18)):
+    n_ek, n_pod = _ettekannete_arv()
+    for f, kk, kokku in (("ettekanded.html", ("liik", "kes"), n_ek), ("podcastid.html", ("kes",), n_pod)):
         h = sait[f]
         for k in kk:
             osa = h[h.index(f'class="u-f ek-f" data-k="{k}"'):]
@@ -1813,3 +1823,20 @@ def test_riikide_strateegiad_tabelina(A):
     assert h.index("VKEd, mis kasutavad") < h.index("koolitus") < h.index("hoiak")  # kasutus enne hoiakuid
     assert "Veel 1 sihti" in h and "lk 20" in h and "arvulisi sihte pole" in h and "puudub" in h
     assert "<svg" not in h and "<b>Eesti</b>" in h  # Eesti oma siht võrdluseks, ilma graafikuta
+
+
+def test_uritused_ja_uudiste_plaadid_ilma_korduseta(sait):
+    """No UI slop läbivaatus 14.11.2026: ürituste lehel ei korda pealkirjad sama lauset; rühma kirjeldus sobib ka podcastidele."""
+    h = sait["uritused.html"]
+    assert h.count("lähim eespool") <= 1 and "Praegu tulevad siia" not in h
+    assert not re.search(r'<h2 id="h-tulekul">Tulekul', h)
+    p = sait["podcastid.html"]
+    assert "Kuidas ettevõtted tehisaru kasutusele võtavad" not in p
+
+
+def test_telefonis_alamlehed_murduvad_ja_nupud_44px():
+    """Kadri 14.11.2026 „muuda“: alamlehtede rida murdub telefonis ja nupud on puudutuseks vähemalt 44 px."""
+    css = (JUUR / "sait" / "stiil.css").read_text(encoding="utf-8")
+    osa = css[css.index("Kadri 14.11.2026 „muuda“"):]
+    assert "html[data-t] .alamlehed { flex-wrap: wrap; overflow-x: visible;" in osa
+    assert "html[data-t] .u-f button" in osa and "min-height: 44px" in osa
