@@ -1886,3 +1886,4 @@ def test_disainikriitika_fookus_skaala_ja_lehel_rida(sait):
     assert svg.count('<line class="v"') >= 3
     # 3. „Sellel lehel“ on tekstilingid sildiga, mitte kiibid.
     assert 'content: "Sellel lehel:" / ""' in css
+    assert re.search(r"max-width: 680px\) \{[^}]*\n  nav\[aria-label=\"Sellel lehel\"\] \.sellel a \{ min-height: 44px", css)

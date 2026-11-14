@@ -1611,3 +1611,6 @@ html[data-t] .pea + .g12 { margin-top: 40px; }
 /* Kadri 14.11.2026: avalehe töötuse kaks graafikut algavad samal kõrgusel, pealkirjad ühel real
    („sesoonselt tasandatud“ on graafikute all olevas märkuses) */
 #tootus .g2 { align-items: start; }
+@media (max-width: 680px) {  /* Kadri 14.11 telefonireegel: iga juhtelement vähemalt 44 px */
+  nav[aria-label="Sellel lehel"] .sellel a { min-height: 44px; display: inline-flex; align-items: center; }
+}
