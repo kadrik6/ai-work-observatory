@@ -369,7 +369,7 @@ def avaleht(A, vaade, vaated):
 <section class="pn sp7" id="tootus" aria-labelledby="h-tootus">
   <div class="pn-h"><h2 id="h-tootus">Eesti töötus oli {kuu_seesytlev(kuu)} <b>{pr(t_ee)}%</b>, aasta keskmiseks prognoositakse {pr(prog[p_aasta]['protsent'])}% ¦ prognoos on {p_aasta}. aasta keskmine. See on teine mõõdik ega ole kuunumbriga otse võrreldav</h2></div>
   <div class="g2"><div><p class="gt">Aasta keskmine, tegelik ja prognoos</p>{aastatulbad([(r["aasta"], r["protsent"], r["tegelik"]) for r in prog.values()], 10, 2)}</div>
-  <div><p class="gt">Kuu kaupa, sesoonselt tasandatud, {k0[5:]}.{k0[:4]}–{kuu[5:]}.{kuu[:4]}</p>{kuujoon}</div></div>
+  <div><p class="gt">Kuu kaupa, {k0[5:]}.{k0[:4]}–{kuu[5:]}.{kuu[:4]}</p>{kuujoon}</div></div>
   <p class="drift">Prognoos on aasta keskmine, kuunumber sesoonselt tasandatud. Tehisaru mõju prognoos eraldi ei arvesta.</p>
   {allikarida([(rm["pealkiri"], rm["url"], kp(rm["avaldatud"])), ("Eurostat une_rt_m", UNE_URL, f"uuendatud {kp(UNE_UUENDATUD)}")])}
 </section>"""

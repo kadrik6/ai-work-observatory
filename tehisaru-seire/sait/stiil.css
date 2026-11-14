@@ -1608,3 +1608,6 @@ html[data-t] .vastus.kpi-pais { padding-left: 0; padding-right: 0; }
 /* Jaotiste vahed (J5): sakkide all algab sisu 24 px pärast, lehe esimene jaotis pealkirja all 40 px pärast (enne 56 px) */
 html[data-t] .sakk-sisu > .g12:first-child { margin-top: 24px; }
 html[data-t] .pea + .g12 { margin-top: 40px; }
+/* Kadri 14.11.2026: avalehe töötuse kaks graafikut algavad samal kõrgusel, pealkirjad ühel real
+   („sesoonselt tasandatud“ on graafikute all olevas märkuses) */
+#tootus .g2 { align-items: start; }
