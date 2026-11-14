@@ -95,6 +95,14 @@
 "miks": "Füüsik Sean Carrolli intervjuud teadlastega mõistuse, tehisaru ja ühiskonna teemal; transkriptid on avalikud",
 "liik": "podcast",
 "korraldaja": "Sean Carroll"
+},
+{
+"id": "tds",
+"nimi": "Tallinn Digital Summit",
+"url": "https://tds.icds.ee/",
+"korraldaja": "Tallinn Digital Summit",
+"miks": "Riikide digijuhtide ja ekspertide iga-aastane tippkohtumine Tallinnas; paneelid tehisarust riigis, majanduses ja tööl; salvestised avalikud YouTube'is",
+"liik": "konverents"
 }
 ],
 "ettekanded": [

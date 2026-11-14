@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-13T08:40:00+02:00",
+  "viimane_kontroll": "2026-11-13T18:20:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "13.11 7.23: uut asjakohast pole (CSC andmeleke juba sees)"
+      "markus": "13.11 17.53: Microsofti tõrge (ERR, ERR News)"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "13.11 7.23: uut asjakohast pole"
+      "markus": "13.11 17.53: Microsofti tõrge (ERR, ERR News)"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "13.11 7.23: SEB finantsjuhtide uuring; EKI keelemudelite mõõdupuu (Sirp); Kulli arvamus; Eesti Energia uut pole"
+      "markus": "13.11 17.53: tehisarukaebused ametites; Telia jätkulugu; Microsofti tõrge ja riigi sõltuvus; Jakobsoni arvamus"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "13.11 7.23: ELi juhtide tehisaru arutelu Dublinis; GDC küsitlus; HR Software uuring"
+      "markus": "13.11 17.53: StockTitani koondamiste ülevaade; Dublini kohtumise levik 8 allikat"
     },
     {
       "nimi": "Challenger kuuaruanne",
