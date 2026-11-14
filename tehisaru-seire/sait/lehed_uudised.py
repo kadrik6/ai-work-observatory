@@ -388,7 +388,7 @@ def tulekul(A, tana):
 <section class="pn sp12" id="tulekul" aria-labelledby="h-tulekul">
   <div class="pn-h"><h2 id="h-tulekul">{f"<b>{len(ees)} üritust või tähtaega</b>, lähim eespool" if ees else "Üritusi ega tähtaegu praegu pole"}</h2></div>
   {loend}
-  <p class="ps">Tulevaste seminaride ja veebiseminaride kava veel ei koguta. Kõik riigi otsused ja eelnõud on lehel <a href="eesti-otsused.html">Eesti otsused</a>.</p>
+  <p class="ps">Tulevaste seminaride ja veebiseminaride kava veel ei koguta. Kõik riigi otsused ja eelnõud on lehel <a href="tehisaru-maarus.html#eesti-otsused">Eesti otsused</a>.</p>
 </section>"""
 
 

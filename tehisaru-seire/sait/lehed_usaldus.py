@@ -79,7 +79,7 @@ def kas_tosi(A, vaade, vaated=None):
     sec_v = f"""
 <section class="jaotis" id="vaited" aria-labelledby="h-vaited">
   <header>
-    <h2 id="h-vaited">{SEESTYTLEV[n].capitalize()} väitest <b>{ARVSONAD[loend[0]]} ütleb muud kui allikas</b>, {ARVSONAD[loend[1]]} vajab täpsustust</h2>
+    <h2 id="h-vaited"><span class="kys">Kas väited peavad paika?</span> {SEESTYTLEV[n].capitalize()} väitest <b>{ARVSONAD[loend[0]]} ütleb muud kui allikas</b>, {ARVSONAD[loend[1]]} vajab täpsustust</h2>
     <p class="alam">Seire kontrollis avalikke väiteid, mis tundusid kahtlased, ja võrdles neid algallikaga. See ei näita, kui täpne on meedia keskmiselt. Väide kuulub väljaandele, mitte üksikule ajakirjanikule.</p>
   </header>
   <figure aria-labelledby="g-vaited">
@@ -115,7 +115,7 @@ def kas_tosi(A, vaade, vaated=None):
     sec_l = f"""
 <section class="jaotis" id="lahknevused" aria-labelledby="h-lahknevused">
   <header>
-    <h2 id="h-lahknevused">{ARVSONAD[len(lahti)].capitalize()} lahknevust on <b>selgitamata</b> ¦ sama küsitluse kohta annavad Eurostat ja Statistikaamet eri numbri</h2>
+    <h2 id="h-lahknevused"><span class="kys">Kus allikad lahknevad?</span> {ARVSONAD[len(lahti)].capitalize()} lahknevust on <b>selgitamata</b> ¦ sama küsitluse kohta annavad Eurostat ja Statistikaamet eri numbri</h2>
     <p class="alam">Lahknevus tähendab, et kaks allikat mõõdavad kataloogi järgi sama asja, aga numbrid erinevad rohkem kui ümardus. Kuni põhjus selgub, kasutab seire riikide võrdluseks Eurostati numbrit.</p>
   </header>
   <div class="kaks vordne">{"".join(l_kaardid)}</div>
@@ -172,7 +172,7 @@ def varskus_ja_muutused(A, vaated):
     sec_varskus = f"""
 <section class="jaotis" id="varskus" aria-labelledby="h-varskus">
   <header>
-    <h2 id="h-varskus">{("Kõik " + ARVSONAD[len(v_read)] + " näitajat <b>on Eurostatis ajakohased</b>") if koik_ajakohased else (SEESTYTLEV[len(v_read)].capitalize() + " näitajast <b>mõni on vananenud</b>")} ¦ {f"{OMASTAV[uuem]} puhul on riiklikul statistikaametil juba uuem number" if uuem else "riiklikel statistikaametitel uuemat numbrit pole"}</h2>
+    <h2 id="h-varskus"><span class="kys">Kui värsked on numbrid?</span> {("Kõik " + ARVSONAD[len(v_read)] + " näitajat <b>on Eurostatis ajakohased</b>") if koik_ajakohased else (SEESTYTLEV[len(v_read)].capitalize() + " näitajast <b>mõni on vananenud</b>")} ¦ {f"{OMASTAV[uuem]} puhul on riiklikul statistikaametil juba uuem number" if uuem else "riiklikel statistikaametitel uuemat numbrit pole"}</h2>
     <p class="alam">Ajakohane tähendab, et allikas pole avaldanud uuemat aastat, kui seire näitab. Uuem riiklik number on lehel eraldi märgitud.</p>
   </header>
   {tabel(["Näitaja", "Allikas uuendas", "Järgmine oodatav", "Seis", "Uuem number"], v_read, numbrid=[], pealdis="Näitajate värskus")}
@@ -184,7 +184,7 @@ def varskus_ja_muutused(A, vaated):
     sec_muut = f"""
 <section class="jaotis" id="muutused" aria-labelledby="h-muutused">
   <header>
-    <h2 id="h-muutused">Allikate ja lahknevuste logis on viimane kanne <b>{kp(S[0]["kuupaev"])}</b></h2>
+    <h2 id="h-muutused"><span class="kys">Mis allikates viimati muutus?</span> Logi viimane kanne on <b>{kp(S[0]["kuupaev"])}</b></h2>
     <p class="alam">Logis on allikate uued numbrid ja leitud lahknevused, uuemad üleval.</p>
   </header>
   {tabel(["Kuupäev", "Liik", "Mis muutus"], s_read, numbrid=[], piir=True, pealdis="Muutuste logi")}

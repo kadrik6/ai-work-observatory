@@ -127,7 +127,12 @@ def kontrolli_ankrud(lehed):
 
 
 # Vana aadress jääb tööle ja viitab uuele (oskus andmesaidi-ulesehitus, samm 5; struktuuri kontroll 6.11.2026)
-VANAD_AADRESSID = {"reeglid-ja-sihid.html": "tehisaru-maarus.html", "uudised-vaited.html": "kas-see-on-tosi.html"}
+VANAD_AADRESSID = {"reeglid-ja-sihid.html": "tehisaru-maarus.html", "uudised-vaited.html": "kas-see-on-tosi.html",
+                   # Kadri 14.11.2026 („Jah, kõigil teemadel“): väikesed alamlehed on nüüd teemalehe plokid
+                   "inimesed-oskused.html": "inimesed.html#digi", "ettevotted-voimekus.html": "ettevotted.html#kasu",
+                   "too-uuringud.html": "too.html#maailm", "too-ametid.html": "too.html#kokkupuude",
+                   "eesti-otsused.html": "tehisaru-maarus.html#eesti-otsused",
+                   "riikide-strateegiad.html": "tehisaru-maarus.html#strateegiad", "varskus.html": "lahknevused.html#varskus"}
 
 
 def suunaja(uus):
@@ -173,8 +178,9 @@ def ehita(valjund=VALJUND, A=None):
     for f, t in kirjutatud.items():
         (valjund / f).write_text(t, encoding="utf-8")
     for vana, uus in VANAD_AADRESSID.items():
-        if uus not in kirjutatud:
-            raise EhitusViga(f"Vana aadress {vana} suunab olematule lehele {uus}")
+        leht, _, ankur = uus.partition("#")
+        if leht not in kirjutatud or (ankur and f'id="{ankur}"' not in kirjutatud[leht]):
+            raise EhitusViga(f"Vana aadress {vana} suunab olematule lehele või ankrule {uus}")
         (valjund / vana).write_text(suunaja(uus), encoding="utf-8")
     for nimi in ("stiil.css", "sait.js"):
         shutil.copyfile(SIIN / nimi, valjund / nimi)

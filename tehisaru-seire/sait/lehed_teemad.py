@@ -297,15 +297,13 @@ def inimesed(A, vaade, vaated=None):
         (f"Tööl, {too['allikas']}", too["url"], too["avaldatud"], f"{too['aasta']}, kõigist 16–74-aastastest"),
         ("ELi võrdlus, Eurostat isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), eu.get("avaldatud") or None, f"{y}, ELi riigid"),
     ])
-    alam_h1(vaade, "inimesed-oskused.html",
-            # Kadri 9.11.2026 20:26: pealkiri oli liiga pikk; siht ja „ei oska“ on kohe all plokkides
-            f'Vähemalt baastaseme digioskused on **{pr(ds["vaartus"])}% Eesti 16–74-aastastest**')
+    # Kadri 14.11.2026 („Jah, kõigil teemadel“): alamleht Oskused on selle lehe plokid.
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Kus ELis?")], sec_andmed),
+        ("digi", [("digi", "Kas oskused on olemas?")], lisa_sihid(A, sec_digi, "digi", *SIHI_TEEMA["inimesed"])),
+        ("ei-oska", [("ei-oska", "Oskuste puudus")], sec_os),
         ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
          tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
-        ("digi", [("digi", "Digioskused")], lisa_sihid(A, sec_digi, "digi", *SIHI_TEEMA["inimesed"])),
-        ("ei-oska", [("ei-oska", "„Ei oska“")], sec_os),
     ], aside=aside)
 
 
@@ -617,7 +615,7 @@ def too(A, vaade, vaated=None):
     sec_tootus, sec_koond = too_eesti(A)
     sec_andmed = tm.andmesakid("too", tm.kys("Mida näitavad Eesti tööturu andmed?", "Kas põhjus on tehisaru, kuunumbrid veel ei ütle"),
                                "Iga sakk on üks andmestik: töötus, vabad kohad, tööpakkumised, koondamised ja prognoos. "
-                               "Põhjuse kohta on uuringud alamlehel Uuringud.", [
+                               "Põhjuse kohta on uuringud allpool.", [
         ("tootus", "Töötus", sec_tootus),
         ("tootus-el", "Töötus ELis", tootus_el()),
         ("vabad", "Vabad kohad", vabad_ametikohad()),
@@ -640,9 +638,6 @@ def too(A, vaade, vaated=None):
         ("Töötuse prognoos, Rahandusministeerium", rm["url"], rm["avaldatud"], "aasta keskmine, tehisaru mõju eraldi ei arvestata",
          f'{KUUD[int(rm["avaldatud"][5:7]) - 1]} {rm["avaldatud"][:4]}' if len(rm["avaldatud"]) == 7 else None),
     ])
-    alam_h1(vaade, "too-ametid.html",
-            f'**{pr(K["avatud"], 0)}% Eesti töötajatest** on tehisarule avatud ametites ¦ neis puudutab generatiivne tehisaru osa ülesandeid; '
-            f'nende hõive kasvas {A0}–{A1} vähem kui teistes ametites.')
     P = A.get("publikatsioonid")
     if P:
         tais = [r for r in P["aastad"] if not r["poolik"]]
@@ -651,16 +646,17 @@ def too(A, vaade, vaated=None):
         alam_h1(vaade, "too-kirjandus.html",
                 f'Tehisarust ja tööst ilmus {p1["aasta"]}. aastal **{_arv(p1["koik"])} publikatsiooni** ¦ see on '
                 f'{pr(p1["koik"] / p0["koik"])} korda rohkem kui {p0["aasta"]}. aastal.')
+    # Kadri 14.11.2026 („Jah, kõigil teemadel“): alamlehed Uuringud ja Ametid on Töö lehe plokid; Kirjandus jääb kataloogina eraldi.
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Tööturg")], sec_andmed),
-        ("teema-lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
+        ("maailm", [("maailm", "Kas võtab töökohti?")], sec_maailm),
+        ("ulesanded", [("ulesanded", "Kas teeb kiiremaks?")], sec_kiirus),
+        ("eesti", [("eesti", "Eesti uuringud")], sec_eesti),
+        ("kokkupuude", [("kokkupuude", "Avatud ametid")], sec_kokkupuude),
+        ("hoive", [], sec_hoive),
+        ("teema-lopp", [("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
          tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
-        ("maailm", [("maailm", "Mida maailmas leiti")], sec_maailm),
-        ("ulesanded", [("ulesanded", "Ülesanded")], sec_kiirus),
-        ("eesti", [("eesti", "Eestis")], sec_eesti),
         ("uuritakse", [("uuritakse", "Mida uuritakse"), ("publikatsioonid", "Publikatsioonid"), ("eesti-allikad", "Eesti allikad")], sec_uuritakse),
-        ("kokkupuude", [("kokkupuude", "Ametid")], sec_kokkupuude),
-        ("hoive", [("hoive", "Hõive muutus")], sec_hoive),
     ], aside=aside)
 
 
@@ -1026,10 +1022,11 @@ def reeglid(A, vaade, vaated=None, tana=None):
     lead = j_tekst
     sec_ee = eesti_otsused(A, vaade, vaated, tana)
     sec_st = riikide_strateegiad(A, vaade)
+    # Kadri 14.11.2026 („Jah, kõigil teemadel“): Eesti otsused ja riikide strateegiad on selle lehe plokid.
     return jaga(A, vaade, lead, [], [
         ("tahtajad", [("tahtajad", "ELi tähtajad")], sec_aeg),
         ("eesti", [("eesti-otsused", "Eesti otsused")], sec_ee),
-        ("strateegiad", [("strateegiad", "Riikide strateegiad")], sec_st),
+        ("strateegiad", [("strateegiad", "Teiste riikide sihid")], sec_st),
     ], aside=aside)
 
 
@@ -1046,10 +1043,8 @@ def riikide_strateegiad(A, vaade):
 
     Andmed: tooelu-uudised/strateegiad.json (hommikune kogumine) → sait/vota_kaasa.py → sisu/strateegiad.json.
     Sihid on riikide poliitilised eesmärgid ja mõõdetakse erinevalt: ainult tabel, ei ühist graafikut ega järjestust."""
-    fail = "riikide-strateegiad.html"
     S = list(((A.get("strateegiad") or {}).get("strateegiad")) or [])
     if not S:
-        alam_h1(vaade, fail, "Teiste riikide tehisarustrateegiad ¦ need tulevad siia **igapäevasest uudistekogumisest**.")
         return """
 <section class="jaotis" id="strateegiad" aria-labelledby="h-strateegiad">
   <header>
@@ -1083,7 +1078,6 @@ def riikide_strateegiad(A, vaade):
     n = len(S)
     sihte = sum(len(s.get("sihid") or []) for s in S)
     riike = ", ".join(s["riik"] for s in S)
-    alam_h1(vaade, fail, f"**{n} riigi** tehisarustrateegial on arvulised sihid ¦ sihid on poliitilised eesmärgid, mitte mõõtmised.")
     uusim = max(s.get("kontrollitud") or s.get("lisatud") or "" for s in S)
     return f"""
 <section class="jaotis" id="strateegiad" aria-labelledby="h-strateegiad">
@@ -1105,9 +1099,7 @@ def eesti_otsused(A, vaade, vaated, tana):
     U = [r for r in (A.get("uudised") or []) if r.get("teema") == "riik"]
     U.sort(key=lambda r: r["kuupaev"], reverse=True)
     ees = sorted((r for r in U if r.get("tahtaeg") and r["tahtaeg"] >= tana), key=lambda r: r["tahtaeg"])
-    fail = "eesti-otsused.html"
     if not U:
-        alam_h1(vaade, fail, "Eesti riigi otsused, eelnõud ja tähtajad ¦ need tulevad siia **igapäevasest uudistekogumisest**.")
         return f"""
 <section class="jaotis" id="eesti-otsused" aria-labelledby="h-eesti-otsused">
   <header>
@@ -1116,12 +1108,6 @@ def eesti_otsused(A, vaade, vaated, tana):
   </header>
 </section>"""
     loend = lambda rr: f'<ul class="u-voog" data-piir-li="12">{"".join(_uudis(r) for r in rr)}</ul>'  # noqa: E731
-    if ees:
-        j = ees[0]
-        alam_h1(vaade, fail, f'Eesti riigi **järgmine tähtaeg on {kp(j["tahtaeg"])}** ¦ '
-                             f'kogumine on leidnud {len(U)} Eesti riigi otsust, eelnõu või tähtaega.')
-    else:
-        alam_h1(vaade, fail, f'Eesolevaid Eesti tähtaegu **praegu pole** ¦ kogumine on leidnud {len(U)} Eesti riigi otsust või eelnõu.')
     liigid = {}
     for r in U:
         liigid[r.get("riigi_liik") or "muu"] = liigid.get(r.get("riigi_liik") or "muu", 0) + 1
@@ -1135,8 +1121,7 @@ def eesti_otsused(A, vaade, vaated, tana):
     {vastavus("osaliselt", "Kogumine leiab avalikult teatatud otsuseid. Eelnõude infosüsteemi kogumine ei loe, nii et kõik eelnõud ei pruugi siia jõuda.")}
   </header>
   {ees_html}
-  <h3 class="veerg">Kõik kirjed, uusimad eespool</h3>
-  {loend(U)}
+  <details class="kokku"><summary>Näita kõiki {len(U)} kirjet, uusimad eespool</summary>{loend(U)}</details>
   <p class="lingid">{link(vaated, "uudised", "Kõik uudised")}</p>
 </section>"""
 

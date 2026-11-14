@@ -57,7 +57,7 @@ const U = [
 
     // Kasutusloogika (oskus kasutusloogika 6.11.2026): väikesed sihtmärgid ja tagasi-nupp
     const vaiksed = {};
-    for (const f of ['index.html', 'too.html', 'hanked.html', 'uudised.html', 'ettevotted-voimekus.html']) {
+    for (const f of ['index.html', 'too.html', 'hanked.html', 'uudised.html', 'ettevotted.html']) {
       await p.goto(D + f);
       const v = await p.evaluate(() => [...document.querySelectorAll('a[href], button, summary')]
         .filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; })

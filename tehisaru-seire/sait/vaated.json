@@ -23,26 +23,7 @@
       "olek": "valmis",
       "kusimus": "Kui paljud Eesti inimesed tehisaru kasutavad ja kas neil on oskusi?",
       "h1": "Tehisaru kasutab **{inimeste-tehisaru-kasutus|EE|uusim|p0}% Eesti 16–74-aastastest** ¦ tööl kasutab seda 36,9% kõigist 16–74-aastastest.",
-      "osad": "Kasutus (kaart ja 2026. aasta kasv); tööalane kasutus; digioskused; „ei oska“ ja lahknevus C6. IT71 küsimuse sõnastus 2026 võib erineda 2025. aasta omast.",
-      "alamlehed": [
-        {
-          "fail": "inimesed.html",
-          "nimi": "Kasutus",
-          "jaotised": [
-            "andmed",
-            "teema-lopp"
-          ]
-        },
-        {
-          "fail": "inimesed-oskused.html",
-          "nimi": "Oskused",
-          "h1": "Digioskused ja oskuse puudus",
-          "jaotised": [
-            "digi",
-            "ei-oska"
-          ]
-        }
-      ]
+      "osad": "Üks leht: kus on Eesti ELis (kasutus, tööl); kas oskused on olemas (digioskused, ELi siht 80%); kui paljusid takistab oskuste puudus; uuringud, väited, reeglid, allikad."
     },
     {
       "id": "ettevotted",
@@ -54,29 +35,7 @@
       "olek": "valmis",
       "kusimus": "Kui suur osa ettevõtetest kasutab tehisaru ja kus on Eesti ELi skaalal?",
       "h1": "{ettevotete-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{ettevotete-tehisaru-kasutus|EE|uusim|p0}% vähemalt 10 hõivatuga Eesti ettevõtetest** ¦ ELi võrdluses ({ettevotete-tehisaru-kasutus|EE|uusim:alus|a}) oli Eesti keskmisest ees, Soomest, Rootsist ja Taanist taga.",
-      "osad": "Kaks alamlehte: Kasutus ja Eesti siht 75%; Tootlikkus ja võimekus (tootlikkus, digiintensiivsus, T&A kulu, ELi sihid, Arenguseire järeldused, Põhjamaade võrdlus 9 näitajas)",
-      "alamlehed": [
-        {
-          "fail": "ettevotted.html",
-          "nimi": "Kasutus",
-          "jaotised": [
-            "andmed",
-            "ligipaas",
-            "teema-lopp"
-          ]
-        },
-        {
-          "fail": "ettevotted-voimekus.html",
-          "nimi": "Tootlikkus ja võimekus",
-          "h1": "Tootlikkus oli suurem, kui tehisaruga **muutus ka töökorraldus** ¦ Eesti VKEde digiintensiivsus on veidi alla ELi keskmise.",
-          "jaotised": [
-            "tootlikkus",
-            "voimekus",
-            "arenguseire",
-            "pohjamaad"
-          ]
-        }
-      ]
+      "osad": "Üks leht: kus on Eesti ELis; mida firmad töötajatele lubavad; kas tasub (uuringud ja tootlikkus); kui digitaalsed on VKEd ja T&A; Põhjamaade võrdlus; Arenguseire soovitused; väited, reeglid, allikad."
     },
     {
       "id": "too",
@@ -88,24 +47,19 @@
       "olek": "valmis",
       "kusimus": "Milliseid töid tehisaru mõjutab ja mida tõendid tegelikult ütlevad?",
       "h1": "**Eesti andmetest ei selgu veel**, kas tehisaru vähendab töökohti ¦ uuringud leiavad seni vähem tööd kitsastes rühmades, näiteks USA noortel tehisarule avatud ametites.",
-      "osad": "Eesti töötus, vabad kohad, tööpakkumised ja koondamised; mida maailmas leiti; ülesannete kiirus katsetes; mida Eestis leiti; prognoos (ei arvesta tehisaru mõju eraldi)",
+      "osad": "Kaks alamlehte: Tööturg ja uuringud (Eesti tööturu andmed, mida maailmas leiti, ülesannete kiirus, Eesti uuringud, avatud ametid ja hõive); Kirjandus (publikatsioonide kataloog).",
       "alamlehed": [
         {
           "fail": "too.html",
-          "nimi": "Tööturg praegu",
+          "nimi": "Tööturg ja uuringud",
           "jaotised": [
             "andmed",
-            "teema-lopp"
-          ]
-        },
-        {
-          "fail": "too-uuringud.html",
-          "nimi": "Uuringud",
-          "h1": "Katsetes kiirendab tehisaru tööd, aga **kogu tööturul pole mõju veel näha** ¦ nii näitavad USA ja Taani uuringud. Eesti uuringud töökohti veel ei mõõda.",
-          "jaotised": [
             "maailm",
             "ulesanded",
-            "eesti"
+            "eesti",
+            "kokkupuude",
+            "hoive",
+            "teema-lopp"
           ]
         },
         {
@@ -114,15 +68,6 @@
           "h1": "Mida maailmas ja Eestis tehisarust ja tööst kirjutatakse",
           "jaotised": [
             "uuritakse"
-          ]
-        },
-        {
-          "fail": "too-ametid.html",
-          "nimi": "Ametid ja hõive",
-          "h1": "Millised Eesti ametid on tehisarule avatud",
-          "jaotised": [
-            "kokkupuude",
-            "hoive"
           ]
         }
       ]
@@ -157,17 +102,7 @@
         {
           "vaade": "reeglid",
           "fail": "tehisaru-maarus.html",
-          "nimi": "Tehisaru määrus"
-        },
-        {
-          "vaade": "reeglid",
-          "fail": "eesti-otsused.html",
-          "nimi": "Eesti otsused"
-        },
-        {
-          "vaade": "reeglid",
-          "fail": "riikide-strateegiad.html",
-          "nimi": "Riikide strateegiad"
+          "nimi": "Reeglid ja otsused"
         }
       ]
     },
@@ -204,37 +139,14 @@
     {
       "id": "reeglid",
       "fail": "tehisaru-maarus.html",
-      "menuu": "Tehisaru määrus",
+      "menuu": "Reeglid ja otsused",
       "koht": "menüü",
       "vanem": "avaleht",
       "kusimused": "K9, K10",
       "olek": "valmis",
       "kusimus": "Millal ELi tehisaru määruse osad kehtima hakkavad?",
       "h1": "Värbamise ja hariduse suure riskiga reeglid kehtivad alates **2.12.2027** ¦ ELi tehisaru määrus kehtib üldiselt alates 2.08.2026.",
-      "osad": "Kolm alamlehte: ELi tehisaru määruse tähtajad; Eesti otsused ja tähtajad igapäevasest uudistekogumisest; teiste riikide tehisarustrateegiad ja sihid (ainult tabel, sihte ei võrrelda). Sihid on oma teema juures (Inimesed › Oskused, Ettevõtted, Hanked).",
-      "alamlehed": [
-        {
-          "fail": "tehisaru-maarus.html",
-          "nimi": "ELi tähtajad",
-          "jaotised": [
-            "tahtajad"
-          ]
-        },
-        {
-          "fail": "eesti-otsused.html",
-          "nimi": "Eesti otsused ja tähtajad",
-          "jaotised": [
-            "eesti"
-          ]
-        },
-        {
-          "fail": "riikide-strateegiad.html",
-          "nimi": "Riikide strateegiad",
-          "jaotised": [
-            "strateegiad"
-          ]
-        }
-      ],
+      "osad": "Üks leht: ELi tehisaru määruse tähtajad; Eesti otsused ja tähtajad igapäevasest uudistekogumisest; teiste riikide tehisarustrateegiad ja sihid (ainult tabel, sihte ei võrrelda). Sihid on oma teema juures (Inimesed, Ettevõtted, Hanked).",
       "teema": "avalik-sektor"
     },
     {
@@ -296,7 +208,7 @@
       "olek": "valmis",
       "kusimus": "Kas see väide on tõsi ja kas allikad räägivad sama?",
       "h1": "IMFi ja Goldman Sachsi **„puudutab“ on pealkirjades muutunud sõnaks „kaob“**; kaks Eurostati ja Statistikaameti lahknevust on selgitamata.",
-      "osad": "Kolm alamlehte: Väited, Lahknevused, Värskus (värskus ja muutuste logi).",
+      "osad": "Kaks alamlehte: Väited; Lahknevused ja värskus (lahknevused, värskus ja muutuste logi).",
       "alamlehed": [
         {
           "fail": "kas-see-on-tosi.html",
@@ -307,18 +219,11 @@
         },
         {
           "fail": "lahknevused.html",
-          "nimi": "Lahknevused",
-          "h1": "Kus Eurostat ja Statistikaamet annavad sama asja kohta eri numbri",
+          "nimi": "Lahknevused ja värskus",
+          "h1": "Kus allikad annavad sama asja kohta eri numbri ja kui värsked on numbrid",
           "lead": "Lahknevused jäävad nähtavale, kuni allikas need selgitab: ministeerium ja Statistikaamet kontrollivad ise, kas viga on allikas.",
           "jaotised": [
-            "lahknevused"
-          ]
-        },
-        {
-          "fail": "varskus.html",
-          "nimi": "Värskus",
-          "h1": "Kui värsked on seire numbrid ja mis allikates viimati muutus",
-          "jaotised": [
+            "lahknevused",
             "varskus"
           ]
         }

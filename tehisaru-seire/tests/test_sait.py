@@ -253,9 +253,10 @@ def test_sihid_on_oma_teema_juures_ja_eesti_siht_on_fookuses(sait):
     kas = _jaotis(sait["ettevotted.html"], "kasutus")
     assert 'class="siht-rida"' not in kas and '<span class="mark-l s">Siht</span>' in kas
     assert "siht 75% (2030)" in tekst(sait["ettevotted.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0])
-    assert _jaotis(sait["ettevotted-voimekus.html"], "digi").count('class="siht-rida"') == 1
-    assert _jaotis(sait["ettevotted-voimekus.html"], "ta").count('class="siht-rida"') == 1
-    assert _jaotis(sait["inimesed-oskused.html"], "digi").count('class="siht-rida"') == 1
+    # Kadri 14.11.2026: endised alamlehed on teemalehe plokid
+    assert _jaotis(sait["ettevotted.html"], "digi").count('class="siht-rida"') == 1
+    assert _jaotis(sait["ettevotted.html"], "ta").count('class="siht-rida"') == 1
+    assert _jaotis(sait["inimesed.html"], "digi").count('class="siht-rida"') == 1
     assert not any('id="siht-' in h for h in sait.values())
     assert 'id="sihid"' not in sait["tehisaru-maarus.html"]
 
@@ -265,13 +266,13 @@ def test_kokkupuute_osad_summeeruvad_ja_pealkiri_tuleb_andmetest(A, sait):
     assert abs(sum(K["osa"].values()) + K["liigitamata"] - 100) < 0.01
     assert K["ilo_ameteid"] == 427 and K["ilo_avatud_ameteid"] == 112  # ILO WP140 tabel A1
     # Kadri 14.11.2026: h2 ei korda h1 (30% avatud ametites); h2 vastab, kui paljud on kõige avatumates, 30% on lisareal
-    h2 = re.search(r'<h2 id="h-kokkupuude">(.*?)</h2>\s*<p class="h-lisa">(.*?)</p>', sait["too-ametid.html"], re.S)
+    h2 = re.search(r'<h2 id="h-kokkupuude">(.*?)</h2>\s*<p class="h-lisa">(.*?)</p>', sait["too.html"], re.S)
     assert f'{komponendid.pr(K["avatud"], 0)}%' in h2.group(2)
     assert f'<b>{komponendid.pr(K["korge"], 0)}% töötajatest on kõige avatumates ametites</b>' in h2.group(1)
 
 
 def test_kokkupuude_ei_ole_moju_ja_el_vordlus_on_eraldi(sait):
-    s = sait["too-ametid.html"]
+    s = sait["too.html"]
     jaotis = s[s.index('id="kokkupuude"'):s.index('id="hoive"')]
     assert "Kokkupuude ei ole mõju" in jaotis
     # ELi ligikaudne võrdlus on tekstis, mitte Eesti 4-kohalise numbriga samal graafikul
@@ -303,8 +304,8 @@ def test_hoive_aegrida_naised_ja_mehed_annavad_kokku(tmp_path):
 
 
 def test_hoive_muutuse_jaotis_on_kirjeldus_mitte_pohjus(A, sait):
-    s = sait["too-ametid.html"]
-    jaotis = s[s.index('id="hoive"'):s.index('</main>')]
+    s = sait["too.html"]
+    jaotis = s[s.index('id="hoive"'):s.index('class="teema-lopp"')]
     assert "kirjeldus, mitte põhjus" in jaotis
     g = A["kokkupuude"]["aeg"][("EE", "T")]
     assert g[2025]["avatud"] / g[2022]["avatud"] < g[2025]["muud"] / g[2022]["muud"]
@@ -378,15 +379,14 @@ def test_menuus_on_kaheksa_teemat_ja_usaldus_on_oma_teema(sait):
     # Kadri 11.11.2026 (ülesehituse kontroll D): Avalik sektor, Hanked ja Tehisaru määrus on ühe punkti „Riik“ all
     assert re.findall(r">([^<>]+)</a>", menuu) == ["Avaleht", "Inimesed", "Ettevõtted", "Töö", "Riik", "Uudised", "Usaldus"]
     # Kadri 12.11.2026 („jah kõik“, ettepanek sp-2026-11-11-1): Riik › Riikide strateegiad
-    for f in ("avalik-sektor.html", "hanked.html", "hanked-naited.html", "tehisaru-maarus.html", "eesti-otsused.html",
-              "riikide-strateegiad.html"):
+    # Kadri 14.11.2026: Tehisaru määrus, Eesti otsused ja Riikide strateegiad on üks leht „Reeglid ja otsused“
+    for f in ("avalik-sektor.html", "hanked.html", "hanked-naited.html", "tehisaru-maarus.html"):
         assert '<a href="avalik-sektor.html" aria-current="page">Riik</a>' in sait[f], f
         alam = re.search(r'<ul class="alamlehed">(.*?)</ul>', sait[f]).group(1)
-        assert re.findall(r">([^<>]+)</a>", alam) == ["Avalik sektor", "Hanked", "Hangete näited", "Tehisaru määrus", "Eesti otsused",
-                                                      "Riikide strateegiad"], f
+        assert re.findall(r">([^<>]+)</a>", alam) == ["Avalik sektor", "Hanked", "Hangete näited", "Reeglid ja otsused"], f
         assert alam.count('aria-current="page"') == 1 and f'href="{f}" aria-current="page"' in alam, f
     assert '<ul class="sellel"></ul>' not in "".join(sait.values())
-    for f in ("kas-see-on-tosi.html", "lahknevused.html", "varskus.html"):
+    for f in ("kas-see-on-tosi.html", "lahknevused.html"):
         assert '<a href="kas-see-on-tosi.html" aria-current="page">Usaldus</a>' in sait[f], f
     # Kadri 12.11.2026: ettekanded, üritused ja podcastid on uudiste kõrval eraldi alamlehed
     assert re.findall(r'<ul class="alamlehed">(.*?)</ul>', sait["uudised.html"])[0].count("<li>") == 4
@@ -396,7 +396,7 @@ def test_lahknevused_ja_varskus_on_usalduse_all_nahtaval(sait):
     # Kadri 6.11.2026 21:38: Eurostati ja Statistikaameti võrdlus jääb nähtavale, kontrollib ministeerium
     osa = _jaotis(sait["lahknevused.html"], "lahknevused")
     assert "selgitamata" in osa and "<details" not in osa.split("</header>")[0]
-    assert 'id="varskus"' in sait["varskus.html"] and 'id="muutused"' in sait["varskus.html"]
+    assert 'id="varskus"' in sait["lahknevused.html"] and 'id="muutused"' in sait["lahknevused.html"]
     assert 'id="varskus"' not in sait["kuidas-lugeda.html"]
 
 
@@ -575,7 +575,7 @@ def test_ettekanded_uritused_ja_podcastid_eraldi_lehtedel(A, sait):
     import copy
     from komponendid import kp
     assert 'id="tulekul"' in sait["uritused.html"] and 'id="tulekul"' not in sait["ettekanded.html"]
-    assert 'href="eesti-otsused.html">Eesti otsused</a>' in sait["uritused.html"]
+    assert 'href="tehisaru-maarus.html#eesti-otsused">Eesti otsused</a>' in sait["uritused.html"]
     assert 'data-liik="podcast"' not in sait["ettekanded.html"] and 'data-liik="podcast"' in sait["podcastid.html"]
     assert 'data-liik="seminar"' not in sait["podcastid.html"]
     assert 'data-k="liik"' not in sait["podcastid.html"]  # ühe valikuga liigirida jääb ära
@@ -612,7 +612,7 @@ def test_pikad_teemad_on_alamlehtedeks_jagatud(sait):
             assert f'<a href="{s["fail"]}" aria-current="page">' in h, s["fail"]
             assert all(f'href="{x["fail"]}"' in h for x in v["alamlehed"])
             assert f'<a href="{t["fail"]}" aria-current="page">{t["menuu"]}</a>' in h  # teema jääb menüüs valituks
-    assert 'id="hoive"' in sait["too-ametid.html"] and 'id="hoive"' not in sait["too.html"]
+    assert 'id="hoive"' in sait["too.html"] and 'id="uuritakse"' in sait["too-kirjandus.html"] and 'id="uuritakse"' not in sait["too.html"]
 
 
 def test_ankurlink_teisele_lehele_peab_olemas_olema():
@@ -984,7 +984,8 @@ def test_koik_teemalehed_jargivad_malli_a(sait):
         assert jrk[0] != -1 and jrk[3] != -1 and jrk[4] != -1, f
         jrk = [i for i in jrk if i != -1]
         assert jrk == sorted(jrk), f
-        assert len(re.findall(r'class="sakk-sisu">', h)) == 1, f
+        # iga sakkidega plokk näitab korraga ühte sakki (Ettevõtetel on kolm sakkidega plokki, Kadri 14.11.2026)
+        assert len(re.findall(r'class="sakk-sisu">', h)) == h.count('class="p-tabs andmesakid"') >= 1, f
 
 
 def test_uus_leht_avaneb_ulevalt():
@@ -1005,15 +1006,10 @@ def test_labivaatus_8_11_parandused(sait):
     assert "kõige kaugemal" not in sait["index.html"] and "siht on 75% aastaks 2030" in h2("index.html", "sihid")
     # P2: iga „viimati“ ütleb, mille kohta see on
     assert h2("index.html", "muutus").startswith("Mis muutus: uus number viimati ")
-    assert h2("varskus.html", "muutused").startswith("Allikate ja lahknevuste logis")
+    assert h2("lahknevused.html", "muutused").startswith("Mis allikates viimati muutus? Logi viimane kanne on")
     # P3: alamlehtede h1 on vastus, mitte teema nimi
-    for f, nimi in [("inimesed-oskused.html", "Digioskused ja oskuse puudus"),
-                    ("ettevotted-voimekus.html", "Tootlikkus, digiintensiivsus ja teadus- ja arendustegevus"),
-                    ("too-uuringud.html", "Mida uuringud tehisaru ja töö kohta leidsid"),
-                    ("too-kirjandus.html", "Mida maailmas ja Eestis tehisarust ja tööst kirjutatakse"),
-                    ("too-ametid.html", "Millised Eesti ametid on tehisarule avatud")]:
+    for f, nimi in [("too-kirjandus.html", "Mida maailmas ja Eestis tehisarust ja tööst kirjutatakse")]:
         assert h1(f) != nimi and len(h1(f)) > len(nimi) and "<b>" in re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1), f
-    assert re.search(r"digioskused on \d+,\d% Eesti 16–74-aastastest", h1("inimesed-oskused.html"))
     # P5: saidikaardil pole sisemärkmeid ega olekuveergu
     # Autori nimi on saidil teadlikult (Kadri 11.11.2026); sisemärkmeid („Kadri 8.11 …“) ei tohi olla
     assert "Kadri" not in sait["saidikaart.html"].replace("Kadri Kungla", "") and "Eelvaate" not in sait["saidikaart.html"]
@@ -1021,7 +1017,7 @@ def test_labivaatus_8_11_parandused(sait):
     # P6, P7, P8
     assert h2("hanked.html", "tapsus").endswith("masinmärgendite järgi")
     assert "hindamata" not in h2("index.html", "teemad")
-    assert "kolm puhul" not in sait["varskus.html"] and "korra" not in h2("index.html", "trend")
+    assert "kolm puhul" not in sait["lahknevused.html"] and "korra" not in h2("index.html", "trend")
     # Kopeeritav fakt: ainult välise allika lingiga plaatidel, lause sisaldab allika lingi
     for f, h in sait.items():
         for m in re.finditer(r'<div class="plaat kp" data-kpi="([^"]+)">(.*?)</div>', h, re.S):
@@ -1129,10 +1125,9 @@ def test_eesti_otsused_tulevad_kogumisest(A):
     # Kadri 8.11.2026 23:02: riigi otsused ja tähtajad leiab kogumine ise (teema „riik“), käsitsi neid ei kanta
     from andmekiht import AndmeViga
     vaade = _vaade("reeglid")
-    assert [s["fail"] for s in vaade["alamlehed"]] == ["tehisaru-maarus.html", "eesti-otsused.html", "riikide-strateegiad.html"]
-    alam = lambda: next(s for s in vaade["alamlehed"] if s["fail"] == "eesti-otsused.html")  # noqa: E731
+    assert "alamlehed" not in vaade  # Kadri 14.11.2026: üks leht „Reeglid ja otsused“
     h = lehed_teemad.eesti_otsused({**A, "uudised": []}, vaade, None, "2026-11-09")
-    assert "pole kogumine veel leidnud" in h and "igapäevasest uudistekogumisest" in alam()["h1"]
+    assert "pole kogumine veel leidnud" in h
     U = [{"kuupaev": "2026-11-09", "piirkond": "EE", "teema": "riik", "riigi_liik": "hange", "tahtaeg": "2026-11-12",
           "pealkiri": "Gigatehaste ühishange", "url": "https://www.justdigi.ee/x", "allikas": "justdigi.ee", "liik": "uudis",
           "pohjus": "Pakkumused 12.11.", "kontrollitud": True},
@@ -1143,7 +1138,7 @@ def test_eesti_otsused_tulevad_kogumisest(A):
     h = lehed_teemad.eesti_otsused({**A, "uudised": U}, vaade, None, "2026-11-09")
     assert "Gigatehaste ühishange" in h and "Valitsuse otsus" in h and "Muu uudis" not in h
     assert "tähtaeg 12.11.2026" in h and "Ees olevad tähtajad (1)" in h
-    assert "järgmine tähtaeg on 12.11.2026" in alam()["h1"] and "2 Eesti riigi" in alam()["h1"]
+    assert "<b>2 kirjet</b>" in h and "Näita kõiki 2 kirjet" in h
     U[0]["riigi_liik"] = "tundmatu"
     with pytest.raises(AndmeViga):
         lehed_teemad.eesti_otsused({**A, "uudised": U}, vaade, None, "2026-11-09")
@@ -1187,11 +1182,11 @@ def test_uuringutulemused_ja_metoodika_on_seire_saidil(sait):
     for i in ("etapid", "liigid", "moju", "oskused", "kupsus", "rahastus"):
         assert f'id="{i}"' in av, i
     assert "22 protsendipunkti väiksem osa" in tekst(av) and "83% uuendusrahast tuli ELilt" in tekst(av)
-    ev = sait["ettevotted-voimekus.html"]
+    ev = sait["ettevotted.html"]
     assert 'id="arenguseire"' in ev and 'id="pohjamaad"' in ev and "Arvutatud: indeks" in ev
     kl = sait["kuidas-lugeda.html"]
     assert 'id="moisted"' in kl and 'id="numbrid-ei-naita"' in kl and "Seitse asja" in kl
-    assert "eesti-otsused.html" in sait and 'href="eesti-otsused.html"' in sait["tehisaru-maarus.html"]
+    assert 'id="eesti-otsused"' in sait["tehisaru-maarus.html"] and 'id="strateegiad"' in sait["tehisaru-maarus.html"]
 
 
 def test_a1_kujundus_kogu_saidil(sait):
@@ -1471,7 +1466,7 @@ def test_ulesehituse_kontroll_a_b_c_e(sait):
     menuu = re.findall(r">([^<>]+)</a>", re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1))
     assert not set(kiibid) & set(menuu), set(kiibid) & set(menuu)
     # C: alamlehtede rida on menüürida teema nimega, mitte sakk
-    assert '<span class="alam-silt">Töö:</span>' in sait["too-uuringud.html"]
+    assert '<span class="alam-silt">Töö:</span>' in sait["too-kirjandus.html"]
     css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8").split("Alamlehtede rida on menüü, mitte sakk")[1]
     assert "border-bottom: 0" in css and "overflow-x: auto" in css
     # E: Usalduse esimene leht ütleb, mida osa tervikuna näitab
@@ -1814,9 +1809,8 @@ def test_riikide_strateegiad_tabelina(A):
     """Kadri „jah kõik“ 12.11.2026 (sp-2026-11-11-1): riikide sihid ainult tabelis, ei ühist graafikut ega järjestust."""
     import vota_kaasa
     vaade = _vaade("reeglid")
-    alam = lambda: next(s for s in vaade["alamlehed"] if s["fail"] == "riikide-strateegiad.html")  # noqa: E731
     h = lehed_teemad.riikide_strateegiad({**A, "strateegiad": None}, vaade)
-    assert "pole kogumine veel siia toonud" in h and "igapäevasest uudistekogumisest" in alam()["h1"]
+    assert "pole kogumine veel siia toonud" in h
     sisend = {"kirjeldus": "x", "strateegiad": [
         {"id": "de", "riik": "Saksamaa", "riik_kood": "DE", "pealkiri": "KI-Nation 2030", "asutus": "BMDS", "kuupaev": "2026-11-02",
          "url": "https://bmds.bund.de/a.pdf", "tahtaeg": "2030", "kokkuvote": "sisemine", "markus": "Mõõtmisviis määramata.",
@@ -1830,7 +1824,6 @@ def test_riikide_strateegiad_tabelina(A):
     S = vota_kaasa.strateegiad_saidile(sisend)
     assert "kokkuvote" not in S["strateegiad"][0] and "kirjeldus" not in S
     h = lehed_teemad.riikide_strateegiad({**A, "strateegiad": S}, vaade)
-    assert "<b>2 riigi</b>" in alam()["h1"].replace("**2 riigi**", "<b>2 riigi</b>") and "mitte mõõtmised" in alam()["h1"]
     assert "4 arvulist sihti" in h and h.index("Saksamaa") < h.index("Rootsi")  # uusim dokument eespool
     assert h.index("VKEd, mis kasutavad") < h.index("koolitus") < h.index("hoiak")  # kasutus enne hoiakuid
     assert "Veel 1 sihti" in h and "lk 20" in h and "arvulisi sihte pole" in h and "puudub" in h
@@ -1898,3 +1891,18 @@ def test_disainikriitika_fookus_skaala_ja_lehel_rida(sait):
     # 3. „Sellel lehel“ on tekstilingid sildiga, mitte kiibid.
     assert 'content: "Sellel lehel:" / ""' in css
     assert re.search(r"max-width: 680px\) \{[^}]*\n  nav\[aria-label=\"Sellel lehel\"\] \.sellel a \{ min-height: 44px", css)
+
+
+def test_vaikesed_alamlehed_on_teemalehe_plokid_ja_vanad_aadressid_suunavad(sait, tmp_path):
+    """Kadri 14.11.2026 („Jah, kõigil teemadel“): väike alamleht on teemalehe plokk; vana aadress viib ploki ankrule."""
+    for f, ankrud in [("inimesed.html", ("digi", "ei-oska")), ("ettevotted.html", ("kasu", "tootlikkus", "voimekus", "digi", "ta", "pohjamaad", "arenguseire")),
+                      ("too.html", ("maailm", "ulesanded", "eesti", "kokkupuude", "hoive")),
+                      ("tehisaru-maarus.html", ("tahtajad", "eesti-otsused", "strateegiad")), ("lahknevused.html", ("lahknevused", "varskus", "muutused"))]:
+        for a in ankrud:
+            assert f'id="{a}"' in sait[f], (f, a)
+    assert 'class="alamlehed"' not in sait["inimesed.html"] and 'class="alamlehed"' not in sait["ettevotted.html"]
+    ehita.ehita(tmp_path)
+    for vana in ("inimesed-oskused.html", "ettevotted-voimekus.html", "too-uuringud.html", "too-ametid.html",
+                 "eesti-otsused.html", "riikide-strateegiad.html", "varskus.html"):
+        uus = ehita.VANAD_AADRESSID[vana]
+        assert f'url={uus}"' in (tmp_path / vana).read_text(encoding="utf-8"), vana
