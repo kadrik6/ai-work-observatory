@@ -1870,3 +1870,20 @@ def test_ligipaasetavus_abitekst_graafik_ja_klopsualad(sait):
     # 3. Puuteala vähemalt 24 px: graafiku joone nähtamatu ala ja uudise kokkuvõte.
     assert int(re.search(r"\.bs \.bh \{[^}]*stroke-width: (\d+)px", css).group(1)) >= 24
     assert re.search(r"\.u-k\.voib \{[^}]*line-height: max\(1.5em, 24px\)", css)
+
+
+def test_disainikriitika_fookus_skaala_ja_lehel_rida(sait):
+    """Disainikriitika 14.11.2026 (Kadri: „tee soovituste põhjal before and after vaade“)."""
+    css = (JUUR / "sait" / "stiil.css").read_text(encoding="utf-8")
+    # 1. Sinine kaardinumber on ainult pealkirja fookus: avalehel ettevõtted, Töö lehel mitte ükski.
+    assert re.search(r'data-kpi="ettevotted">.*?<span class="big s"', sait["index.html"], re.S)
+    assert re.search(r'data-kpi="inimesed">.*?<span class="big"', sait["index.html"], re.S)
+    assert '<span class="big s"' not in sait["too.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]
+    assert ".vastus.kpi-pais > .plaat:first-child .big:not(.s) { color: var(--ink); }" in css
+    # 2. Töötuse kuugraafikul on abijooned koos väärtustega (y-skaala).
+    osa = sait["too.html"][sait["too.html"].index('id="tootus-kuud"'):]
+    svg = osa[:osa.index("</svg>")]
+    assert svg.count('<line class="v"') >= 3
+    # 3. „Sellel lehel“ on tekstilingid sildiga, mitte kiibid.
+    assert 'content: "Sellel lehel:" / ""' in css
+    assert re.search(r"max-width: 680px\) \{[^}]*\n  nav\[aria-label=\"Sellel lehel\"\] \.sellel a \{ min-height: 44px", css)

@@ -595,7 +595,7 @@ def too(A, vaade, vaated=None):
     aside = kpi_pais(
         kpi_plaat("too-noored", "Noorte (22–25) hõive tehisarule avatud ametites, USA", e(can["muutus"]), "",
                   {"tekst": "vs vähem avatud ametid · <b>laialdast kadu pole</b>"},
-                  a(U["canaries2026"]["url"], f'Brynjolfsson jt {U["canaries2026"]["aasta"]}'), fookus=True),
+                  a(U["canaries2026"]["url"], f'Brynjolfsson jt {U["canaries2026"]["aasta"]}')),  # pealkirja fookus on Eesti, mitte USA number (14.11)
         kpi_plaat("too-taani", "Mõju tulule ja töötundidele, Taani", "&lt; 2%", "",
                   {"tekst": "<b>muutust ei leitud</b> 2 aastat pärast ChatGPT-d"},
                   a(hum["url"], f'Humlum ja Vestergaard {hum["aasta"]}')),

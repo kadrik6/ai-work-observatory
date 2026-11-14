@@ -1585,3 +1585,32 @@ html[data-t] .vastus.kpi-pais.tihe { padding-left: 0; padding-right: 0; }
   html[data-t] .u-f button, html[data-t] .p-tabs button, html[data-t] .kogus button,
   html[data-t] .src button.kopeeri, html[data-t] summary { min-height: 44px; }
 }
+
+/* ---- Disainikriitika 14.11.2026 (Kadri „tee soovituste põhjal before and after vaade“) ----
+   3: „Sellel lehel“ on tekstilingid sildiga, nagu alamlehtede rida, mitte ümarad kiibid, mis näevad välja nagu filtrid.
+   J1: numbrikaartide rida joondub pealkirjaga ka teemalehtedel. U: kompaktses uudistevoos on kokkuvõte tavakirjas
+   (paks võtmelause jääb avatud vaatesse) ja päev loeb „13. nov“, selle all „eile“. */
+nav[aria-label="Sellel lehel"] .sellel { align-items: baseline; gap: 2px 16px; font-size: 14px; }
+nav[aria-label="Sellel lehel"] .sellel::before { content: "Sellel lehel:" / ""; flex: none; color: var(--ink-3); font-size: 14px; }
+html[data-t] nav[aria-label="Sellel lehel"] .sellel a, nav[aria-label="Sellel lehel"] .sellel a {
+  padding: 0; border: 0; border-radius: 0; background: none; color: var(--ink-2); text-decoration: none; }
+nav[aria-label="Sellel lehel"] .sellel a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+nav[aria-label="Sellel lehel"] .sellel a[aria-current="true"] { color: var(--signal); font-weight: 700; border: 0; background: none; }
+html[data-t] .vastus.kpi-pais { padding-left: 0; padding-right: 0; }
+.u-paev .u-k.kinni b { font-weight: inherit; color: inherit; }
+@media (min-width: 681px) {  /* telefonis on päev juba ühel real: „14. täna nov“ */
+  .u-pk { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 5px; }
+  .u-pk b, .u-pk span { display: inline; }
+  .u-pk .u-pn { order: 3; flex-basis: 100%; }
+}
+/* Soovitus 1: esimene kaart ei ole automaatselt sinine; sinine on ainult pealkirja fookusfraasi number (klass .s) */
+.vastus.kpi-pais > .plaat:first-child .big:not(.s) { color: var(--ink); }
+/* Jaotiste vahed (J5): sakkide all algab sisu 24 px pärast, lehe esimene jaotis pealkirja all 40 px pärast (enne 56 px) */
+html[data-t] .sakk-sisu > .g12:first-child { margin-top: 24px; }
+html[data-t] .pea + .g12 { margin-top: 40px; }
+/* Kadri 14.11.2026: avalehe töötuse kaks graafikut algavad samal kõrgusel, pealkirjad ühel real
+   („sesoonselt tasandatud“ on graafikute all olevas märkuses) */
+#tootus .g2 { align-items: start; }
+@media (max-width: 680px) {  /* Kadri 14.11 telefonireegel: iga juhtelement vähemalt 44 px */
+  nav[aria-label="Sellel lehel"] .sellel a { min-height: 44px; display: inline-flex; align-items: center; }
+}
