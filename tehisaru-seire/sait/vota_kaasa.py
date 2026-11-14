@@ -9,6 +9,7 @@ riigihangete registri avalikud väljad (kirjeldus lühendatud) ja publikatsiooni
 Käivitus: python3 sait/vota_kaasa.py PROJEKTI_KAUST   (või keskkonnamuutuja PROJEKTI_KAUST)
 Uudistest jäetakse välja, kes ütles (väide kuulub väljaandele, mitte inimesele).
 """
+import datetime as dt
 import json
 import os
 import re
@@ -85,8 +86,35 @@ def ligipaasu_sundmused(uudised, tagasivaade):
     return sorted(out, key=lambda r: r["kuupaev"], reverse=True)
 
 
+# ADR-2 (Kadri „jah ADR-2“ 14.11.2026): käsitsi hoitud failidel projekti kaustas pole ajalugu ja viimane kirjutaja
+# võidab. Enne kopeerimist läheb nendest päevane koopia projekti kausta (mitte repo), alles 14 päeva.
+KASITSI_FAILID = ("seire-uks-sait/ettekanded.json", "seire-uks-sait/saidi-ettepanekud.json",
+                  "tooelu-leht-andmed/leiud-lisa.json")
+VARUKOOPIAD = "seire-uks-sait/varukoopiad"
+HOIA_PAEVI = 14
+
+
+def varukoopia(proj, tana=None, hoia=HOIA_PAEVI):
+    """Kopeerib käsitsi hoitud failid kausta varukoopiad/AAAA-KK-PP/ ja kustutab üle `hoia` päeva vanad."""
+    proj, tana = Path(proj), tana or dt.date.today()
+    juur = proj / VARUKOOPIAD
+    paev = juur / tana.isoformat()
+    tehtud = []
+    for rel in KASITSI_FAILID:
+        if (proj / rel).exists():
+            paev.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(proj / rel, paev / rel.replace("/", "__"))
+            tehtud.append(rel)
+    piir = (tana - dt.timedelta(days=hoia)).isoformat()
+    for k in juur.iterdir() if juur.exists() else []:
+        if k.is_dir() and re.fullmatch(r"\d{4}-\d{2}-\d{2}", k.name) and k.name < piir:
+            shutil.rmtree(k)
+    return tehtud
+
+
 def vota(proj):
     proj = Path(proj)
+    varukoopia(proj)
     uu = proj / "tooelu-uudised"
     read = [json.loads(r) for r in (uu / "uudised.jsonl").read_text(encoding="utf-8").splitlines() if r.strip()]
     for r in read:
