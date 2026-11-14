@@ -403,7 +403,7 @@ def _pohjamaad(A):
       ("Põhjamaade tasemel", "s", f'{e(nimed(tasemel)[:1].upper() + nimed(tasemel)[1:])}.' if tasemel else "Mitte üheski näitajas."),
       ("Kuidas arvutatud", "", "Arvutatud: indeks = Eesti väärtus / Põhjamaade keskmine × 100 (näitajal „ei oska“ vastupidi, sest väiksem on parem). "
                                "Aasta on uusim, kus on olemas Eesti ja vähemalt viis teist riiki."),
-      ("Erinev keskmine", "", f'Siin on Põhjamaade keskmine neli riiki koos Norraga. Lehe Kasutus vahe Põhjamaadega arvutab ainult kolm ELi Põhjamaad, '
+      ("Erinev keskmine", "", f'Siin on Põhjamaade keskmine neli riiki koos Norraga. Ploki „Kus on Eesti ELis?“ vahe Põhjamaadega arvutab ainult kolm ELi Põhjamaad, '
                               f'seepärast on ettevõtete vahe seal teine number (siin Eesti {pr(ettev["ee"])}% ja Põhjamaade keskmine {pr(ettev["pk"])}%, {ettev["a"]}).'),
   ])}</div>
   <details>
@@ -606,7 +606,7 @@ def ametnike_juhendid(A):
 </section>"""
 
 
-def _kasu(A, vaated, uuringud, lingid):
+def _kasu(A, vaated, uuringud, lingid, pais=True):
     """Kas tehisaru tõstab tootlikkust: katsed + Eesti ja OECD uuringud ühes plokis (oli kahes kohas, Kadri 14.11.2026)."""
     from abi import link
     import teemamall as tm
@@ -622,6 +622,14 @@ def _kasu(A, vaated, uuringud, lingid):
            pealdis="Uuringud tehisaru mõjust töö tulemusele", numbrid=[])}
   </div>"""
     li = "".join(f'<li><span class="k">{e(s_)}</span><span>{t} {link(vaated, vid, "Vaata", ank)}</span></li>' for s_, t, vid, ank in uuringud)
+    if not pais:  # sisu sakis (Kadri 14.11.2026): pealkiri on sakkidega ploki päises
+        return f"""
+<div class="kasu-katsed">
+  <p class="alam">Katsetes tegid tehisaru kasutajad tööd rohkem ja kiiremini. Ühes katses said nad tehisarule sobimatus ülesandes vähem õigeid lahendusi, teises hindasid kogenud arendajad oma kiirust valesti.</p>
+  {katsed}
+  {f'<p class="gt">Eesti ja OECD uuringud</p><ul class="t-loend">{li}</ul>' if li else ""}
+  {faktid([("Valik", "risk", "Katsete neli uuringut on valik, mitte süstemaatiline ülevaade. Need kasutasid 2022–2025 tööriistu ja erasektori töötajaid, mitte riigiametnikke ega tänaseid agente.")])}
+</div>"""
     return f"""
 <section class="jaotis" id="kasu" aria-labelledby="h-kasu">
   <header>
@@ -631,12 +639,12 @@ def _kasu(A, vaated, uuringud, lingid):
   {katsed}
   {f'<p class="gt">Eesti ja OECD uuringud</p><ul class="t-loend">{li}</ul>' if li else ""}
   {faktid([("Valik", "risk", "Katsete neli uuringut on valik, mitte süstemaatiline ülevaade. Need kasutasid 2022–2025 tööriistu ja erasektori töötajaid, mitte riigiametnikke ega tänaseid agente.")])}
-  <p class="lingid">{lingid}</p>
+  {f'<p class="lingid">{lingid}</p>' if lingid else ""}
 </section>"""
 
 
 def ettevotted(A, vaade, vaated=None):
-    """Kaks alamlehte (sisuloogika 6.11.2026, Kadri otsus 6): Kasutus | Tootlikkus ja võimekus.
+    """Üks leht (Kadri 14.11.2026; enne kaks alamlehte Kasutus | Tootlikkus ja võimekus).
     Sisu korrastus (Kadri 14.11.2026): iga plokk vastab ühele küsimusele, iga number on lehel üks kord."""
     from abi import jaga, link
     from lehed_teemad import lisa_sihid
@@ -692,11 +700,11 @@ def ettevotted(A, vaade, vaated=None):
     ])
     lyh = lambda k: e(tm.esimene_lause(U[k]["leid"]))  # noqa: E731
     kasu = _kasu(A, vaated, [
-        ("Eesti", f'{lyh("vahter2026")} ({e(U["vahter2026"]["autorid"].split(",")[0])} {U["vahter2026"]["aasta"]})', "ettevotted", "tootlikkus"),
+        # Vahter 2026 on kohe all oma plokis (#tootlikkus), siin seda ei korrata
         ("Eesti", f'{lyh("oska2025")} (OSKA {U["oska2025"]["aasta"]})', "ettevotted", "tootlikkus"),
         ("OECD", f'{lyh("calvino2023")} (Calvino ja Fontanelli {U["calvino2023"]["aasta"]})', "ettevotted", "tootlikkus"),
         ("Katse", f'Firmad, kes nägid teiste ümberkorraldatud töövooge, leidsid 44% rohkem kasutusviise ja teenisid 1,9 korda rohkem tulu (Kim jt {U["kim2026"]["aasta"]}).', "too", "ulesanded"),
-    ], link(vaated, "ettevotted", "Tootlikkus ja võimekus", "tootlikkus"))
+    ], "", pais=False)
     t_vaited = tm.vaidete_plokk(A, vaated, "ettevotted", vaite_teema)
     t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-uldkohaldamine"])  # läbipaistvus, nt klienditeeninduse vestlusrobot
     t_allikad = tm.allikate_plokk([
@@ -708,16 +716,32 @@ def ettevotted(A, vaade, vaated=None):
          kp(A["leiud"]["gem-ai-teadlikkus"]["avaldatud"])),
         (f"Siht, {siht['allikas']}", siht["url"], siht["kontrollitud"], f"{pr(sv, 0)}% aastaks {siht['aasta']}; kontrollitud"),
     ])
+    # Endine alamleht Tootlikkus ja võimekus: digi, T&A, Põhjamaad ja Arenguseire on üks sakkidega plokk, et leht ei veniks
+    # (Kadri 14.11.2026: kõrvalpaneel tegi lehe pikemaks; sakis on korraga üks vaade, ankrud #digi jt avavad oma saki).
+    DI, TA = "ettevotete-digiintensiivsus", "ta-kulud"
+    alla = [nimi for nid, nimi in ((DI, "digis"), (TA, "teadus- ja arendustöös"))
+            if andmed.leia(A, nid, "EE", 2024)["vaartus"] < andmed.leia(A, nid, EL, 2024)["vaartus"]]
+    vastus = (f'{" ja ".join(alla).capitalize()} jääb Eesti ELi keskmisest alla' if alla else "Digis ja teadus- ja arendustöös on Eesti ELi keskmisel tasemel") + " (2024)"
+    voimekus = tm.andmesakid("ettevotted", tm.kys("Kas ettevõtetel on võimekust kasvada?", vastus),
+                             "Iga sakk on üks vaade: Põhjamaade võrdlus üheksas näitajas, digiintensiivsus ja teadus- ja arendustöö, Arenguseire Keskuse soovitused.", [
+        ("pm", "Põhjamaad", _pohjamaad(A)),
+        ("digi-ta", "Digi ja T&A", lisa_sihid(A, lisa_sihid(A, _digi_ja_ta(A), "digi", "el-digiintensiivsus-90"), "ta", "el-ta-3")),
+        ("soovitused", "Soovitused", _arenguseire(A)),
+    ], jid="voimekus", silt="Võimekus")
+    # Kadri 14.11.2026 („Jah, kõigil teemadel“): alamleht Tootlikkus ja võimekus on selle lehe plokid.
+    # Kleepuvas reas on üks link küsimuse kohta; alamplokid (tootlikkus, T&A) on sama küsimuse all.
     return jaga(A, vaade, lead, [], [
         ("andmed", [("andmed", "Kus ELis?")], sec_andmed),
-        ("ligipaas", [("ligipaas", "Mida firmad lubavad?"), ("kasu", "Kas tasub?")], _ligipaas(A) + kasu),
+        ("ligipaas", [("ligipaas", "Mida firmad lubavad?")], _ligipaas(A)),
+        ("kasu", [("kasu", "Kas tasub?")], tm.andmesakid(
+            "ettevotted", tm.kys("Kas tehisaru tõstab tootlikkust?", "Kasu on päris, aga mitte igas ülesandes"),
+            "Esimene sakk on katsed ja teised uuringud, teine Eesti ettevõtete tootlikkuse uuring.", [
+                ("katsed", "Katsed ja uuringud", kasu),
+                ("eesti-firmad", "Eesti ettevõtted", _tootlikkus(A)),
+            ], jid="kasu", silt="Kas tasub?")),
+        ("voimekus", [("voimekus", "Võimekus")], voimekus),
         ("teema-lopp", [("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
          tm.teema_lopp("", t_vaited, t_reeglid, t_allikad)),
-        ("tootlikkus", [("tootlikkus", "Tootlikkus")], _tootlikkus(A)),
-        ("voimekus", [("digi", "Digiintensiivsus"), ("ta", "Teadus ja arendus")],
-         lisa_sihid(A, lisa_sihid(A, _digi_ja_ta(A), "digi", "el-digiintensiivsus-90"), "ta", "el-ta-3")),
-        ("arenguseire", [("arenguseire", "Arenguseire järeldused")], _arenguseire(A)),
-        ("pohjamaad", [("pohjamaad", "Põhjamaade võrdlus")], _pohjamaad(A)),
     ], aside=aside)
 
 

@@ -21,8 +21,9 @@ def kys(kysimus, vastus):
     return f'<span class="kys">{kysimus}</span> <b>{vastus}</b>'
 
 
-def andmesakid(tid, pealkiri, alam, sakid):
-    """sakid: [(saki id, nimi, html)]. Esimene sakk on avatud; ülejäänud on peidus, aga nende ankrud jäävad lehele."""
+def andmesakid(tid, pealkiri, alam, sakid, jid="andmed", silt="Andmed"):
+    """sakid: [(saki id, nimi, html)]. Esimene sakk on avatud; ülejäänud on peidus, aga nende ankrud jäävad lehele.
+    jid: ploki id (lehel võib olla mitu sakkidega plokki, Kadri 14.11.2026: alamlehed liideti teemalehele)."""
     sakid = [s for s in sakid if s[2].strip()]
     if len(sakid) < 2:
         raise AndmeViga(f"Teema {tid}: andmesakke peab olema vähemalt kaks")
@@ -34,12 +35,12 @@ def andmesakid(tid, pealkiri, alam, sakid):
         f'<div role="tabpanel" id="sakk-{sid}" aria-labelledby="sakk-{sid}-n" class="sakk-sisu"{"" if i == 0 else " hidden"}>{html}</div>'
         for i, (sid, _, html) in enumerate(sakid))
     return f"""
-<section class="jaotis teema-andmed" id="andmed" aria-labelledby="h-andmed">
+<section class="jaotis teema-andmed" id="{jid}" aria-labelledby="h-{jid}">
   <header>
-    <h2 id="h-andmed">{pealkiri}</h2>
+    <h2 id="h-{jid}">{pealkiri}</h2>
     <p class="alam">{alam}</p>
   </header>
-  <div class="p-tabs andmesakid" role="tablist" aria-label="Andmed">{nupud}</div>
+  <div class="p-tabs andmesakid" role="tablist" aria-label="{e(silt)}">{nupud}</div>
   {paneelid}
 </section>"""
 
@@ -55,7 +56,7 @@ def uuringute_plokk(vaated, read, lingid, vastus=None):
     li = "".join(f'<li><span class="k">{e(s)}</span><span>{t} {link(vaated, vid, "Vaata", ank)}</span></li>' for s, t, vid, ank in read)
     ll = " · ".join(link(vaated, vid, t, ank) for vid, t, ank in lingid)
     return f"""<section class="pn" id="t-uuringud" aria-labelledby="h-t-uuringud">
-  <h2 id="h-t-uuringud">{kys("Mida uuringud leidsid?", vastus or (f"{sonaga(len(read)).capitalize()} uuring" + ("ut" if len(read) != 1 else "") + ", igaüks ühe lausega"))}</h2>
+  <h2 id="h-t-uuringud">{kys("Mida uuringud leidsid?", vastus or ("Üks uuring ühe lausega" if len(read) == 1 else f"{sonaga(len(read)).capitalize()} uuringut, igaüks ühe lausega"))}</h2>
   <ul class="t-loend">{li}</ul>
   <p class="lingid">{ll}</p>
 </section>"""
