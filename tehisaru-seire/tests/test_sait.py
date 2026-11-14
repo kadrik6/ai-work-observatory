@@ -61,7 +61,8 @@ def test_iga_2026_number_saab_moodiku_kataloogist(A):
 def test_eesti_ettevotete_2026_ei_ole_elii_skaalaga_sama_klass(A):
     ee26 = andmekiht.leia(A, EB, "EE", 2026)
     assert ee26["klass"] == "osaliselt"  # uus klassifikaator EMTAK 2025 (kataloog: sa-it1490)
-    assert andmekiht.leia(A, EB, "EE", "uusim:alus")["aasta"] == 2025
+    # Reegel, mitte aasta: kui Eurostat avaldab 2026. aasta võrreldava rea, ei tohi igapäevane andmetöö kukkuda
+    assert andmekiht.leia(A, EB, "EE", "uusim:alus")["aasta"] >= 2025
 
 
 def test_skaala_keeldub_eri_klassidest(A):

@@ -24,10 +24,9 @@ import zipfile
 from pathlib import Path
 
 SIIN = Path(__file__).resolve().parent
+sys.path.insert(0, str(SIIN))
+from lae_ettekanded import KANDIDAADID, UTTV_LEHT, tuntud_videod  # noqa: E402  (üks koht, mitte koopia)
 REPO = SIIN.parents[1]
-KANDIDAADID = SIIN / "sisu" / "ettekannete-kandidaadid.json"
-TUNTUD = SIIN / "sisu" / "ettekanded.json"
-UTTV_LEHT = "https://uttv.ee/pls/uttv/naita?id={}"
 WHISPER_MUDEL = "small"  # sülearvutis mõistlik kiirus; eesti keel tuleb loetav, nimed võivad vigaseks jääda
 
 
@@ -36,20 +35,6 @@ def video_url(vid):
     if vid.startswith("uttv-"):
         return UTTV_LEHT.format(vid.split("-", 1)[1])
     return f"https://www.youtube.com/watch?v={vid}"
-
-
-def tuntud_videod(tuntud_fail=TUNTUD):
-    """Saidil juba olevate ettekannete video id-d (neile teksti ei tehta)."""
-    if not tuntud_fail.exists():
-        return set()
-    d = json.loads(tuntud_fail.read_text(encoding="utf-8"))
-    ids = set()
-    for r in d.get("ettekanded", []):
-        ids.add(r.get("id", ""))
-        m = re.search(r"(?:youtu\.be/|v=)([\w-]{11})", r.get("video", ""))
-        if m:
-            ids.add(m.group(1))
-    return ids
 
 
 def vali(kandidaadid, tuntud, soovitud=None, kuni=None):

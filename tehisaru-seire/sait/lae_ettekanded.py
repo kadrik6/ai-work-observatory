@@ -117,12 +117,19 @@ def teemas(r):
     return bool(TEEMA.search(r["pealkiri"] + " " + r["kirjeldus"]))
 
 
-def tuntud_videod():
-    """Videod, millest kokkuvõte juba on (saidi ettekanded)."""
-    if not TUNTUD.exists():
+def tuntud_videod(tuntud_fail=None):
+    """Saidil juba olevate ettekannete id-d ja YouTube'i video id-d (neile kandidaati ega teksti ei tehta)."""
+    tuntud_fail = tuntud_fail or TUNTUD
+    if not tuntud_fail.exists():
         return set()
-    d = json.loads(TUNTUD.read_text(encoding="utf-8"))
-    return {m.group(1) for r in d.get("ettekanded", []) for m in [re.search(r"(?:youtu\.be/|v=)([\w-]{11})", r.get("video", ""))] if m}
+    d = json.loads(tuntud_fail.read_text(encoding="utf-8"))
+    ids = set()
+    for r in d.get("ettekanded", []):
+        ids.add(r.get("id", ""))
+        m = re.search(r"(?:youtu\.be/|v=)([\w-]{11})", r.get("video", ""))
+        if m:
+            ids.add(m.group(1))
+    return ids - {""}
 
 
 def uuenda(kandidaadid, leitud, tuntud, tana, esimene):
