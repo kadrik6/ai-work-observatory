@@ -108,7 +108,8 @@ def test_ettevotete_h1_vaide_klapib_andmetega(A):
 def test_ettevotete_koht_ja_el_keskmine_lehel(A, sait):
     h = tekst(sait["ettevotted.html"])
     koht = andmekiht.koht(A, EB, "EE", 2025)
-    assert f"Eesti 27 riigi seas {koht}. kohal" in h
+    # Kadri 14.11.2026: ploki pealkiri on küsimus ja vastus; koht on üks kord (plaat ja see pealkiri)
+    assert f"Kus on Eesti ELis? {koht}. kohal" in h
     assert "EL 20,0%" in h  # Eurostat 19,95
 
 
@@ -248,7 +249,10 @@ def _jaotis(h, ank):
 def test_sihid_on_oma_teema_juures_ja_eesti_siht_on_fookuses(sait):
     # Sisuloogika 6.11.2026, Kadri otsus 4: sihid teemade juurde, määruse lehel ainult tähtajad.
     # Paigutus 6.11.2026 22:27 (ettepanek 4): siht on üks rida näitaja enda plokis, mitte eraldi plokk
-    assert _jaotis(sait["ettevotted.html"], "kasutus").count('class="sihiriba fookus"') == 1
+    # Kadri 14.11.2026: Ettevõtete siht on päise plaadi ribal ja „Kuidas lugeda“ loendis, mitte kolmandat korda sihireal
+    kas = _jaotis(sait["ettevotted.html"], "kasutus")
+    assert 'class="siht-rida"' not in kas and '<span class="mark-l s">Siht</span>' in kas
+    assert "siht 75% (2030)" in tekst(sait["ettevotted.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0])
     assert _jaotis(sait["ettevotted-voimekus.html"], "digi").count('class="siht-rida"') == 1
     assert _jaotis(sait["ettevotted-voimekus.html"], "ta").count('class="siht-rida"') == 1
     assert _jaotis(sait["inimesed-oskused.html"], "digi").count('class="siht-rida"') == 1
@@ -260,9 +264,10 @@ def test_kokkupuute_osad_summeeruvad_ja_pealkiri_tuleb_andmetest(A, sait):
     K = A["kokkupuude"]
     assert abs(sum(K["osa"].values()) + K["liigitamata"] - 100) < 0.01
     assert K["ilo_ameteid"] == 427 and K["ilo_avatud_ameteid"] == 112  # ILO WP140 tabel A1
-    h2 = re.search(r'<h2 id="h-kokkupuude">(.*?)</h2>', sait["too-ametid.html"], re.S).group(1)
-    assert f'{komponendid.pr(K["avatud"], 0)}%' in h2
-    assert f'<b>{komponendid.pr(K["korge"], 0)}% kõige avatumates</b>' in h2
+    # Kadri 14.11.2026: h2 ei korda h1 (30% avatud ametites); h2 vastab, kui paljud on kõige avatumates, 30% on lisareal
+    h2 = re.search(r'<h2 id="h-kokkupuude">(.*?)</h2>\s*<p class="h-lisa">(.*?)</p>', sait["too-ametid.html"], re.S)
+    assert f'{komponendid.pr(K["avatud"], 0)}%' in h2.group(2)
+    assert f'<b>{komponendid.pr(K["korge"], 0)}% töötajatest on kõige avatumates ametites</b>' in h2.group(1)
 
 
 def test_kokkupuude_ei_ole_moju_ja_el_vordlus_on_eraldi(sait):
@@ -489,7 +494,9 @@ def test_too_vaates_on_publikatsioonid(A, sait):
     P = A["publikatsioonid"]
     assert 'id="uuritakse"' in h and 'id="publikatsioonid"' in h and 'id="eesti-allikad"' in h
     a1 = [r for r in P["aastad"] if not r["poolik"]][-1]
-    assert f'{a1["aasta"]}. aastal <b>' in h.split('id="h-uuritakse">')[1].split("</h2>")[0]
+    assert f'{a1["aasta"]}. aastal <b>' in h.split("<h1")[1].split("</h1>")[0]
+    # h2 ei korda h1 numbrit (Kadri 14.11.2026), vaid ütleb suurima teema
+    assert "Suurim teema on" in h.split('id="h-uuritakse">')[1].split("</h2>")[0]
 
 
 def test_ulevaade_ja_avalik_sektor_viitavad_uutele_vaadetele(sait):
@@ -1304,7 +1311,9 @@ def test_ai_tooriistade_ligipaas_ettevotete_lehel(sait, A):
     assert "Töös: kogumine käib" in sec
     assert f"{abi.sonaga(len(S), 'seestytlev').capitalize()} kogutud otsusest" in tekst(sec)
     assert "Näitame arve, mitte osakaale" in sec
-    assert "33 asutusel puudus asutusesisene kord" in tekst(sec)  # Riigikontroll 30.05.2025, p 58
+    # Riigikontroll 30.05.2025, p 58 käib avaliku sektori kohta: Avaliku sektori lehel (Kadri 14.11.2026)
+    assert "33 asutusel puudus asutusesisene kord" not in tekst(sec)
+    assert "33 asutusel puudus asutusesisene kord" in tekst(_jaotis(sait["avalik-sektor.html"], "ametnikud"))
     otsused = sec.split('class="lp-lisa"')[0]  # taustaplokkide tabelid ei ole otsused
     assert otsused.count("<tr>") == len(S) + 1  # päis + üks rida otsuse kohta
     assert all("kontroll" not in r for r in S)  # sisemine kontrollimärge ei lähe saidile
@@ -1316,14 +1325,16 @@ def test_ligipaasu_taust_teised_riigid_ja_uuringud(sait, A):
     K = A.get("ligipaas_kontekst") or {}
     if not K:
         pytest.skip("sisu/ligipaas-kontekst.json puudub")
-    h = sait["ettevotted.html"]
-    sec = h[h.index('id="ligipaas"'):]
-    sec = sec[:sec.index("</section>")]
+    # Kadri 14.11.2026: ametnike juhendid on Avaliku sektori lehel, katsed Ettevõtete lehel küsimuse „Kas tehisaru tõstab tootlikkust?“ all
+    leht = {"ligipaas-riigid": _jaotis(sait["avalik-sektor.html"], "ametnikud"), "ligipaas-uuringud": _jaotis(sait["ettevotted.html"], "kasu")}
+    sec = leht["ligipaas-riigid"] + leht["ligipaas-uuringud"]
     for plokk, read, pk in [("ligipaas-riigid", K["riigid"], "Soome, Holland, Ühendkuningriik ja USA lubavad ametnikel tehisaru kasutada tingimustega"),
-                            ("ligipaas-uuringud", K["uuringud"], "Kasu on päris, aga mitte igas ülesandes, ja kasutaja hinnang võib eksida")]:
-        osa = sec[sec.index(f'id="{plokk}"'):]
+                            ("ligipaas-uuringud", K["uuringud"], "Kasu on päris, aga mitte igas ülesandes")]:
+        osa = leht[plokk]
+        pk_osa = osa
+        osa = osa[osa.index(f'id="{plokk}"'):]
         osa = osa[:osa.index("</table>")]
-        assert pk in tekst(osa)
+        assert pk in tekst(pk_osa)
         assert osa.count("<tr>") == len(read) + 1
         for r in read:
             assert r["url"].startswith("https://") and f'href="{r["url"]}"' in osa
