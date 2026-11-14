@@ -23,12 +23,14 @@ def _sisu(s):
 
 
 class _Nahtav(HTMLParser):
-    """Jätab välja peidetud sakipaneelid (role="tabpanel" hidden): lugeja näeb korraga ühte sakki (teemamall A, 8.11.2026)."""
+    """Jätab välja peidetud sakipaneelid (role="tabpanel" hidden): lugeja näeb korraga ühte sakki (teemamall A, 8.11.2026).
+    Teemalehe tahvel (14.11.2026): välja jäävad ka telefonivaate koopia (.tv-tel, sama sisu teise paigutusega)
+    ja kokkupandud „Üksikasjad“ plokkide sisu (details.tt-pl); plokkide pealkirjad (summary) jäävad sisse."""
     TUHJAD = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
 
     def __init__(self):
         super().__init__(convert_charrefs=False)
-        self.osad, self.sugavus = [], 0
+        self.osad, self.sugavus, self.kokku = [], 0, 0
 
     def handle_starttag(self, tag, attrs):
         d = dict(attrs)
@@ -36,9 +38,14 @@ class _Nahtav(HTMLParser):
             if tag not in self.TUHJAD:
                 self.sugavus += 1
             return
-        if d.get("role") == "tabpanel" and "hidden" in d:
+        klass = (d.get("class") or "").split()
+        if (d.get("role") == "tabpanel" and "hidden" in d) or "tv-tel" in klass:
             self.sugavus = 1
             return
+        if tag == "details" and "tt-pl" in klass and "open" not in d:
+            self.kokku = 1
+        elif self.kokku and tag not in self.TUHJAD:
+            self.kokku += 1
         self.osad.append(self.get_starttag_text())
 
     def handle_startendtag(self, tag, attrs):
@@ -51,6 +58,10 @@ class _Nahtav(HTMLParser):
                 self.sugavus -= 1
             return
         self.osad.append(f"</{tag}>")
+        if self.kokku and tag not in self.TUHJAD:
+            self.kokku -= 1
+            if tag == "summary" and self.kokku == 1:  # pealkiri loetud, ülejäänud plokk on kinni kuni </details>
+                self.kokku, self.sugavus = 0, 1
 
     def handle_data(self, data):
         if not self.sugavus:

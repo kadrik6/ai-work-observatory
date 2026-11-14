@@ -90,7 +90,7 @@ KPI_VER1 = {  # avalehe kuus plaati läksid 14.11.2026 ära (avaleht on signaali
             # Alamlehtede päis (Kadri 8.11.2026: „ka teistel alamlehtedel, käsitsi üle vaadatud nagu ver1“).
             # Iga plaat sai oma konteksti: muutus, kui on võrreldav eelmine aasta; riba, kui on siht või võrdlus.
             "in-kasutus": ("muutus", "riba"), "in-koht": ("tekst", "riba"), "in-tool": ("muutus", "tekst"),
-            "ev-kasutus": ("muutus", "riba"), "ev-koht": ("muutus", "riba"), "ev-pohja": ("muutus",),
+            # Ettevõtete plaadid ev-* läksid 14.11.2026 ära: leht algab tahvliga (Kadri valis „B koos C maatriksiga“)
             "too-noored": ("tekst",), "too-taani": ("tekst",), "too-prognoos": ("muutus",),
             "hk-arv": ("muutus",), "hk-kvaliteet": ("tekst", "riba"), "hk-uks": ("tekst", "riba"), "hk-tapsus": ("tekst",),
             "us-muud": ("tekst", "riba"), "us-lahk": ("tekst",), "us-uudis": ("tekst",),

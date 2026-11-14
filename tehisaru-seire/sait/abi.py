@@ -44,15 +44,17 @@ def vastus(read, silt="Peamised numbrid"):
 
 
 def pea(A, vaade, lead, lingid, vastuse_read, aside=None):
-    """aside: valmis numbriplaatide HTML (lukustatud KPI valik ver1); muidu vastus(vastuse_read)."""
+    """aside: valmis numbriplaatide HTML (lukustatud KPI valik ver1); muidu vastus(vastuse_read).
+    Kui kumbagi pole (nt teemalehe tahvel, 14.11.2026), on päis ühes veerus ja tühja kõrvalkasti ei tehta."""
+    parem = aside or (vastus(vastuse_read) if vastuse_read else "")
     return f"""
-<div class="pea">
+<div class="pea{"" if parem else " yks"}">
   <div class="pea-tekst">
     <h1>{taida(vaade["h1"], A)}</h1>
     {f'<p class="lead">{lead}</p>' if lead else ""}
     {sellel_lehel(lingid)}
   </div>
-  {aside or vastus(vastuse_read)}
+  {parem}
 </div>"""
 
 
