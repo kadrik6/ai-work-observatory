@@ -82,7 +82,10 @@ def pohitabel(cn, can):
         v = (r["allikas"], hanke_voti(r))
         esimene = hanked.get(v, {}).get("esimene_kuupaev") or r.get("kuupaev") or r.get("kuu")
         teateid = hanked.get(v, {}).get("teateid", 0) + 1
-        hanked[v] = {**r, "esimene_kuupaev": esimene, "teateid": teateid}
+        # esimese versiooni väljad: riskimudel kasutab avaldamishetke infot (hilisem muudatus oleks leke)
+        esim = hanked.get(v, {}).get("esimene_versioon") or {
+            k: r.get(k) for k in ("osade_info", "eeldatav_maksumus", "menetlus", "kriteeriumid", "cpv")}
+        hanked[v] = {**r, "esimene_kuupaev": esimene, "teateid": teateid, "esimene_versioon": esim}
     tulemus = {}
     for r in can:
         v = (r["allikas"], hanke_voti(r))

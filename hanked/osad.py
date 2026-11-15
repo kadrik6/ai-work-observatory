@@ -29,6 +29,10 @@ from pathlib import Path
 TREENING = range(2017, 2024)
 VALIDEERIMINE = 2024
 TEST = 2025
+KALIBREERIMINE = 2023  # eraldi kalibreerimise katses: treening 2017–2022, kalibreerimine 2023, valideerimine 2024
+# „Päris valikut ei olnud“: osa lõppes ilma lepinguta, sest pakkumusi ei tulnud, kõik lükati tagasi või vastuvõetavaid
+# pakkumusi oli üks. TED-vormis on „pakkumusi ei tulnud“ ja „kõik lükati tagasi“ üks valik (UNSUCCESSFUL).
+VALIKUTA = {"no-rece", "all-rej", "one-admis", "ted:PROCUREMENT_UNSUCCESSFUL"}
 SILUMINE = 20  # M0: nii mitu "näilist" osa üldmääraga lisatakse igale CPV-grupile
 
 MENETLUS = {
@@ -62,6 +66,19 @@ def osa_voti(x):
     return str(int(m.group())) if m else x.lower()
 
 
+def siht2(r):
+    """Laiem sihttunnus: 1 = päris valikut ei olnud (üks pakkumus või lepinguta VALIKUTA põhjusel),
+    0 = vähemalt kaks pakkumust ja leping. Muul põhjusel lepinguta osa on "muu põhjus", puuduv on "puudub"."""
+    t, p = r.get("osa_tulemus"), r.get("pakkumusi")
+    if t == "clos-nw":
+        return 1 if r.get("pohjus") in VALIKUTA else "muu põhjus"
+    if p == 1:
+        return 1
+    if p is not None and p >= 2 and t == "selec-w":
+        return 0
+    return "puudub"
+
+
 def siht(p):
     """Pakkumuste arv → 1 (üks), 0 (kaks või rohkem), "null" või "puudub"."""
     if p is None:
@@ -93,10 +110,15 @@ def osade_tabel(hanked):
         for k, x in (h.get("osade_summa") or {}).items():
             summ[osa_voti(k)] = summ.get(osa_voti(k), 0) + x
         uks = len(info) == 1
-        hm = h.get("eeldatav_maksumus")
+        esim = h.get("esimene_versioon") or {}
+        esimesed = {osa_voti(o.get("osa")): o for o in (esim.get("osade_info") or [])}
+        if uks and len(esimesed) == 1:
+            esimesed = {osa_voti(info[0].get("osa")): next(iter(esimesed.values()))}
+        hm = esim.get("eeldatav_maksumus") if esim else h.get("eeldatav_maksumus")
         kasutatud, seostamata = set(), []
-        for o in info:
-            k = osa_voti(o.get("osa"))
+        for o_viimane in info:
+            k = osa_voti(o_viimane.get("osa"))
+            o = esimesed.get(k) or o_viimane  # tunnused avaldamishetke (esimese) versiooni järgi
             osa_tul = tul.get(k) or (next(iter(tul.values())) if uks and len(tul) == 1 else None)
             if k in can:
                 p, sid = can[k], "seotud"
@@ -111,7 +133,7 @@ def osade_tabel(hanked):
                 p, sid = None, "ainult hanketeates" if h.get("tulemus_olemas") else "tulemus puudub"
                 if h.get("tulemus_olemas"):
                     seostamata.append(o.get("osa"))
-            cpv_h = (h.get("cpv") or [None])[0]
+            cpv_h = ((esim.get("cpv") if esim else None) or h.get("cpv") or [None])[0]
             m, tuletatud = o.get("maksumus"), False
             if m is None and hm:
                 m, tuletatud = hm / len(info), not uks
@@ -125,26 +147,30 @@ def osade_tabel(hanked):
                 "cpv": o.get("cpv") or cpv_h,
                 "maksumus": m,
                 "maksumus_tuletatud": tuletatud,
-                "kriteeriumid": o.get("kriteeriumid") or (h.get("kriteeriumid") if uks else []) or [],
+                "kriteeriumid": o.get("kriteeriumid") or ((esim.get("kriteeriumid") if esim else h.get("kriteeriumid"))
+                                                          if uks else []) or [],
                 "kriteeriumid_dokumendis": bool(o.get("kriteeriumid_dokumendis")),
                 "osa_tulemus": osa_tul,
                 "pohjus": pohj.get(k) or (next(iter(pohj.values())) if uks and len(pohj) == 1 else None),
                 "lepingu_summa": summ.get(k) if k in summ else (sum(summ.values()) if uks and summ else None),
                 "tahtaeg": o.get("tahtaeg"),
-                "menetlus": h.get("menetlus"),
+                "tahtaeg_viimane": o_viimane.get("tahtaeg"),
+                "versioone": h.get("teateid") or 1,
+                "menetlus": (esim.get("menetlus") if esim else None) or h.get("menetlus"),
                 "liik": h.get("liik"),
                 "hankija_liik": h.get("hankija_liik"),
                 "sidumine": sid,
                 "pakkumusi": p,
                 "siht": siht(p),
             })
+            read[-1]["siht2"] = siht2(read[-1])
         v = (h.get("aasta"), h.get("allikas"))
         if uks and (can or tul) and read[-1]["sidumine"] != "ainult hanketeates":
             kasutatud |= set(can) | set(tul)
         yle = sorted((set(can) | set(tul)) - kasutatud)
         ainult_can[v] += len(yle)
         if (seostamata or yle) and len(naited[v]) < 4:
-            naited[v].append({"hange": hanke_voti(h), "hanketeate_osad": [o.get("osa") for o in info][:8],
+            naited[v].append({"hange": hanke_voti(h), "hanketeate_osad": [x.get("osa") for x in info][:8],
                               "tulemuse_osad": sorted(set(h.get("osade_pakkumusi") or {}) | set(h.get("osade_tulemus") or {}))[:8],
                               "seostamata": seostamata[:8]})
     osade_tabel.naited = dict(naited)
@@ -257,20 +283,25 @@ def tunnused(r, ylesehitus=True, aasta=True, paindlik=True):
 
 # ---------------------------------------------------------------- puuduvus
 
+def _kirjelda(g):
+    """Osade rühma kirjeldus: arv, maksumus, menetlus, liik, mitme osaga ja IT-CPV osakaal."""
+    n = len(g)
+    if not n:
+        return {"n": 0}
+    mk = sorted(r["maksumus"] for r in g if r.get("maksumus"))
+    return {"n": n,
+            "maksumuse_mediaan": round(mk[len(mk) // 2]) if mk else None,
+            "maksumus_teada": round(len(mk) / n, 3),
+            "avatud": round(sum(MENETLUS.get(r.get("menetlus") or "") == "avatud" for r in g) / n, 3),
+            "teenus": round(sum(r.get("liik") == "services" for r in g) / n, 3),
+            "mitme_osaga": round(sum(r["osade_arv"] > 1 for r in g) / n, 3),
+            "it_cpv72_48": round(sum((r.get("cpv") or "")[:2] in ("72", "48") for r in g) / n, 3),
+            "cpv_top": dict(Counter((r.get("cpv") or "")[:2] for r in g).most_common(4))}
+
+
 def puuduvuse_vordlus(read):
     """Aasta kaupa: osad, mille pakkumuste arv on teada, vs osad, mille arv puudub (keskmised tunnused)."""
-    def kirjelda(g):
-        n = len(g)
-        if not n:
-            return {"n": 0}
-        mk = sorted(r["maksumus"] for r in g if r.get("maksumus"))
-        return {"n": n,
-                "maksumuse_mediaan": round(mk[len(mk) // 2]) if mk else None,
-                "maksumus_teada": round(len(mk) / n, 3),
-                "avatud": round(sum(MENETLUS.get(r.get("menetlus") or "") == "avatud" for r in g) / n, 3),
-                "teenus": round(sum(r.get("liik") == "services" for r in g) / n, 3),
-                "mitme_osaga": round(sum(r["osade_arv"] > 1 for r in g) / n, 3),
-                "it_cpv72_48": round(sum((r.get("cpv") or "")[:2] in ("72", "48") for r in g) / n, 3)}
+    kirjelda = _kirjelda
     valja = {}
     for a in sorted({r["aasta"] for r in read}):
         g = [r for r in read if r["aasta"] == a]
@@ -320,6 +351,13 @@ def kalibreeritus(y, p, kaste=10):
     return round(100 * suurim, 1)
 
 
+def _kal_np(y, p, kaste=10):
+    """Sama mis kalibreeritus(), aga numpy massiividel ja osakaaluna (bootstrapi jaoks)."""
+    import numpy as np
+    j = np.argsort(p, kind="stable")
+    return max(abs(float(p[k].mean() - y[k].mean())) for k in np.array_split(j, kaste) if len(k))
+
+
 def hinda(y, ennustused, grupid, kordi=1000, seeme=1):
     """ennustused: {nimi: [p]}. Tagastab punkthinnangud ja 95% vahemikud (rühmitatud bootstrap)."""
     import numpy as np
@@ -349,12 +387,15 @@ def hinda(y, ennustused, grupid, kordi=1000, seeme=1):
         ap = {k: average_precision_score(yy, P[k][valik]) for k in nimed}
         for k in nimed:
             jaotus[k].append(ap[k])
+            jaotus["kal:" + k].append(_kal_np(yy, P[k][valik]))
         for a, b in paarid:
             jaotus[f"{b}-{a}"].append(ap[b] - ap[a])
     for k, v in jaotus.items():
         lo, hi = np.percentile(v, [2.5, 97.5])
         rida = {"vahemik_95": [round(float(lo), 3), round(float(hi), 3)]}
-        if k in tulemus:
+        if k.startswith("kal:"):
+            tulemus[k[4:]]["kalibreeritus_vahemik_95"] = [round(100 * float(lo), 1), round(100 * float(hi), 1)]
+        elif k in tulemus:
             tulemus[k]["pr_auc_vahemik_95"] = rida["vahemik_95"]
         else:
             a, b = k.split("-")[1], k.split("-")[0]
@@ -362,6 +403,11 @@ def hinda(y, ennustused, grupid, kordi=1000, seeme=1):
                           "jareldus": "pole piisavalt tõendeid" if lo <= 0 <= hi else ("suurem" if lo > 0 else "väiksem")}
     tulemus["bootstrap"] = {"kordi": len(jaotus[nimed[0]]) if nimed else 0, "hankeid": len(ryhmad)}
     return tulemus
+
+
+def sihiga(read, vali):
+    """Read, kus "siht" on asendatud teise sihttunnusega (nt "siht2")."""
+    return [{**r, "siht": r[vali]} for r in read] if vali != "siht" else read
 
 
 def mudelid(read, test=False):
@@ -392,6 +438,90 @@ def mudelid(read, test=False):
         for k, pp in lisad.items():
             valja[nimi][k] = hinda([r["siht"] for r in h], {k: pp[j]}, [r["hange"] for r in h], kordi=0)[k]
     return valja
+
+
+def kalibreerimise_katse(read):
+    """Treening 2017–2022, kalibreerimine 2023 (sõltumatud ennustused), valideerimine 2024. M2 ilma aastata."""
+    import numpy as np
+    from sklearn.isotonic import IsotonicRegression
+    from sklearn.linear_model import LogisticRegression
+    sobiv = [r for r in read if r["siht"] in (0, 1)]
+    tr = [r for r in sobiv if r["aasta"] < KALIBREERIMINE]
+    kal = [r for r in sobiv if r["aasta"] == KALIBREERIMINE]
+    val = [r for r in sobiv if r["aasta"] == VALIDEERIMINE]
+    if not tr or not kal or not val or len({r["siht"] for r in kal}) < 2:
+        return {"viga": "andmeid pole"}
+    p_kal, p_val = logreg(tr, [kal, val], aasta=False)
+    p_kal, p_val = np.asarray(p_kal), np.asarray(p_val)
+    y_kal = np.asarray([r["siht"] for r in kal])
+    logit = lambda p: np.log(np.clip(p, 1e-6, 1 - 1e-6) / (1 - np.clip(p, 1e-6, 1 - 1e-6)))  # noqa: E731
+    platt = LogisticRegression().fit(logit(p_kal).reshape(-1, 1), y_kal)
+    iso = IsotonicRegression(out_of_bounds="clip").fit(p_kal, y_kal)
+    e = {"M2_kalibreerimata": list(p_val),
+         "M2_platt": list(platt.predict_proba(logit(p_val).reshape(-1, 1))[:, 1]),
+         "M2_isotooniline": list(iso.predict(p_val))}
+    v = hinda([r["siht"] for r in val], e, [r["hange"] for r in val])
+    return {"treening": len(tr), "kalibreerimine": len(kal), "kalibreerimise_maar": round(float(y_kal.mean()), 3),
+            **{k: v[k] for k in e}, "bootstrap": v["bootstrap"], "osakaal_2024": v["osakaal"]}
+
+
+def sihi_maarad(read):
+    """Mõlema sihttunnuse jaotus aasta ja skeemi kaupa."""
+    valja = {}
+    for (a, src) in sorted({(r["aasta"], r["allikas"]) for r in read}):
+        g = [r for r in read if r["aasta"] == a and r["allikas"] == src]
+        c1, c2 = Counter(str(r["siht"]) for r in g), Counter(str(r["siht2"]) for r in g)
+        k1, k2 = c1["1"] + c1["0"], c2["1"] + c2["0"]
+        valja[f"{a} {src}"] = {"A_uks_pakkumus": [c1["1"], k1, round(c1["1"] / k1, 3) if k1 else None],
+                               "B_valikuta": [c2["1"], k2, round(c2["1"] / k2, 3) if k2 else None],
+                               "B_valja_muu_pohjus": c2["muu põhjus"], "B_puudub": c2["puudub"],
+                               "B_lepinguta_valikuta": sum(1 for r in g if r["siht2"] == 1 and r.get("osa_tulemus") == "clos-nw")}
+    return valja
+
+
+def versioonide_kontroll(read):
+    """Kas pakkumuste tähtaeg muutus pärast avaldamist (esimene vs viimane hanketeate versioon)?"""
+    valja = {}
+    for (a, src) in sorted({(r["aasta"], r["allikas"]) for r in read}):
+        g = [r for r in read if r["aasta"] == a and r["allikas"] == src]
+        mol = [r for r in g if r.get("tahtaeg") and r.get("tahtaeg_viimane")]
+        hilisem = [r for r in mol if r["tahtaeg_viimane"] > r["tahtaeg"]]
+        valja[f"{a} {src}"] = {"osi": len(g), "mitu_versiooni": sum(1 for r in g if (r.get("versioone") or 1) > 1),
+                               "tahtaeg_teada_molemas": len(mol),
+                               "tahtaeg_muutus": sum(1 for r in mol if r["tahtaeg_viimane"] != r["tahtaeg"]),
+                               "tahtaeg_pikenes": len(hilisem),
+                               "pikenemise_mediaan_paevi": (sorted(_paevi(r["tahtaeg"], r["tahtaeg_viimane"]) for r in hilisem)
+                                                            [len(hilisem) // 2] if hilisem else None)}
+    return valja
+
+
+def lunga_kontroll(read, aasta=TEST):
+    """Pakkumuste arvu puudumine valitud aastal: pooleli/hilinenud vs püsiv lünk (aeg tähtajast andmete lõpuni)."""
+    lopp = max((r.get("kuupaev") or "") for r in read)
+    g = [r for r in read if r["aasta"] == aasta]
+    def liik(r):
+        if r["siht"] in (0, 1, "null"):
+            return "teada"
+        if r["sidumine"] == "tulemus olemas, arv puudub":
+            return "tulemusteade olemas, arv puudub: " + str(r.get("osa_tulemus"))
+        p = _paevi(r.get("tahtaeg_viimane") or r.get("tahtaeg"), lopp)
+        if p is None:
+            return "tulemusteadet pole, tähtaeg teadmata"
+        return "tulemusteadet pole, tähtajast " + ("≤6 kuud" if p <= 183 else "6–12 kuud" if p <= 365 else ">12 kuud")
+    ryhm = defaultdict(list)
+    for r in g:
+        ryhm[liik(r)].append(r)
+    return {"andmete_lopp": lopp, **{k: _kirjelda(v) for k, v in sorted(ryhm.items())}}
+
+
+def eelkatse_kontroll(hanked):
+    """Hanke tase (nagu eelkatses 6.11): pakkumuste arv teada ja ühe pakkumusega hanked aastas."""
+    c = defaultdict(lambda: [0, 0])
+    for h in hanked:
+        if h.get("pakkumusi") is not None:
+            c[h["aasta"]][0] += 1
+            c[h["aasta"]][1] += h["pakkumusi"] == 1
+    return {str(a): {"teada": n, "uks": k, "osakaal": round(k / n, 3) if n else None} for a, (n, k) in sorted(c.items())}
 
 
 def skeemi_kontroll(read):
@@ -451,6 +581,17 @@ def main():
         kirjuta("riski-laiendus", aasta_allikas=k, **c)
     kirjuta("riski-skeem", **skeemi_kontroll(read))
     kirjuta("riski-mudelid", test=a.test, **mudelid(read, test=a.test))
+    # sõltumatu kontroll 15.11: laiem sihttunnus B, eraldi kalibreerimine, versioonid, 2025 lünk, eelkatse periood
+    for k, c in sihi_maarad(read).items():
+        kirjuta("riski-sihi-maarad", aasta_allikas=k, **c)
+    read_b = sihiga(read, "siht2")
+    kirjuta("riski-mudelid-B", test=a.test, **mudelid(read_b, test=a.test))
+    kirjuta("riski-kalibreerimine-A", **kalibreerimise_katse(read))
+    kirjuta("riski-kalibreerimine-B", **kalibreerimise_katse(read_b))
+    for k, c in versioonide_kontroll(read).items():
+        kirjuta("riski-versioonid", aasta_allikas=k, **c)
+    kirjuta("riski-lunk-2025", **lunga_kontroll(read))
+    kirjuta("riski-eelkatse", **eelkatse_kontroll(hanked))
 
 
 if __name__ == "__main__":

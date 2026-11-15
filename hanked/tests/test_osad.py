@@ -132,3 +132,52 @@ def test_laienduse_kontroll():
     assert k["ilma_voitjata"] == 1 and k["pohjused"] == {"no-rece": 1}
     assert k["voitjaga"] == 2 and k["lepingu_summa_olemas"] == 2 and k["molemad"] == 1  # osa 3 maksumus on tuletatud
     assert k["suhe_mediaan"] == 1.2 and k["suhe_ule_1_1"] == 1.0
+
+
+def test_siht2_paris_valikut_ei_olnud():
+    """B: üks pakkumus või lepinguta (pakkumusi ei tulnud / kõik tagasi / üks vastuvõetav) = 1; ≥2 ja leping = 0."""
+    r = lambda **k: {"osa_tulemus": "selec-w", "pakkumusi": None, "pohjus": None, **k}  # noqa: E731
+    assert O.siht2(r(pakkumusi=1)) == 1 and O.siht2(r(pakkumusi=3)) == 0
+    assert O.siht2(r(osa_tulemus="clos-nw", pohjus="no-rece")) == 1
+    assert O.siht2(r(osa_tulemus="clos-nw", pohjus="all-rej", pakkumusi=4)) == 1
+    assert O.siht2(r(osa_tulemus="clos-nw", pohjus="ted:PROCUREMENT_UNSUCCESSFUL")) == 1
+    assert O.siht2(r(osa_tulemus="clos-nw", pohjus="chan-need")) == "muu põhjus"
+    assert O.siht2(r(osa_tulemus=None, pakkumusi=2)) == "puudub" and O.siht2(r()) == "puudub"
+
+
+def test_tunnused_esimesest_versioonist():
+    """Tähtaeg ja maksumus tulevad esimesest hanketeatest; hilisem pikendus on eraldi väljal (leke)."""
+    esim = {"osade_info": [_osa("1", tahtaeg="2024-03-11", maksumus=5000.0)], "eeldatav_maksumus": 5000.0,
+            "menetlus": "open", "kriteeriumid": [], "cpv": ["72000000"]}
+    h = _hange("A", 2024, [_osa("1", tahtaeg="2024-04-30")], {"1": 2}, esimene_versioon=esim, teateid=2,
+               osade_tulemus={"1": "selec-w"})
+    r = O.osade_tabel([h])[0][0]
+    assert r["tahtaeg"] == "2024-03-11" and r["tahtaeg_viimane"] == "2024-04-30" and r["maksumus"] == 5000.0
+    v = O.versioonide_kontroll([r])["2024 eforms"]
+    assert v["tahtaeg_pikenes"] == 1 and v["pikenemise_mediaan_paevi"] == 50 and v["mitu_versiooni"] == 1
+
+
+def test_lunk_ja_eelkatse():
+    hanked = [_hange("A", 2025, [_osa("1", tahtaeg="2025-02-01")], {}, tulemus=False, kuupaev="2026-11-01"),
+              _hange("B", 2025, [_osa("1")], {"1": 1}, osade_tulemus={"1": "selec-w"}, pakkumusi=1)]
+    read, _ = O.osade_tabel(hanked)
+    for r in read:
+        r["kuupaev"] = "2026-11-01" if r["hange"] == "eforms:A" else "2025-03-01"
+    k = O.lunga_kontroll(read, 2025)
+    assert k["tulemusteadet pole, tähtajast >12 kuud"]["n"] == 1 and k["teada"]["n"] == 1
+    assert O.eelkatse_kontroll(hanked) == {"2025": {"teada": 1, "uks": 1, "osakaal": 1.0}}
+
+
+def test_kalibreerimise_katse_ja_hinda_vahemik():
+    rnd = random.Random(5)
+    hanked = []
+    for i in range(1500):
+        a = rnd.choice([2018, 2020, 2022, 2023, 2024])
+        paevi = rnd.choice([5, 30])
+        yks = rnd.random() < (0.6 if paevi == 5 else 0.1)
+        hanked.append(_hange(f"H{i}", a, [_osa("1", tahtaeg=f"{a}-03-{1 + paevi:02d}" if paevi < 30 else f"{a}-03-31")],
+                             {"1": 1 if yks else 3}, osade_tulemus={"1": "selec-w"}))
+    read, _ = O.osade_tabel(hanked)
+    k = O.kalibreerimise_katse(read)
+    assert k["M2_platt"]["kalibreeritus_pp"] is not None and len(k["M2_platt"]["kalibreeritus_vahemik_95"]) == 2
+    assert k["treening"] > 0 and k["kalibreerimine"] > 0
