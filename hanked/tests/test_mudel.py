@@ -25,3 +25,13 @@ def test_mudel_opib_lihtsa_eristuse():
     m = M.Mudel().sobita(tekstid, y)
     p = m.toenaosus(["kõnetuvastuse arendus", "teede hooldus"])
     assert p[0] > 0.5 > p[1]
+
+
+def test_lehe_reegel_on_lukus_ja_sonavara_valim_stabiilne():
+    """Kadri otsus 15.11.2026: lehe reegel ei vahetu ise. Uus hange muudab sõnavara valimit kõige rohkem ühe rea võrra."""
+    import mudel as M
+    assert M.LEHE_REEGEL == "mudel_voi_marksona"
+    votmed = [f"eforms:{i}" for i in range(3000)]
+    a = {votmed[i] for i in M.stabiilne_valim(votmed, 1000)}
+    b = {(votmed + ["eforms:uus"])[i] for i in M.stabiilne_valim(votmed + ["eforms:uus"], 1000)}
+    assert len(a - b) <= 1 and len(b - a) <= 1
