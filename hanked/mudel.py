@@ -10,9 +10,13 @@ Hindamine (etapp 4):
 - ajapõhine jaotus: treening kuni 2023, test 2024–2026 (mudel peab töötama tulevaste hangete peal);
 - täpsus ja saagis kaalutakse kihi valikutõenäosusega, et need kehtiksid kogu registri, mitte valimi kohta;
 - võrdlusalus on märksõnaloend (reeglid.py). Accuracy't ei kasutata, sest positiivseid on alla 1%.
-- Võrreldakse nelja reeglit: mudel, märksõnaloend, OECD-laadne loend ja „mudel või märksõna“. Kogu registri
-  silt tuleb sellest, millel on ajapõhisel testil suurim F1. Kui märksõnaloendi F1 on parimast vähem kui
-  0,02 võrra väiksem, valitakse märksõnaloend, sest seda saab igaüks kontrollida (valik on logis ja lehel).
+- Võrreldakse nelja reeglit: mudel, märksõnaloend, OECD-laadne loend ja „mudel või märksõna“.
+- Kogu registri silt tuleb lukustatud reeglist LEHE_REEGEL (Kadri otsus 15.11.2026: „mudel või märksõna“), et
+  lehe arv ei kõiguks päevast päeva. Hindamine arvutab endiselt, milline reegel oleks parim (suurim F1, kuid
+  märksõnaloend, kui vahe on alla 0,02), ja logib hoiatuse, kui see erineb lukustatud reeglist. Reegel muutub
+  ainult siis, kui Kadri seda otsustab.
+- Sõnavara valim (25 000 hanget) valitakse hanke võtme räsi järgi, mitte juhuslikult. Nii ei muuda uued
+  teated valimit tervikuna, vaid lisavad või vahetavad üksikuid ridu.
 - Hindamise populatsioon on eVormide hanked (alates 09/2023), sest valim on sealt võetud.
 
 Väljund: <valjund>/tulemus.jsonl.gz (iga hanke tõenäosus ja silt), logiread "HANKED mudel ..." ja
@@ -39,7 +43,16 @@ SIIN = Path(__file__).resolve().parent
 POSITIIVNE = {"AI", "ANDMED"}
 LAVI = 0.5
 LIPP = re.compile(r"\bzzmark\w+")
-VAIKE_VAHE = 0.02  # F1 vahe, millest väiksema korral valitakse lihtsam reegel
+VAIKE_VAHE = 0.02  # F1 vahe, millest väiksema korral soovitatakse lihtsamat reeglit
+LEHE_REEGEL = "mudel_voi_marksona"  # lukustatud (Kadri 15.11.2026); muuta ainult tema otsusega
+SONAVARA = 25000
+
+
+def stabiilne_valim(votmed, n=SONAVARA):
+    """n hanke indeksid, mille võtme räsi on väikseim. Uus hange muudab valimit kõige rohkem ühe rea võrra."""
+    import hashlib
+    jarj = sorted(range(len(votmed)), key=lambda i: hashlib.sha1(str(votmed[i]).encode("utf-8")).hexdigest())
+    return sorted(jarj[:n])
 
 
 def sisend(r):
@@ -200,9 +213,8 @@ def main():
     kirjuta("margendid", kokku=len(koik_margendid), leitud_registrist=len(margendid),
             positiivseid=sum(m["silt"] in POSITIIVNE for m in margendid))
     korpus = [sisend(r) for r in hanked]
-    # sõnavara õpitakse juhuslikult 25 000 hanke tekstist (mälu piir), märgendatud read on alati sees
-    rnd = np.random.default_rng(20261104)
-    sonavara = [korpus[i] for i in rnd.choice(len(korpus), min(25000, len(korpus)), replace=False)]
+    # sõnavara õpitakse 25 000 hanke tekstist (mälu piir), märgendatud read on alati sees
+    sonavara = [korpus[i] for i in stabiilne_valim([vota(r) for r in hanked])]
     y = np.array([int(m["silt"] in POSITIIVNE) for m in margendid])
     w = np.array([1.0 / float(m["valiku_toenaosus"]) for m in margendid])
     aasta = np.array([voti[m["voti"]]["aasta"] for m in margendid])
@@ -212,7 +224,7 @@ def main():
 
     # 1) ajapõhine hindamine
     tr, te = aasta < a.testi_alates, aasta >= a.testi_alates
-    tulemused, valitud = {}, "marksonaloend"
+    tulemused, valitud, soovitus = {}, LEHE_REEGEL, None
     if tr.sum() and te.sum() and y[tr].sum() and y[te].sum():
         m = Mudel().sobita([x_tekst[i] for i in np.where(tr)[0]], y[tr], korpus=sonavara + x_tekst)
         p = m.toenaosus([x_tekst[i] for i in np.where(te)[0]])
@@ -223,10 +235,13 @@ def main():
         for nimi, eb in reeglid.items():
             tulemused[nimi] = {**kaalutud_moodikud(y[te], eb, w[te]), **bootstrap(y[te], eb, w[te], kihid[te])}
         kandidaadid = {k: tulemused[k]["f1"] or 0 for k in ("mudel", "marksonaloend", "mudel_voi_marksona")}
-        valitud = max(kandidaadid, key=kandidaadid.get)
-        # lihtsam reegel võidab, kui vahe on väike (märksõnaloendit saab igaüks kontrollida ja korrata)
-        if kandidaadid[valitud] - kandidaadid["marksonaloend"] < VAIKE_VAHE:
-            valitud = "marksonaloend"
+        soovitus = max(kandidaadid, key=kandidaadid.get)
+        # lihtsam reegel oleks soovitus, kui vahe on väike (märksõnaloendit saab igaüks kontrollida ja korrata)
+        if kandidaadid[soovitus] - kandidaadid["marksonaloend"] < VAIKE_VAHE:
+            soovitus = "marksonaloend"
+        if soovitus != LEHE_REEGEL:
+            kirjuta("hoiatus", tekst="hindamine soovitaks teist reeglit; leht kasutab lukustatud reeglit",
+                    lukustatud=LEHE_REEGEL, soovitus=soovitus, f1=kandidaadid)
         # vead üle vaatamiseks (ainult võti ja pealkiri; tekst on registris avalik)
         vead = []
         for j, i in enumerate(np.where(te)[0]):
@@ -236,7 +251,7 @@ def main():
                              "marksona": int(marks[i]), "pealkiri": (r.get("pealkiri") or "")[:140]})
         kirjuta("vead", reegel=valitud, n=len(vead), read=vead[:60])
     kirjuta("hindamine", testi_alates=a.testi_alates, treening=int(tr.sum()), test=int(te.sum()),
-            treening_pos=int(y[tr].sum()), test_pos=int(y[te].sum()), lavi=LAVI, valitud=valitud,
+            treening_pos=int(y[tr].sum()), test_pos=int(y[te].sum()), lavi=LAVI, valitud=valitud, soovitus=soovitus,
             tulemused=tulemused)
 
     # 2) lõplik mudel kõigil märgendustel → kogu registri märgendamine valitud reegliga
