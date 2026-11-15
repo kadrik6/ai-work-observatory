@@ -465,6 +465,58 @@ def kalibreerimise_katse(read):
             **{k: v[k] for k in e}, "bootstrap": v["bootstrap"], "osakaal_2024": v["osakaal"]}
 
 
+def _ryhm_2024(r):
+    """Valideerimisaasta osa rühm tingimuslikkuse kontrolliks."""
+    if r["siht"] == 1:
+        return "uks"
+    if r["siht"] == 0:
+        return "mitu"
+    if r["siht"] == "null" or (r.get("osa_tulemus") == "clos-nw" and r.get("pohjus") == "no-rece"):
+        return "pakkumusteta"
+    if r.get("osa_tulemus") == "clos-nw" and r.get("pohjus") in ("all-rej", "one-admis"):
+        return "lepinguta_valikuta"
+    return None
+
+
+def tingimuslikkuse_kontroll(read):
+    """Põhimudel ennustab P(üks | vähemalt üks). Kas seda tohib kasutada kõigi kavandatavate hangete riskina?
+    Rakendab 2017–2023 treenitud M0 ja M2 valideerimisaasta eVormide osadele, sh pakkumusteta osadele."""
+    import numpy as np
+    sobiv = [r for r in read if r["siht"] in (0, 1)]
+    treening = [r for r in sobiv if r["aasta"] in TREENING]
+    val = [r for r in read if r["aasta"] == VALIDEERIMINE and r["allikas"] == "eforms" and _ryhm_2024(r)]
+    if not treening or not val:
+        return {"viga": "andmeid pole"}
+    maarad, yld = m0_maarad(treening)
+    p0 = np.asarray(m0_ennusta(maarad, yld, val))
+    p2 = np.asarray(logreg(treening, [val])[0])
+    ryhm = [_ryhm_2024(r) for r in val]
+    lavi = np.quantile(p2, 0.8)
+    valja = {"lavi_ulemine_20_protsenti": round(float(lavi), 3), "ryhmad": {}}
+    for g in ("uks", "mitu", "pakkumusteta", "lepinguta_valikuta"):
+        m = np.asarray([x == g for x in ryhm])
+        if m.any():
+            valja["ryhmad"][g] = {"osi": int(m.sum()), "M2_keskmine": round(float(p2[m].mean()), 3),
+                                  "M2_mediaan": round(float(np.median(p2[m])), 3),
+                                  "ulemises_20_protsendis": round(float((p2[m] >= lavi).mean()), 3)}
+
+    def alam(silt, y_kaart):
+        idx = [i for i, g in enumerate(ryhm) if g in y_kaart]
+        if len({y_kaart[ryhm[i]] for i in idx}) < 2:
+            return
+        v = hinda([y_kaart[ryhm[i]] for i in idx], {"M0": list(p0[idx]), "M2": list(p2[idx])},
+                  [val[i]["hange"] for i in idx])
+        valja[silt] = {k: v[k] for k in ("n", "osakaal", "M0", "M2", "M2-M0")}
+
+    # 1) kas pakkumusteta osad saavad samuti kõrge riski (järjestus pakkumusteta vs vähemalt kaks)
+    alam("pakkumusteta_vs_mitu", {"pakkumusteta": 1, "mitu": 0})
+    # 2) tingimusteta kasutus: kuni üks pakkumus (0 või 1) vs vähemalt kaks
+    alam("kuni_uks_vs_mitu", {"uks": 1, "pakkumusteta": 1, "mitu": 0})
+    # 3) täpselt üks pakkumus kõigil osadel (pakkumusteta = 0): kas tõenäosus kehtib tingimusteta
+    alam("tapselt_uks_koigil", {"uks": 1, "mitu": 0, "pakkumusteta": 0})
+    return valja
+
+
 def sihi_maarad(read):
     """Mõlema sihttunnuse jaotus aasta ja skeemi kaupa."""
     valja = {}
@@ -592,6 +644,8 @@ def main():
         kirjuta("riski-versioonid", aasta_allikas=k, **c)
     kirjuta("riski-lunk-2025", **lunga_kontroll(read))
     kirjuta("riski-eelkatse", **eelkatse_kontroll(hanked))
+    # 15.11 õhtu: kas põhimudel (P(üks | ≥1)) sobib kõigi kavandatavate hangete riskiks
+    kirjuta("riski-tingimuslikkus", **tingimuslikkuse_kontroll(read))
 
 
 if __name__ == "__main__":

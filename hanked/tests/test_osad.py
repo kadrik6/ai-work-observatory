@@ -181,3 +181,28 @@ def test_kalibreerimise_katse_ja_hinda_vahemik():
     k = O.kalibreerimise_katse(read)
     assert k["M2_platt"]["kalibreeritus_pp"] is not None and len(k["M2_platt"]["kalibreeritus_vahemik_95"]) == 2
     assert k["treening"] > 0 and k["kalibreerimine"] > 0
+
+
+def test_tingimuslikkuse_kontroll():
+    """Põhimudel rakendatakse ka pakkumusteta osadele; lühike tähtaeg = kõrge risk mõlemas rühmas."""
+    rnd = random.Random(7)
+    hanked = []
+    for i in range(1200):
+        a = rnd.choice([2019, 2021, 2023, 2024])
+        lyhike = rnd.random() < 0.5
+        tahtaeg = f"{a}-03-06" if lyhike else f"{a}-03-31"
+        if a == 2024 and rnd.random() < (0.3 if lyhike else 0.05):
+            hanked.append(_hange(f"H{i}", a, [_osa("1", tahtaeg=tahtaeg)], {},
+                                 osade_tulemus={"1": "clos-nw"}, osade_pohjus={"1": "no-rece"}))
+            continue
+        yks = rnd.random() < (0.6 if lyhike else 0.1)
+        hanked.append(_hange(f"H{i}", a, [_osa("1", tahtaeg=tahtaeg)], {"1": 1 if yks else 3},
+                             osade_tulemus={"1": "selec-w"}))
+    read, _ = O.osade_tabel(hanked)
+    k = O.tingimuslikkuse_kontroll(read)
+    g = k["ryhmad"]
+    assert g["pakkumusteta"]["osi"] > 0 and g["uks"]["osi"] > 0 and g["mitu"]["osi"] > 0
+    assert g["pakkumusteta"]["M2_keskmine"] > g["mitu"]["M2_keskmine"]
+    assert k["pakkumusteta_vs_mitu"]["M2"]["roc_auc"] > 0.5
+    assert k["kuni_uks_vs_mitu"]["n"] == g["uks"]["osi"] + g["mitu"]["osi"] + g["pakkumusteta"]["osi"]
+    assert k["tapselt_uks_koigil"]["osakaal"] < k["kuni_uks_vs_mitu"]["osakaal"]
