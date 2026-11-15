@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-14T18:20:00+02:00",
+  "viimane_kontroll": "2026-11-15T08:15:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "14.11: Jagomägi intervjuu (tehisaru ja tarkvaratöö)"
+      "markus": "15.11: uut tehisaru lugu pole"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "14.11: uut tehisaru lugu pole"
+      "markus": "15.11: uut tehisaru lugu pole (Jakobsoni EN versioon juba sees)"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "14.11: Jagomägi (ERR), LHV tehisaru kulud (Äritehnoloogia); agendikoodi levik +TV3"
+      "markus": "15.11: Mart Pukk (Delfi, arvamus); TalTechi lektor (Raamatupidaja.ee)"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "14.11: Fedi Barr tehisaru tööturuhäiretest; USA avaliku sektori ametiühingud; Microsofti tõrge ja koondamised; 12.53: Skydance kulukärped ja tehisaru"
+      "markus": "15.11: tehnoloogiakoondamised 206 817 (Latin Times/TrueUp); OECD oskuste puudus (Euronews)"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -29,37 +29,37 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "14.11: uut asjakohast postitust pole"
+      "markus": "15.11: uut postitust pole (viimane 5.11)"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "14.11: avanes; uut pole (viimane 7.10 Arunädal)"
+      "markus": "15.11: uut teadet pole (viimane 7.10 Arunädal)"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "14.11: avanes; tehisaru või IKT uudist pole"
+      "markus": "15.11: uut tehisaru/IKT teadet pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "14.11: uut riigi otsust pole; T2027 kontroll 4/7"
+      "markus": "15.11: Riigikantselei innovatsioonikonverentsi kokkuvõte (OECD 29%); T2027 kontroll 4/7"
     },
     {
       "nimi": "OECD uudised (otsing)",
       "ok": true,
-      "markus": "14.11: uut OECD tehisaru teadet pole"
+      "markus": "15.11: OECD oskuste puuduse aruanne Euronewsi kaudu"
     },
     {
       "nimi": "Riikide strateegiad",
       "ok": true,
-      "markus": "14.11: uut strateegiat pole; tagasivaade ei edenenud (UK PDF ei avanenud)"
+      "markus": "15.11: uut strateegiat pole; tagasivaade seisab (UK PDF ei avane)"
     },
     {
       "nimi": "DataCite 10.58009 (TÜ repositoorium)",
       "ok": true,
-      "markus": "14.11: uut DOI-d pole"
+      "markus": "14.11: uut DOI-d pole; 15.11 ei kontrollitud"
     }
   ]
 }
