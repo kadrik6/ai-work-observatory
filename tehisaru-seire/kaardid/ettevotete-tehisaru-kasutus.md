@@ -2,7 +2,7 @@
 
 > Kui suur osa Eesti ettevõtetest kasutab tehisaru võrreldes teiste riikidega?
 
-**Staatus:** ajakohane · **Allikas uuendas:** 2026-06-15 · **Kontrollitud:** 2026-11-14 · **Järgmine oodatav uuendus:** 2027-06-15
+**Staatus:** ajakohane · **Allikas uuendas:** 2026-06-15 · **Kontrollitud:** 2026-11-15 · **Järgmine oodatav uuendus:** 2027-06-15
 
 ## Number
 
