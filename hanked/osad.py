@@ -88,6 +88,10 @@ def osade_tabel(hanked):
         for k, t in (h.get("osade_tulemus") or {}).items():
             if tul.get(osa_voti(k)) != "selec-w":
                 tul[osa_voti(k)] = t
+        pohj = {osa_voti(k): x for k, x in (h.get("osade_pohjus") or {}).items()}
+        summ = {}
+        for k, x in (h.get("osade_summa") or {}).items():
+            summ[osa_voti(k)] = summ.get(osa_voti(k), 0) + x
         uks = len(info) == 1
         hm = h.get("eeldatav_maksumus")
         kasutatud, seostamata = set(), []
@@ -124,6 +128,8 @@ def osade_tabel(hanked):
                 "kriteeriumid": o.get("kriteeriumid") or (h.get("kriteeriumid") if uks else []) or [],
                 "kriteeriumid_dokumendis": bool(o.get("kriteeriumid_dokumendis")),
                 "osa_tulemus": osa_tul,
+                "pohjus": pohj.get(k) or (next(iter(pohj.values())) if uks and len(pohj) == 1 else None),
+                "lepingu_summa": summ.get(k) if k in summ else (sum(summ.values()) if uks and summ else None),
                 "tahtaeg": o.get("tahtaeg"),
                 "menetlus": h.get("menetlus"),
                 "liik": h.get("liik"),
@@ -156,6 +162,32 @@ def sidumise_kontroll(read, ainult_can):
         valja[v] = {**dict(k), "ainult tulemusteates": ainult_can.get(v, 0),
                     "seotud_osakaal": round((k["seotud"] + k["üks osa"] + k["tulemus olemas, arv puudub"]) / tulemusega, 3)
                     if tulemusega else None}
+    return valja
+
+
+def laienduse_kontroll(read):
+    """Sihttunnuse laiendamise eeltöö (ainult loendamine): ilma võitjata osade põhjused ning
+    lepingu summa ja eeldatava maksumuse suhe osa tasemel."""
+    valja = {}
+    for (a, src) in sorted({(r["aasta"], r["allikas"]) for r in read}):
+        g = [r for r in read if r["aasta"] == a and r["allikas"] == src]
+        nw = [r for r in g if r.get("osa_tulemus") == "clos-nw"]
+        voit = [r for r in g if r.get("osa_tulemus") == "selec-w"]
+        hinn = [r for r in voit if r.get("maksumus") and not r.get("maksumus_tuletatud")]
+        mol = [r for r in hinn if r.get("lepingu_summa")]
+        suhe = sorted(r["lepingu_summa"] / r["maksumus"] for r in mol)
+        valja[f"{a} {src}"] = {
+            "ilma_voitjata": len(nw),
+            "pohjused": dict(Counter(r.get("pohjus") or "puudub" for r in nw).most_common(10)),
+            "voitjaga": len(voit),
+            "lepingu_summa_olemas": sum(1 for r in voit if r.get("lepingu_summa")),
+            "eeldatav_olemas": len(hinn),
+            "molemad": len(mol),
+            "molemad_osakaal": round(len(mol) / len(voit), 3) if voit else None,
+            "suhe_mediaan": round(suhe[len(suhe) // 2], 3) if suhe else None,
+            "suhe_ule_1_1": round(sum(x > 1.1 for x in suhe) / len(suhe), 3) if suhe else None,
+            "suhe_alla_0_5": round(sum(x < 0.5 for x in suhe) / len(suhe), 3) if suhe else None,
+        }
     return valja
 
 
@@ -415,6 +447,8 @@ def main():
             tt[r["aasta"]][k] += k in t
     for aasta, c in sorted(tt.items()):
         kirjuta("riski-tunnuste-taitumus", aasta=aasta, **c)
+    for k, c in laienduse_kontroll(read).items():
+        kirjuta("riski-laiendus", aasta_allikas=k, **c)
     kirjuta("riski-skeem", **skeemi_kontroll(read))
     kirjuta("riski-mudelid", test=a.test, **mudelid(read, test=a.test))
 

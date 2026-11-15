@@ -119,3 +119,16 @@ def test_skeemi_kontroll():
                             [_hange(f"E{i}", 2024, [_osa("1")], {"1": 2}) for i in range(10)])
     k = O.skeemi_kontroll(read)
     assert k["uks_pakkumus"]["2020 ted_esender"] == [5, 10, 0.5] and k["menetlus"]["eforms"] == {"open": 10}
+
+
+def test_laienduse_kontroll():
+    """Ilma võitjata osa põhjus ning lepingu summa ja eeldatava maksumuse suhe osa tasemel."""
+    info = [_osa("1"), _osa("2"), _osa("3", maksumus=None)]
+    h = _hange("A", 2024, info, {"LOT-0001": 2, "LOT-0003": 1},
+               osade_tulemus={"LOT-0001": "selec-w", "LOT-0002": "clos-nw", "LOT-0003": "selec-w"},
+               osade_pohjus={"LOT-0002": "no-rece"}, osade_summa={"LOT-0001": 12000.0, "LOT-0003": 5000.0})
+    read, _ = O.osade_tabel([h])
+    k = O.laienduse_kontroll(read)["2024 eforms"]
+    assert k["ilma_voitjata"] == 1 and k["pohjused"] == {"no-rece": 1}
+    assert k["voitjaga"] == 2 and k["lepingu_summa_olemas"] == 2 and k["molemad"] == 1  # osa 3 maksumus on tuletatud
+    assert k["suhe_mediaan"] == 1.2 and k["suhe_ule_1_1"] == 1.0

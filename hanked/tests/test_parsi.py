@@ -175,3 +175,27 @@ def test_osade_tulemus():
     sisu = TED.replace("<AWARD_CONTRACT><AWARDED", "<AWARD_CONTRACT><LOT_NO>1</LOT_NO><AWARDED", 1).replace("</F03_2014>", katk, 1)
     cn, can, vahele = parsi_fail(sisu.encode(), "2019-05")
     assert can[0]["osade_tulemus"] == {"1": "selec-w", "2": "clos-nw"} and can[0]["osade_pakkumusi"] == {"1": 3}
+
+
+def test_mitteandmise_pohjus_summa_ja_muutmised():
+    from parsi import MUUTMISED
+    sisu = CAN.replace('<efac:TenderLot><cbc:ID schemeName="Lot">LOT-0002</cbc:ID></efac:TenderLot>',
+                       '<efac:LotTender><cbc:ID schemeName="tender">TEN-0002</cbc:ID></efac:LotTender>'
+                       '<efac:DecisionReason><efbc:DecisionReasonCode listName="non-award-justification">no-rece</efbc:DecisionReasonCode></efac:DecisionReason>'
+                       '<efac:TenderLot><cbc:ID schemeName="Lot">LOT-0002</cbc:ID></efac:TenderLot>', 1)
+    sisu = sisu.replace('</efac:NoticeResult>', '<efac:LotTender><cbc:ID schemeName="tender">TEN-0002</cbc:ID>'
+                        '<cac:LegalMonetaryTotal><cbc:PayableAmount currencyID="EUR">7000</cbc:PayableAmount></cac:LegalMonetaryTotal>'
+                        '</efac:LotTender></efac:NoticeResult>', 1)
+    cn, can, vahele = parsi_fail(sisu.encode(), "2025-05")
+    assert can[0]["osade_pohjus"] == {"LOT-0002": "no-rece"} and can[0]["osade_summa"] == {"LOT-0002": 7000.0}
+    katk = ("<AWARD_CONTRACT><LOT_NO>2</LOT_NO><NO_AWARDED_CONTRACT><PROCUREMENT_UNSUCCESSFUL/></NO_AWARDED_CONTRACT>"
+            "</AWARD_CONTRACT></F03_2014>")
+    sisu = TED.replace("</F03_2014>", katk, 1)
+    cn, can, vahele = parsi_fail(sisu.encode(), "2019-05")
+    assert can[0]["osade_pohjus"] == {"2": "ted:PROCUREMENT_UNSUCCESSFUL"} and can[0]["osade_summa"] == {"#1": 50000.0}
+    enne = sum(n for (a, s, v), n in MUUTMISED.items() if a == "2019" and s == "ted_esender" and v)
+    f20 = TED.replace("<F14_2014/>", "<F20_2014><OBJECT_CONTRACT><TITLE><P>x</P></TITLE></OBJECT_CONTRACT><MODIFICATIONS_CONTRACT>"
+                      "<INFO_MODIFICATIONS><VALUES><VAL_TOTAL_BEFORE>10</VAL_TOTAL_BEFORE><VAL_TOTAL_AFTER>12</VAL_TOTAL_AFTER>"
+                      "</VALUES></INFO_MODIFICATIONS></MODIFICATIONS_CONTRACT></F20_2014>")
+    parsi_fail(f20.encode(), "2019-05")
+    assert sum(n for (a, s, v), n in MUUTMISED.items() if a == "2019" and s == "ted_esender" and v) == enne + 1

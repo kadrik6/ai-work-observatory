@@ -23,7 +23,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from parsi import DIAG, DIAG_NAITED, parsi_fail  # noqa: E402
+from parsi import DIAG, DIAG_NAITED, MUUTMISED, parsi_fail  # noqa: E402
 
 BAAS = "https://riigihanked.riik.ee/rhr/api/public/v1/opendata"
 
@@ -86,11 +86,16 @@ def pohitabel(cn, can):
     tulemus = {}
     for r in can:
         v = (r["allikas"], hanke_voti(r))
-        t = tulemus.setdefault(v, {"pakkumusi": None, "osade_pakkumusi": {}, "osade_tulemus": {}, "tulemused": [], "voitjad": [], "lepingu_summa": None})
+        t = tulemus.setdefault(v, {"pakkumusi": None, "osade_pakkumusi": {}, "osade_tulemus": {}, "osade_pohjus": {}, "osade_summa": {},
+                                     "tulemused": [], "voitjad": [], "lepingu_summa": None})
         if r.get("pakkumusi") is not None:
             t["pakkumusi"] = max(t["pakkumusi"] or 0, r["pakkumusi"])
         for osa, n in (r.get("osade_pakkumusi") or {}).items():
             t["osade_pakkumusi"][osa] = max(t["osade_pakkumusi"].get(osa, 0), n)
+        if r.get("teate_liik") != "can-modif":
+            for osa, x in (r.get("osade_summa") or {}).items():
+                t["osade_summa"][osa] = max(t["osade_summa"].get(osa, 0), x)  # parandatud teade ei liitu
+        t["osade_pohjus"].update(r.get("osade_pohjus") or {})
         for osa, k in (r.get("osade_tulemus") or {}).items():
             if t["osade_tulemus"].get(osa) != "selec-w":
                 t["osade_tulemus"][osa] = k
@@ -103,7 +108,7 @@ def pohitabel(cn, can):
         t = tulemus.get(v)
         r = dict(r)
         r["tulemus_olemas"] = t is not None
-        r.update(t or {"pakkumusi": None, "osade_pakkumusi": {}, "osade_tulemus": {}, "tulemused": [], "voitjad": [], "lepingu_summa": None})
+        r.update(t or {"pakkumusi": None, "osade_pakkumusi": {}, "osade_tulemus": {}, "osade_pohjus": {}, "osade_summa": {}, "tulemused": [], "voitjad": [], "lepingu_summa": None})
         r["aasta"] = int((r.get("esimene_kuupaev") or r["kuu"])[:4])
         valja.append(r)
     return valja
@@ -172,6 +177,12 @@ def main():
         aastad.setdefault(r["aasta"], 0)
         aastad[r["aasta"]] += 1
     kirjuta("diagnostika", **dict(DIAG.most_common(40)))
+    muut = {}
+    for (aasta, allikas, vaartused), n in MUUTMISED.items():
+        c = muut.setdefault(f"{aasta} {allikas}", {"teateid": 0, "vaartus_enne_ja_parast": 0})
+        c["teateid"] += n
+        c["vaartus_enne_ja_parast"] += n if vaartused else 0
+    kirjuta("muutmised", **dict(sorted(muut.items())))
     for n in DIAG_NAITED:
         kirjuta("diagnostika_naide", **n)
     pakk = {}

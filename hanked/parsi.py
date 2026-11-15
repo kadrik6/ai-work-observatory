@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 
 # loendur diagnostikaks (lae.py logib): statistikakoodid ja TED-vormide nimed
 DIAG = collections.Counter()
+MUUTMISED = collections.Counter()  # lepingu muutmise teated: (aasta, allikas, kas väärtus enne ja pärast on olemas)
 DIAG_NAITED = []  # mõni XML-i lõik, kui struktuur on ootamatu (pakkumuste arv puudub)
 
 
@@ -184,10 +185,29 @@ def eforms_tulemus(teade, kuu=None):
     org = _eforms_organisatsioonid(teade)
     projekt = _laps(teade, "ProcurementProject")
     pakkumusi, tulemused, voitjad, osad, osade_tulemus = [], [], [], {}, {}
+    osade_pohjus, osade_summa = {}, {}
+    # pakkumuste summad: NoticeResult/LotTender (ID + LegalMonetaryTotal/PayableAmount)
+    summad = {}
+    for lt in _koik(teade, "LotTender"):
+        tid, pa = _tekst(lt, "ID"), _laps(lt, "LegalMonetaryTotal", "PayableAmount")
+        if tid and pa is not None:
+            summad[tid] = _arv(pa.text)
+    liik = _tekst(teade, "NoticeTypeCode")
+    alamtyyp = _tekst(teade, "UBLExtensions", "UBLExtension", "ExtensionContent", "EformsExtension",
+                      "NoticeSubType", "SubTypeCode")
+    if liik == "can-modif" or alamtyyp in ("38", "39", "40"):
+        MUUTMISED[((kuu or "????")[:4], "eforms", any(_l(e.tag) in ("TotalAmount", "PayableAmount") for e in teade.iter()))] += 1
     for i, lr in enumerate(_koik(teade, "LotResult")):
         tulemused.append(_tekst(lr, "TenderResultCode"))
         osa = _tekst(lr, "TenderLot", "ID") or f"#{i + 1}"
         osade_tulemus[osa] = _tekst(lr, "TenderResultCode") or "?"
+        pohjus = next((e.text.strip() for e in _koik(lr, "DecisionReasonCode") if e.text), None)
+        if pohjus:
+            osade_pohjus[osa] = pohjus
+        s_osa = [summad.get(_tekst(lt, "ID")) for lt in _lapsed(lr, "LotTender")]
+        s_osa = [x for x in s_osa if x is not None]
+        if s_osa:
+            osade_summa[osa] = osade_summa.get(osa, 0) + sum(s_osa)
         for s in _koik(lr, "ReceivedSubmissionsStatistics"):
             kood = _tekst(s, "StatisticsCode")
             DIAG["statistika:" + str(kood)] += 1
@@ -221,6 +241,9 @@ def eforms_tulemus(teade, kuu=None):
         "pakkumusi": max(pakk) if pakk else None,
         "osade_pakkumusi": osad,
         "osade_tulemus": osade_tulemus,
+        "osade_pohjus": osade_pohjus,
+        "osade_summa": osade_summa,
+        "teate_liik": liik,
         "tulemused": _uniq(tulemused),
         "voitjad": _uniq(voitjad),
         "lepingu_summa": summa,
@@ -264,16 +287,27 @@ def ted_teade(teade, kuu=None):
     saadetud = next((e.text for e in f.iter() if _l(e.tag) == "DATE_DISPATCH_NOTICE" and e.text), None)
     rida_yld = {"allikas": "ted_esender", "kuu": kuu, "vorm": vorm, "teate_id": uuid, "viitenumber": viitenumber,
                 "kuupaev": saadetud[:10] if saadetud else None}
+    if vorm == "F20_2014":
+        tags = {_l(e.tag) for e in f.iter()}
+        MUUTMISED[((kuu or "????")[:4], "ted_esender", {"VAL_TOTAL_BEFORE", "VAL_TOTAL_AFTER"} <= tags)] += 1
+        return None
     if vorm in ("F03_2014", "F06_2014", "F15_2014"):
         pakk = [_arv(e.text) for e in f.iter() if _l(e.tag) == "NB_TENDERS_RECEIVED"]
         pakk = [p for p in pakk if p is not None]
-        osad, osade_tulemus = {}, {}
+        osad, osade_tulemus, osade_pohjus, osade_summa = {}, {}, {}, {}
         for i, ac in enumerate(e for e in f.iter() if _l(e.tag) == "AWARD_CONTRACT"):
             osa = _tekst(ac, "LOT_NO") or f"#{i + 1}"
-            if _laps(ac, "AWARDED_CONTRACT") is not None:
+            aw = _laps(ac, "AWARDED_CONTRACT")
+            if aw is not None:
                 osade_tulemus[osa] = "selec-w"
+                v = _arv(_tekst(aw, "VALUES", "VAL_TOTAL"))
+                if v is not None:
+                    osade_summa[osa] = osade_summa.get(osa, 0) + v
             elif osade_tulemus.get(osa) != "selec-w":
                 osade_tulemus[osa] = "clos-nw"
+                na = _laps(ac, "NO_AWARDED_CONTRACT")
+                if na is not None:
+                    osade_pohjus[osa] = ("ted:" + _l(na[0].tag)) if len(na) else "ted:?"
             n = [_arv(e.text) for e in ac.iter() if _l(e.tag) == "NB_TENDERS_RECEIVED"]
             n = [x for x in n if x is not None]
             if n:
@@ -283,7 +317,8 @@ def ted_teade(teade, kuu=None):
         summa = [s for s in summa if s is not None]
         mitte = any(_l(e.tag) == "NO_AWARDED_CONTRACT" for e in f.iter())
         return {**rida_yld, "teade": "CAN", "pakkumusi": max(pakk) if pakk else None, "osade_pakkumusi": osad,
-                "osade_tulemus": osade_tulemus, "tulemused": ["clos-nw"] if mitte and not pakk else (["selec-w"] if pakk else []),
+                "osade_tulemus": osade_tulemus, "osade_pohjus": osade_pohjus, "osade_summa": osade_summa,
+                "teate_liik": vorm, "tulemused": ["clos-nw"] if mitte and not pakk else (["selec-w"] if pakk else []),
                 "voitjad": _uniq(voitjad), "lepingu_summa": sum(summa) if summa else None}
     if vorm not in ("F02_2014", "F05_2014", "F21_2014", "F22_2014", "F24_2014", "F17_2014"):
         return None
