@@ -141,9 +141,10 @@ def kontrolli_faili(juur, tee, sonad, sisu=None):
         if muster.search(tekst):
             vead.append(f"{nimi} (muster: {muster.pattern[:30]}…)")
     madal = tekst.lower()
-    for s in sonad:
+    # Sõna ise logisse ei lähe: Actionsi logid võivad olla avalikud. Number viitab reale privaatses loendis.
+    for nr, s in enumerate(sonad, 1):
         if s.lower() in madal:
-            vead.append(f"keelatud sõna: „{s}“")
+            vead.append(f"keelatud sõna nr {nr} privaatsest loendist")
     aadressid = sorted(set(EPOST.findall(tekst)))
     if aadressid:
         hoiatused.append(f"e-posti aadress: {', '.join(aadressid[:3])}")
