@@ -23,9 +23,9 @@
    "kaotatud_tekst": "Mitmest osakonnast, sh analüütikud, disainerid ja turundusspetsialistid; vähem meeskondi ja juhtimistasandeid.",
    "kaotatud_allikas": "https://www.err.ee/1610180251/pipedrive-koondab-massiliselt-tootajaid-ja-paneb-kontoreid-kinni",
    "otsib": {
-    "kontrollitud": "2026-11-09",
+    "kontrollitud": "2026-11-16",
     "ametid": [],
-    "tekst": "Eestis avatud kuulutusi ei ole.",
+    "tekst": "Eestis avatud kuulutusi ei ole (16.11).",
     "url": "https://www.pipedrive.com/en/jobs/open-positions?location=estonia"
    },
    "omand": "Eestis asutatud, välisinvestori omanduses",
@@ -43,9 +43,9 @@
    "kaotatud_tekst": "Umbes 130 ametikohta üle organisatsiooni; täpsed ametid selguvad pärast koondamiskonsultatsiooni.",
    "kaotatud_allikas": "https://news.err.ee/1610180281/coolbet-estonia-to-shed-up-to-134-jobs-at-tallinn-hq",
    "otsib": {
-    "kontrollitud": "2026-11-09",
+    "kontrollitud": "2026-11-16",
     "ametid": [],
-    "tekst": "Avatud kuulutusi ei ole üheski riigis.",
+    "tekst": "Avatud kuulutusi ei ole üheski riigis (16.11).",
     "url": "https://careers.coolbet.ee/jobs"
    },
    "omand": "välisomanikuga",
@@ -78,7 +78,7 @@
       "liik": "IT ja andmed"
      }
     ],
-    "tekst": "3 kuulutust Tallinnas (kontsernis kokku 55). Uus on sisujuht; krediidiriski modelleerija kuulutust enam pole. Andmehalduse kuulutus on mitme riigi kohta.",
+    "tekst": "3 kuulutust Tallinnas (kontsernis kokku 55). Uus on sisujuht; krediidiriski modelleerija kuulutust enam pole. Andmehalduse kuulutus on mitme riigi kohta. Kontroll 16.11 ebaõnnestus (leht ei näidanud kuulutuste loendit), näidatud on 9.11 seis.",
     "url": "https://jobs.swedbank.com/jobs?location=Tallinn"
    },
    "omand": "välisomanikuga",
@@ -98,15 +98,22 @@
    "kaotatud_tekst": "Jaanuaris liideti tehnoloogia ja IT juhtimine. Oktoobri koondamise ametid avalikult ei ole teada; kontsern viib umbes 220 tehnoloogiaüksuse ametikohta riikide üksustesse.",
    "kaotatud_allikas": "https://news.err.ee/1610163940/telia-to-cut-100-jobs-in-estonia-as-telecom-group-plans-900-layoffs",
    "otsib": {
-    "kontrollitud": "2026-11-09",
+    "kontrollitud": "2026-11-16",
     "ametid": [
      {
-      "nimi": "Suurkliendi müügijuht",
-      "liik": "müük ja klienditeenindus",
-      "avaldatud": "2026-10-30"
+      "nimi": "Müügijuht",
+      "liik": "müük ja klienditeenindus"
+     },
+     {
+      "nimi": "AISaaS ja andmeteenuste juht",
+      "liik": "IT ja andmed"
+     },
+     {
+      "nimi": "pealkiri lehel puudub (kuulutus 60860)",
+      "liik": "teadmata"
      }
     ],
-    "tekst": "1 kuulutus Tallinnas (disainisüsteemi disaineri kuulutust enam pole).",
+    "tekst": "3 kuulutust Tallinnas; uus on AISaaS ja andmeteenuste juht (avaldatud umbes 12.11). Suurkliendi müügijuhi kuulutust enam pole.",
     "url": "https://teliacompany.wd3.myworkdayjobs.com/Telia_careers?q=Tallinn"
    },
    "omand": "välisomanikuga",
@@ -126,15 +133,15 @@
    "kaotatud_tekst": "Tootmise tugivaldkonnad ja keskühikud: remont, transport ja logistika, IT, turundus. Õlitööstuse ja elektrijaamade operaatoreid ei puuduta. Lõplikud arvud 23.11.",
    "kaotatud_allikas": "https://www.err.ee/1610186842/eesti-energia-plaanib-koondada-10-protsenti-ametikohtadest",
    "otsib": {
-    "kontrollitud": "2026-11-09",
+    "kontrollitud": "2026-11-16",
     "ametid": [],
-    "tekst": "Kontserni (Enefit, Elektrilevi) tööpakkumiste lehel avatud kuulutusi ei ole.",
+    "tekst": "Kontserni (Enefit, Elektrilevi) tööpakkumiste lehel avatud kuulutusi ei ole (16.11).",
     "url": "https://www.enefit.com/et/too-ja-praktika/tule-toole"
    },
    "omand": "riigifirma",
    "koondab_ee": {
     "arv": 390,
-    "tekst": "esialgne, lõplik 23.11; Ida-Virumaal umbes 300"
+    "tekst": "esialgne, lõplik 23.11; Ida-Virumaal umbes 300, neist Narvas 140 (ERR 15.11)"
    }
   },
   "RMK": {
@@ -151,7 +158,7 @@
     "tekst": "koondamisteated 2026. aasta lõpus, sulgemine 31.03.2027"
    },
    "otsib": {
-    "kontrollitud": "2026-11-15",
+    "kontrollitud": "2026-11-16",
     "ametid": [
      {
       "nimi": "Süsteemiinsener",
@@ -166,7 +173,7 @@
       "liik": "IT ja andmed"
      }
     ],
-    "tekst": "RMK vabade töökohtade lehel 3 kuulutust (IT taristu, kinnisvara Kirde-Eestis, andmetiim).",
+    "tekst": "RMK vabade töökohtade lehel 3 kuulutust (IT taristu, kinnisvara Kirde-Eestis, andmetiim); süsteemiinseneri tähtaeg oli 15.11.",
     "url": "https://rmk.ee/kuulutused/vabad-tookohad/"
    }
   }
