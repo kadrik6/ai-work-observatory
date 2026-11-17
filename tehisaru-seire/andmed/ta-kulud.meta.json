@@ -4,7 +4,7 @@
   "naitaja_nimi": "Annual; All sectors; Percentage of gross domestic product (GDP)",
   "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/rd_e_gerdtot?format=JSON&lang=EN&freq=A&sectperf=TOTAL&unit=PC_GDP&sinceTimePeriod=2012&geo=EE&geo=FI&geo=SE&geo=DK&geo=NO&geo=DE&geo=NL&geo=EU27_2020",
   "allikas_uuendas": "2026-11-03",
-  "kontrollitud": "2026-11-15",
+  "kontrollitud": "2026-11-17",
   "varskus": {
     "staatus": "ajakohane",
     "jargmine_oodatav": "2027-11-03"

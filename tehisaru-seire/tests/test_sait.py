@@ -415,10 +415,11 @@ def test_lahknevused_ja_varskus_on_usalduse_all_nahtaval(sait):
 
 
 def test_igas_teemavaates_on_numbriplaadid(sait):
-    for f in ["too.html", "avalik-sektor.html", "tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
+    for f in ["avalik-sektor.html", "tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
         assert 'class="vastus' in sait[f], f  # Avalik sektor: „vastus kpi-pais“ (KPI ver1)
-    # 14.11.2026: Ettevõtete ja Inimeste numbrid on tahvli ridadel (Kadri valis „B koos C maatriksiga“ ja „A ja B koos“)
-    assert 'class="tv-arv"' in sait["ettevotted.html"] and 'class="tv-arv"' in sait["inimesed.html"]
+    # 14.11.2026: Ettevõtete ja Inimeste numbrid on tahvli ridadel (Kadri valis „B koos C maatriksiga“ ja „A ja B koos“); Töö 17.11 („A ja C koos“)
+    for f in ("ettevotted.html", "inimesed.html", "too.html"):
+        assert 'class="tv-arv"' in sait[f], f
 
 
 def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
@@ -963,7 +964,8 @@ def test_iga_vaide_on_avalehe_tabelis_teemaga(A):
 def test_too_leht_teemamall_a(sait):
     """Kadri 8.11.2026: teemaleht A järgi: number, andmed sakkides, uuringud, väited, reeglid, allikad; vanad ankrud alles."""
     h = sait["too.html"]
-    jrk = [h.index(x) for x in ('class="vastus kpi-pais"', 'id="andmed"', 'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
+    # 17.11.2026: numbriplaatide asemel tahvel, tõendikaart ja astmed; plokid on nende all kokkupandult
+    jrk = [h.index(x) for x in ('id="tahvel"', 'id="toendid"', 'id="astmed"', 'id="andmed"', 'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
     assert jrk == sorted(jrk)
     assert 'id="t-uuringud"' not in h  # Kadri 11.11.2026: uuringud on alamlehel Töö › Uuringud
     for vana in ("tootus-kuud", "koondamised", "tootus-el", "palkamine", "vabad-kohad", "toopakkumised", "ai-kuulutused", "tulevik"):
@@ -1705,7 +1707,7 @@ def test_uudiste_numbriplaadid_on_tihedad_ilma_allikareata(sait):
     assert pais.count('class="plaat kp"') == 4
     assert "Seire uudistekogumine" not in u and 'class="src"' not in pais
     # teiste lehtede plaatidel on allikas alles
-    assert 'class="src"' in sait["too.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]  # 14.11.2026: Inimestel on tahvel
+    assert 'class="src"' in sait["avalik-sektor.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]  # 17.11.2026: Töö lehel on tahvel
 
 
 def test_valislingid_avanevad_uues_vahelehes(sait):
@@ -1897,7 +1899,7 @@ def test_disainikriitika_fookus_skaala_ja_lehel_rida(sait):
     css = (JUUR / "sait" / "stiil.css").read_text(encoding="utf-8")
     # 1. Sinine kaardinumber on ainult pealkirja fookus: avalehel ettevõtted, Töö lehel mitte ükski.
     assert '<span class="big s"' not in sait["index.html"]  # 14.11.2026: avalehel plaate pole, tahvli numbrid on tumedad
-    assert '<span class="big s"' not in sait["too.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]
+    assert 'class="vastus kpi-pais"' not in sait["too.html"]  # 17.11.2026: Töö lehel plaate pole, numbrid on tahvli ridadel
     assert ".vastus.kpi-pais > .plaat:first-child .big:not(.s) { color: var(--ink); }" in css
     # 2. Töötuse kuugraafikul on abijooned koos väärtustega (y-skaala).
     osa = sait["too.html"][sait["too.html"].index('id="tootus-kuud"'):]
@@ -1998,3 +2000,39 @@ def test_vahvel_ei_luba_ule_saja_protsendi():
     import teema_tahvel
     with pytest.raises(andmekiht.AndmeViga):
         teema_tahvel.vahvel([("tool", 60), ("oska", 50)], "x")
+
+
+def test_too_on_tahvel_toendikaart_ja_astmed(A, sait):
+    """Kadri 17.11.2026 valis Töö lehele „A ja C koos“: tahvel, kus on tõendeid, hõive avatuse astme järgi, siis plokid kokku pandud."""
+    h = sait["too.html"]
+    main = re.search(r"<main.*?</main>", h, re.S).group(0)
+    assert main.index("</h1>") < main.index('id="tahvel"') < main.index('id="toendid"') < main.index('id="astmed"') < main.index('id="h-uksikasjad"')
+    assert 'data-kpi="too-' not in h and '<aside class="vastus"' not in h
+    tv = _jaotis(h, "tahvel")
+    read = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">(.*?)</a>', tv)
+    assert len(read) == 6 and all(f'id="{a}"' in h for a, _ in read)
+    assert tv.count('<details class="tv-r">') == len(read)
+    assert "ei näita, mis on muutuse põhjus" in tv
+    # tõendikaart: iga rida on küsimus, neli kohta; lahtrite numbreid ei võrrelda; Eesti töökohtade ridadel pole rühmi võrdlevat uuringut
+    tk = _jaotis(h, "toendid")
+    ridu = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">.*?</tr>', tk, re.S)
+    assert len(ridu) >= 6 and all(f'id="{a}"' in h for a in ridu)
+    for rida in re.findall(r'<tr><th scope="row">.*?</tr>', tk, re.S):
+        assert rida.count("<td class=\"tk-") == 4
+        if "tootlikkus" not in rida:
+            assert not rida.split("</th>")[1].startswith('<td class="tk-p"'), rida[:80]
+    assert "Eri lahtrite numbreid ei võrrelda" in tk
+    # astmed: kuus astet laias ja kitsas joonises, Eesti ja EL igal real; kirjeldus, mitte põhjus
+    am = _jaotis(h, "astmed")
+    for svg in am.split('class="tt-sc-')[1:]:
+        svg = svg.split("</svg>")[0]
+        assert svg.count('<circle class="tv-pf"') == 6 and svg.count('<circle class="tt-elp"') == 6
+    assert "kirjeldus, mitte põhjus" in am and "lfsa_egai2d" in am
+    for sid in ("andmed", "maailm", "eesti", "ametid", "lopp"):
+        assert f'<details class="tt-pl" id="d-{sid}">' in h, sid
+
+
+def test_jaotusriba_ei_luba_ule_saja_protsendi():
+    import too_tahvel
+    with pytest.raises(andmekiht.AndmeViga):
+        too_tahvel.jaotusriba([("s", 70), ("m", 40)], "liiga palju")

@@ -1775,3 +1775,39 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
   .tt-pl > summary::before { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .tt-pl > summary::before { transition: none; } }
+
+/* Töö (Kadri 17.11.2026 „A ja C koos“): tahvli osaribad, tõendikaart (küsimus × koht) ja hõive avatuse astme järgi */
+.tt-jr.s { fill: var(--signal); } .tt-jr.m { fill: color-mix(in srgb, var(--signal) 35%, var(--panel)); } .tt-jr.t { fill: var(--ink-3); opacity: .45; }
+.tt-ring { fill: var(--panel); stroke: var(--ink-3); stroke-width: 1.5; }
+.tt-elp { fill: var(--panel); stroke: var(--ink-2); stroke-width: 2; }
+.tt-as { font-size: 13.5px; }
+.tk-laud { margin-top: 24px; }
+.tk-laud table { width: 100%; border-collapse: collapse; font-size: 14.5px; table-layout: fixed; }
+.tk-laud th[scope=row] { width: 24%; text-align: left; font-weight: 600; vertical-align: top; }
+.tk-laud th[scope=row] a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--border); }
+.tk-laud td, .tk-laud th { border: 1px solid var(--border); padding: 8px 10px; vertical-align: top; }
+.tk-laud thead th { font-size: 13.5px; color: var(--ink-3); font-weight: 600; text-align: left; }
+.tk-laud.tbl td { position: relative; padding-left: 30px; }
+.tk-m { position: absolute; left: 10px; top: 11px; width: 12px; height: 12px; border-radius: 2px; display: inline-block; box-sizing: border-box; }
+.tk-p .tk-m, .tk-m.p { background: var(--signal); }
+.tk-k .tk-m, .tk-m.k { background: linear-gradient(90deg, var(--signal) 50%, transparent 50%); box-shadow: inset 0 0 0 1.5px var(--signal); }
+.tk-h .tk-m, .tk-m.h { border: 1.5px solid var(--signal); border-radius: 50%; }
+.tk-0 .tk-m, .tk-m.z { border: 1px dashed var(--ink-3); }
+.tk-laud td.tk-0 { background: var(--surface-2); } .tk-0 .tk-r { color: var(--ink-3); font-size: 13.5px; }
+.tk-l { display: block; font-size: 12.5px; color: var(--ink-3); }
+.tk-r { display: block; font-size: 15px; color: var(--ink); }
+.tk-laud td small { display: block; font-size: 12.5px; color: var(--ink-3); margin-top: 2px; }
+.tk-laud td:nth-child(2) { background: color-mix(in srgb, var(--brand-soft) 50%, var(--surface)); }
+.tk-laud td.tk-0:nth-child(2) { background: color-mix(in srgb, var(--brand-soft) 50%, var(--surface-2)); }
+.tk-leg { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--ink-3); margin: 10px 0 0; }
+.tk-leg span { display: inline-flex; align-items: center; gap: 6px; } .tk-leg .tk-m { position: static; }
+@media (max-width: 640px) {
+  .tk-laud table, .tk-laud tbody, .tk-laud tr { display: block; } .tk-laud thead { display: none; }
+  .tk-laud tr { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 12px; }
+  .tk-laud th[scope=row] { grid-column: 1 / -1; width: auto; border: 0; padding: 6px 0; }
+  .tk-laud td { display: block; font-size: 13.5px; }
+  .tk-laud td::before { display: block; font-size: 11.5px; color: var(--ink-3); font-weight: 600; }
+  .tk-laud td:nth-of-type(1)::before { content: "Eesti"; } .tk-laud td:nth-of-type(2)::before { content: "Euroopa"; }
+  .tk-laud td:nth-of-type(3)::before { content: "USA"; } .tk-laud td:nth-of-type(4)::before { content: "Mujal"; }
+  .tk-m { top: 26px; }
+}
