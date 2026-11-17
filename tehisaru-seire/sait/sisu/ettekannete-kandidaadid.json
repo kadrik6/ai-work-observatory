@@ -1,6 +1,141 @@
 {
  "kandidaadid": [
   {
+   "id": "uttv-44020",
+   "allikas": "uttv",
+   "pealkiri": "Õiglase Ülemineku Foorum 2026 &bdquo;Ida-Viru elanikud ja ettevõtted muutuste keskel. Mis saab homme?&ldquo;",
+   "avaldatud": "2026-11-18",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44020",
+   "leitud": "2026-11-17",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "826j2aLRhUw",
+   "allikas": "oecd",
+   "pealkiri": "Pourquoi les langues sont-elles importantes à l’OCDE ?",
+   "avaldatud": "2026-11-17",
+   "url": "https://www.youtube.com/watch?v=826j2aLRhUw",
+   "leitud": "2026-11-17",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "vwqJUGI55vA",
+   "allikas": "ilo",
+   "pealkiri": "Webinar \"Chain Reaction: Driving Disability Inclusion in Supply Chains\", 17 November 2026",
+   "avaldatud": "2026-11-17",
+   "url": "https://www.youtube.com/watch?v=vwqJUGI55vA",
+   "leitud": "2026-11-17",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "-tpu_muap6Q",
+   "allikas": "tds",
+   "pealkiri": "Tallinn Digital Summit 2026 I Official Aftermovie",
+   "avaldatud": "2026-11-17",
+   "url": "https://www.youtube.com/watch?v=-tpu_muap6Q",
+   "leitud": "2026-11-17",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "UKFYbZo3nDA",
+   "allikas": "oecd",
+   "pealkiri": "Why do languages matter at the OECD?",
+   "avaldatud": "2026-11-16",
+   "url": "https://www.youtube.com/watch?v=UKFYbZo3nDA",
+   "leitud": "2026-11-17",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "2TAThYG8euc",
+   "allikas": "oecd",
+   "pealkiri": "Scoring more than goals: Football, men’s health and social impact",
+   "avaldatud": "2026-11-16",
+   "url": "https://www.youtube.com/watch?v=2TAThYG8euc",
+   "leitud": "2026-11-17",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "PpjjF6_CIJE",
+   "allikas": "oecd",
+   "pealkiri": "Who are valued principals, what do they do best and when do they thrive?",
+   "avaldatud": "2026-11-16",
+   "url": "https://www.youtube.com/watch?v=PpjjF6_CIJE",
+   "leitud": "2026-11-17",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "b7mZiHzeunI",
+   "allikas": "ilo",
+   "pealkiri": "ILO PROSPECTS | How we support entrepreneurship in Egypt?",
+   "avaldatud": "2026-11-15",
+   "url": "https://www.youtube.com/watch?v=b7mZiHzeunI",
+   "leitud": "2026-11-17",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44042",
+   "allikas": "uttv",
+   "pealkiri": "&nbsp;Astronoomialoeng:&nbsp;&bdquo;Öötaeva avastamine &ndash; kuidas ma loon Atlast&quot;&nbsp;|&nbsp; Liam Arbuckle &nbsp;",
+   "avaldatud": "2026-11-03",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44042",
+   "leitud": "2026-11-17",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44041",
+   "allikas": "uttv",
+   "pealkiri": "&nbsp;Astronoomialoeng:&nbsp;&bdquo;Tähe teekond läbi galaktika&quot;&nbsp;|&nbsp; Rain Kipper &nbsp;",
+   "avaldatud": "2026-10-20",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44041",
+   "leitud": "2026-11-17",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44040",
+   "allikas": "uttv",
+   "pealkiri": "&nbsp;Astronoomialoeng:&nbsp;&nbsp;&bdquo;Taeva-aasta 2026&ndash;2027&ldquo;&nbsp;|&nbsp; Üllar Kivila &nbsp;",
+   "avaldatud": "2026-10-06",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44040",
+   "leitud": "2026-11-17",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44043",
+   "allikas": "uttv",
+   "pealkiri": "Tartu Ülikooli õigusteaduskonna konverents-karjäärimess&nbsp;2026",
+   "avaldatud": "2026-09-23",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44043",
+   "leitud": "2026-11-17",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44000",
+   "allikas": "uttv",
+   "pealkiri": "&nbsp;Astronoomialoeng:&nbsp;&bdquo;Kuidas masin näeb ja kas sellest astronoomidel ka kasu on?&ldquo;&quot;&nbsp;|&nbsp;Jaan Pelt",
+   "avaldatud": "2026-09-15",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44000",
+   "leitud": "2026-11-17",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
    "id": "LOVROnbxcvw",
    "allikas": "oecd-ai",
    "pealkiri": "OECD.AI Index",
@@ -1557,9 +1692,9 @@
   "oecd-ai": "UCl4praikeBNNxiSVpAvxwkA",
   "ilo": "UCrlcu5KChYyHwXlIeD7oLUg",
   "stanford-hai": "UChugFTK0KyrES9terTid8vA",
-  "uttv": 43980,
+  "uttv": 44043,
   "tds": "UC9ptGynkOPe3vFRW6otoI3g"
  },
- "uuendatud": "2026-11-15",
+ "uuendatud": "2026-11-17",
  "vead": []
 }
