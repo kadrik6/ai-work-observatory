@@ -43,8 +43,15 @@ def test_leiab_votme_urlist(tmp_path):
 
 def test_leiab_keelatud_sona_tostutundetult(tmp_path):
     tee = fail(tmp_path, "tehisaru-seire/a.md", "Siin on SALAJANE tekst.\n")
+    vead, _ = kontrolli.kontrolli_faili(tmp_path, tee, ["muu", "salajane"])
+    assert vead == ["keelatud sõna nr 2 privaatsest loendist"]
+
+
+def test_veateade_ei_naita_keelatud_sona(tmp_path):
+    """Actionsi logid võivad olla avalikud, seega veateade ei tohi sõna ennast sisaldada."""
+    tee = fail(tmp_path, "tehisaru-seire/a.md", "Siin on SALAJANE tekst.\n")
     vead, _ = kontrolli.kontrolli_faili(tmp_path, tee, ["salajane"])
-    assert vead == ["keelatud sõna: „salajane“"]
+    assert vead and not any("salajane" in v.lower() for v in vead)
 
 
 def test_keelatud_kaust_ja_tuup(tmp_path):
