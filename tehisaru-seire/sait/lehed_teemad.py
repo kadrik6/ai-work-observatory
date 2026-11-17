@@ -747,7 +747,6 @@ def avalik_sektor(A, vaade, vaated=None):
     kontrolli(vaade, "Iga neljas", "generatiivset tehisaru", "kolmandik")
     if not all(25 <= v(k) <= 30 for k in ("genai-kesk", "genai-kov")) or not 30 <= v("laiendati") <= 36:
         raise AndmeViga("Avaliku sektori h1 („iga neljas“, „kolmandik“) ei klapi enam OECD numbritega")
-    src = lambda i: f'{OECD_NIMI.split(",")[0]}, {_o(A, i)["koht"]}'  # noqa: E731
     gk, gl = _o(A, "genai-kesk"), _o(A, "genai-kov")
     if round(int(gk["lugeja"]) / int(gk["nimetaja"]) * 100) != int(gk["vaartus"]):
         raise AndmeViga("OECD 28% ei klapi arvudega 48/170")
@@ -764,22 +763,12 @@ def avalik_sektor(A, vaade, vaated=None):
     <p class="alam">Avalikud teenistujad ja asutuste juhid nimetasid oma olulisima uuenduse ja etapi, kuhu see jõudis. Küsitlus oli detsember 2025 kuni veebruar 2026.</p>
   </header>
   <div class="kaks">
-    <div class="pinu">
     <figure aria-labelledby="g-lehter">
       <figcaption><span class="gt" id="g-lehter">Kuhu olulisimad uuendused jõudsid, % uuendustest</span>
         <span class="gs">Avalik sektor kokku, keskvalitsus ja omavalitsused.</span></figcaption>
       {lihtribad([("Jõudis rakendamiseni", v("rakendati"), None), ("Laiendati", v("laiendati"), None)], 100, 25, "%", fookus=1)}
       {allikas}
     </figure>
-    <figure aria-labelledby="g-hindamine">
-      <figcaption><span class="gt" id="g-hindamine">Hindamismeetod, % töötajate kirjeldatud hindamistest</span>
-        <span class="gs">Üks hindamine võib kasutada mitut meetodit. Juhtide järgi oli tasuvuse hindamine {pr(v("hindamine-vfm-juhid"), 0)}%.</span></figcaption>
-      {lihtribad([("Protsess", v("hindamine-protsess-tootajad"), None), ("Tasuvus", v("hindamine-vfm-tootajad"), None),
-                  ("Teooriapõhine", v("hindamine-teooria-tootajad"), None), ("Kulude ja tulude analüüs", v("hindamine-cba-tootajad"), None),
-                  ("Katse (RCT)", v("hindamine-rct-tootajad"), None), ("Kvaasikatse", v("hindamine-kvaasi-tootajad"), None)], 100, 25, "%")}
-      {allikarida([("OECD (2026)", OECD_URL, "joonised 6.3 ja 6.4 (lk 132–133)")])}
-    </figure>
-    </div>
     <div class="kulg">
       {vastavus("osaliselt", "Need on vastajate olulisimad uuendused, mitte kõik uuendused. Tehisaru projekte eraldi ei loendata.")}
       {faktid([
@@ -814,34 +803,7 @@ def avalik_sektor(A, vaade, vaated=None):
   </div>
 </section>"""
 
-    # OECD lisatulemused otse aruandest (Kadri 8.11.2026: kõik ühes kohas, otse allikast; kontrollitud aruande PDF-ist)
-    et = [("Uurimine", "etapp-uurimine"), ("Ideed", "etapp-ideed"), ("Prototüüp", "etapp-prototyyp"),
-          ("Hindamine", "etapp-hindamine"), ("Otsus", "etapp-otsus")]
-    langus = round(v("etapp-prototyyp") - v("etapp-hindamine"))
-    if max(round(v(et[i][1]) - v(et[i + 1][1])) for i in range(len(et) - 1)) != langus:
-        raise AndmeViga("OECD etapid: suurim langus ei ole enam prototüübist hindamiseni")
-    sec_etapid = f"""
-<section class="jaotis" id="etapid" aria-labelledby="h-etapid">
-  <header>
-    <h2 id="h-etapid">Uuendused jäävad pidama <b>hindamise ja otsuse ees</b> ¦ hindamiseni jõuab {langus} protsendipunkti väiksem osa projektidest kui prototüübini</h2>
-    <p class="alam">Uuendusprojektide osakaal, mis jõudis etapini (projekte {", ".join(_o(A, k)["lugeja"] for _, k in et)}).</p>
-  </header>
-  <div class="kaks">
-    <figure aria-labelledby="g-etapid">
-      <figcaption><span class="gt" id="g-etapid">Etapini jõudnud uuendusprojektid, %</span></figcaption>
-      {lihtribad([(n, v(k), None) for n, k in et], 100, 25, "%", fookus="Hindamine")}
-      {allikarida([("OECD (2026)", OECD_URL, _o(A, "etapp-uurimine")["koht"])])}
-    </figure>
-    <div class="kulg">
-      {vastavus("osaliselt", "Vastajad kirjeldasid oma projekte. Tehisaru projekte eraldi ei loendata.")}
-      {faktid([
-          ("Fakt", "", f'Kõige olulisematest uuendustest jõuab rakendamiseni {pr(v("rakendati"), 0)}%, laiendatakse {pr(v("laiendati"), 0)}%. {e(_o(A, "etapp-otsus")["markus"])}'),
-          ("Tõlgendus · OECD", "s", "Hinnatakse peamiselt protsessi; mõju ja tasuvust hinnatakse harvem, nii et otsustajal on vähe tõendeid laiendamiseks."),
-      ], koik_lahti=True)}
-    </div>
-  </div>
-</section>"""
-
+    # Etapid ja hindamismeetodid on teekonna joonisel tahvli all (avalik_tahvel.sec_teekond, Kadri 17.11.2026 „A ja C koos“)
     liigid = [("Olemasoleva parandamine", "liik-parandus"), ("Kohanemine muutustega", "liik-kohanemine"),
               ("Missioonipõhine", "liik-missioon"), ("Tulevikku ennetav", "liik-ennetav"), ("Muu", "liik-muu")]
     if not 60 <= v("liik-parandus") <= 70:
@@ -885,31 +847,8 @@ def avalik_sektor(A, vaade, vaated=None):
   </div>
 </section>"""
 
-    osk = [("Tehisaru kasutuselevõtt", "oskus-kasutuselevott"), ("Strateegiline juhtimine ja teenused", "oskus-strateegia"),
-           ("Suhtlus ja mõjutamine", "oskus-suhtlus"), ("Digi- ja andmeoskused", "oskus-digi"),
-           ("Andmepõhised otsused", "oskus-andmeotsused"), ("Tehisaruoskuste arendamine", "oskus-arendus")]
-    if max(osk, key=lambda x: v(x[1]))[1] != "oskus-kasutuselevott":
-        raise AndmeViga("OECD oskused: tehisaru kasutuselevõtt ei ole enam kõige soovitum oskus")
-    sec_oskused = f"""
-<section class="jaotis" id="oskused" aria-labelledby="h-oskused">
-  <header>
-    <h2 id="h-oskused">Töötajad tahavad kõige rohkem arendada <b>tehisaru kasutuselevõtu</b> oskusi</h2>
-    <p class="alam">Vastused küsimusele „Milliseid oskusi tahaksid kõige rohkem arendada?“, kokku {_o(A, "oskus-kasutuselevott")["nimetaja"]} vastust.</p>
-  </header>
-  <div class="kaks">
-    <figure aria-labelledby="g-oskused">
-      <figcaption><span class="gt" id="g-oskused">Soovitud oskus, % vastustest</span></figcaption>
-      {lihtribad([(n, v(k), None) for n, k in osk], 50, 10, "%", fookus=0)}
-      {allikarida([("OECD (2026)", OECD_URL, _o(A, "oskus-kasutuselevott")["koht"])])}
-    </figure>
-    <div class="kulg">
-      {faktid([
-          ("Hoiatus · OECD", "risk", e(_o(A, "oskus-arendus")["markus"])),
-          ("Kuidas mõõdeti", "", e(_o(A, "oskus-kasutuselevott")["markus"])),
-      ])}
-    </div>
-  </div>
-</section>
+    # Oskussoovid on asutuste ploki kõrval tahvli all (avalik_tahvel.sec_asutused)
+    sec_kupsus = f"""
 <section class="jaotis" id="kupsus" aria-labelledby="h-kupsus">
   <header>
     <h2 id="h-kupsus">OECD: enamikul asutustest <b>pole generatiivse tehisaru jaoks piisavat juhtimisraamistikku</b></h2>
@@ -972,31 +911,8 @@ def avalik_sektor(A, vaade, vaated=None):
   {allikarida([("OECD (2026)", OECD_URL, "7. peatükk")])}
 </section>"""
 
-    ree = [
-        (f'{pr(v("uuendajad"), 0)}%', f'vastanud avalikest teenistujatest tegi viimase 24 kuu jooksul uuenduse.', e(src("uuendajad"))),
-        (f'{pr(v("rakendati"), 0)} → {pr(v("laiendati"), 0)}%', 'olulisimatest uuendustest jõudis rakendamiseni → laiendati.', e(src("rakendati"))),
-        (f'{gk["vaartus"]}% <small>({gk["lugeja"]}/{gk["nimetaja"]})</small>', 'keskvalitsuse innovaatoritest kasutas oma uuenduses generatiivset tehisaru.', e(src("genai-kesk"))),
-    ]
-    lead = "Kõik numbrid: OECD avalik raport (2026), küsitlus 2025–2026."
-    # Päise numbrid lukustatud KPI valiku ver1 järgi (Kadri 7.11.2026 21:46): silt üleval, muutus/tekst ja võrdlusriba
-    import re
-    from lehed_ulevaade import kpi_plaat, kpi_riba
-    uu = _o(A, "uuendajad")
-    m = re.search(r"Juhtidest (\d+)%, haldustöötajatest (\d+)%", uu["markus"])
-    if not m:
-        raise AndmeViga("avalik-sektor.csv: uuendajate märkuses puudub juhtide ja haldustöötajate osa")
-    oecd = lambda i: a(OECD_URL, f'OECD 2026, {_o(A, i)["koht"].split(", ")[-1]}')  # noqa: E731
-    aside = ('<aside class="vastus kpi-pais" aria-label="Peamised numbrid">' + "".join([
-        kpi_plaat("uuendus", "Tegi uuenduse (avalikud teenistujad, 24 kuud)", f'{pr(v("uuendajad"), 0)}%', "2025–2026",
-                  {"muutus": (f"juhid {m.group(1)}% · haldustöötajad {m.group(2)}%", ""), "riba": kpi_riba(v("uuendajad"), 100, fookus=True)},
-                  oecd("uuendajad"), fookus=True),
-        kpi_plaat("laiendus", "Uuendus rakendati → laiendati", f'{pr(v("rakendati"), 0)} → {pr(v("laiendati"), 0)}%', "",
-                  {"tekst": "<b>kolmandik</b> jõuab laiendamiseni", "riba": kpi_riba(v("laiendati"), 100, vrd=v("rakendati"), vrd_nimi="rakendati")},
-                  oecd("rakendati")),
-        kpi_plaat("genai", "Kasutab generatiivset tehisaru (keskvalitsuse uuendajad)", f'{gk["vaartus"]}%', f'{gk["lugeja"]}/{gk["nimetaja"]}',
-                  {"tekst": "omavalitsustes " + ("<b>peaaegu sama</b>" if abs(float(gk["vaartus"]) - float(gl["vaartus"])) < 3 else f'<b>{gl["vaartus"]}%</b>'), "riba": kpi_riba(v("genai-kesk"), 100, vrd=v("genai-kov"), vrd_nimi="omavalitsused")},
-                  oecd("genai-kesk")),
-    ]) + "</aside>")
+    lead = "Kõik numbrid: OECD avalik raport (2026), küsitlus 2025–2026, ja Riigikontrolli asutuste küsitlus (2025)."
+    # Numbriplaadid uuendus, laiendus ja genai läksid 17.11.2026 ära: leht algab tahvliga (Kadri valis näidistest „A ja C koos“)
     # Hanked on oma menüükoht; lehtede vahel on rida „Seotud“ (Kadri 6.11.2026 22:27, ettepanek 8)
     # Teemamall A (Kadri 8.11.2026): andmed sakkides, siis uuringud, väited, reeglid, allikad
     import teemamall as tm
@@ -1005,9 +921,9 @@ def avalik_sektor(A, vaade, vaated=None):
     sec_andmed = tm.andmesakid("avalik-sektor", tm.kys("Kus uuendused pidama jäävad?", "Hindamise ja otsuse ees"),
                                "Kõik numbrid on OECD avalikust raportist (2026), küsitlus detsember 2025 kuni veebruar 2026. "
                                "Sakkides on rakendamine, uuenduse liik, tehisaru, rahastus, asutuste rühmad ja OECD soovitused.", [
-        ("lehter", "Rakendamine", sec_lehter + sec_etapid),
+        ("lehter", "Rakendamine", sec_lehter),
         ("liigid", "Uuenduse liik ja mõju", sec_liigid),
-        ("tehisaru", "Tehisaru", sec_genai + sec_oskused),
+        ("tehisaru", "Tehisaru", sec_genai + sec_kupsus),
         ("rahastus", "Rahastus", sec_raha),
         ("kiirused", "Kolm rühma", sec_kiirus),
         ("soovitused", "Soovitused", sec_soov),
@@ -1025,9 +941,28 @@ def avalik_sektor(A, vaade, vaated=None):
     # Ametnike juhendid ja Riigikontrolli küsitlus tulid Ettevõtete lehelt (Kadri 14.11.2026: plokk oma küsimuse juurde)
     from lehed import ametnike_juhendid
     sec_ametnikud = ametnike_juhendid(A)
-    return (pea(A, vaade, lead, [("andmed", "Kus jääb pidama?"), ("ametnikud", "Mida ametnikud tohivad?"), ("t-uuringud", "Uuringud"),
-                                 ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")], ree, aside=aside)
-            + sec_andmed + sec_ametnikud + tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad))  # „Seotud“ rida jäi ära: Riigi alamlehtede rida viib samadele lehtedele (Kadri 11.11.2026, D)
+    # Töölaud (Kadri 17.11.2026 valis näidistest „A ja C koos“): tahvel, uuenduse teekond, 48 asutust, siis plokid kokkupandult.
+    import avalik_tahvel as at
+    import teema_tahvel as tt
+    from lehed_usaldus import _raskus
+    D = at.Andmed(A)
+    vv = [x for x in A["vaited"] if vaite_teema(x) == "avalik-sektor"]
+    kr3 = next(r for r in A["otsused"] if r["id"] == "ai-korge-risk-iii")
+    n_all = 1 + (1 if rk else 0)
+    uusim = max(["2026-11-03"] + ([rk["avaldatud"]] if rk else []))
+    us = at.usaldus(len(vv), sum(_raskus(x) == 0 for x in vv), [(kr3["nimi"], kr3["kuupaev"] <= datetime.date.today().isoformat())], n_all, uusim)
+    uks = tt.uksikasjad([
+        ("andmed", "Kus uuendused pidama jäävad?", "rakendamine, uuenduse liik ja mõju, tehisaru, rahastus, kolm rühma, OECD soovitused", sec_andmed),
+        ("ametnikud", "Mida ametnikud tohivad kasutada?", "neli riiki, Riigikontrolli küsitlus", sec_ametnikud),
+        ("lopp", "Uuringud, reeglid ja allikad", f'2 uuringut · 1 reegel · {n_all} allikat', tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
+    ])
+    # „Seotud“ rida jäi ära: Riigi alamlehtede rida viib samadele lehtedele (Kadri 11.11.2026, D)
+    return jaga(A, vaade, lead, [], [
+        ("tahvel", [("tahvel", "Ülevaade")], at.tahvel(D, us)),
+        ("teekond", [("teekond", "Kus pidama jääb?")], at.sec_teekond(D)),
+        ("asutused", [("asutused", "Asutuste kord")], at.sec_asutused(D)),
+        ("uksikasjad", [("andmed", "Andmed"), ("ametnikud", "Ametnikud"), ("t-allikad", "Allikad")], uks),
+    ])
 
 
 # ---------------------------------------------------------------- Reeglid ja sihid

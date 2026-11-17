@@ -1811,3 +1811,24 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
   .tk-laud td:nth-of-type(3)::before { content: "USA"; } .tk-laud td:nth-of-type(4)::before { content: "Mujal"; }
   .tk-m { top: 26px; }
 }
+/* Avalik sektor (Kadri 17.11.2026 „A ja C koos“): uuenduse teekond ja 48 asutuse ruudustik */
+.av-kaks { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 32px; align-items: start; margin-top: 24px; }
+.av-fig { margin: 0; }
+.av-pr { stroke: var(--ink-3); stroke-dasharray: 3 3; }
+.av-hall { stroke: var(--ink-3); opacity: .55; }
+.av-mini { list-style: none; padding: 0; margin: 8px 0; font-size: 14px; }
+.av-mini li { display: grid; grid-template-columns: 11em auto 1fr; gap: 8px; align-items: center; padding: 3px 0; color: var(--ink-2); }
+.av-mini i { display: block; height: 10px; background: color-mix(in srgb, var(--signal) 35%, var(--panel)); border-radius: 2px; }
+.av-mini li.f i { background: var(--signal); } .av-mini li.f span { color: var(--ink); font-weight: 600; } .av-mini b { color: var(--ink); font-weight: 600; }
+.av-qq { display: grid; grid-template-columns: repeat(12, 22px); gap: 5px; margin-top: 8px; }
+.av-q { width: 22px; height: 22px; border-radius: 3px; display: inline-block; }
+.av-q.a { background: var(--accent); } .av-q.b { background: var(--signal); } .av-q.c { background: var(--surface-3); box-shadow: inset 0 0 0 1px var(--border); }
+.av-qleg { list-style: none; padding: 0; margin: 12px 0; font-size: 14px; color: var(--ink-2); }
+.av-qleg li { display: flex; gap: 8px; align-items: center; padding: 2px 0; } .av-qleg b { color: var(--ink); min-width: 20px; text-align: right; }
+.av-qleg .av-q { width: 12px; height: 12px; }
+@media (max-width: 640px) {
+  .av-kaks { grid-template-columns: 1fr; gap: 20px; }
+  .av-qq { grid-template-columns: repeat(12, 1fr); gap: 4px; } .av-q { width: 100%; height: auto; aspect-ratio: 1; }
+  .av-qleg .av-q { width: 12px; height: 12px; }
+  .av-mini li { grid-template-columns: 9.5em auto 1fr; font-size: 13px; }
+}
