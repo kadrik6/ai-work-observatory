@@ -91,7 +91,7 @@ KPI_VER1 = {  # avalehe kuus plaati läksid 14.11.2026 ära (avaleht on signaali
             # Iga plaat sai oma konteksti: muutus, kui on võrreldav eelmine aasta; riba, kui on siht või võrdlus.
             # Inimeste plaadid in-* läksid 14.11.2026 ära: leht algab tahvliga (Kadri valis „A ja B koos“)
             # Ettevõtete plaadid ev-* läksid 14.11.2026 ära: leht algab tahvliga (Kadri valis „B koos C maatriksiga“)
-            "too-noored": ("tekst",), "too-taani": ("tekst",), "too-prognoos": ("muutus",),
+            # Töö plaadid too-* läksid 17.11.2026 ära: leht algab tahvliga (Kadri valis „A ja C koos“)
             "hk-arv": ("muutus",), "hk-kvaliteet": ("tekst", "riba"), "hk-uks": ("tekst", "riba"), "hk-tapsus": ("tekst",),
             "us-muud": ("tekst", "riba"), "us-lahk": ("tekst",), "us-uudis": ("tekst",),
             "kl-allikad": ("tekst",), "kl-klassid": ("tekst",), "kl-uuringud": ("tekst",),
@@ -147,7 +147,7 @@ def kpi_plaat(pid, lbl, big, per, kontekst, src, fookus=False, href=""):
 # Lühike päis (Kadri 8.11.2026: pealkiri ja selle all olev tekst lühemaks, allikad ühe lingi taha)
 TUTVUS = "Tehisaru kasutus ja mõju Eestis ja ELis: statistika, uuringud ja väidete kontroll, iga number allikaga."
 
-KOOPIA_KES = {"ma-": "ELi tehisaru määrus", "too-noored": "", "too-taani": ""}
+KOOPIA_KES = {"ma-": "ELi tehisaru määrus"}
 
 
 def fakt(lbl, big, per, src, kes="Eesti"):

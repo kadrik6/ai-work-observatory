@@ -659,19 +659,7 @@ def too(A, vaade, vaated=None):
   </details>
 </section>"""
 
-    from lehed_ulevaade import _p, kpi_pais, kpi_plaat
-    aside = kpi_pais(
-        kpi_plaat("too-noored", "Noorte (22–25) hõive tehisarule avatud ametites, USA", e(can["muutus"]), "",
-                  {"tekst": "vs vähem avatud ametid · <b>laialdast kadu pole</b>"},
-                  a(U["canaries2026"]["url"], f'Brynjolfsson jt {U["canaries2026"]["aasta"]}')),  # pealkirja fookus on Eesti, mitte USA number (14.11)
-        kpi_plaat("too-taani", "Mõju tulule ja töötundidele, Taani", "&lt; 2%", "",
-                  {"tekst": "<b>muutust ei leitud</b> 2 aastat pärast ChatGPT-d"},
-                  a(hum["url"], f'Humlum ja Vestergaard {hum["aasta"]}')),
-        kpi_plaat("too-prognoos", "Eesti töötuse prognoos", f'{pr(t2030["protsent"])}%', "2030",
-                  {"muutus": (f'{_p(t2030["protsent"] - t_tegelik["protsent"])} protsendipunkti {t_tegelik["aasta"]}. aastast',
-                              f'{t_tegelik["aasta"]}: {pr(t_tegelik["protsent"])}% · <b>tehisaru mõjuta</b>')},
-                  a(rm["url"], f'Rahandusministeerium, {kp(rm["avaldatud"])}')),
-    )
+    # Numbriplaadid too-* läksid 17.11.2026 ära: leht algab tahvliga (Kadri valis näidistest „A ja C koos“)
     lead = ("Mõnes ametis on vähenenud ka vabakutseliste tööd. "
             "Eesti kohta selliseid mõõtmisi veel ei ole.")
     from lehed_ulevaade import too_eesti, tootus_el, vabad_ametikohad
@@ -701,7 +689,7 @@ def too(A, vaade, vaated=None):
     t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-korge-risk-iii"])  # värbamine ja töötajate juhtimine
     vabad = [r for r in _loe("vabad-ametikohad.csv") if r["tabel"] == "PAV011"] if (Path(__file__).resolve().parent / "sisu" / "vabad-ametikohad.csv").exists() else []
     kv_v = max((r["periood"] for r in vabad), key=_kv) if vabad else None
-    t_allikad = tm.allikate_plokk([
+    allikad = [
         ("Töötus kuu kaupa, Eurostat une_rt_m", UNE_URL, UNE_UUENDATUD, "sesoonselt tasandatud"),
         ("Koondamised, uudised", "", A["koondamised"]["kontrollitud"], "käsitsi kogutud, nimekiri pole täielik"),
         ("Tööpakkumised, 3 portaali", "", A["toopakkumised"]["uuendatud"][:10], "kogutakse iga päev"),
@@ -709,7 +697,8 @@ def too(A, vaade, vaated=None):
         *([("Vabad ametikohad, Statistikaamet PAV011", PAV_URL, max(r["uuendatud"] for r in vabad), f"viimane kvartal: {kv_v}")] if vabad else []),
         ("Töötuse prognoos, Rahandusministeerium", rm["url"], rm["avaldatud"], "aasta keskmine, tehisaru mõju eraldi ei arvestata",
          f'{KUUD[int(rm["avaldatud"][5:7]) - 1]} {rm["avaldatud"][:4]}' if len(rm["avaldatud"]) == 7 else None),
-    ])
+    ]
+    t_allikad = tm.allikate_plokk(allikad)
     P = A.get("publikatsioonid")
     if P:
         tais = [r for r in P["aastad"] if not r["poolik"]]
@@ -718,18 +707,28 @@ def too(A, vaade, vaated=None):
         alam_h1(vaade, "too-kirjandus.html",
                 f'Tehisarust ja tööst ilmus {p1["aasta"]}. aastal **{_arv(p1["koik"])} publikatsiooni** ¦ see on '
                 f'{pr(p1["koik"] / p0["koik"])} korda rohkem kui {p0["aasta"]}. aastal.')
-    # Kadri 14.11.2026 („Jah, kõigil teemadel“): alamlehed Uuringud ja Ametid on Töö lehe plokid; Kirjandus jääb kataloogina eraldi.
-    return jaga(A, vaade, lead, [], [
-        ("andmed", [("andmed", "Tööturg")], sec_andmed),
-        ("maailm", [("maailm", "Kas võtab töökohti?")], sec_maailm),
-        ("ulesanded", [("ulesanded", "Kas teeb kiiremaks?")], sec_kiirus),
-        ("eesti", [("eesti", "Eesti uuringud")], sec_eesti),
-        ("kokkupuude", [("kokkupuude", "Avatud ametid")], sec_kokkupuude),
-        ("hoive", [], sec_hoive),
-        ("teema-lopp", [("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
+    # Töölaud (Kadri 17.11.2026 valis näidistest „A ja C koos“): tahvel, tõendikaart, hõive avatuse astme järgi,
+    # siis praegused plokid kokkupandult. Kirjandus jääb kataloogina eraldi alamleheks (Kadri 14.11.2026).
+    import teema_tahvel as tt
+    import too_tahvel
+    D = too_tahvel.Andmed(A)
+    vv = [v for v in A["vaited"] if vaite_teema(v) == "too"]
+    uusim = max(str(r[2])[:10] for r in allikad if r[2])
+    uks = tt.uksikasjad([
+        ("andmed", "Mida näitavad Eesti tööturu andmed?", "töötus, ELi järjestus, vabad kohad, tööportaalid, AI-tööd, koondamised, prognoos", sec_andmed),
+        ("maailm", "Mida uuringud mujal leidsid?", "töökohad ja ülesannete kiirus", sec_maailm + sec_kiirus),
+        ("eesti", "Mida Eesti uuringud mõõdavad?", "tootlikkus ja takistused", sec_eesti),
+        ("ametid", "Kui avatud on Eesti ametid?", "ILO astmed, ametid, hõive muutus", sec_kokkupuude + sec_hoive),
+        ("lopp", "Väited, reeglid ja allikad", f'{len(vv)} {"väide" if len(vv) == 1 else "väidet"} · 1 reegel · {len(allikad)} allikat',
          tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
+    ])
+    return jaga(A, vaade, lead, [], [
+        ("tahvel", [("tahvel", "Ülevaade")], too_tahvel.tahvel(D, vv, len(allikad), uusim)),
+        ("toendid", [("toendid", "Kus on tõendeid?")], too_tahvel.sec_toendid(D)),
+        ("astmed", [("astmed", "Avatud ametid")], too_tahvel.sec_astmed(D)),
+        ("uksikasjad", [("andmed", "Tööturg"), ("maailm", "Uuringud"), ("t-vaited", "Väited"), ("t-allikad", "Allikad")], uks),
         ("uuritakse", [("uuritakse", "Mida uuritakse"), ("publikatsioonid", "Publikatsioonid"), ("eesti-allikad", "Eesti allikad")], sec_uuritakse),
-    ], aside=aside)
+    ])
 
 
 # ---------------------------------------------------------------- Avalik sektor
