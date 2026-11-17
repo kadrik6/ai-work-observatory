@@ -86,7 +86,7 @@ def plaat(lbl, big, small="", cmp="", src="", fookus=False, lisa="", href=""):
 # kast, kaks rida (3 + 3), number 24 px, silt numbri kohal, lühike allikas, fookus Inimesed;
 # iga plaadi kontekst on oma: muutus ja/või tekst ja/või võrdlusriba. Lugeja neid ei muuda.
 KPI_VER1 = {  # avalehe kuus plaati läksid 14.11.2026 ära (avaleht on signaalitahvel, Kadri valis näidise C)
-            "uuendus": ("muutus", "riba"), "laiendus": ("tekst", "riba"), "genai": ("tekst", "riba"),
+            # uuendus, laiendus ja genai läksid 17.11.2026 ära: Avaliku sektori lehel on tahvel
             # Alamlehtede päis (Kadri 8.11.2026: „ka teistel alamlehtedel, käsitsi üle vaadatud nagu ver1“).
             # Iga plaat sai oma konteksti: muutus, kui on võrreldav eelmine aasta; riba, kui on siht või võrdlus.
             # Inimeste plaadid in-* läksid 14.11.2026 ära: leht algab tahvliga (Kadri valis „A ja B koos“)

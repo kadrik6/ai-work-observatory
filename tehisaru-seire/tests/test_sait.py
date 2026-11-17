@@ -415,10 +415,11 @@ def test_lahknevused_ja_varskus_on_usalduse_all_nahtaval(sait):
 
 
 def test_igas_teemavaates_on_numbriplaadid(sait):
-    for f in ["avalik-sektor.html", "tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
-        assert 'class="vastus' in sait[f], f  # Avalik sektor: „vastus kpi-pais“ (KPI ver1)
-    # 14.11.2026: Ettevõtete ja Inimeste numbrid on tahvli ridadel (Kadri valis „B koos C maatriksiga“ ja „A ja B koos“); Töö 17.11 („A ja C koos“)
-    for f in ("ettevotted.html", "inimesed.html", "too.html"):
+    for f in ["tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
+        assert 'class="vastus' in sait[f], f
+    # 14.11.2026: Ettevõtete ja Inimeste numbrid on tahvli ridadel (Kadri valis „B koos C maatriksiga“ ja „A ja B koos“);
+    # Töö ja Avalik sektor 17.11 (mõlemal „A ja C koos“)
+    for f in ("ettevotted.html", "inimesed.html", "too.html", "avalik-sektor.html"):
         assert 'class="tv-arv"' in sait[f], f
 
 
@@ -887,7 +888,7 @@ def test_kpi_plaadid_jargivad_lukustatud_valikut_ver1(sait):
         assert ('class="tekst"' in pl) == ("tekst" in osad), pid
     # 8.11.2026 (Kadri: vähem teksti): legend on märk + sõna, mitte „oranž/tume kriips:“
     assert "ELi siht 80% (2030)" in h  # tahvli siht
-    assert '<i class="lg v"></i>omavalitsused 27%' in sait["avalik-sektor.html"]
+    assert 'aria-label="kesk 28%; KOV 27%"' in sait["avalik-sektor.html"]  # 17.11.2026: plaadi asemel tahvli rida
     assert "kriips:" not in "".join(sait.values())
 
 
@@ -1195,9 +1196,9 @@ def test_sait_ei_loe_teiste_lehtede_faile():
 def test_uuringutulemused_ja_metoodika_on_seire_saidil(sait):
     # Kadri 8.11.2026: uuringutulemused ja metoodika ühes kohas, otse allikatest, samade reeglitega
     av = sait["avalik-sektor.html"]
-    for i in ("etapid", "liigid", "moju", "oskused", "kupsus", "rahastus"):
+    for i in ("teekond", "liigid", "moju", "asutused", "kupsus", "rahastus"):  # 17.11.2026: etapid → teekond, oskused → asutused
         assert f'id="{i}"' in av, i
-    assert "22 protsendipunkti väiksem osa" in tekst(av) and "83% uuendusrahast tuli ELilt" in tekst(av)
+    assert "Prototüübist hindamiseni kukub 22 protsendipunkti" in tekst(av) and "83% uuendusrahast tuli ELilt" in tekst(av)
     ev = sait["ettevotted.html"]
     assert 'id="arenguseire"' in ev and 'id="pohjamaad"' in ev and "Arvutatud: indeks" in ev
     kl = sait["kuidas-lugeda.html"]
@@ -1707,7 +1708,7 @@ def test_uudiste_numbriplaadid_on_tihedad_ilma_allikareata(sait):
     assert pais.count('class="plaat kp"') == 4
     assert "Seire uudistekogumine" not in u and 'class="src"' not in pais
     # teiste lehtede plaatidel on allikas alles
-    assert 'class="src"' in sait["avalik-sektor.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]  # 17.11.2026: Töö lehel on tahvel
+    assert 'class="src"' in sait["hanked.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]  # 17.11.2026: Töö ja Avaliku sektori lehel on tahvel
 
 
 def test_valislingid_avanevad_uues_vahelehes(sait):
@@ -2036,3 +2037,45 @@ def test_jaotusriba_ei_luba_ule_saja_protsendi():
     import too_tahvel
     with pytest.raises(andmekiht.AndmeViga):
         too_tahvel.jaotusriba([("s", 70), ("m", 40)], "liiga palju")
+
+
+def test_avalik_sektor_on_tahvel_teekond_ja_asutused(A, sait):
+    """Kadri 17.11.2026 valis Avaliku sektori lehele „A ja C koos“: tahvel, uuenduse teekond, 48 asutust, siis plokid kokku pandud."""
+    h = sait["avalik-sektor.html"]
+    main = re.search(r"<main.*?</main>", h, re.S).group(0)
+    assert main.index("</h1>") < main.index('id="tahvel"') < main.index('id="teekond"') < main.index('id="asutused"') < main.index('id="h-uksikasjad"')
+    assert 'data-kpi="' not in h and 'class="vastus' not in h
+    tv = _jaotis(h, "tahvel")
+    read = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">(.*?)</a>', tv)
+    assert len(read) == 6 and all(f'id="{a}"' in h for a, _ in read)
+    # väiteid avaliku sektori kohta pole: tahvli all pole väidete linki, mis viiks tühja kohta
+    assert 'href="#t-vaited"' not in tv and 'href="#t-allikad"' in tv
+    # teekond: viis etappi laias ja kitsas joonises, fookus pärast suurimat langust
+    tk = _jaotis(h, "teekond")
+    for svg in tk.split('class="tt-svg tt-sc-')[1:]:
+        svg = svg.split("</svg>")[0]
+        assert svg.count('<rect class="tv-v"') == 2 and svg.count('<rect class="tt-jr m"') == 3
+    assert "Prototüübist hindamiseni kukub 22 protsendipunkti" in tekst(tk) and "Katse (RCT)" in tk
+    # asutused: üks ruut = üks vastanud asutus; korrata asutused on kasutajate hulgas
+    asu = _jaotis(h, "asutused")
+    R = {r["ruhm"]: int(r["vaartus"]) for r in A["leiud_arvud"] if r["leid"] == "rk-ai-kord"}
+    assert asu.count('<i class="av-q a"></i>') == R["korrata"] + 1  # + legend
+    assert asu.count('<i class="av-q b"></i>') == R["kasutab"] - R["korrata"] + 1
+    assert asu.count('<i class="av-q c"></i>') == R["vastas"] - R["kasutab"] + 1
+    assert "Ei ole kõigi Eesti asutuste kohta" in asu and "riigikontroll.ee" in asu
+    # sama joonis pole kaks korda: etapid ja oskused on ainult tahvli all
+    assert 'id="etapid"' not in h and 'id="oskused"' not in h and 'id="g-hindamine"' not in h
+    for sid in ("andmed", "ametnikud", "lopp"):
+        assert f'<details class="tt-pl" id="d-{sid}">' in h, sid
+
+
+def test_avaliku_sektori_tahvel_kukub_kui_andmed_pealkirja_ei_toeta(A):
+    import avalik_tahvel
+    muuda = lambda i, x: dict(A, avalik={k: (dict(r, vaartus=x) if r["id"] == i else r) for k, r in A["avalik"].items()})  # noqa: E731
+    with pytest.raises(andmekiht.AndmeViga):
+        avalik_tahvel.Andmed(muuda("etapp-hindamine", "50"))  # suurim langus ei ole enam prototüübist hindamiseni
+    with pytest.raises(andmekiht.AndmeViga):
+        avalik_tahvel.Andmed(muuda("indeks-moju-max", "0.3"))  # mõju ei ole enam alla 0,25
+    arvud = [dict(r, vaartus="45") if r["leid"] == "rk-ai-kord" and r["ruhm"] == "korrata" else r for r in A["leiud_arvud"]]
+    with pytest.raises(andmekiht.AndmeViga):
+        avalik_tahvel.Andmed(dict(A, leiud_arvud=arvud))  # korrata asutusi ei saa olla rohkem kui kasutajaid
