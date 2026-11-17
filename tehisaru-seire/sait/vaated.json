@@ -47,19 +47,16 @@
       "olek": "valmis",
       "kusimus": "Milliseid töid tehisaru mõjutab ja mida tõendid tegelikult ütlevad?",
       "h1": "**Eesti andmetest ei selgu veel**, kas tehisaru vähendab töökohti ¦ uuringud leiavad seni vähem tööd kitsastes rühmades, näiteks USA noortel tehisarule avatud ametites.",
-      "osad": "Kaks alamlehte: Tööturg ja uuringud (Eesti tööturu andmed, mida maailmas leiti, ülesannete kiirus, Eesti uuringud, avatud ametid ja hõive); Kirjandus (publikatsioonide kataloog).",
+      "osad": "Kaks alamlehte: Tööturg ja uuringud (tahvel kuue Eesti küsimusega, kus on tõendeid, hõive avatuse astme järgi; üksikasjad kokkupandult: tööturu andmed, uuringud mujal ja Eestis, avatud ametid); Kirjandus (publikatsioonide kataloog).",
       "alamlehed": [
         {
           "fail": "too.html",
           "nimi": "Tööturg ja uuringud",
           "jaotised": [
-            "andmed",
-            "maailm",
-            "ulesanded",
-            "eesti",
-            "kokkupuude",
-            "hoive",
-            "teema-lopp"
+            "tahvel",
+            "toendid",
+            "astmed",
+            "uksikasjad"
           ]
         },
         {
