@@ -1,13 +1,13 @@
 {
   "kirjeldus": "Tööportaalide kuulutuste arv ja portaali enda jaotused. Iga portaal eraldi: arve EI liideta, sest sama kuulutus võib olla mitmes portaalis. Ühel kuulutusel võib olla mitu valdkonda ja asukohta, seega jaotuste summa võib ületada kogusumma. Isikuandmeid ei koguta, ainult portaali avalikud koondarvud.",
-  "uuendatud": "2026-11-17T07:50:00+02:00",
+  "uuendatud": "2026-11-18T07:45:00+02:00",
   "portaalid": [
     {
       "portaal": "CV.ee",
-      "kontrollitud": "2026-11-17",
+      "kontrollitud": "2026-11-18",
       "url": "https://www.cv.ee/et/search",
-      "kuulutusi_kokku": 3347,
-      "allikas_tekst": "Tööpakkumised (3347)",
+      "kuulutusi_kokku": 3459,
+      "allikas_tekst": "Tööpakkumised (3459)",
       "lugemisluba": "robots.txt ei keela",
       "ametivaldkond": [
         {
@@ -2160,10 +2160,10 @@
     },
     {
       "portaal": "CV Keskus",
-      "kontrollitud": "2026-11-17",
+      "kontrollitud": "2026-11-18",
       "url": "https://www.cvkeskus.ee/toopakkumised",
-      "kuulutusi_kokku": 3156,
-      "allikas_tekst": "Tööpakkumised 3 156 (asukohalehel Eesti 3120 + töö välismaal 36)",
+      "kuulutusi_kokku": 3275,
+      "allikas_tekst": "Tööpakkumised 3 275 (asukohalehel Eesti 3238 + töö välismaal 37)",
       "lugemisluba": "robots.txt keelab ainult firmade kuulutuste lehe /firm_joboffers.php; koondlehed lubatud",
       "ametivaldkond": [
         {
@@ -2447,10 +2447,10 @@
     },
     {
       "portaal": "Töötukassa",
-      "kontrollitud": "2026-11-17",
+      "kontrollitud": "2026-11-18",
       "url": "https://www.tootukassa.ee/et/toopakkumised",
-      "kuulutusi_kokku": 1432,
-      "allikas_tekst": "Lehel 20 kuulutust ja nupp 'Laadi veel 1412'; kokku 1432",
+      "kuulutusi_kokku": 1518,
+      "allikas_tekst": "Lehel 20 kuulutust ja nupp 'Laadi veel 1498'; kokku 1518",
       "lugemisluba": "robots.txt keelab päringuparameetritega lehed (/et/toopakkumised?), seega filtreid ei loeta",
       "ametivaldkond": [
         {
@@ -3923,6 +3923,21 @@
       "kuupaev": "2026-11-17",
       "portaal": "Töötukassa",
       "kuulutusi_kokku": 1432
+    },
+    {
+      "kuupaev": "2026-11-18",
+      "portaal": "CV.ee",
+      "kuulutusi_kokku": 3459
+    },
+    {
+      "kuupaev": "2026-11-18",
+      "portaal": "CV Keskus",
+      "kuulutusi_kokku": 3275
+    },
+    {
+      "kuupaev": "2026-11-18",
+      "portaal": "Töötukassa",
+      "kuulutusi_kokku": 1518
     }
   ]
 }
