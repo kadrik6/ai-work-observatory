@@ -2,7 +2,7 @@
 
 > Kui suur osa inimestest jätab generatiivse tehisaru kasutamata, sest ei oska seda kasutada?
 
-**Staatus:** ajakohane · **Allikas uuendas:** 2026-04-17 · **Kontrollitud:** 2026-11-18 · **Järgmine oodatav uuendus:** 2027-04-17
+**Staatus:** ajakohane · **Allikas uuendas:** 2026-04-17 · **Kontrollitud:** 2026-11-19 · **Järgmine oodatav uuendus:** 2027-04-17
 
 ## Number
 
