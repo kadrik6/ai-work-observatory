@@ -113,15 +113,17 @@
       "olek": "valmis",
       "kusimus": "Mida riik tehisaru ja andmete kohta hangib ja kust leida häid näiteid?",
       "h1": "Tehisaru- ja andmehanked on **alla 1% riigihangetest** ¦ kvaliteeti hinnatakse neis sagedamini kui teistes IT-hangetes.",
-      "osad": "Aastad; innovatsioonimärk ja 2% siht; kuidas hangitakse; hankijad; litsentsid; otsitav loend headest näidetest; klassifikaatori täpsus",
+      "osad": "Tahvel kuue küsimusega; kuidas hangitakse (kolm näitajat kolmes rühmas); head näited (kolm tingimust ja teadmata osa); kokkupandult aastad, innovatsioonimärk, hankijad, litsentsid, täpsus, reeglid ja allikad; otsitav loend headest näidetest",
       "teema": "avalik-sektor",
       "alamlehed": [
         {
           "fail": "hanked.html",
           "nimi": "Hanked",
           "jaotised": [
-            "andmed",
-            "lopp"
+            "tahvel",
+            "kuidas",
+            "naited-kokku",
+            "uksikasjad"
           ]
         },
         {
