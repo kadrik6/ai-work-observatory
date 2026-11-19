@@ -1,6 +1,90 @@
 {
  "kandidaadid": [
   {
+   "id": "WSTGMv12pB8",
+   "allikas": "ilo",
+   "pealkiri": "Exposure to hazardous substances can put workers' health and lives at risk",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=WSTGMv12pB8",
+   "leitud": "2026-11-19",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "rA9gCW4kpOs",
+   "allikas": "ilo",
+   "pealkiri": "Starting a business with ILO PROSPECTS",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=rA9gCW4kpOs",
+   "leitud": "2026-11-19",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "epxNHG7Jcr4",
+   "allikas": "ilo",
+   "pealkiri": "ILO Director-General Gilbert F. Houngbo calls for action to protect workers from hazardous chemicals",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=epxNHG7Jcr4",
+   "leitud": "2026-11-19",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "LGPEvb0yZZI",
+   "allikas": "ilo",
+   "pealkiri": "Memajukan Pekerjaan Layak di Indonesia: Perjalanan DWCP",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=LGPEvb0yZZI",
+   "leitud": "2026-11-19",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "xrZiedwfzc0",
+   "allikas": "ilo",
+   "pealkiri": "Decent Work in Action",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=xrZiedwfzc0",
+   "leitud": "2026-11-19",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "bm_ph6-NFbE",
+   "allikas": "stanford-hai",
+   "pealkiri": "Gordon Wetzstein: Building World Models at Stanford with Marlowe",
+   "avaldatud": "2026-11-18",
+   "url": "https://www.youtube.com/watch?v=bm_ph6-NFbE",
+   "leitud": "2026-11-19",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44060",
+   "allikas": "uttv",
+   "pealkiri": "INAUGURATSIOONILOENG&nbsp; &nbsp;&bdquo;Sensorid meie ümber &ndash; infosillad kahe maailma vahel&ldquo; Raivo Jaaniso, Tartu Ülikooli sensortehnoloogiate professor",
+   "avaldatud": "2026-11-18",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44060",
+   "leitud": "2026-11-19",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44061",
+   "allikas": "uttv",
+   "pealkiri": "Programmeerimine -&nbsp;Nädal 12 - 18.11.2026 - kontrolltöö 2 kordamine.",
+   "avaldatud": "2026-11-18",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44061",
+   "leitud": "2026-11-19",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
    "id": "kaV9aHXHAfs",
    "allikas": "oecd",
    "pealkiri": "Why move? Talking through OECD Regions and Cities at a Glance 2026",
@@ -1736,9 +1820,9 @@
   "oecd-ai": "UCl4praikeBNNxiSVpAvxwkA",
   "ilo": "UCrlcu5KChYyHwXlIeD7oLUg",
   "stanford-hai": "UChugFTK0KyrES9terTid8vA",
-  "uttv": 44043,
+  "uttv": 44061,
   "tds": "UC9ptGynkOPe3vFRW6otoI3g"
  },
- "uuendatud": "2026-11-18",
+ "uuendatud": "2026-11-19",
  "vead": []
 }
