@@ -176,6 +176,46 @@
     "tekst": "RMK vabade töökohtade lehel 3 kuulutust (IT taristu, kinnisvara Kirde-Eestis, andmetiim); süsteemiinseneri tähtaeg oli 15.11.",
     "url": "https://rmk.ee/kuulutused/vabad-tookohad/"
    }
+  },
+  "Guestjoy OÜ (SiteMinder)": {
+   "sektor": "tarkvara",
+   "firma_liik": "Eestis asutatud hotellitarkvara idufirma, 2022. aastast Austraalia börsifirma SiteMinder tütarettevõte",
+   "kaotatud": [
+    "teadmata"
+   ],
+   "kaotatud_tekst": "Äripäeva avalõik ameteid ei nimeta (tasuline lugu).",
+   "kaotatud_allikas": "https://www.aripaev.ee/uudised/2026/11/19/austraalia-borsifirma-karped-loovad-valusalt-miljonitega-ostetud-eesti-idufirmat",
+   "otsib": {
+    "kontrollitud": "2026-11-19",
+    "ametid": [],
+    "tekst": "SiteMinderi tööpakkumiste lehel Eesti kuulutusi ei ole (19.11); avatud kohad on mujal, sh tehisaru tooterollid Sydneys.",
+    "url": "https://www.siteminder.com/jobs/"
+   },
+   "omand": "Eestis asutatud, välisomaniku (SiteMinder, Austraalia) omanduses",
+   "koondab_ee": {
+    "arv": null,
+    "tekst": "Eesti arv avalõigus puudub; SiteMinder koondab üleilmselt iga kümnenda töötaja."
+   }
+  },
+  "Limestone Factories of Estonia": {
+   "sektor": "mäetööstus",
+   "firma_liik": "Eesti kaevandusettevõte (paekivi ja killustik)",
+   "kaotatud": [
+    "teadmata"
+   ],
+   "kaotatud_tekst": "Ameteid artikli kokkuvõte ei nimeta; põhjus on uue karjääri loa puudumine.",
+   "kaotatud_allikas": "https://majandus.postimees.ee/8586163/maetoostur-lahkus-keerulisel-ajal-oma-ettevotte-juhatusest-pooli-tootajaid-ahvardab-koondamine",
+   "otsib": {
+    "kontrollitud": "2026-11-19",
+    "ametid": [],
+    "tekst": "Ettevõtte kodulehel tööpakkumiste lehte ei leitud (19.11).",
+    "url": "https://limestone.ee/"
+   },
+   "omand": "Eestis asutatud",
+   "koondab_ee": {
+    "arv": 40,
+    "tekst": "umbes 40 töökohta sajast (Postimehe kokkuvõte Äripäeva loost)"
+   }
   }
  }
 }
