@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-20T07:45:00+02:00",
+  "viimane_kontroll": "2026-11-20T18:05:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "20.11: Riigikohus m-valimistest; merekaablite parandusseadmete ühishange"
+      "markus": "20.11 õhtu: Pakosta tehisaru maksustamisest; TI-Hüppe hange"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "20.11: uut tehisaru lugu pole"
+      "markus": "20.11 õhtu: platvormitöö seadus (levik)"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "20.11: Postimehe m-valijarakenduse audit; Merikarhu levik 4 väljaannet"
+      "markus": "20.11 õhtu: Isotamm (Delfi); Sportland ja Apollo (Kaubandus.ee); koondajate jätkuotsingud tühjad"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "20.11: Anthropic üle 2 triljoni (jätkulugu); Ubisoft 166; Barron's uued ettevõtted"
+      "markus": "20.11 õhtu: uut suurt pole; Ubisofti ja Fortnoxi levik"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -29,22 +29,22 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "20.11: uut postitust pole (viimane 18.11)"
+      "markus": "20.11 õhtu: uut postitust pole"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "20.11: uut teadet pole"
+      "markus": "20.11 õhtu: uut teadet pole"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "20.11: uut tehisaru/IKT teadet pole (TÖR-i üleskutse ei sobi)"
+      "markus": "20.11 õhtu: uut tehisaru/IKT teadet pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "20.11: site:-otsingud uut ei andnud"
+      "markus": "20.11 õhtu: site:-otsingud uut ei andnud; TI-Hüppe hange ERR-ist"
     },
     {
       "nimi": "OECD uudised (otsing)",
