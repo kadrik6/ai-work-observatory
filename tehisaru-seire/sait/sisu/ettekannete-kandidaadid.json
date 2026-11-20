@@ -1,6 +1,150 @@
 {
  "kandidaadid": [
   {
+   "id": "o6--H-peWys",
+   "allikas": "ilo",
+   "pealkiri": "Social Security Reform in Indonesia: Trade Union Perspectives",
+   "avaldatud": "2026-11-20",
+   "url": "https://www.youtube.com/watch?v=o6--H-peWys",
+   "leitud": "2026-11-20",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "bZNuAI6w_cc",
+   "allikas": "oecd",
+   "pealkiri": "Strategic foresight in central banking: Priorities, risks and opportunities",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=bZNuAI6w_cc",
+   "leitud": "2026-11-20",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "4b034-_w5_w",
+   "allikas": "oecd",
+   "pealkiri": "Why make a megatrend report in 2026 (and how to use it in times of unrest)?",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=4b034-_w5_w",
+   "leitud": "2026-11-20",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "jq1iLusvr90",
+   "allikas": "oecd",
+   "pealkiri": "Maps of a fragmenting world: Inside the 10F Consortium",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=jq1iLusvr90",
+   "leitud": "2026-11-20",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "pTVLdEXYQUo",
+   "allikas": "oecd",
+   "pealkiri": "Beyond horizon scanning: From trends to action and anticipatory capacity",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=pTVLdEXYQUo",
+   "leitud": "2026-11-20",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "tZbBdAElvuA",
+   "allikas": "oecd",
+   "pealkiri": "Lessons from 25 years of crowd (and A.I.) forecasting",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=tZbBdAElvuA",
+   "leitud": "2026-11-20",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "WGjuvTvz90U",
+   "allikas": "stanford-hai",
+   "pealkiri": "AI Goes Mainstream: The Scaling Era and the Rise of Generative AI",
+   "avaldatud": "2026-11-19",
+   "url": "https://www.youtube.com/watch?v=WGjuvTvz90U",
+   "leitud": "2026-11-20",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44062",
+   "allikas": "uttv",
+   "pealkiri": "Loovettevõtja kogemuslugu: Mari Pukk | Kihnu sitsikultuurist oma tekstiiliettevõtteni",
+   "avaldatud": "2026-11-19",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44062",
+   "leitud": "2026-11-20",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44063",
+   "allikas": "uttv",
+   "pealkiri": "Loovettevõtja kogemuslugu: Maris Altsoo | Lasnamäe rõdult rahvusvaheliste suursündmusteni",
+   "avaldatud": "2026-11-19",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44063",
+   "leitud": "2026-11-20",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44064",
+   "allikas": "uttv",
+   "pealkiri": "Loovettevõtja kogemuslugu: Maris Pihlap | Kuidas murda vaese muusiku müüti",
+   "avaldatud": "2026-11-19",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44064",
+   "leitud": "2026-11-20",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44065",
+   "allikas": "uttv",
+   "pealkiri": "Loovettevõtja kogemuslugu: Peep Maasik | Kuidas juhtida teatrit ilma ettevõtlushariduseta",
+   "avaldatud": "2026-11-19",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44065",
+   "leitud": "2026-11-20",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44066",
+   "allikas": "uttv",
+   "pealkiri": "Loovettevõtja kogemuslugu: Sten Arvi | Loominguline vabadus helitehnika maailmas ja inimsuhete tähtsus",
+   "avaldatud": "2026-11-19",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44066",
+   "leitud": "2026-11-20",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44083",
+   "allikas": "uttv",
+   "pealkiri": "Doctoral defence: Tauri Tölpt &bdquo;Style of Old Greek Job. Its value for textual, literary, and redaction criticism of Hebrew Job&ldquo;",
+   "avaldatud": "2026-11-19",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44083",
+   "leitud": "2026-11-20",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44082",
+   "allikas": "uttv",
+   "pealkiri": "Väärikate ülikool - Epp Alatalu",
+   "avaldatud": "2026-11-10",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44082",
+   "leitud": "2026-11-20",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
    "id": "WSTGMv12pB8",
    "allikas": "ilo",
    "pealkiri": "Exposure to hazardous substances can put workers' health and lives at risk",
@@ -1820,9 +1964,9 @@
   "oecd-ai": "UCl4praikeBNNxiSVpAvxwkA",
   "ilo": "UCrlcu5KChYyHwXlIeD7oLUg",
   "stanford-hai": "UChugFTK0KyrES9terTid8vA",
-  "uttv": 44061,
+  "uttv": 44083,
   "tds": "UC9ptGynkOPe3vFRW6otoI3g"
  },
- "uuendatud": "2026-11-19",
+ "uuendatud": "2026-11-20",
  "vead": []
 }
