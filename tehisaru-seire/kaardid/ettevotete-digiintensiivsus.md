@@ -2,7 +2,7 @@
 
 > Kui suur osa Eesti väikestest ja keskmistest ettevõtetest kasutab digitehnoloogiat vähemalt baastasemel võrreldes teiste riikidega?
 
-**Staatus:** ajakohane · **Allikas uuendas:** 2026-02-27 · **Kontrollitud:** 2026-11-19 · **Järgmine oodatav uuendus:** 2028-02-27
+**Staatus:** ajakohane · **Allikas uuendas:** 2026-02-27 · **Kontrollitud:** 2026-11-20 · **Järgmine oodatav uuendus:** 2028-02-27
 
 ## Number
 
