@@ -41,6 +41,13 @@ def _v(nimi):
 # nende jaoks analüütikat vaja pole. Domeen sobib täpselt või alamdomeenina (www), mitte lihtsalt sama lõpuga nimi.
 VERCEL_HOSTID = (".vercel.app",)
 OMA_DOMEENID = ("tehisaruseire.ee",)
+# Otsingumootorid (Kadri 21.11.2026: „Remove this no index“): põhiaadress on www.tehisaruseire.ee (teised domeenid suunavad
+# sinna). Iga leht ütleb canonical-lingiga oma põhiaadressi, et vercel.app ja suunavad domeenid ei oleks topeltsisu.
+SAIDI_AADRESS = "https://www.tehisaruseire.ee/"
+
+
+def aadress(fail):
+    return SAIDI_AADRESS + ("" if fail == "index.html" else fail)
 ANALYYTIKA_JS = ("<script>(function(){var h=location.hostname,ok=" + "||".join(
                      [f"h.slice(-{len(x)})==='{x}'" for x in VERCEL_HOSTID]
                      + [f"h==='{d}'||h.slice(-{len(d) + 1})==='.{d}'" for d in OMA_DOMEENID])
@@ -212,6 +219,7 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
                     for v in vaated if not v["menuu"] and v["id"] != "avaleht" and v["olek"] == "valmis"]
     kavas = [v for v in vaated if not v["menuu"] and v["olek"] != "valmis" and v["id"] != "avaleht"]
     jalus_lingid += [f'{e("Kuidas lugeda" if v["id"] == "kuidas" else v["id"])} (tulekul)' for v in kavas]
+    kirjeldus = (vaade.get("kusimus") or "") + " Tehisaru kasutus ja mõju Eestis ja Euroopas: numbrid otse avalikest allikatest koos kuupäevaga."
     return f"""<!doctype html>
 <html lang="et" data-t="1">
 <head>
@@ -221,6 +229,8 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
 <meta name="author" content="{e(AUTOR)}">
 <meta name="copyright" content="© {autori_aastad()} {e(AUTOR)}">
 <title>{e(title)}</title>
+<meta name="description" content="{e(kirjeldus)}">
+<link rel="canonical" href="{aadress(fail)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&amp;family=Inter:wght@400;600;700&amp;display=swap">

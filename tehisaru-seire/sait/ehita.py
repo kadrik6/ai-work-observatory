@@ -136,8 +136,10 @@ VANAD_AADRESSID = {"reeglid-ja-sihid.html": "tehisaru-maarus.html", "uudised-vai
 
 
 def suunaja(uus):
+    kanoon = kest.aadress(uus.partition("#")[0])
     return (f'<!doctype html>\n<html lang="et"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-            f'<meta http-equiv="refresh" content="0; url={uus}"><title>Leht on kolinud · Tehisaru seire</title></head>'
+            f'<meta http-equiv="refresh" content="0; url={uus}"><meta name="robots" content="noindex">'
+            f'<link rel="canonical" href="{kanoon}"><title>Leht on kolinud · Tehisaru seire</title></head>'
             f'<body style="font-family:system-ui,sans-serif;margin:2rem;background:#fff;color:#222"><p>Leht on kolinud: <a href="{uus}">{uus}</a>.</p></body></html>\n')
 
 
@@ -193,13 +195,21 @@ def ehita(valjund=VALJUND, A=None):
     if (SIIN / "pilt" / "logod").is_dir():
         shutil.copytree(SIIN / "pilt" / "logod", valjund / "pilt" / "logod", dirs_exist_ok=True,
                         ignore=shutil.ignore_patterns("*.json"))
-    # Veebis (Vercel) on sait esialgu link, mida otsingumootorid ei indekseeri (Kadri 8.11.2026).
-    # Sama keeld on ka päises X-Robots-Tag (vercel.json). Avalikuks tegemine on Kadri otsus.
+    # Kadri 21.11.2026: sait on otsingumootoritele avatud (enne 8.11 alates keelatud). robots.txt näitab sisukaarti;
+    # vercel.app aadressil jääb X-Robots-Tag noindex (vercel.json), et põhiaadress oleks ainult www.tehisaruseire.ee.
     (valjund / "robots.txt").write_text(ROBOTS, encoding="utf-8")
+    (valjund / "sitemap.xml").write_text(sisukaart(kirjutatud), encoding="utf-8")
     return sorted(kirjutatud)
 
 
-ROBOTS = "User-agent: *\nDisallow: /\n"
+ROBOTS = f"User-agent: *\nAllow: /\nSitemap: {kest.SAIDI_AADRESS}sitemap.xml\n"
+
+
+def sisukaart(kirjutatud):
+    """Otsingumootorite sisukaart: ainult päris lehed (vanade aadresside suunajad mitte), avaleht esimesena."""
+    lehed = sorted(kirjutatud, key=lambda f: (f != "index.html", f))
+    read = "".join(f"<url><loc>{kest.aadress(f)}</loc></url>\n" for f in lehed)
+    return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{read}</urlset>\n'
 
 
 if __name__ == "__main__":

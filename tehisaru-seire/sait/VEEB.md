@@ -7,8 +7,9 @@ Kadri 8.11.2026: sait peab olema kolleegidele avatav link, mis ehitub GitHubist 
 1. Vercel ehitab saidi `main` harust: `cd tehisaru-seire && python3 sait/ehita.py` (ainult Pythoni standardteek).
    Veebi läheb ainult kaust `tehisaru-seire/valjund/sait`. Teisi repo faile Vercel ei serveeri.
 2. Teiste harude eelvaateid ei ehitata (`ignoreCommand` failis `vercel.json`).
-3. Otsingumootorid saiti ei indekseeri: päis `X-Robots-Tag: noindex, nofollow` ja `robots.txt`.
-   Kes lingi saab, see näeb. Avalikuks tegemine (indekseerimise lubamine) on Kadri otsus.
+3. Otsingumootorid indekseerivad saiti alates 21.11.2026 (Kadri otsus). Põhiaadress on `https://www.tehisaruseire.ee/`:
+   igal lehel on sinna canonical-link, `robots.txt` lubab kõike ja näitab `sitemap.xml`-i. `*.vercel.app` aadressil jääb
+   päis `X-Robots-Tag: noindex, nofollow`, et sama sisu ei oleks otsingus kahe aadressiga.
 4. Ametlik statistika uueneb iga päev: töö `.github/workflows/sait-andmed.yml` laeb numbrid allikatest,
    ehitab saidi, jooksutab testid ja turvakontrolli ning teeb commit'i `main` harule ainult siis, kui mõni number muutus.
    Iga selline commit käivitab Verceli uue ehituse. Kui uus number ei klapi lehe pealkirjaga, töö kukub ja
