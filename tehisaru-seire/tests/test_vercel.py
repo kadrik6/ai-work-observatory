@@ -37,11 +37,14 @@ def test_robots_keelab_koik(tmp_path):
 
 
 def test_kulastusloendur_ainult_vercelis():
-    """Verceli Web Analytics (Kadri 8.11.2026): skript laaditakse ainult *.vercel.app aadressil."""
+    """Verceli Web Analytics (Kadri 8.11.2026): skript laaditakse ainult *.vercel.app ja oma domeeni aadressil."""
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "sait"))
     import kest
     assert "/_vercel/insights/script.js" in kest.ANALYYTIKA_JS
     assert "h.slice(-11)==='.vercel.app'" in kest.ANALYYTIKA_JS and "if(!ok)return" in kest.ANALYYTIKA_JS
+    # 21.11.2026: oma domeen tehisaruseire.ee ja www; mitte sama lõpuga võõras nimi (nt xtehisaruseire.ee)
+    assert "h==='tehisaruseire.ee'||h.slice(-17)==='.tehisaruseire.ee'" in kest.ANALYYTIKA_JS
+    assert "h.slice(-16)==='tehisaruseire.ee'" not in kest.ANALYYTIKA_JS
     d = Path(__file__).resolve().parents[1] / "valjund" / "sait"
     if d.exists():
         for f in d.glob("*.html"):

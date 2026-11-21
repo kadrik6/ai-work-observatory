@@ -37,8 +37,13 @@ def _v(nimi):
 # sest brauser võttis vahemälust vana sait.js). Vaikimisi Pehme; süsteemi tumeda korral Tume; salvestatud valik ees.
 # Verceli külastusloendur (Kadri 8.11.2026 21:51 „jah, lisa“). Laaditakse ainult Verceli aadressil, mitte Claude'i
 # artefaktis ega kohalikus failis. Vercel Web Analytics ei kasuta küpsiseid; analüütika tuleb Vercelis sisse lülitada.
+# Oma domeen (Kadri 21.11.2026): tehisaruseire.ee on põhiaadress; teised domeenid suunatakse Vercelis sinna, seega
+# nende jaoks analüütikat vaja pole. Domeen sobib täpselt või alamdomeenina (www), mitte lihtsalt sama lõpuga nimi.
 VERCEL_HOSTID = (".vercel.app",)
-ANALYYTIKA_JS = ("<script>(function(){var h=location.hostname,ok=" + "||".join(f"h.slice(-{len(x)})==='{x}'" for x in VERCEL_HOSTID)
+OMA_DOMEENID = ("tehisaruseire.ee",)
+ANALYYTIKA_JS = ("<script>(function(){var h=location.hostname,ok=" + "||".join(
+                     [f"h.slice(-{len(x)})==='{x}'" for x in VERCEL_HOSTID]
+                     + [f"h==='{d}'||h.slice(-{len(d) + 1})==='.{d}'" for d in OMA_DOMEENID])
                  + ";if(!ok)return;window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};"
                  "var s=document.createElement('script');s.defer=true;s.src='/_vercel/insights/script.js';"
                  "document.head.appendChild(s)})()</script>")
