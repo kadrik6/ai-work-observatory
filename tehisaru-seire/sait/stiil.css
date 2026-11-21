@@ -1832,3 +1832,15 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
   .av-qleg .av-q { width: 12px; height: 12px; }
   .av-mini li { grid-template-columns: 9.5em auto 1fr; font-size: 13px; }
 }
+
+/* Hanked (Kadri 19.11.2026 „A ja C koos“): kuidas hangitakse (kolm rühma ühel skaalal) ja head näited (kolm tingimust) */
+.hk-it { fill: var(--panel); stroke: var(--ink-2); stroke-width: 2; } .hk-ko { fill: var(--ink-3); }
+.hk-leg { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 0; margin: 0 0 8px; font-size: 14px; color: var(--ink-2); }
+.hk-leg li { display: flex; align-items: center; gap: 6px; }
+.hk-suur { margin: 4px 0 8px; font-size: 14px; color: var(--ink-2); } .hk-suur b { font: 600 28px var(--font-display); color: var(--ink); margin-right: 6px; }
+.hk-cc { display: grid; gap: 16px; margin-top: 12px; max-width: 560px; }
+.hk-c p { display: flex; justify-content: space-between; margin: 0 0 4px; font-size: 15px; max-width: 420px; } .hk-c p b { font: 600 18px var(--font-display); }
+.hk-c svg { width: 100%; max-width: 420px; height: 16px; } .hk-c small { display: block; color: var(--ink-3); font-size: 13px; margin-top: 2px; }
+.av-q.hk-m { background: color-mix(in srgb, var(--signal) 35%, var(--panel)); }
+.av-q.hk-l { width: 12px; height: 12px; }
+.hk-link { margin: 20px 0 0; font-weight: 600; }

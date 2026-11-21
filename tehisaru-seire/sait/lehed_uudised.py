@@ -561,34 +561,13 @@ def hanked(A, vaade, vaated=None):
     if not kv["ai_andmed"] > kv["it_muud"]:
         raise AndmeViga("Pealkiri ütleb, et kvaliteeti hinnatakse sagedamini kui teistes IT-hangetes, andmed ei näita seda")
     kontrolli(vaade, "alla 1%", "sagedamini kui teistes IT-hangetes")
-    p0, p1 = V["periood"]
     K = H["kontsentratsioon"]
     hind = H["hindamine"]
     val = hind["hindamine"]["valitud"]
     tul = hind["hindamine"]["tulemused"][val]
     lev = hind["levimus"]
 
-    from lehed_ulevaade import kpi_pais, kpi_plaat, kpi_riba
-    h1, h0 = aastad[-1], aastad[-2]
-    yks = {g: V[g]["uks_pakkuja_osakaal"] for g in ("ai_andmed", "it_muud", "koik")}
-    katseline = ""  # Kadri 8.11.2026 16:29: pimeülevaatus tehtud, katselisuse märgid ära
-    aside = kpi_pais(
-        kpi_plaat("hk-arv", "Tehisaru- ja andmehanked", str(h1["ai_andmed"]), f'{h1["aasta"]}{"*" if poolik else ""}',
-                  {"muutus": (f'{h0["aasta"]} kokku {h0["ai_andmed"]}',
-                              f'{pr(h1["ai_andmed_osakaal"])}% kõigist hangetest' + (" · * aasta pooleli" if poolik else ""))},
-                  a(HANKED_URL, "Riigihangete register") + katseline, fookus=True),
-        kpi_plaat("hk-kvaliteet", "Hindas ka kvaliteeti, mitte ainult hinda", f'{pr(kv["ai_andmed"], 0)}%', f"{p0}–{p1}",
-                  {"tekst": f'kõigis hangetes {pr(kv["koik"], 0)}%',
-                   "riba": kpi_riba(kv["ai_andmed"], 100, vrd=round(kv["it_muud"]), vrd_nimi="teised IT-hanked")},
-                  "Hindamiskriteeriumid registris"),
-        kpi_plaat("hk-uks", "Said ainult ühe pakkumuse", f'{pr(yks["ai_andmed"], 0)}%', f"{p0}–{p1}",
-                  {"tekst": f'kõigis hangetes {pr(yks["koik"], 0)}%',
-                   "riba": kpi_riba(yks["ai_andmed"], 100, vrd=round(yks["it_muud"]), vrd_nimi="teised IT-hanked")},
-                  f'Pakkumuste arv teada {V["ai_andmed"]["pakkumusi_teada"]} hankel'),
-        kpi_plaat("hk-tapsus", "Tuvastuse täpsus", f'{pr(tul["tapsus"] * 100, 0)}%', "",
-                  {"tekst": f'leiab <b>{pr(tul["saagis"] * 100, 0)}%</b> hangetest (saagis)'},
-                  f'Masina vs masina märgendid; käsitsi kokkulangevus {KASITSI["kokku"]}%' + katseline),
-    )
+    # KPI-plaadid hk-* läksid 19.11.2026 ära: leht algab tahvliga (Kadri valis näidistest „A ja C koos“)
     lead = ("Tehisaru = "
             "pealkirjas või kirjelduses on tehisaru märksõna; andmed = andmeladu, -haldus, -analüüs jms. "
             "Tehisaru uuringute ja mõjuanalüüside hankeid eraldi veel ei loeta.")
@@ -617,29 +596,17 @@ def hanked(A, vaade, vaated=None):
   <p class="kr-leg"><span><i class="kr-t siht"></i>siht 2%</span></p>
 </section>"""
 
-    # 3. Kuidas hangitakse
-    G = [("tehisaru ja andmed", "ai_andmed", True), ("muud IT-hanked", "it_muud", False), ("kõik hanked", "koik", False)]
-    viisid = "".join([
-        _viis_rida("Hindas ka kvaliteeti, %", [(n, kv[g], f) for n, g, f in G], k=0),
-        _viis_rida("Ainult üks pakkumus, %", [(n, V[g]["uks_pakkuja_osakaal"], f) for n, g, f in G], k=0),
-        _viis_rida("Hange katkes, %", [(n, V[g]["katkes_osakaal"], f) for n, g, f in G], k=0),
-        _viis_rida("Pakkumusi (mediaan)", [(n, V[g]["pakkumusi_mediaan"], f) for n, g, f in G], uhik="", k=0),
-    ])
-    sec_viis = f"""
-<section class="pn sp8" id="viis" aria-labelledby="h-viis">
-  <div class="pn-h"><h2 id="h-viis">Tehisaru- ja andmehangetes hinnatakse kvaliteeti <b>sagedamini kui teistes IT-hangetes</b> ({p0}–{p1})</h2></div>
-  <p class="ps">Hankeid: tehisaru ja andmed {V["ai_andmed"]["hankeid"]}, muud IT {_arv(V["it_muud"]["hankeid"])}, kõik {_arv(V["koik"]["hankeid"])}. Pakkumuste arv on teada osal hangetest; {p1}. aasta pakkumusi registri avaandmetes pole.</p>
-  <div class="viisid">{viisid}</div>
-</section>"""
+    # 3. Kuidas hangitakse: lehe tunnuspilt (hanked_tahvel.sec_kuidas), siin enam ei korrata
 
     # 4. Hankijad
     top = H["hankijad_top"][:10]
     tmax = top[0][1]
+    la0, la1 = min(r["a"] for r in H["loend"]), max(r["a"] for r in H["loend"])
     t_read = "".join(f'<div class="vr"><span class="vr-n" title="{e(n)}">{e(n)}</span><span class="vr-r"><i style="width:{c / tmax * 100:.1f}%"></i></span><span class="vr-v">{c}</span></div>' for n, c in top)
     sec_hankijad = f"""
-<section class="pn sp4" id="hankijad" aria-labelledby="h-hankijad">
+<section class="pn sp12" id="hankijad" aria-labelledby="h-hankijad">
   <div class="pn-h"><h2 id="h-hankijad">{sonaga(K["top10_protsenti_hankijaid"]).capitalize()} hankijat {K["hankijaid"]}-st teeb <b>{pr(K["nende_osakaal"], 0)}%</b> tehisaru- ja andmehangetest</h2></div>
-  <p class="ps">{p0}–{p1}. {K["uks_hange_hankijaid"]} hankijat tegi ainult ühe sellise hanke. Kümme suurimat:</p>
+  <p class="ps">Kõik leitud hanked {la0}–{la1}. {K["uks_hange_hankijaid"]} hankijat tegi ainult ühe sellise hanke. Kümme suurimat:</p>
   <div class="viis hk">{t_read}</div>
 </section>"""
 
@@ -804,9 +771,9 @@ def hanked(A, vaade, vaated=None):
     import teemamall as tm
     from lehed_ulevaade import vaite_teema
     sec_andmed = tm.andmesakid("hanked", tm.kys("Kuidas riik tehisaru ostab?", "Kvaliteeti hinnatakse sagedamini kui teistes IT-hangetes"),
-                               "Riigihangete registri ja TEDi hanked, märgistatud masinaga. Sakkides on aastad, hankimise viis, litsentsid ja klassifikaatori täpsus.", [
+                               "Riigihangete registri ja TEDi hanked, märgistatud masinaga. Sakkides on aastad, hankijad, litsentsid ja klassifikaatori täpsus.", [
         ("aastad", "Aastad", '<div class="g12">' + sec_aastad + sec_inn + "</div>"),
-        ("viis", "Kuidas hangitakse", '<div class="g12">' + sec_viis + sec_hankijad + "</div>"),
+        ("hankijad-sakk", "Hankijad", '<div class="g12">' + sec_hankijad + "</div>"),
         ("litsentsid", "Litsentsid", sec_lits),
         ("tapsus", "Täpsus", sec_tapsus),
     ])
@@ -822,12 +789,27 @@ def hanked(A, vaade, vaated=None):
     from abi import alam_h1
     alam_h1(vaade, "hanked-naited.html", f"Eeskujuks sobib **{n_hea} hanget {len(loend)}-st** ¦ "
             "hea näide: kvaliteeti hinnati, pakkumusi oli vähemalt kaks ja hange ei katkenud")
+    # Töölaud (Kadri 19.11.2026 valis näidistest „A ja C koos“): tahvel, kuidas hangitakse, head näited, siis plokid kokkupandult.
+    import datetime
+    import hanked_tahvel as ht
+    import teema_tahvel as tt
+    from avalik_tahvel import usaldus
+    from lehed_usaldus import _raskus
+    D = ht.Andmed(H, KASITSI)
+    vv = [x for x in A["vaited"] if vaite_teema(x) == "hanked"]
+    yr = next(r for r in A["otsused"] if r["id"] == "ai-uldkohaldamine")
+    us = usaldus(len(vv), sum(_raskus(x) == 0 for x in vv), [(yr["nimi"], yr["kuupaev"] <= datetime.date.today().isoformat())], 2, seis)
+    uks = tt.uksikasjad([
+        ("andmed", "Kuidas riik tehisaru ostab?", "aastad, innovatsioonimärk, hankijad, litsentsid, täpsus", sec_andmed + markus),
+        ("lopp", "Reeglid ja allikad", "1 reegel · 2 allikat", tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
+    ])
     return jaga(A, vaade, lead, [], [
-        ("andmed", [("andmed", "Kuidas ostab?")], sec_andmed + markus),
-        ("lopp", [("t-uuringud", "Uuringud"), ("t-vaited", "Väited"), ("t-reeglid", "Reeglid"), ("t-allikad", "Allikad")],
-         tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
+        ("tahvel", [("tahvel", "Ülevaade")], ht.tahvel(D, us)),
+        ("kuidas", [("kuidas", "Kuidas hangitakse?")], ht.sec_kuidas(D, a(HANKED_URL, "Riigihangete register") + " ja TED")),
+        ("naited-kokku", [("naited-kokku", "Head näited")], ht.sec_naited(D)),
+        ("uksikasjad", [("andmed", "Andmed"), ("t-allikad", "Allikad")], uks),
         ("naited", [("loend", "Näited")], sec_loend),
-    ], aside=aside)
+    ])
 
 
 # ---------------------------------------------------------------- Töö: mida uuritakse
