@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-20T18:05:00+02:00",
+  "viimane_kontroll": "2026-11-21T07:50:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "20.11 õhtu: Pakosta tehisaru maksustamisest; TI-Hüppe hange"
+      "markus": "21.11: andmekeskuste buum Eestis (ERR)"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "20.11 õhtu: platvormitöö seadus (levik)"
+      "markus": "21.11: uut tehisaru lugu pole"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "20.11 õhtu: Isotamm (Delfi); Sportland ja Apollo (Kaubandus.ee); koondajate jätkuotsingud tühjad"
+      "markus": "21.11: TI-Hüppe hanke levik (Postimees); koondajate jätkuotsingud tühjad"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "20.11 õhtu: uut suurt pole; Ubisofti ja Fortnoxi levik"
+      "markus": "21.11: SMH Austraalia analüüs; Salesforce'i uus voor (jätkulugu)"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -29,32 +29,32 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "20.11 õhtu: uut postitust pole"
+      "markus": "21.11: uut postitust pole (viimane 18.11)"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "20.11 õhtu: uut teadet pole"
+      "markus": "21.11: uut teadet pole"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "20.11 õhtu: uut tehisaru/IKT teadet pole"
+      "markus": "21.11: uut tehisaru/IKT teadet pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "20.11 õhtu: site:-otsingud uut ei andnud; TI-Hüppe hange ERR-ist"
+      "markus": "21.11: site:-otsingud uut ei andnud"
     },
     {
       "nimi": "OECD uudised (otsing)",
       "ok": true,
-      "markus": "20.11: OECD uudist pole"
+      "markus": "21.11: OECD uudist pole (ainult OECD.AI intsidendid)"
     },
     {
       "nimi": "Riikide strateegiad",
       "ok": true,
-      "markus": "20.11: ei kontrollitud hommikul"
+      "markus": "21.11: ei kontrollitud"
     },
     {
       "nimi": "DataCite 10.58009 (TÜ repositoorium)",
