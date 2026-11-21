@@ -415,11 +415,11 @@ def test_lahknevused_ja_varskus_on_usalduse_all_nahtaval(sait):
 
 
 def test_igas_teemavaates_on_numbriplaadid(sait):
-    for f in ["tehisaru-maarus.html", "hanked.html", "kas-see-on-tosi.html"]:
+    for f in ["tehisaru-maarus.html", "kas-see-on-tosi.html"]:
         assert 'class="vastus' in sait[f], f
     # 14.11.2026: Ettevõtete ja Inimeste numbrid on tahvli ridadel (Kadri valis „B koos C maatriksiga“ ja „A ja B koos“);
-    # Töö ja Avalik sektor 17.11 (mõlemal „A ja C koos“)
-    for f in ("ettevotted.html", "inimesed.html", "too.html", "avalik-sektor.html"):
+    # Töö ja Avalik sektor 17.11 (mõlemal „A ja C koos“), Hanked 19.11 („A ja C koos“)
+    for f in ("ettevotted.html", "inimesed.html", "too.html", "avalik-sektor.html", "hanked.html"):
         assert 'class="tv-arv"' in sait[f], f
 
 
@@ -935,9 +935,9 @@ def test_neli_vaiteparandust_8_11(sait):
     assert "aastaga" not in h1("inimesed.html")
     assert "küsimus võib erineda" in sait["inimesed.html"] and "küsimus võib erineda" in sait["index.html"]
     assert h1("too.html").startswith("Eesti andmetest")  # 8.11 õhtu: h1 algab Eestist (läbivaatus P4)
-    hanked = re.search(r'data-kpi="hk-arv">(.*?)</div>', sait["hanked.html"], re.S).group(1)
+    hanked = _jaotis(sait["hanked.html"], "tahvel")  # 19.11.2026: hangete arv on tahvli esimesel real
     avaleht = _jaotis(sait["index.html"], "teemad").split('href="hanked.html"')[1].split("</tr>")[0]
-    assert re.search(r'class="tv-arv"[^>]*>(\d+)<', avaleht).group(1) == re.search(r'class="big[^"]*">(\d+)<', hanked).group(1)
+    assert re.search(r'class="tv-arv"[^>]*>(\d+)<', avaleht).group(1) == re.search(r'class="tv-arv"[^>]*>(\d+)<', hanked).group(1)
     assert "jaan" not in avaleht
 
 
@@ -1708,7 +1708,7 @@ def test_uudiste_numbriplaadid_on_tihedad_ilma_allikareata(sait):
     assert pais.count('class="plaat kp"') == 4
     assert "Seire uudistekogumine" not in u and 'class="src"' not in pais
     # teiste lehtede plaatidel on allikas alles
-    assert 'class="src"' in sait["hanked.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]  # 17.11.2026: Töö ja Avaliku sektori lehel on tahvel
+    assert 'class="src"' in sait["tehisaru-maarus.html"].split('class="vastus kpi-pais"')[1].split("</aside>")[0]  # 19.11.2026: teemalehtedel on tahvel
 
 
 def test_valislingid_avanevad_uues_vahelehes(sait):
@@ -2079,3 +2079,50 @@ def test_avaliku_sektori_tahvel_kukub_kui_andmed_pealkirja_ei_toeta(A):
     arvud = [dict(r, vaartus="45") if r["leid"] == "rk-ai-kord" and r["ruhm"] == "korrata" else r for r in A["leiud_arvud"]]
     with pytest.raises(andmekiht.AndmeViga):
         avalik_tahvel.Andmed(dict(A, leiud_arvud=arvud))  # korrata asutusi ei saa olla rohkem kui kasutajaid
+
+
+def test_hanked_on_tahvel_kuidas_ja_head_naited(A, sait):
+    """Kadri 19.11.2026 valis Hangete lehele „A ja C koos“: tahvel, kuidas hangitakse, head näited, siis plokid kokku pandud."""
+    h = sait["hanked.html"]
+    H = A["hanked_leht"]
+    main = re.search(r"<main.*?</main>", h, re.S).group(0)
+    assert main.index("</h1>") < main.index('id="tahvel"') < main.index('id="kuidas"') < main.index('id="naited-kokku"') < main.index('id="h-uksikasjad"')
+    assert 'data-kpi="' not in h and 'class="vastus' not in h
+    tv = _jaotis(h, "tahvel")
+    read = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">(.*?)</a>', tv)
+    assert len(read) == 6 and all(f'id="{a}"' in h for a, _ in read)
+    assert 'href="#t-vaited"' not in tv and 'href="#t-allikad"' in tv
+    # kuidas: kolm näitajat kolmes rühmas, lai ja kitsas joonis; sakis sama joonist enam pole
+    V = H["hankimise_viis"]
+    ku = _jaotis(h, "kuidas")
+    assert ku.count('class="tt-svg tt-sc-') == 2 and ku.count('<circle class="tv-pf"') == 2 * 3 + 1  # + legend
+    assert f'Kvaliteeti hinnatakse {100 - V["ai_andmed"]["ainult_hind_osakaal"]:.0f}% hangetest' in tekst(ku)
+    assert 'id="viis"' not in h and "Hindas ka kvaliteeti, %" not in h
+    # head näited: kolm tingimust; täidetud + täitmata + teadmata = kõik hanked; link näidete lehele
+    L = H["loend"]
+    na = _jaotis(h, "naited-kokku")
+    hea = sum(1 for r in L if r.get("hea") == 3)
+    assert f"{hea} hanget {len(L)}-st vastab kõigile kolmele tingimusele" in tekst(na) and 'href="hanked-naited.html"' in na
+    for jah, ei, tea in re.findall(r'<p><span>[^<]+</span><b>(\d+)</b></p>.*?<small>[^<]*? (\d+) · teadmata (\d+)</small>', na, re.S):
+        assert int(jah) + int(ei) + int(tea) == len(L)
+    # hankijate arv on kogu loendi pealt, nii ka periood (enne oli silt hankimise viisi perioodist)
+    a0, a1 = min(r["a"] for r in L), max(r["a"] for r in L)
+    assert f"Kõik leitud hanked {a0}–{a1}." in _jaotis(h, "hankijad")
+    for sid in ("andmed", "lopp"):
+        assert f'<details class="tt-pl" id="d-{sid}">' in h, sid
+
+
+def test_hangete_tahvel_kukub_kui_andmed_pealkirja_ei_toeta(A):
+    import hanked_tahvel
+    from lehed_uudised import KASITSI
+    H = A["hanked_leht"]
+    V = H["hankimise_viis"]
+    v2 = dict(V, ai_andmed=dict(V["ai_andmed"], ainult_hind_osakaal=V["it_muud"]["ainult_hind_osakaal"]))  # kvaliteeti sama sageli
+    with pytest.raises(andmekiht.AndmeViga):
+        hanked_tahvel.Andmed(dict(H, hankimise_viis=v2), KASITSI)
+    with pytest.raises(andmekiht.AndmeViga):  # kontsentratsioon pole kogu loendi pealt
+        hanked_tahvel.Andmed(dict(H, kontsentratsioon=dict(H["kontsentratsioon"], nende_osakaal=H["kontsentratsioon"]["nende_osakaal"] + 5)), KASITSI)
+    i = next(i for i, r in enumerate(H["loend"]) if r.get("hea") != 3)
+    loend = H["loend"][:i] + [dict(H["loend"][i], hea=3)] + H["loend"][i + 1:]
+    with pytest.raises(andmekiht.AndmeViga):  # hea näite märge ei vasta tingimustele
+        hanked_tahvel.Andmed(dict(H, loend=loend), KASITSI)

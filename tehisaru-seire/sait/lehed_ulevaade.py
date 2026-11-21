@@ -92,7 +92,7 @@ KPI_VER1 = {  # avalehe kuus plaati läksid 14.11.2026 ära (avaleht on signaali
             # Inimeste plaadid in-* läksid 14.11.2026 ära: leht algab tahvliga (Kadri valis „A ja B koos“)
             # Ettevõtete plaadid ev-* läksid 14.11.2026 ära: leht algab tahvliga (Kadri valis „B koos C maatriksiga“)
             # Töö plaadid too-* läksid 17.11.2026 ära: leht algab tahvliga (Kadri valis „A ja C koos“)
-            "hk-arv": ("muutus",), "hk-kvaliteet": ("tekst", "riba"), "hk-uks": ("tekst", "riba"), "hk-tapsus": ("tekst",),
+            # Hangete plaadid hk-* läksid 19.11.2026 ära: leht algab tahvliga (Kadri valis „A ja C koos“)
             "us-muud": ("tekst", "riba"), "us-lahk": ("tekst",), "us-uudis": ("tekst",),
             "kl-allikad": ("tekst",), "kl-klassid": ("tekst",), "kl-uuringud": ("tekst",),
             "ma-jargmine": ("muutus", "tekst"), "ma-korge": ("muutus", "tekst"), "ma-osad": ("muutus", "riba"),
