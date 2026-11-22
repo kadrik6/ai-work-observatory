@@ -1,5 +1,5 @@
 {
-  "viimane_kontroll": "2026-11-21T18:05:00+02:00",
+  "viimane_kontroll": "2026-11-22T07:45:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
@@ -29,22 +29,22 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "21.11: uut postitust pole (viimane 18.11)"
+      "markus": "22.11: feed avanes, uusi postitusi pole (viimane 18.11)"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "21.11: uut teadet pole"
+      "markus": "22.11: avanes, uusi uudiseid pole"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "21.11: uut tehisaru/IKT teadet pole"
+      "markus": "22.11: avanes, uusi tehisaru, IKT ega tööturu teateid pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "21.11: site:-otsingud uut ei andnud"
+      "markus": "22.11: site-otsingud ja uudisotsingud ei andnud uusi riigi teateid"
     },
     {
       "nimi": "OECD uudised (otsing)",
