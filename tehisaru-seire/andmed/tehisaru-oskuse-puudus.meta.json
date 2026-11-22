@@ -4,7 +4,7 @@
   "naitaja_nimi": "Annual; Reason for not using generative AI tools: Did not know how to use; Percentage of individuals; All individuals",
   "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_ai_iaiuxr?format=JSON&lang=EN&freq=A&indic_is=I_IUAIX_NUUSE&unit=PC_IND&ind_type=IND_TOTAL&geo=EE&geo=FI&geo=SE&geo=DK&geo=NO&geo=DE&geo=NL&geo=EU27_2020",
   "allikas_uuendas": "2026-04-17",
-  "kontrollitud": "2026-11-21",
+  "kontrollitud": "2026-11-22",
   "varskus": {
     "staatus": "ajakohane",
     "jargmine_oodatav": "2027-04-17"
