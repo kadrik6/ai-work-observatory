@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-22T18:05:00+02:00",
+  "viimane_kontroll": "2026-11-23T07:50:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "21.11: andmekeskuste buum Eestis (ERR)"
+      "markus": "23.11: idusektori ülevaade (Pipedrive'i jätkulugu)"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "21.11: uut tehisaru lugu pole"
+      "markus": "23.11: uut tehisaru lugu pole"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "21.11: TI-Hüppe hanke levik (Postimees); koondajate jätkuotsingud tühjad"
+      "markus": "23.11: koondajate jätkuotsingud tühjad"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "21.11: SMH Austraalia analüüs; Salesforce'i uus voor (jätkulugu)"
+      "markus": "23.11: Gujarati IT-töökohad −15% (ETHRWorld); Canva jätkulugu"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -29,27 +29,27 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "22.11: feed avanes, uusi postitusi pole (viimane 18.11)"
+      "markus": "23.11: feed avanes, uusi postitusi pole (viimane 18.11)"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "22.11: avanes, uusi uudiseid pole"
+      "markus": "23.11: avanes, uusi uudiseid pole"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "22.11: avanes, uusi tehisaru, IKT ega tööturu teateid pole"
+      "markus": "23.11: avanes, uusi tehisaru, IKT ega tööturu teateid pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "22.11: site-otsingud ja uudisotsingud ei andnud uusi riigi teateid"
+      "markus": "23.11: uusi riigi teateid ei leitud; KONTROLL 4/7"
     },
     {
       "nimi": "OECD uudised (otsing)",
       "ok": true,
-      "markus": "21.11: OECD uudist pole (ainult OECD.AI intsidendid)"
+      "markus": "23.11: uut OECD uudist pole"
     },
     {
       "nimi": "Riikide strateegiad",

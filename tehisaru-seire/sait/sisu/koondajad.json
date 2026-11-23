@@ -23,9 +23,9 @@
    "kaotatud_tekst": "Mitmest osakonnast, sh analüütikud, disainerid ja turundusspetsialistid; vähem meeskondi ja juhtimistasandeid.",
    "kaotatud_allikas": "https://www.err.ee/1610180251/pipedrive-koondab-massiliselt-tootajaid-ja-paneb-kontoreid-kinni",
    "otsib": {
-    "kontrollitud": "2026-11-16",
+    "kontrollitud": "2026-11-23",
     "ametid": [],
-    "tekst": "Eestis avatud kuulutusi ei ole (16.11).",
+    "tekst": "Eestis avatud kuulutusi ei ole (23.11).",
     "url": "https://www.pipedrive.com/en/jobs/open-positions?location=estonia"
    },
    "omand": "Eestis asutatud, välisinvestori omanduses",
@@ -43,9 +43,9 @@
    "kaotatud_tekst": "Umbes 130 ametikohta üle organisatsiooni; täpsed ametid selguvad pärast koondamiskonsultatsiooni.",
    "kaotatud_allikas": "https://news.err.ee/1610180281/coolbet-estonia-to-shed-up-to-134-jobs-at-tallinn-hq",
    "otsib": {
-    "kontrollitud": "2026-11-16",
+    "kontrollitud": "2026-11-23",
     "ametid": [],
-    "tekst": "Avatud kuulutusi ei ole üheski riigis (16.11).",
+    "tekst": "Avatud kuulutusi ei ole üheski riigis (23.11).",
     "url": "https://careers.coolbet.ee/jobs"
    },
    "omand": "välisomanikuga",
@@ -63,22 +63,22 @@
    "kaotatud_tekst": "Suured IT-arenduse ja andmemudelduse projektid said valmis, nii palju arendajaid pole enam vaja. Osale pakutakse ümberõpet teisele ametikohale.",
    "kaotatud_allikas": "https://news.err.ee/1610178361/swedbank-lays-off-100-in-baltic-states-warns-ai-could-mean-more-cuts",
    "otsib": {
-    "kontrollitud": "2026-11-09",
+    "kontrollitud": "2026-11-23",
     "ametid": [
      {
-      "nimi": "Sisujuht",
+      "nimi": "Tarkvarainsener (teenusejuht)",
+      "liik": "IT ja andmed"
+     },
+     {
+      "nimi": "Automatiseeritud turunduse juuniorspetsialist",
       "liik": "disain ja turundus"
      },
      {
-      "nimi": "Karjäärikeskuse juuniorspetsialist",
-      "liik": "muu"
-     },
-     {
-      "nimi": "Business Data Steward (andmehaldus, mitu asukohta)",
-      "liik": "IT ja andmed"
+      "nimi": "Veebidisainer",
+      "liik": "disain ja turundus"
      }
     ],
-    "tekst": "3 kuulutust Tallinnas (kontsernis kokku 55). Uus on sisujuht; krediidiriski modelleerija kuulutust enam pole. Andmehalduse kuulutus on mitme riigi kohta. Kontroll 16.11 ebaõnnestus (leht ei näidanud kuulutuste loendit), näidatud on 9.11 seis.",
+    "tekst": "3 kuulutust Tallinnas (kontsernis kokku 50), kõik Baltikumi ühised: tarkvarainsener (teenusejuht), automatiseeritud turunduse juuniorspetsialist ja veebidisainer. Varasemaid sisujuhi, karjäärikeskuse ja andmehalduse kuulutusi enam pole (23.11).",
     "url": "https://jobs.swedbank.com/jobs?location=Tallinn"
    },
    "omand": "välisomanikuga",
@@ -98,12 +98,8 @@
    "kaotatud_tekst": "Jaanuaris liideti tehnoloogia ja IT juhtimine. Oktoobri koondamise ametid avalikult ei ole teada; kontsern viib umbes 220 tehnoloogiaüksuse ametikohta riikide üksustesse.",
    "kaotatud_allikas": "https://news.err.ee/1610163940/telia-to-cut-100-jobs-in-estonia-as-telecom-group-plans-900-layoffs",
    "otsib": {
-    "kontrollitud": "2026-11-16",
+    "kontrollitud": "2026-11-23",
     "ametid": [
-     {
-      "nimi": "Müügijuht",
-      "liik": "müük ja klienditeenindus"
-     },
      {
       "nimi": "AISaaS ja andmeteenuste juht",
       "liik": "IT ja andmed"
@@ -113,7 +109,7 @@
       "liik": "teadmata"
      }
     ],
-    "tekst": "3 kuulutust Tallinnas; uus on AISaaS ja andmeteenuste juht (avaldatud umbes 12.11). Suurkliendi müügijuhi kuulutust enam pole.",
+    "tekst": "2 kuulutust Tallinnas: AISaaS ja andmeteenuste juht ning pealkirjata kuulutus 60860. Müügijuhi kuulutust enam pole (23.11).",
     "url": "https://teliacompany.wd3.myworkdayjobs.com/Telia_careers?q=Tallinn"
    },
    "omand": "välisomanikuga",
@@ -133,9 +129,9 @@
    "kaotatud_tekst": "Tootmise tugivaldkonnad ja keskühikud: remont, transport ja logistika, IT, turundus. Õlitööstuse ja elektrijaamade operaatoreid ei puuduta. Lõplikud arvud 23.11.",
    "kaotatud_allikas": "https://www.err.ee/1610186842/eesti-energia-plaanib-koondada-10-protsenti-ametikohtadest",
    "otsib": {
-    "kontrollitud": "2026-11-16",
+    "kontrollitud": "2026-11-23",
     "ametid": [],
-    "tekst": "Kontserni (Enefit, Elektrilevi) tööpakkumiste lehel avatud kuulutusi ei ole (16.11).",
+    "tekst": "Kontserni (Enefit, Elektrilevi) tööpakkumiste lehel avatud kuulutusi ei ole (23.11).",
     "url": "https://www.enefit.com/et/too-ja-praktika/tule-toole"
    },
    "omand": "riigifirma",
@@ -158,22 +154,22 @@
     "tekst": "koondamisteated 2026. aasta lõpus, sulgemine 31.03.2027"
    },
    "otsib": {
-    "kontrollitud": "2026-11-16",
+    "kontrollitud": "2026-11-23",
     "ametid": [
      {
-      "nimi": "Süsteemiinsener",
-      "liik": "IT ja andmed"
-     },
-     {
-      "nimi": "Kinnisvarahaldur",
+      "nimi": "Kinnisvarahaldur (Lääne-Eesti)",
       "liik": "muu"
      },
      {
-      "nimi": "QGIS-i analüütik-arendaja",
+      "nimi": "Kinnisvarahaldur (Kirde-Eesti, tähtaeg möödas)",
+      "liik": "muu"
+     },
+     {
+      "nimi": "QGIS-i analüütik-arendaja (tähtaeg möödas)",
       "liik": "IT ja andmed"
      }
     ],
-    "tekst": "RMK vabade töökohtade lehel 3 kuulutust (IT taristu, kinnisvara Kirde-Eestis, andmetiim); süsteemiinseneri tähtaeg oli 15.11.",
+    "tekst": "RMK vabade töökohtade lehel 3 kuulutust: kinnisvarahaldur Lääne-Eestisse (tähtaeg 29.11) ning kinnisvarahaldur Kirde-Eestisse ja QGIS-i analüütik-arendaja, mille tähtajad on möödas. Süsteemiinseneri kuulutust enam pole (23.11).",
     "url": "https://rmk.ee/kuulutused/vabad-tookohad/"
    }
   },
@@ -186,9 +182,9 @@
    "kaotatud_tekst": "Äripäeva avalõik ameteid ei nimeta (tasuline lugu).",
    "kaotatud_allikas": "https://www.aripaev.ee/uudised/2026/11/19/austraalia-borsifirma-karped-loovad-valusalt-miljonitega-ostetud-eesti-idufirmat",
    "otsib": {
-    "kontrollitud": "2026-11-19",
+    "kontrollitud": "2026-11-23",
     "ametid": [],
-    "tekst": "SiteMinderi tööpakkumiste lehel Eesti kuulutusi ei ole (19.11); avatud kohad on mujal, sh tehisaru tooterollid Sydneys.",
+    "tekst": "SiteMinderi tööpakkumiste lehel Eesti kuulutusi ei ole (23.11); avatud kohad on mujal, sh tehisaru tooterollid Sydneys.",
     "url": "https://www.siteminder.com/jobs/"
    },
    "omand": "Eestis asutatud, välisomaniku (SiteMinder, Austraalia) omanduses",
@@ -206,9 +202,9 @@
    "kaotatud_tekst": "Ameteid artikli kokkuvõte ei nimeta; põhjus on uue karjääri loa puudumine.",
    "kaotatud_allikas": "https://majandus.postimees.ee/8586163/maetoostur-lahkus-keerulisel-ajal-oma-ettevotte-juhatusest-pooli-tootajaid-ahvardab-koondamine",
    "otsib": {
-    "kontrollitud": "2026-11-19",
+    "kontrollitud": "2026-11-23",
     "ametid": [],
-    "tekst": "Ettevõtte kodulehel tööpakkumiste lehte ei leitud (19.11).",
+    "tekst": "Ettevõtte kodulehel tööpakkumiste lehte ei leitud (23.11).",
     "url": "https://limestone.ee/"
    },
    "omand": "Eestis asutatud",
