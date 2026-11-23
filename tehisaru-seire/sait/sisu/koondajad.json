@@ -126,7 +126,7 @@
     "IT ja andmed",
     "disain ja turundus"
    ],
-   "kaotatud_tekst": "Tootmise tugivaldkonnad ja keskühikud: remont, transport ja logistika, IT, turundus. Õlitööstuse ja elektrijaamade operaatoreid ei puuduta. Lõplikud arvud 23.11.",
+   "kaotatud_tekst": "Tootmise tugivaldkonnad ja keskühikud: remont, transport ja logistika, IT, turundus. Õlitööstuse ja elektrijaamade operaatoreid ei puuduta. Lõplik arv 343 (23.11).",
    "kaotatud_allikas": "https://www.err.ee/1610186842/eesti-energia-plaanib-koondada-10-protsenti-ametikohtadest",
    "otsib": {
     "kontrollitud": "2026-11-23",
@@ -136,8 +136,8 @@
    },
    "omand": "riigifirma",
    "koondab_ee": {
-    "arv": 390,
-    "tekst": "esialgne, lõplik 23.11; Ida-Virumaal umbes 300, neist Narvas 140 (ERR 15.11)"
+    "arv": 343,
+    "tekst": "lõplik (23.11; esialgu 390): Enefit Industry 204, Enefit Power 85, Eesti Energia AS 54"
    }
   },
   "RMK": {

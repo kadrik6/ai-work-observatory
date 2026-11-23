@@ -1,5 +1,5 @@
 {
-  "viimane_kontroll": "2026-11-23T07:50:00+02:00",
+  "viimane_kontroll": "2026-11-23T18:05:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
@@ -14,12 +14,12 @@
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "23.11: koondajate jätkuotsingud tühjad"
+      "markus": "23.11 õhtu: Eesti Energia lõplik koondamisarv 343 (ERR)"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "23.11: Gujarati IT-töökohad −15% (ETHRWorld); Canva jätkulugu"
+      "markus": "23.11 õhtu: RAISE US/Burning Glassi raport; ZipRecruiteri tööandjate küsitlus"
     },
     {
       "nimi": "Challenger kuuaruanne",
