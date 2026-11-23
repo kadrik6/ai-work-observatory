@@ -4,7 +4,7 @@
   "naitaja_nimi": "Annual; Enterprises with at least basic level of digital intensity (DII Version 4); Percentage of enterprises; From 10 to 249 persons employed; All activities (except agriculture, forestry and fishing, and mining and quarrying), without financial sector",
   "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_e_dii?format=JSON&lang=EN&freq=A&indic_is=E_DI4_GELO&unit=PC_ENT&size_emp=10-249&nace_r2=C10-S951_X_K&geo=EE&geo=FI&geo=SE&geo=DK&geo=NO&geo=DE&geo=NL&geo=EU27_2020",
   "allikas_uuendas": "2026-02-27",
-  "kontrollitud": "2026-11-22",
+  "kontrollitud": "2026-11-23",
   "varskus": {
     "staatus": "ajakohane",
     "jargmine_oodatav": "2028-02-27"
