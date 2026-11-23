@@ -1,6 +1,124 @@
 {
  "kandidaadid": [
   {
+   "id": "B-Ul51vvZlw",
+   "allikas": "oecd",
+   "pealkiri": "100th Steel committee",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=B-Ul51vvZlw",
+   "leitud": "2026-11-23",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "E2gFtoWOaDQ",
+   "allikas": "ilo",
+   "pealkiri": "International Administrative Tribunals and Cross-fertilization",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=E2gFtoWOaDQ",
+   "leitud": "2026-11-23",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "EFNCclKtW44",
+   "allikas": "ilo",
+   "pealkiri": "The Right of Access to Justice for Non-staff Personnel",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=EFNCclKtW44",
+   "leitud": "2026-11-23",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "XgdcIRlAbRk",
+   "allikas": "ilo",
+   "pealkiri": "The Law Applied by International Administrative Tribunals",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=XgdcIRlAbRk",
+   "leitud": "2026-11-23",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "2MtDRLKpyJY",
+   "allikas": "ilo",
+   "pealkiri": "The Right to Equality and The Prohibition of Discrimination",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=2MtDRLKpyJY",
+   "leitud": "2026-11-23",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "DU5JVkEX8S8",
+   "allikas": "ilo",
+   "pealkiri": "BRICS Future Skills and SSTC",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=DU5JVkEX8S8",
+   "leitud": "2026-11-23",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "tfKgcVStVFY",
+   "allikas": "ilo",
+   "pealkiri": "Why should a country join the UN Global Accelerator as a pathfinder?",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=tfKgcVStVFY",
+   "leitud": "2026-11-23",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "ftHTlAVXcKA",
+   "allikas": "ilo",
+   "pealkiri": "Building Financially Healthy Workplaces | Financial Health Forum 2026",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=ftHTlAVXcKA",
+   "leitud": "2026-11-23",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "5Ex2qsm4tg8",
+   "allikas": "ilo",
+   "pealkiri": "The Human Side of Financial Health | Financial Health Forum 2026",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=5Ex2qsm4tg8",
+   "leitud": "2026-11-23",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "YTcLNpd7nKY",
+   "allikas": "ilo",
+   "pealkiri": "From Financial Access to Financial Resilience | Financial Health Forum 2026",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=YTcLNpd7nKY",
+   "leitud": "2026-11-23",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "3nqR5hfhA_E",
+   "allikas": "ilo",
+   "pealkiri": "Intelligence artificielle et métiers de la création: menaces ou opportunités ?",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=3nqR5hfhA_E",
+   "leitud": "2026-11-23",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "PU_qV7dlv1s",
+   "allikas": "ilo",
+   "pealkiri": "Artificial intelligence and creative professions: threats or opportunities?",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=PU_qV7dlv1s",
+   "leitud": "2026-11-23",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
    "id": "RHy-FAuH0oI",
    "allikas": "ilo",
    "pealkiri": "Her Çocuk Bir Fırsatı Hak Eder",
@@ -1976,6 +2094,6 @@
   "uttv": 44083,
   "tds": "UC9ptGynkOPe3vFRW6otoI3g"
  },
- "uuendatud": "2026-11-22",
+ "uuendatud": "2026-11-23",
  "vead": []
 }
