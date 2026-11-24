@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-23T18:05:00+02:00",
+  "viimane_kontroll": "2026-11-24T07:50:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "23.11: idusektori ülevaade (Pipedrive'i jätkulugu)"
+      "markus": "24.11: andmekeskuste liitumistaotlused (ERR); Eesti Energia 343 juba olemas"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "23.11: uut tehisaru lugu pole"
+      "markus": "24.11: uut tehisaru lugu pole"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "23.11 õhtu: Eesti Energia lõplik koondamisarv 343 (ERR)"
+      "markus": "24.11: koondajate jätkuotsingud ei andnud uut (Eesti Energia 343 juba olemas)"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "23.11 õhtu: RAISE US/Burning Glassi raport; ZipRecruiteri tööandjate küsitlus"
+      "markus": "24.11: Robert Waltersi Singapuri uuring; RAISE US raporti levik (Axios)"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -29,27 +29,27 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "23.11: feed avanes, uusi postitusi pole (viimane 18.11)"
+      "markus": "24.11: feed avanes; uus postitus 23.11 tervishoiu rahastusest (pole töö teema)"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "23.11: avanes, uusi uudiseid pole"
+      "markus": "24.11: avanes, uusi uudiseid pole"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "23.11: avanes, uusi tehisaru, IKT ega tööturu teateid pole"
+      "markus": "24.11: avanes, uusi tehisaru, IKT ega tööturu teateid pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "23.11: uusi riigi teateid ei leitud; KONTROLL 4/7"
+      "markus": "24.11: JDM-i tehisarurakenduste usaldusväärsuse hinnangud (23.11); KONTROLL 4/7"
     },
     {
       "nimi": "OECD uudised (otsing)",
       "ok": true,
-      "markus": "23.11: uut OECD uudist pole"
+      "markus": "24.11: ainult OECD maksuhalduse blogi, ei lisatud"
     },
     {
       "nimi": "Riikide strateegiad",

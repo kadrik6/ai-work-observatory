@@ -1,42 +1,42 @@
 {
   "kirjeldus": "Tööportaalide kuulutuste arv ja portaali enda jaotused. Iga portaal eraldi: arve EI liideta, sest sama kuulutus võib olla mitmes portaalis. Ühel kuulutusel võib olla mitu valdkonda ja asukohta, seega jaotuste summa võib ületada kogusumma. Isikuandmeid ei koguta, ainult portaali avalikud koondarvud.",
-  "uuendatud": "2026-11-23T08:05:00+02:00",
+  "uuendatud": "2026-11-24T08:00:00+02:00",
   "portaalid": [
     {
       "portaal": "CV.ee",
-      "kontrollitud": "2026-11-23",
+      "kontrollitud": "2026-11-24",
       "url": "https://www.cv.ee/et/search",
-      "kuulutusi_kokku": 3144,
-      "allikas_tekst": "Tööpakkumised (3144)",
+      "kuulutusi_kokku": 3226,
+      "allikas_tekst": "Tööpakkumised (3226)",
       "lugemisluba": "robots.txt ei keela",
       "ametivaldkond": [
         {
           "nimi": "Teenindus",
-          "arv": 684
+          "arv": 704
         },
         {
           "nimi": "Tootmine / töötlemine",
-          "arv": 484
+          "arv": 493
         },
         {
           "nimi": "Haridus / teadus",
-          "arv": 318
+          "arv": 331
         },
         {
           "nimi": "Ehitus / kinnisvara",
-          "arv": 291
+          "arv": 295
         },
         {
           "nimi": "Tervishoid ja sotsiaaltöö",
-          "arv": 270
+          "arv": 279
         },
         {
           "nimi": "Logistika / transport",
-          "arv": 262
+          "arv": 276
         },
         {
           "nimi": "Müük",
-          "arv": 221
+          "arv": 217
         },
         {
           "nimi": "Avalik sektor",
@@ -44,31 +44,31 @@
         },
         {
           "nimi": "Turism / hotellindus / toitlustus",
-          "arv": 205
+          "arv": 209
         },
         {
           "nimi": "Infotehnoloogia",
-          "arv": 204
+          "arv": 208
         },
         {
           "nimi": "Tehnika",
-          "arv": 204
+          "arv": 208
         },
         {
           "nimi": "Kaubandus",
-          "arv": 179
+          "arv": 177
         },
         {
           "nimi": "Korrakaitse / päästeteenistus / julgeolek",
-          "arv": 146
+          "arv": 156
         },
         {
           "nimi": "Juhtimine",
-          "arv": 114
+          "arv": 119
         },
         {
           "nimi": "Turundus / reklaam",
-          "arv": 92
+          "arv": 93
         },
         {
           "nimi": "Administratiivtöö",
@@ -76,31 +76,31 @@
         },
         {
           "nimi": "Finants / raamatupidamine",
-          "arv": 68
-        },
-        {
-          "nimi": "Põllumajandus / keskkonnakaitse",
-          "arv": 67
+          "arv": 70
         },
         {
           "nimi": "Energeetika / elekter",
-          "arv": 64
+          "arv": 66
+        },
+        {
+          "nimi": "Põllumajandus / keskkonnakaitse",
+          "arv": 63
         },
         {
           "nimi": "Pangandus / kindlustus",
-          "arv": 51
-        },
-        {
-          "nimi": "Õigusabi / juura",
-          "arv": 42
+          "arv": 54
         },
         {
           "nimi": "Elektroonika / telekommunikatsioon",
-          "arv": 39
+          "arv": 44
+        },
+        {
+          "nimi": "Õigusabi / juura",
+          "arv": 43
         },
         {
           "nimi": "Kultuur / kunst / meelelahutus / sport",
-          "arv": 28
+          "arv": 30
         },
         {
           "nimi": "Meedia / avalikud suhted",
@@ -108,7 +108,7 @@
         },
         {
           "nimi": "Personalijuhtimine",
-          "arv": 13
+          "arv": 12
         },
         {
           "nimi": "Kvaliteedikontroll",
@@ -143,39 +143,39 @@
       "asukoht_maakond": [
         {
           "nimi": "Harjumaa",
-          "arv": 1680
+          "arv": 1726
         },
         {
           "nimi": "Tartumaa",
-          "arv": 299
+          "arv": 316
         },
         {
           "nimi": "Ida-Virumaa",
-          "arv": 213
+          "arv": 217
         },
         {
           "nimi": "Pärnumaa",
-          "arv": 130
+          "arv": 131
         },
         {
           "nimi": "Lääne-Virumaa",
-          "arv": 121
+          "arv": 123
         },
         {
           "nimi": "Viljandimaa",
-          "arv": 73
+          "arv": 77
         },
         {
           "nimi": "Järvamaa",
-          "arv": 65
+          "arv": 61
         },
         {
           "nimi": "Raplamaa",
-          "arv": 60
+          "arv": 61
         },
         {
           "nimi": "Jõgevamaa",
-          "arv": 57
+          "arv": 58
         },
         {
           "nimi": "Võrumaa",
@@ -183,11 +183,11 @@
         },
         {
           "nimi": "Saaremaa",
-          "arv": 39
+          "arv": 45
         },
         {
           "nimi": "Läänemaa",
-          "arv": 28
+          "arv": 29
         },
         {
           "nimi": "Põlvamaa",
@@ -195,25 +195,25 @@
         },
         {
           "nimi": "Hiiumaa",
-          "arv": 11
+          "arv": 10
         }
       ],
       "asukoht_linn": [
         {
           "nimi": "Tallinn",
-          "arv": 1240
+          "arv": 1278
         },
         {
           "nimi": "Tartu",
-          "arv": 200
+          "arv": 210
         },
         {
           "nimi": "Pärnu",
-          "arv": 94
+          "arv": 95
         },
         {
           "nimi": "Narva",
-          "arv": 50
+          "arv": 52
         },
         {
           "nimi": "Kohtla-Järve",
@@ -221,51 +221,51 @@
         },
         {
           "nimi": "Tapa",
-          "arv": 42
+          "arv": 44
         },
         {
           "nimi": "Jõhvi",
-          "arv": 40
+          "arv": 42
         },
         {
           "nimi": "Viljandi",
-          "arv": 33
-        },
-        {
-          "nimi": "Paide",
-          "arv": 28
-        },
-        {
-          "nimi": "Võru",
-          "arv": 26
-        },
-        {
-          "nimi": "Keila",
-          "arv": 25
+          "arv": 32
         },
         {
           "nimi": "Kuressaare",
+          "arv": 31
+        },
+        {
+          "nimi": "Paide",
+          "arv": 27
+        },
+        {
+          "nimi": "Võru",
+          "arv": 27
+        },
+        {
+          "nimi": "Keila",
           "arv": 24
         },
         {
+          "nimi": "Rakvere",
+          "arv": 22
+        },
+        {
           "nimi": "Valga",
-          "arv": 23
+          "arv": 22
         },
         {
           "nimi": "Haapsalu",
           "arv": 21
         },
         {
-          "nimi": "Rakvere",
-          "arv": 19
+          "nimi": "Rapla",
+          "arv": 17
         },
         {
           "nimi": "Viimsi",
-          "arv": 18
-        },
-        {
-          "nimi": "Rapla",
-          "arv": 14
+          "arv": 15
         },
         {
           "nimi": "Saue",
@@ -280,15 +280,15 @@
       "top_tooandjad": [
         {
           "nimi": "Kaitseressursside Amet",
-          "arv": 84
+          "arv": 89
         },
         {
           "nimi": "Bolt",
-          "arv": 75
+          "arv": 73
         },
         {
           "nimi": "Rimi Eesti Food AS",
-          "arv": 70
+          "arv": 65
         },
         {
           "nimi": "Selver AS",
@@ -296,15 +296,15 @@
         },
         {
           "nimi": "MAXIMA Eesti OÜ",
-          "arv": 33
+          "arv": 34
         },
         {
           "nimi": "Siseturvalisuse karjäärikeskus",
-          "arv": 28
+          "arv": 25
         },
         {
           "nimi": "SOL Baltics OÜ",
-          "arv": 20
+          "arv": 18
         },
         {
           "nimi": "BLRT Grupp AS",
@@ -319,19 +319,19 @@
           "arv": 12
         },
         {
+          "nimi": "LHV Bank AS",
+          "arv": 12
+        },
+        {
+          "nimi": "Tartu Ülikool",
+          "arv": 12
+        },
+        {
           "nimi": "JYSK Linnen`n Furniture OÜ",
           "arv": 11
         },
         {
-          "nimi": "LHV Bank AS",
-          "arv": 11
-        },
-        {
           "nimi": "Põhja-Eesti Regionaalhaigla SA",
-          "arv": 11
-        },
-        {
-          "nimi": "Tartu Ülikool",
           "arv": 11
         },
         {
@@ -347,6 +347,10 @@
           "arv": 9
         },
         {
+          "nimi": "Saue Vallavalitsuse allasutus",
+          "arv": 9
+        },
+        {
           "nimi": "Barona Eesti OÜ",
           "arv": 8
         },
@@ -355,16 +359,20 @@
           "arv": 8
         },
         {
+          "nimi": "SA Viljandi Haigla",
+          "arv": 8
+        },
+        {
           "nimi": "Sanitex OÜ",
           "arv": 8
         },
         {
-          "nimi": "Saue Vallavalitsuse allasutus",
+          "nimi": "Vanglad",
           "arv": 8
         }
       ],
       "top_tooandjad_url": "https://www.cv.ee/et/employers",
-      "markus": "Top-tööandjates on 21 rida, sest kohad 18–21 on jagatud (8 kuulutust: Barona, ERGO, Sanitex, Saue Vallavalitsuse allasutus). Tööandjate koguarvu portaal ei näita.",
+      "markus": "Top-tööandjates on 23 rida, sest kohad 19–23 on jagatud (8 kuulutust: Barona, ERGO, SA Viljandi Haigla, Sanitex, Vanglad). Tööandjate koguarvu portaal ei näita.",
       "valdkonniti": [
         {
           "nimi": "Teenindus",
@@ -2140,19 +2148,19 @@
     },
     {
       "portaal": "CV Keskus",
-      "kontrollitud": "2026-11-23",
+      "kontrollitud": "2026-11-24",
       "url": "https://www.cvkeskus.ee/toopakkumised",
-      "kuulutusi_kokku": 3249,
-      "allikas_tekst": "Tööpakkumised 3 249 (asukohalehel Eesti 3213 + töö välismaal 36)",
+      "kuulutusi_kokku": 3299,
+      "allikas_tekst": "Tööpakkumised 3 299 (asukohalehel Eesti 3263 + töö välismaal 37)",
       "lugemisluba": "robots.txt keelab ainult firmade kuulutuste lehe /firm_joboffers.php; koondlehed lubatud",
       "ametivaldkond": [
         {
           "nimi": "Klienditeenindus",
-          "arv": 829
+          "arv": 838
         },
         {
           "nimi": "Tööstus / Tootmine",
-          "arv": 589
+          "arv": 596
         },
         {
           "nimi": "Müük",
@@ -2160,35 +2168,35 @@
         },
         {
           "nimi": "Infotehnoloogia",
-          "arv": 418
+          "arv": 417
         },
         {
           "nimi": "Transport / Logistika",
-          "arv": 366
+          "arv": 380
         },
         {
           "nimi": "Ehitus / Kinnisvara",
-          "arv": 333
+          "arv": 338
         },
         {
           "nimi": "Tervishoid / Sotsiaaltöö",
-          "arv": 292
+          "arv": 298
         },
         {
           "nimi": "Mehaanika / Tehnika",
-          "arv": 265
+          "arv": 270
         },
         {
           "nimi": "Haridus / Teadus",
-          "arv": 229
+          "arv": 237
         },
         {
           "nimi": "Toitlustus",
-          "arv": 227
+          "arv": 231
         },
         {
           "nimi": "Juhtimine",
-          "arv": 198
+          "arv": 205
         },
         {
           "nimi": "Riigi- ja avalik haldus",
@@ -2224,7 +2232,7 @@
         },
         {
           "nimi": "Energeetika / Loodusvarad",
-          "arv": 68
+          "arv": 67
         },
         {
           "nimi": "Koolitus / Personalitöö",
@@ -2232,11 +2240,11 @@
         },
         {
           "nimi": "Õigusala",
-          "arv": 30
+          "arv": 32
         },
         {
           "nimi": "Kultuur / Meelelahutus",
-          "arv": 24
+          "arv": 23
         },
         {
           "nimi": "Meedia / Loomemajandus / Tõlkimine",
@@ -2248,30 +2256,30 @@
         },
         {
           "nimi": "Pangandus",
-          "arv": 14
+          "arv": 11
         }
       ],
       "ametivaldkond_url": "https://www.cvkeskus.ee/toopakkumised-kategooriates",
       "asukoht_maakond": [
         {
           "nimi": "Harjumaa",
-          "arv": 1730
+          "arv": 1770
         },
         {
           "nimi": "Kodukontor",
-          "arv": 475
+          "arv": 476
         },
         {
           "nimi": "Tartumaa",
-          "arv": 332
+          "arv": 344
         },
         {
           "nimi": "Ida-Virumaa",
-          "arv": 187
+          "arv": 191
         },
         {
           "nimi": "Pärnumaa",
-          "arv": 138
+          "arv": 135
         },
         {
           "nimi": "Lääne-Virumaa",
@@ -2279,11 +2287,11 @@
         },
         {
           "nimi": "Viljandimaa",
-          "arv": 72
+          "arv": 76
         },
         {
           "nimi": "Järvamaa",
-          "arv": 61
+          "arv": 57
         },
         {
           "nimi": "Võrumaa",
@@ -2291,31 +2299,31 @@
         },
         {
           "nimi": "Jõgevamaa",
-          "arv": 56
+          "arv": 55
         },
         {
           "nimi": "Raplamaa",
-          "arv": 49
+          "arv": 47
         },
         {
           "nimi": "Valgamaa",
-          "arv": 43
+          "arv": 45
         },
         {
           "nimi": "Töö välismaal",
-          "arv": 36
-        },
-        {
-          "nimi": "Põlvamaa",
-          "arv": 32
+          "arv": 37
         },
         {
           "nimi": "Saaremaa",
-          "arv": 32
+          "arv": 34
+        },
+        {
+          "nimi": "Põlvamaa",
+          "arv": 26
         },
         {
           "nimi": "Läänemaa",
-          "arv": 20
+          "arv": 21
         },
         {
           "nimi": "Hiiumaa",
@@ -2325,51 +2333,51 @@
       "asukoht_linn": [
         {
           "nimi": "Tallinn",
-          "arv": 1374
+          "arv": 1402
         },
         {
           "nimi": "Tartu",
-          "arv": 260
+          "arv": 265
         },
         {
           "nimi": "Pärnu",
-          "arv": 105
+          "arv": 104
         },
         {
           "nimi": "Narva",
-          "arv": 41
-        },
-        {
-          "nimi": "Rae",
-          "arv": 31
+          "arv": 43
         },
         {
           "nimi": "Kohtla Järve / Jõhvi",
-          "arv": 29
+          "arv": 31
+        },
+        {
+          "nimi": "Rae",
+          "arv": 30
         },
         {
           "nimi": "Maardu",
-          "arv": 26
+          "arv": 29
         },
         {
           "nimi": "Jüri / Aruküla",
-          "arv": 24
+          "arv": 26
         },
         {
           "nimi": "Rakvere",
-          "arv": 24
+          "arv": 26
         },
         {
           "nimi": "Keila",
-          "arv": 22
+          "arv": 25
         },
         {
           "nimi": "Viimsi",
-          "arv": 20
+          "arv": 21
         },
         {
           "nimi": "Jõgeva",
-          "arv": 19
+          "arv": 18
         },
         {
           "nimi": "Laagri",
@@ -2381,7 +2389,7 @@
         },
         {
           "nimi": "Loo",
-          "arv": 12
+          "arv": 13
         },
         {
           "nimi": "Paldiski",
@@ -2396,41 +2404,37 @@
           "arv": 10
         },
         {
-          "nimi": "Tabasalu",
-          "arv": 10
-        },
-        {
           "nimi": "Saku",
           "arv": 9
         },
         {
-          "nimi": "Kehra",
-          "arv": 6
+          "nimi": "Tabasalu",
+          "arv": 7
         },
         {
-          "nimi": "Kose",
-          "arv": 1
+          "nimi": "Kehra",
+          "arv": 5
         },
         {
           "nimi": "Kuusalu",
-          "arv": 1
+          "arv": 2
         },
         {
           "nimi": "Lagedi",
-          "arv": 1
+          "arv": 2
         }
       ],
       "asukoht_url": "https://www.cvkeskus.ee/toopakkumised-asukohtades",
       "top_tooandjad": "puudub",
       "top_tooandjad_pohjus": "Leht /toopakkumised-firma-jargi ei näidanud automaatsel lugemisel arve (ainult küpsiseteade); kontrollitud 16.11.",
-      "markus": "Kategooriad 'Sobib ka ukrainlastele', 'Hooaja-/ajutine töö', 'Praktika' ja 'Vabatahtlik töö' on lisasildid, mitte ametivaldkonnad. 14.11 näitas kategooriate leht kõiki 26 ametivaldkonda. Firmade leht näitas ainult küpsiseteadet. || 23.11: kategooriate leht näitas 20 ametivaldkonda 26-st; puuduvatel jäi varasem arv (Assisteerimine / Administreerimine, Elektroonika / Telekommunikatsioon, Korrakaitse / Turva / Julgeolek, Meedia / Loomemajandus / Tõlkimine, Põllumajandus / Metsandus, Turism / Hotellindus / Iluteenused)."
+      "markus": "Kategooriad 'Sobib ka ukrainlastele', 'Hooaja-/ajutine töö', 'Praktika' ja 'Vabatahtlik töö' on lisasildid, mitte ametivaldkonnad. 14.11 näitas kategooriate leht kõiki 26 ametivaldkonda. Firmade leht näitas ainult küpsiseteadet. || 24.11: kategooriate leht näitas 20 ametivaldkonda 26-st; puuduvatel jäi varasem arv (Assisteerimine / Administreerimine, Elektroonika / Telekommunikatsioon, Korrakaitse / Turva / Julgeolek, Meedia / Loomemajandus / Tõlkimine, Põllumajandus / Metsandus, Turism / Hotellindus / Iluteenused)."
     },
     {
       "portaal": "Töötukassa",
-      "kontrollitud": "2026-11-23",
+      "kontrollitud": "2026-11-24",
       "url": "https://www.tootukassa.ee/et/toopakkumised",
-      "kuulutusi_kokku": 1461,
-      "allikas_tekst": "Lehel 20 kuulutust ja nupp 'Laadi veel 1441'; kokku 1461 (sama mis 22.11; uusimad kuulutused 21.11)",
+      "kuulutusi_kokku": 1422,
+      "allikas_tekst": "Lehel 20 kuulutust ja nupp 'Laadi veel 1402'; kokku 1422",
       "lugemisluba": "robots.txt keelab päringuparameetritega lehed (/et/toopakkumised?), seega filtreid ei loeta",
       "ametivaldkond": [
         {
@@ -3993,6 +3997,21 @@
       "kuupaev": "2026-11-23",
       "portaal": "Töötukassa",
       "kuulutusi_kokku": 1461
+    },
+    {
+      "kuupaev": "2026-11-24",
+      "portaal": "CV.ee",
+      "kuulutusi_kokku": 3226
+    },
+    {
+      "kuupaev": "2026-11-24",
+      "portaal": "CV Keskus",
+      "kuulutusi_kokku": 3299
+    },
+    {
+      "kuupaev": "2026-11-24",
+      "portaal": "Töötukassa",
+      "kuulutusi_kokku": 1422
     }
   ]
 }
