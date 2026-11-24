@@ -1,6 +1,123 @@
 {
  "kandidaadid": [
   {
+   "id": "v14ipGmRglI",
+   "allikas": "arenguseire",
+   "pealkiri": "Raporti \"Lähisuhtevägivalla levik ja trendid Eestis\" esitlus",
+   "avaldatud": "2026-11-24",
+   "url": "https://www.youtube.com/watch?v=v14ipGmRglI",
+   "leitud": "2026-11-24",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "Ze9O9GuZQ2c",
+   "allikas": "ilo",
+   "pealkiri": "Disability Hub Europe (D-Hub) at 15th United Nations Forum on Business and Human Rights",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=Ze9O9GuZQ2c",
+   "leitud": "2026-11-24",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "3CsVdKI3qgA",
+   "allikas": "ilo",
+   "pealkiri": "L'avenir du travail en Afrique commence dès maintenant",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=3CsVdKI3qgA",
+   "leitud": "2026-11-24",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "lgjPNqSTaao",
+   "allikas": "ilo",
+   "pealkiri": "The Future of Work in Africa Starts Now",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=lgjPNqSTaao",
+   "leitud": "2026-11-24",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "bhNMhd3ua-A",
+   "allikas": "ilo",
+   "pealkiri": "Geothermal Systems and Heat Pumps | 3-month adult training programme in Moldova",
+   "avaldatud": "2026-11-23",
+   "url": "https://www.youtube.com/watch?v=bhNMhd3ua-A",
+   "leitud": "2026-11-24",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44102",
+   "allikas": "uttv",
+   "pealkiri": "&nbsp; G. Frege nimeline loengusari 2026: Matti Eklund &bdquo;Võõrad keeled ja võõras reaalsus&ldquo;&nbsp;| 1. loeng &quot;Introduction &ndash; the alien&quot;",
+   "avaldatud": "2026-11-23",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44102",
+   "leitud": "2026-11-24",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44103",
+   "allikas": "uttv",
+   "pealkiri": "G. Frege nimeline loengusari 2026: Matti Eklund &bdquo;Võõrad keeled ja võõras reaalsus&ldquo;&nbsp;| 2. loeng &quot;Alien languages&quot;",
+   "avaldatud": "2026-11-23",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44103",
+   "leitud": "2026-11-24",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44129",
+   "allikas": "uttv",
+   "pealkiri": "1st Roundtable for Building a Baltic Network (Baltic-ECHO) for transdisciplinary studies of the human past &nbsp;",
+   "avaldatud": "2026-11-20",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44129",
+   "leitud": "2026-11-24",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44127",
+   "allikas": "uttv",
+   "pealkiri": "Kogukonna- ja huvijuhtide üliõpilastööde konverents 2026 I osa",
+   "avaldatud": "2026-11-12",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44127",
+   "leitud": "2026-11-24",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44128",
+   "allikas": "uttv",
+   "pealkiri": "Kogukonna- ja huvijuhtide üliõpilastööde konverents 2026 II osa",
+   "avaldatud": "2026-11-12",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44128",
+   "leitud": "2026-11-24",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44122",
+   "allikas": "uttv",
+   "pealkiri": "|Bridget Moran-Nae, fennougristika nooremteadur, &bdquo;How to Revitalize a Language? The Role of Livonian Musicians&ldquo;&nbsp;",
+   "avaldatud": "2026-10-21",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44122",
+   "leitud": "2026-11-24",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
    "id": "B-Ul51vvZlw",
    "allikas": "oecd",
    "pealkiri": "100th Steel committee",
@@ -2091,9 +2208,9 @@
   "oecd-ai": "UCl4praikeBNNxiSVpAvxwkA",
   "ilo": "UCrlcu5KChYyHwXlIeD7oLUg",
   "stanford-hai": "UChugFTK0KyrES9terTid8vA",
-  "uttv": 44083,
+  "uttv": 44129,
   "tds": "UC9ptGynkOPe3vFRW6otoI3g"
  },
- "uuendatud": "2026-11-23",
+ "uuendatud": "2026-11-24",
  "vead": []
 }
