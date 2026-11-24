@@ -2,7 +2,7 @@
 
 > Kui palju kulutab Eesti teadus- ja arendustegevusele protsendina SKPst võrreldes teiste riikidega?
 
-**Staatus:** ajakohane · **Allikas uuendas:** 2026-11-03 · **Kontrollitud:** 2026-11-23 · **Järgmine oodatav uuendus:** 2027-11-03
+**Staatus:** ajakohane · **Allikas uuendas:** 2026-11-03 · **Kontrollitud:** 2026-11-24 · **Järgmine oodatav uuendus:** 2027-11-03
 
 ## Number
 
