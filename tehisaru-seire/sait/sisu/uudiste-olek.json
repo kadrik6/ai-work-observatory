@@ -1,10 +1,10 @@
 {
-  "viimane_kontroll": "2026-11-24T07:50:00+02:00",
+  "viimane_kontroll": "2026-11-24T18:05:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "24.11: andmekeskuste liitumistaotlused (ERR); Eesti Energia 343 juba olemas"
+      "markus": "24.11 õhtu: andmekeskuste poliitiline arutelu (ERR); Pipedrive 236 päeval"
     },
     {
       "nimi": "ERR News (RSS)",
@@ -19,7 +19,7 @@
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "24.11: Robert Waltersi Singapuri uuring; RAISE US raporti levik (Axios)"
+      "markus": "24.11 õhtu: Fitch Ratings tehisaru ja USA hõive (Crypto Briefing)"
     },
     {
       "nimi": "Challenger kuuaruanne",
