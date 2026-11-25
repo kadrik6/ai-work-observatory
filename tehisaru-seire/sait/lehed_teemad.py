@@ -669,7 +669,7 @@ def too(A, vaade, vaated=None):
     # Teemamall A (Kadri 8.11.2026): number → graafik sakkides → uuringud → väited → reeglid → allikad.
     import teemamall as tm
     from komponendid import KUUD
-    from lehed_ulevaade import PAV_URL, REG_URL, UNE_URL, UNE_UUENDATUD, _loe, _kv, reg_tootud, vaite_teema
+    from lehed_ulevaade import PAV_URL, REG_URL, UNE_URL, UNE_UUENDATUD, _loe, _kv, koondamiste_viimane, reg_tootud, vaite_teema
     # Kadri 11.11.2026: koondamised olid liiga suure fookuse all; neid uudiseid on harva ja muu pole vähem tähtis.
     # Töötus, vabad kohad ja kuulutused on eespool; koondamised ja „Keda koondajad otsivad“ on ühes sakis prognoosi ees.
     sec_tootus, sec_koond = too_eesti(A)
@@ -695,7 +695,7 @@ def too(A, vaade, vaated=None):
     allikad = [
         ("Töötus kuu kaupa, Eurostat une_rt_m", UNE_URL, UNE_UUENDATUD, "sesoonselt tasandatud"),
         ("Registreeritud töötud kuu kaupa, Statistikaamet TT065", REG_URL, reg_tootud()[1], "Töötukassas arvel olijad; ei ole töötuse määr"),
-        ("Koondamised, uudised", "", max(r["kuupaev"] for r in A["koondamised"]["juhtumid"]), "viimane teade; uudistest kogutud, nimekiri pole täielik"),
+        ("Koondamised, uudised", "", koondamiste_viimane(A["koondamised"]), "viimane teade või arvu täpsustus; uudistest kogutud, nimekiri pole täielik"),
         ("Tööpakkumised, 3 portaali", "", A["toopakkumised"]["uuendatud"][:10], "kogutakse iga päev"),
         ("AI- ja andmetööde kuulutused, CV.ee", "https://www.cv.ee/et/search", A["ai_kuulutused"]["uuendatud"][:10],
          "kogutakse iga päev" if ak_vanus <= 3 else "kogumine on katkenud, näidatud on viimane seis"),

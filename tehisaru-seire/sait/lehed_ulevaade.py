@@ -367,6 +367,19 @@ def koondamise_arv(r):
     return f'kuni {r["arv_ulem"]}' if r.get("arv_ulem") else "arv pole teada"
 
 
+def koondamiste_viimane(K):
+    """Uusim kuupäev, mil koondamiste nimekiri muutus: uus juhtum või jätku-uudisest uuenenud arv."""
+    return max([j["kuupaev"] for j in K["juhtumid"]] + [j["arv_uuendus"]["kuupaev"] for j in K["juhtumid"] if j.get("arv_uuendus")])
+
+
+def arvu_uuendused(juhtumid):
+    """Lause juhtumite kohta, mille arv uuenes jätku-uudisest (andmekiht.uuenda_koondamiste_arvud); tühi, kui neid pole."""
+    osad = [f'{e(j["ettevote"])} {e(koondamise_arv(j))} (esimeses teates {e(koondamise_arv(j["arv_varem"]))}; '
+            f'<a href="{e(j["arv_uuendus"]["url"])}">{e(j["arv_uuendus"]["allikas"])}, {kp(j["arv_uuendus"]["kuupaev"])}</a>)'
+            for j in juhtumid if j.get("arv_uuendus")]
+    return f'<p class="allikas" id="koondamised-uuendused">Arv uuenes hilisema uudise järgi: {"; ".join(osad)}.</p>' if osad else ""
+
+
 def too_eesti(A):
     """Töö vaate andmed: (Eesti töötus kuu kaupa, Eesti koondamised, kus küsiti tehisaru rolli).
 
@@ -460,6 +473,7 @@ def too_eesti(A):
   <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa">{ribad}</div>
   <p class="kr-leg">{legend}</p>
   <p class="allikas">Allikas: uudised, lingid tabelis <a href="#palkamine">Keda koondajad otsivad</a>. Ettevõtte enda selgitus ei tõenda põhjust. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
+  {arvu_uuendused(juhtumid)}
   {bonney_rida}
 </div>"""
     # Kaardid võeti maha; arv, põhjus ja link on tabelis „Keda koondajad otsivad“ (Kadri MKUS-i kommentaar 7.11.2026 08:48)
