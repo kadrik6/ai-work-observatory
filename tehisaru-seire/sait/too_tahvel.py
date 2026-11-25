@@ -154,7 +154,7 @@ def read(D):
              pilt=jaotusriba([(k, D.k_osa[k] / D.k_kokku * 100) for k in ("s", "m", "t")],
                              f'{D.k_kokku} töökohast {D.k_osa["s"]} puhul nimetati tehisaru põhjusena, {D.k_osa["m"]} puhul mainiti muul moel'),
              mrk=f"{len(D.kj)} koondamist. {k_lause}. Nimekiri pole täielik.",
-             liik="uudised", allikas="Eesti uudised", kuup=f'kontrollitud {kp(D.ko["kontrollitud"])}'),
+             liik="uudised", allikas="Eesti uudised", kuup=f'viimane teade {kp(max(r["kuupaev"] for r in D.kj))}'),
         dict(kys="Kas tehisaruoskust otsitakse?", ank="ai-kuulutused", arv=str(D.ak_amet), all=f"{_arvt(D.ak_n)} kuulutusest on AI- või andmeametid",
              pilt=vahvel100((D.ak_amet + D.ak_osk) / D.ak_n * 100, f"{D.ak_amet + D.ak_osk} kuulutust {D.ak_n}-st, {pr((D.ak_amet + D.ak_osk) / D.ak_n * 100)}%"),
              mrk=f"Veel {D.ak_osk} muu ameti kuulutust mainib tehisaru. {pr(D.ak_harju / D.ak_amet * 100, 0)}% AI- ja andmetöödest on Harjumaal. Liigitus märksõnade järgi.",

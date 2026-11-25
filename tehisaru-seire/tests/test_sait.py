@@ -2126,3 +2126,12 @@ def test_hangete_tahvel_kukub_kui_andmed_pealkirja_ei_toeta(A):
     loend = H["loend"][:i] + [dict(H["loend"][i], hea=3)] + H["loend"][i + 1:]
     with pytest.raises(andmekiht.AndmeViga):  # hea näite märge ei vasta tingimustele
         hanked_tahvel.Andmed(dict(H, loend=loend), KASITSI)
+
+
+def test_koondamiste_kuupaev_on_viimase_teate_oma(A, sait):
+    # Kadri 25.11.2026: nimekiri täieneb uudistest iga päev, „kontrollitud 8.11“ näitas seda vanana
+    viimane = komponendid.kp(max(r["kuupaev"] for r in A["koondamised"]["juhtumid"]))
+    h = sait["too.html"]
+    assert f"viimane teade {viimane}" in tekst(_jaotis(h, "tahvel"))
+    assert f"(viimane teade {viimane})" in tekst(_jaotis(h, "koondamised"))
+    assert "kontrollitud " + komponendid.kp(A["koondamised"]["kontrollitud"]) not in tekst(_jaotis(h, "tahvel"))
