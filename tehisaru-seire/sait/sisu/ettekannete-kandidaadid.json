@@ -1,6 +1,66 @@
 {
  "kandidaadid": [
   {
+   "id": "ugthYZkr7c8",
+   "allikas": "ilo",
+   "pealkiri": "Timor-Leste Decent Work Country Programme 2026–2030: Key highlights",
+   "avaldatud": "2026-11-25",
+   "url": "https://www.youtube.com/watch?v=ugthYZkr7c8",
+   "leitud": "2026-11-25",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "jBBMmVZyIo4",
+   "allikas": "ilo",
+   "pealkiri": "Roadmaps for more and better jobs through sustainable investment",
+   "avaldatud": "2026-11-24",
+   "url": "https://www.youtube.com/watch?v=jBBMmVZyIo4",
+   "leitud": "2026-11-25",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "-UgBo2gnyOc",
+   "allikas": "ilo",
+   "pealkiri": "Por um mundo do trabalho livre de violência e assédio: Convenção nº 190 da OIT",
+   "avaldatud": "2026-11-24",
+   "url": "https://www.youtube.com/watch?v=-UgBo2gnyOc",
+   "leitud": "2026-11-25",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "JyWJymgqLOE",
+   "allikas": "ilo",
+   "pealkiri": "For a world of work free from violence and harassment: ILO Convention No. 190",
+   "avaldatud": "2026-11-24",
+   "url": "https://www.youtube.com/watch?v=JyWJymgqLOE",
+   "leitud": "2026-11-25",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "zQub6qC-sFg",
+   "allikas": "ilo",
+   "pealkiri": "Por un mundo del trabajo libre de violencia y acoso: el Convenio 190 de la OIT",
+   "avaldatud": "2026-11-24",
+   "url": "https://www.youtube.com/watch?v=zQub6qC-sFg",
+   "leitud": "2026-11-25",
+   "olek": "teemaväline"
+  },
+  {
+   "id": "uttv-44142",
+   "allikas": "uttv",
+   "pealkiri": "Defense of a doctoral thesis:&nbsp;Bruno Rucy Carneiro Alves De Lima &quot;Dynamic Recursive Queries&quot;",
+   "avaldatud": "2026-11-12",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44142",
+   "leitud": "2026-11-25",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
    "id": "v14ipGmRglI",
    "allikas": "arenguseire",
    "pealkiri": "Raporti \"Lähisuhtevägivalla levik ja trendid Eestis\" esitlus",
@@ -2208,9 +2268,9 @@
   "oecd-ai": "UCl4praikeBNNxiSVpAvxwkA",
   "ilo": "UCrlcu5KChYyHwXlIeD7oLUg",
   "stanford-hai": "UChugFTK0KyrES9terTid8vA",
-  "uttv": 44129,
+  "uttv": 44142,
   "tds": "UC9ptGynkOPe3vFRW6otoI3g"
  },
- "uuendatud": "2026-11-24",
+ "uuendatud": "2026-11-25",
  "vead": []
 }
