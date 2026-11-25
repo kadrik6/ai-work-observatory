@@ -691,7 +691,7 @@ def too(A, vaade, vaated=None):
     kv_v = max((r["periood"] for r in vabad), key=_kv) if vabad else None
     allikad = [
         ("Töötus kuu kaupa, Eurostat une_rt_m", UNE_URL, UNE_UUENDATUD, "sesoonselt tasandatud"),
-        ("Koondamised, uudised", "", A["koondamised"]["kontrollitud"], "käsitsi kogutud, nimekiri pole täielik"),
+        ("Koondamised, uudised", "", max(r["kuupaev"] for r in A["koondamised"]["juhtumid"]), "viimane teade; uudistest kogutud, nimekiri pole täielik"),
         ("Tööpakkumised, 3 portaali", "", A["toopakkumised"]["uuendatud"][:10], "kogutakse iga päev"),
         ("AI- ja andmetööde kuulutused, CV.ee", "https://www.cv.ee/et/search", A["ai_kuulutused"]["uuendatud"][:10], "kogutakse iga päev"),
         *([("Vabad ametikohad, Statistikaamet PAV011", PAV_URL, max(r["uuendatud"] for r in vabad), f"viimane kvartal: {kv_v}")] if vabad else []),

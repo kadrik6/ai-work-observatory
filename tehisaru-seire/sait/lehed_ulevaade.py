@@ -24,7 +24,6 @@ SISU = Path(__file__).resolve().parent / "sisu"
 IN, EB, DS = "inimeste-tehisaru-kasutus", "ettevotete-tehisaru-kasutus", "inimeste-digioskused"
 EUROSTAT = "https://ec.europa.eu/eurostat/databrowser/view/{}/default/table"
 UNE_URL = "https://ec.europa.eu/eurostat/databrowser/view/une_rt_m/default/table"
-UNE_UUENDATUD = "2026-10-30"
 HANKED_URL = "https://riigihanked.riik.ee/"
 OECD_KUUPAEV = "2026-11-03"  # OECD avaliku sektori innovatsiooni raport (sama kuupäev teematabelis)
 VOO_PAEVI, VOO_RIDU = 14, 8
@@ -63,6 +62,17 @@ def tootus():
     if "EE" not in s or EL not in s:
         raise AndmeViga("sisu/eurostat-tootus-kuud.csv: Eesti või ELi rida puudub")
     return s
+
+
+def tootuse_uuendatud():
+    """Kuupäev, millal Eurostat töötuse kuurida viimati muutis (sait/lae_tootus.py kirjutab selle faili)."""
+    kp_ = {r.get("uuendatud") or "" for r in _loe("eurostat-tootus-kuud.csv")}
+    if len(kp_) != 1 or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", next(iter(kp_))):
+        raise AndmeViga("sisu/eurostat-tootus-kuud.csv: veerus „uuendatud“ peab olema üks kuupäev")
+    return kp_.pop()
+
+
+UNE_UUENDATUD = tootuse_uuendatud()
 
 
 def hanked():
@@ -413,7 +423,7 @@ def too_eesti(A):
     sec_v = f"""
 <div class="kk-vis" id="koondamised-visuaal">
   <h3 class="kk-h3" id="h-koondamised-v">{piir.capitalize()}{kokku} koondatud töökohast <b>{pohjus} töökoha</b> puhul nimetati üheks põhjuseks tehisaru</h3>
-  <p class="ps">Teatatud töökohad ettevõtte kaupa. Ainult koondamised, mille puhul uudis küsis tehisaru kohta; nimekiri pole täielik (kontrollitud {kp(K["kontrollitud"])}).</p>
+  <p class="ps">Teatatud töökohad ettevõtte kaupa. Ainult koondamised, mille puhul uudis küsis tehisaru kohta; nimekiri pole täielik (viimane teade {kp(juhtumid[0]["kuupaev"])}).</p>
   <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa">{ribad}</div>
   <p class="kr-leg">{legend}</p>
   <p class="allikas">Allikas: uudised, lingid tabelis <a href="#palkamine">Keda koondajad otsivad</a>. Ettevõtte enda selgitus ei tõenda põhjust. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
