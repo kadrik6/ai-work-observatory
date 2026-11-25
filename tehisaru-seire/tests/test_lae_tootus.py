@@ -68,3 +68,56 @@ def test_igapaevane_too_laeb_tootuse_ja_paneb_faili_commiti():
     yml = (JUUR.parent / ".github" / "workflows" / "sait-andmed.yml").read_text(encoding="utf-8")
     assert "python sait/lae_tootus.py" in yml
     assert "tehisaru-seire/sait/sisu/eurostat-tootus-kuud.csv" in yml.split("git add")[1].split("git diff")[0]
+
+
+# ---------- registreeritud töötud (sait/lae_reg_tootud.py) ----------
+
+import lae_reg_tootud  # noqa: E402
+
+
+def reg_vastus(viimane_tyhi=True):
+    """json-stat2 nagu Statistikaamet annab: Aasta × Kuu, viimase aasta lõpukuud on tühjad."""
+    aastad, kuud = ["2024", "2025", "2026"], [str(k) for k in range(1, 13)]
+    v = []
+    for a in aastad:
+        for k in kuud:
+            tyhi = a == "2026" and int(k) > (10 if viimane_tyhi else 12)
+            v.append(None if tyhi else 40000 + int(a) % 100 * 10 + int(k))
+    return {"id": ["Aasta", "Kuu", "Sugu"], "size": [3, 12, 1], "value": v,
+            "dimension": {"Aasta": {"category": {"index": {a: i for i, a in enumerate(aastad)}}},
+                          "Kuu": {"category": {"index": {k: i for i, k in enumerate(kuud)}}},
+                          "Sugu": {"category": {"index": {"1": 0}}}}}
+
+
+def test_reg_tootud_viimased_25_kuud_ilma_tyhjade_kuudeta():
+    read = lae_reg_tootud.read_vastusest(reg_vastus())
+    assert len(read) == 25 and read[0][0] == "2024-10" and read[-1] == ("2026-10", 40000 + 260 + 10)
+    assert dict(read)["2025-10"] == 40000 + 250 + 10  # aasta varasem kuu on olemas
+
+
+def test_reg_tootud_paring_jatab_kuude_keskmise_valja():
+    meta = {"variables": [
+        {"code": "Aasta", "values": ["2023", "2024", "2025", "2026"], "valueTexts": ["2023", "2024", "2025", "2026"]},
+        {"code": "Kuu", "values": ["00"] + [str(k) for k in range(1, 13)], "valueTexts": ["Kuude keskmine"] + ["x"] * 12},
+        {"code": "Piirkond/Haldusüksus", "values": ["1", "2"], "valueTexts": ["Kogu Eesti", "Põhja-Eesti"]},
+        {"code": "Sugu", "values": ["1", "2"], "valueTexts": ["Mehed ja naised", "Mehed"]},
+        {"code": "Vanuserühm", "values": ["1", "2"], "valueTexts": ["Vanuserühmad kokku", "16-24"]}]}
+    q = {x["code"]: x["selection"]["values"] for x in lae_reg_tootud.paring(meta, aastaid=3)["query"]}
+    assert q["Kuu"] == [str(k) for k in range(1, 13)] and q["Aasta"] == ["2024", "2025", "2026"]
+    assert q["Piirkond/Haldusüksus"] == ["1"] and q["Sugu"] == ["1"] and q["Vanuserühm"] == ["1"]
+
+
+def test_reg_tootud_fail_muutub_ainult_siis_kui_arv_muutus():
+    read = lae_reg_tootud.read_vastusest(reg_vastus())
+    esimene = lae_reg_tootud.uus_seis([], read, "2026-11-16")
+    vanad = [{k: str(v) for k, v in r.items()} for r in esimene]
+    assert lae_reg_tootud.uus_seis(vanad, read, "2026-12-15") is None
+    assert lae_reg_tootud.uus_seis(vanad, read[1:] + [("2026-11", 41000)], "2026-12-15")[-1]["uuendatud"] == "2026-12-15"
+
+
+def test_reg_tootud_repo_fail_ja_igapaevane_too():
+    kuud, avaldatud = lehed_ulevaade.reg_tootud()
+    assert len(kuud) == lae_reg_tootud.KUID and avaldatud >= "2026-11-16"
+    yml = (JUUR.parent / ".github" / "workflows" / "sait-andmed.yml").read_text(encoding="utf-8")
+    assert "python sait/lae_reg_tootud.py" in yml
+    assert "tehisaru-seire/sait/sisu/reg-tootud-kuud.csv" in yml.split("git add")[1].split("git diff")[0]

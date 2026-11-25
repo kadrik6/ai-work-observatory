@@ -16,6 +16,8 @@ Kadri 8.11.2026: sait peab olema kolleegidele avatav link, mis ehitub GitHubist 
    GitHub saadab teate; sait jääb eelmise seisuga.
    Sama töö laeb ka töötuse kuurea (`sait/lae_tootus.py`, Eurostat une_rt_m): uus kuu jõuab lehele samal päeval,
    kui Eurostat avaldab nii Eesti kui ka ELi numbri.
+   Registreeritud töötute arvu laeb `sait/lae_reg_tootud.py` (Statistikaamet TT065, Töötukassa andmed); see on
+   eraldi plokis ja töötuse määraga seda ei võrrelda.
 5. Uudised, koondajad, AI-kuulutused, hanked ja publikatsioonid tulevad projekti igapäevastest töödest
    (7.23 ja 17.53 Tallinna aja järgi). Iga töö viimane samm on `bash tehisaru-seire/sait/sisu_maini.sh`
    puhtas koopias: see võtab hetkeseisu (`sait/vota_kaasa.py`), ehitab saidi, jooksutab testid ja turvakontrolli
