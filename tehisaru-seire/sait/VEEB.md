@@ -22,6 +22,9 @@ Kadri 8.11.2026: sait peab olema kolleegidele avatav link, mis ehitub GitHubist 
    (7.23 ja 17.53 Tallinna aja järgi). Iga töö viimane samm on `bash tehisaru-seire/sait/sisu_maini.sh`
    puhtas koopias: see võtab hetkeseisu (`sait/vota_kaasa.py`), ehitab saidi, jooksutab testid ja turvakontrolli
    ning push'ib `main` harusse ainult kausta `sait/sisu/` (Kadri otsus 8.11.2026). Kui midagi kukub, push'i ei tule.
+   Eesti koondamiste arv uueneb uudistest ise (25.11.2026): kui sama ettevõtte hilisemal koondamisuudisel on failis
+   `sisu/uudised.jsonl` väljal `arv_eestis` uus arv, näitab Töö vaade seda ja ütleb juurde esimese teate arvu ning uue
+   arvu allika (`andmekiht.uuenda_koondamiste_arvud`). Käsitsi faili `tooelu-seire/koondamised_ee.json` selleks muuta ei ole vaja.
 
 ## Ühekordne seadistus (Kadri)
 

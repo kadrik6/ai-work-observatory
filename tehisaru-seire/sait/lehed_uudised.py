@@ -946,10 +946,13 @@ def palkamine(A):
         js = [j for j in K if j["ettevote"] == f]
         arvud = "".join(
             f'<div class="pk-k" id="pk-{e(j["id"])}"><b>{e(koondamise_arv(j))}</b> <span class="pk-d">{j["kuupaev"][5:7]}.{j["kuupaev"][:4]}</span>'
-            f'<small>tehisaru: {e(ROLL_NIMI[j["roll"]])}</small></div>' for j in js)
+            f'<small>tehisaru: {e(ROLL_NIMI[j["roll"]])}</small>'
+            + (f'<small>esimeses teates {e(koondamise_arv(j["arv_varem"]))}</small>' if j.get("arv_uuendus") else "") + '</div>' for j in js)
         pohjused = "".join(
             f'<div class="pk-k"><p>{e(j["pohjus"])}</p><small>{a(j["url"], j["allikas"])}'
-            f'{" · uudisest, kontrollimata" if j.get("kandidaat") else ""}</small></div>' for j in js)
+            f'{" · uudisest, kontrollimata" if j.get("kandidaat") else ""}'
+            + (f' · uus arv: {a(j["arv_uuendus"]["url"], j["arv_uuendus"]["allikas"])}, {kp(j["arv_uuendus"]["kuupaev"])}' if j.get("arv_uuendus") else "")
+            + '</small></div>' for j in js)
         x = F.get(f)
         if x is None:
             read.append(f'<tr><td><b>{e(f)}</b><small>{e(js[0]["sektor"])}</small></td><td>{arvud}</td><td>{pohjused}</td>'

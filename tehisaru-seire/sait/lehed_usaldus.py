@@ -458,14 +458,16 @@ def _uuenemine(A):
         return kp(x[:10]) if x else "—"
     otsib = min((f["otsib"]["kontrollitud"] for f in (F or {}).values() if f["otsib"].get("kontrollitud")), default="")
     kandidaate = sum(1 for j in K.get("juhtumid", []) if j.get("kandidaat"))
+    from lehed_ulevaade import koondamiste_viimane
     Oo, Ov = A.get("ootel") or {}, A.get("oecd_valvur") or {}
     viim_uuring = max([T.get("kontrollitud", "")] + [u.get("seire_kinnitatud", "") for u in A.get("uuringud", {}).values() if u.get("lisa")])
     viim_vaide = max([v.get("kuupaev", "") for v in A.get("uudiste_vaited") or []], default="")
     read = [
         ("Uudised Eestist ja maailmast", "ise, kaks korda päevas (7.23 ja 17.53), sh jätkulood; kell 12.53 suured uudised", d(O["viimane_kontroll"]) if O else "—",
          "Mitte midagi. Uudise liigi ja leviku märgib kogumine ise."),
-        ("Eesti koondamised (Töö)", "uudistest ise, märkega „uudisest, kontrollimata“", d(K.get("kontrollitud", "")),
-         f"Kinnitamine käsitsi peetud nimekirja (tooelu-seire/koondamised_ee.json). Praegu on kinnitamata {kandidaate}."),
+        ("Eesti koondamised (Töö)", "uudistest ise, märkega „uudisest, kontrollimata“; koondatute arv uueneb hilisemast uudisest ise",
+         d(koondamiste_viimane(K)) if K.get("juhtumid") else "—",
+         f"Kinnitamine käsitsi peetud nimekirja (tooelu-seire/koondamised_ee.json, viimati {d(K.get('kontrollitud', ''))}). Praegu on kinnitamata {kandidaate}."),
         ("Keda koondajad otsivad", "ise, esmaspäeviti ja uue koondaja lisandumisel", d(otsib), "Mitte midagi."),
         ("Ametlikud numbrid (Eurostat, Statistikaamet)", "ise, iga päev", d(A.get("uuendatud", "")),
          "Kui number muutub, peatub ehitus ja pealkiri tuleb üle vaadata. Riikide 2026. aasta numbrid kantakse käsitsi."),
