@@ -243,8 +243,28 @@ def sihiriba(praegu, siht, lopp, uhik, k=1, fookus=False):
             f'<i class="joon siht" style="left:{siht / lopp * 100:.2f}%"></i></span>')
 
 
-def tabel(pais, read, fookus_rida=None, piir=False, pealdis="", numbrid=None):
-    """numbrid: veergude indeksid, mis joondatakse paremale (vaikimisi kõik peale esimese)."""
+def tbl_div(tel="", lisa=""):
+    """Tabeli ümbrise algus. `tel` ütleb, kuidas lai tabel telefonis ära mahub (Kadri 25.11.2026: külgsuunas ei kerita,
+    tabeli rida jääb üheks reaks). Sõnad tühikuga: „-3“ peidab telefonis 3. veeru, „1:6em“ annab 1. veerule laiuse,
+    „v3“ jätab aastatabelist alles esimese veeru ja kolm viimast aastat. Peidetud veerud toob tagasi nupp
+    „Näita kõiki veerge“ (sait.js). Reeglid on failis stiil.css (.tbl.tf)."""
+    kl, stiil = ["tbl"] + lisa.split(), []
+    for osa in tel.split():
+        if osa == "v3":
+            kl.append("tv3")
+        elif osa.startswith("-"):
+            kl.append(f"tp-{int(osa[1:])}")
+        else:
+            nr, laius = osa.split(":")
+            stiil.append(f"--t{int(nr)}:{laius}")
+    if tel:
+        kl.insert(1, "tf")
+    st = f' style="{";".join(stiil)}"' if stiil else ""
+    return f'<div class="{" ".join(kl)}"{st}>'
+
+
+def tabel(pais, read, fookus_rida=None, piir=False, pealdis="", numbrid=None, tel=""):
+    """numbrid: veergude indeksid, mis joondatakse paremale (vaikimisi kõik peale esimese). tel: vt tbl_div."""
     numbrid = set(range(1, len(pais))) if numbrid is None else set(numbrid)
     th = "".join(f'<th scope="col"{" class=v" if i in numbrid else ""}>{e(p)}</th>' for i, p in enumerate(pais))
     tr = []
@@ -252,7 +272,7 @@ def tabel(pais, read, fookus_rida=None, piir=False, pealdis="", numbrid=None):
         kl = ' class="fookus"' if fookus_rida is not None and i == fookus_rida else ""
         tr.append(f"<tr{kl}>" + "".join(f'<td{" class=v" if j in numbrid else ""}>{c}</td>' for j, c in enumerate(r)) + "</tr>")
     cap = f'<caption class="peidus">{e(pealdis)}</caption>' if pealdis else ""
-    return (f'<div class="tbl"><table{" data-piir" if piir else ""}>{cap}<thead><tr>{th}</tr></thead>'
+    return (f'{tbl_div(tel)}<table{" data-piir" if piir else ""}>{cap}<thead><tr>{th}</tr></thead>'
             f'<tbody>{"".join(tr)}</tbody></table></div>')
 
 

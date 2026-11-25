@@ -10,7 +10,7 @@ import re
 
 from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, jaga, pea, seotud, sonaga
 from andmekiht import AndmeViga
-from komponendid import e, faktid, kp, pr
+from komponendid import e, faktid, kp, pr, tbl_div
 import json as _json
 from pathlib import Path as _Path
 
@@ -683,14 +683,14 @@ def hanked(A, vaade, vaated=None):
     </div>
     <div class="lits-mx">
       <p class="gt" id="g-lits-as">Kes milliseid litsentse hangib: hangete arv asutuse ja eesmärgi järgi</p>
-      <div class="tbl"><table class="lits-m" aria-describedby="g-lits-as"><thead><tr><th scope="col">Asutus</th>{m_pais}<th scope="col" class="v">Kokku</th></tr></thead>
+      {tbl_div("1:36%", "tl")}<table class="lits-m" aria-describedby="g-lits-as"><thead><tr><th scope="col">Asutus</th>{m_pais}<th scope="col" class="v">Kokku</th></tr></thead>
       <tbody>{m_read}</tbody></table></div>
       <p class="gs">Lahtris on hangete arv ja peamine toode.</p>
     </div>
   </div>
   <details>
     <summary>Näita kõiki {len(LI)} litsentsihanget koos eesmärgiga</summary>
-    <div class="tbl"><table data-piir><thead><tr><th scope="col">Aasta</th><th scope="col">Hange ja hankija</th><th scope="col">Toode</th><th scope="col">Eesmärk</th><th scope="col" class="v">Eeldatav maksumus</th></tr></thead>
+    {tbl_div("-4 1:3.8em 3:22% 5:6.2em")}<table data-piir><thead><tr><th scope="col">Aasta</th><th scope="col">Hange ja hankija</th><th scope="col">Toode</th><th scope="col">Eesmärk</th><th scope="col" class="v">Eeldatav maksumus</th></tr></thead>
     <tbody>{"".join(l_rows)}</tbody></table></div>
   </details>
   <details>
@@ -739,7 +739,7 @@ def hanked(A, vaade, vaated=None):
   <div class="h-otsing"><input type="search" placeholder="nt andmeladu, kõnetuvastus, Tableau" aria-label="Otsi hangetest">
     <div class="u-f" role="group" aria-label="Rühm"><button type="button" data-r="" aria-pressed="true">kõik</button><button type="button" data-r="ai">tehisaru</button><button type="button" data-r="andmed">andmed</button><button type="button" data-r="hea">head näited</button></div>
     <span class="h-loe" aria-live="polite"></span></div>
-  <div class="tbl"><table class="h-tabel" data-piir><thead><tr><th scope="col">Kuupäev</th><th scope="col">Hange ja hankija</th><th scope="col">Rühm</th><th scope="col" class="v">Eeldatav maksumus</th><th scope="col">Hindamine</th><th scope="col">Tunnused</th></tr></thead>
+  {tbl_div("-3 -5 -6 1:6.6em 4:6.4em")}<table class="h-tabel" data-piir><thead><tr><th scope="col">Kuupäev</th><th scope="col">Hange ja hankija</th><th scope="col">Rühm</th><th scope="col" class="v">Eeldatav maksumus</th><th scope="col">Hindamine</th><th scope="col">Tunnused</th></tr></thead>
   <tbody>{"".join(l_read)}</tbody></table></div>
 </section>
 </div>"""
@@ -758,7 +758,7 @@ def hanked(A, vaade, vaated=None):
 <section class="pn sp12" id="tapsus" aria-labelledby="h-tapsus">
   <div class="pn-h"><h2 id="h-tapsus">Klassifikaator leiab umbes <b>{pr(tul["saagis"] * 100, 0)}%</b> tehisaru- ja andmehangetest ning {pr(tul["tapsus"] * 100, 0)}% leitutest on õiged masinmärgendite järgi</h2></div>
   <p class="ps">Testitud {hind["hindamine"]["test"]} hankel alates {hind["hindamine"]["testi_alates"]}. aastast. Märgendid ({hind["margendid"]["kokku"]}) tegi Claude; {KASITSI["n"]} neist vaadati käsitsi pimesi üle: lõplikus viitevalimis on {KASITSI["viide"]["ei"]} ei, {KASITSI["viide"]["andmed"]} andmehanget ja {KASITSI["viide"]["ai"]} tehisaruhanget. Masinmärgendid langevad viitega kokku {KASITSI["kokku"]}% (kappa {KASITSI["kappa"]}), käsitsi esmamärgendid {KASITSI["kasitsi"]}% (kappa {KASITSI["kappa_kasitsi"]}). Täpsus ja saagis on veel mõõdetud masina märgendite vastu. eForms-hangetest ({_arv(lev["hankeid"])}) on valimi põhjal umbes {lev["valimi_pohjal"]["hinnang"]} tehisaru- või andmehanget (95% vahemik {vmin}–{vmax}); klassifikaator leidis {lev["valitud_leidis"]}.</p>
-  <div class="tbl"><table><thead><tr><th scope="col">Meetod</th><th scope="col" class="v">Täpsus (95%)</th><th scope="col" class="v">Saagis (95%)</th><th scope="col" class="v">F1</th></tr></thead>
+  {tbl_div("1:30% 4:2.8em")}<table><thead><tr><th scope="col">Meetod</th><th scope="col" class="v">Täpsus (95%)</th><th scope="col" class="v">Saagis (95%)</th><th scope="col" class="v">F1</th></tr></thead>
   <tbody>{"".join(t_rows)}</tbody></table></div>
 </section>
 </div>"""
@@ -871,7 +871,7 @@ def uuringud_too(A):
         li = "".join(f'<tr><td class="n">{kp(r["avaldatud"])}</td><td class="v pub-ts{" t" if not r["viiteid"] else ""}">{_arv(r["viiteid"])}</td>'
                      f'<td><a href="{e(r["url"])}">{e(r["pealkiri"])}</a><small>{e(r.get("kanal") or "")}</small></td></tr>' for r in read if r.get("url"))
         nupud.append(f'<button type="button" role="tab" aria-selected="{"true" if i == 0 else "false"}" aria-controls="pub-{g}" id="tab-{g}">{e(nimi)} ({len(read)})</button>')
-        osad.append(f'<div role="tabpanel" id="pub-{g}" aria-labelledby="tab-{g}"{"" if i == 0 else " hidden"}><div class="tbl"><table data-piir><thead><tr><th scope="col">Avaldatud</th><th scope="col" class="v">Tsiteeritud</th><th scope="col">Publikatsioon ja kanal</th></tr></thead><tbody>{li}</tbody></table></div></div>')
+        osad.append(f'<div role="tabpanel" id="pub-{g}" aria-labelledby="tab-{g}"{"" if i == 0 else " hidden"}>{tbl_div("-2 1:6.4em")}<table data-piir><thead><tr><th scope="col">Avaldatud</th><th scope="col" class="v">Tsiteeritud</th><th scope="col">Publikatsioon ja kanal</th></tr></thead><tbody>{li}</tbody></table></div></div>')
     sec_t = f"""
 <section class="pn sp12" id="publikatsioonid" aria-labelledby="h-publikatsioonid">
   <div class="pn-h"><h2 id="h-publikatsioonid"><span class="kys">Mida tasub lugeda?</span> <b>Uusimad ja enim tsiteeritud tööd</b></h2></div>
@@ -914,7 +914,7 @@ def uuringud_too(A):
 <section class="pn sp12" id="eesti-allikad" aria-labelledby="h-eesti-allikad">
   <div class="pn-h"><h2 id="h-eesti-allikad"><span class="kys">Mida on Eestis uuritud?</span> <b>{len(ee)} uuringut ja raportit</b></h2></div>
   <p class="ps">Arenguseire Keskuse, OSKA ja teiste Eesti allikate tööd, mis käsitlevad tehisaru, tootlikkust või oskusi.{kpi_t or " Uusimad eespool."}</p>
-  <div class="tbl"><table data-piir class="ee-tbl"><thead><tr><th scope="col">Avaldatud</th><th scope="col">Töö</th><th scope="col">Põhinumbrid</th><th scope="col">Allikas</th></tr></thead><tbody>{e_read}</tbody></table></div>
+  {tbl_div("-4 1:6.6em")}<table data-piir class="ee-tbl"><thead><tr><th scope="col">Avaldatud</th><th scope="col">Töö</th><th scope="col">Põhinumbrid</th><th scope="col">Allikas</th></tr></thead><tbody>{e_read}</tbody></table></div>
 </section>
 </div>"""
     # Kaks visuaali kõrvuti oma real, publikatsioonide tabel oma real (Kadri MKUS-i kommentaar 7.11.2026 08:52)
@@ -980,7 +980,7 @@ def palkamine(A):
 <section class="pn sp12" id="palkamine" aria-labelledby="h-palkamine">
   <div class="pn-h"><h2 id="h-palkamine">{h2} otsib praegu Eestis töötajaid <b>{ARVSONAD.get(len(otsivad), len(otsivad))}</b> (kokku {sonaga(kuulutusi)} kuulutust){sama_t}</h2></div>
   <p class="ps">Tööpakkumiste lehed on kontrollitud {kp(kp_min)}. Sinise äärega ametiliik on sama, mida koondatakse.</p>
-  <div class="tbl"><table class="pk"><thead><tr><th scope="col">Ettevõte</th><th scope="col">Koondab Eestis</th><th scope="col">Põhjus ettevõtte sõnul</th><th scope="col">Kaotab</th><th scope="col">Otsib praegu Eestis</th></tr></thead>
+  {tbl_div("-3 -4")}<table class="pk"><thead><tr><th scope="col">Ettevõte</th><th scope="col">Koondab Eestis</th><th scope="col">Põhjus ettevõtte sõnul</th><th scope="col">Kaotab</th><th scope="col">Otsib praegu Eestis</th></tr></thead>
   <tbody>{"".join(read)}</tbody></table></div>
   <details><summary>Täpsustused: ametiliigid ja mida tabel ei näita</summary><div>
     <ul>{"".join(selgitused)}</ul>
@@ -1130,7 +1130,7 @@ def toopakkumised(A):
   <p class="ps">Portaalide avalikud arvud, loetud iga päev. Portaale ei liideta, sest sama kuulutus võib olla mitmes.</p>
   <div class="p-tabs" role="tablist" aria-label="Tööportaal">{"".join(nupud)}</div>
   {"".join(osad)}
-  <details><summary>Kõik portaalid ja kuidas arv loeti</summary><div><p>Kategooriad on portaali omad; üks kuulutus võib olla mitmes kategoorias.{ilma_t}</p><div class="tbl"><table><thead><tr><th scope="col">Portaal</th><th scope="col" class="v">Kuulutusi</th><th scope="col">Loetud</th><th scope="col">Lehel oli</th></tr></thead><tbody>{pt}</tbody></table></div></div></details>
+  <details><summary>Kõik portaalid ja kuidas arv loeti</summary><div><p>Kategooriad on portaali omad; üks kuulutus võib olla mitmes kategoorias.{ilma_t}</p>{tbl_div("-3 1:26% 2:5.8em")}<table><thead><tr><th scope="col">Portaal</th><th scope="col" class="v">Kuulutusi</th><th scope="col">Loetud</th><th scope="col">Lehel oli</th></tr></thead><tbody>{pt}</tbody></table></div></div></details>
 </section>
 </div>"""
 
@@ -1282,7 +1282,7 @@ def ai_kuulutused(A):
     <div class="u-f" role="group" aria-label="Rühm"><button type="button" data-r="" aria-pressed="true">kõik</button>{r_nupud}</div>
     <select data-kus aria-label="Maakond"><option value="">kõik maakonnad</option>{kus_val}</select>
     <span class="h-loe" aria-live="polite"></span></div>
-  <div class="tbl"><table class="h-tabel" data-piir><thead><tr><th scope="col">Avaldatud</th><th scope="col">Kuulutus ja tööandja</th><th scope="col">Rühm</th><th scope="col">Kus</th></tr></thead>
+  {tbl_div("-4 1:6.6em 3:6.6em")}<table class="h-tabel" data-piir><thead><tr><th scope="col">Avaldatud</th><th scope="col">Kuulutus ja tööandja</th><th scope="col">Rühm</th><th scope="col">Kus</th></tr></thead>
   <tbody>{"".join(rows)}</tbody></table></div>
   <details><summary>Täpsustused: firma üldnõue ja mida see ei näita</summary><div>{fn_t}<p>{e(K.get("piirangud", ""))} Liigitus on märksõnapõhine, inimene pole seda kontrollinud.</p></div></details>
 </section>

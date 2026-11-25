@@ -1833,7 +1833,7 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
 .av-qleg li { display: flex; gap: 8px; align-items: center; padding: 2px 0; } .av-qleg b { color: var(--ink); min-width: 20px; text-align: right; }
 .av-qleg .av-q { width: 12px; height: 12px; }
 @media (max-width: 640px) {
-  .av-kaks { grid-template-columns: 1fr; gap: 20px; }
+  .av-kaks { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .av-qq { grid-template-columns: repeat(12, 1fr); gap: 4px; } .av-q { width: 100%; height: auto; aspect-ratio: 1; }
   .av-qleg .av-q { width: 12px; height: 12px; }
   .av-mini li { grid-template-columns: 9.5em auto 1fr; font-size: 13px; }
@@ -1850,3 +1850,45 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
 .av-q.hk-m { background: color-mix(in srgb, var(--signal) 35%, var(--panel)); }
 .av-q.hk-l { width: 12px; height: 12px; }
 .hk-link { margin: 20px 0 0; font-weight: 600; }
+
+/* Telefon: miski ei keri külgsuunas (Kadri 25.11.2026: „so everyone can just scroll down“; tabeli rida jääb üheks reaks).
+   1) Nupu- ja lingiread murduvad mitmele reale. 2) Tabelid on telefonis sama puhta joonega nagu arvutis, tihedama vahega.
+   3) „Sellel lehel“ rida telefonis ei kleepu. 4) Laiad tabelid (.tbl.tf, vt komponendid.tbl_div) näitavad kuni 560 px laiusel põhiveerge kindla laiusega, nii et rida
+      mahub ekraanile. Peidetud veerud toob tagasi nupp „Näita kõiki veerge“ (klass .koik) või telefoni külili keeramine. */
+@media (max-width: 680px) {
+  html[data-t] .u-f, html[data-t] .p-tabs, html[data-t] .lehel-rida .sellel, html[data-t] .top .sellel { flex-wrap: wrap; overflow-x: visible; }
+  html[data-t] .lehel-rida .sellel li, html[data-t] .top .sellel li { flex: 0 1 auto; }
+  html[data-t] .lehel-rida { position: static; }  /* murtud rida võtaks kleepudes veerandi ekraanist; arvutis kleepub edasi (R1) */
+  html[data-t] .tbl table { font-size: 14px; min-width: 0; }
+  html[data-t] .tbl th, html[data-t] .tbl td { border: 0; border-bottom: 1px solid var(--border); padding: 8px 10px 8px 0; overflow-wrap: break-word; }
+  html[data-t] .tbl th:last-child, html[data-t] .tbl td:last-child { padding-right: 0; }
+  html[data-t] .tbl thead th { background: transparent; text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 600; color: var(--ink-2); border-bottom: 2px solid var(--ink); }
+  html[data-t] .tbl td small { font-size: 12.5px; }
+}
+.kogus.veerud { display: none; }
+@media (max-width: 560px) {
+  .kogus.veerud { display: flex; margin-top: 2px; }
+  html[data-t] .kogus.veerud button { padding-left: 0; color: var(--signal); font-weight: 600; }
+  html[data-t] .tbl.tf:not(.koik) { overflow-x: visible; }
+  html[data-t] .tbl.tf:not(.koik) table { table-layout: fixed; width: 100%; min-width: 0; }
+  html[data-t] .tbl.tf:not(.koik) th, html[data-t] .tbl.tf:not(.koik) td { white-space: normal; hyphens: auto; }
+  html[data-t] .tbl.tf:not(.koik) thead th { hyphens: manual; }
+  html[data-t] .tbl.tf:not(.koik) td *, html[data-t] .tbl.tf:not(.koik).tv3 td.v, html[data-t] #ligipaas .tbl.tf:not(.koik) td .lp-kiip { white-space: normal; }
+  html[data-t] #ligipaas .tbl.tf:not(.koik) td .lp-kiip { border-radius: 12px; }
+  html[data-t] .tbl.tf:not(.koik) td.n, html[data-t] .tbl.tf:not(.koik) td.v { white-space: nowrap; }
+  html[data-t] .tbl.tf:not(.koik) tr > :nth-child(1) { width: var(--t1, auto); }
+  html[data-t] .tbl.tf:not(.koik) tr > :nth-child(2) { width: var(--t2, auto); }
+  html[data-t] .tbl.tf:not(.koik) tr > :nth-child(3) { width: var(--t3, auto); }
+  html[data-t] .tbl.tf:not(.koik) tr > :nth-child(4) { width: var(--t4, auto); }
+  html[data-t] .tbl.tf:not(.koik) tr > :nth-child(5) { width: var(--t5, auto); }
+  html[data-t] .tbl.tf:not(.koik) tr > :nth-child(6) { width: var(--t6, auto); }
+  html[data-t] .tbl.tp-1:not(.koik) tr > :nth-child(1), html[data-t] .tbl.tp-2:not(.koik) tr > :nth-child(2), html[data-t] .tbl.tp-3:not(.koik) tr > :nth-child(3), html[data-t] .tbl.tp-4:not(.koik) tr > :nth-child(4), html[data-t] .tbl.tp-5:not(.koik) tr > :nth-child(5), html[data-t] .tbl.tp-6:not(.koik) tr > :nth-child(6),
+  html[data-t] .tbl.tv3:not(.koik) tr > :not(:first-child):not(:nth-last-child(-n+3)) { display: none; }
+  /* Litsentside maatriks: telefonis ainult arvud, veerupäised püsti; tootenimed on täistabelis. */
+  html[data-t] .tbl.tf:not(.koik) .lits-m thead th:not(:first-child) { writing-mode: vertical-rl; transform: rotate(180deg); text-align: left; padding: 6px 0; white-space: nowrap; vertical-align: middle; }
+  html[data-t] .tbl.tf:not(.koik) .lits-m td { padding: 6px 0; text-align: center; }
+  html[data-t] .tbl.tf:not(.koik) .lits-m td.lm small { display: none; }
+  html[data-t] .tbl.tf:not(.koik) .lits-m th[scope="row"] { position: static; min-width: 0; max-width: none; }
+}
+/* Väga kitsas telefon (320 px): tulpade sildiveerg kitsamaks, et protsent mahuks ära. */
+@media (max-width: 340px) { html[data-t] .av-mini li { grid-template-columns: 7em auto 1fr; } }

@@ -3,7 +3,7 @@ import re
 import andmekiht as andmed
 from abi import ARVSONAD, OMASTAV, SEESTYTLEV, a, jaga, kontrolli, link, pea, sonaga
 from andmekiht import EL, AndmeViga
-from komponendid import (allikarida, e, faktid, kohariba, kp, lihtribad, osad, pr, riik, tabel, vastavus)
+from komponendid import (allikarida, e, faktid, kohariba, kp, lihtribad, osad, pr, riik, tabel, tbl_div, vastavus)
 from pealkiri import taida
 from kest import AUTOR, autori_aastad
 
@@ -175,7 +175,7 @@ def varskus_ja_muutused(A, vaated):
     <h2 id="h-varskus"><span class="kys">Kui värsked on numbrid?</span> {("Kõik " + ARVSONAD[len(v_read)] + " näitajat <b>on Eurostatis ajakohased</b>") if koik_ajakohased else (SEESTYTLEV[len(v_read)].capitalize() + " näitajast <b>mõni on vananenud</b>")} ¦ {f"{OMASTAV[uuem]} puhul on riiklikul statistikaametil juba uuem number" if uuem else "riiklikel statistikaametitel uuemat numbrit pole"}</h2>
     <p class="alam">Ajakohane tähendab, et allikas pole avaldanud uuemat aastat, kui seire näitab. Uuem riiklik number on lehel eraldi märgitud.</p>
   </header>
-  {tabel(["Näitaja", "Allikas uuendas", "Järgmine oodatav", "Seis", "Uuem number"], v_read, numbrid=[], pealdis="Näitajate värskus")}
+  {tabel(["Näitaja", "Allikas uuendas", "Järgmine oodatav", "Seis", "Uuem number"], v_read, numbrid=[], pealdis="Näitajate värskus", tel="-2 -3 4:6.6em")}
 </section>"""
 
     S = sorted([s for s in A["sundmused"] if s["liik"] in ("allikas", "lahknevus")], key=lambda s: s["kuupaev"], reverse=True)
@@ -187,7 +187,7 @@ def varskus_ja_muutused(A, vaated):
     <h2 id="h-muutused"><span class="kys">Mis allikates viimati muutus?</span> Logi viimane kanne on <b>{kp(S[0]["kuupaev"])}</b></h2>
     <p class="alam">Logis on allikate uued numbrid ja leitud lahknevused, uuemad üleval.</p>
   </header>
-  {tabel(["Kuupäev", "Liik", "Mis muutus"], s_read, numbrid=[], piir=True, pealdis="Muutuste logi")}
+  {tabel(["Kuupäev", "Liik", "Mis muutus"], s_read, numbrid=[], piir=True, pealdis="Muutuste logi", tel="1:6.6em 2:5.6em")}
 </section>"""
 
     return sec_varskus + sec_muut
@@ -340,14 +340,14 @@ def _metoodika(A, vaated):
     <h2 id="h-moisted">Viis mõistet kõlavad sarnaselt, aga <b>mõõdavad eri asju</b></h2>
     <p class="alam">Kui kaks numbrit kasutavad eri mõistet, ei panda neid samale teljele.</p>
   </header>
-  {tabel(["Mõiste", "Mida see tähendab", "Kus saidil"], m_read, numbrid=[], piir=True, pealdis="Sarnased mõisted")}
+  {tabel(["Mõiste", "Mida see tähendab", "Kus saidil"], m_read, numbrid=[], piir=True, pealdis="Sarnased mõisted", tel="1:32% 3:27%")}
 </section>
 <section class="jaotis" id="avaliku-numbrid" aria-labelledby="h-avaliku-numbrid">
   <header>
     <h2 id="h-avaliku-numbrid">Avaliku sektori tehisaru numbrid <b>ei ole omavahel võrreldavad</b> ¦ üks loeb asutusi, teine innovaatorite uuendusi</h2>
     <p class="alam">„Kasutamine“ on eri allikates määratletud eri moodi. Siht on oma mõõdiku kõrval, mitte teise allika numbri kõrval.</p>
   </header>
-  {tabel(["Number", "Mida see loeb", "Allikas", "Kuidas kasutada"], a_read, numbrid=[], piir=True, pealdis="Mida iga avaliku sektori tehisaru number mõõdab")}
+  {tabel(["Number", "Mida see loeb", "Allikas", "Kuidas kasutada"], a_read, numbrid=[], piir=True, pealdis="Mida iga avaliku sektori tehisaru number mõõdab", tel="-3 1:28%")}
   {allikarida([("Digiühiskonna arengukava 2035", DYAK_URL, "valitsus kinnitas 7.05.2026"), ("Digiühiskonna programm 2027–2030 eelnõu", PROG_URL, "2026")])}
 </section>
 <section class="jaotis" id="numbrid-ei-naita" aria-labelledby="h-numbrid-ei-naita">
@@ -370,7 +370,7 @@ def kuidas(A, vaade, vaated=None):
     <h2 id="h-allikad">Ametlik statistika tuleb <b>{len(Al)} allikast</b> ¦ {riiklik} riiklikku statistikaametit ja {len(Al) - riiklik} rahvusvahelist organisatsiooni</h2>
     <p class="alam">Uuringud ja raportid (OECD, Arenguseire, ülikoolid) on lisaks sellele loendile ja nende juures on alati link.</p>
   </header>
-  {tabel(["Allikas", "Andmeliides", "Uuendab", "Viimane tehisaru avaldus"], a_read, numbrid=[], piir=True, pealdis="Allikate register")}
+  {tabel(["Allikas", "Andmeliides", "Uuendab", "Viimane tehisaru avaldus"], a_read, numbrid=[], piir=True, pealdis="Allikate register", tel="-2 3:26%")}
 </section>"""
 
     T = A["tooelu"]
@@ -404,7 +404,7 @@ def kuidas(A, vaade, vaated=None):
     <h2 id="h-vorreldavus">Igal näitajal on üks võrdlusalus ja <b>{sonaga(teisi)} teist mõõdikut</b> on sellega võrreldud</h2>
     <p class="alam">Ainult „võrdlusalus“ ja „sama“ võivad olla ühel teljel. Teised on lehtedel skaala all märkega „ei ole otse võrreldav“.</p>
   </header>
-  {tabel(["Mõõdik", "Näitaja", "Klass", "Mis erineb"], m_read, numbrid=[], piir=True, pealdis="Mõõdikute võrreldavus")}
+  {tabel(["Mõõdik", "Näitaja", "Klass", "Mis erineb"], m_read, numbrid=[], piir=True, pealdis="Mõõdikute võrreldavus", tel="-2 3:7.2em")}
 </section>"""
 
     tug = lambda m: next((tugevus[t] for t, mm in T["kindlus"].items() if m in mm), "")  # noqa: E731
@@ -420,7 +420,7 @@ def kuidas(A, vaade, vaated=None):
     <h2 id="h-uuringud">Kogus on <b>{len(U)} uuringut</b>, neist {n_tugev} tugeva tõendiga (katse või registriandmed)</h2>
     <p class="alam">Iga arv on võetud allika kokkuvõttest ja kontrollitud lingi kaudu ({kp(T.get("kontrollitud", ""))}).</p>
   </header>
-  {tabel(["Uuring", "Tõend", "Kus", "Mida leiti"], u_read, numbrid=[], piir=True, pealdis="Uuringute kogu")}
+  {tabel(["Uuring", "Tõend", "Kus", "Mida leiti"], u_read, numbrid=[], piir=True, pealdis="Uuringute kogu", tel="-3 2:5.4em")}
 </section>"""
 
     from lehed_ulevaade import kpi_pais, kpi_plaat
@@ -491,7 +491,7 @@ def _uuenemine(A):
     <h2 id="h-uuendused">Saidi {sonaga(len(read), "seestytlev")} osast uueneb ise <b>{sonaga(ise)}</b> ¦ {sonaga(pool, "omastav")} puhul otsib arvuti ise ja inimene kinnitab</h2>
     <p class="alam">Sait ehitatakse uuesti kaks korda päevas (7.23 ja 17.53) ja avaldatakse ainult siis, kui kõik testid läbivad. Kuupäev on viimane kontroll või andmete seis.</p>
   </header>
-  <div class="tbl"><table><thead><tr><th scope="col">Osa</th><th scope="col">Kuidas uueneb</th><th scope="col">Viimati</th><th scope="col">Mida on vaja käsitsi</th></tr></thead><tbody>{t}</tbody></table></div>
+  {tbl_div("-4 3:6.6em")}<table><thead><tr><th scope="col">Osa</th><th scope="col">Kuidas uueneb</th><th scope="col">Viimati</th><th scope="col">Mida on vaja käsitsi</th></tr></thead><tbody>{t}</tbody></table></div>
 </section>"""
 
 

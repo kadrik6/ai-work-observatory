@@ -488,7 +488,7 @@ def el_jarjestus(naitaja, fookus="EE", kahanevalt=True, koht_praegu=None, aasta_
     from komponendid import tabel
     tbl = tabel(["Riik"] + [str(a) for a in aastad],
                 [[e(nimed[x])] + [f"{pr(v[x][a])} ({koht[x][a]}.)" if a in v[x] else "–" for a in aastad] for x in jarjest],
-                fookus_rida=jarjest.index(fookus), pealdis=R[0]["kirjeldus"] + " (sulgudes koht ELis)")
+                fookus_rida=jarjest.index(fookus), pealdis=R[0]["kirjeldus"] + " (sulgudes koht ELis)", tel="v3 1:30%")
     return g, koht[fookus], aastad, tbl, R[0]["uuendatud"]
 
 
@@ -547,7 +547,7 @@ def _vabad_jarjestus():
     nb = lambda v: f"{v:,.0f}".replace(",", NBSP)  # noqa: E731
     tbl = tabel(["Tegevusala"] + [str(a) for a in aastad],
                 [[e(n)] + [f"{nb(arv[n][a])} ({koht[n][a]}.)" if a in arv[n] else "–" for a in aastad] for n in jarjest],
-                pealdis=f"Vabad ametikohad tegevusala järgi, iga aasta {kv} (sulgudes koht)")
+                pealdis=f"Vabad ametikohad tegevusala järgi, iga aasta {kv} (sulgudes koht)", tel="v3 1:34%")
     return g, gt, tbl
 
 

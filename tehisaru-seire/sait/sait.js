@@ -144,6 +144,22 @@
         g.addEventListener('blur', function () { esile(null); if (k.seireRiik) k.seireRiik(null); });
       });
     });
+    // Lai tabel telefonis: näha on põhiveerud, nupp toob kõik veerud (Kadri 25.11.2026: külgsuunas ei kerita).
+    document.querySelectorAll('.tbl.tf[class*=" tp-"], .tbl.tf.tv3, .tbl.tf.tl').forEach(function (k) {
+      var riba = document.createElement('div'), b = document.createElement('button');
+      riba.className = 'kogus veerud';
+      b.type = 'button';
+      b.setAttribute('aria-expanded', 'false');
+      b.textContent = 'Näita kõiki veerge';
+      b.addEventListener('click', function () {
+        var koik = k.classList.toggle('koik');
+        b.setAttribute('aria-expanded', koik ? 'true' : 'false');
+        b.textContent = koik ? 'Näita ainult põhiveerge' : 'Näita kõiki veerge';
+        if (!koik) k.scrollLeft = 0;
+      });
+      riba.appendChild(b);
+      k.insertAdjacentElement('afterend', riba);
+    });
     // Pikk tabel: vaikimisi 12 rida.
     document.querySelectorAll('table[data-piir]').forEach(function (tabel) {
       var read = Array.prototype.slice.call(tabel.tBodies[0].rows);
@@ -458,8 +474,10 @@
     var p = document.querySelector('header.top');
     if (p) document.documentElement.style.setProperty('--top-h', p.offsetHeight + 'px');
     // R1 (Kadri 8.11.2026): „Sellel lehel“ rida kleepub päise alla; ankur peab jääma ka selle rea alla.
+    // Telefonis rida ei kleepu (murtud rida võtaks veerandi ekraanist), siis ankur selle kõrgust ei arvesta.
     var r = document.querySelector('.lehel-rida');
-    document.documentElement.style.setProperty('--lehel-h', (r ? r.offsetHeight : 0) + 'px');
+    var kleepub = r && getComputedStyle(r).position === 'sticky';
+    document.documentElement.style.setProperty('--lehel-h', (kleepub ? r.offsetHeight : 0) + 'px');
   }
   document.addEventListener('DOMContentLoaded', function () {
     korgus();
