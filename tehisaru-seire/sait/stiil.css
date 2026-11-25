@@ -1396,34 +1396,39 @@ html[data-t] .tbl { max-width: 100%; overflow-x: auto; }
 /* Kadri 9.11.2026 07:30: pilt ei tohi saiti laiemaks teha. 100vw sisaldab püstise kerimisriba laiust ja tekitas
    kõrvale rõhtsa kerimisriba; clip lõikab selle ära, ilma et kleepuv päis lakkaks töötamast. */
 html[data-t] body { overflow-x: clip; }
-html[data-t] .pea-rahu.pilt { position: relative; isolation: isolate; padding-top: 56px; padding-bottom: 48px; min-height: 300px; }
+/* Kadri 25.11.2026: pilt on avalehe taust, mitte päise riba. See ulatub pealkirja tagant tahvli taha ja hajub alla
+   lehe taustaks; nähtavus on väiksem (30%, enne 55%), et pilt ei segaks numbreid ja graafikuid. Päisel pole enam
+   oma kõrgust ega alumist vahet, nii algab tahvel kõrgemalt. z-index -1 ilma isolation'ita: pilt jääb kogu sisu taha.
+   Filter on ainult grayscale: heledus ja kontrast muutsid ka katte värvi ja jätsid pildi alla nähtava serva. */
+html[data-t] .pea-rahu.pilt { position: relative; padding-top: 36px; padding-bottom: 0; }
 html[data-t] .pea-rahu.pilt::before {
-  content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%);
+  content: ""; position: absolute; z-index: -1; top: 0; height: 560px; left: 50%; width: 100vw; transform: translateX(-50%);
   background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
-              linear-gradient(0deg, var(--page) 0%, transparent 30%),
-              url("pilt/avaleht.jpg") right 62% / cover no-repeat;
-  filter: grayscale(1) brightness(1.08) contrast(.94); opacity: .55; pointer-events: none;
+              linear-gradient(0deg, var(--page) 0%, color-mix(in srgb, var(--page) 75%, transparent) 30%, transparent 70%),
+              url("pilt/avaleht.jpg") right top / cover no-repeat;
+  filter: grayscale(1); opacity: .3; pointer-events: none;
 }
-html[data-t] .pea-rahu.pilt h1 { max-width: 22ch; }
-html[data-t] .pea-rahu.pilt .alla { max-width: 56ch; }
+html[data-t] .pea-rahu.pilt h1 { max-width: 30ch; }
+html[data-t] .pea-rahu.pilt .alla { max-width: 62ch; }
 html[data-t] .pea-rahu.pilt + nav .sellel { margin-top: 24px; }
-/* Tume teema: oma pilt (Kadri 11.11.2026: tumedas kroomitud võrgustik hämaral pinnal; heledas H1 võrk), sama üleminek, mustvalge, nähtavus 55% */
-html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { filter: grayscale(1); opacity: .55;
+html[data-t] .pea-rahu.pilt + .g12 { margin-top: 32px; }
+/* Tume teema: oma pilt (Kadri 11.11.2026: tumedas kroomitud võrgustik hämaral pinnal; heledas H1 võrk), sama üleminek, mustvalge */
+html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { opacity: .3;
   background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
-              linear-gradient(0deg, var(--page) 0%, transparent 30%),
-              url("pilt/avaleht-tume.jpg") right 62% / cover no-repeat; }
-/* Telefonis on pilt samuti teksti taustal, nagu arvutis (Kadri 25.11.2026; enne 27.10 reegel: tekst pildi all).
-   Tekst on kogu laiuses, seepärast on pilt heledama kattega, paremal ja nõrgem (40%, tumedas 45%), et taust ei segaks lugemist. */
+              linear-gradient(0deg, var(--page) 0%, color-mix(in srgb, var(--page) 75%, transparent) 30%, transparent 70%),
+              url("pilt/avaleht-tume.jpg") right top / cover no-repeat; }
+/* Telefonis sama: pilt on tausta osa, paremal ülal, veel nõrgem (24%, tumedas 26%), sest tekst on kogu laiuses. */
 @media (max-width: 680px) {
-  html[data-t] .pea-rahu.pilt { min-height: 0; padding-top: 40px; padding-bottom: 24px; }
-  html[data-t] .pea-rahu.pilt::before {
+  html[data-t] .pea-rahu.pilt { padding-top: 24px; }
+  html[data-t] .pea-rahu.pilt + .g12 { margin-top: 24px; }
+  html[data-t] .pea-rahu.pilt::before { height: 460px;
     background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 60%, transparent) 55%, transparent 100%),
-                linear-gradient(0deg, var(--page) 0%, transparent 35%),
-                url("pilt/avaleht.jpg") right top / cover no-repeat; opacity: .4; }
+                linear-gradient(0deg, var(--page) 0%, color-mix(in srgb, var(--page) 75%, transparent) 30%, transparent 70%),
+                url("pilt/avaleht.jpg") right top / cover no-repeat; opacity: .24; }
   html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before {
     background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 60%, transparent) 55%, transparent 100%),
-                linear-gradient(0deg, var(--page) 0%, transparent 35%),
-                url("pilt/avaleht-tume.jpg") right top / cover no-repeat; opacity: .45; }
+                linear-gradient(0deg, var(--page) 0%, color-mix(in srgb, var(--page) 75%, transparent) 30%, transparent 70%),
+                url("pilt/avaleht-tume.jpg") right top / cover no-repeat; opacity: .26; }
 }
 
 /* Saidi nimi päises: suurem ja must, ka avalehel (Kadri 9.11.2026 00:13) */
