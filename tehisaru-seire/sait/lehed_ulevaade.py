@@ -73,6 +73,19 @@ def tootuse_uuendatud():
 
 
 UNE_UUENDATUD = tootuse_uuendatud()
+REG_URL = "https://andmed.stat.ee/et/stat/sotsiaalelu__tooturg__tootud__luhiajastatistika/TT065"
+
+
+def reg_tootud():
+    """Registreeritud töötute arv kuu kaupa (Statistikaamet TT065; sait/lae_reg_tootud.py): ([(kuu, arv)], avaldatud).
+
+    See on Töötukassas arvel olijate arv, mitte töötuse määr; määraga seda ei võrrelda ega liideta."""
+    read = _loe("reg-tootud-kuud.csv")
+    kuud = sorted((r["kuu"], int(r["arv"])) for r in read)
+    kp_ = {r["uuendatud"] for r in read}
+    if len(kuud) < 13 or len(kp_) != 1:
+        raise AndmeViga("sisu/reg-tootud-kuud.csv: vaja vähemalt 13 kuud ja üks avaldamise kuupäev")
+    return kuud, kp_.pop()
 
 
 def hanked():
@@ -386,6 +399,26 @@ def too_eesti(A):
   <p class="ps">Töötuse määr, %, sesoonselt tasandatud, {k0[5:]}.{k0[:4]}–{kuu[5:]}.{kuu[:4]}. {muutus}Kuunumber ei ütle, kas põhjus on tehisaru.</p>
   {joonis}
   {allikarida([("Eurostat une_rt_m", UNE_URL, f"uuendatud {kp(UNE_UUENDATUD)}")])}
+</section>"""
+    # Registreeritud töötud (Kadri 25.11.2026: määr on septembri oma, uuem kuu on olemas ainult selle arvu kohta)
+    RT, r_avaldatud = reg_tootud()
+    r_kuu, r_n = RT[-1]
+    r_n0 = dict(RT).get(f"{int(r_kuu[:4]) - 1}{r_kuu[4:]}")
+    if r_n0 is None:
+        raise AndmeViga(f"Registreeritud töötute muutus vajab kuud {int(r_kuu[:4]) - 1}{r_kuu[4:]}")
+    r_muut = (r_n - r_n0) / r_n0 * 100
+    rn = len(RT) - 1
+    r_margid = sorted({i for i, (k, _) in enumerate(RT) if k[5:7] == "01"} | {0, rn})
+    r_joonis = joon([("Eesti", [(i, v / 1000) for i, (_, v) in enumerate(RT)], "fookus")],
+                    0, rn, 50, 10, w=720, h=200, ml=30, mr=64, x_margid=r_margid, lihtne=True, y_skaala=True,
+                    x_silt=lambda i: RT[int(i)][0][5:] + "." + RT[int(i)][0][:4], silt="Registreeritud töötute arv kuu kaupa, tuhandetes")
+    r_arv = lambda x: f"{x:,}".replace(",", NBSP)  # noqa: E731
+    sec_t += f"""
+<section class="pn sp12" id="reg-tootud" aria-labelledby="h-reg-tootud">
+  <div class="pn-h"><h2 id="h-reg-tootud">Töötukassas oli {kuu_seesytlev(r_kuu)} {r_kuu[:4]} arvel <b>{r_arv(r_n)}</b> töötut</h2></div>
+  <p class="ps">Registreeritud töötute arv, tuhandetes, {RT[0][0][5:]}.{RT[0][0][:4]}–{r_kuu[5:]}.{r_kuu[:4]}. Aasta varem {r_arv(r_n0)}, muutus {'+' if r_muut >= 0 else '−'}{pr(abs(r_muut), 0)}%. See ei ole töötuse määr: määr tuleb küsitlusest ja loeb ka tööotsijaid, kes Töötukassas arvel ei ole. Neid kahte numbrit ei võrrelda.</p>
+  {r_joonis}
+  {allikarida([("Statistikaamet TT065", REG_URL, f"avaldatud {kp(r_avaldatud)}")])}
 </section>"""
 
     otsene = sum(r["roll"] == "otsene" for r in juhtumid)

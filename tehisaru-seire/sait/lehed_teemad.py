@@ -669,7 +669,7 @@ def too(A, vaade, vaated=None):
     # Teemamall A (Kadri 8.11.2026): number → graafik sakkides → uuringud → väited → reeglid → allikad.
     import teemamall as tm
     from komponendid import KUUD
-    from lehed_ulevaade import PAV_URL, UNE_URL, UNE_UUENDATUD, _loe, _kv, vaite_teema
+    from lehed_ulevaade import PAV_URL, REG_URL, UNE_URL, UNE_UUENDATUD, _loe, _kv, reg_tootud, vaite_teema
     # Kadri 11.11.2026: koondamised olid liiga suure fookuse all; neid uudiseid on harva ja muu pole vähem tähtis.
     # Töötus, vabad kohad ja kuulutused on eespool; koondamised ja „Keda koondajad otsivad“ on ühes sakis prognoosi ees.
     sec_tootus, sec_koond = too_eesti(A)
@@ -689,11 +689,16 @@ def too(A, vaade, vaated=None):
     t_reeglid = tm.reeglite_plokk(A, vaated, ["ai-korge-risk-iii"])  # värbamine ja töötajate juhtimine
     vabad = [r for r in _loe("vabad-ametikohad.csv") if r["tabel"] == "PAV011"] if (Path(__file__).resolve().parent / "sisu" / "vabad-ametikohad.csv").exists() else []
     kv_v = max((r["periood"] for r in vabad), key=_kv) if vabad else None
+    # AI-kuulutuste kogumine võib katkeda (25.11.2026: fail oli 10.11 seisuga); võrdlus sama päeva portaalide failiga
+    import datetime as _dt
+    ak_vanus = (_dt.date.fromisoformat(A["toopakkumised"]["uuendatud"][:10]) - _dt.date.fromisoformat(A["ai_kuulutused"]["uuendatud"][:10])).days
     allikad = [
         ("Töötus kuu kaupa, Eurostat une_rt_m", UNE_URL, UNE_UUENDATUD, "sesoonselt tasandatud"),
+        ("Registreeritud töötud kuu kaupa, Statistikaamet TT065", REG_URL, reg_tootud()[1], "Töötukassas arvel olijad; ei ole töötuse määr"),
         ("Koondamised, uudised", "", max(r["kuupaev"] for r in A["koondamised"]["juhtumid"]), "viimane teade; uudistest kogutud, nimekiri pole täielik"),
         ("Tööpakkumised, 3 portaali", "", A["toopakkumised"]["uuendatud"][:10], "kogutakse iga päev"),
-        ("AI- ja andmetööde kuulutused, CV.ee", "https://www.cv.ee/et/search", A["ai_kuulutused"]["uuendatud"][:10], "kogutakse iga päev"),
+        ("AI- ja andmetööde kuulutused, CV.ee", "https://www.cv.ee/et/search", A["ai_kuulutused"]["uuendatud"][:10],
+         "kogutakse iga päev" if ak_vanus <= 3 else "kogumine on katkenud, näidatud on viimane seis"),
         *([("Vabad ametikohad, Statistikaamet PAV011", PAV_URL, max(r["uuendatud"] for r in vabad), f"viimane kvartal: {kv_v}")] if vabad else []),
         ("Töötuse prognoos, Rahandusministeerium", rm["url"], rm["avaldatud"], "aasta keskmine, tehisaru mõju eraldi ei arvestata",
          f'{KUUD[int(rm["avaldatud"][5:7]) - 1]} {rm["avaldatud"][:4]}' if len(rm["avaldatud"]) == 7 else None),

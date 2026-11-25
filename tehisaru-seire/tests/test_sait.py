@@ -2200,3 +2200,25 @@ def test_telefoni_stiil_ei_keri_kylgsuunas_ja_nupp_toob_koik_veerud():
     assert "'.tbl.tf[class*=\" tp-\"], .tbl.tf.tv3, .tbl.tf.tl'" in js
     assert "Näita kõiki veerge" in js and "Näita ainult põhiveerge" in js and "classList.toggle('koik')" in js
     assert "getComputedStyle(r).position === 'sticky'" in js  # ankur ei arvesta rida, mis telefonis ei kleepu
+
+
+def test_registreeritud_tootud_on_eraldi_plokis_ja_ei_ole_maar(sait):
+    # Kadri 25.11.2026: töötuse määr on septembri oma; uuem kuu on olemas ainult registreeritud töötute kohta
+    kuud, avaldatud = lehed_ulevaade.reg_tootud()
+    kuu, n = kuud[-1]
+    h = sait["too.html"]
+    esimene = h[h.index('id="sakk-tootus"'):h.index('id="sakk-tootus-el"')]
+    assert esimene.index('id="tootus-kuud"') < esimene.index('id="reg-tootud"')
+    osa = tekst(_jaotis(h, "reg-tootud"))
+    assert f"{n:,}".replace(",", " ") in osa.replace(" ", " ") and lehed_ulevaade.kuu_seesytlev(kuu) in osa
+    assert "ei ole töötuse määr" in osa and "ei võrrelda" in osa and "TT065" in osa
+    assert "%" not in re.search(r'<h2 id="h-reg-tootud">(.*?)</h2>', h, re.S).group(1)  # pealkirjas on arv, mitte määr
+    assert _jaotis(h, "reg-tootud").count("<svg") == 1
+
+
+def test_ai_kuulutuste_allikarida_ei_luba_igapaevast_kogumist_kui_fail_on_vana(A, sait):
+    import datetime as dt
+    vanus = (dt.date.fromisoformat(A["toopakkumised"]["uuendatud"][:10]) - dt.date.fromisoformat(A["ai_kuulutused"]["uuendatud"][:10])).days
+    rida = [r for r in sait["too.html"][sait["too.html"].index('id="t-allikad"'):].split("</tr>") if "CV.ee" in r and "AI- ja andmetööde" in r][0]
+    assert ("kogutakse iga päev" in rida) == (vanus <= 3)
+    assert ("kogumine on katkenud" in rida) == (vanus > 3)
