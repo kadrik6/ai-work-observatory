@@ -1,10 +1,10 @@
 {
-  "viimane_kontroll": "2026-11-25T08:10:00+02:00",
+  "viimane_kontroll": "2026-11-25T18:05:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "25.11: WSJ tehisarumulli mõjust USA majandusele (ERR)"
+      "markus": "25.11 päev: miinimumpalga kokkulepe 2027 (997 eurot); hommikul WSJ tehisarumull"
     },
     {
       "nimi": "ERR News (RSS)",
@@ -14,12 +14,12 @@
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "25.11: Äripäev, pea 200 renditöötaja koondamine kahes tööjõurendifirmas; Pipedrive Tartus 38 (Tartu Postimees)"
+      "markus": "25.11 õhtu: uusi Eesti koondamisi ≥10 pole (Radius Machining 7)"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "25.11: Indeed Hiring Lab, Grant Thornton Kreeka küsitlus, India IT-töötajate nõudmine"
+      "markus": "25.11 õhtu: Allstate jätkulugu (TechCrunch); Gartneri prognoos juba 10.11 olemas"
     },
     {
       "nimi": "Challenger kuuaruanne",
