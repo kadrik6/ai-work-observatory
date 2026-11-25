@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-24T18:05:00+02:00",
+  "viimane_kontroll": "2026-11-25T08:10:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "24.11 õhtu: andmekeskuste poliitiline arutelu (ERR); Pipedrive 236 päeval"
+      "markus": "25.11: WSJ tehisarumulli mõjust USA majandusele (ERR)"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "24.11: uut tehisaru lugu pole"
+      "markus": "25.11: uusi tehisaru lugusid pole (24.11 lood ingliskeelsed versioonid)"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "24.11: koondajate jätkuotsingud ei andnud uut (Eesti Energia 343 juba olemas)"
+      "markus": "25.11: Äripäev, pea 200 renditöötaja koondamine kahes tööjõurendifirmas; Pipedrive Tartus 38 (Tartu Postimees)"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "24.11 õhtu: Fitch Ratings tehisaru ja USA hõive (Crypto Briefing)"
+      "markus": "25.11: Indeed Hiring Lab, Grant Thornton Kreeka küsitlus, India IT-töötajate nõudmine"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -29,27 +29,27 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "24.11: feed avanes; uus postitus 23.11 tervishoiu rahastusest (pole töö teema)"
+      "markus": "25.11: feed avanes; uusi postitusi pole"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "24.11: avanes, uusi uudiseid pole"
+      "markus": "25.11: avanes, uusi uudiseid pole"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "24.11: avanes, uusi tehisaru, IKT ega tööturu teateid pole"
+      "markus": "25.11: avanes, uusi tehisaru, IKT ega tööturu teateid pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "24.11: JDM-i tehisarurakenduste usaldusväärsuse hinnangud (23.11); KONTROLL 4/7"
+      "markus": "25.11: AKI teade tehisaru ja hariduse resolutsioonist (24.11); KONTROLL 4/7"
     },
     {
       "nimi": "OECD uudised (otsing)",
       "ok": true,
-      "markus": "24.11: ainult OECD maksuhalduse blogi, ei lisatud"
+      "markus": "25.11: OECD uudiseid ei leitud"
     },
     {
       "nimi": "Riikide strateegiad",
