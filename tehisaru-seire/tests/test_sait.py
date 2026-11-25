@@ -2137,6 +2137,71 @@ def test_koondamiste_kuupaev_on_viimase_teate_oma(A, sait):
     assert "kontrollitud " + komponendid.kp(A["koondamised"]["kontrollitud"]) not in tekst(_jaotis(h, "tahvel"))
 
 
+# Telefon: külgsuunas ei kerita, tabeli rida jääb üheks reaks (Kadri 25.11.2026)
+_TBL = re.compile(r'<div class="(tbl[^"]*)"(?: style="([^"]*)")?>\s*<table([^>]*)>(.*?)</table>', re.S)
+# Need tabelid laotakse telefonis ümber omaette reeglitega (stiil.css), tbl_div märget nad ei vaja.
+_TELEFONIS_OMA_KUJU = ("tv-laud", "tt-mx", "tk-laud")
+
+
+def _tabelid(sait):
+    for f, h in sait.items():
+        if not f.endswith(".html"):
+            continue
+        for m in _TBL.finditer(h):
+            pea = re.search(r"<thead>\s*<tr[^>]*>(.*?)</tr>", m.group(4), re.S)
+            veerge = len(re.findall(r"<th\b", pea.group(1))) if pea else 0
+            yield f, m.group(1).split(), m.group(2) or "", m.group(3) + m.group(4)[:200], veerge
+
+
+def test_tbl_div_kirjutab_telefonireeglid_klassideks():
+    assert komponendid.tbl_div() == '<div class="tbl">'
+    assert komponendid.tbl_div("-3 -5 1:6em") == '<div class="tbl tf tp-3 tp-5" style="--t1:6em">'
+    assert komponendid.tbl_div("v3 1:30%", "kaart") == '<div class="tbl tf kaart tv3" style="--t1:30%">'
+    assert 'class="tbl tf tp-2"' in komponendid.tabel(["A", "B"], [["1", "2"]], tel="-2")
+
+
+def test_lai_tabel_ei_jaa_telefonis_margita(sait):
+    """Nelja ja enama veeruga tabel peab ütlema, kuidas ta telefonis ära mahub; muidu hakkab leht jälle külgsuunas kerima."""
+    margita = sorted({(f, veerge) for f, kl, _, tabel, veerge in _tabelid(sait)
+                      if veerge >= 4 and "tf" not in kl and not set(kl) & set(_TELEFONIS_OMA_KUJU)
+                      and "Riikide tehisarustrateegiad" not in tabel})  # #strateegiad laotakse telefonis kaartideks
+    assert not margita, margita
+
+
+def test_telefonis_on_tabelis_kuni_viis_veergu_ja_reeglid_viitavad_olemasolevale_veerule(sait):
+    naha = 0
+    for f, kl, stiil, tabel, veerge in _tabelid(sait):
+        if "tf" not in kl:
+            continue
+        naha += 1
+        peidus = [int(k[3:]) for k in kl if k.startswith("tp-")]
+        laiused = [int(n) for n in re.findall(r"--t(\d+):", stiil)]
+        assert all(1 <= n <= veerge for n in peidus + laiused), (f, kl, stiil, veerge)
+        assert not set(peidus) & set(laiused), (f, kl, stiil)  # peidetud veerule laiust ei anta
+        jaab = 4 if "tv3" in kl else veerge - len(peidus)
+        assert jaab <= 5 or 'class="lits-m"' in tabel, (f, kl, veerge)  # viis mahub ainult arvudega; litsentside maatriksis on telefonis ainult arvud
+        assert 1 not in peidus or veerge - len(peidus) >= 2, (f, kl)
+    assert naha >= 20
+
+
+def test_telefoni_stiil_ei_keri_kylgsuunas_ja_nupp_toob_koik_veerud():
+    css = (JUUR / "sait" / "stiil.css").read_text(encoding="utf-8")
+    osa = css[css.index("Telefon: miski ei keri külgsuunas"):]
+    assert "html[data-t] .lehel-rida .sellel, html[data-t] .top .sellel { flex-wrap: wrap; overflow-x: visible; }" in osa
+    assert "html[data-t] .lehel-rida { position: static; }" in osa
+    kitsas = osa[osa.index("@media (max-width: 560px)"):]
+    assert "html[data-t] .tbl.tf:not(.koik) table { table-layout: fixed; width: 100%; min-width: 0; }" in kitsas
+    for n in range(1, 7):  # iga veerunumber, mida tbl_div võib kirjutada, on stiilis olemas
+        assert f"tr > :nth-child({n}) {{ width: var(--t{n}, auto); }}" in kitsas
+        assert f"html[data-t] .tbl.tp-{n}:not(.koik) tr > :nth-child({n})" in kitsas
+    assert "html[data-t] .tbl.tv3:not(.koik) tr > :not(:first-child):not(:nth-last-child(-n+3)) { display: none; }" in kitsas
+    assert ".kogus.veerud { display: none; }" in osa  # arvutis nuppu ei ole
+    js = (JUUR / "sait" / "sait.js").read_text(encoding="utf-8")
+    assert "'.tbl.tf[class*=\" tp-\"], .tbl.tf.tv3, .tbl.tf.tl'" in js
+    assert "Näita kõiki veerge" in js and "Näita ainult põhiveerge" in js and "classList.toggle('koik')" in js
+    assert "getComputedStyle(r).position === 'sticky'" in js  # ankur ei arvesta rida, mis telefonis ei kleepu
+
+
 def test_registreeritud_tootud_on_eraldi_plokis_ja_ei_ole_maar(sait):
     # Kadri 25.11.2026: töötuse määr on septembri oma; uuem kuu on olemas ainult registreeritud töötute kohta
     kuud, avaldatud = lehed_ulevaade.reg_tootud()

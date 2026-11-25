@@ -5,7 +5,7 @@ mida see tähendab, siis üksikasjad ja allikad.
 """
 import andmekiht as andmed
 from andmekiht import EL, AndmeViga
-from komponendid import (allikarida, e, ei_naita, faktid, hantlid, jaga_klassid, kaart, kp, leiu_ribad, margend, pr,
+from komponendid import (allikarida, e, ei_naita, faktid, hantlid, jaga_klassid, kaart, kp, leiu_ribad, margend, pr, tbl_div,
                          riik, tabel, telg, vastavus)
 from pealkiri import taida
 from abi import sonaga
@@ -42,7 +42,7 @@ def _kasutus(A, pais=True):
                f'{e(v.get("miks", ""))}'
                f'<small><a href="{e(v["url"])}">{e(v["allikas"])}</a>, {e(kp(v["avaldatud"]))}</small>'] for v in muud]
     uued_tbl = tabel(["Riik ja kogum", f"{muud[0]['aasta']}, %", "Miks ei ole otse võrreldav; allikas"], t_read, fookus_rida=0, numbrid=[1],
-                     pealdis="Riikide uusimad numbrid, mis ei ole ELi skaalaga võrreldavad")
+                     pealdis="Riikide uusimad numbrid, mis ei ole ELi skaalaga võrreldavad", tel="1:36% 2:5em")
 
     lahk = next(l for l in A["lahknevused"] if l["kood"] == "C5")
     sa25 = next(t for t in n["teised_allikad"] if t["allikas"].startswith("Statistikaamet, tabel IT149"))
@@ -117,7 +117,7 @@ def _kasutus(A, pais=True):
       <p class="gt">Kõik ELi riigid, {y}, %</p>
       {tabel(["Riik", f"{y}, %"], el_read, fookus_rida=[v["geo"] for v in jarjest].index("EE"), piir=True, pealdis=f"ELi riigid {y}")}
       <p class="gt">Võrdlusriigid aastate kaupa, %</p>
-      {tabel(["Riik"] + [str(a) for a in aastad], d_read, fookus_rida=0, pealdis="Võrdlusriigid aastate kaupa")}
+      {tabel(["Riik"] + [str(a) for a in aastad], d_read, fookus_rida=0, pealdis="Võrdlusriigid aastate kaupa", tel="1:26%")}
       <p>2022. aasta andmeid ei ole: Eurostat seda küsimust 2022. aastal ei küsinud.</p>
       <p class="gt">Mida see number ei näita</p>
       {ei_naita(n["piirangud"])}
@@ -395,7 +395,7 @@ def _pohjamaad(A):
   <details>
     <summary>Näita andmetabelit ja indeksit</summary>
     <div>{tabel(["Näitaja", "Eesti", "Põhjamaade keskmine", "Indeks (100 = Põhjamaad), arvutatud", "Hinnang", "Koht"], t_read,
-                pealdis="Eesti ja Põhjamaade keskmine üheksas näitajas")}
+                pealdis="Eesti ja Põhjamaade keskmine üheksas näitajas", tel="-4 -5 2:3.6em 3:7em 6:3em")}
       <p>Kuus näitajat tulevad seire enda Eurostati andmetest ja uuenevad iga päev. IKT-spetsialistid tulevad Eurostatist ning IKT lõpetajad ja teadlased UNESCO UISist. Seire laeb need iga päev otse allika API-st.</p></div>
   </details>
 </section>"""
@@ -536,7 +536,7 @@ def _ligipaas(A):
   </figure>
   <details class="kokku"><summary>Näita kõiki {len(S)} otsust koos põhjuse ja allikaga</summary>
   {tabel(["Kuupäev", "Ettevõte", "Otsus", "Mida otsustati", "Põhjus ettevõtte sõnul", "Allikas"], tabel_read,
-         pealdis="Ettevõtete otsused tehisaru tööriistade kasutamise kohta, uuemad eespool", numbrid=[])}
+         pealdis="Ettevõtete otsused tehisaru tööriistade kasutamise kohta, uuemad eespool", numbrid=[], tel="-1 -5 -6 2:30% 3:6.2em")}
   </details>
   {faktid([("Valim", "risk", "Otsused tulevad uudistest, seepärast on neis rohkem suuri ja tuntud ettevõtteid. "
             "Näitame arve, mitte osakaale: see ei ütle, kui suur osa ettevõtetest tööriistu lubab või keelab.")])}
@@ -579,7 +579,7 @@ def ametnike_juhendid(A):
     <p>Soome, Holland, Ühendkuningriik ja USA lubavad ametnikel tehisaru kasutada tingimustega. Piirid tulevad peamiselt andmetest ja mõjust. Üksikuid tööriistu on keelatud turvariski tõttu: näiteks Austraalia keelas 4.02.2025 DeepSeeki kõigis riigiasutuste süsteemides ja seadmetes (<a href="https://www.protectivesecurity.gov.au/publications-library/direction-001-2025-deepseek-products-applications-and-web-services">PSPF Direction 001-2025</a>).</p>
     {tabel(["Riik", "Mida juhend ütleb", "Allikas"],
            [[f"<b>{e(r['riik'])}</b>", e(r["tekst"]), f'<a href="{e(r["url"])}">{e(r["allikas"])}</a>'] for r in K["riigid"]],
-           pealdis="Kuidas teised riigid ametnike tehisaru kasutust korraldavad", numbrid=[])}
+           pealdis="Kuidas teised riigid ametnike tehisaru kasutust korraldavad", numbrid=[], tel="1:26% 3:30%")}
   </div>"""
     return f"""
 <section class="jaotis" id="ametnikud" aria-labelledby="h-ametnikud">
@@ -605,7 +605,7 @@ def _kasu(A, vaated, uuringud, lingid, pais=True):
   <div class="lp-lisa" id="ligipaas-uuringud">
     {tabel(["Leid", "Uuring", "Tõendi liik"],
            [[e(r["leid"]), f'<a href="{e(r["url"])}">{e(r["uuring"])}</a>', e(r["liik"])] for r in K["uuringud"]],
-           pealdis="Uuringud tehisaru mõjust töö tulemusele", numbrid=[])}
+           pealdis="Uuringud tehisaru mõjust töö tulemusele", numbrid=[], tel="2:28% 3:27%")}
   </div>"""
     li = "".join(f'<li><span class="k">{e(s_)}</span><span>{t} {link(vaated, vid, "Vaata", ank)}</span></li>' for s_, t, vid, ank in uuringud)
     if not pais:  # sisu sakis (Kadri 14.11.2026): pealkiri on sakkidega ploki päises
@@ -794,7 +794,7 @@ def saidikaart(A, vaade, vaated):
   </div>
 </div>
 <section class="jaotis" aria-label="Vaated">
-  <div class="tbl kaart"><table><thead><tr>{pais}</tr></thead><tbody>{"".join(read)}</tbody></table></div>
+  {tbl_div("-4 1:24%", "kaart")}<table><thead><tr>{pais}</tr></thead><tbody>{"".join(read)}</tbody></table></div>
 </section>"""
 
 

@@ -531,7 +531,7 @@ def too(A, vaade, vaated=None):
           <span class="gs">Töötajad täistööajale taandatult, 2022; ametid astmetes 3 ja 4. Sinine = aste 4, hall = aste 3.</span></figcaption>
         <div class="ar" data-piir="12">{ar_read}</div>
         <details><summary>Näita andmetabelit</summary>
-        {tabel(["Amet", "Töötajaid", "Aste"], k_tabel, piir=True, pealdis="Kõige avatumad ametid Eestis, töötajad täistööajale taandatult, 2022")}
+        {tabel(["Amet", "Töötajaid", "Aste"], k_tabel, piir=True, pealdis="Kõige avatumad ametid Eestis, töötajad täistööajale taandatult, 2022", tel="2:5.6em 3:3em")}
         </details>
       </figure>"""
     ee_el, el_el = K["el"]["EE"], K["el"][EL]
@@ -841,7 +841,7 @@ def avalik_sektor(A, vaade, vaated=None):
     <p class="alam">OECD indeks 0–1 neljas mõõtmes, vastajate järgi valitsemisalas. Tabelis on madalaim ja kõrgeim valitsemisala.</p>
   </header>
   <div class="kaks">
-    <div>{tabel(["Mõõde", "Vahemik valitsemisalade vahel"], m_read, fookus_rida=3, pealdis="OECD innovatsioonivõimekuse indeks valitsemisalade kaupa")}
+    <div>{tabel(["Mõõde", "Vahemik valitsemisalade vahel"], m_read, fookus_rida=3, pealdis="OECD innovatsioonivõimekuse indeks valitsemisalade kaupa", tel="2:42%")}
       {allikarida([("OECD (2026)", OECD_URL, _o(A, "indeks-moju-min")["koht"])])}</div>
     <div class="kulg">
       {faktid([
@@ -883,7 +883,7 @@ def avalik_sektor(A, vaade, vaated=None):
     <h2 id="h-rahastus">Uuendusi rahastatakse projektidest: <b>{pr(v("raha-el"), 0)}% uuendusrahast tuli ELilt</b> ja innovatsioonihankeid tehakse vähe</h2>
     <p class="alam">Iga number loeb eri asja, seepärast on need tabelis, mitte ühel teljel.</p>
   </header>
-  {tabel(["Number", "Mida see loeb", "Kus aruandes"], r_read, numbrid=[], pealdis="Avaliku sektori uuenduste rahastus")}
+  {tabel(["Number", "Mida see loeb", "Kus aruandes"], r_read, numbrid=[], pealdis="Avaliku sektori uuenduste rahastus", tel="1:4.8em 3:30%")}
   {faktid([("Vastuolu aruandes", "risk", e(fond["markus"]))], koik_lahti=True)}
   {allikarida([("OECD (2026)", OECD_URL, "2. ja 6. peatükk")])}
 </section>"""
@@ -912,7 +912,7 @@ def avalik_sektor(A, vaade, vaated=None):
     <h2 id="h-soovitused">OECD soovitab tehisaru kasutuseks avalikus sektoris <b>{ARVSONAD[len(s_read)]} sammu</b>: juhtimine, oskused, rahastus ja hindamine</h2>
     <p class="alam">See on OECD soovitus, mitte seire hinnang. Kõik soovitused on raporti 7. peatükis.</p>
   </header>
-  {tabel(["Nr", "OECD soovitus", "Kellele"], s_read, numbrid=[], pealdis="OECD tehisaru soovitused")}
+  {tabel(["Nr", "OECD soovitus", "Kellele"], s_read, numbrid=[], pealdis="OECD tehisaru soovitused", tel="1:2.2em 3:32%")}
   {allikarida([("OECD (2026)", OECD_URL, "7. peatükk")])}
 </section>"""
 
