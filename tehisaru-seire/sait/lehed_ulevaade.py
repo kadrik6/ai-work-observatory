@@ -383,8 +383,9 @@ def arvu_uuendused(juhtumid):
 def too_eesti(A):
     """Töö vaate andmed: (Eesti töötus kuu kaupa, Eesti koondamised, kus küsiti tehisaru rolli).
 
-    Kadri 11.11.2026: koondamised olid liiga suure fookuse all (esimese saki 3/4). Töötus on nüüd esimene sakk üksi,
-    koondamised on oma sakis koos tabeliga „Keda koondajad otsivad“."""
+    Kadri 11.11.2026: koondamised olid liiga suure fookuse all (esimese saki 3/4).
+    Kadri 25.11.2026 (oluline enne valikulist): töötus ja koondamised on tahvli all nähtaval, mitte sakkides. Töötuse määr ja
+    registreeritud töötud on laial ekraanil kõrvuti (kaks eri mõõtu, kummalgi oma telg ja pealkiri; neid ei liideta)."""
     T = tootus()
     K = A.get("koondamised") or {}
     juhtumid = sorted(K.get("juhtumid", []), key=lambda r: r["kuupaev"], reverse=True)
@@ -398,16 +399,18 @@ def too_eesti(A):
     k0 = T["EE"][0][0]
     idx = {k: i for i, (k, _) in enumerate(T["EE"])}
     n = len(T["EE"]) - 1
-    margid = [i for i, (k, _) in enumerate(T["EE"]) if k[5:7] in ("01",)] + [0, n]
+    # Jaanuari märk jääb ära, kui see on otsale lähemal kui 5 kuud: kitsas joonises läheksid sildid üksteise peale
+    jaan = lambda kuud, viimane: [i for i, (k, _) in enumerate(kuud) if k[5:7] == "01" and 5 <= i <= viimane - 5]  # noqa: E731
+    margid = jaan(T["EE"], n) + [0, n]
     joonis = joon([("Eesti", [(idx[k], v) for k, v in T["EE"]], "fookus"),
                    ("EL", [(idx[k], v) for k, v in T[EL] if k in idx], "ref")],
-                  0, n, 10, 2, w=720, h=220, ml=30, mr=64, x_margid=sorted(set(margid)), lihtne=True, y_skaala=True,
+                  0, n, 10, 2, w=460, h=220, ml=30, mr=64, x_margid=sorted(set(margid)), lihtne=True, y_skaala=True,
                   x_silt=lambda i: T["EE"][int(i)][0][5:] + "." + T["EE"][int(i)][0][:4], silt="Töötuse määr kuu kaupa")
     aasta_tagasi = dict(T["EE"]).get(f"{int(kuu[:4]) - 1}{kuu[4:]}")
     muutus = "" if aasta_tagasi is None else (
         f"Aasta varem {pr(aasta_tagasi)}%, muutus {'+' if t_ee >= aasta_tagasi else '−'}{pr(abs(t_ee - aasta_tagasi))} protsendipunkti. ")
     sec_t = f"""
-<section class="pn sp12" id="tootus-kuud" aria-labelledby="h-tootus-kuud">
+<section class="pn sp6" id="tootus-kuud" data-vana-sakk="sakk-tootus" aria-labelledby="h-tootus-kuud">
   <div class="pn-h"><h2 id="h-tootus-kuud">Eesti töötus oli {kuu_seesytlev(kuu)} {kuu[:4]} <b>{pr(t_ee)}%</b>, ELis {pr(t_el)}%</h2></div>
   <p class="ps">Töötuse määr, %, sesoonselt tasandatud, {k0[5:]}.{k0[:4]}–{kuu[5:]}.{kuu[:4]}. {muutus}Kuunumber ei ütle, kas põhjus on tehisaru.</p>
   {joonis}
@@ -421,13 +424,13 @@ def too_eesti(A):
         raise AndmeViga(f"Registreeritud töötute muutus vajab kuud {int(r_kuu[:4]) - 1}{r_kuu[4:]}")
     r_muut = (r_n - r_n0) / r_n0 * 100
     rn = len(RT) - 1
-    r_margid = sorted({i for i, (k, _) in enumerate(RT) if k[5:7] == "01"} | {0, rn})
+    r_margid = sorted(set(jaan(RT, rn)) | {0, rn})
     r_joonis = joon([("Eesti", [(i, v / 1000) for i, (_, v) in enumerate(RT)], "fookus")],
-                    0, rn, 50, 10, w=720, h=200, ml=30, mr=64, x_margid=r_margid, lihtne=True, y_skaala=True,
+                    0, rn, 50, 10, w=460, h=220, ml=30, mr=64, x_margid=r_margid, lihtne=True, y_skaala=True,
                     x_silt=lambda i: RT[int(i)][0][5:] + "." + RT[int(i)][0][:4], silt="Registreeritud töötute arv kuu kaupa, tuhandetes")
     r_arv = lambda x: f"{x:,}".replace(",", NBSP)  # noqa: E731
     sec_t += f"""
-<section class="pn sp12" id="reg-tootud" aria-labelledby="h-reg-tootud">
+<section class="pn sp6" id="reg-tootud" aria-labelledby="h-reg-tootud">
   <div class="pn-h"><h2 id="h-reg-tootud">Töötukassas oli {kuu_seesytlev(r_kuu)} {r_kuu[:4]} arvel <b>{r_arv(r_n)}</b> töötut</h2></div>
   <p class="ps">Registreeritud töötute arv, tuhandetes, {RT[0][0][5:]}.{RT[0][0][:4]}–{r_kuu[5:]}.{r_kuu[:4]}. Aasta varem {r_arv(r_n0)}, muutus {'+' if r_muut >= 0 else '−'}{pr(abs(r_muut), 0)}%. See ei ole töötuse määr: määr tuleb küsitlusest ja loeb ka tööotsijaid, kes Töötukassas arvel ei ole. Neid kahte numbrit ei võrrelda.</p>
   {r_joonis}
@@ -478,7 +481,7 @@ def too_eesti(A):
 </div>"""
     # Kaardid võeti maha; arv, põhjus ja link on tabelis „Keda koondajad otsivad“ (Kadri MKUS-i kommentaar 7.11.2026 08:48)
     sec_kv = f"""
-<section class="pn sp12" id="koondamised" aria-labelledby="h-koondamised">
+<section class="pn sp12" id="koondamised" data-vana-sakk="sakk-koondamised" aria-labelledby="h-koondamised">
   {k_pea}
   {sec_v}
 </section>"""

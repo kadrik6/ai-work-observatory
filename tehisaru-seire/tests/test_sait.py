@@ -419,8 +419,9 @@ def test_igas_teemavaates_on_numbriplaadid(sait):
         assert 'class="vastus' in sait[f], f
     # 14.11.2026: Ettevõtete ja Inimeste numbrid on tahvli ridadel (Kadri valis „B koos C maatriksiga“ ja „A ja B koos“);
     # Töö ja Avalik sektor 17.11 (mõlemal „A ja C koos“), Hanked 19.11 („A ja C koos“)
-    for f in ("ettevotted.html", "inimesed.html", "too.html", "avalik-sektor.html", "hanked.html"):
+    for f in ("ettevotted.html", "inimesed.html", "avalik-sektor.html", "hanked.html"):
         assert 'class="tv-arv"' in sait[f], f
+    assert 'class="vt-n"' in sait["too.html"]  # 25.11.2026: Töö tahvli rida vastab sõnaga, number on selle kõrval
 
 
 def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
@@ -966,14 +967,16 @@ def test_too_leht_teemamall_a(sait):
     """Kadri 8.11.2026: teemaleht A järgi: number, andmed sakkides, uuringud, väited, reeglid, allikad; vanad ankrud alles."""
     h = sait["too.html"]
     # 17.11.2026: numbriplaatide asemel tahvel, tõendikaart ja astmed; plokid on nende all kokkupandult
-    jrk = [h.index(x) for x in ('id="tahvel"', 'id="toendid"', 'id="astmed"', 'id="andmed"', 'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
+    # 25.11.2026 (oluline enne valikulist): tahvli all on nähtaval töötus, koondamised ja astmed; tõendikaart on üksikasjades
+    jrk = [h.index(x) for x in ('id="tahvel"', 'id="tootus-kuud"', 'id="koondamised"', 'id="astmed"', 'id="toendid"', 'id="andmed"',
+                                'id="t-vaited"', 'id="t-reeglid"', 'id="t-allikad"')]
     assert jrk == sorted(jrk)
     assert 'id="t-uuringud"' not in h  # Kadri 11.11.2026: uuringud on alamlehel Töö › Uuringud
     for vana in ("tootus-kuud", "koondamised", "tootus-el", "palkamine", "vabad-kohad", "toopakkumised", "ai-kuulutused", "tulevik"):
         assert f'id="{vana}"' in h, vana
     sakid = re.findall(r'role="tab" id="sakk-([a-z-]+)-n" aria-controls="sakk-\1" aria-selected="(true|false)"', h)
-    assert len(sakid) == 7 and [s for s, v in sakid if v == "true"] == ["tootus"]
-    assert len(re.findall(r'class="sakk-sisu" hidden>', h)) == 6
+    assert len(sakid) == 5 and [s for s, v in sakid if v == "true"] == ["vabad"]
+    assert len(re.findall(r'class="sakk-sisu" hidden>', h)) == 4
     assert "august 2026" in h[h.index('id="t-allikad"'):]
 
 
@@ -1538,17 +1541,19 @@ def test_podcastid_ettekannete_lehel(sait):
 
 
 def test_koondamised_ei_ole_esikohal(sait):
-    """Kadri 11.11.2026: koondamised olid liiga suure fookuse all. Töö lehel on töötus esimene sakk üksi ja koondamised
-    oma sakis koos tabeliga „Keda koondajad otsivad“. Uudiste filtris pole koondamisel oma nuppu: see on töö all
-    (Kadri 11.11.2026: „võta koondamine siit ära, see info peaks koonduma töö alla“)."""
+    """Kadri 11.11.2026: koondamised olid liiga suure fookuse all (esimese saki 3/4). Uudiste filtris pole koondamisel
+    oma nuppu: see on töö all (Kadri 11.11.2026: „võta koondamine siit ära, see info peaks koonduma töö alla“).
+    Kadri 25.11.2026 valis Töö lehe põhigraafikuteks töötuse kuu kaupa ja koondamised: töötus on koondamiste ees, mõlemad
+    on nähtaval (mitte sakis) ja pikk tabel „Keda koondajad otsivad“ avaneb koondamiste graafiku all klõpsuga."""
     h = sait["too.html"]
     sakid = re.findall(r'role="tab" id="sakk-([a-z-]+)-n"[^>]*>([^<]+)</button>', h)
-    assert [s for s, _ in sakid] == ["tootus", "tootus-el", "vabad", "portaalid", "ai-tood", "koondamised", "prognoos"]
-    assert dict(sakid)["tootus"] == "Töötus"
-    esimene = h[h.index('id="sakk-tootus"'):h.index('id="sakk-tootus-el"')]
-    assert 'id="tootus-kuud"' in esimene and 'id="koondamised"' not in esimene
-    koond = h[h.index('id="sakk-koondamised"'):h.index('id="sakk-prognoos"')]
-    assert 'id="koondamised"' in koond and 'id="palkamine"' in koond
+    assert [s for s, _ in sakid] == ["vabad", "portaalid", "ai-tood", "tootus-el", "prognoos"]
+    nahtav = h[h.index('id="tootus-kuud"'):h.index('id="astmed"')]
+    assert nahtav.index('id="reg-tootud"') < nahtav.index('id="koondamised"') < nahtav.index('<details class="tt-pl tt-yksi" id="d-palkamine">') < nahtav.index('id="palkamine"')
+    assert 'role="tabpanel"' not in nahtav and nahtav.count("<details") == h[h.index('id="palkamine"'):h.index('id="astmed"')].count("<details") + 1
+    # vana jagatud link (?sakk=sakk-koondamised) leiab ploki üles: plokk kannab vana saki nime ja sait.js kerib sinna
+    assert 'id="koondamised" data-vana-sakk="sakk-koondamised"' in h and 'id="tootus-kuud" data-vana-sakk="sakk-tootus"' in h
+    assert "data-vana-sakk" in (JUUR / "sait" / "sait.js").read_text(encoding="utf-8")
     u = sait["uudised.html"]
     for rid in ("eesti-uudised", "maailma-uudised"):
         osa = u[u.index(f'id="{rid}"'):]
@@ -2026,16 +2031,22 @@ def test_vahvel_ei_luba_ule_saja_protsendi():
 
 
 def test_too_on_tahvel_toendikaart_ja_astmed(A, sait):
-    """Kadri 17.11.2026 valis Töö lehele „A ja C koos“: tahvel, kus on tõendeid, hõive avatuse astme järgi, siis plokid kokku pandud."""
+    """Kadri 17.11.2026 valis Töö lehele „A ja C koos“: tahvel, kus on tõendeid, hõive avatuse astme järgi, siis plokid kokku pandud.
+    Kadri 25.11.2026 (oluline enne valikulist): tahvel, töötus, koondamised ja astmed on nähtaval; tõendikaart on üksikasjade esimene rida."""
     h = sait["too.html"]
     main = re.search(r"<main.*?</main>", h, re.S).group(0)
-    assert main.index("</h1>") < main.index('id="tahvel"') < main.index('id="toendid"') < main.index('id="astmed"') < main.index('id="h-uksikasjad"')
+    assert (main.index("</h1>") < main.index('id="tahvel"') < main.index('id="tootus-kuud"') < main.index('id="koondamised"')
+            < main.index('id="astmed"') < main.index('id="h-uksikasjad"') < main.index('id="toendid"'))
     assert 'data-kpi="too-' not in h and '<aside class="vastus"' not in h
     tv = _jaotis(h, "tahvel")
-    read = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">(.*?)</a>', tv)
-    assert len(read) == 6 and all(f'id="{a}"' in h for a, _ in read)
-    assert tv.count('<details class="tv-r">') == len(read)
-    assert "ei näita, mis on muutuse põhjus" in tv
+    read = re.findall(r'<details class="vt-r"><summary><span class="vt-k">(.*?)</span><span class="vt-v"><b>(.*?)</b><span class="vt-n">(.*?)</span>', tv)
+    lingid = re.findall(r'<p class="vt-ava"><a href="#([a-z-]+)">', tv)
+    assert len(read) == len(lingid) == 6 and all(f'id="{a}"' in h for a in lingid)
+    assert all(sona.strip() and not re.search(r"\d+[,.]?\d*\s*%", sona) for _, sona, _ in read)  # vastus on sõna, protsent on selle kõrval
+    assert "ei näita, kas muutuse põhjus on tehisaru" in tv
+    # tahvli ees ei ole lugemisjuhist ega all loendurite rida; märkus, tõend ja allikas on rea sees
+    assert "<table" not in tv and 'class="tt-us"' not in tv and "Rida viib oma plokki" not in tv
+    assert tv.count("<dt>Märkus</dt>") == tv.count("<dt>Allikas</dt>") == 6
     # tõendikaart: iga rida on küsimus, neli kohta; lahtrite numbreid ei võrrelda; Eesti töökohtade ridadel pole rühmi võrdlevat uuringut
     tk = _jaotis(h, "toendid")
     ridu = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">.*?</tr>', tk, re.S)
@@ -2051,8 +2062,8 @@ def test_too_on_tahvel_toendikaart_ja_astmed(A, sait):
         svg = svg.split("</svg>")[0]
         assert svg.count('<circle class="tv-pf"') == 6 and svg.count('<circle class="tt-elp"') == 6
     assert "kirjeldus, mitte põhjus" in am and "lfsa_egai2d" in am
-    for sid in ("andmed", "maailm", "eesti", "ametid", "lopp"):
-        assert f'<details class="tt-pl" id="d-{sid}">' in h, sid
+    plokid = re.findall(r'<details class="tt-pl" id="d-([a-z]+)">', h)
+    assert plokid == ["toendid", "andmed", "maailm", "eesti", "ametid", "lopp"]
 
 
 def test_jaotusriba_ei_luba_ule_saja_protsendi():
@@ -2229,8 +2240,7 @@ def test_registreeritud_tootud_on_eraldi_plokis_ja_ei_ole_maar(sait):
     kuud, avaldatud = lehed_ulevaade.reg_tootud()
     kuu, n = kuud[-1]
     h = sait["too.html"]
-    esimene = h[h.index('id="sakk-tootus"'):h.index('id="sakk-tootus-el"')]
-    assert esimene.index('id="tootus-kuud"') < esimene.index('id="reg-tootud"')
+    assert h.index('id="tahvel"') < h.index('id="tootus-kuud"') < h.index('id="reg-tootud"') < h.index('id="koondamised"')
     osa = tekst(_jaotis(h, "reg-tootud"))
     assert f"{n:,}".replace(",", " ") in osa.replace(" ", " ") and lehed_ulevaade.kuu_seesytlev(kuu) in osa
     assert "ei ole töötuse määr" in osa and "ei võrrelda" in osa and "TT065" in osa
@@ -2244,3 +2254,44 @@ def test_ai_kuulutuste_allikarida_ei_luba_igapaevast_kogumist_kui_fail_on_vana(A
     rida = [r for r in sait["too.html"][sait["too.html"].index('id="t-allikad"'):].split("</tr>") if "CV.ee" in r and "AI- ja andmetööde" in r][0]
     assert ("kogutakse iga päev" in rida) == (vanus <= 3)
     assert ("kogumine on katkenud" in rida) == (vanus > 3)
+
+
+
+def test_too_tahvli_sona_tuleb_andmetest():
+    """Kadri 25.11.2026: tahvli rida vastab sõnaga. Sõna arvutatakse numbrist kindla piiriga, mitte ei kirjutata käsitsi."""
+    import types
+    import too_tahvel as tt_
+    D = types.SimpleNamespace(t_ee=8.0, t_ee0=7.1, v_muut=-19.2, k_pohjusena=[1, 2], kj=list(range(10)))
+    assert tt_.sona_tootus(D) == "Jah" and tt_.sona_vabad(D) == "Jah" and tt_.sona_koondamised(D) == "Mõni ettevõte ütleb nii"
+    D.t_ee0, D.v_muut, D.k_pohjusena = 7.9, 2.0, []
+    assert tt_.sona_tootus(D) == "Püsib samal tasemel" and tt_.sona_vabad(D) == "Umbes sama palju"
+    assert tt_.sona_koondamised(D) == "Ükski ettevõte ei öelnud nii"
+    D.t_ee0, D.v_muut, D.k_pohjusena = 8.6, 7.0, list(range(6))
+    assert tt_.sona_tootus(D) == "Ei, väheneb" and tt_.sona_vabad(D) == "Ei, rohkem" and tt_.sona_koondamised(D) == "Enamik ettevõtteid ütleb nii"
+    D.t_ee0 = None
+    with pytest.raises(andmekiht.AndmeViga):
+        tt_.sona_tootus(D)
+    assert [tt_.sona_hoive(v) for v in (-3.0, -0.9, -0.2, 0.3, 1.5)] == ["Jah", "Veidi vähem", "Sama palju", "Sama palju", "Ei, rohkem"]
+    assert [tt_.sona_oskus(v) for v in (0.4, 2.6, 12.0, 30.0)] == ["Väga harva", "Harva", "Osas kuulutustes", "Sageli"]
+
+
+def test_too_uks_kusimus_uks_number(A, sait):
+    """Läbivaatus 25.11.2026: „Kas avatud ametites on tööd vähem?“ oli kolmes plokis kahe eri numbriga (+0,7% ja −0,9%).
+    Tahvli rida ja nähtav joonis räägivad nüüd samast rühmast (aste 3–4) sama numbriga; teine rühm on rea märkuses."""
+    import too_tahvel as tt_
+    h = sait["too.html"]
+    D = tt_.Andmed(A)
+    rida = [r for r in _jaotis(h, "tahvel").split('<details class="vt-r">') if "kõige avatumates ametites on tööd vähem" in r]
+    assert len(rida) == 1
+    kokku, markus = rida[0].split("</summary>")
+    assert f'<span class="vt-n">{tt_.mt(D.ee_k)}</span>' in kokku and tt_.mt(D.ee_av) not in tekst(kokku)
+    assert 'href="#astmed"' in markus and f"(aste 1–4) {tt_.mt(D.ee_av)}" in tekst(markus)
+    assert komponendid.pr(abs(D.ee_k)) + "%" in tekst(re.search(r'<h2 id="h-astmed">(.*?)</h2>', h, re.S).group(1))
+
+
+def test_tagasi_nupp_viib_ankrult_tagasi():
+    """Viga leitud 25.11.2026: tahvli realt plokki hüpates ei viinud tagasi-nupp tahvli juurde (kerimise taastamine on käsitsi
+    ja saki avamine kirjutas lahkumise koha aadressi üle). Skript jätab koha meelde ja ankur ei kirjuta ?sakk=… aadressi."""
+    js = (JUUR / "sait" / "sait.js").read_text(encoding="utf-8")
+    assert "olek.keri = Math.round(window.scrollY)" in js and "window.addEventListener('popstate'" in js
+    assert "if (!window.seireAnkurAvab) sea(" in js and "window.seireAnkurAvab = true" in js

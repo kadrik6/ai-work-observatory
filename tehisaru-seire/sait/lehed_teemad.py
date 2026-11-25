@@ -670,18 +670,19 @@ def too(A, vaade, vaated=None):
     import teemamall as tm
     from komponendid import KUUD
     from lehed_ulevaade import PAV_URL, REG_URL, UNE_URL, UNE_UUENDATUD, _loe, _kv, koondamiste_viimane, reg_tootud, vaite_teema
-    # Kadri 11.11.2026: koondamised olid liiga suure fookuse all; neid uudiseid on harva ja muu pole vähem tähtis.
-    # Töötus, vabad kohad ja kuulutused on eespool; koondamised ja „Keda koondajad otsivad“ on ühes sakis prognoosi ees.
+    # Kadri 11.11.2026: koondamised olid liiga suure fookuse all (esimese saki 3/4). Kadri 25.11.2026 (oluline enne valikulist):
+    # töötus kuu kaupa ja koondamised on tahvli all nähtaval, sest need uuenevad ja nende pärast tullakse; ülejäänud
+    # andmestikud on üksikasjades sakkidena ja tabel „Keda koondajad otsivad“ avaneb koondamiste graafiku all.
     sec_tootus, sec_koond = too_eesti(A)
-    sec_andmed = tm.andmesakid("too", tm.kys("Mida näitavad Eesti tööturu andmed?", "Kas põhjus on tehisaru, kuunumbrid veel ei ütle"),
-                               "Iga sakk on üks andmestik: töötus, vabad kohad, tööpakkumised, koondamised ja prognoos. "
-                               "Põhjuse kohta on uuringud allpool.", [
-        ("tootus", "Töötus", sec_tootus),
-        ("tootus-el", "Töötus ELis", tootus_el()),
+    palk_plokk = (f'<details class="tt-pl tt-yksi" id="d-palkamine"><summary><b>Keda koondajad praegu otsivad?</b>'
+                  f'<span>iga koondamise arv, põhjus ettevõtte sõnul, uudise link ja avatud töökohad</span></summary>{sec_palk}</details>'
+                  if sec_palk.strip() else "")
+    sec_andmed = tm.andmesakid("too", tm.kys("Mida näitavad teised tööturu andmed?", "Kas põhjus on tehisaru, need numbrid veel ei ütle"),
+                               "Iga sakk on üks andmestik. Töötus kuu kaupa ja koondamised on lehe alguses.", [
         ("vabad", "Vabad kohad", vabad_ametikohad()),
         ("portaalid", "Tööportaalid", toopakkumised(A)),
         ("ai-tood", "Tehisaru- ja andmetööd", ai_kuulutused(A)),
-        ("koondamised", "Koondamised", sec_koond + sec_palk),
+        ("tootus-el", "Töötus ELis", tootus_el()),
         ("prognoos", "Prognoos", sec_tulevik),
     ])
     t_uuringud = ""  # Kadri 11.11.2026: uuringud on ühes kohas, alamlehel Töö › Uuringud (teine rida)
@@ -714,13 +715,15 @@ def too(A, vaade, vaated=None):
                 f'{pr(p1["koik"] / p0["koik"])} korda rohkem kui {p0["aasta"]}. aastal.')
     # Töölaud (Kadri 17.11.2026 valis näidistest „A ja C koos“): tahvel, tõendikaart, hõive avatuse astme järgi,
     # siis praegused plokid kokkupandult. Kirjandus jääb kataloogina eraldi alamleheks (Kadri 14.11.2026).
+    # Kadri 25.11.2026: tahvli all on nähtaval ainult töötus, koondamised ja hõive avatuse astme järgi; tõendikaart
+    # (15 lahtrit 32-st on „uuringut pole“) on üksikasjade esimene rida.
     import teema_tahvel as tt
     import too_tahvel
     D = too_tahvel.Andmed(A)
     vv = [v for v in A["vaited"] if vaite_teema(v) == "too"]
-    uusim = max(str(r[2])[:10] for r in allikad if r[2])
     uks = tt.uksikasjad([
-        ("andmed", "Mida näitavad Eesti tööturu andmed?", "töötus, ELi järjestus, vabad kohad, tööportaalid, AI-tööd, koondamised, prognoos", sec_andmed),
+        ("toendid", "Kus on tõendeid?", "8 küsimust ja 4 kohta: milline uuring on olemas ja milline puudub", too_tahvel.sec_toendid(D)),
+        ("andmed", "Mida näitavad teised tööturu andmed?", "vabad kohad, tööportaalid, AI-tööd, töötus ELis, prognoos", sec_andmed),
         ("maailm", "Mida uuringud mujal leidsid?", "töökohad ja ülesannete kiirus", sec_maailm + sec_kiirus),
         ("eesti", "Mida Eesti uuringud mõõdavad?", "tootlikkus ja takistused", sec_eesti),
         ("ametid", "Kui avatud on Eesti ametid?", "ILO astmed, ametid, hõive muutus", sec_kokkupuude + sec_hoive),
@@ -728,10 +731,11 @@ def too(A, vaade, vaated=None):
          tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
     ])
     return jaga(A, vaade, lead, [], [
-        ("tahvel", [("tahvel", "Ülevaade")], too_tahvel.tahvel(D, vv, len(allikad), uusim)),
-        ("toendid", [("toendid", "Kus on tõendeid?")], too_tahvel.sec_toendid(D)),
+        ("tahvel", [("tahvel", "Ülevaade")], too_tahvel.tahvel(D)),
+        ("tootus", [("tootus-kuud", "Töötus")], sec_tootus),
+        ("koondamised", [("koondamised", "Koondamised")], sec_koond + palk_plokk),
         ("astmed", [("astmed", "Avatud ametid")], too_tahvel.sec_astmed(D)),
-        ("uksikasjad", [("andmed", "Tööturg"), ("maailm", "Uuringud"), ("t-vaited", "Väited"), ("t-allikad", "Allikad")], uks),
+        ("uksikasjad", [("h-uksikasjad", "Üksikasjad")], uks),
         ("uuritakse", [("uuritakse", "Mida uuritakse"), ("publikatsioonid", "Publikatsioonid"), ("eesti-allikad", "Eesti allikad")], sec_uuritakse),
     ])
 
