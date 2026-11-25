@@ -1273,6 +1273,28 @@ def test_paise_pilt_teema_jargi():
     assert css.count('url("pilt/avaleht.jpg")') == 2
 
 
+def test_avalehe_pilt_on_lehe_taust():
+    # Kadri 25.11.2026: „put this picture in the main page as a background … more see-through … save some more space
+    # on the upper part“ – pilt on kogu avalehe ülaosa taust (ka tahvli taga), nõrgem, ja päisel pole oma kõrgust
+    import re
+    css = (Path(__file__).resolve().parent.parent / "sait" / "stiil.css").read_text(encoding="utf-8")
+    reeglid = css.split("}")
+    pais = next(r for r in reeglid if "html[data-t] .pea-rahu.pilt { position" in r)
+    assert "min-height" not in pais and "padding-bottom: 0" in pais
+    # isolation tooks pildi sisu peale, kui pilt ulatub päisest allapoole; pilt peab jääma kogu sisu taha
+    assert "isolation:" not in pais
+    pildid = [r for r in reeglid if ".pea-rahu.pilt::before" in r]
+    assert len(pildid) == 4
+    assert "z-index: -1" in pildid[0] and "pointer-events: none" in pildid[0]
+    # pilt on päisest kõrgem (ulatub tahvli taha) ja hajub alla lehe taustaks
+    assert int(re.search(r"height: (\d+)px", pildid[0]).group(1)) >= 460
+    assert all("linear-gradient(0deg, var(--page) 0%" in r for r in pildid)
+    # heledus- ja kontrastifilter muutis ka katte värvi ja jättis pildi alla serva
+    assert "filter: grayscale(1);" in pildid[0] and "brightness(" not in "".join(pildid)
+    nahtavus = [float(x) for r in pildid for x in re.findall(r"opacity: (\.\d+)", r)]
+    assert len(nahtavus) == 4 and max(nahtavus) <= .3
+
+
 def test_ai_kuulutuste_leiud_asukoht_ja_uks_tooandja(A, sait):
     # Kadri 9.11.2026: mustandi leiud 1 (asukoht) ja 2 (üks tööandja) AI-kuulutuste jaotisse; numbrid failidest
     K = A["ai_kuulutused"]
