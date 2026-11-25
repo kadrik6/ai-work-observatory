@@ -68,6 +68,48 @@ def lisa_uudiste_koondamised(A):
     K["juhtumid"].sort(key=lambda j: j["kuupaev"], reverse=True)
 
 
+ARVU_AKEN_PAEVI = 180
+
+
+def uuenda_koondamiste_arvud(A):
+    """Koondatute arv uueneb jätku-uudisest ise (Kadri 25.11.2026: Pipedrive'i ja Eesti Energia lõplikud arvud olid
+    uudistes olemas, aga Töö vaade näitas esimest teadet). Sama ettevõtte hilisem Eesti koondamisuudis, mille arvuväljal
+    on arv, mida selle juhtumi kohta varem pole nähtud, asendab juhtumi arvu. Varem nähtud arvu kordamine (näiteks
+    arvamuslugu, mis nimetab esialgset arvu) midagi ei muuda. Esimene teade jääb alles väljale arv_varem, uue arvu
+    allikas väljale arv_uuendus. Tehisaru roll ja juhtumi kuupäev ei muutu: need tulevad esimesest teatest."""
+    K = A.get("koondamised") or {}
+    if not K.get("juhtumid") or not A.get("uudised"):
+        return
+    import datetime as _dt
+    paev = _dt.date.fromisoformat
+    read = sorted((r for r in A["uudised"] if r.get("piirkond") == "EE" and r.get("teema") == "koondamine" and r.get("ettevote")
+                   and isinstance(r.get("arv_eestis"), int) and not isinstance(r.get("arv_eestis"), bool)),
+                  key=lambda r: (r["kuupaev"], r.get("lisatud") or r["kuupaev"]))
+    for j in K["juhtumid"]:
+        nimi, algus = j["ettevote"].lower(), paev(j["kuupaev"])
+        jargmine = min((paev(x["kuupaev"]) for x in K["juhtumid"]
+                        if x is not j and x["ettevote"].lower() == nimi and paev(x["kuupaev"]) > algus), default=None)
+        nahtud, uus = {j.get("arv_eestis")}, None
+        for r in read:
+            kp_ = paev(r["kuupaev"])
+            if r["ettevote"].lower() != nimi or kp_ < algus or (kp_ - algus).days > ARVU_AKEN_PAEVI or (jargmine and kp_ >= jargmine):
+                continue
+            if r["arv_eestis"] not in nahtud:
+                nahtud.add(r["arv_eestis"])
+                uus = r
+        if uus is None:
+            continue
+        tekst = (uus.get("arv_tekst") or "").strip()
+        if tekst.lower().startswith("jätkulugu:"):
+            tekst = tekst[len("jätkulugu:"):].strip()
+        j["arv_varem"] = {"arv_eestis": j.get("arv_eestis"), "arv_vahemalt": bool(j.get("arv_vahemalt")),
+                          "arv_ulem": j.get("arv_ulem"), "arv_tekst": j.get("arv_tekst", "")}
+        j["arv_uuendus"] = {"kuupaev": uus["kuupaev"], "url": uus["url"], "allikas": uus["allikas"], "pealkiri": uus["pealkiri"]}
+        j["arv_eestis"], j["arv_tekst"] = uus["arv_eestis"], tekst
+        j.pop("arv_vahemalt", None)
+        j.pop("arv_ulem", None)
+
+
 class AndmeViga(Exception):
     """Andmed on puudu või vastuolus. Ehitus peatub."""
 
@@ -193,6 +235,7 @@ def lae(juur=JUUR, sisu=SIIN / "sisu"):
     lisa_kinnitatud_uuringud(A, sisu / "uuringud-lisa.json")
     jata_valja(A)
     lisa_uudiste_koondamised(A)
+    uuenda_koondamiste_arvud(A)
     lisa_uudiste_vaited(A)
     for r in A["avalik"].values():
         if not r["vaartus"] or not r["koht"]:
