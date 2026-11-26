@@ -179,6 +179,10 @@ def ehita(valjund=VALJUND, A=None):
     kontrolli_ankrud(kirjutatud)
     for f, t in kirjutatud.items():
         (valjund / f).write_text(t, encoding="utf-8")
+    import margendid  # andmestiku märgendid viitavad lehe ankrule: see peab olemas olema
+    for leht, ankur in margendid.ankrud(A):
+        if f'id="{ankur}"' not in kirjutatud.get(leht, ""):
+            raise EhitusViga(f"Andmestiku märgend viitab olematule kohale {leht}#{ankur} (margendid.KOHAD)")
     for vana, uus in VANAD_AADRESSID.items():
         leht, _, ankur = uus.partition("#")
         if leht not in kirjutatud or (ankur and f'id="{ankur}"' not in kirjutatud[leht]):

@@ -221,6 +221,8 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
                     for v in vaated if not v["menuu"] and v["id"] != "avaleht" and v["olek"] == "valmis"]
     kavas = [v for v in vaated if not v["menuu"] and v["olek"] != "valmis" and v["id"] != "avaleht"]
     jalus_lingid += [f'{e("Kuidas lugeda" if v["id"] == "kuidas" else v["id"])} (tulekul)' for v in kavas]
+    import margendid  # andmestiku märgendid (Kadri 27.11.2026, nähtavus otsingus)
+    andmestik = margendid.jsonld(A, fail)
     kirjeldus = (vaade.get("kusimus") or "") + " Tehisaru kasutus ja mõju Eestis ja Euroopas: numbrid otse avalikest allikatest koos kuupäevaga."
     return f"""<!doctype html>
 <html lang="et" data-t="1">
@@ -233,6 +235,7 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
 <title>{e(title)}</title>
 <meta name="description" content="{e(kirjeldus)}">
 <link rel="canonical" href="{aadress(fail)}">
+{andmestik}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&amp;family=Inter:wght@400;600;700&amp;display=swap">

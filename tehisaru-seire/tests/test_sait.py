@@ -2536,3 +2536,26 @@ def test_hele_teema_v9(sait):
     assert "--k4: #0f39c2" in css
     tume = re.search(r':root\[data-seire-teema="dark"\] \{([^}]*)\}', css).group(1)
     assert "--signal: #9fb0f5" in tume and "--page: #1f2023" in tume
+
+
+def test_andmestiku_margendid(sait, A):
+    """Kadri 27.11.2026 (nähtavus otsingus, punkt 2): teemalehtedel schema.org Dataset, avalehel DataCatalog.
+    Iga kataloogi näitaja on mõnel lehel, märgend viitab olemasolevale ankrule ja kirjeldus vastab Google'i nõudele."""
+    import margendid
+    D = margendid.andmestikud(A)
+    assert set(A["naitajad"]) <= set(margendid.KOHAD)
+    assert len(D) >= len(A["naitajad"]) + 1  # + töötus (+ hanked, kui andmed on)
+    for d in D:
+        assert margendid.kirjeldus_on_piisav(d), d["name"]
+        assert d["url"].startswith("https://www.tehisaruseire.ee/") and ".html" not in d["url"]
+        assert re.fullmatch(r"\d{4}(-\d{2}(-\d{2})?)?/\d{4}(-\d{2}(-\d{2})?)?", d["temporalCoverage"]), d["temporalCoverage"]
+        assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", d["dateModified"]) and d["isBasedOn"] and d["creator"]
+        assert f'id="{d["_ankur"]}"' in sait[d["_fail"]]
+    for f, h in sait.items():
+        for m in re.findall(r'<script type="application/ld\+json">(.*?)</script>', h, re.S):
+            o = json.loads(m)
+            assert o["@context"] == "https://schema.org" and "_fail" not in m, f
+    k = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', sait["index.html"], re.S).group(1))
+    kat = next(x for x in k["@graph"] if x["@type"] == "DataCatalog")
+    assert len(kat["dataset"]) == len(D)
+    assert "Kadri" not in json.dumps(k, ensure_ascii=False)
