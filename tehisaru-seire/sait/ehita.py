@@ -34,6 +34,27 @@ class EhitusViga(Exception):
     pass
 
 
+NIME_KONTROLL = re.compile(r"Kadri(?!oru)|Kungla")  # Kadrioru on kohanimi (koolid, linnaosa)
+
+
+def ilma_markmeteta(nimi, tekst):
+    """Eemaldab CSS-ist /* … */ ja JS-ist /* … */, terve rea // ja koodi järel oleva // märkme."""
+    tekst = re.sub(r"/\*.*?\*/", "", tekst, flags=re.S)
+    if nimi.endswith(".js"):
+        tekst = re.sub(r"(?m)^[ \t]*//[^\n]*\n", "", tekst)
+        tekst = re.sub(r"(?m)(?<=[;{}),])[ \t]+//[^\n]*$", "", tekst)
+    return tekst
+
+
+def nime_kontroll(valjund):
+    """Ehitus kukub, kui avaldatavas failis on Kadri nimi (Kadri 27.11.2026)."""
+    for f in sorted(valjund.rglob("*")):
+        if f.suffix in (".html", ".css", ".js", ".txt", ".xml", ".json", ".csv"):
+            m = NIME_KONTROLL.search(f.read_text(encoding="utf-8"))
+            if m:
+                raise EhitusViga(f"{f.relative_to(valjund)}: avaldataval lehel on nimi ({m.group(0)})")
+
+
 def lae_vaated():
     v = json.loads((SIIN / "vaated.json").read_text(encoding="utf-8"))["vaated"]
     failid = [x["fail"] for x in v]
@@ -188,8 +209,11 @@ def ehita(valjund=VALJUND, A=None):
         if leht not in kirjutatud or (ankur and f'id="{ankur}"' not in kirjutatud[leht]):
             raise EhitusViga(f"Vana aadress {vana} suunab olematule lehele või ankrule {uus}")
         (valjund / vana).write_text(suunaja(uus), encoding="utf-8")
+    # Kadri 27.11.2026: saidil ei ole tema nime. Lähtekoodi märkmed („Kadri 8.11.2026 …“) jäävad repo, aga
+    # avaldatud CSS-i ja JS-i lähevad ilma kommentaarideta.
     for nimi in ("stiil.css", "sait.js"):
-        shutil.copyfile(SIIN / nimi, valjund / nimi)
+        (valjund / nimi).write_text(ilma_markmeteta(nimi, (SIIN / nimi).read_text(encoding="utf-8")), encoding="utf-8")
+    nime_kontroll(valjund)
     # Avalehe päise pilt (Kadri 8.11.2026, B7)
     (valjund / "pilt").mkdir(exist_ok=True)
     # Kadri 9.11.2026 07:18: heledas ja pehmes teemas pilt B (avaleht.jpg), tumedas pilt A (avaleht-tume.jpg)

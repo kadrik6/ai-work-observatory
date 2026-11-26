@@ -19,7 +19,9 @@ MEGA_NIMI = ' class="mega-nimi"'
 # Autor (Kadri 11.11.2026: „lisa saidile minu kui autori info, et oleks mingigi autori kaitse olemas“).
 # Kadri 12.11.2026: märge on lühike nagu teistel saitidel; jaluses ainult „© aasta nimi“, ilma „küsi luba“ ja kordamiseta.
 # Autoriõigus tekib teose loomisega ise; märge teeb autori ja kasutustingimused lugejale nähtavaks.
-AUTOR = "Kadri Kungla"
+# Kadri 27.11.2026: „palun võta lehelt viide minu nimele ka ära. Igaks juhuks praegu.“ Nimi ei ole saidil (jalus, meta,
+# „Autor“ lõik); © märge kannab saidi nime. Nime tagasi panekuks muuda AUTOR, lisa meta author ja muuda NIME_KONTROLL (ehita.py).
+AUTOR = "Tehisaru seire"
 AUTORI_ALGUS = 2026
 
 
@@ -230,7 +232,6 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="author" content="{e(AUTOR)}">
 <meta name="copyright" content="© {autori_aastad()} {e(AUTOR)}">
 <title>{e(title)}</title>
 <meta name="description" content="{e(kirjeldus)}">
