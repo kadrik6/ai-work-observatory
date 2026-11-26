@@ -466,7 +466,7 @@ def too_eesti(A):
     piir = "kuni " if ulem and not alam else ("vähemalt " if alam and not ulem else "umbes ")
 
     def _rida(r):
-        nimi = f'<span class="kr-n">{e(r["ettevote"])}<small>{kp(r["kuupaev"])}</small></span>'
+        nimi = f'<span class="kr-n" title="{e(r["ettevote"])}">{e(r["ettevote"])}<small>{kp(r["kuupaev"])}</small></span>'
         if not _arv(r):
             return (f'<div class="kr" data-k="{e(r["id"])}" role="listitem">{nimi}'
                     f'<span class="kr-rada"><span class="kr-pole">arv pole teada</span></span><span class="kr-a"></span></div>')
