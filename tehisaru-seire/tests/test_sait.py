@@ -1381,10 +1381,10 @@ def test_avalehe_pilt_on_lehe_taust():
     assert len(nahtavus) == 4 and max(nahtavus) <= .3
     # heledas teemas: pilt sinise tooniga, filter ei muuda katte värvi, nähtavus nagu laboris (42%), tume ei muutu
     assert "filter: none" in toon[0] and "luminosity" in toon[0] and "opacity: .42" in toon[0]
-    # Kadri 26.11.2026 14:50: pilt natuke vähem küllastatud → toon #6071a9 (küllastus ~30%, enne #3f60cc ~58%)
+    # Kadri 26.11.2026 14:50: pilt natuke vähem küllastatud; 15:28 valis liugurilt 40% → toon #546ab6 (enne #3f60cc ~58%)
     import colorsys
     tk = re.search(r"background-color: #([0-9a-f]{6})", toon[0]).group(1)
-    assert colorsys.rgb_to_hls(*(int(tk[i:i + 2], 16) / 255 for i in (0, 2, 4)))[2] <= 0.35, tk
+    assert abs(colorsys.rgb_to_hls(*(int(tk[i:i + 2], 16) / 255 for i in (0, 2, 4)))[2] - 0.40) < 0.015, tk
     assert "dark" not in toon[0]
 
 

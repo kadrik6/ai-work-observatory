@@ -1466,7 +1466,7 @@ html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { opacity: .3;
 
 /* V9 (Kadri 26.11.2026): heledas teemas on pilt sinise tooniga. Hall pilt segatakse tooniga (luminosity), filter jääb ära,
    sest grayscale muudaks halliks ka lehevärvi katte. Nähtavus 42% nagu laboris, kus Kadri V9 valis; tumedas ei muutu. */
-html[data-t][data-seire-teema="soft"] .pea-rahu.pilt::before { filter: none; opacity: .42; background-color: #6071a9; background-blend-mode: normal, normal, luminosity; }
+html[data-t][data-seire-teema="soft"] .pea-rahu.pilt::before { filter: none; opacity: .42; background-color: #546ab6; background-blend-mode: normal, normal, luminosity; }
 
 /* Saidi nimi päises: suurem ja must, ka avalehel (Kadri 9.11.2026 00:13) */
 .top .mark, .top .mark[aria-current="page"] { color: var(--ink); font-size: 24px; letter-spacing: -0.02em; line-height: 1.1; }
