@@ -1129,6 +1129,10 @@ def test_allikad_ja_kuupaevad_iga_tabel_eraldi(sait):
         li = re.search(rf'<li><time datetime="{k}">[^<]*</time>(?:(?!</li>).)*>{tabel}</a>', p, re.S)
         assert li, (allikas, tabel, k)
     assert "une_rt_m</a> · Eesti uusim kuu: " in p
+    # 15:21: iga rea nimi viib saidil selle numbri juurde (leht ja ankur on olemas)
+    for leht, ank in re.findall(r'<li><time[^>]*>[^<]*</time><span><b><a href="([a-z-]+\.html)#([a-z0-9-]+)">', p):
+        assert f'id="{ank}"' in sait[leht], (leht, ank)
+    assert len(re.findall(r'<li><time[^>]*>[^<]*</time><span><b><a href="[a-z-]+\.html#', p)) == len(kp_)
     for k in kp_:
         assert _d.fromisoformat(k) <= _d.today()
     if U[("Statistikaamet", "IT1490")] > "2026-09-16":

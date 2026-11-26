@@ -298,45 +298,46 @@ def tabelite_uuendused():
     return {(r["allikas"], r["tabel"]): r["uuendatud"] for r in read}
 
 
-def uuenduste_loend(A, ein, ein25, eeb, ds, kuu, t_ee, t_koht, h_uus, h_seis):
+def uuenduste_loend(A, vaated, ein, ein25, eeb, ds, kuu, t_ee, t_koht, h_uus, h_seis):
     """Avalehe „Allikad ja kuupäevad“: iga avalehe number eraldi, allikas, tabel ja allika viimane uuendus, uusim üleval.
     Kadri 26.11.2026: statistika eri osad uuenevad eri päeval ja hilisemad uuendused peavad siin näha olema.
-    Kui allikas uuendas tabelit pärast numbri esimest avaldamist, on avaldamise päev märkusena juures."""
+    Kui allikas uuendas tabelit pärast numbri esimest avaldamist, on avaldamise päev märkusena juures.
+    Rea nimi viib saidil selle numbri juurde (Kadri 26.11.2026 15:21: uue asja saab kohe avada)."""
     from lehed_teemad import OECD_URL
     U = tabelite_uuendused()
     eeb25 = andmed.leia(A, EB, "EE", "uusim:alus")
     m = re.search(r"\((\d{4})\)", t_koht[0])
 
-    def tabelist(r, tekst, lisa=""):
+    def tabelist(r, tekst, koht, lisa=""):
         allikas, tabel = r["allikas"].split(",")[0].strip(), r["allikas"].split()[-1]
         kuup = U.get((allikas, tabel), r["avaldatud"])
         marg = [lisa] if lisa else []
         if r["avaldatud"] and r["avaldatud"] < kuup:
             marg.append(f"uuendati hiljem, esmalt {kp(r['avaldatud'])}")
-        return (kuup, tekst, f'{allikas} <a href="{e(r["url"])}">{e(tabel)}</a>', marg)
+        return (kuup, tekst, f'{allikas} <a href="{e(r["url"])}">{e(tabel)}</a>', marg, koht)
 
     une_kp = U.get(("Eurostat", "une_rt_m"), UNE_UUENDATUD)
     R = [
-        tabelist(ein, f"Inimeste tehisaru kasutus {pr(ein['vaartus'])}% ({ein['aasta']})"),
-        tabelist(eeb, f"Ettevõtete tehisaru kasutus {pr(eeb['vaartus'])}% ({eeb['aasta']})"),
-        tabelist(ein25, f"Inimeste koht ELis ({ein25['aasta']})"),
-        tabelist(eeb25, f"Ettevõtete koht ELis ({eeb25['aasta']})"),
-        tabelist(ds, f"Digioskused {pr(ds['vaartus'])}% ({ds['aasta']})"),
+        tabelist(ein, f"Inimeste tehisaru kasutus {pr(ein['vaartus'])}% ({ein['aasta']})", ("inimesed", "kasutus")),
+        tabelist(eeb, f"Ettevõtete tehisaru kasutus {pr(eeb['vaartus'])}% ({eeb['aasta']})", ("ettevotted", "kasutus")),
+        tabelist(ein25, f"Inimeste koht ELis ({ein25['aasta']})", ("inimesed", "kasutus")),
+        tabelist(eeb25, f"Ettevõtete koht ELis ({eeb25['aasta']})", ("ettevotted", "kasutus")),
+        tabelist(ds, f"Digioskused {pr(ds['vaartus'])}% ({ds['aasta']})", ("inimesed", "digi")),
         (une_kp, f"Töötus {pr(t_ee)}% ({KUUD[int(kuu[5:]) - 1]} {kuu[:4]})", f'Eurostat <a href="{UNE_URL}">une_rt_m</a>',
-         [f"Eesti uusim kuu: {KUUD[int(kuu[5:]) - 1]}"]),
-        (OECD_KUUPAEV, "Avaliku sektori tehisaru (OECD raport)", f'OECD <a href="{OECD_URL}">raport</a>', ["raport ei uuene"]),
-        (h_seis, f"Tehisaru- ja andmehanked ({h_uus['periood']})", "Riigihangete register", ["registrist kogutud"]),
+         [f"Eesti uusim kuu: {KUUD[int(kuu[5:]) - 1]}"], ("too", "tootus-kuud")),
+        (OECD_KUUPAEV, "Avaliku sektori tehisaru (OECD raport)", f'OECD <a href="{OECD_URL}">raport</a>', ["raport ei uuene"], ("avalik-sektor", "tahvel")),
+        (h_seis, f"Tehisaru- ja andmehanked ({h_uus['periood']})", "Riigihangete register", ["registrist kogutud"], ("hanked", "aastad")),
     ]
     if m:
         R.append((U.get(("Eurostat", "une_rt_a"), ""), f"Töötuse koht ELis ({m.group(1)})",
-                  'Eurostat <a href="https://ec.europa.eu/eurostat/databrowser/view/une_rt_a/default/table">une_rt_a</a>', []))
+                  'Eurostat <a href="https://ec.europa.eu/eurostat/databrowser/view/une_rt_a/default/table">une_rt_a</a>', [], ("too", "tootus-el")))
     if A.get("uudiste_olek"):
-        R.append((A["uudiste_olek"]["viimane_kontroll"][:10], "Uudised ja väited", "uudisteallikad", ["viimati kontrollitud"]))
+        R.append((A["uudiste_olek"]["viimane_kontroll"][:10], "Uudised ja väited", "uudisteallikad", ["viimati kontrollitud"], ("uudised", "uudised-paevad")))
     R = [r for r in R if r[0]]
     R.sort(key=lambda r: r[1])
     R.sort(key=lambda r: r[0], reverse=True)
-    li = "".join(f'<li><time datetime="{k}">{kp(k)}</time><span><b>{e(t)}</b><small>{a_}'
-                 + "".join(f" · {e(x)}" for x in mg) + "</small></span></li>" for k, t, a_, mg in R)
+    li = "".join(f'<li><time datetime="{k}">{kp(k)}</time><span><b>{link(vaated, koht[0], t, koht[1])}</b><small>{a_}'
+                 + "".join(f" · {e(x)}" for x in mg) + "</small></span></li>" for k, t, a_, mg, koht in R)
     return f'<ol class="uu-l">{li}</ol>'
 
 
@@ -396,7 +397,7 @@ def avaleht(A, vaade, vaated):
   <div class="alla">
     <p class="tutvus">{TUTVUS} {menuu("saidist", "Mis see sait on?")}</p>
     <details class="allikad-l"><summary>Allikad ja kuupäevad</summary><div>
-      {uuenduste_loend(A, ein, ein25, eeb, ds, kuu, t_ee, t_koht, h_uus, h_seis)}
+      {uuenduste_loend(A, vaated, ein, ein25, eeb, ds, kuu, t_ee, t_koht, h_uus, h_seis)}
       <p>Kuupäev on päev, mil allikas tabelit viimati muutis; uusim on üleval. {menuu("kuidas", "Kuidas numbreid lugeda")}</p>
     </div></details>
   </div>

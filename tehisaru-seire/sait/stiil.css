@@ -1362,6 +1362,7 @@ html[data-t] .pea-rahu.pilt .alla:has(.allikad-l[open]) { max-width: 980px; }  /
 .uu-l b { font-weight: 600; color: var(--ink); }
 .uu-l small { font-size: 13.6px; color: var(--ink-3); }
 .uu-l a { color: var(--signal); }
+.uu-l b a { color: var(--ink); text-decoration-color: var(--control); text-underline-offset: 2px; } .uu-l b a:hover { color: var(--signal); text-decoration-color: currentColor; }
 @media (max-width: 680px) {
   .uu-l li { grid-template-columns: 5.6em minmax(0, 1fr); column-gap: 10px; }
   .uu-l small { grid-column: 2; }
