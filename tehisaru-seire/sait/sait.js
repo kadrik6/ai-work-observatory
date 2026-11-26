@@ -453,7 +453,9 @@
       for (var p = paneel; p; p = p.parentElement && p.parentElement.closest('[role="tabpanel"]')) {
         if (p.hidden) {
           var nupp = document.querySelector('[role="tab"][aria-controls="' + p.id + '"]');
-          if (nupp) { nupp.click(); oli = true; }
+          // Ankur avab saki ise; aadressi ei kirjutata ?sakk=…, muidu muutub lahkumise koht ajaloos ja tagasi-nupp
+          // ei vii lugejat sinna, kust ta tuli (viga leitud 25.11.2026: tahvli realt saki plokki ja tagasi).
+          if (nupp) { window.seireAnkurAvab = true; try { nupp.click(); } finally { window.seireAnkurAvab = false; } oli = true; }
         }
       }
       if (keri && oli) el.scrollIntoView();
@@ -568,7 +570,7 @@
     ];
     paarid.forEach(function (p) {
       var nupud = document.querySelectorAll(p[1]);
-      nupud.forEach(function (b) { b.addEventListener('click', function () { sea(p[0], b.getAttribute(p[2]), b); }); });
+      nupud.forEach(function (b) { b.addEventListener('click', function () { if (!window.seireAnkurAvab) sea(p[0], b.getAttribute(p[2]), b); }); });
       var v = q.get(p[0]);
       if (v) nupud.forEach(function (b) {
         if (b.getAttribute(p[2]) !== v) return;
@@ -587,6 +589,14 @@
         if (p && p.hidden) { var n = document.querySelector('[role="tab"][aria-controls="' + p.id + '"]'); if (n) n.click(); }
       }
     });
+    // Vana jagatud link sakile, mida enam pole (25.11.2026: Töö lehe töötus ja koondamised on nüüd nähtavad plokid):
+    // plokk kannab vana saki nime (data-vana-sakk); aadress saab ploki ankru ja leht kerib sinna.
+    var vana = q.get('sakk') && document.querySelector('[data-vana-sakk="' + String(q.get('sakk')).replace(/[^a-z0-9-]/gi, '') + '"]');
+    if (vana && vana.id) {
+      try { history.replaceState(history.state, '', location.pathname + '#' + vana.id); } catch (e) { /* sandbox */ }
+      vana.scrollIntoView();
+      return;
+    }
     // Vana jagatud link ilma ankruta (?otsi=… või ?ruhm=…): keri filtri juurde ja lisa ankur aadressi.
     if (!location.hash) {
       var el = null;
@@ -666,6 +676,27 @@
     if (!h || h.charAt(0) === '#' || /^[a-z]+:/i.test(h) || a.target === '_blank') return;
     if (h.indexOf('#') < 0) { salvesta(); lahkus = true; window.scrollTo(0, 0); }
   }, true); // püüdefaasis: claude.ai kest võib lingiklõpsu ise käsitleda
+  // Lehesisene ankur (viga leitud 25.11.2026): kerimise taastamine on käsitsi, seega ei viinud tagasi-nupp lugejat
+  // tahvli realt avatud plokist tahvli juurde tagasi. Enne ankrule hüppamist jätab ajalookirje oma kerimiskoha meelde
+  // ja tagasi tulles taastatakse see; edasi-nupp kerib uuesti ankru juurde.
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('a[href^="#"]');
+    if (!a || a.getAttribute('href').length < 2 || ev.button || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    try {
+      var olek = {}, vana = history.state || {}, k;
+      for (k in vana) if (Object.prototype.hasOwnProperty.call(vana, k)) olek[k] = vana[k];
+      olek.keri = Math.round(window.scrollY);
+      history.replaceState(olek, '');
+    } catch (e) { /* sandbox: ankur töötab ikka, ainult tagasitee koht ei jää meelde */ }
+  }, true);
+  window.addEventListener('popstate', function (ev) {
+    var y = ev.state && ev.state.keri, el = null;
+    try { el = location.hash.length > 1 ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null; } catch (e) { el = null; }
+    window.setTimeout(function () {
+      if (typeof y === 'number') window.scrollTo(0, y);
+      else if (el) el.scrollIntoView();
+    }, 0);
+  });
 })();
 
 // Kopeeritav fakt (sisuloogika 8.11.2026, idee 2): nupp numbriplaadil kopeerib lause koos allika ja lingiga.

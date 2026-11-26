@@ -2,9 +2,10 @@
 
 Leht algab tahvliga (kuus Eesti küsimust, iga rida üks pilk), siis tõendikaart (küsimus × koht, iga lahter näitab
 uuringu liiki) ja hõive muutus ametite avatuse astme järgi. Praegused plokid on lehe lõpus kokkupandult.
-"""
-import datetime
 
+Kadri 25.11.2026 (oluline enne valikulist): tahvli rida vastab sõnaga, number on selle kõrval ja märkus avaneb real.
+Tahvli all on nähtaval töötus kuu kaupa, koondamised ja hõive avatuse astme järgi; tõendikaart on üksikasjade esimene rida.
+"""
 from andmekiht import EL, AndmeViga
 from avaleht_tahvel import kulujoon, vahvel as vahvel100
 from abi import a
@@ -117,18 +118,52 @@ def jaotusriba(osad, silt, w=150):
     return f'<svg class="tv-osa" viewBox="0 0 {w} 16" width="{w}" height="16" role="img" aria-label="{e(silt)}">{"".join(out)}</svg>'
 
 
-def hoive_hantel(D, w=150, h=44):
-    """Hõive muutus: täis punkt = avatud ametid, rõngas = teised ametid; Eesti üleval, EL all."""
+def hoive_tapid(D, w=150, h=44):
+    """Hõive muutus kõige avatumates ametites (aste 3–4): Eesti täpp üleval, ELi ring all, nulljoon vahel."""
     lo, hi = -2, 6
     X = lambda v: 8 + (min(hi, max(lo, v)) - lo) / (hi - lo) * (w - 40)  # noqa: E731
     out = [f'<line class="tv-ax" x1="{X(0):.1f}" x2="{X(0):.1f}" y1="2" y2="{h - 2}"/>']
-    for i, (nimi, av, muud, f) in enumerate([("EE", D.ee_av, D.ee_mu, "f"), ("EL", D.el_av, D.el_mu, "r")]):
+    for i, (nimi, v, f) in enumerate([("EE", D.ee_k, "f"), ("EL", D.el_k, "r")]):
         yy = 12 + i * 20
-        out.append(f'<line class="tv-l{f}" x1="{X(av):.1f}" x2="{X(muud):.1f}" y1="{yy}" y2="{yy}" stroke-width="2"/>'
-                   f'<circle class="tv-p{f}" cx="{X(av):.1f}" cy="{yy}" r="3.5"/><circle class="tt-ring" cx="{X(muud):.1f}" cy="{yy}" r="3.5"/>'
-                   f'<text class="tt-t{" b" if f == "f" else ""}" x="{max(X(av), X(muud)) + 8:.1f}" y="{yy + 4}">{nimi}</text>')
-    return (f'<svg class="tt-svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="Hõive muutus {D.A0}–{D.A1}: '
-            f'Eesti avatud ametid {mt(D.ee_av)}, teised {mt(D.ee_mu)}; EL avatud {mt(D.el_av)}, teised {mt(D.el_mu)}">{"".join(out)}</svg>')
+        out.append(f'<line class="tv-l{f}" x1="{X(0):.1f}" x2="{X(v):.1f}" y1="{yy}" y2="{yy}" stroke-width="2"/>'
+                   + (f'<circle class="tv-pf" cx="{X(v):.1f}" cy="{yy}" r="3.5"/>' if f == "f" else f'<circle class="tt-ring" cx="{X(v):.1f}" cy="{yy}" r="3.5"/>')
+                   + f'<text class="tt-t{" b" if f == "f" else ""}" x="{max(X(v), X(0)) + 8:.1f}" y="{yy + 4}">{nimi}</text>')
+    return (f'<svg class="tt-svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="Hõive muutus {D.A0}–{D.A1} '
+            f'kõige avatumates ametites: Eesti {mt(D.ee_k)}, EL {mt(D.el_k)}">{"".join(out)}</svg>')
+
+
+# Sõnaga vastuse piirid (25.11.2026). Vastus arvutatakse andmetest; piir on kirjas siin, et seda saaks muuta ühes kohas.
+PIIR_TOOTUS_PP = 0.3      # töötuse määra muutus aastaga, protsendipunkti
+PIIR_VABAD_PR = 5         # vabade ametikohtade muutus aastaga, %
+PIIR_HOIVE_PR = (0.5, 2)  # hõive muutus: alla esimese = sama palju, alla teise = veidi
+
+
+def sona_tootus(D):
+    if D.t_ee0 is None:
+        raise AndmeViga("Tahvli vastus „Kas töötus kasvab?“ vajab aasta varasemat kuud")
+    d = D.t_ee - D.t_ee0
+    return "Jah" if d >= PIIR_TOOTUS_PP else ("Ei, väheneb" if d <= -PIIR_TOOTUS_PP else "Püsib samal tasemel")
+
+
+def sona_vabad(D):
+    return "Jah" if D.v_muut <= -PIIR_VABAD_PR else ("Ei, rohkem" if D.v_muut >= PIIR_VABAD_PR else "Umbes sama palju")
+
+
+def sona_koondamised(D):
+    """Vastus ütleb, mida ettevõtted ise teatasid; ettevõtte selgitus ei tõenda põhjust."""
+    n = len(D.k_pohjusena)
+    return "Ükski ettevõte ei öelnud nii" if n == 0 else ("Mõni ettevõte ütleb nii" if n * 2 < len(D.kj) else "Enamik ettevõtteid ütleb nii")
+
+
+def sona_oskus(osa):
+    return "Väga harva" if osa < 1 else ("Harva" if osa < 5 else ("Osas kuulutustes" if osa < 20 else "Sageli"))
+
+
+def sona_hoive(v):
+    vahe, palju = PIIR_HOIVE_PR
+    if abs(v) < vahe:
+        return "Sama palju"
+    return ("Jah" if v <= -palju else "Veidi vähem") if v < 0 else "Ei, rohkem"
 
 
 def read(D):
@@ -136,50 +171,54 @@ def read(D):
     kuu = D.kuu
     ee_kuud = dict(TM["EE"])
     pohjus = D.k_pohjusena
-    k_lause = ("Tehisaru otsese põhjusena " + ("mitte ükski" if D.k_otsene == 0 else str(D.k_otsene))
-               + f', ühe põhjusena {"üks" if len(pohjus) == 1 else len(pohjus)}'
-               + (f' ({", ".join(e(r["ettevote"]) for r in pohjus)})' if pohjus else ""))
-    aasta_varem = f"Aasta varem {pr(D.t_ee0)}%. " if D.t_ee0 is not None else ""
+    if not pohjus:
+        k_lause = "Ükski ettevõte ei nimetanud tehisaru koondamise põhjusena"
+    else:
+        k_lause = (f'Tehisaru nimetas põhjusena {len(pohjus)} {"ettevõte" if len(pohjus) == 1 else "ettevõtet"} '
+                   f'({", ".join(e(r["ettevote"]) for r in pohjus)}); otsese põhjusena {D.k_otsene if D.k_otsene else "mitte ükski"}')
+    ak_osa = (D.ak_amet + D.ak_osk) / D.ak_n * 100
     return [
-        dict(kys="Kas töötus kasvab?", ank="tootus-kuud", arv=f"{pr(D.t_ee)}%", all=f'{KUUD[int(kuu[5:]) - 1]} {kuu[:4]}',
+        dict(kys="Kas töötus kasvab?", ank="tootus-kuud", ava="Vaata töötuse graafikut", sona=sona_tootus(D), arv=f"{pr(D.t_ee)}%",
+             all=f'{KUUD[int(kuu[5:]) - 1]} {kuu[:4]}, aasta varem {pr(D.t_ee0)}%',
              pilt=kulujoon([([(i, v) for i, (k, v) in enumerate(TM[EL]) if k in ee_kuud], "r"), ([(i, v) for i, (_, v) in enumerate(TM["EE"])], "f")],
                            5, 9, f"Töötus kuu kaupa: Eesti {pr(D.t_ee)}%, EL {pr(D.t_el)}%", w=150, h=40),
-             mrk=f'{aasta_varem}<span class="tv-lg eu"></span>EL {pr(D.t_el)}%. Kuunumber ei ütle, kas põhjus on tehisaru.',
+             mrk=f'ELis {pr(D.t_el)}% (pildil punktiirjoon). Kuunumber ei ütle, kas põhjus on tehisaru.',
              liik="mõõdetud", allikas="Eurostat une_rt_m", kuup=f"uuendatud {kp(D.une_uuendatud)}"),
-        dict(kys="Kas tööandjad otsivad vähem?", ank="vabad-kohad", arv=_arvt(D.v_n), all=f'vaba ametikohta, {D.v_kv.replace(" kvartal", " kv")}',
+        dict(kys="Kas tööandjad otsivad vähem?", ank="vabad-kohad", ava="Ava vabade ametikohtade andmed", sona=sona_vabad(D), arv=_arvt(D.v_n),
+             all=f'vaba ametikohta, {D.v_kv.replace(" kvartal", " kv")}; {abs(D.v_muut):.0f}% {"vähem" if D.v_muut < 0 else "rohkem"} kui aasta varem',
              pilt=kv_tulbad(D.vab),
-             mrk=f'{abs(D.v_muut):.0f}% {"vähem" if D.v_muut < 0 else "rohkem"} kui aasta varem. Enim: {e(D.v_enim[0])} ja {e(D.v_enim[1])}.',
+             mrk=f'Enim vabu kohti: {e(D.v_enim[0])} ja {e(D.v_enim[1])}.',
              liik="mõõdetud", allikas="Statistikaamet PAV011", kuup=kp(D.v_uuend)),
-        dict(kys="Kas koondatakse tehisaru tõttu?", ank="koondamised", arv=str(D.k_osa["s"]), all=f"umbes {D.k_kokku} töökohast",
+        dict(kys="Kas koondatakse tehisaru tõttu?", ank="koondamised", ava="Vaata koondamisi ettevõtte kaupa", sona=sona_koondamised(D),
+             arv=f'{len(pohjus)} {"koondamine" if len(pohjus) == 1 else "koondamist"} {len(D.kj)}-st',
+             all=f'{D.k_osa["s"]} töökohta umbes {D.k_kokku}-st',
              pilt=jaotusriba([(k, D.k_osa[k] / D.k_kokku * 100) for k in ("s", "m", "t")],
                              f'{D.k_kokku} töökohast {D.k_osa["s"]} puhul nimetati tehisaru põhjusena, {D.k_osa["m"]} puhul mainiti muul moel'),
-             mrk=f"{len(D.kj)} koondamist. {k_lause}. Nimekiri pole täielik.",
+             mrk=f"{k_lause}. Ettevõtte enda selgitus ei tõenda põhjust. Nimekiri pole täielik.",
              liik="uudised", allikas="Eesti uudised", kuup=f'viimane teade {kp(max(r["kuupaev"] for r in D.kj))}'),
-        dict(kys="Kas tehisaruoskust otsitakse?", ank="ai-kuulutused", arv=str(D.ak_amet), all=f"{_arvt(D.ak_n)} kuulutusest on AI- või andmeametid",
-             pilt=vahvel100((D.ak_amet + D.ak_osk) / D.ak_n * 100, f"{D.ak_amet + D.ak_osk} kuulutust {D.ak_n}-st, {pr((D.ak_amet + D.ak_osk) / D.ak_n * 100)}%"),
-             mrk=f"Veel {D.ak_osk} muu ameti kuulutust mainib tehisaru. {pr(D.ak_harju / D.ak_amet * 100, 0)}% AI- ja andmetöödest on Harjumaal. Liigitus märksõnade järgi.",
+        dict(kys="Kas tehisaruoskust otsitakse?", ank="ai-kuulutused", ava="Ava tehisaru- ja andmetööde kuulutused", sona=sona_oskus(ak_osa),
+             arv=f"{pr(ak_osa)}%", all=f"{D.ak_amet + D.ak_osk} kuulutust {_arvt(D.ak_n)}-st",
+             pilt=vahvel100(ak_osa, f"{D.ak_amet + D.ak_osk} kuulutust {D.ak_n}-st, {pr(ak_osa)}%"),
+             mrk=(f"{D.ak_amet} on AI- või andmeametid, veel {D.ak_osk} muu ameti kuulutust mainib tehisaru. "
+                  f"{pr(D.ak_harju / D.ak_amet * 100, 0)}% AI- ja andmetöödest on Harjumaal. Liigitus märksõnade järgi."),
              liik="arvutatud", allikas="CV.ee kuulutused", kuup=kp(D.ak["uuendatud"][:10])),
-        dict(kys="Kui paljud on avatud ametites?", ank="kokkupuude", arv=f'{pr(K["korge"], 0)}%', all="kõige avatumates (aste 3–4), 2022",
+        dict(kys="Kui paljud on avatud ametites?", ank="kokkupuude", ava="Ava ametite avatuse andmed", sona=f'Umbes iga {round(100 / K["korge"])}. töötaja',
+             arv=f'{pr(K["korge"], 0)}%', all="kõige avatumates ametites (aste 3–4), 2022",
              pilt=jaotusriba([("s", K["korge"]), ("m", K["avatud"] - K["korge"])], f'Aste 3–4 {pr(K["korge"], 0)}%, aste 1–2 {pr(K["avatud"] - K["korge"], 0)}%'),
              mrk=f'Kokku {pr(K["avatud"], 0)}% töötajatest on ametites, mille ülesandeid generatiivne tehisaru puudutab. Kokkupuude ei ole mõju.',
              liik="arvutatud", allikas="ILO indeks, Statistikaamet", kuup="2022"),
-        dict(kys="Kas avatud ametites on tööd vähem?", ank="hoive", arv=mt(D.ee_av), all=f"hõive avatud ametites, {D.A0}–{D.A1}",
-             pilt=hoive_hantel(D),
-             mrk=(f'Teistes ametites {mt(D.ee_mu)}. ELis {"vastupidi" if (D.ee_av < D.ee_mu) != (D.el_av < D.el_mu) else "samuti"}: '
-                  f'{mt(D.el_av)} ja {mt(D.el_mu)}. Kirjeldus, mitte põhjus; Eesti valim on väike.'),
+        dict(kys="Kas kõige avatumates ametites on tööd vähem?", ank="astmed", ava="Vaata hõivet avatuse astme järgi", sona=sona_hoive(D.ee_k),
+             arv=mt(D.ee_k), all=f"hõive astmes 3–4, {D.A0}–{D.A1}; ELis {mt(D.el_k)}",
+             pilt=hoive_tapid(D),
+             mrk=(f'Kõigis avatud ametites kokku (aste 1–4) {mt(D.ee_av)}, teistes ametites {mt(D.ee_mu)}. '
+                  'Kirjeldus, mitte põhjus; Eesti valim on väike.'),
              liik="arvutatud", allikas="Eurostat lfsa_egai2d", kuup="uuendatud 30.10.2026"),
     ]
 
 
-def tahvel(D, vaited, n_allikaid, uusim):
-    from lehed_usaldus import _raskus
-    O = {o["id"]: o for o in D.A["otsused"]}
-    r = O["ai-korge-risk-iii"]
-    us = tt.usaldusriba(len(vaited), sum(_raskus(v) == 0 for v in vaited),
-                        [(r["nimi"], r["kuupaev"] <= datetime.date.today().isoformat())], n_allikaid, uusim)
-    return tt.tahvel("tahvel", "Mida näitavad Eesti andmed?", "6 küsimust, iga rida üks pilk",
-                     "Iga rida on oma skaalal; eri ridade numbreid ei võrrelda. Ükski rida ei näita, mis on muutuse põhjus. Rida viib oma plokki.",
-                     read(D), us)
+def tahvel(D):
+    """Kadri 25.11.2026: tahvli ees ei ole lugemisjuhist ega all loendurite rida; jääb üks hoiatus, mis muudab lugemist."""
+    return tt.vastustahvel("tahvel", "Mida näitavad Eesti andmed?", "Ükski rida ei näita, kas muutuse põhjus on tehisaru.", read(D))
 
 
 # ---------------------------------------------------------------- tõendikaart (näidis A)

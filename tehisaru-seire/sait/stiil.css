@@ -637,7 +637,11 @@ h3.veerg { font-size: 13.5px; }
 /* Töö: töötuse joon kitsam (sp4), koondamised laiemad (sp8, kolm kaarti reas), Kadri 5.11 23:00 */
 .sp8 { grid-column: span 8; }
 .sp8 .kk-v { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-@media (max-width: 1180px) { .sp8 { grid-column: span 12; } #tootus-kuud { grid-column: span 12; } }
+@media (max-width: 1180px) { .sp8 { grid-column: span 12; } }
+@media (max-width: 900px) { #tootus-kuud, #reg-tootud { grid-column: span 12; } }
+/* Töötuse määr ja registreeritud töötud kõrvuti (25.11.2026): joonised algavad samalt kõrguselt, ka kui selgitus on eri pikkusega */
+#tootus-kuud, #reg-tootud { display: flex; flex-direction: column; }
+#tootus-kuud > .ps, #reg-tootud > .ps { flex: 1 0 auto; }
 @media (max-width: 760px) { .sp8 .kk-v { grid-template-columns: minmax(0, 1fr); } }
 /* Koondamiste tulbad (Töö, Kadri 5.11 23:06): rida = 3 + 4 + 5 veergu */
 .sp5 .kk-v { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1752,6 +1756,39 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
 .tt-mx td.tt-h.ok { color: var(--signal); } .tt-mx td.tt-h.maas { color: var(--accent-text); }
 .tt-mx td.tt-h small { display: block; font-weight: 400; color: var(--ink-3); }
 /* Üksikasjad: praegused plokid kokkupandult */
+/* Vastustahvel (Kadri 25.11.2026: oluline enne valikulist). Rida = küsimus, vastus sõnaga, number, väike pilt;
+   märkus, tõend ja allikas avanevad real. Sama muster igal laiusel, telefonis on küsimus omaette real. */
+.vt-read { border-top: 1px solid var(--ink); }
+.vt-r { border-bottom: 1px solid var(--border); }
+.vt-r > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 160px; gap: 4px 20px; align-items: center; min-height: 56px; padding: 7px 4px; }
+.vt-r > summary::-webkit-details-marker { display: none; }
+.vt-r > summary:hover { background: var(--surface-2); }
+.vt-r > summary:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
+.vt-k { font: 600 17px var(--font-display); color: var(--ink); display: flex; align-items: baseline; gap: 10px; }
+.vt-k::before { content: "›"; color: var(--ink-3); font-size: 18px; display: inline-block; transition: transform .15s; }
+.vt-r[open] .vt-k::before { transform: rotate(90deg); }
+.vt-v { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.vt-v b { font: 700 17px var(--font-display); color: var(--ink); }
+.vt-n { color: var(--ink); font-size: 15px; font-variant-numeric: tabular-nums; }
+.vt-v small { flex-basis: 100%; color: var(--ink-3); font-size: 13px; }
+.vt-p { justify-self: end; line-height: 0; }
+.vt-d { padding: 2px 4px 16px 24px; }
+.vt-d dl { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 6px 14px; margin: 0; max-width: 78ch; font-size: 14px; }
+.vt-d dt { color: var(--ink-3); font-size: 13px; } .vt-d dd { margin: 0; color: var(--ink); }
+.vt-ava { margin: 8px 0 0; } .vt-ava a { display: inline-flex; align-items: center; min-height: 32px; font-size: 14px; }
+@media (max-width: 680px) {
+  .vt-r > summary { grid-template-columns: minmax(0, 1fr) 88px; gap: 4px 10px; padding: 10px 0; }
+  .vt-k { grid-column: 1 / -1; font-size: 15.5px; gap: 6px; }
+  .vt-v { padding-left: 14px; }
+  .vt-p svg { width: 88px; height: auto; }
+  .vt-d { padding-left: 14px; padding-right: 0; }
+  .vt-d dl { grid-template-columns: 64px minmax(0, 1fr); }
+  .vt-ava a { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) { .vt-k::before { transition: none; } }
+/* Üksik avatav plokk nähtava graafiku all (nt „Keda koondajad praegu otsivad?“) */
+.tt-yksi { margin-top: 20px; border-bottom: 1px solid var(--border); }
+html[data-t] .tt-pl > .g12 { margin-top: 0; margin-bottom: 24px; }
 .tt-det { margin-top: 32px; }
 .tt-h2s { font: 600 18px var(--font-display); margin: 8px 0 10px; }
 .tt-pl { border-top: 1px solid var(--border); }

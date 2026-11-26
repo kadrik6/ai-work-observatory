@@ -49,6 +49,32 @@ def tahvel(hid, kysimus, vastus, selgitus, read, usaldus=""):
 </section>"""
 
 
+def vastustahvel(hid, kysimus, hoiatus, read):
+    """Kadri 25.11.2026: oluline enne valikulist. Rida = küsimus, vastus sõnaga, number ja väike pilt.
+    Märkus, tõendi liik ja allikas avanevad real (sama muster igal laiusel), link viib graafiku juurde.
+    read: [dict(kys, ank, sona, arv, all, pilt, mrk, liik, allikas, kuup, ava)]. sona on arvutatud andmetest, mitte käsitsi kirjutatud."""
+    for r in read:
+        if r["liik"] not in LIIK:
+            raise AndmeViga(f"Tahvli rida „{r['kys']}“: tundmatu tõendi liik {r['liik']}")
+        if not r["sona"].strip():
+            raise AndmeViga(f"Tahvli rida „{r['kys']}“: vastus sõnaga puudub")
+    rida = "".join(
+        f'<details class="vt-r"><summary><span class="vt-k">{e(r["kys"])}</span>'
+        f'<span class="vt-v"><b>{e(r["sona"])}</b><span class="vt-n">{r["arv"]}</span><small>{e(r["all"])}</small></span>'
+        f'<span class="vt-p">{r["pilt"]}</span></summary>'
+        f'<div class="vt-d"><dl><dt>Märkus</dt><dd>{r["mrk"]}</dd><dt>Tõend</dt><dd><span class="tt-liik {LIIK[r["liik"]]}">{e(r["liik"])}</span></dd>'
+        f'<dt>Allikas</dt><dd>{e(r["allikas"])}, {r["kuup"]}</dd></dl>'
+        f'<p class="vt-ava"><a href="#{r["ank"]}">{e(r["ava"])} →</a></p></div></details>' for r in read)
+    return f"""
+<section class="jaotis vt" id="{hid}" aria-labelledby="h-{hid}">
+  <header>
+    <h2 id="h-{hid}">{kysimus}</h2>
+    <p class="alam">{hoiatus}</p>
+  </header>
+  <div class="vt-read">{rida}</div>
+</section>"""
+
+
 def usaldusriba(n_vaiteid, n_muud, reeglid, n_allikaid, uusim):
     """Väited, reeglid ja allikad ühel real tahvli all; lingid viivad lehe lõppu. reeglid: [(nimi, kehtib)]."""
     v = "ükski ei ütle muud kui allikas" if not n_muud else f"{n_muud} ütleb muud kui allikas"
