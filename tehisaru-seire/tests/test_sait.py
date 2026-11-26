@@ -1128,11 +1128,11 @@ def test_allikad_ja_kuupaevad_iga_tabel_eraldi(sait):
     for (allikas, tabel), k in U.items():
         li = re.search(rf'<li><time datetime="{k}">[^<]*</time>(?:(?!</li>).)*>{tabel}</a>', p, re.S)
         assert li, (allikas, tabel, k)
-    assert "une_rt_m</a> · Eesti uusim kuu tabelis on" in p
+    assert "une_rt_m</a> · Eesti uusim kuu: " in p
     for k in kp_:
         assert _d.fromisoformat(k) <= _d.today()
     if U[("Statistikaamet", "IT1490")] > "2026-09-16":
-        assert "number avaldati 16.09.2026, tabelit uuendati hiljem" in p
+        assert "uuendati hiljem, esmalt 16.09.2026" in p
 
 
 def test_eksitav_silt_on_heleroosa(sait):

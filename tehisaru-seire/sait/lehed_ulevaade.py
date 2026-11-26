@@ -312,7 +312,7 @@ def uuenduste_loend(A, ein, ein25, eeb, ds, kuu, t_ee, t_koht, h_uus, h_seis):
         kuup = U.get((allikas, tabel), r["avaldatud"])
         marg = [lisa] if lisa else []
         if r["avaldatud"] and r["avaldatud"] < kuup:
-            marg.append(f"number avaldati {kp(r['avaldatud'])}, tabelit uuendati hiljem")
+            marg.append(f"uuendati hiljem, esmalt {kp(r['avaldatud'])}")
         return (kuup, tekst, f'{allikas} <a href="{e(r["url"])}">{e(tabel)}</a>', marg)
 
     une_kp = U.get(("Eurostat", "une_rt_m"), UNE_UUENDATUD)
@@ -323,8 +323,8 @@ def uuenduste_loend(A, ein, ein25, eeb, ds, kuu, t_ee, t_koht, h_uus, h_seis):
         tabelist(eeb25, f"Ettevõtete koht ELis ({eeb25['aasta']})"),
         tabelist(ds, f"Digioskused {pr(ds['vaartus'])}% ({ds['aasta']})"),
         (une_kp, f"Töötus {pr(t_ee)}% ({KUUD[int(kuu[5:]) - 1]} {kuu[:4]})", f'Eurostat <a href="{UNE_URL}">une_rt_m</a>',
-         [f"Eesti uusim kuu tabelis on {KUUD[int(kuu[5:]) - 1]} {kuu[:4]}"]),
-        (OECD_KUUPAEV, "Avaliku sektori tehisaru (OECD raport)", f'OECD <a href="{OECD_URL}">raport</a>', ["avaldatud, raport ei uuene"]),
+         [f"Eesti uusim kuu: {KUUD[int(kuu[5:]) - 1]}"]),
+        (OECD_KUUPAEV, "Avaliku sektori tehisaru (OECD raport)", f'OECD <a href="{OECD_URL}">raport</a>', ["raport ei uuene"]),
         (h_seis, f"Tehisaru- ja andmehanked ({h_uus['periood']})", "Riigihangete register", ["registrist kogutud"]),
     ]
     if m:
