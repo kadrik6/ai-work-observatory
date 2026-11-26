@@ -257,7 +257,7 @@ def leht(A, vaated, vaade, sisu, title, fail=None):
     <nav aria-label="Teemad" class="paisteemad"><ul class="menu">{menuu(vaated, vaade.get("teema") or vaade["id"])}</ul></nav>
   </div>
 </header>
-<main id="sisu" class="wrap">
+<main id="sisu" class="wrap" data-teema="{e(teema["id"])}">
 {sisu}
 </main>
 <footer class="jalus">
