@@ -20,6 +20,7 @@ def test_vercel_ehitab_ainult_saidi_kausta_ja_noindex_ainult_vercel_app():
     assert (REPO / v["outputDirectory"]).resolve() == ehita.VALJUND.resolve()
     assert v["buildCommand"] == "cd tehisaru-seire && python3 sait/ehita.py"
     assert "main" in v["ignoreCommand"]  # eelvaateid teistest harudest ei ehitata
+    assert v["cleanUrls"] is True and v["trailingSlash"] is False  # aadressiribal /too, mitte /too.html (Kadri 26.11.2026)
     koik = [r for r in v["headers"] if "has" not in r]
     assert all(h["key"] != "X-Robots-Tag" for r in koik for h in r["headers"])  # põhidomeen on indekseeritav
     vercel = [r for r in v["headers"] if r.get("has") == [{"type": "host", "value": ".*\\.vercel\\.app"}]]
@@ -35,7 +36,9 @@ def test_robots_lubab_ja_sisukaart_on_parisleheed(tmp_path):
     assert all(f"https://www.tehisaruseire.ee/{v}" not in loc for v in ehita.VANAD_AADRESSID)  # suunajad pole sisukaardis
     for f in lehed:  # igal lehel on oma põhiaadress ja kirjeldus
         h = (tmp_path / f).read_text(encoding="utf-8")
-        assert f'<link rel="canonical" href="https://www.tehisaruseire.ee/{"" if f == "index.html" else f}">' in h, f
+        # 26.11.2026 (Kadri: „index.html“ aadressis häirib): põhiaadress on ilma .html lõputa, Vercel cleanUrls
+        assert f'<link rel="canonical" href="https://www.tehisaruseire.ee/{"" if f == "index.html" else f[:-5]}">' in h, f
+        assert ".html" not in "".join(loc)
         assert '<meta name="description" content="' in h and 'name="robots"' not in h, f
     for vana in ehita.VANAD_AADRESSID:
         assert '<meta name="robots" content="noindex">' in (tmp_path / vana).read_text(encoding="utf-8")
