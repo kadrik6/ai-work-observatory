@@ -1997,3 +1997,52 @@ html[data-t] .tt-pl > .g12 { margin-top: 0; margin-bottom: 24px; }
 }
 /* Väga kitsas telefon (320 px): tulpade sildiveerg kitsamaks, et protsent mahuks ära. */
 @media (max-width: 340px) { html[data-t] .av-mini li { grid-template-columns: 7em auto 1fr; } }
+
+/* Alamlehe päise pilt (Kadri 27.11.2026 valis laborist https://claude.ai/artifact/1Fb4unuecaUKHouRZErzsj:
+   „uudistele D, aga muudele A“). Sama pilt ja toon nagu avalehel, aga ainult päise kõrguses ja nõrgem.
+   A: madal taust (250 px, telefonis 220 px), hajub alla ja vasakule lehe taustaks; päise kõrgus ei muutu.
+   D (Uudised ja selle alamlehed): pilt täidab täpselt päise ala, hajub ainult vasakule, all peenike joon. */
+html[data-t] main > .pea { position: relative; }
+html[data-t] main > .pea::before {
+  content: ""; position: absolute; z-index: -1; top: 0; height: 250px; left: 50%; width: 100vw; transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
+              linear-gradient(0deg, var(--page) 0%, color-mix(in srgb, var(--page) 75%, transparent) 35%, transparent 75%),
+              url("pilt/avaleht.jpg") right 35% / cover no-repeat;
+  filter: grayscale(1); opacity: .3; pointer-events: none;
+}
+html[data-t][data-seire-teema="dark"] main > .pea::before {
+  background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
+              linear-gradient(0deg, var(--page) 0%, color-mix(in srgb, var(--page) 75%, transparent) 35%, transparent 75%),
+              url("pilt/avaleht-tume.jpg") right 35% / cover no-repeat; }
+html[data-t][data-seire-teema="soft"] main > .pea::before { filter: none; background-color: #546ab6; background-blend-mode: normal, normal, luminosity; }
+/* Kleepuva „Sellel lehel“ rea taust ei lõika pilti enne, kui rida kleepub. */
+html[data-t] main > .pea + .lehel-rida:not(.kleepub) { background: transparent; }
+/* D: Uudised */
+html[data-t] main[data-teema="uudised"] > .pea { padding-bottom: 18px; }
+html[data-t] main[data-teema="uudised"] > .pea::before { height: auto; bottom: 0; opacity: .26;
+  background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
+              url("pilt/avaleht.jpg") right 38% / cover no-repeat; }
+html[data-t][data-seire-teema="dark"] main[data-teema="uudised"] > .pea::before {
+  background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 70%, transparent) 38%, transparent 70%),
+              url("pilt/avaleht-tume.jpg") right 38% / cover no-repeat; }
+html[data-t][data-seire-teema="soft"] main[data-teema="uudised"] > .pea::before { background-color: #546ab6; background-blend-mode: normal, luminosity; }
+html[data-t] main[data-teema="uudised"] > .pea::after { content: ""; position: absolute; left: 50%; width: 100vw; transform: translateX(-50%); bottom: 0; border-bottom: 1px solid var(--border); }
+html[data-t] main[data-teema="uudised"] > .pea + .lehel-rida { margin-top: 6px; }
+@media (max-width: 680px) {
+  html[data-t] main > .pea::before { height: 220px; opacity: .22;
+    background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 60%, transparent) 55%, transparent 100%),
+                linear-gradient(0deg, var(--page) 0%, color-mix(in srgb, var(--page) 75%, transparent) 35%, transparent 75%),
+                url("pilt/avaleht.jpg") right 35% / cover no-repeat; }
+  html[data-t][data-seire-teema="dark"] main > .pea::before {
+    background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 60%, transparent) 55%, transparent 100%),
+                linear-gradient(0deg, var(--page) 0%, color-mix(in srgb, var(--page) 75%, transparent) 35%, transparent 75%),
+                url("pilt/avaleht-tume.jpg") right 35% / cover no-repeat; }
+  html[data-t][data-seire-teema="soft"] main > .pea::before { background-color: #546ab6; background-blend-mode: normal, normal, luminosity; }
+  html[data-t] main[data-teema="uudised"] > .pea::before { height: auto; opacity: .2;
+    background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 60%, transparent) 55%, transparent 100%),
+                url("pilt/avaleht.jpg") right 38% / cover no-repeat; }
+  html[data-t][data-seire-teema="dark"] main[data-teema="uudised"] > .pea::before {
+    background: linear-gradient(90deg, var(--page) 0%, color-mix(in srgb, var(--page) 60%, transparent) 55%, transparent 100%),
+                url("pilt/avaleht-tume.jpg") right 38% / cover no-repeat; }
+  html[data-t][data-seire-teema="soft"] main[data-teema="uudised"] > .pea::before { background-color: #546ab6; background-blend-mode: normal, luminosity; }
+}

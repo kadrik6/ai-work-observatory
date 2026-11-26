@@ -1353,7 +1353,9 @@ def test_paise_pilt_teema_jargi():
     css = (Path(__file__).resolve().parent.parent / "sait" / "stiil.css").read_text(encoding="utf-8")
     tume = [r for r in css.split("}") if 'data-seire-teema="dark"] .pea-rahu.pilt::before' in r]
     assert len(tume) == 2 and all("pilt/avaleht-tume.jpg" in r for r in tume)
-    assert css.count('url("pilt/avaleht.jpg")') == 2
+    # avalehe päis: hele pilt kahes reeglis (arvuti, telefon); alamlehtede päis (27.11.2026) kasutab sama pilti eraldi
+    avaleht = [r for r in css.split("}") if ".pea-rahu.pilt::before" in r]
+    assert sum(r.count('url("pilt/avaleht.jpg")') for r in avaleht) == 2
 
 
 def test_avalehe_pilt_on_lehe_taust():
@@ -2575,3 +2577,18 @@ def test_andmestiku_margendid(sait, A):
     kat = next(x for x in k["@graph"] if x["@type"] == "DataCatalog")
     assert len(kat["dataset"]) == len(D)
     assert "Kadri" not in json.dumps(k, ensure_ascii=False)
+
+
+def test_alamlehe_pais_pildiga(sait):
+    """Kadri 27.11.2026: alamlehtedel sama pilt nagu avalehel, aga väiksemalt; „uudistele D, aga muudele A“."""
+    css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
+    a = re.search(r"html\[data-t\] main > \.pea::before \{([^}]*)\}", css).group(1)
+    assert "height: 250px" in a and 'url("pilt/avaleht.jpg")' in a and "opacity: .3" in a
+    assert 'main[data-teema="uudised"] > .pea::before { height: auto; bottom: 0;' in css  # D: täpselt päise ala
+    assert 'main[data-teema="uudised"] > .pea::after' in css  # D: peenike joon all
+    assert 'html[data-t][data-seire-teema="dark"] main > .pea::before' in css and "avaleht-tume.jpg" in css
+    assert 'html[data-t][data-seire-teema="soft"] main > .pea::before { filter: none; background-color: #546ab6;' in css
+    for f in ("ettekanded.html", "uritused.html", "podcastid.html", "uudised.html"):
+        assert '<main id="sisu" class="wrap" data-teema="uudised">' in sait[f], f
+    assert '<main id="sisu" class="wrap" data-teema="too">' in sait["too.html"]
+    assert 'class="pea' not in sait["index.html"].replace('class="pea-', "")  # avalehe päis (pea-rahu) ei muutu
