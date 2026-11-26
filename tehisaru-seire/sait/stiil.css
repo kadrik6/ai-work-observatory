@@ -1726,9 +1726,6 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
 /* Teemalehe tahvel (Kadri 14.11.2026 valis Ettevõtete lehele „B koos C maatriksiga“). Kasutab ka .tv-* klasse. */
 .tt-svg { display: block; overflow: visible; }
 .tt-t { fill: var(--ink-3); font: 11px var(--font-sans); } .tt-t.b { fill: var(--ink); font-weight: 600; }
-.tt-pilt { width: 210px; } .tt-pilt svg { max-width: 200px; }
-.tt-mrk { color: var(--ink-2); max-width: 240px; }
-.tt-src { color: var(--ink-2); white-space: nowrap; }
 .tt-liik { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--ink-2); white-space: nowrap; }
 .tt-liik.m { border-color: var(--signal); color: var(--signal); }
 .tt-liik.k { border-color: var(--accent); color: var(--accent-text); }
@@ -1737,12 +1734,6 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
 .tt-lg.ava { background: var(--signal); } .tt-lg.pii { background: var(--accent); } .tt-lg.kee { background: var(--ink); }
 .tt-lg.kr { width: 14px; height: 2px; border-radius: 0; background: repeating-linear-gradient(90deg, var(--ink) 0 3px, transparent 3px 6px); }
 .tt-r9.ok { fill: var(--signal); } .tt-r9.maas { fill: var(--surface-3); stroke: var(--accent); stroke-width: 1.5; }
-.tt-kiibid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; max-width: 220px; }
-.tt-kiibid li { border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px; font-size: 12.5px; }
-.tt-kiibid li b { color: var(--ink); font-weight: 600; } .tt-kiibid li.halb b { color: var(--accent-text); }
-.tt-kiibid small { display: none; }
-.tt-us { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 16px 0 0; padding-top: 12px; border-top: 1px solid var(--border); font-size: 14px; }
-.tt-us a { color: var(--ink-2); text-decoration: none; } .tt-us a:hover, .tt-us a:focus-visible { text-decoration: underline; } .tt-us b { color: var(--ink); }
 /* Põhjamaade maatriks: iga rida oma skaalal, tumedam = parem */
 .tt-mx table { width: 100%; border-collapse: separate; border-spacing: 3px; font-size: 14px; }
 .tt-mx th { text-align: left; font-weight: 500; color: var(--ink-3); font-size: 12.5px; padding: 4px 6px; }
@@ -1759,27 +1750,33 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
 /* Vastustahvel (Kadri 25.11.2026: oluline enne valikulist). Rida = küsimus, vastus sõnaga, number, väike pilt;
    märkus, tõend ja allikas avanevad real. Sama muster igal laiusel, telefonis on küsimus omaette real. */
 .vt-read { border-top: 1px solid var(--ink); }
-.vt-r { border-bottom: 1px solid var(--border); }
-.vt-r > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 160px; gap: 4px 20px; align-items: center; min-height: 56px; padding: 7px 4px; }
+.vt-r { border-top: 0; border-bottom: 1px solid var(--border); padding-top: 0; }  /* üldine details-reegel lisas 10px tühja ruumi ja teise joone */
+.vt-r > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 160px; gap: 4px 20px; align-items: center; min-height: 56px; padding: 10px 4px; }
 .vt-r > summary::-webkit-details-marker { display: none; }
 .vt-r > summary:hover { background: var(--surface-2); }
 .vt-r > summary:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
 .vt-k { font: 600 17px var(--font-display); color: var(--ink); display: flex; align-items: baseline; gap: 10px; }
 .vt-k::before { content: "›"; color: var(--ink-3); font-size: 18px; display: inline-block; transition: transform .15s; }
 .vt-r[open] .vt-k::before { transform: rotate(90deg); }
-.vt-v { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.vt-v { display: flex; flex-direction: column; gap: 2px; }
+.vt-s { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
 .vt-v b { font: 700 17px var(--font-display); color: var(--ink); }
 .vt-n { color: var(--ink); font-size: 15px; font-variant-numeric: tabular-nums; }
-.vt-v small { flex-basis: 100%; color: var(--ink-3); font-size: 13px; }
+.vt-v small { color: var(--ink-3); font-size: 13px; }
 .vt-p { justify-self: end; line-height: 0; }
+.vt-p svg { max-width: 160px; height: auto; }
 .vt-d { padding: 2px 4px 16px 24px; }
 .vt-d dl { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 6px 14px; margin: 0; max-width: 78ch; font-size: 14px; }
 .vt-d dt { color: var(--ink-3); font-size: 13px; } .vt-d dd { margin: 0; color: var(--ink); }
 .vt-ava { margin: 8px 0 0; } .vt-ava a { display: inline-flex; align-items: center; min-height: 32px; font-size: 14px; }
 @media (max-width: 680px) {
-  .vt-r > summary { grid-template-columns: minmax(0, 1fr) 88px; gap: 4px 10px; padding: 10px 0; }
+  .vt-r > summary { grid-template-columns: minmax(0, 1fr) 88px; gap: 2px 10px; padding: 11px 0; }
   .vt-k { grid-column: 1 / -1; font-size: 15.5px; gap: 6px; }
-  .vt-v { padding-left: 14px; }
+  /* telefonis saab vastus (sõna ja number) terve rea, pilt on täpsustuse kõrval: nii mahub sõna ja number ühele reale */
+  .vt-v { display: contents; }
+  .vt-s { grid-column: 1 / -1; padding-left: 14px; }
+  .vt-v small { grid-column: 1; padding-left: 14px; }
+  .vt-p { grid-column: 2; align-self: center; }
   .vt-p svg { width: 88px; height: auto; }
   .vt-d { padding-left: 14px; padding-right: 0; }
   .vt-d dl { grid-template-columns: 64px minmax(0, 1fr); }
@@ -1812,10 +1809,6 @@ html[data-t] .tt-pl > .g12 { margin-top: 0; margin-bottom: 24px; }
 .tt-elk { stroke: var(--ink-3); stroke-width: 1; opacity: .6; }
 .tt-scfig { max-width: 760px; margin: 24px 0 0; } .tt-sc-kitsas { display: none; }
 @media (max-width: 640px) {
-  .tt-tel .tv-pea, .tt-tel summary { grid-template-columns: 120px minmax(0, 1fr) 96px; }
-  .tt-tel .tv-t { hyphens: auto; overflow-wrap: anywhere; }
-  .tt-tvis svg { width: 96px; }
-  .tt-tvis svg { width: 100px; height: auto; } .tt-tvis .tt-kiibid { display: none; }
   .tt-mx thead th:not(:first-child):not(.ee):not(:last-child), .tt-mx tbody td:not(.ee):not(.tt-h) { display: none; }
   .tt-pl > summary { flex-direction: column; gap: 2px; padding-left: 0; }
   .tt-sc-lai { display: none; } .tt-sc-kitsas { display: block; }

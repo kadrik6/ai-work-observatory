@@ -86,47 +86,67 @@ def vahemikud(D, w=150, h=46):
     return f'<svg class="tt-svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="{aria}">{"".join(out)}</svg>'
 
 
+# Vastus sõnaga (Kadri 25.11.2026): sõna tuleb numbrist. Piirid on teema_tahvel.sona_osa ja siin.
+PIIR_MOJU = (0.33, 0.66)   # mõjuskoor 0–1: kõrgeim valitsemisala alla esimese = vähe, madalaim üle teise = jah
+PIIR_RAHA = (50, 66)       # ELi osa uuendusrahast, %: üle teise = peamiselt, üle esimese = üle poole
+
+
+def sona_moju(lo, hi):
+    return "Vähe" if hi < PIIR_MOJU[0] else "Jah" if lo >= PIIR_MOJU[1] else "Osaliselt"
+
+
+def sona_kord(k, kr):
+    """k asutust kasutas tehisaru, neist kr ilma oma korrata."""
+    if not 0 <= kr <= k or not k:
+        raise AndmeViga(f"Asutuste korra arvud ei klapi: {kr} / {k}")
+    return "Jah" if kr == 0 else "Enamikul veel mitte" if kr * 2 > k else "Enamikul on"
+
+
+def sona_raha(p):
+    return "Peamiselt ELilt" if p >= PIIR_RAHA[1] else "Üle poole ELilt" if p >= PIIR_RAHA[0] else "Osaliselt ELilt"
+
+
 def read(D):
     v, gk, gl = D.v, D.gk, D.gl
     return [
-        dict(kys="Kui paljud teenistujad teevad uuendusi?", ank="lehter", arv=f'{pr(v("uuendajad"), 0)}%', all="viimase 24 kuu jooksul",
+        dict(kys="Kui paljud teenistujad teevad uuendusi?", ank="lehter", ava="Ava uuendajad rühmade kaupa", sona=tt.sona_osa(v("uuendajad")),
+             arv=f'{pr(v("uuendajad"), 0)}%', all="viimase 24 kuu jooksul",
              pilt=osariba(v("uuendajad"), 100, silt=f'{pr(v("uuendajad"), 0)}%'),
              mrk=f"Juhtidest {D.juhid}%, haldustöötajatest {D.haldus}%. Keskvalitsuses ja omavalitsustes sama.",
              liik="mõõdetud", allikas="OECD küsitlus", kuup="12.2025–02.2026"),
-        dict(kys="Kas uuendused jõuavad lõpuni?", ank="teekond", arv=f'{pr(v("rakendati"), 0)} → {pr(v("laiendati"), 0)}%', all="rakendati → laiendati",
+        dict(kys="Kui paljud uuendused jõuavad laiendamiseni?", ank="teekond", ava="Vaata uuenduse teekonda", sona=tt.sona_osa(v("laiendati")),
+             arv=f'{pr(v("laiendati"), 0)}%', all=f'olulisimatest uuendustest; rakendati {pr(v("rakendati"), 0)}%',
              pilt=kaks_riba([("rak.", v("rakendati"), False), ("laiend.", v("laiendati"), True)]),
-             mrk=f'Olulisimad uuendused. Projektidest jõuab hindamiseni {pr(v("etapp-hindamine"), 0)}%, otsuseni {pr(v("etapp-otsus"), 0)}%.',
+             mrk=f'Projektidest jõuab hindamiseni {pr(v("etapp-hindamine"), 0)}%, otsuseni {pr(v("etapp-otsus"), 0)}%.',
              liik="mõõdetud", allikas="OECD küsitlus", kuup="12.2025–02.2026"),
-        dict(kys="Kas uuendustes kasutatakse tehisaru?", ank="tehisaru", arv=f'{gk["vaartus"]}%', all=f'keskvalitsuse innovaatoritest ({gk["lugeja"]}/{gk["nimetaja"]})',
+        dict(kys="Kui paljud uuendajad kasutavad tehisaru?", ank="tehisaru", ava="Ava tehisaru uuendustes", sona=tt.sona_osa(gk["vaartus"]),
+             arv=f'{gk["vaartus"]}%', all=f'keskvalitsuse uuendajatest ({gk["lugeja"]}/{gk["nimetaja"]})',
              pilt=kaks_riba([("kesk", v("genai-kesk"), True), ("KOV", v("genai-kov"), False)], 50),
              mrk=f'Omavalitsustes {gl["vaartus"]}% ({gl["lugeja"]}/{gl["nimetaja"]}). Küsiti ainult uuenduse teinutelt.',
              liik="mõõdetud", allikas="OECD küsitlus", kuup="12.2025–02.2026"),
-        dict(kys="Kas uuenduste mõju mõõdetakse?", ank="moju", arv=f'{pr(v("indeks-moju-min"), 2)}–{pr(v("indeks-moju-max"), 2)}', all="mõjuskoor 0–1, valitsemisalad",
+        dict(kys="Kas uuenduste mõju mõõdetakse?", ank="moju", ava="Ava indeks valitsemisalade kaupa",
+             sona=sona_moju(v("indeks-moju-min"), v("indeks-moju-max")),
+             arv=f'{pr(v("indeks-moju-min"), 2)}–{pr(v("indeks-moju-max"), 2)}', all="mõjuskoor 0–1, madalaim ja kõrgeim valitsemisala",
              pilt=vahemikud(D),
              mrk=f'Võimekus {pr(v("indeks-voimekus-min"), 2)}–{pr(v("indeks-voimekus-max"), 2)}. Katset kasutab {pr(v("hindamine-rct-tootajad"), 0)}% hindamistest.',
              liik="arvutatud", allikas="OECD indeks", kuup="2026"),
-        dict(kys="Kas asutustel on tehisaru kord?", ank="asutused", arv=f"{D.kr} / {D.n}", all="asutusel puudus kord",
+        dict(kys="Kas asutustel on tehisaru kord?", ank="asutused", ava="Vaata asutusi", sona=sona_kord(D.k, D.kr),
+             arv=f"{D.kr} / {D.n}", all="asutust kasutas valmislahendusi ilma oma korrata",
              pilt=jaotusriba([("s", D.kr / D.n * 100), ("m", (D.k - D.kr) / D.n * 100)],
                              f"{D.kr} asutust kasutas ilma korrata, {D.k - D.kr} korraga, {D.n - D.k} ei kasutanud"),
-             mrk=f"{D.k} asutust {D.n}-st kasutas välismaiseid valmislahendusi; neist {D.kr} ilma asutusesisese korrata. Ainult vastanud asutused.",
+             mrk=f"{D.k} asutust {D.n}-st kasutas välismaiseid valmislahendusi; neist {D.k - D.kr} asutusel oli oma kord. Ainult vastanud asutused.",
              liik="mõõdetud", allikas="Riigikontroll", kuup=kp(D.rk["avaldatud"])),
-        dict(kys="Kust tuleb uuendusraha?", ank="rahastus", arv=f'{pr(v("raha-el"), 0)}%', all="keskvalitsuse uuendusrahast ELilt",
+        dict(kys="Kust tuleb uuendusraha?", ank="rahastus", ava="Ava rahastus", sona=sona_raha(v("raha-el")),
+             arv=f'{pr(v("raha-el"), 0)}%', all="keskvalitsuse uuendusrahast ELilt",
              pilt=osariba(v("raha-el"), 100, silt=f'{pr(v("raha-el"), 0)}% ELilt'),
              mrk=f'Innovatsioonihangetele läheb {pr(v("hanked-innovatsioon"), 1)}% hangete eelarvest; neid on alla 1% hangetest, siht on 2% aastaks 2027.',
              liik="mõõdetud", allikas="OECD aruanne", kuup="2026"),
     ]
 
 
-def usaldus(n_vaiteid, n_muud, reeglid, n_allikaid, uusim):
-    """Usaldusrida; kui väiteid pole, jääb väidete link ära (lehel pole väidete plokki)."""
-    us = tt.usaldusriba(n_vaiteid, n_muud, reeglid, n_allikaid, uusim)
-    return us if n_vaiteid else re.sub(r'<a href="#t-vaited">.*?</a>', "", us, count=1)
-
-
-def tahvel(D, us):
-    return tt.tahvel("tahvel", "Kuidas riik uuendab ja tehisaru kasutab?", "6 küsimust, iga rida üks pilk",
-                     "Iga rida on oma skaalal ja oma alusel (teenistujad, uuendused, asutused); eri ridade numbreid ei võrrelda. Rida viib oma plokki.",
-                     read(D), us)
+def tahvel(D):
+    return tt.vastustahvel("tahvel", "Kuidas riik uuendab ja tehisaru kasutab?",
+                           "Iga rida on oma alusel (teenistujad, uuendused, asutused); eri ridade numbreid ei võrrelda.", read(D))
 
 
 def _mini(read, laius, fookus=None):

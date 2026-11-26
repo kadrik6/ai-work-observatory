@@ -1,6 +1,7 @@
 """Uue saidi (sait/) testid: pealkirjade numbrid tulevad andmetest, eri klassid ei ole ühel teljel, lingid töötavad."""
 
 import csv
+import html
 import json
 import re
 import sys
@@ -252,7 +253,8 @@ def test_sihid_on_oma_teema_juures_ja_eesti_siht_on_fookuses(sait):
     # Kadri 14.11.2026: Ettevõtete siht on tahvli esimesel real ja „Kuidas lugeda“ loendis, mitte kolmandat korda sihireal
     kas = _jaotis(sait["ettevotted.html"], "kasutus")
     assert 'class="siht-rida"' not in kas and '<span class="mark-l s">Siht</span>' in kas
-    rida1 = _jaotis(sait["ettevotted.html"], "tahvel").split("<tbody>")[1].split("</tr>")[0]
+    # 26.11.2026: tahvli rida vastab sõnaga; siht on rea nähtavas osas (numbri all ja pildil), mitte ainult avatud märkuses
+    rida1 = _jaotis(sait["ettevotted.html"], "tahvel").split('<details class="vt-r">')[1].split("</summary>")[0]
     assert "siht 75% (2030)" in tekst(rida1) and 'class="tv-siht"' in rida1
     # Kadri 14.11.2026: endised alamlehed on teemalehe plokid
     assert _jaotis(sait["ettevotted.html"], "digi").count('class="siht-rida"') == 1
@@ -419,9 +421,9 @@ def test_igas_teemavaates_on_numbriplaadid(sait):
         assert 'class="vastus' in sait[f], f
     # 14.11.2026: Ettevõtete ja Inimeste numbrid on tahvli ridadel (Kadri valis „B koos C maatriksiga“ ja „A ja B koos“);
     # Töö ja Avalik sektor 17.11 (mõlemal „A ja C koos“), Hanked 19.11 („A ja C koos“)
-    for f in ("ettevotted.html", "inimesed.html", "avalik-sektor.html", "hanked.html"):
-        assert 'class="tv-arv"' in sait[f], f
-    assert 'class="vt-n"' in sait["too.html"]  # 25.11.2026: Töö tahvli rida vastab sõnaga, number on selle kõrval
+    # 25.–26.11.2026: tahvli rida vastab sõnaga, number on selle kõrval (Töö 25.11, teised teemalehed 26.11)
+    for f in ("ettevotted.html", "inimesed.html", "avalik-sektor.html", "hanked.html", "too.html"):
+        assert 'class="vt-n"' in sait[f] and 'class="tv-arv"' not in sait[f], f
 
 
 def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
@@ -938,7 +940,7 @@ def test_neli_vaiteparandust_8_11(sait):
     assert h1("too.html").startswith("Eesti andmetest")  # 8.11 õhtu: h1 algab Eestist (läbivaatus P4)
     hanked = _jaotis(sait["hanked.html"], "tahvel")  # 19.11.2026: hangete arv on tahvli esimesel real
     avaleht = _jaotis(sait["index.html"], "teemad").split('href="hanked.html"')[1].split("</tr>")[0]
-    assert re.search(r'class="tv-arv"[^>]*>(\d+)<', avaleht).group(1) == re.search(r'class="tv-arv"[^>]*>(\d+)<', hanked).group(1)
+    assert re.search(r'class="tv-arv"[^>]*>(\d+)<', avaleht).group(1) == re.search(r'class="vt-n"[^>]*>(\d+)<', hanked).group(1)
     assert "jaan" not in avaleht
 
 
@@ -1953,6 +1955,14 @@ def test_vaikesed_alamlehed_on_teemalehe_plokid_ja_vanad_aadressid_suunavad(sait
         assert f'url={uus}"' in (tmp_path / vana).read_text(encoding="utf-8"), vana
 
 
+def _vt_read(tv):
+    """Vastustahvli read: [(ankur, küsimus)]. Iga rea link viib oma plokki."""
+    out = []
+    for r in tv.split('<details class="vt-r">')[1:]:
+        out.append((re.search(r'class="vt-ava"><a href="#([a-z0-9-]+)"', r).group(1), html.unescape(re.search(r'class="vt-k">(.*?)</span>', r).group(1))))
+    return out
+
+
 def test_ettevotted_on_tahvel_maatriks_ja_kokkupandud_plokid(A, sait):
     """Kadri 14.11.2026 valis Ettevõtete lehele „B koos C maatriksiga“: tahvel, Põhjamaade maatriks, siis plokid kokku pandud."""
     import lehed
@@ -1962,22 +1972,21 @@ def test_ettevotted_on_tahvel_maatriks_ja_kokkupandud_plokid(A, sait):
     assert main.index("</h1>") < main.index('id="tahvel"') < main.index('id="pohjamaad"') < main.index('id="h-uksikasjad"')
     assert 'data-kpi="ev-' not in h and '<aside class="vastus"' not in h
     tv = _jaotis(h, "tahvel")
-    read = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">(.*?)</a>', tv)
+    read = _vt_read(tv)
     assert [r[1] for r in read] == ["Kui paljud kasutavad?", "Kus on Eesti ELis?", "Kas vahe Põhjamaadega kahaneb?",
                                     "Mida firmad töötajatele lubavad?", "Kas tehisaru tõstab tootlikkust?", "Kas võimekus on Põhjamaade tasemel?"]
     assert all(f'id="{a}"' in h for a, _ in read)
-    # telefonivaade: samad read puudutusega avanevana
-    assert tv.count('<details class="tv-r">') == len(read)
-    # iga rida ütleb tõendi liigi; katsete numbreid ei liideta (iga katse oma kiip)
-    assert tv.count('class="tt-liik ') == 2 * len(read)
+    # iga rida ütleb tõendi liigi; katsete numbreid ei liideta (iga katse oma ruut ja oma number märkuses)
+    assert tv.count('class="tt-liik ') == len(read)
     K = lehed._ligipaasu_kontekst(A)["uuringud"]
-    assert tv.split("Kas tehisaru tõstab tootlikkust?")[1].split("</tr>")[0].count("<li ") == len(K)
+    katsed = tv.split("Kas tehisaru tõstab tootlikkust?")[1].split("</details>")[0]
+    assert katsed.count('<rect class="tt-r9 ') == len(K) and all(k["uuring"] in html.unescape(katsed) for k in K)
     # maatriks: 9 näitajat × 7 riiki, Eesti veerg raamitud; Põhjamaade võrdlus ei ole enam Võimekuse sakk
     mx = _jaotis(h, "pohjamaad")
     P = lehed.pohjamaade_profiil(A)
     assert mx.count('<td class="ee"') == len(P) == 9 and mx.split("</thead>")[0].count('<th scope="col"') == 9
     tasemel = sum(p["hinnang"] in ("yle", "vahemik") for p in P)
-    assert mx.count('class="tt-h ok"') == tasemel and f"{tasemel}/{len(P)}" in tv
+    assert mx.count('class="tt-h ok"') == tasemel and f"{tasemel} / {len(P)}" in tv
     assert 'id="sakk-pm"' not in h
     # plokid on kokkupandult, ankur avab ploki (sait.js avaAnkur)
     for sid in ("andmed", "ligipaas", "kasu", "voimekus", "lopp"):
@@ -2002,9 +2011,8 @@ def test_inimesed_on_tahvel_sada_inimest_ja_kasutus_oskused(A, sait):
     assert main.index("</h1>") < main.index('id="tahvel"') < main.index('id="sada"') < main.index('id="kasutus-oskused"') < main.index('id="h-uksikasjad"')
     assert 'data-kpi="in-' not in h and '<aside class="vastus"' not in h
     tv = _jaotis(h, "tahvel")
-    read = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">(.*?)</a>', tv)
+    read = _vt_read(tv)
     assert len(read) >= 5 and all(f'id="{a}"' in h for a, _ in read)
-    assert tv.count('<details class="tv-r">') == len(read)
     assert "küsimus võib erineda" in tv and "kontrollimata" in tv
     # sada inimest: 100 ruutu Eesti ja ELi kohta; rühmad samast küsitlusest ega kattu
     sada = _jaotis(h, "sada")
@@ -2039,7 +2047,7 @@ def test_too_on_tahvel_toendikaart_ja_astmed(A, sait):
             < main.index('id="astmed"') < main.index('id="h-uksikasjad"') < main.index('id="toendid"'))
     assert 'data-kpi="too-' not in h and '<aside class="vastus"' not in h
     tv = _jaotis(h, "tahvel")
-    read = re.findall(r'<details class="vt-r"><summary><span class="vt-k">(.*?)</span><span class="vt-v"><b>(.*?)</b><span class="vt-n">(.*?)</span>', tv)
+    read = re.findall(r'<details class="vt-r"><summary><span class="vt-k">(.*?)</span><span class="vt-v"><span class="vt-s"><b>(.*?)</b><span class="vt-n">(.*?)</span>', tv)
     lingid = re.findall(r'<p class="vt-ava"><a href="#([a-z-]+)">', tv)
     assert len(read) == len(lingid) == 6 and all(f'id="{a}"' in h for a in lingid)
     assert all(sona.strip() and not re.search(r"\d+[,.]?\d*\s*%", sona) for _, sona, _ in read)  # vastus on sõna, protsent on selle kõrval
@@ -2079,10 +2087,10 @@ def test_avalik_sektor_on_tahvel_teekond_ja_asutused(A, sait):
     assert main.index("</h1>") < main.index('id="tahvel"') < main.index('id="teekond"') < main.index('id="asutused"') < main.index('id="h-uksikasjad"')
     assert 'data-kpi="' not in h and 'class="vastus' not in h
     tv = _jaotis(h, "tahvel")
-    read = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">(.*?)</a>', tv)
+    read = _vt_read(tv)
     assert len(read) == 6 and all(f'id="{a}"' in h for a, _ in read)
-    # väiteid avaliku sektori kohta pole: tahvli all pole väidete linki, mis viiks tühja kohta
-    assert 'href="#t-vaited"' not in tv and 'href="#t-allikad"' in tv
+    # väiteid avaliku sektori kohta pole: lehel pole väidete linki, mis viiks tühja kohta
+    assert 'href="#t-vaited"' not in h
     # teekond: viis etappi laias ja kitsas joonises, fookus pärast suurimat langust
     tk = _jaotis(h, "teekond")
     for svg in tk.split('class="tt-svg tt-sc-')[1:]:
@@ -2122,9 +2130,9 @@ def test_hanked_on_tahvel_kuidas_ja_head_naited(A, sait):
     assert main.index("</h1>") < main.index('id="tahvel"') < main.index('id="kuidas"') < main.index('id="naited-kokku"') < main.index('id="h-uksikasjad"')
     assert 'data-kpi="' not in h and 'class="vastus' not in h
     tv = _jaotis(h, "tahvel")
-    read = re.findall(r'<tr><th scope="row"><a href="#([a-z-]+)">(.*?)</a>', tv)
+    read = _vt_read(tv)
     assert len(read) == 6 and all(f'id="{a}"' in h for a, _ in read)
-    assert 'href="#t-vaited"' not in tv and 'href="#t-allikad"' in tv
+    assert 'href="#t-vaited"' not in h
     # kuidas: kolm näitajat kolmes rühmas, lai ja kitsas joonis; sakis sama joonist enam pole
     V = H["hankimise_viis"]
     ku = _jaotis(h, "kuidas")
@@ -2295,3 +2303,46 @@ def test_tagasi_nupp_viib_ankrult_tagasi():
     js = (JUUR / "sait" / "sait.js").read_text(encoding="utf-8")
     assert "olek.keri = Math.round(window.scrollY)" in js and "window.addEventListener('popstate'" in js
     assert "if (!window.seireAnkurAvab) sea(" in js and "window.seireAnkurAvab = true" in js
+
+
+def test_teemalehtede_tahvel_vastab_sonaga(sait):
+    """Kadri 25.11.2026: oluline enne valikulist, „this logic needs to be redone in other pages as well“.
+    Igal teemalehel on tahvli rida küsimus, vastus sõnaga, üks number ja pilt; märkus, tõend ja allikas avanevad real."""
+    for f in ("inimesed.html", "ettevotted.html", "avalik-sektor.html", "hanked.html", "too.html"):
+        tv = _jaotis(sait[f], "tahvel")
+        read = tv.split('<details class="vt-r">')[1:]
+        assert 5 <= len(read) <= 6, f
+        assert "<table" not in tv and 'class="tt-us"' not in tv and "Rida viib oma plokki" not in tv, f
+        for r in read:
+            kokku, lahti = r.split("</summary>")
+            sona, arv = re.search(r'<span class="vt-s"><b>(.*?)</b><span class="vt-n">(.*?)</span>', kokku, re.S).groups()
+            assert sona.strip() and not re.search(r"\d,\d|%", sona), (f, sona)        # sõna, mitte teine number
+            assert len(re.findall(r"\d+(?:,\d+)?%", tekst(arv))) <= 1, (f, arv)         # üks küsimus, üks number
+            assert "<svg" in kokku and "<dt>Märkus</dt>" in lahti and "<dt>Allikas</dt>" in lahti and 'class="tt-liik ' in lahti, f
+            assert "<dt>Märkus</dt>" not in kokku and 'class="tt-liik ' not in kokku, f
+
+
+def test_tahvli_sonade_piirid():
+    """Sõna tuleb numbrist kindla piiriga (piirid on Claude'i valik, kirjas failis UUENDUSED.md 26.11.2026)."""
+    import avalik_tahvel
+    import hanked_tahvel
+    import teema_tahvel as tt_
+    osa = {0.9: "Umbes iga 100.", 4.7: "Umbes iga 20.", 13: "Umbes iga 8.", 20: "Umbes iga viies", 24: "Umbes veerand", 28: "Umbes veerand",
+           33: "Umbes kolmandik", 36.9: "Umbes kolmandik", 44: "Alla poole", 50: "Umbes pooled", 60: "Üle poole", 65: "Umbes kaks kolmandikku",
+           75: "Umbes kolmveerand", 83: "Enamik", 97: "Peaaegu kõik", "28": "Umbes veerand"}
+    assert {p: tt_.sona_osa(p) for p in osa} == osa
+    for vale in (-1, 101, None, "palju"):
+        with pytest.raises(andmekiht.AndmeViga):
+            tt_.sona_osa(vale)
+    assert [tt_.sona_koht(k, 27) for k in (2, 3, 4, 9, 10, 18, 19, 27)] == ["Esikolmikus"] * 2 + ["Esimeses kolmandikus"] * 2 + ["Keskmiste seas"] * 2 + ["Viimases kolmandikus"] * 2
+    with pytest.raises(andmekiht.AndmeViga):
+        tt_.sona_koht(28, 27)
+    assert [tt_.sona_muutus(v, 1, "kasvab", "kahaneb", "sama") for v in (6.5, 0.9, -0.1, -1.0)] == ["kasvab", "sama", "sama", "kahaneb"]
+    assert [avalik_tahvel.sona_moju(lo, hi) for lo, hi in ((0.09, 0.21), (0.2, 0.5), (0.7, 0.9))] == ["Vähe", "Osaliselt", "Jah"]
+    assert [avalik_tahvel.sona_kord(41, kr) for kr in (0, 8, 33)] == ["Jah", "Enamikul on", "Enamikul veel mitte"]
+    with pytest.raises(andmekiht.AndmeViga):
+        avalik_tahvel.sona_kord(41, 42)
+    assert [avalik_tahvel.sona_raha(p) for p in (83, 55, 20)] == ["Peamiselt ELilt", "Üle poole ELilt", "Osaliselt ELilt"]
+    assert [hanked_tahvel.sona_hankijad(p) for p in (60, 44, 20)] == ["Peamiselt mõni suur hankija", "Suur osa vähestelt hankijatelt", "Paljud eri hankijad"]
+    assert [hanked_tahvel.sona_siht(v, 2) for v in (1.5, 2.0)] == ["Veel mitte", "Jah"]
+    assert [hanked_tahvel.sona_tapsus(t, s_) for t, s_ in ((95, 92), (80, 78), (70, 73), (50, 90))] == ["Väga täpne", "Üsna täpne", "Keskmiselt täpne", "Ebatäpne"]

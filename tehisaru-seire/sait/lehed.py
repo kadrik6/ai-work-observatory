@@ -375,7 +375,6 @@ def _pohjamaad(A):
 <section class="jaotis" id="pohjamaad" aria-labelledby="h-pohjamaad">
   <header>
     <h2 id="h-pohjamaad"><span class="kys">Kus jääb Eesti Põhjamaadest maha?</span> Üheksast näitajast on Eesti {arv(len(tasemel))} puhul Põhjamaade tasemel ¦ <b>{arv(len(maas))} puhul jääb Põhjamaadest maha</b></h2>
-    <p class="alam">Seitse riiki igal näitajal: Eesti, Soome, Rootsi, Taani, Norra, Saksamaa ja Holland. Iga rida on oma skaalal, ridu omavahel ei võrrelda.</p>
     {vastavus("osaliselt", "Näitajad on samast küsimustikust kõigis riikides, aga need mõõdavad eri asju (inimesed, ettevõtted, kulud). Ühte koondnumbrit neist ei arvutata.")}
   </header>
   <figure aria-labelledby="g-pohjamaad">
@@ -384,19 +383,19 @@ def _pohjamaad(A):
     {maatriks(P, RIIGID7, PP_NIMI, _arvt)}
     {allikarida(allikad)}
   </figure>
-  <div class="kulg">{faktid([
+  <details>
+    <summary>Näita andmetabelit, indeksit ja arvutust</summary>
+    <div>{tabel(["Näitaja", "Eesti", "Põhjamaade keskmine", "Indeks (100 = Põhjamaad), arvutatud", "Hinnang", "Koht"], t_read,
+                pealdis="Eesti ja Põhjamaade keskmine üheksas näitajas", tel="-4 -5 2:3.6em 3:7em 6:3em")}
+      <p>Kuus näitajat tulevad seire enda Eurostati andmetest ja uuenevad iga päev. IKT-spetsialistid tulevad Eurostatist ning IKT lõpetajad ja teadlased UNESCO UISist. Seire laeb need iga päev otse allika API-st.</p>
+    <div class="kulg">{faktid([
       ("Maas", "risk", f'Põhjamaadest maas: {e(nimed(maas))}.' if maas else "Eesti ei jää üheski näitajas Põhjamaadest maha."),
       ("Põhjamaade tasemel", "s", f'{e(nimed(tasemel)[:1].upper() + nimed(tasemel)[1:])}.' if tasemel else "Mitte üheski näitajas."),
       ("Kuidas arvutatud", "", "Arvutatud: indeks = Eesti väärtus / Põhjamaade keskmine × 100 (näitajal „ei oska“ vastupidi, sest väiksem on parem). "
                                "Aasta on uusim, kus on olemas Eesti ja vähemalt viis teist riiki."),
       ("Erinev keskmine", "", f'Siin on Põhjamaade keskmine neli riiki koos Norraga. Ploki „Kus on Eesti ELis?“ vahe Põhjamaadega arvutab ainult kolm ELi Põhjamaad, '
                               f'seepärast on ettevõtete vahe seal teine number (siin Eesti {pr(ettev["ee"])}% ja Põhjamaade keskmine {pr(ettev["pk"])}%, {ettev["a"]}).'),
-  ])}</div>
-  <details>
-    <summary>Näita andmetabelit ja indeksit</summary>
-    <div>{tabel(["Näitaja", "Eesti", "Põhjamaade keskmine", "Indeks (100 = Põhjamaad), arvutatud", "Hinnang", "Koht"], t_read,
-                pealdis="Eesti ja Põhjamaade keskmine üheksas näitajas", tel="-4 -5 2:3.6em 3:7em 6:3em")}
-      <p>Kuus näitajat tulevad seire enda Eurostati andmetest ja uuenevad iga päev. IKT-spetsialistid tulevad Eurostatist ning IKT lõpetajad ja teadlased UNESCO UISist. Seire laeb need iga päev otse allika API-st.</p></div>
+  ])}</div></div>
   </details>
 </section>"""
 
@@ -719,43 +718,56 @@ def ettevotted(A, vaade, vaated=None):
     tasemel = [p for p in P if p["hinnang"] in ("yle", "vahemik")]
     maas = [p for p in P if p not in tasemel]
     eb_url = "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table"
+    # Vastus sõnaga (Kadri 25.11.2026): sõna tuleb numbrist; piirid on teema_tahvel.sona_* ja siin
+    PIIR_VAHE_P = 1                        # protsendipunkti: alla selle loetakse vahe Põhjamaadega samaks
     read = [
-        dict(kys="Kui paljud kasutavad?", ank="andmed", arv=f'{pr(ee["vaartus"])}%', all=f'{ee["aasta"]}, vähemalt 10 hõivatuga ettevõtted',
+        dict(kys="Kui paljud kasutavad?", ank="andmed", ava="Ava kasutus Eestis ja ELis", sona=tt.sona_osa(ee["vaartus"]),
+             arv=f'{pr(ee["vaartus"])}%', all=f'{ee["aasta"]}, vähemalt 10 hõivatuga ettevõtted; siht {pr(sv, 0)}% ({siht["aasta"]})',
              pilt=osariba(ee["vaartus"], 100, sv, silt=f'{pr(ee["vaartus"])}%, siht {pr(sv, 0)}%'),
              mrk=f'<span class="tv-lg siht"></span>siht {pr(sv, 0)}% ({siht["aasta"]}). {ee["aasta"] - 1}. aastaga ei võrrelda (uus tegevusalade klassifikaator EMTAK 2025).',
              liik="mõõdetud", allikas="Statistikaamet " + ee["allikas"].split("tabel ")[-1], kuup=kp(ee["avaldatud"])),
-        dict(kys="Kus on Eesti ELis?", ank="andmed", arv=f"{koht}.", all=f'{J["n"]} riigist, {y}', pilt=ribarida(J),
+        dict(kys="Kus on Eesti ELis?", ank="andmed", ava="Ava kaart ja riikide järjestus", sona=tt.sona_koht(koht, J["n"]),
+             arv=f"{koht}. koht", all=f'{J["n"]} riigist, {y}', pilt=ribarida(J),
              mrk=f'{y0}: {k_ee[y0]}. koht. Eesti {pr(ee_el["vaartus"])}%, <span class="tv-lg eu"></span>EL {pr(eu["vaartus"])}%.',
              liik="mõõdetud", allikas="Eurostat isoc_eb_ai", kuup=kp(ee_el["avaldatud"]) if ee_el.get("avaldatud") else str(y)),
-        dict(kys="Kas vahe Põhjamaadega kahaneb?", ank="andmed", arv=f"{pr(vahe)} p", all=f"{y}, Soome, Rootsi ja Taani keskmine",
+        dict(kys="Kas vahe Põhjamaadega kahaneb?", ank="andmed", ava="Ava võrdlus Põhjamaadega",
+             sona=tt.sona_muutus(vahe - vahe0, PIIR_VAHE_P, "Ei, vahe kasvab", "Jah", "Vahe püsib sama"),
+             arv=f"{pr(vahe)} p", all=f"{y}, Soome, Rootsi ja Taani keskmisest; 2023 oli {pr(vahe0)} p",
              pilt=kulujoon([(pm_ts, "r"), (ee_ts, "f")], 0, max(v for _, v in pm_ts) * 1.05, "Eesti ja Põhjamaade keskmine " + f"{pm_ts[0][0]}–{pm_ts[-1][0]}"),
-             mrk=f'Ei: 2023 oli vahe {pr(vahe0)} p. <span class="tv-lg ee"></span>Eesti, <span class="tt-lg kr"></span>Põhjamaad.',
+             mrk='<span class="tv-lg ee"></span>Eesti, <span class="tt-lg kr"></span>Põhjamaade keskmine. Vahe on protsendipunktides.',
              liik="arvutatud", allikas="Eurostat isoc_eb_ai", kuup=kp(ee_el["avaldatud"]) if ee_el.get("avaldatud") else str(y)),
     ]
     if S:
-        read.append(dict(kys="Mida firmad töötajatele lubavad?", ank="ligipaas", arv=str(len(S)),
-                         all=f'kogutud otsust {min(r["kuupaev"] for r in S)[:4]}–{max(r["kuupaev"] for r in S)[:4]}',
+        from collections import Counter
+        ruhm = Counter(tt.GRUPP[r["ligipaas"]] for r in S)
+        suurim, n_suurim = ruhm.most_common(1)[0]
+        sona_lubavad = ({"ava": "Enamik avas kõigile", "pii": "Enamik piirab rolliga", "kee": "Enamik keelas"}[suurim]
+                        if n_suurim * 2 > len(S) else "Otsused on erinevad")
+        read.append(dict(kys="Mida firmad töötajatele lubavad?", ank="ligipaas", ava="Ava otsused ja põhjused", sona=sona_lubavad,
+                         arv=f'{len(S)} otsust', all=f'{min(r["kuupaev"] for r in S)[:4]}–{max(r["kuupaev"] for r in S)[:4]}, uudistest kogutud',
                          pilt=tt.otsuste_aeg(S, LIGIPAAS_NIMI), mrk=tt.otsuste_legend(S) + ". Valim on uudistest, mitte kõigi firmade ülevaade.",
                          liik="uudised", allikas="ettevõtete teated", kuup="viimane " + kp(max(r["kuupaev"] for r in S))))
     if KU:
-        read.append(dict(kys="Kas tehisaru tõstab tootlikkust?", ank="kasu", arv=str(len(KU)), all="katset, igaüks eri ülesandes",
-                         pilt=tt.katse_kiibid(KU), mrk="Kasu on päris, aga mitte igas ülesandes. Katsete numbreid ei liideta.",
+        n_hea = sum(tt.katse_number(r["leid"])[1] for r in KU)
+        sona_katsed = "Jah, katsetes" if n_hea == len(KU) else "Katsetes mitte" if n_hea == 0 else "Mitte igas ülesandes"
+        read.append(dict(kys="Kas tehisaru tõstab tootlikkust?", ank="kasu", ava="Ava katsed ja uuringud", sona=sona_katsed,
+                         arv=f"{n_hea} katses {len(KU)}-st", all="tootlikkus kasvas; igaüks eri ülesandes",
+                         pilt=tt.katse_ruudud(KU), mrk=tt.katse_loend(KU) + " Katsete numbreid ei liideta.",
                          liik="katse", allikas=f"{len(KU)} uuringut", kuup="avaldatud " + "–".join(sorted({min(map(tt.aasta, KU)), max(map(tt.aasta, KU))}))))
-    read.append(dict(kys="Kas võimekus on Põhjamaade tasemel?", ank="pohjamaad", arv=f"{len(tasemel)}/{len(P)}", all="näitajat Põhjamaade tasemel",
+    sona_voimekus = ("Jah" if not maas else "Enamikus näitajates" if len(tasemel) * 2 > len(P) else
+                     "Pooltes näitajates" if len(tasemel) * 2 == len(P) else "Vähestes näitajates" if tasemel else "Veel mitte")
+    read.append(dict(kys="Kas võimekus on Põhjamaade tasemel?", ank="pohjamaad", ava="Vaata üheksat näitajat", sona=sona_voimekus,
+                     arv=f"{len(tasemel)} / {len(P)}", all="näitajat Põhjamaade tasemel",
                      pilt=tt.ruudud(P), mrk="Maas: " + e(", ".join(p["nimi"][:1].lower() + p["nimi"][1:] if not p["nimi"][1:2].isupper() else p["nimi"] for p in maas)) + "." if maas else "Üheski näitajas pole maas.",
                      liik="mõõdetud", allikas="Eurostat, UNESCO UIS", kuup=f'andmeaastad {min(p["a"] for p in P)}–{max(p["a"] for p in P)}'))
     vv = [v for v in A["vaited"] if vaite_teema(v) == "ettevotted"]
-    from lehed_usaldus import _raskus
     allikad = [ee["avaldatud"], ee_el.get("avaldatud"), A["leiud"]["gem-ai-teadlikkus"]["avaldatud"], siht["kontrollitud"]]
     allikad = [d + "-01" if d and len(d) == 7 else d for d in allikad]
     O = {o["id"]: o for o in A["otsused"]}
     import datetime as _dt
     tana = _dt.date.today().isoformat()
     reeglid = [(O[i]["nimi"], (O[i]["kuupaev"] + ("-01" if O[i].get("tapsus") == "kuu" else "")) < tana) for i in ["ai-uldkohaldamine"]]
-    us = tt.usaldusriba(len(vv), sum(_raskus(v) == 0 for v in vv), reeglid, len(allikad), max(d for d in allikad if d))
-    sec_tahvel = tt.tahvel("tahvel", "Mis on ettevõtete seis?", f"{len(read)} küsimust, iga rida üks pilk",
-                           "Iga rida on oma skaalal; eri ridade numbreid ei võrrelda. Rida viib oma plokki. „Tõend“ ütleb, kas number on mõõdetud, arvutatud, katsest või uudistest.",
-                           read, us)
+    sec_tahvel = tt.vastustahvel("tahvel", "Mis on ettevõtete seis?", "Iga rida on oma skaalal; eri ridade numbreid ei võrrelda.", read)
     uks = tt.uksikasjad([
         ("andmed", "Kus on Eesti ELis?", "kaart, järjestus, riikide 2026. aasta numbrid, ekspertide hinnang", sec_andmed),
         ("ligipaas", "Mida firmad töötajatele lubavad?", f"{len(S)} otsust ja põhjused", _ligipaas(A)),
