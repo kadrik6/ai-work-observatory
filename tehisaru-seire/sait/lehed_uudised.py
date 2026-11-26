@@ -793,18 +793,13 @@ def hanked(A, vaade, vaated=None):
     import datetime
     import hanked_tahvel as ht
     import teema_tahvel as tt
-    from avalik_tahvel import usaldus
-    from lehed_usaldus import _raskus
     D = ht.Andmed(H, KASITSI)
-    vv = [x for x in A["vaited"] if vaite_teema(x) == "hanked"]
-    yr = next(r for r in A["otsused"] if r["id"] == "ai-uldkohaldamine")
-    us = usaldus(len(vv), sum(_raskus(x) == 0 for x in vv), [(yr["nimi"], yr["kuupaev"] <= datetime.date.today().isoformat())], 2, seis)
     uks = tt.uksikasjad([
         ("andmed", "Kuidas riik tehisaru ostab?", "aastad, innovatsioonimärk, hankijad, litsentsid, täpsus", sec_andmed + markus),
         ("lopp", "Reeglid ja allikad", "1 reegel · 2 allikat", tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),
     ])
     return jaga(A, vaade, lead, [], [
-        ("tahvel", [("tahvel", "Ülevaade")], ht.tahvel(D, us)),
+        ("tahvel", [("tahvel", "Ülevaade")], ht.tahvel(D)),
         ("kuidas", [("kuidas", "Kuidas hangitakse?")], ht.sec_kuidas(D, a(HANKED_URL, "Riigihangete register") + " ja TED")),
         ("naited-kokku", [("naited-kokku", "Head näited")], ht.sec_naited(D)),
         ("uksikasjad", [("andmed", "Andmed"), ("t-allikad", "Allikad")], uks),

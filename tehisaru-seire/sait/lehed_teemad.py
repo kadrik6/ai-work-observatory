@@ -284,34 +284,46 @@ def inimesed(A, vaade, vaated=None):
     # ---- Töölaud (Kadri 14.11.2026 valis „A ja B koos“): tahvel, sada inimest, kasutus × digioskused, siis plokid kokku pandud
     import teema_tahvel as tt
     from avaleht_tahvel import el_jaotus, osariba, ribarida
-    from lehed_usaldus import _raskus
     J_IN, J_TOO, J_OS, J_DS = el_jaotus(A, IN), el_jaotus(A, TOO), el_jaotus(A, OS, vaiksem_parem=True), el_jaotus(A, DS)
     if {J["y"] for J in (J_IN, J_TOO, J_OS, J_DS)} != {y} or J_IN["koht"] != koht:
         raise AndmeViga("Inimeste tahvli ELi aastad või koht ei klapi ploki „Kus on Eesti ELis?“ numbritega")
     pp = sorted(paarid, key=lambda p: -(p[1]["vaartus"] - p[0]["vaartus"]))
     teised = ", ".join(f'{riik(v1["geo"])} +{tt.p1(v1["vaartus"] - v0["vaartus"])}' for v0, v1 in pp if v1["geo"] != "EE")
+    # Vastus sõnaga (Kadri 25.11.2026): sõna tuleb numbrist, piirid on teema_tahvel.sona_* ja siin kahes kohas
+    PIIR_NAABER_P, PIIR_DIGI_P = 2, 1      # protsendipunkti: alla selle loetakse kasv samaks ja digioskused muutumatuks
+    naabrid = [v1["vaartus"] - v0["vaartus"] for v0, v1 in pp if v1["geo"] != "EE"]
+    sona_naabrid = ("Jah, umbes sama kiiresti" if all(abs(n - kasv) < PIIR_NAABER_P for n in naabrid) else
+                    "Ei, aeglasemalt" if all(n <= kasv - PIIR_NAABER_P for n in naabrid) else
+                    "Ei, kiiremini" if all(n >= kasv + PIIR_NAABER_P for n in naabrid) else "Osa kiiremini, osa aeglasemalt")
     read = [
-        dict(kys="Kui paljud kasutavad?", ank="kasutus", arv=f'{tt.p1(ee["vaartus"])}%', all=f'{ee["aasta"]}, 16–74-aastased',
+        dict(kys="Kui paljud kasutavad?", ank="kasutus", ava="Ava kasutus Eestis ja ELis", sona=tt.sona_osa(ee["vaartus"]),
+             arv=f'{tt.p1(ee["vaartus"])}%', all=f'{ee["aasta"]}, 16–74-aastased',
              pilt=osariba(ee["vaartus"], 100, silt=f'{tt.p1(ee["vaartus"])}%'),
              mrk=f'{y}: {pr(ee25["vaartus"])}% (Eurostat), küsimus võib erineda; seda pole veel kontrollitud.',
              liik="mõõdetud", allikas="Statistikaamet " + ee["allikas"].split("tabel ")[-1], kuup=kp(ee["avaldatud"])),
-        dict(kys="Kus on Eesti ELis?", ank="kasutus", arv=f"{koht}.", all=f'{J_IN["n"]} riigist, {y}', pilt=ribarida(J_IN),
+        dict(kys="Kus on Eesti ELis?", ank="kasutus", ava="Ava kaart ja riikide järjestus", sona=tt.sona_koht(koht, J_IN["n"]),
+             arv=f"{koht}. koht", all=f'{J_IN["n"]} riigist, {y}', pilt=ribarida(J_IN),
              mrk=f'Eesti {pr(J_IN["ee"])}%, <span class="tv-lg eu"></span>EL {pr(J_IN["eu"])}%. Eurostat mõõtis seda esimest korda {y}. aastal.',
              liik="mõõdetud", allikas="Eurostat isoc_ai_iaiu", kuup=str(y)),
     ]
     if len(pp) > 1:
-        read.append(dict(kys="Kas naabrid kasvavad sama kiiresti?", ank="kasutus", arv=f'+{tt.p1(kasv)} p', all=f"Eesti, {y} → {y + 1}",
+        read.append(dict(kys="Kas naabrid kasvavad sama kiiresti?", ank="kasutus", ava="Ava riikide kasv aastaga", sona=sona_naabrid,
+                         arv=f'Eesti +{tt.p1(kasv)} p', all=f"{y} → {y + 1}, kontrollimata võrdlus",
                          pilt=tt.mini_hantlid(pp, riik), mrk=f"{teised}. {y} Eurostat, {y + 1} riiklik statistika; küsimuse samasus kontrollimata.",
                          liik="arvutatud", allikas="riiklikud statistikaametid", kuup=f"{y} ja {y + 1}"))
     read += [
-        dict(kys="Kui paljud kasutavad tööl?", ank="tool", arv=f'{tt.p1(too["vaartus"])}%', all=f'{too["aasta"]}, kõigist 16–74-aastastest',
+        dict(kys="Kui paljud kasutavad tööl?", ank="tool", ava="Ava tööalane kasutus", sona=tt.sona_osa(too["vaartus"]),
+             arv=f'{tt.p1(too["vaartus"])}%', all=f'{too["aasta"]}, kõigist 16–74-aastastest',
              pilt=ribarida(J_TOO), mrk=f'Arvus on ka töötud, õpilased ja pensionärid. ELi skaalal {J_TOO["koht"]}. koht ({y}: Eesti {pr(J_TOO["ee"])}%, EL {pr(J_TOO["eu"])}%).',
              liik="mõõdetud", allikas="Statistikaamet " + too["allikas"].split("tabel ")[-1], kuup=kp(too["avaldatud"]) if too.get("avaldatud") else str(too["aasta"])),
-        dict(kys="Kas digioskused paranevad?", ank="digi", arv=f'{tt.p1(ds["vaartus"])}%', all=f'{ds["aasta"]}, vähemalt baastase',
+        dict(kys="Kas digioskused paranevad?", ank="digi", ava="Ava digioskused riigiti",
+             sona=tt.sona_muutus(ds["vaartus"] - ds23["vaartus"], PIIR_DIGI_P, "Jah", "Ei, langevad", "Püsivad samal tasemel"),
+             arv=f'{tt.p1(ds["vaartus"])}%', all=f'{ds["aasta"]}, vähemalt baastase; 2023 oli {pr(ds23["vaartus"])}%',
              pilt=osariba(ds["vaartus"], 100, float(siht["siht"]), silt=f'{pr(ds["vaartus"])}%, ELi siht {siht["siht"]}%'),
-             mrk=f'Ei: 2023 oli {pr(ds23["vaartus"])}%. <span class="tv-lg siht"></span>ELi siht {siht["siht"]}% ({siht["aasta"]}) on kogu ELi kohta.',
+             mrk=f'<span class="tv-lg siht"></span>ELi siht {siht["siht"]}% ({siht["aasta"]}) on kogu ELi kohta.',
              liik="mõõdetud", allikas="Eurostat isoc_sk_dskl_i21", kuup=str(ds["aasta"])),
-        dict(kys="Kui paljusid takistab oskuste puudus?", ank="ei-oska", arv=f'{pr(J_OS["ee"])}%', all=f"{y}, ei kasutanud, sest ei osanud",
+        dict(kys="Kui paljusid takistab oskuste puudus?", ank="ei-oska", ava="Ava riikide võrdlus", sona=tt.sona_osa(J_OS["ee"]),
+             arv=f'{pr(J_OS["ee"])}%', all=f"{y}, ei kasutanud, sest ei osanud",
              pilt=ribarida(J_OS), mrk=f'ELis {J_OS["koht"]}. väikseim, EL {pr(J_OS["eu"])}%. Statistikaamet annab {pr(it72["vaartus"])}%, sest seal võib inimesel olla mitu põhjust (lahknevus C6).',
              liik="mõõdetud", allikas="Eurostat isoc_ai_iaiuxr", kuup=str(y)),
     ]
@@ -319,10 +331,7 @@ def inimesed(A, vaade, vaated=None):
     O = {o["id"]: o for o in A["otsused"]}
     tana = datetime.date.today().isoformat()
     reeglid = [(O[i]["nimi"], (O[i]["kuupaev"] + ("-01" if O[i].get("tapsus") == "kuu" else "")) < tana) for i in ["ai-keelud-kirjaoskus"]]
-    allikad = [d for d in (ee["avaldatud"], too.get("avaldatud"), eu.get("avaldatud")) if d]
-    us = tt.usaldusriba(len(vv), sum(_raskus(v) == 0 for v in vv), reeglid, 3, max(allikad))
-    sec_tahvel = tt.tahvel("tahvel", "Mis on inimeste seis?", f"{len(read)} küsimust, iga rida üks pilk",
-                           "Iga rida on oma skaalal; eri ridade numbreid ei võrrelda. Rida viib oma plokki.", read, us)
+    sec_tahvel = tt.vastustahvel("tahvel", "Mis on inimeste seis?", "Iga rida on oma skaalal; eri ridade numbreid ei võrrelda.", read)
     # Sada inimest: neli rühma samast Eurostati küsitlusest (mittekasutaja on ühe põhjuse all), seepärast tohib neid ühte pilti panna
     def ruhmad(g):
         k, t, o = (andmed.leia(A, n, g, y)["vaartus"] for n in (IN, TOO, OS))
@@ -953,13 +962,8 @@ def avalik_sektor(A, vaade, vaated=None):
     # Töölaud (Kadri 17.11.2026 valis näidistest „A ja C koos“): tahvel, uuenduse teekond, 48 asutust, siis plokid kokkupandult.
     import avalik_tahvel as at
     import teema_tahvel as tt
-    from lehed_usaldus import _raskus
     D = at.Andmed(A)
-    vv = [x for x in A["vaited"] if vaite_teema(x) == "avalik-sektor"]
-    kr3 = next(r for r in A["otsused"] if r["id"] == "ai-korge-risk-iii")
     n_all = 1 + (1 if rk else 0)
-    uusim = max(["2026-11-03"] + ([rk["avaldatud"]] if rk else []))
-    us = at.usaldus(len(vv), sum(_raskus(x) == 0 for x in vv), [(kr3["nimi"], kr3["kuupaev"] <= datetime.date.today().isoformat())], n_all, uusim)
     uks = tt.uksikasjad([
         ("andmed", "Kus uuendused pidama jäävad?", "rakendamine, uuenduse liik ja mõju, tehisaru, rahastus, kolm rühma, OECD soovitused", sec_andmed),
         ("ametnikud", "Mida ametnikud tohivad kasutada?", "neli riiki, Riigikontrolli küsitlus", sec_ametnikud),
@@ -967,7 +971,7 @@ def avalik_sektor(A, vaade, vaated=None):
     ])
     # „Seotud“ rida jäi ära: Riigi alamlehtede rida viib samadele lehtedele (Kadri 11.11.2026, D)
     return jaga(A, vaade, lead, [], [
-        ("tahvel", [("tahvel", "Ülevaade")], at.tahvel(D, us)),
+        ("tahvel", [("tahvel", "Ülevaade")], at.tahvel(D)),
         ("teekond", [("teekond", "Kus pidama jääb?")], at.sec_teekond(D)),
         ("asutused", [("asutused", "Asutuste kord")], at.sec_asutused(D)),
         ("uksikasjad", [("andmed", "Andmed"), ("ametnikud", "Ametnikud"), ("t-allikad", "Allikad")], uks),

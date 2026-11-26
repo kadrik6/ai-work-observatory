@@ -57,47 +57,69 @@ class Andmed:
             raise AndmeViga(f"Hangete tahvel: heade näidete arv ({self.hea}) ei vasta kolmele tingimusele ({tais})")
 
 
+# Vastus sõnaga (Kadri 25.11.2026): sõna tuleb numbrist. Piirid on teema_tahvel.sona_osa ja siin.
+PIIR_HANKIJAD = (33, 50)   # kümnendiku hankijate osa hangetest, %: üle teise = peamiselt, üle esimese = suur osa
+PIIR_TAPSUS = (60, 75, 90)  # täpsuse ja saagise väiksem väärtus, %
+
+
+def sona_hankijad(p):
+    return "Peamiselt mõni suur hankija" if p >= PIIR_HANKIJAD[1] else "Suur osa vähestelt hankijatelt" if p >= PIIR_HANKIJAD[0] else "Paljud eri hankijad"
+
+
+def sona_siht(v, siht):
+    return "Jah" if v >= siht else "Veel mitte"
+
+
+def sona_tapsus(tapsus, saagis):
+    m = min(tapsus, saagis)
+    return "Väga täpne" if m >= PIIR_TAPSUS[2] else "Üsna täpne" if m >= PIIR_TAPSUS[1] else "Keskmiselt täpne" if m >= PIIR_TAPSUS[0] else "Ebatäpne"
+
+
 def read(D):
     u, kv, uk, K, V, tul, KS = D.u, D.kv, D.uk, D.K, D.V, D.tul, D.KASITSI
     n_ai = u["ai_marksonaga"]
     n_and = u["ai_andmed"] - n_ai
     return [
-        dict(kys="Kui palju riik tehisaru ja andmeid hangib?", ank="aastad", arv=str(u["ai_andmed"]),
-             all=f'hanget {u["aasta"]}, seisuga {kp(D.seis)}',
+        dict(kys="Kui palju riik tehisaru ja andmeid hangib?", ank="aastad", ava="Ava hanked aastate kaupa",
+             sona=tt.sona_osa(u["ai_andmed_osakaal"]) + " hange", arv=str(u["ai_andmed"]),
+             all=f'hanget {u["aasta"]}, {pr(u["ai_andmed_osakaal"])}% kõigist; seisuga {kp(D.seis)}',
              pilt=jaotusriba([("s", n_ai / u["ai_andmed"] * 100), ("m", n_and / u["ai_andmed"] * 100)], f"{n_ai} tehisaru, {n_and} andmed"),
-             mrk=f'{pr(u["ai_andmed_osakaal"])}% kõigist hangetest; tehisaru {n_ai}, andmed {n_and}. Aastaid ei võrrelda enne klassifikaatori uuendust.',
+             mrk=f'Tehisaru {n_ai}, andmed {n_and}. Aastaid ei võrrelda enne klassifikaatori uuendust.',
              liik="arvutatud", allikas="Riigihangete register", kuup=kp(D.seis)),
-        dict(kys="Kas hinnatakse ka kvaliteeti?", ank="kuidas", arv=f'{pr(kv["ai_andmed"], 0)}%', all=f"hangetest {D.p0}–{D.p1}",
+        dict(kys="Kas hinnatakse ka kvaliteeti?", ank="kuidas", ava="Vaata, kuidas hangitakse", sona=tt.sona_osa(kv["ai_andmed"]) + " hangetest",
+             arv=f'{pr(kv["ai_andmed"], 0)}%', all=f"hangetest {D.p0}–{D.p1}",
              pilt=kaks_riba([("need", kv["ai_andmed"], True), ("IT", kv["it_muud"], False), ("kõik", kv["koik"], False)], h=44),
              mrk=f'Teistes IT-hangetes {pr(kv["it_muud"], 0)}%, kõigis hangetes {pr(kv["koik"], 0)}%. Ülejäänud hindasid ainult hinda.',
              liik="mõõdetud", allikas="Riigihangete register", kuup=f"{D.p0}–{D.p1}"),
-        dict(kys="Kas pakkujaid on piisavalt?", ank="kuidas", arv=f'{pr(uk["ai_andmed"], 0)}%', all="said ainult ühe pakkumuse",
+        dict(kys="Kui sageli tuleb ainult üks pakkumus?", ank="kuidas", ava="Vaata, kuidas hangitakse", sona=tt.sona_osa(uk["ai_andmed"]) + " hangetest",
+             arv=f'{pr(uk["ai_andmed"], 0)}%', all=f'{V["ai_andmed"]["pakkumusi_teada"]} hankest, mille pakkumuste arv on teada',
              pilt=kaks_riba([("need", uk["ai_andmed"], True), ("IT", uk["it_muud"], False), ("kõik", uk["koik"], False)], h=44),
              mrk=f'Teistes IT-hangetes {pr(uk["it_muud"], 0)}%, kõigis {pr(uk["koik"], 0)}%. Pakkumuste arv on teada '
                  f'{V["ai_andmed"]["pakkumusi_teada"]} hankel {V["ai_andmed"]["hankeid"]}-st.',
              liik="mõõdetud", allikas="Riigihangete register", kuup=f"{D.p0}–{D.p1}"),
-        dict(kys="Kes hangib?", ank="hankijad", arv=f'{K["top10_protsenti_hankijaid"]} / {K["hankijaid"]}',
-             all=f'hankijat teeb {pr(K["nende_osakaal"], 0)}% hangetest',
+        dict(kys="Kes hangib?", ank="hankijad", ava="Ava hankijad", sona=sona_hankijad(K["nende_osakaal"]),
+             arv=f'{pr(K["nende_osakaal"], 0)}%', all=f'hangetest teeb {K["top10_protsenti_hankijaid"]} hankijat {K["hankijaid"]}-st',
              pilt=jaotusriba([("s", K["nende_osakaal"])], f'{K["top10_protsenti_hankijaid"]} hankijat teeb {pr(K["nende_osakaal"], 0)}%'),
              mrk=f'{K["uks_hange_hankijaid"]} hankijat tegi ühe hanke. Suurimad on riigi IT-majad, mis hangivad ka teistele asutustele.',
              liik="arvutatud", allikas="Riigihangete register", kuup=f"{D.a0}–{D.a1}"),
-        dict(kys="Kas innovatsioonihangete siht täitub?", ank="innovatsioon", arv=f'{pr(D.inn["innovatsioonimark_osakaal"])}%',
-             all=f'hangetest {D.inn["aasta"]}, hankija märkega',
+        dict(kys="Kas innovatsioonihangete siht täitub?", ank="innovatsioon", ava="Ava innovatsioonihanked",
+             sona=sona_siht(D.inn["innovatsioonimark_osakaal"], 2), arv=f'{pr(D.inn["innovatsioonimark_osakaal"])}%',
+             all=f'hangetest {D.inn["aasta"]}, hankija märkega; siht 2% aastaks 2027',
              pilt=osariba(D.inn["innovatsioonimark_osakaal"], 2.5, siht=2, silt=f'{pr(D.inn["innovatsioonimark_osakaal"])}%, siht 2%'),
-             mrk="Siht on 2% hangetest aastaks 2027 (OECD 2026). Märge on hankija enda linnuke; sisu keegi ei kontrolli.",
+             mrk="Sihi allikas on OECD aruanne (2026). Märge on hankija enda linnuke; sisu keegi ei kontrolli.",
              liik="mõõdetud", allikas="eForms", kuup=f'{D.inn["aasta"]}, osaline'),
-        dict(kys="Kui täpne on hangete leidmine?", ank="tapsus", arv=f'{pr(tul["tapsus"] * 100, 0)}% / {pr(tul["saagis"] * 100, 0)}%',
-             all="täpsus / saagis",
+        dict(kys="Kui täpne on hangete leidmine?", ank="tapsus", ava="Ava klassifikaatori test",
+             sona=sona_tapsus(tul["tapsus"] * 100, tul["saagis"] * 100), arv=f'{pr(tul["tapsus"] * 100, 0)}%',
+             all=f'täpsus; saagis {pr(tul["saagis"] * 100, 0)}%',
              pilt=kaks_riba([("täps.", tul["tapsus"] * 100, True), ("saagis", tul["saagis"] * 100, False)]),
              mrk=f'Mõõdetud masinmärgendite vastu. {KS["n"]} hanget vaadati käsitsi üle, kokkulangevus {KS["kokku"]}%.',
              liik="arvutatud", allikas="Klassifikaatori test", kuup=kp(KS["kuupaev"])),
     ]
 
 
-def tahvel(D, us):
-    return tt.tahvel("tahvel", "Mida riik tehisaru ja andmete kohta hangib?", "6 küsimust, iga rida üks pilk",
-                     "Iga rida on oma skaalal ja oma alusel (hanked, hankijad); eri ridade numbreid ei võrrelda. "
-                     "Hanked leidis klassifikaator. Rida viib oma plokki.", read(D), us)
+def tahvel(D):
+    return tt.vastustahvel("tahvel", "Mida riik tehisaru ja andmete kohta hangib?",
+                           "Hanked leidis klassifikaator. Iga rida on oma alusel (hanked, hankijad); eri ridade numbreid ei võrrelda.", read(D))
 
 
 # ---------------------------------------------------------------- A: kuidas hangitakse

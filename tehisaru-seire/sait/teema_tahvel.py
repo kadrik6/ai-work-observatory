@@ -19,34 +19,46 @@ LIIK = {"mõõdetud": "m", "arvutatud": "a", "katse": "k", "uudised": "u"}
 
 # ---------------------------------------------------------------- tahvel
 
-def tahvel(hid, kysimus, vastus, selgitus, read, usaldus=""):
-    """read: [dict(kys, ank, arv, all, pilt, mrk, liik, allikas, kuup)]. kys/all/allikas on tekst, arv/pilt/mrk/kuup HTML."""
-    for r in read:
-        if r["liik"] not in LIIK:
-            raise AndmeViga(f"Tahvli rida „{r['kys']}“: tundmatu tõendi liik {r['liik']}")
-    liik = lambda r: f'<span class="tt-liik {LIIK[r["liik"]]}">{e(r["liik"])}</span>'  # noqa: E731
-    laud = "".join(
-        f'<tr><th scope="row"><a href="#{r["ank"]}">{e(r["kys"])}</a></th>'
-        f'<td class="tv-num"><span class="tv-arv">{r["arv"]}</span><small>{e(r["all"])}</small></td>'
-        f'<td class="tt-pilt">{r["pilt"]}</td><td class="tt-mrk">{r["mrk"]}</td><td>{liik(r)}</td>'
-        f'<td class="tt-src">{e(r["allikas"])}<small>{r["kuup"]}</small></td></tr>' for r in read)
-    tel = "".join(
-        f'<details class="tv-r"><summary><span class="tv-t">{e(r["kys"])}</span>'
-        f'<span class="tv-n"><b>{r["arv"]}</b><small>{e(r["all"])}</small></span><span class="tt-tvis">{r["pilt"]}</span></summary>'
-        f'<dl><dt>Märkus</dt><dd>{r["mrk"]}</dd><dt>Tõend</dt><dd>{liik(r)}</dd><dt>Allikas</dt><dd>{e(r["allikas"])}, {r["kuup"]}</dd></dl>'
-        f'<p class="tv-ava"><a href="#{r["ank"]}">Ava plokk →</a></p></details>' for r in read)
-    return f"""
-<section class="jaotis tv tt" id="{hid}" aria-labelledby="h-{hid}">
-  <header>
-    <h2 id="h-{hid}"><span class="kys">{kysimus}</span> <b>{vastus}</b></h2>
-    <p class="alam">{selgitus}</p>
-  </header>
-  <div class="tbl tv-laud tt-laud"><table><caption class="peidus">{kysimus}</caption>
-    <thead><tr><th scope="col">Küsimus</th><th scope="col">Vastus</th><th scope="col">Pilt</th><th scope="col">Märkus</th><th scope="col">Tõend</th><th scope="col">Allikas</th></tr></thead>
-    <tbody>{laud}</tbody></table></div>
-  <div class="tv-tel tt-tel"><div class="tv-pea" aria-hidden="true"><span>Küsimus</span><span>Vastus</span><span>Pilt</span></div>{tel}</div>
-  {usaldus}
-</section>"""
+# Vastus sõnaga (Kadri 25.11.2026: oluline enne valikulist). Sõna arvutatakse numbrist kindla piiriga; piirid on siin ühes kohas.
+OSA_PIIRID = [(15, None), (22.5, "Umbes iga viies"), (29.2, "Umbes veerand"), (37.5, "Umbes kolmandik"), (45, "Alla poole"),
+              (55, "Umbes pooled"), (62, "Üle poole"), (71, "Umbes kaks kolmandikku"), (80, "Umbes kolmveerand"), (95, "Enamik")]
+
+
+def sona_osa(p):
+    """Osakaal protsentides → sõna („Umbes kolmandik“). Alla 15% → „Umbes iga N.“ (N ümardatud: kuni 12 täpselt, kuni 50 viieni, edasi ühe tüvenumbrini)."""
+    try:
+        p = float(p)
+    except (TypeError, ValueError):
+        raise AndmeViga(f"Osakaal ei ole arv: {p!r}")
+    if not 0 <= p <= 100:
+        raise AndmeViga(f"Osakaal peab olema 0–100, on {p}")
+    if p < 15:
+        if p <= 0:
+            return "Mitte ükski"
+        n = 100 / p
+        if n > 50:
+            aste = 10 ** (len(str(int(n))) - 1)
+            n = round(n / aste) * aste
+        elif n > 12:
+            n = round(n / 5) * 5
+        return f"Umbes iga {round(n)}."
+    for piir, sona in OSA_PIIRID:
+        if p < piir:
+            return sona
+    return "Peaaegu kõik"
+
+
+def sona_koht(koht, n):
+    """Koht järjestuses → sõna. Esikolmik eraldi, muidu kolmandikud."""
+    if not 1 <= koht <= n:
+        raise AndmeViga(f"Koht {koht} ei mahu vahemikku 1–{n}")
+    return ("Esikolmikus" if koht <= 3 else "Esimeses kolmandikus" if koht <= n / 3 else
+            "Keskmiste seas" if koht <= 2 * n / 3 else "Viimases kolmandikus")
+
+
+def sona_muutus(vahe, piir, kasv, kahanemine, sama):
+    """Muutus → üks kolmest sõnast; |vahe| alla piiri loetakse samaks."""
+    return sama if abs(vahe) < piir else kasv if vahe > 0 else kahanemine
 
 
 def vastustahvel(hid, kysimus, hoiatus, read):
@@ -60,7 +72,7 @@ def vastustahvel(hid, kysimus, hoiatus, read):
             raise AndmeViga(f"Tahvli rida „{r['kys']}“: vastus sõnaga puudub")
     rida = "".join(
         f'<details class="vt-r"><summary><span class="vt-k">{e(r["kys"])}</span>'
-        f'<span class="vt-v"><b>{e(r["sona"])}</b><span class="vt-n">{r["arv"]}</span><small>{e(r["all"])}</small></span>'
+        f'<span class="vt-v"><span class="vt-s"><b>{e(r["sona"])}</b><span class="vt-n">{r["arv"]}</span></span><small>{e(r["all"])}</small></span>'
         f'<span class="vt-p">{r["pilt"]}</span></summary>'
         f'<div class="vt-d"><dl><dt>Märkus</dt><dd>{r["mrk"]}</dd><dt>Tõend</dt><dd><span class="tt-liik {LIIK[r["liik"]]}">{e(r["liik"])}</span></dd>'
         f'<dt>Allikas</dt><dd>{e(r["allikas"])}, {r["kuup"]}</dd></dl>'
@@ -73,15 +85,6 @@ def vastustahvel(hid, kysimus, hoiatus, read):
   </header>
   <div class="vt-read">{rida}</div>
 </section>"""
-
-
-def usaldusriba(n_vaiteid, n_muud, reeglid, n_allikaid, uusim):
-    """Väited, reeglid ja allikad ühel real tahvli all; lingid viivad lehe lõppu. reeglid: [(nimi, kehtib)]."""
-    v = "ükski ei ütle muud kui allikas" if not n_muud else f"{n_muud} ütleb muud kui allikas"
-    k = sum(1 for _, keh in reeglid if keh)
-    r = (f'<a href="#t-reeglid">Reeglid: <b>{k} kehtib</b> ({e(", ".join(n for n, _ in reeglid))})</a>' if reeglid else "")
-    return (f'<p class="tt-us"><a href="#t-vaited">Väited: <b>{n_vaiteid} kontrollitud</b>, {v}</a>{r}'
-            f'<a href="#t-allikad">Allikad: <b>{n_allikaid}</b>, uusim {kp(uusim)}</a></p>')
 
 
 def uksikasjad(plokid):
@@ -170,13 +173,21 @@ def katse_number(leid):
     raise AndmeViga(f"Katse numbrit ei leitud: {leid[:80]}")
 
 
-def katse_kiibid(uuringud):
-    """Iga katse oma kiibina; numbreid ei liideta (eri ülesanded ja mõõdikud)."""
-    out = []
-    for r in uuringud:
-        n, hea = katse_number(r["leid"])
-        out.append(f'<li class="{"hea" if hea else "halb"}"><b>{e(n)}</b><small>{e(r["uuring"])}</small></li>')
-    return f'<ul class="tt-kiibid">{"".join(out)}</ul>'
+def katse_ruudud(uuringud, r=12):
+    """Üks ruut = üks katse: täidetud = tootlikkus kasvas, tühi = ei kasvanud. Numbreid ei liideta (eri ülesanded ja mõõdikud)."""
+    out, n = [], 0
+    for i, u in enumerate(uuringud):
+        silt, hea = katse_number(u["leid"])
+        n += hea
+        out.append(f'<rect class="tt-r9 {"ok" if hea else "maas"}" x="{i * (r + 4)}" y="1" width="{r}" height="{r}" rx="2"><title>{e(silt)}, {e(u["uuring"])}</title></rect>')
+    w = len(uuringud) * (r + 4)
+    return (f'<svg class="tt-svg" viewBox="0 0 {w} {r + 2}" width="{w}" height="{r + 2}" role="img" '
+            f'aria-label="{n} katses {len(uuringud)}-st tootlikkus kasvas">{"".join(out)}</svg>')
+
+
+def katse_loend(uuringud):
+    """Katsete numbrid lausena rea märkusesse: iga katse oma number ja viide."""
+    return "; ".join(f'{e(katse_number(u["leid"])[0])} ({e(u["uuring"])})' for u in uuringud) + "."
 
 
 def aasta(uuring):
