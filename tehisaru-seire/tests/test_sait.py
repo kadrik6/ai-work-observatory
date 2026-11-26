@@ -283,6 +283,36 @@ def test_kokkupuude_ei_ole_moju_ja_el_vordlus_on_eraldi(sait):
     assert "ELile" not in graafik and "EL " not in graafik
 
 
+def test_astmete_naited_on_suurimad_nimega_ametid(tmp_path):
+    """Kadri 26.11.2026: astme juures on kolm suurimat ametit. Nimi tuleb Statistikaameti tabelist PA633,
+    jääkrühm „mujal liigitamata“ ei ole näide ja nimeta amet peatab ehituse."""
+    import shutil
+    sisu = JUUR / "sait" / "sisu"
+    K = andmekiht.arvuta_kokkupuude(sisu)
+    assert set(K["naited"]) == set(andmekiht.ASTMED)
+    ilo = {r["isco4"]: r["aste"] for r in andmekiht.loe_csv(sisu / "ilo-kokkupuude-2025.csv")}
+    ee = [r for r in andmekiht.loe_csv(sisu / "ee-tootajad-ametid-2022.csv") if len(r["kood"]) == 4 and r["kood"] in ilo]
+    assert all(r["nimi_et"] for r in ee)
+    for a, naited in K["naited"].items():
+        sobib = sorted((r for r in ee if ilo[r["kood"]] == a and "mujal liigitamata" not in r["nimi_et"]),
+                       key=lambda r: (-int(r["tootajad_fte"]), r["kood"]))
+        assert [x["kood"] for x in naited] == [r["kood"] for r in sobib[:andmekiht.NAITEID]]
+        assert all(x["aste"] == a and "mujal liigitamata" not in x["nimi"] for x in naited)
+    assert K["naited"]["4"][0]["nimi"] == "Raamatupidamise kontoritöötajad" and K["naited"]["1"][0]["nimi"] == "Poemüüjad"
+    for f in ("ilo-kokkupuude-2025.csv", "ee-tootajad-ametid-2022.csv", "eurostat-hoive-ametid-2025.csv", "eurostat-hoive-ametid-2021-2025.csv"):
+        shutil.copy(sisu / f, tmp_path / f)
+    p = tmp_path / "ee-tootajad-ametid-2022.csv"
+    p.write_text(p.read_text(encoding="utf-8").replace(",Poemüüjad\n", ",\n", 1), encoding="utf-8")
+    with pytest.raises(andmekiht.AndmeViga):
+        andmekiht.arvuta_kokkupuude(tmp_path)
+
+
+def test_ametinimi_loetelus():
+    import too_tahvel
+    assert too_tahvel._naide("Poemüüjad") == "poemüüjad" and too_tahvel._naide("IKT kasutajatoe tehnikud") == "IKT kasutajatoe tehnikud"
+    assert too_tahvel._as_x(too_tahvel.AS_LO - 5) == 0 and too_tahvel._as_x(too_tahvel.AS_HI + 5) == 100
+
+
 def test_kokkupuute_andmed_kukuvad_valjult(tmp_path):
     import shutil
     sisu = JUUR / "sait" / "sisu"
@@ -440,6 +470,14 @@ def test_iga_koondamine_on_tulbal_ja_tabelis_arvu_pohjuse_ja_lingiga(A, sait):
     from lehed_ulevaade import koondamise_arv
     h = sait["too.html"]
     tulbad = re.findall(r'<div class="kr" data-k="([^"]+)"', h)
+    # Kadri 26.11.2026: teated ajajärjekorras (uuemad üleval), mitte suuruse järgi; kuu on vahepealkiri
+    kp_ = {r["id"]: r["kuupaev"] for r in A["koondamised"]["juhtumid"]}
+    assert [kp_[k] for k in tulbad] == sorted(kp_.values(), reverse=True)
+    vis = h[h.index('id="koondamised-visuaal"'):h.index('class="kr-leg"')]
+    kuud = re.findall(r'<p class="kr-kuu">(.*?)</p>', vis)
+    assert len(kuud) == len({v[:7] for v in kp_.values()}) == vis.count('class="kr-ribad"')
+    assert kuud[0] == f'{komponendid.KUUD[int(max(kp_.values())[5:7]) - 1].capitalize()} {max(kp_.values())[:4]}'
+    assert "uuemad üleval" in vis and "nimekiri pole täielik" in vis
     tabel = _jaotis(h, "palkamine")
     read = re.findall(r'<div class="pk-k" id="pk-([^"]+)"', tabel)
     assert sorted(tulbad) == sorted(read) == sorted(r["id"] for r in A["koondamised"]["juhtumid"])
@@ -2048,8 +2086,16 @@ def test_too_on_tahvel_toendikaart_ja_astmed(A, sait):
     assert 'data-kpi="too-' not in h and '<aside class="vastus"' not in h
     tv = _jaotis(h, "tahvel")
     read = re.findall(r'<details class="vt-r"><summary><span class="vt-k">(.*?)</span><span class="vt-v"><span class="vt-s"><b>(.*?)</b><span class="vt-n">(.*?)</span>', tv)
-    lingid = re.findall(r'<p class="vt-ava"><a href="#([a-z-]+)">', tv)
-    assert len(read) == len(lingid) == 6 and all(f'id="{a}"' in h for a in lingid)
+    lingid = re.findall(r'<p class="vt-ava"><a href="([a-z]*(?:\.html)?)#([a-z-]+)">', tv)
+    # rea link viib oma plokki; tööalase kasutuse graafik on Inimeste lehel (Kadri 26.11.2026 „Jah, vaheta“)
+    assert len(read) == len(lingid) == 6 and all(f'id="{a}"' in (sait[leht] if leht else h) for leht, a in lingid)
+    assert [leht for leht, _ in lingid if leht] == ["inimesed.html"]
+    too_rida = next(r for r in tv.split('<details class="vt-r">')[1:] if "Kui paljud kasutavad tehisaru tööl?" in r)
+    _, too_uus = andmekiht.tooalane_kasutus(A)
+    assert f'<span class="vt-n">{komponendid.pr(too_uus["vaartus"])}%</span>' in too_rida and "kõigist 16–74-aastastest" in too_rida
+    assert f'>{komponendid.pr(too_uus["vaartus"])}% Eesti 16–74-aastastest</b>' in sait["inimesed.html"]  # sama number mis Inimeste lehel
+    assert 'href="#ai-kuulutused"' in too_rida and "Kas tehisaruoskust otsitakse?" not in h  # kuulutused jäävad üksikasjadesse
+    assert h.index('id="h-uksikasjad"') < h.index('id="ai-kuulutused"')
     assert all(sona.strip() and not re.search(r"\d+[,.]?\d*\s*%", sona) for _, sona, _ in read)  # vastus on sõna, protsent on selle kõrval
     assert "ei näita, kas muutuse põhjus on tehisaru" in tv
     # tahvli ees ei ole lugemisjuhist ega all loendurite rida; märkus, tõend ja allikas on rea sees
@@ -2064,11 +2110,20 @@ def test_too_on_tahvel_toendikaart_ja_astmed(A, sait):
         if "tootlikkus" not in rida:
             assert not rida.split("</th>")[1].startswith('<td class="tk-p"'), rida[:80]
     assert "Eri lahtrite numbreid ei võrrelda" in tk
-    # astmed: kuus astet laias ja kitsas joonises, Eesti ja EL igal real; kirjeldus, mitte põhjus
+    # astmed: kuus astet, Eesti ja EL igal real; kirjeldus, mitte põhjus
     am = _jaotis(h, "astmed")
-    for svg in am.split('class="tt-sc-')[1:]:
-        svg = svg.split("</svg>")[0]
-        assert svg.count('<circle class="tv-pf"') == 6 and svg.count('<circle class="tt-elp"') == 6
+    # Kadri 26.11.2026: aste üksi ei ütle midagi; iga rea all on kolm suurimat ametit Eestis (Statistikaamet PA633)
+    import too_tahvel
+    read = re.findall(r'<li class="as-r[^"]*">(.*?)</li>', am, re.S)
+    assert len(read) == 6
+    K = A["kokkupuude"]
+    for (k, nimi), rida in zip(too_tahvel.ASTE, read):
+        assert rida.count('class="as-ee"') == 1 and rida.count('class="as-el"') == 1
+        assert tekst(re.search(r'<div class="as-n"><b>(.*?)</b>', rida).group(1)) == nimi
+        naited = tekst(re.search(r"<small>(.*?)</small>", rida).group(1)).split(" · ")
+        assert [n.lower() for n in naited] == [x["nimi"].lower() for x in K["naited"][k]] and len(naited) == 3
+        assert "Eesti " in tekst(re.search(r'<span class="peidus">(.*?)</span>', rida).group(1))  # sama info sõnadega
+    assert "Statistikaamet, PA633" in am and "<svg" not in am[am.index("<figure"):am.index("</figure>")]
     assert "kirjeldus, mitte põhjus" in am and "lfsa_egai2d" in am
     plokid = re.findall(r'<details class="tt-pl" id="d-([a-z]+)">', h)
     assert plokid == ["toendid", "andmed", "maailm", "eesti", "ametid", "lopp"]
@@ -2280,7 +2335,6 @@ def test_too_tahvli_sona_tuleb_andmetest():
     with pytest.raises(andmekiht.AndmeViga):
         tt_.sona_tootus(D)
     assert [tt_.sona_hoive(v) for v in (-3.0, -0.9, -0.2, 0.3, 1.5)] == ["Jah", "Veidi vähem", "Sama palju", "Sama palju", "Ei, rohkem"]
-    assert [tt_.sona_oskus(v) for v in (0.4, 2.6, 12.0, 30.0)] == ["Väga harva", "Harva", "Osas kuulutustes", "Sageli"]
 
 
 def test_too_uks_kusimus_uks_number(A, sait):

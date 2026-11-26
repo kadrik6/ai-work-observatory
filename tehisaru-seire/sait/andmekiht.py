@@ -256,6 +256,9 @@ PA633_URL = "https://andmed.stat.ee/et/stat/majandus__palk-ja-toojeukulu__tootas
 ILO_SKOORID_URL = "https://pgmyrek.github.io/2025_GenAI_scores_ISCO08/"
 
 
+NAITEID = 3  # mitu ametit näidatakse astme juures näitena
+
+
 def arvuta_kokkupuude(sisu):
     """ILO 2025 generatiivse tehisaru kokkupuute astmed Eesti töötajate ametite järgi.
     Eesti: Statistikaamet PA633, 2022 oktoober, töötajad täistööajale taandatult, 4-kohaline amet.
@@ -282,7 +285,7 @@ def arvuta_kokkupuude(sisu):
             raise AndmeViga(f"PA633 rühm {g}: ametite summa {alla} ei sobi rühma kogusummaga {kokku}")
     kokku = sum(int(r["tootajad_fte"]) for r in neli)
     osa = {a: 0 for a in ASTMED}
-    liigitamata, ametid = 0, []
+    liigitamata, ametid, astmes = 0, [], {a: [] for a in ASTMED}
     for r in neli:
         n = int(r["tootajad_fte"])
         a = aste.get(r["kood"])
@@ -290,11 +293,20 @@ def arvuta_kokkupuude(sisu):
             liigitamata += n
             continue
         osa[a] += n
+        if not r["nimi_et"]:
+            raise AndmeViga(f"Ametil {r['kood']} puudub eestikeelne nimi (Statistikaamet PA633)")
+        astmes[a].append({"kood": r["kood"], "nimi": r["nimi_et"], "fte": n, "aste": a})
         if a in ("3", "4"):
-            if not r["nimi_et"]:
-                raise AndmeViga(f"Kõige avatumal ametil {r['kood']} puudub eestikeelne nimi")
-            ametid.append({"kood": r["kood"], "nimi": r["nimi_et"], "fte": n, "aste": a})
+            ametid.append(astmes[a][-1])
     ametid.sort(key=lambda x: -x["fte"])
+    # Näited iga astme kohta (Kadri 26.11.2026: aste üksi ei ütle midagi): kolm suurima töötajate arvuga ametit.
+    # Jääkrühm „mujal liigitamata“ ei ole näide, sest see ei nimeta ametit.
+    naited = {}
+    for a, l in astmes.items():
+        sobib = sorted((x for x in l if "mujal liigitamata" not in x["nimi"]), key=lambda x: (-x["fte"], x["kood"]))
+        if len(sobib) < NAITEID:
+            raise AndmeViga(f"Astmes {a} on alla {NAITEID} nimega ameti; näiteid ei saa näidata")
+        naited[a] = sobib[:NAITEID]
     pr_ = {a: n / kokku * 100 for a, n in osa.items()}
     # EL võrdlus samal ligikaudsel viisil
     from collections import Counter
@@ -344,7 +356,7 @@ def arvuta_kokkupuude(sisu):
     return {
         "kokku": kokku, "osa": pr_, "liigitamata": liigitamata / kokku * 100,
         "avatud": sum(pr_[a] for a in ("1", "2", "3", "4")), "korge": pr_["3"] + pr_["4"],
-        "ametid": ametid, "el": el_pr, "aeg": aeg, "aeg_uhtlane": aeg_uhtlane, "ilo_ameteid": len(aste),
+        "ametid": ametid, "naited": naited, "el": el_pr, "aeg": aeg, "aeg_uhtlane": aeg_uhtlane, "ilo_ameteid": len(aste),
         "ilo_avatud_ameteid": sum(1 for a in aste.values() if a in ("1", "2", "3", "4")),
     }
 
@@ -433,6 +445,18 @@ def el27_aasta(A, naitaja, aasta):
         puudu = sorted(set(A["el_riigid"]) - set(el))
         raise AndmeViga(f"{naitaja} {aasta}: ELi riikidest puuduvad {puudu}")
     return el
+
+
+TOOALANE = "tooalane-tehisaru-kasutus"
+
+
+def tooalane_kasutus(A):
+    """Eesti tööalane tehisaru kasutus: (Eurostati alusaasta kirje, uusim võrreldav kirje).
+    Statistikaameti uuem number on registris eraldi näitaja nime all (numbrid-2026.csv). Sama arvutus Inimeste ja Töö lehel."""
+    alus = leia(A, TOOALANE, "EE", "uusim:alus")
+    uued = [v for v in vali(A, TOOALANE + "-uus", "EE") + vali(A, "inimeste-tehisaru-kasutus-too", "EE")
+            if v["klass"] in VORRELDAVAD and v["aasta"] > alus["aasta"]]
+    return alus, (max(uued, key=lambda v: v["aasta"]) if uued else alus)
 
 
 def koht(A, naitaja, geo, aasta):

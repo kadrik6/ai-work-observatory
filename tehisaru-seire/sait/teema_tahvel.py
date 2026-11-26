@@ -64,7 +64,8 @@ def sona_muutus(vahe, piir, kasv, kahanemine, sama):
 def vastustahvel(hid, kysimus, hoiatus, read):
     """Kadri 25.11.2026: oluline enne valikulist. Rida = küsimus, vastus sõnaga, number ja väike pilt.
     Märkus, tõendi liik ja allikas avanevad real (sama muster igal laiusel), link viib graafiku juurde.
-    read: [dict(kys, ank, sona, arv, all, pilt, mrk, liik, allikas, kuup, ava)]. sona on arvutatud andmetest, mitte käsitsi kirjutatud."""
+    read: [dict(kys, ank, sona, arv, all, pilt, mrk, liik, allikas, kuup, ava)]. sona on arvutatud andmetest, mitte käsitsi kirjutatud.
+    Valikuline `leht` (nt „inimesed.html“): graafik on teisel lehel ja link viib sinna, `ank` on selle lehe ankur."""
     for r in read:
         if r["liik"] not in LIIK:
             raise AndmeViga(f"Tahvli rida „{r['kys']}“: tundmatu tõendi liik {r['liik']}")
@@ -76,7 +77,7 @@ def vastustahvel(hid, kysimus, hoiatus, read):
         f'<span class="vt-p">{r["pilt"]}</span></summary>'
         f'<div class="vt-d"><dl><dt>Märkus</dt><dd>{r["mrk"]}</dd><dt>Tõend</dt><dd><span class="tt-liik {LIIK[r["liik"]]}">{e(r["liik"])}</span></dd>'
         f'<dt>Allikas</dt><dd>{e(r["allikas"])}, {r["kuup"]}</dd></dl>'
-        f'<p class="vt-ava"><a href="#{r["ank"]}">{e(r["ava"])} →</a></p></div></details>' for r in read)
+        f'<p class="vt-ava"><a href="{e(r.get("leht", ""))}#{r["ank"]}">{e(r["ava"])} →</a></p></div></details>' for r in read)
     return f"""
 <section class="jaotis vt" id="{hid}" aria-labelledby="h-{hid}">
   <header>

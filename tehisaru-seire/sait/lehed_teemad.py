@@ -13,7 +13,7 @@ from komponendid import (aastatulbad, ajajoon, allikarida, e, ei_naita, faktid, 
                          margend, muutus, osad, pr, riik, ribad, sihiriba, tabel, vastavus)
 
 VORDLUS = ["EE", "FI", "SE", "DK", "NO", "DE", "NL", EL]
-IN, TOO, OS, DS = "inimeste-tehisaru-kasutus", "tooalane-tehisaru-kasutus", "tehisaru-oskuse-puudus", "inimeste-digioskused"
+IN, TOO, OS, DS = "inimeste-tehisaru-kasutus", andmed.TOOALANE, "tehisaru-oskuse-puudus", "inimeste-digioskused"
 EB = "ettevotete-tehisaru-kasutus"
 EUROSTAT = "https://ec.europa.eu/eurostat/databrowser/view/{}/default/table"
 
@@ -56,11 +56,7 @@ def inimesed(A, vaade, vaated=None):
     koht = andmed.koht(A, IN, "EE", y)
     el = andmed.el27_aasta(A, IN, y)
     jarjest = sorted(el.values(), key=lambda v: -v["vaartus"])
-    # Statistikaameti 2026. aasta tööalane number on registris eraldi näitaja nime all (numbrid-2026.csv)
-    too25 = andmed.leia(A, TOO, "EE", "uusim:alus")
-    too_uued = [v for v in andmed.vali(A, TOO + "-uus", "EE") + andmed.vali(A, "inimeste-tehisaru-kasutus-too", "EE")
-                if v["klass"] in andmed.VORRELDAVAD and v["aasta"] > too25["aasta"]]
-    too = max(too_uued, key=lambda v: v["aasta"]) if too_uued else too25
+    too25, too = andmed.tooalane_kasutus(A)
     # Kasutuse lehe pealkiri räägib ainult sellest, mis sellel lehel on (Kadri 6.11.2026 22:27, ettepanek 5)
     kontrolli(vaade, f"tööl kasutab seda {pr(too['vaartus'])}% kõigist 16–74-aastastest")
 

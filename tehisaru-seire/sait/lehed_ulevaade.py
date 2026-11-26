@@ -454,26 +454,41 @@ def too_eesti(A):
             "ei_mainita": ("t", "tehisaru polnud põhjus")}  # ei_pohjus: ettevõte eitas (Kadri 8.11.2026)
     def _arv(r):
         return r["arv_eestis"] if r.get("arv_eestis") is not None else r.get("arv_ulem")
-    teada = sorted((r for r in juhtumid if _arv(r)), key=_arv, reverse=True)
-    pole = [r for r in juhtumid if not _arv(r)]
+    # Kadri 26.11.2026: teated ajajärjekorras (uuemad üleval), mitte suuruse järgi; kuu on vahepealkiri.
+    # Ajatelge ei joonistata: nimekiri pole täielik ja peaaegu kõik teated on kahest viimasest kuust, nii et telg näitaks
+    # kogumise algust, mitte koondamiste kasvu.
+    teada = [r for r in juhtumid if _arv(r)]
     suurim = max(_arv(r) for r in teada)
     kokku = sum(_arv(r) for r in teada)
     pohjus = sum(_arv(r) for r in teada if RYHM[r["roll"]][0] == "s")
     ulem = any(r.get("arv_eestis") is None for r in teada)
     alam = any(r.get("arv_vahemalt") for r in teada)
     piir = "kuni " if ulem and not alam else ("vähemalt " if alam and not ulem else "umbes ")
+
+    def _rida(r):
+        nimi = f'<span class="kr-n">{e(r["ettevote"])}<small>{kp(r["kuupaev"])}</small></span>'
+        if not _arv(r):
+            return (f'<div class="kr" data-k="{e(r["id"])}" role="listitem">{nimi}'
+                    f'<span class="kr-rada"><span class="kr-pole">arv pole teada</span></span><span class="kr-a"></span></div>')
+        return (f'<div class="kr" data-k="{e(r["id"])}" role="listitem">{nimi}'
+                f'<span class="kr-rada"><i class="kr-t {RYHM[r["roll"]][0]}{" ulem" if r.get("arv_eestis") is None else ""}" style="width:{_arv(r) / suurim * 100:.1f}%"></i></span>'
+                f'<span class="kr-a">{"kuni " if r.get("arv_eestis") is None else ""}{_arv(r)}{"+" if r.get("arv_vahemalt") else ""}</span></div>')
+
+    kuud = []
+    for r in juhtumid:  # juba kuupäeva järgi, uuemad ees
+        if not kuud or kuud[-1][0] != r["kuupaev"][:7]:
+            kuud.append((r["kuupaev"][:7], []))
+        kuud[-1][1].append(r)
     ribad = "".join(
-        f'<div class="kr" data-k="{e(r["id"])}" role="listitem"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
-        f'<span class="kr-rada"><i class="kr-t {RYHM[r["roll"]][0]}{" ulem" if r.get("arv_eestis") is None else ""}" style="width:{_arv(r) / suurim * 100:.1f}%"></i></span>'
-        f'<span class="kr-a">{"kuni " if r.get("arv_eestis") is None else ""}{_arv(r)}{"+" if r.get("arv_vahemalt") else ""}</span></div>' for r in teada)
-    ribad += "".join(f'<div class="kr" data-k="{e(r["id"])}" role="listitem"><span class="kr-n">{e(r["ettevote"])}<small>{r["kuupaev"][5:7]}.{r["kuupaev"][:4]}</small></span>'
-                     f'<span class="kr-rada"><span class="kr-pole">arv pole teada</span></span><span class="kr-a"></span></div>' for r in pole)
+        f'<p class="kr-kuu">{KUUD[int(k[5:]) - 1].capitalize()} {k[:4]}</p>'
+        f'<div class="kr-ribad" role="list" aria-label="Koondamisteated, {KUUD[int(k[5:]) - 1]} {k[:4]}">{"".join(_rida(r) for r in read)}</div>'
+        for k, read in kuud)
     legend = "".join(f'<span><i class="kr-t {k}"></i>{e(t)}</span>' for k, t in [("s", "nimetas tehisaru põhjusena"), ("m", "mainis tehisaru muul moel"), ("t", "tehisaru ei mainitud või eitati")])
     sec_v = f"""
 <div class="kk-vis" id="koondamised-visuaal">
   <h3 class="kk-h3" id="h-koondamised-v">{piir.capitalize()}{kokku} koondatud töökohast <b>{pohjus} töökoha</b> puhul nimetati üheks põhjuseks tehisaru</h3>
-  <p class="ps">Teatatud töökohad ettevõtte kaupa. Ainult koondamised, mille puhul uudis küsis tehisaru kohta; nimekiri pole täielik (viimane teade {kp(juhtumid[0]["kuupaev"])}).</p>
-  <div class="kr-ribad" role="list" aria-label="Koondatavad töökohad ettevõtte kaupa">{ribad}</div>
+  <p class="ps">Teated ajajärjekorras, uuemad üleval; tulp näitab teatatud töökohti. Ainult koondamised, mille puhul uudis küsis tehisaru kohta; nimekiri pole täielik (viimane teade {kp(juhtumid[0]["kuupaev"])}).</p>
+  <div class="kr-aeg">{ribad}</div>
   <p class="kr-leg">{legend}</p>
   <p class="allikas">Allikas: uudised, lingid tabelis <a href="#palkamine">Keda koondajad otsivad</a>. Ettevõtte enda selgitus ei tõenda põhjust. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
   {arvu_uuendused(juhtumid)}
