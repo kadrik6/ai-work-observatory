@@ -430,7 +430,15 @@ def too(A, vaade, vaated=None):
     rm = U[tulevik["tootus_ee"]["uuring"]]
     if "Tehisaru mõju ei ole töötuse prognoosis" not in rm["leid"]:
         raise AndmeViga("Töötuse prognoosi juures puudub märge, et tehisaru mõju ei ole eraldi arvestatud")
-    kontrolli(vaade, "Eesti andmetest", "USA noortel")
+    # h1 (Kadri 26.11.2026: „ei selgu, kas vähendab“ jättis mulje, et mõju pole): mõju on mõõdetud tööalases kasutuses
+    # (Statistikaamet IT71, hõivatud); lahtine on ainult see, mitu koondamist see põhjustab.
+    h0, h = andmed.tooalane_hoivatutest(A)
+    if h0 is None:
+        raise AndmeViga("Töö h1 vajab tööalase kasutuse kahte aastat (IT71, hõivatud)")
+    kontrolli(vaade, "muudab tehisaru tööd", f"{pr(h['vaartus'])}% töötajatest",
+              f"See on {h['aasta']}. aasta number, aasta varem oli see {pr(h0['vaartus'])}%", "Mitu koondamist")
+    if h["aasta"] - 1 != h0["aasta"]:
+        raise AndmeViga("Töö h1 „aasta varem“ eeldab kahte järjestikust aastat")
     if _muutus_arv(can["muutus"]) >= 0:
         raise AndmeViga("Noorte hõive langus ei ole enam andmetes")
 

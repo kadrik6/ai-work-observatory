@@ -289,6 +289,57 @@ def _esimene_lause(t):
     m = re.match(r"(.+?[.!?])\s+(?=[A-ZÕÄÖÜŠŽ])", t)
     return m.group(1) if m else t
 
+def tabelite_uuendused():
+    """{(allikas, tabel): kuupäev} – millal allikas tabelit viimati muutis (sait/lae_uuendused.py, Kadri 26.11.2026)."""
+    read = _loe("tabelite-uuendused.csv")
+    for r in read:
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", r["uuendatud"]):
+            raise AndmeViga(f"sisu/tabelite-uuendused.csv: vigane kuupäev {r}")
+    return {(r["allikas"], r["tabel"]): r["uuendatud"] for r in read}
+
+
+def uuenduste_loend(A, ein, ein25, eeb, ds, kuu, t_ee, t_koht, h_uus, h_seis):
+    """Avalehe „Allikad ja kuupäevad“: iga avalehe number eraldi, allikas, tabel ja allika viimane uuendus, uusim üleval.
+    Kadri 26.11.2026: statistika eri osad uuenevad eri päeval ja hilisemad uuendused peavad siin näha olema.
+    Kui allikas uuendas tabelit pärast numbri esimest avaldamist, on avaldamise päev märkusena juures."""
+    from lehed_teemad import OECD_URL
+    U = tabelite_uuendused()
+    eeb25 = andmed.leia(A, EB, "EE", "uusim:alus")
+    m = re.search(r"\((\d{4})\)", t_koht[0])
+
+    def tabelist(r, tekst, lisa=""):
+        allikas, tabel = r["allikas"].split(",")[0].strip(), r["allikas"].split()[-1]
+        kuup = U.get((allikas, tabel), r["avaldatud"])
+        marg = [lisa] if lisa else []
+        if r["avaldatud"] and r["avaldatud"] < kuup:
+            marg.append(f"number avaldati {kp(r['avaldatud'])}, tabelit uuendati hiljem")
+        return (kuup, tekst, f'{allikas} <a href="{e(r["url"])}">{e(tabel)}</a>', marg)
+
+    une_kp = U.get(("Eurostat", "une_rt_m"), UNE_UUENDATUD)
+    R = [
+        tabelist(ein, f"Inimeste tehisaru kasutus {pr(ein['vaartus'])}% ({ein['aasta']})"),
+        tabelist(eeb, f"Ettevõtete tehisaru kasutus {pr(eeb['vaartus'])}% ({eeb['aasta']})"),
+        tabelist(ein25, f"Inimeste koht ELis ({ein25['aasta']})"),
+        tabelist(eeb25, f"Ettevõtete koht ELis ({eeb25['aasta']})"),
+        tabelist(ds, f"Digioskused {pr(ds['vaartus'])}% ({ds['aasta']})"),
+        (une_kp, f"Töötus {pr(t_ee)}% ({KUUD[int(kuu[5:]) - 1]} {kuu[:4]})", f'Eurostat <a href="{UNE_URL}">une_rt_m</a>',
+         [f"Eesti uusim kuu tabelis on {KUUD[int(kuu[5:]) - 1]} {kuu[:4]}"]),
+        (OECD_KUUPAEV, "Avaliku sektori tehisaru (OECD raport)", f'OECD <a href="{OECD_URL}">raport</a>', ["avaldatud, raport ei uuene"]),
+        (h_seis, f"Tehisaru- ja andmehanked ({h_uus['periood']})", "Riigihangete register", ["registrist kogutud"]),
+    ]
+    if m:
+        R.append((U.get(("Eurostat", "une_rt_a"), ""), f"Töötuse koht ELis ({m.group(1)})",
+                  'Eurostat <a href="https://ec.europa.eu/eurostat/databrowser/view/une_rt_a/default/table">une_rt_a</a>', []))
+    if A.get("uudiste_olek"):
+        R.append((A["uudiste_olek"]["viimane_kontroll"][:10], "Uudised ja väited", "uudisteallikad", ["viimati kontrollitud"]))
+    R = [r for r in R if r[0]]
+    R.sort(key=lambda r: r[1])
+    R.sort(key=lambda r: r[0], reverse=True)
+    li = "".join(f'<li><time datetime="{k}">{kp(k)}</time><span><b>{e(t)}</b><small>{a_}'
+                 + "".join(f" · {e(x)}" for x in mg) + "</small></span></li>" for k, t, a_, mg in R)
+    return f'<ol class="uu-l">{li}</ol>'
+
+
 def avaleht(A, vaade, vaated):
     """Avaleht on signaalitahvel (Kadri 14.11.2026 valis näidise C): teemade tabel ja ajajoon.
     Varasemad plokid (KPI-plaadid, ELi kaart, töötuse prognoos, ettevõtete trend, sihid, hanked, väited) on teemalehtedel."""
@@ -345,9 +396,8 @@ def avaleht(A, vaade, vaated):
   <div class="alla">
     <p class="tutvus">{TUTVUS} {menuu("saidist", "Mis see sait on?")}</p>
     <details class="allikad-l"><summary>Allikad ja kuupäevad</summary><div>
-      <p>Andmed: Statistikaamet {kp(ein["avaldatud"])} ja {kp(eeb["avaldatud"])}, Eurostat {kp(UNE_UUENDATUD)}.</p>
-      <p>ELi järjestus on {ein25["aasta"]}. aasta kohta (Eurostat). Iga number on allikaga, allikas on teema lehel numbri juures.</p>
-      <p>{menuu("kuidas", "Kuidas numbreid lugeda")}</p>
+      {uuenduste_loend(A, ein, ein25, eeb, ds, kuu, t_ee, t_koht, h_uus, h_seis)}
+      <p>Kuupäev on päev, mil allikas tabelit viimati muutis; uusim on üleval. {menuu("kuidas", "Kuidas numbreid lugeda")}</p>
     </div></details>
   </div>
 </div>"""

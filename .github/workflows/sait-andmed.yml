@@ -37,6 +37,7 @@ jobs:
           python sait/lae_el_jarjestus.py || echo "HOIATUS ELi järjestus jäi eelmise seisuga"
           python sait/lae_tootus.py || echo "HOIATUS töötuse kuurida jäi eelmise seisuga"
           python sait/lae_reg_tootud.py || echo "HOIATUS registreeritud töötud jäid eelmise seisuga"
+          python sait/lae_uuendused.py || echo "HOIATUS tabelite uuendamise kuupäevad jäid eelmise seisuga"
           python sait/oecd_valvur.py || echo "HOIATUS OECD valvur jäi eelmise seisuga"
       - name: Sait ehitub ja testid läbivad
         working-directory: tehisaru-seire
@@ -54,7 +55,7 @@ jobs:
                   tehisaru-seire/kataloog/valis-olek.csv tehisaru-seire/sait/sisu/vabad-ametikohad.csv \
                   tehisaru-seire/sait/sisu/vabad-jarjestus.csv tehisaru-seire/sait/sisu/el-jarjestus.csv \
                   tehisaru-seire/sait/sisu/oecd-valvur.json tehisaru-seire/sait/sisu/eurostat-tootus-kuud.csv \
-                  tehisaru-seire/sait/sisu/reg-tootud-kuud.csv
+                  tehisaru-seire/sait/sisu/reg-tootud-kuud.csv tehisaru-seire/sait/sisu/tabelite-uuendused.csv
           if git diff --cached --quiet; then echo "Uusi numbreid pole"; exit 0; fi
           python turvakontroll/kontrolli.py
           git diff --cached --stat >> "$GITHUB_STEP_SUMMARY"
