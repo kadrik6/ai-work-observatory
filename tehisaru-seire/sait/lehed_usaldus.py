@@ -562,5 +562,5 @@ def saidist(A, vaade, vaated):
 </section>
 <section class="jaotis" id="autor" aria-labelledby="h-autor">
   <header><h2 id="h-autor">Autor</h2></header>
-  <p>Saidi on koostanud {e(AUTOR)} tehisaru (Claude) abiga. Teemad, sisu valik, ülesehitus ja kujundus on autori otsused; koodi, andmete kogumise ja kokkuvõtete mustandid tegi tehisaru. Numbrid ja uuringud kuuluvad oma allikatele. © {autori_aastad()} {e(AUTOR)}.</p>
+  <p>Sait on koostatud tehisaru (Claude) abiga. Teemad, sisu valik, ülesehitus ja kujundus on autori otsused; koodi, andmete kogumise ja kokkuvõtete mustandid tegi tehisaru. Numbrid ja uuringud kuuluvad oma allikatele. © {autori_aastad()} {e(AUTOR)}.</p>
 </section>"""
