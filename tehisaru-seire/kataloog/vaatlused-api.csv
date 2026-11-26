@@ -10,6 +10,8 @@ sa-it71-internetikasutajad,EE,2025,49.2,,2026-10-27,Statistikaameti API,https://
 sa-it71-internetikasutajad,EE,2026,69.0,,2026-10-27,Statistikaameti API,https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-leibkonnas/IT71,
 sa-it71-too,EE,2025,25.1,,2026-10-27,Statistikaameti API,https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-leibkonnas/IT71,
 sa-it71-too,EE,2026,36.9,,2026-10-27,Statistikaameti API,https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-leibkonnas/IT71,
+sa-it71-too-hoivatud,EE,2025,33.1,,2026-11-26,Statistikaameti API,https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-leibkonnas/IT71,
+sa-it71-too-hoivatud,EE,2026,49.2,,2026-11-26,Statistikaameti API,https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-leibkonnas/IT71,
 sa-it72-oskus,EE,2025,13.5,,2026-10-27,Statistikaameti API,https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-leibkonnas/IT72,Põhjused liituvad üle 100% mittekasutajatest: üks inimene võib olla mitmes reas.
 sa-it72-oskus,EE,2026,7.4,,2026-10-27,Statistikaameti API,https://andmed.stat.ee/et/stat/majandus__infotehnoloogia__infotehnoloogia-leibkonnas/IT72,Põhjused liituvad üle 100% mittekasutajatest: üks inimene võib olla mitmes reas.
 eurostat-isoc-ai-iaiuxr-oskus-mittekasutajad,DE,2025,5.97,2026-04-17,2026-10-27,Eurostati API,https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_ai_iaiuxr?format=JSON&lang=EN&freq=A&indic_is=I_IUAIX_NUUSE&unit=PC_IND_IUAIX&ind_type=IND_TOTAL&geo=EE&geo=FI&geo=SE&geo=DK&geo=NO&geo=DE&geo=NL&geo=EU27_2020,

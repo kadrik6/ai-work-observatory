@@ -13,7 +13,7 @@ import re
 from pathlib import Path
 
 import andmekiht as andmed
-from abi import ARVSONAD, SEESTYTLEV, a, kontrolli, link, sonaga
+from abi import ARVSONAD, a, kontrolli, link, sonaga
 from andmekiht import EL, AndmeViga
 from komponendid import KUUD, aastatulbad, allikarida, e, kaart, kp, pr, riik, sihiriba
 from lehed_usaldus import RASKUS, _raskus
@@ -439,14 +439,20 @@ def too_eesti(A):
 
     otsene = sum(r["roll"] == "otsene" for r in juhtumid)
     mainib = sum(r["roll"] in ("otsene", "osaline") for r in juhtumid)
-    arvsona = SEESTYTLEV.get(len(juhtumid), f"{len(juhtumid)}-st")
     otse = "mitte ükski" if otsene == 0 else ARVSONAD.get(otsene, str(otsene))
     # USA statistikaameti firmauuring: otsene mõõt firmadelt (sisuloogika 6.11.2026)
     bon = (A.get("uuringud") or {}).get("bonney2026")
     bonney_rida = (f'<p class="ps">Võrdluseks USA: ametlikus ettevõtete uuringus teatas tehisaruga seotud töötajate vähendamisest '
                    f'<b>2% firmadest</b>, tehisaru kasutas 18% (<a href="{e(bon["url"])}">USA statistikaamet, Bonney jt {bon["aasta"]}</a>).</p>'
                    if bon and "2% firmadest" in bon["leid"] and "18% firmadest" in bon["leid"] else "")
-    k_pea = f'<div class="pn-h"><h2 id="h-koondamised">{arvsona.capitalize()} Eesti koondamisest: tehisaru otsese põhjusena <b>{otse}</b>, ühe põhjusena {ARVSONAD.get(mainib, str(mainib))}</h2></div>'
+    # Kadri 26.11.2026: teated on uudistest kogutud valik, mitte kõigi koondamiste loend. Pealkiri ütleb arvu ilma jagajata
+    # („kaks ettevõtet“, mitte „kaks kümnest“) ja kogutud teadete arv on eraldi lauses.
+    if mainib == 0:
+        k_lause = "<b>Ükski ettevõte</b> ei nimetanud tehisaru koondamise põhjusena"
+    else:
+        k_lause = (f'Tehisaru nimetas koondamise põhjusena <b>{ARVSONAD.get(mainib, str(mainib))} {"ettevõte" if mainib == 1 else "ettevõtet"}</b>; '
+                   f'otsese põhjusena {otse}')
+    k_pea = f'<div class="pn-h"><h2 id="h-koondamised">{k_lause}</h2></div>'
     # Keskel: töökohad ettevõtte kaupa, värv näitab, mida ettevõte tehisaru kohta ütles (Kadri 5.11 23:06)
     RYHM = {"otsene": ("s", "nimetas tehisaru põhjusena"), "osaline": ("s", "nimetas tehisaru põhjusena"),
             "kaudne": ("m", "mainis tehisaru muul moel"), "tulevikus": ("m", "mainis tehisaru muul moel"),
@@ -486,8 +492,8 @@ def too_eesti(A):
     legend = "".join(f'<span><i class="kr-t {k}"></i>{e(t)}</span>' for k, t in [("s", "nimetas tehisaru põhjusena"), ("m", "mainis tehisaru muul moel"), ("t", "tehisaru ei mainitud või eitati")])
     sec_v = f"""
 <div class="kk-vis" id="koondamised-visuaal">
-  <h3 class="kk-h3" id="h-koondamised-v">{piir.capitalize()}{kokku} koondatud töökohast <b>{pohjus} töökoha</b> puhul nimetati üheks põhjuseks tehisaru</h3>
-  <p class="ps">Teated ajajärjekorras, uuemad üleval; tulp näitab teatatud töökohti. Ainult koondamised, mille puhul uudis küsis tehisaru kohta; nimekiri pole täielik (viimane teade {kp(juhtumid[0]["kuupaev"])}).</p>
+  <h3 class="kk-h3" id="h-koondamised-v"><b>{pohjus} töökoha</b> puhul nimetati üheks põhjuseks tehisaru</h3>
+  <p class="ps">Kogutud on {len(juhtumid)} koondamisteadet, kokku {piir}{kokku} töökohta. See ei ole kõigi Eesti koondamiste loend (ainult need, mille puhul uudis küsis tehisaru kohta), seepärast osakaalu ei arvutata. Teated ajajärjekorras, uuemad üleval; tulp näitab teatatud töökohti (viimane teade {kp(juhtumid[0]["kuupaev"])}).</p>
   <div class="kr-aeg">{ribad}</div>
   <p class="kr-leg">{legend}</p>
   <p class="allikas">Allikas: uudised, lingid tabelis <a href="#palkamine">Keda koondajad otsivad</a>. Ettevõtte enda selgitus ei tõenda põhjust. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>

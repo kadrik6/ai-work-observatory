@@ -459,6 +459,21 @@ def tooalane_kasutus(A):
     return alus, (max(uued, key=lambda v: v["aasta"]) if uued else alus)
 
 
+HOIVATUD = "sa-it71-too-hoivatud"
+
+
+def tooalane_hoivatutest(A):
+    """Tööalane tehisaru kasutus hõivatute seas (Statistikaamet IT71, rühm „Hõivatud“): (aasta varasem kirje või None, uusim kirje).
+    Küsimus „kui paljud kasutavad tööl“ vajab jagajaks töötajaid; kõigi 16–74-aastaste arvus on ka töötud, õpilased ja
+    pensionärid (Kadri 26.11.2026: jagaja peab sobima küsimusega). Mõõdik on kataloogis klassis „osaliselt“: Eurostati
+    võrdlusalusega (kõik isikud) seda ei võrrelda, ELi võrdlus jääb kõigi isikute alusele."""
+    aastad = sorted(int(r["aasta"]) for r in A["kataloogi_vaatlused"] if r["moodik"] == HOIVATUD and r["riik"] == "EE" and r["vaartus"])
+    if not aastad:
+        raise AndmeViga(f"Kataloogis pole mõõdiku {HOIVATUD} vaatlusi (kataloog/vaatlused-api.csv)")
+    uus = kataloogist(A, HOIVATUD, "EE", aastad[-1])
+    return (kataloogist(A, HOIVATUD, "EE", aastad[-1] - 1) if aastad[-1] - 1 in aastad else None), uus
+
+
 def koht(A, naitaja, geo, aasta):
     el = el27_aasta(A, naitaja, aasta)
     jarjest = sorted(el, key=lambda g: -el[g]["vaartus"])

@@ -21,8 +21,9 @@ def _arv(n):
 class Andmed:
     """Tahvli ja tunnuspiltide numbrid koos kontrollidega. H = sisu/hanked-leht.json, kasitsi = lehed_uudised.KASITSI."""
 
-    def __init__(self, H, kasitsi):
+    def __init__(self, H, kasitsi, oecd_inn=None):
         self.H, self.KASITSI = H, kasitsi
+        self.oecd_inn = oecd_inn  # innovatsioonihangete osa hangete eelarvest OECD aruande järgi (sisu/avalik-sektor.csv), %
         V = self.V = H["hankimise_viis"]
         self.p0, self.p1 = V["periood"]
         rg = [g for _, g in G]
@@ -59,32 +60,26 @@ class Andmed:
 
 # Vastus sõnaga (Kadri 25.11.2026): sõna tuleb numbrist. Piirid on teema_tahvel.sona_osa ja siin.
 PIIR_HANKIJAD = (33, 50)   # kümnendiku hankijate osa hangetest, %: üle teise = peamiselt, üle esimese = suur osa
-PIIR_TAPSUS = (60, 75, 90)  # täpsuse ja saagise väiksem väärtus, %
 
 
 def sona_hankijad(p):
     return "Peamiselt mõni suur hankija" if p >= PIIR_HANKIJAD[1] else "Suur osa vähestelt hankijatelt" if p >= PIIR_HANKIJAD[0] else "Paljud eri hankijad"
 
 
-def sona_siht(v, siht):
-    return "Jah" if v >= siht else "Veel mitte"
-
-
-def sona_tapsus(tapsus, saagis):
-    m = min(tapsus, saagis)
-    return "Väga täpne" if m >= PIIR_TAPSUS[2] else "Üsna täpne" if m >= PIIR_TAPSUS[1] else "Keskmiselt täpne" if m >= PIIR_TAPSUS[0] else "Ebatäpne"
-
-
 def read(D):
-    u, kv, uk, K, V, tul, KS = D.u, D.kv, D.uk, D.K, D.V, D.tul, D.KASITSI
+    u, kv, uk, K, V, tul = D.u, D.kv, D.uk, D.K, D.V, D.tul
     n_ai = u["ai_marksonaga"]
     n_and = u["ai_andmed"] - n_ai
+    oecd = f" ja {pr(D.oecd_inn, 1)}% hangete eelarvest" if D.oecd_inn is not None else ""
     return [
         dict(kys="Kui palju riik tehisaru ja andmeid hangib?", ank="aastad", ava="Ava hanked aastate kaupa",
-             sona=tt.sona_osa(u["ai_andmed_osakaal"]) + " hange", arv=str(u["ai_andmed"]),
+             # Kadri 26.11.2026 (nõrgad numbrid): arv on klassifikaatori leid, mitte loendus; täpsus on sama rea märkuses.
+             sona=tt.sona_osa(u["ai_andmed_osakaal"]) + " hange", arv=f'umbes {u["ai_andmed"]}',
              all=f'hanget {u["aasta"]}, {pr(u["ai_andmed_osakaal"])}% kõigist; seisuga {kp(D.seis)}',
              pilt=jaotusriba([("s", n_ai / u["ai_andmed"] * 100), ("m", n_and / u["ai_andmed"] * 100)], f"{n_ai} tehisaru, {n_and} andmed"),
-             mrk=f'Tehisaru {n_ai}, andmed {n_and}. Aastaid ei võrrelda enne klassifikaatori uuendust.',
+             mrk=(f'Tehisaru {n_ai}, andmed {n_and}. Hanked leidis klassifikaator: täpsus {pr(tul["tapsus"] * 100, 0)}%, saagis {pr(tul["saagis"] * 100, 0)}% '
+                  f'(<a href="#tapsus">test</a>), seega osa leitud hankeid ei ole tehisaru- ega andmehanked ja osa jääb leidmata. '
+                  "Aastaid ei võrrelda enne klassifikaatori uuendust."),
              liik="arvutatud", allikas="Riigihangete register", kuup=kp(D.seis)),
         dict(kys="Kas hinnatakse ka kvaliteeti?", ank="kuidas", ava="Vaata, kuidas hangitakse", sona=tt.sona_osa(kv["ai_andmed"]) + " hangetest",
              arv=f'{pr(kv["ai_andmed"], 0)}%', all=f"hangetest {D.p0}–{D.p1}",
@@ -102,18 +97,18 @@ def read(D):
              pilt=jaotusriba([("s", K["nende_osakaal"])], f'{K["top10_protsenti_hankijaid"]} hankijat teeb {pr(K["nende_osakaal"], 0)}%'),
              mrk=f'{K["uks_hange_hankijaid"]} hankijat tegi ühe hanke. Suurimad on riigi IT-majad, mis hangivad ka teistele asutustele.',
              liik="arvutatud", allikas="Riigihangete register", kuup=f"{D.a0}–{D.a1}"),
-        dict(kys="Kas innovatsioonihangete siht täitub?", ank="innovatsioon", ava="Ava innovatsioonihanked",
-             sona=sona_siht(D.inn["innovatsioonimark_osakaal"], 2), arv=f'{pr(D.inn["innovatsioonimark_osakaal"])}%',
-             all=f'hangetest {D.inn["aasta"]}, hankija märkega; siht 2% aastaks 2027',
-             pilt=osariba(D.inn["innovatsioonimark_osakaal"], 2.5, siht=2, silt=f'{pr(D.inn["innovatsioonimark_osakaal"])}%, siht 2%'),
-             mrk="Sihi allikas on OECD aruanne (2026). Märge on hankija enda linnuke; sisu keegi ei kontrolli.",
+        # Kadri 26.11.2026 (nõrgad numbrid): rida ei vasta enam „Veel mitte“ ega joonista sihti. Riigi siht on 2%, aga
+        # allikad mõõdavad eri asja (hankija märge, hangete arv, eelarve) ja sihi ühik on kontrollimata.
+        dict(kys="Kui palju on innovatsioonihankeid?", ank="innovatsioon", ava="Ava innovatsioonihanked",
+             sona=tt.sona_osa(D.inn["innovatsioonimark_osakaal"]) + " hange", arv=f'{pr(D.inn["innovatsioonimark_osakaal"])}%',
+             all=f'hangetest {D.inn["aasta"]}, hankija enda märke järgi',
+             pilt=osariba(D.inn["innovatsioonimark_osakaal"], 10, silt=f'{pr(D.inn["innovatsioonimark_osakaal"])}% hangetest'),
+             mrk=(f"Teised allikad annavad teise arvu: OECD aruande järgi alla 1% hangete arvust{oecd}. "
+                  "Riigi siht on 2% aastaks 2027; kas siht käib märke, arvu või eelarve kohta, pole kontrollitud, seepärast sihiga ei võrrelda. "
+                  "Märge on hankija enda linnuke; sisu keegi ei kontrolli."),
              liik="mõõdetud", allikas="eForms", kuup=f'{D.inn["aasta"]}, osaline'),
-        dict(kys="Kui täpne on hangete leidmine?", ank="tapsus", ava="Ava klassifikaatori test",
-             sona=sona_tapsus(tul["tapsus"] * 100, tul["saagis"] * 100), arv=f'{pr(tul["tapsus"] * 100, 0)}%',
-             all=f'täpsus; saagis {pr(tul["saagis"] * 100, 0)}%',
-             pilt=kaks_riba([("täps.", tul["tapsus"] * 100, True), ("saagis", tul["saagis"] * 100, False)]),
-             mrk=f'Mõõdetud masinmärgendite vastu. {KS["n"]} hanget vaadati käsitsi üle, kokkulangevus {KS["kokku"]}%.',
-             liik="arvutatud", allikas="Klassifikaatori test", kuup=kp(KS["kuupaev"])),
+        # Rida „Kui täpne on hangete leidmine?“ on tahvlilt maas: see on meetodi info, mitte hangete seis. Täpsus on esimese
+        # rea märkuses ja plokis #tapsus.
     ]
 
 
