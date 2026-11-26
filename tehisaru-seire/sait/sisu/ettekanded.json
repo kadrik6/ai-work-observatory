@@ -128,7 +128,7 @@
 "Kui ehitamine on odav, võtab vähem oluline 80% tööst fookuse olulisimalt 20%-lt; fookus tähendab häid ideid tagasi lükata.",
 "Ettevõtte kogemus, mitte mõõtmine: esineja ütles ise, et nähtus võib olla ajutine."
 ],
-"kontroll": "Kokkuvõte puhastatud automaatsubtiitrite põhjal (Kadri CLI, 8.11.2026); kuupäev ja kava cs.ut.ee järgi.",
+"kontroll": "Kokkuvõte puhastatud automaatsubtiitrite põhjal (tehisaru abil, 8.11.2026); kuupäev ja kava cs.ut.ee järgi.",
 "seire_kinnitatud": "2026-11-08",
 "tegija": "TÜ arvutiteaduse instituut"
 },
@@ -827,7 +827,7 @@
 "TÜ õigusõppe katses lahendasid üliõpilased ülesande kõigepealt ise ja seejärel tehisaruga. Nende tagasiside järgi on tehisaru vigu lihtsam leida, kui teema on enne selge.",
 "Advokaadi sõnul teeb tehisaru juba hästi praktikandi tavatöid, nagu kohtupraktika otsing ja mustandid, kuid õppimiseks peab osa tööst tegema käsitsi: kes pole olnud algaja, ei saa kogenud juristiks. Esinejate kogemus ja arvamus, mitte mõõtmine."
 ],
-"kontroll": "Kokkuvõte transkriptsiooni põhjal (Kadri CLI, 12.11.2026); esinejad ja ametid UTTV lehelt.",
+"kontroll": "Kokkuvõte transkriptsiooni põhjal (tehisaru abil, 12.11.2026); esinejad ja ametid UTTV lehelt.",
 "seire_kinnitatud": "2026-11-13"
 },
 {
@@ -852,7 +852,7 @@
 "Hagi puuduste kõrvaldamine (nt riigilõiv, ebaselge nõue) võtab praegu kuid. Kui tehisaru juhiks neile tähelepanu juba hagi esitamisel, lüheneks menetlus. Enne automatiseerimist tuleks menetlusseadused läbi vaadata, et mitte digitaliseerida paberiaja samme.",
 "Riskina nähti tehisaruga koostatud üha pikemaid menetlusdokumente. Panelistid nõudsid läbipaistvust: kohus ja pooled peaksid ütlema, kus nad tehisaru kasutasid. Panelistide arvamus, mitte mõõtmine."
 ],
-"kontroll": "Kokkuvõte transkriptsiooni põhjal (Kadri CLI, 12.11.2026); esinejad ja ametid UTTV lehelt.",
+"kontroll": "Kokkuvõte transkriptsiooni põhjal (tehisaru abil, 12.11.2026); esinejad ja ametid UTTV lehelt.",
 "seire_kinnitatud": "2026-11-13"
 },
 {
@@ -876,7 +876,7 @@
 "Projektis XSCAVE arendab töörühm tehisaru rasketehnikale, kus vigu teha ei tohi ja treeningandmeid peaaegu pole.",
 "Õpetamises ei kontrolli ta enam, kas üliõpilane oskab algoritmi programmeerida, sest seda teeb tehisaru; nüüd annab ta keerukamaid probleemülesandeid. Professori seisukoht ja töörühma tulemused, mitte sõltumatu võrdlus."
 ],
-"kontroll": "Kokkuvõte transkriptsiooni põhjal (Kadri CLI, 12.11.2026); loengu kirjeldus UTTV lehelt.",
+"kontroll": "Kokkuvõte transkriptsiooni põhjal (tehisaru abil, 12.11.2026); loengu kirjeldus UTTV lehelt.",
 "seire_kinnitatud": "2026-11-13",
 "tegija": "TÜ tehnoloogiainstituut"
 }

@@ -1083,7 +1083,7 @@ def test_labivaatus_8_11_parandused(sait):
         assert h1(f) != nimi and len(h1(f)) > len(nimi) and "<b>" in re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1), f
     # P5: saidikaardil pole sisemärkmeid ega olekuveergu
     # Autori nimi on saidil teadlikult (Kadri 11.11.2026); sisemärkmeid („Kadri 8.11 …“) ei tohi olla
-    assert "Kadri" not in sait["saidikaart.html"].replace("Kadri Kungla", "") and "Eelvaate" not in sait["saidikaart.html"]
+    assert "Kadri" not in sait["saidikaart.html"] and "Eelvaate" not in sait["saidikaart.html"]
     assert ">Olek<" not in sait["saidikaart.html"]
     # P6, P7, P8
     assert h2("hanked.html", "tapsus").endswith("masinmärgendite järgi")
@@ -1319,7 +1319,7 @@ def test_tutvustuse_leht_uuele_lugejale(A, sait):
         assert f'href="{f}"' in h
     assert 'href="saidist.html">Mis see sait on?</a>' in sait["index.html"]  # avalehelt leitav
     assert 'href="saidist.html">Mis see sait on</a>' in sait["inimesed.html"]  # jaluses igal lehel
-    assert "Kadri" not in h.replace("Kadri Kungla", "")  # autori nimi on teadlikult (11.11.2026), sisemärkmeid pole
+    assert "Kadri" not in h  # sisemärkmeid ega nime pole (nimi võeti ära 27.11.2026)
 
 
 def test_avatumad_ametid_on_tulpdiagramm(A, sait):
@@ -1848,19 +1848,35 @@ def test_valislingid_avanevad_uues_vahelehes(sait):
 
 
 def test_autor_on_igal_lehel(sait):
-    """Kadri 11.11.2026: autoriinfo saidile, et oleks autori kaitse. Jalus, meta ja „Mis see sait on“ lõik."""
+    """Kadri 11.11.2026: autoriinfo saidile. Kadri 27.11.2026: „palun võta lehelt viide minu nimele ka ära“:
+    © märge ja „Autor“ lõik jäävad, aga nime asemel on saidi nimi ja meta author on ära."""
     import kest
-    assert kest.AUTOR == "Kadri Kungla" and kest.autori_aastad(2026) == "2026" and kest.autori_aastad(2028) == "2026–2028"
+    assert kest.AUTOR == "Tehisaru seire" and kest.autori_aastad(2026) == "2026" and kest.autori_aastad(2028) == "2026–2028"
     for f, h in sait.items():
         if 'http-equiv="refresh"' in h:
             continue  # kolinud lehe suunamine
-        assert '<meta name="author" content="Kadri Kungla">' in h, f
-        assert re.search(r'<p class="autor">© 20\d\d(–20\d\d)? <a href="saidist.html#autor">Kadri Kungla</a></p>', h), f
+        assert '<meta name="author"' not in h, f
+        assert re.search(r'<p class="autor">© 20\d\d(–20\d\d)? <a href="saidist.html#autor">Tehisaru seire</a></p>', h), f
     s = sait["saidist.html"]
     assert 'id="autor"' in s and "kuuluvad oma allikatele" in s
     assert "tehisaru (Claude) abiga" in s and "on autori otsused" in s  # Kadri 12.11.2026: ava, mida tegi tehisaru
     # Kadri 12.11.2026: märge lühike nagu teistel saitidel, ilma „küsi luba“ ja kordamiseta
     assert "luba" not in s.split('id="autor"')[1].split("</section>")[0]
+
+
+def test_saidil_pole_kadri_nime(A, tmp_path):
+    """Kadri 27.11.2026: nime ei ole ühelgi avaldataval lehel ega failis; CSS ja JS lähevad välja ilma märkmeteta,
+    sest märkmetes on „Kadri 8.11.2026 …“. Kadrioru on kohanimi ja on lubatud."""
+    ehita.ehita(tmp_path, A)  # ehitus ise kukub nime korral (nime_kontroll); siin kontrollitakse veel kord
+    for f in sorted(tmp_path.rglob("*")):
+        if f.suffix in (".html", ".css", ".js", ".txt", ".xml", ".json", ".csv"):
+            t = f.read_text(encoding="utf-8")
+            assert not ehita.NIME_KONTROLL.search(t), f
+    css = (tmp_path / "stiil.css").read_text(encoding="utf-8")
+    js = (tmp_path / "sait.js").read_text(encoding="utf-8")
+    assert "/*" not in css and "/*" not in js and not re.search(r"(?m)^\s*//", js)
+    assert ehita.ilma_markmeteta("a.js", "var u = 'https://x.ee/a'; // märge\n  // rida\nf();") == "var u = 'https://x.ee/a';\nf();"
+    assert ehita.NIME_KONTROLL.search("Kadrioru park") is None and ehita.NIME_KONTROLL.search("Kadri K")
 
 
 def test_jarjestuse_joon_on_lihtne_tabada_ja_kaardi_vihje_luhike(sait):
