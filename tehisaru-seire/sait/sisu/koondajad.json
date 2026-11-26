@@ -212,6 +212,91 @@
     "arv": 40,
     "tekst": "umbes 40 töökohta sajast (Postimehe kokkuvõte Äripäeva loost)"
    }
+  },
+  "Finesta Baltic": {
+   "sektor": "tööjõurent",
+   "firma_liik": "Soome taustaga tööjõurendi- ja värbamisfirma",
+   "kaotatud": [
+    "teadmata"
+   ],
+   "kaotatud_tekst": "Ameteid uudis ei nimeta; renditöötajad olid tootmisettevõttes, mille suur projekt lõppes.",
+   "kaotatud_allikas": "https://www.err.ee/1610206504/toostusettevotted-tombavad-talve-eel-tegevust-koomale",
+   "otsib": {
+    "kontrollitud": "2026-11-26",
+    "ametid": [],
+    "tekst": "Ettevõtte kodulehte ei õnnestunud avada (26.11); varasemad avalikud kuulutused olid tootmistööde kohta (koostajad, keevitajad).",
+    "url": "https://finesta.eu/"
+   },
+   "omand": "välismaise emaettevõttega",
+   "koondab_ee": {
+    "arv": 140,
+    "tekst": "ligi 140 renditöötajat (Äripäev: 137–141), teade töötukassale"
+   }
+  },
+  "Barona Eesti": {
+   "sektor": "tööjõurent",
+   "firma_liik": "Soome taustaga tööjõurendi- ja värbamisfirma",
+   "kaotatud": [
+    "teadmata"
+   ],
+   "kaotatud_tekst": "Ameteid uudis ei nimeta; ERR-i järgi on taustaks tööstusklientide väiksem töömaht (energiahinnad, tellimuste vähesus).",
+   "kaotatud_allikas": "https://www.err.ee/1610206504/toostusettevotted-tombavad-talve-eel-tegevust-koomale",
+   "otsib": {
+    "kontrollitud": "2026-11-26",
+    "ametid": [
+     {
+      "nimi": "Elektriseadmete monteerija",
+      "liik": "tootmise tugiteenused"
+     },
+     {
+      "nimi": "Tootmistöötaja",
+      "liik": "tootmise tugiteenused"
+     },
+     {
+      "nimi": "Keevitaja",
+      "liik": "tootmise tugiteenused"
+     },
+     {
+      "nimi": "MIG/MAG keevitaja-koostaja",
+      "liik": "tootmise tugiteenused"
+     },
+     {
+      "nimi": "Mehhatroonik/hooldusinsener",
+      "liik": "muu"
+     },
+     {
+      "nimi": "Service Engineer",
+      "liik": "muu"
+     }
+    ],
+    "tekst": "6 ametit (osa kuulutusi ka vene keeles): neli tootmistööd Jüris ning mehhatroonik ja hooldusinsener Tallinnas (26.11).",
+    "url": "https://career.recrur.com/barona"
+   },
+   "omand": "välismaise emaettevõttega",
+   "koondab_ee": {
+    "arv": 60,
+    "tekst": "60 töökohta (Äripäev: 60–64), Statistikaameti novembri andmed"
+   }
+  },
+  "Makron": {
+   "sektor": "masinaehitus",
+   "firma_liik": "Soome Makron Groupi Eesti tootmisüksus (transpordiliinid ja masinad)",
+   "kaotatud": [
+    "teadmata"
+   ],
+   "kaotatud_tekst": "Ameteid uudis ei nimeta; ERR-i järgi on taustaks tööstusklientide väiksem töömaht (energiahinnad, tellimuste vähesus).",
+   "kaotatud_allikas": "https://www.err.ee/1610206504/toostusettevotted-tombavad-talve-eel-tegevust-koomale",
+   "otsib": {
+    "kontrollitud": "2026-11-26",
+    "ametid": [],
+    "tekst": "Eesti kuulutusi ei leitud; CV Keskuse ettevõtte lehel aktiivseid pakkumisi pole (26.11).",
+    "url": "https://www.cvkeskus.ee/makron-estonia-ou-toopakkumised-49378"
+   },
+   "omand": "välismaise emaettevõttega",
+   "koondab_ee": {
+    "arv": 40,
+    "tekst": "ligi 40 inimest (ERR)"
+   }
   }
  }
 }
