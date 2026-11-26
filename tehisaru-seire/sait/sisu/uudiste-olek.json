@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-25T18:05:00+02:00",
+  "viimane_kontroll": "2026-11-26T08:50:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "25.11 päev: miinimumpalga kokkulepe 2027 (997 eurot); hommikul WSJ tehisarumull"
+      "markus": "26.11: Finesta ligi 140, Barona 60 ja Makron ligi 40 koondamist (AK); Nestori intervjuu miinimumpalga andmetest"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "25.11: uusi tehisaru lugusid pole (24.11 lood ingliskeelsed versioonid)"
+      "markus": "26.11: uusi tehisaru lugusid pole"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "25.11 õhtu: uusi Eesti koondamisi ≥10 pole (Radius Machining 7)"
+      "markus": "26.11: renditöö loo jätkulugu kinnitab firmad ja arvud; Makron uus koondaja"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "25.11 õhtu: Allstate jätkulugu (TechCrunch); Gartneri prognoos juba 10.11 olemas"
+      "markus": "26.11: Rootsi LO analüüs valgekraede töötusest (Social Europe); Ubisoft juba olemas, Workday lugu ilma avatava allikata"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -29,27 +29,27 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "25.11: feed avanes; uusi postitusi pole"
+      "markus": "26.11: feed avanes; uusi postitusi pole"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "25.11: avanes, uusi uudiseid pole"
+      "markus": "26.11: avanes, uusi uudiseid pole"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "25.11: avanes, uusi tehisaru, IKT ega tööturu teateid pole"
+      "markus": "26.11: avanes; novembri konjunktuuribaromeeter (25.11) lisatud"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "25.11: AKI teade tehisaru ja hariduse resolutsioonist (24.11); KONTROLL 4/7"
+      "markus": "26.11: valitsuse 26.11 istungil avaliku teabe seaduse eelnõu (andmejälgija, andmete teabevärav, DORIS); KONTROLL 4/7"
     },
     {
       "nimi": "OECD uudised (otsing)",
       "ok": true,
-      "markus": "25.11: OECD uudiseid ei leitud"
+      "markus": "26.11: tehisaru ja töö teemalisi OECD uudiseid ei leitud"
     },
     {
       "nimi": "Riikide strateegiad",
