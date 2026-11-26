@@ -1,6 +1,50 @@
 {
  "kandidaadid": [
   {
+   "id": "CZBC_t7vm88",
+   "allikas": "ilo",
+   "pealkiri": "From Design to Practice: Three Months of Training in Geothermal Systems and Heat Pumps",
+   "avaldatud": "2026-11-26",
+   "url": "https://www.youtube.com/watch?v=CZBC_t7vm88",
+   "leitud": "2026-11-26",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44162",
+   "allikas": "uttv",
+   "pealkiri": "Tartu Ülikooli teenetemärkide üleandmine 2026",
+   "avaldatud": "2026-11-26",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44162",
+   "leitud": "2026-11-26",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44143",
+   "allikas": "uttv",
+   "pealkiri": "Programmeerimine -&nbsp;Nädal 13 - 25.11.2026 - objektorienteeritud programmeerimine.",
+   "avaldatud": "2026-11-25",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44143",
+   "leitud": "2026-11-26",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
+   "id": "uttv-44144",
+   "allikas": "uttv",
+   "pealkiri": "XIV Pärandtehnoloogia konverents",
+   "avaldatud": "2026-11-25",
+   "url": "https://uttv.ee/pls/uttv/naita?id=44144",
+   "leitud": "2026-11-26",
+   "olek": "uus",
+   "subtiitrid": false,
+   "vajab_teksti": true
+  },
+  {
    "id": "ugthYZkr7c8",
    "allikas": "ilo",
    "pealkiri": "Timor-Leste Decent Work Country Programme 2026–2030: Key highlights",
@@ -2268,9 +2312,9 @@
   "oecd-ai": "UCl4praikeBNNxiSVpAvxwkA",
   "ilo": "UCrlcu5KChYyHwXlIeD7oLUg",
   "stanford-hai": "UChugFTK0KyrES9terTid8vA",
-  "uttv": 44142,
+  "uttv": 44162,
   "tds": "UC9ptGynkOPe3vFRW6otoI3g"
  },
- "uuendatud": "2026-11-25",
+ "uuendatud": "2026-11-26",
  "vead": []
 }
