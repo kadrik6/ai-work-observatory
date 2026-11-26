@@ -2,7 +2,7 @@
 
 > Kui suur osa Eesti inimestest kasutab generatiivse tehisaru tööriistu võrreldes teiste riikidega?
 
-**Staatus:** ajakohane · **Allikas uuendas:** 2026-06-05 · **Kontrollitud:** 2026-11-24 · **Järgmine oodatav uuendus:** 2027-06-05
+**Staatus:** ajakohane · **Allikas uuendas:** 2026-06-05 · **Kontrollitud:** 2026-11-26 · **Järgmine oodatav uuendus:** 2027-06-05
 
 ## Number
 
