@@ -181,7 +181,7 @@ def sec_teekond(D):
     svg += f'<svg class="tt-svg tt-sc-kitsas" viewBox="0 0 {kw} {8 + len(vals) * rh}" width="100%" role="img" aria-label="{aria}">{"".join(ko)}</svg>'
     return f"""
 <section class="jaotis" id="teekond" aria-labelledby="h-teekond">
-  <header><h2 id="h-teekond"><span class="kys">Kus uuendus pidama jääb?</span> <b>Prototüübist hindamiseni kukub {D.langus} protsendipunkti</b> ¦ otsuseni jõuab veerand projektidest</h2>
+  <header><h2 id="h-teekond"><span class="kys">Kus uuendus pidama jääb?</span> <b>Prototüübist hindamiseni jõuab {D.langus} protsendipunkti vähem projekte</b> ¦ otsuseni jõuab veerand projektidest</h2>
   <p class="alam">Uuendusprojektide osa, mis jõudis etapini; vastajad kirjeldasid oma projekte. Olulisimatest uuendustest rakendati {pr(D.v("rakendati"), 0)}% ja laiendati {pr(D.v("laiendati"), 0)}%. Tehisaru projekte eraldi ei loendata.</p></header>
   <div class="av-kaks">
     <figure class="av-fig">{svg}</figure>

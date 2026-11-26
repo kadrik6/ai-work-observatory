@@ -137,8 +137,8 @@ def koha_joon(koht, w=200, h=50):
 
 def katse_number(leid):
     """Katse peamine number leiu tekstist. Kui muster ei leia, kukub ehitus (number ei tohi vaikselt kaduda)."""
-    for muster, silt in [(r"(\d+)% rohkem töid", "+{} % lõpetatud töid"), (r"tunnis (\d+)% rohkem", "+{} % pöördumisi tunnis"),
-                         (r"tehti (\d+)% rohkem", "+{} % tööd sobivas ülesandes"), (r"ajakulu kasvas (\d+)%", "+{} % ajakulu")]:
+    for muster, silt in [(r"(\d+)% rohkem töid", "+{}% lõpetatud töid"), (r"tunnis (\d+)% rohkem", "+{}% pöördumisi tunnis"),
+                         (r"tehti (\d+)% rohkem", "+{}% tööd sobivas ülesandes"), (r"ajakulu kasvas (\d+)%", "+{}% ajakulu")]:
         m = re.search(muster, leid)
         if m:
             return silt.format(m.group(1)), "ajakulu" not in silt

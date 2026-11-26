@@ -147,8 +147,8 @@ def _seis(read, kontroll):
     paev = kontroll[:10]
     uued = sum(1 for r in read if r.get("lisatud") == paev)
     if uued:
-        return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval lisandus <b>{uued}</b> {"uudis" if uued == 1 else "uudist"}.</p>'
-    return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16]}. Sel päeval uusi uudiseid ei lisandunud.</p>'
+        return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16].replace(":", ".")}. Sel päeval lisandus <b>{uued}</b> {"uudis" if uued == 1 else "uudist"}.</p>'
+    return f'<p class="ps u-seis">Viimane kontroll {kp(paev)} kell {kontroll[11:16].replace(":", ".")}. Sel päeval uusi uudiseid ei lisandunud.</p>'
 
 
 # Filtrinuppude kindel järjekord (Kadri 11.11.2026: koondamised olid liiga suure fookuse all, kuigi neid uudiseid on harva).
@@ -255,7 +255,7 @@ def uudised(A, vaade, vaated=None):
                   {"muutus": (f"+{uusi(m)} nädalaga", f'uusim {kp(m[0]["kuupaev"])}' if m else "")}, ""),
         kpi_plaat("ud-suured", "Suured uudised", str(len(suured)), "",
                   {"tekst": f"riigi otsus, statistika, üle 50 koondatu · <b>{arvamusi} arvamuslugu</b>"}, ""),
-        kpi_plaat("ud-kontroll", "Viimane kontroll", f"{vk.day}.{vk.month:02d}", f"{vk:%H:%M}",
+        kpi_plaat("ud-kontroll", "Viimane kontroll", f"{vk.day}.{vk.month:02d}", f"{vk:%H.%M}",
                   {"tekst": f'<b>{korras}/{len(O["allikad"])}</b> allikat vastas · 7.23 ja 17.53'}, ""),
         tihe=True,
     )
@@ -306,7 +306,7 @@ ETTEKANDE_TEEMA = {"too": "Töö", "ettevotted": "Ettevõtted", "inimesed": "Ini
 # Rühm = valdkond, millest ettekanne räägib (lugeja küsimus „mida see minu valdkonnas tähendab“), mitte ürituse nimi.
 # Järjekord on lehe järjekord; tühja rühma ei näidata. Uus kirje saab ettekanded.json-is välja „ruhm“.
 ETTEKANDE_RUHM = {
-    "too": ("Töö ja organisatsioon", "Kuidas tehisaru muudab tööd, ameteid ja ettevõtete tööviisi."),
+    "too": ("Töö ja organisatsioon", "Kuidas tehisaru muudab tööd, ameteid ja ettevõtete toimimist."),
     "riik": ("Riik ja haridus", "Riigiasutuste tehisarukatsed ning tehisaru koht koolis."),
     "tulevik": ("Tehisaru areng ja tulevik", "Pikemad vestlused sellest, kuhu tehisaru liigub ja mida see tähendab."),
     # Kadri 11.11.2026 kinnitas alapealkirja (podcastide lõim): teadlaste vestlused, mis aitavad tehisarust mõelda
@@ -972,11 +972,11 @@ def palkamine(A):
             selgitused.append(f'<li><b>{e(f)}</b>: {e(x["kaotatud_tekst"])}</li>')
     n_k = len(kontrollitud)
     h2 = f'{SEESTYTLEV.get(n_k, str(n_k) + "-st").capitalize()} kontrollitud koondajast'
-    sama_t = (f"; {ARVSONAD.get(len(sama), len(sama))} otsib sama ametiliiki, mida koondab" if sama else "; mitte ükski ei otsi sama ametiliiki, mida koondab")
+    sama_t = (f", neist {ARVSONAD.get(len(sama), len(sama))} samasse ametiliiki, mida koondab" if sama else ", aga mitte ükski samasse ametiliiki, mida koondab")
     return f"""
 <div class="g12">
 <section class="pn sp12" id="palkamine" aria-labelledby="h-palkamine">
-  <div class="pn-h"><h2 id="h-palkamine">{h2} otsib praegu Eestis töötajaid <b>{ARVSONAD.get(len(otsivad), len(otsivad))}</b> (kokku {sonaga(kuulutusi)} kuulutust){sama_t}</h2></div>
+  <div class="pn-h"><h2 id="h-palkamine">{h2} otsib praegu Eestis töötajaid <b>{ARVSONAD.get(len(otsivad), len(otsivad))}</b> ({sonaga(kuulutusi)} kuulutust){sama_t}</h2></div>
   <p class="ps">Tööpakkumiste lehed on kontrollitud {kp(kp_min)}. Sinise äärega ametiliik on sama, mida koondatakse.</p>
   {tbl_div("-3 -4")}<table class="pk"><thead><tr><th scope="col">Ettevõte</th><th scope="col">Koondab Eestis</th><th scope="col">Põhjus ettevõtte sõnul</th><th scope="col">Kaotab</th><th scope="col">Otsib praegu Eestis</th></tr></thead>
   <tbody>{"".join(read)}</tbody></table></div>
@@ -1027,7 +1027,7 @@ def toopakkumised(A):
         v = p.get("ametivaldkond")
         return [r for r in v if r["nimi"] not in LISASILDID] if isinstance(v, list) else []
     suurim = [f'{valdkonnad(p)[0]["nimi"].lower()} ({e(p["portaal"])})' for p in P if valdkonnad(p)]
-    h2 = (f'{kp(kp_)} oli {loendid} <b>tööpakkumist</b>; suurim valdkond oli '
+    h2 = (f'{kp(kp_)} oli {loendid} <b>tööpakkumist</b>; suurim valdkond: '
           + (", ".join(suurim[:-1]) + " ja " + suurim[-1] if len(suurim) > 1 else "".join(suurim)))
 
     def ribad(read, n=12):

@@ -110,7 +110,7 @@ def hantlid(paarid, alg, lopp, samm, uhik, k=1, fookus="EE", ref=EL, viide=None,
         joon = f'<i class="joon siht" style="left:{pos(viide):.2f}%"></i>' if viide is not None else ""
         lv = (lisa or {}).get(g)
         lisa_html = f'<span class="tapp lisa" style="left:{pos(lv["vaartus"]):.2f}%"></span>' if lv else ""
-        pealkiri = f'{riik(g)}: {v0["aasta"]} {pr(v0["vaartus"], k)} → {v1["aasta"]} {pr(v1["vaartus"], k)} {uhik}'
+        pealkiri = f'{riik(g)}: {v0["aasta"]} {pr(v0["vaartus"], k)} → {v1["aasta"]} {pr(v1["vaartus"], k)}{"" if uhik.startswith("%") else " "}{uhik}'
         out.append(f'<div class="rida {liik}" title="{e(pealkiri)}"><span class="n">{e(riik(g))}</span><span class="rada">{joon}'
                    f'<span class="hant" style="left:{a:.2f}%;width:{b - a:.2f}%"></span>'
                    f'<span class="tapp vana" style="left:{pos(v0["vaartus"]):.2f}%"></span>'
