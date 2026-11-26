@@ -1128,11 +1128,15 @@ def test_allikad_ja_kuupaevad_iga_tabel_eraldi(sait):
     for (allikas, tabel), k in U.items():
         li = re.search(rf'<li><time datetime="{k}">[^<]*</time>(?:(?!</li>).)*>{tabel}</a>', p, re.S)
         assert li, (allikas, tabel, k)
-    assert "une_rt_m</a> · Eesti uusim kuu tabelis on" in p
+    assert "une_rt_m</a> · Eesti uusim kuu: " in p
+    # 15:21: iga rea nimi viib saidil selle numbri juurde (leht ja ankur on olemas)
+    for leht, ank in re.findall(r'<li><time[^>]*>[^<]*</time><span><b><a href="([a-z-]+\.html)#([a-z0-9-]+)">', p):
+        assert f'id="{ank}"' in sait[leht], (leht, ank)
+    assert len(re.findall(r'<li><time[^>]*>[^<]*</time><span><b><a href="[a-z-]+\.html#', p)) == len(kp_)
     for k in kp_:
         assert _d.fromisoformat(k) <= _d.today()
     if U[("Statistikaamet", "IT1490")] > "2026-09-16":
-        assert "number avaldati 16.09.2026, tabelit uuendati hiljem" in p
+        assert "uuendati hiljem, esmalt 16.09.2026" in p
 
 
 def test_eksitav_silt_on_heleroosa(sait):
@@ -1377,10 +1381,10 @@ def test_avalehe_pilt_on_lehe_taust():
     assert len(nahtavus) == 4 and max(nahtavus) <= .3
     # heledas teemas: pilt sinise tooniga, filter ei muuda katte värvi, nähtavus nagu laboris (42%), tume ei muutu
     assert "filter: none" in toon[0] and "luminosity" in toon[0] and "opacity: .42" in toon[0]
-    # Kadri 26.11.2026 14:50: pilt natuke vähem küllastatud → toon #6071a9 (küllastus ~30%, enne #3f60cc ~58%)
+    # Kadri 26.11.2026 14:50: pilt natuke vähem küllastatud; 15:28 valis liugurilt 40% → toon #546ab6 (enne #3f60cc ~58%)
     import colorsys
     tk = re.search(r"background-color: #([0-9a-f]{6})", toon[0]).group(1)
-    assert colorsys.rgb_to_hls(*(int(tk[i:i + 2], 16) / 255 for i in (0, 2, 4)))[2] <= 0.35, tk
+    assert abs(colorsys.rgb_to_hls(*(int(tk[i:i + 2], 16) / 255 for i in (0, 2, 4)))[2] - 0.40) < 0.015, tk
     assert "dark" not in toon[0]
 
 

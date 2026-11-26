@@ -47,7 +47,9 @@ SAIDI_AADRESS = "https://www.tehisaruseire.ee/"
 
 
 def aadress(fail):
-    return SAIDI_AADRESS + ("" if fail == "index.html" else fail)
+    """Lehe põhiaadress ilma .html lõputa (Kadri 26.11.2026: aadressiribal ei peaks olema „index.html“).
+    Vercel (vercel.json cleanUrls) suunab „too.html“ aadressile „/too“ ja „index.html“ juurele."""
+    return SAIDI_AADRESS + ("" if fail == "index.html" else fail.removesuffix(".html"))
 ANALYYTIKA_JS = ("<script>(function(){var h=location.hostname,ok=" + "||".join(
                      [f"h.slice(-{len(x)})==='{x}'" for x in VERCEL_HOSTID]
                      + [f"h==='{d}'||h.slice(-{len(d) + 1})==='.{d}'" for d in OMA_DOMEENID])

@@ -1351,14 +1351,22 @@ ol.sammud p { margin: 0; max-width: 72ch; }
 .allikad-l > div { margin-top: 6px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); max-width: 60ch; line-height: 1.5; font-size: 14px; }
 .allikad-l > div p { margin: 0 0 4px; }
 /* Iga avalehe number eraldi koos allika viimase uuendusega, uusim üleval (Kadri 26.11.2026) */
-.allikad-l > div:has(.uu-l) { max-width: 72ch; }
-.uu-l { list-style: none; margin: 0 0 8px; padding: 0; }
-.uu-l li { display: grid; grid-template-columns: 6.4em minmax(0, 1fr); column-gap: 12px; padding: 6px 0; border-top: 1px solid var(--grid); }
-.uu-l li:first-child { border-top: 0; padding-top: 0; }
+/* Kadri 26.11.2026 15:19: ruumi säästlikult – üks number ühel real (kuupäev · number · allikas ja märkus), väike reavahe */
+.allikad-l > div:has(.uu-l) { max-width: 980px; padding: 6px 12px; }
+html[data-t] .pea-rahu.pilt .alla:has(.allikad-l[open]) { max-width: 980px; }  /* avatud loend tohib olla laiem kui sissejuhatus */
+.uu-l { list-style: none; margin: 0 0 4px; padding: 0; }
+.uu-l li { display: grid; grid-template-columns: 5.9em minmax(0, 22em) minmax(0, 1fr); column-gap: 14px; align-items: baseline; padding: 3px 0; line-height: 1.35; border-top: 1px solid var(--grid); }
+.uu-l li:first-child { border-top: 0; }
 .uu-l time { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; white-space: nowrap; }
-.uu-l b { display: block; font-weight: 600; color: var(--ink); }
-.uu-l small { display: block; font-size: 13.6px; color: var(--ink-3); }
+.uu-l li > span { display: contents; }
+.uu-l b { font-weight: 600; color: var(--ink); }
+.uu-l small { font-size: 13.6px; color: var(--ink-3); }
 .uu-l a { color: var(--signal); }
+.uu-l b a { color: var(--ink); text-decoration-color: var(--control); text-underline-offset: 2px; } .uu-l b a:hover { color: var(--signal); text-decoration-color: currentColor; }
+@media (max-width: 680px) {
+  .uu-l li { grid-template-columns: 5.6em minmax(0, 1fr); column-gap: 10px; }
+  .uu-l small { grid-column: 2; }
+}
 
 html[data-t] {
   /* Kadri 9.11.2026: laial ekraanil poole väiksemad külgvarud kui 1280 px piiriga: (ekraan + 1280) / 2, kuni 1920 px */
@@ -1458,7 +1466,7 @@ html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { opacity: .3;
 
 /* V9 (Kadri 26.11.2026): heledas teemas on pilt sinise tooniga. Hall pilt segatakse tooniga (luminosity), filter jääb ära,
    sest grayscale muudaks halliks ka lehevärvi katte. Nähtavus 42% nagu laboris, kus Kadri V9 valis; tumedas ei muutu. */
-html[data-t][data-seire-teema="soft"] .pea-rahu.pilt::before { filter: none; opacity: .42; background-color: #6071a9; background-blend-mode: normal, normal, luminosity; }
+html[data-t][data-seire-teema="soft"] .pea-rahu.pilt::before { filter: none; opacity: .42; background-color: #546ab6; background-blend-mode: normal, normal, luminosity; }
 
 /* Saidi nimi päises: suurem ja must, ka avalehel (Kadri 9.11.2026 00:13) */
 .top .mark, .top .mark[aria-current="page"] { color: var(--ink); font-size: 24px; letter-spacing: -0.02em; line-height: 1.1; }
