@@ -737,28 +737,21 @@ def ettevotted(A, vaade, vaated=None):
              mrk='<span class="tv-lg ee"></span>Eesti, <span class="tt-lg kr"></span>Põhjamaade keskmine. Vahe on protsendipunktides.',
              liik="arvutatud", allikas="Eurostat isoc_eb_ai", kuup=kp(ee_el["avaldatud"]) if ee_el.get("avaldatud") else str(y)),
     ]
-    if S:
-        from collections import Counter
-        ruhm = Counter(tt.GRUPP[r["ligipaas"]] for r in S)
-        suurim, n_suurim = ruhm.most_common(1)[0]
-        sona_lubavad = ({"ava": "Enamik avas kõigile", "pii": "Enamik piirab rolliga", "kee": "Enamik keelas"}[suurim]
-                        if n_suurim * 2 > len(S) else "Otsused on erinevad")
-        read.append(dict(kys="Mida firmad töötajatele lubavad?", ank="ligipaas", ava="Ava otsused ja põhjused", sona=sona_lubavad,
-                         arv=f'{len(S)} otsust', all=f'{min(r["kuupaev"] for r in S)[:4]}–{max(r["kuupaev"] for r in S)[:4]}, uudistest kogutud',
-                         pilt=tt.otsuste_aeg(S, LIGIPAAS_NIMI), mrk=tt.otsuste_legend(S) + ". Valim on uudistest, mitte kõigi firmade ülevaade.",
-                         liik="uudised", allikas="ettevõtete teated", kuup="viimane " + kp(max(r["kuupaev"] for r in S))))
+    # Kadri 26.11.2026 (nõrgad numbrid): rida „Mida firmad töötajatele lubavad?“ on tahvlilt maas. Otsused on uudistest
+    # kogutud üksikud välisfirmade teated; nende arv ei ole Eesti ettevõtete seis. Plokk jääb üksikasjadesse.
     if KU:
         n_hea = sum(tt.katse_number(r["leid"])[1] for r in KU)
         sona_katsed = "Jah, katsetes" if n_hea == len(KU) else "Katsetes mitte" if n_hea == 0 else "Mitte igas ülesandes"
         read.append(dict(kys="Kas tehisaru tõstab tootlikkust?", ank="kasu", ava="Ava katsed ja uuringud", sona=sona_katsed,
-                         arv=f"{n_hea} katses {len(KU)}-st", all="tootlikkus kasvas; igaüks eri ülesandes",
-                         pilt=tt.katse_ruudud(KU), mrk=tt.katse_loend(KU) + " Katsete numbreid ei liideta.",
+                         arv=f"{len(KU)} katset", all=f"{n_hea} katses tootlikkus kasvas; igaüks eri ülesandes",
+                         pilt=tt.katse_ruudud(KU), mrk=tt.katse_loend(KU) + " Katsed on seire valik, mitte kõigi uuringute ülevaade; numbreid ei liideta.",
                          liik="katse", allikas=f"{len(KU)} uuringut", kuup="avaldatud " + "–".join(sorted({min(map(tt.aasta, KU)), max(map(tt.aasta, KU))}))))
     sona_voimekus = ("Jah" if not maas else "Enamikus näitajates" if len(tasemel) * 2 > len(P) else
                      "Pooltes näitajates" if len(tasemel) * 2 == len(P) else "Vähestes näitajates" if tasemel else "Veel mitte")
     read.append(dict(kys="Kas võimekus on Põhjamaade tasemel?", ank="pohjamaad", ava="Vaata üheksat näitajat", sona=sona_voimekus,
                      arv=f"{len(tasemel)} / {len(P)}", all="näitajat Põhjamaade tasemel",
-                     pilt=tt.ruudud(P), mrk="Maas: " + e(", ".join(p["nimi"][:1].lower() + p["nimi"][1:] if not p["nimi"][1:2].isupper() else p["nimi"] for p in maas)) + "." if maas else "Üheski näitajas pole maas.",
+                     pilt=tt.ruudud(P), mrk=("Maas: " + e(", ".join(p["nimi"][:1].lower() + p["nimi"][1:] if not p["nimi"][1:2].isupper() else p["nimi"] for p in maas)) + "."
+                                             if maas else "Üheski näitajas pole maas.") + " Näitajad ja taseme piiri valis seire; teise valikuga oleks arv teine.",
                      liik="mõõdetud", allikas="Eurostat, UNESCO UIS", kuup=f'andmeaastad {min(p["a"] for p in P)}–{max(p["a"] for p in P)}'))
     vv = [v for v in A["vaited"] if vaite_teema(v) == "ettevotted"]
     allikad = [ee["avaldatud"], ee_el.get("avaldatud"), A["leiud"]["gem-ai-teadlikkus"]["avaldatud"], siht["kontrollitud"]]

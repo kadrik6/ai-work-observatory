@@ -128,7 +128,7 @@ def tahvel(A, vaated, d, vaite_teema, tootus_el_koht):
     gk = _o(A, "genai-kesk")
     HL = A["hanked_leht"]
     inn = [r for r in HL["aastad"] if r.get("innovatsioonimark_osakaal") is not None][-1]
-    INN_SIHT = 2.0  # riigihangete innovatsioonisiht, sama mis teemalehel (hanked.html#innovatsioon)
+    INN_SIHT = 2.0  # riigihangete innovatsioonisiht aastaks 2027 (OECD aruanne 2026, lk 41 ja 49)
     from lehed_ulevaade import LAHK_TEEMA
     vt, lahk = collections.defaultdict(list), collections.defaultdict(list)
     for v in A["vaited"]:
@@ -187,8 +187,9 @@ def tahvel(A, vaated, d, vaite_teema, tootus_el_koht):
          _muutus(None, "aastaid veel ei võrrelda", "klassifikaator uueneb pärast pimekontrolli"),
          '<small class="tv-tuhi">–</small>', ("–", ""),
          _vaited(vt["hanked"], vaated, lahk["hanked"]),
-         menuu("hanked", f'innovatsioonimärk {pr(inn["innovatsioonimark_osakaal"])}% ({inn["aasta"]}) → siht {pr(INN_SIHT, 0)}%', "innovatsioon")
-         + osariba(inn["innovatsioonimark_osakaal"], INN_SIHT * 1.25, INN_SIHT, silt=f'Innovatsioonimärk {pr(inn["innovatsioonimark_osakaal"])}%, siht {pr(INN_SIHT, 0)}%'),
+         # Kadri 26.11.2026 (nõrgad numbrid): märki ei panda sihiga ühele ribale. Hankija märge, hangete arv ja eelarve annavad
+         # eri arvu ning sihi ühik on kontrollimata (hanked.html#innovatsioon).
+         menuu("hanked", f'innovatsioonihangete siht {pr(INN_SIHT, 0)}% (2027); hankija märkega {pr(inn["innovatsioonimark_osakaal"])}% ({inn["aasta"]}), mõõtmisviis kontrollimata', "innovatsioon"),
          HL["seis"]["kuupaev"]),
     ]
     viimane = max(r[-1] for r in R)

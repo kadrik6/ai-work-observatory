@@ -586,14 +586,14 @@ def hanked(A, vaade, vaated=None):
     inn = [r for r in aastad if r.get("innovatsioonimark_osakaal") is not None]
     inn_read = "".join(
         f'<div class="vr{" f" if r["aasta"] == inn[-1]["aasta"] else ""}"><span class="vr-n">{r["aasta"]}{"*" if (poolik and r["aasta"] == viimane_t) or r is inn[0] else ""}</span>'
-        f'<span class="vr-r"><i style="width:{r["innovatsioonimark_osakaal"] / 2.5 * 100:.1f}%"></i><b class="vr-siht" style="left:{2 / 2.5 * 100:.1f}%"></b></span>'
+        f'<span class="vr-r"><i style="width:{r["innovatsioonimark_osakaal"] / 2.5 * 100:.1f}%"></i></span>'
         f'<span class="vr-v">{pr(r["innovatsioonimark_osakaal"])}%</span></div>' for r in inn)
     sec_inn = f"""
 <section class="pn sp7" id="innovatsioon" aria-labelledby="h-innovatsioon">
-  <div class="pn-h"><h2 id="h-innovatsioon">Innovatsioonimärgiga hankeid oli {inn[-1]["aasta"]}. aastal <b>{pr(inn[-1]["innovatsioonimark_osakaal"])}%</b>, siht on 2% ¦ märgi määratlus on kontrollimata</h2></div>
-  <p class="ps">Osa eForms-hangetest, millele hankija märkis innovatsiooni; * osaline aasta (eForms algas septembris 2023). Siht: {a(OECD_URL, "OECD 2026")}. Rahandusministeeriumi 0,2% (2023) võib olla teise määratlusega.</p>
+  <div class="pn-h"><h2 id="h-innovatsioon">Innovatsioonimärgiga hankeid oli {inn[-1]["aasta"]}. aastal <b>{pr(inn[-1]["innovatsioonimark_osakaal"])}%</b> ¦ teised allikad annavad teise arvu</h2></div>
+  <p class="ps">Osa eForms-hangetest, millele hankija märkis innovatsiooni; * osaline aasta (eForms algas septembris 2023). Märge on hankija enda linnuke ja selle määratlus on kontrollimata.</p>
   <div class="viis">{inn_read}</div>
-  <p class="kr-leg"><span><i class="kr-t siht"></i>siht 2%</span></p>
+  <p class="allikas">Sihijoont joonisel ei ole. Riigi siht on 2% aastaks 2027 ({a(OECD_URL, "OECD 2026")}), aga allikad mõõdavad eri asja: OECD aruande järgi on innovatsioonihankeid alla 1% hangete arvust ja {pr(float(A["avalik"]["hanked-innovatsioon"]["vaartus"]), 1)}% hangete eelarvest, Rahandusministeeriumi järgi 0,2% (2023). Kas siht käib märke, arvu või eelarve kohta, pole kontrollitud.</p>
 </section>"""
 
     # 3. Kuidas hangitakse: lehe tunnuspilt (hanked_tahvel.sec_kuidas), siin enam ei korrata
@@ -793,7 +793,7 @@ def hanked(A, vaade, vaated=None):
     import datetime
     import hanked_tahvel as ht
     import teema_tahvel as tt
-    D = ht.Andmed(H, KASITSI)
+    D = ht.Andmed(H, KASITSI, float(A["avalik"]["hanked-innovatsioon"]["vaartus"]))
     uks = tt.uksikasjad([
         ("andmed", "Kuidas riik tehisaru ostab?", "aastad, innovatsioonimärk, hankijad, litsentsid, täpsus", sec_andmed + markus),
         ("lopp", "Reeglid ja allikad", "1 reegel · 2 allikat", tm.teema_lopp(t_uuringud, t_vaited, t_reeglid, t_allikad)),

@@ -13,7 +13,7 @@ from komponendid import (aastatulbad, ajajoon, allikarida, e, ei_naita, faktid, 
                          margend, muutus, osad, pr, riik, ribad, sihiriba, tabel, vastavus)
 
 VORDLUS = ["EE", "FI", "SE", "DK", "NO", "DE", "NL", EL]
-IN, TOO, OS, DS = "inimeste-tehisaru-kasutus", "tooalane-tehisaru-kasutus", "tehisaru-oskuse-puudus", "inimeste-digioskused"
+IN, TOO, OS, DS = "inimeste-tehisaru-kasutus", andmed.TOOALANE, "tehisaru-oskuse-puudus", "inimeste-digioskused"
 EB = "ettevotete-tehisaru-kasutus"
 EUROSTAT = "https://ec.europa.eu/eurostat/databrowser/view/{}/default/table"
 
@@ -56,11 +56,11 @@ def inimesed(A, vaade, vaated=None):
     koht = andmed.koht(A, IN, "EE", y)
     el = andmed.el27_aasta(A, IN, y)
     jarjest = sorted(el.values(), key=lambda v: -v["vaartus"])
-    # Statistikaameti 2026. aasta tööalane number on registris eraldi näitaja nime all (numbrid-2026.csv)
-    too25 = andmed.leia(A, TOO, "EE", "uusim:alus")
-    too_uued = [v for v in andmed.vali(A, TOO + "-uus", "EE") + andmed.vali(A, "inimeste-tehisaru-kasutus-too", "EE")
-                if v["klass"] in andmed.VORRELDAVAD and v["aasta"] > too25["aasta"]]
-    too = max(too_uued, key=lambda v: v["aasta"]) if too_uued else too25
+    too25, too = andmed.tooalane_kasutus(A)
+    # Jagaja on hõivatud (Kadri 26.11.2026: jagaja peab sobima küsimusega); ELi võrdlus jääb kõigi isikute alusele (Eurostat).
+    th0, th = andmed.tooalane_hoivatutest(A)
+    if th["aasta"] != too["aasta"]:
+        raise AndmeViga("Inimeste leht: hõivatute ja kõigi 16–74-aastaste tööalane kasutus on eri aastast")
     # Kasutuse lehe pealkiri räägib ainult sellest, mis sellel lehel on (Kadri 6.11.2026 22:27, ettepanek 5)
     kontrolli(vaade, f"tööl kasutab seda {pr(too['vaartus'])}% kõigist 16–74-aastastest")
 
@@ -150,8 +150,8 @@ def inimesed(A, vaade, vaated=None):
     sec_too = f"""
 <section class="jaotis" id="tool" aria-labelledby="h-tool">
   <header>
-    <h2 id="h-tool">Tööl kasutab tehisaru <b>{pr(too["vaartus"])}% Eesti 16–74-aastastest</b> ({too["aasta"]}); ELi skaalal oli Eesti {y}. aastal {k_too}. kohal</h2>
-    <p class="alam">Protsent on kõigist 16–74-aastastest, ka töötutest, õpilastest ja pensionäridest. Töötajate seas on osakaal suurem.</p>
+    <h2 id="h-tool">Tööl kasutab tehisaru <b>{pr(th["vaartus"])}% Eesti hõivatutest</b> ({th["aasta"]}); kõigist 16–74-aastastest {pr(too["vaartus"])}%, selle järgi oli Eesti ELis {y}. aastal {k_too}. kohal</h2>
+    <p class="alam">Hõivatute osakaal on {a(th["url"], "Statistikaameti tabelist IT71")} (rühm „Hõivatud“){f"; aasta varem {pr(th0['vaartus'])}%" if th0 else ""}. Riike võrreldakse kõigi 16–74-aastaste alusel (ka töötud, õpilased ja pensionärid), sest Eurostati võrdlusalus on selline.</p>
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-tool">
@@ -160,7 +160,7 @@ def inimesed(A, vaade, vaated=None):
       {allikarida([("Eurostat, isoc_ai_iaiu", EUROSTAT.format("isoc_ai_iaiu"), "uuendatud " + kp(m_too["allikas_uuendas"]))])}
     </figure>
     <div class="kulg">
-      {vastavus("osaliselt", "Number näitab, kui paljud kasutasid tehisaru tööks, aga mitte seda, kui suur osa töötajatest kasutab või mida tööga tehti.")}
+      {vastavus("osaliselt", "Joonis võrdleb riike kõigi 16–74-aastaste alusel; hõivatute osakaal on siin ainult Eesti kohta. Kumbki arv ei ütle, mida tehisaruga tööl tehti.")}
       <div class="plokk">
         <h3>Eestis kasvas tööalane kasutus {pr(too25["vaartus"])}%-lt {pr(too["vaartus"])}%-ni</h3>
         <div class="vahe">
@@ -287,34 +287,29 @@ def inimesed(A, vaade, vaated=None):
     J_IN, J_TOO, J_OS, J_DS = el_jaotus(A, IN), el_jaotus(A, TOO), el_jaotus(A, OS, vaiksem_parem=True), el_jaotus(A, DS)
     if {J["y"] for J in (J_IN, J_TOO, J_OS, J_DS)} != {y} or J_IN["koht"] != koht:
         raise AndmeViga("Inimeste tahvli ELi aastad või koht ei klapi ploki „Kus on Eesti ELis?“ numbritega")
-    pp = sorted(paarid, key=lambda p: -(p[1]["vaartus"] - p[0]["vaartus"]))
-    teised = ", ".join(f'{riik(v1["geo"])} +{tt.p1(v1["vaartus"] - v0["vaartus"])}' for v0, v1 in pp if v1["geo"] != "EE")
     # Vastus sõnaga (Kadri 25.11.2026): sõna tuleb numbrist, piirid on teema_tahvel.sona_* ja siin kahes kohas
-    PIIR_NAABER_P, PIIR_DIGI_P = 2, 1      # protsendipunkti: alla selle loetakse kasv samaks ja digioskused muutumatuks
-    naabrid = [v1["vaartus"] - v0["vaartus"] for v0, v1 in pp if v1["geo"] != "EE"]
-    sona_naabrid = ("Jah, umbes sama kiiresti" if all(abs(n - kasv) < PIIR_NAABER_P for n in naabrid) else
-                    "Ei, aeglasemalt" if all(n <= kasv - PIIR_NAABER_P for n in naabrid) else
-                    "Ei, kiiremini" if all(n >= kasv + PIIR_NAABER_P for n in naabrid) else "Osa kiiremini, osa aeglasemalt")
+    PIIR_DIGI_P = 1      # protsendipunkti: alla selle loetakse digioskused muutumatuks
+    # Kadri 26.11.2026 (nõrgad numbrid): naabrite kasvu rida on tahvlilt maas. Võrdlus pani kõrvuti Eurostati aasta ja riikliku
+    # statistika järgmise aasta ning küsimuse samasus on kontrollimata; riikide kasv jääb plokki „Kasutus ELis“ koos hoiatusega.
+    # Tööl kasutamise jagaja on hõivatud; ELi võrdlus jääb kõigi isikute alusele (Eurostat) ja on märkuses.
+    sa25 = andmed.kataloogist(A, "sa-it71", "EE", ee["aasta"] - 1)
     read = [
         dict(kys="Kui paljud kasutavad?", ank="kasutus", ava="Ava kasutus Eestis ja ELis", sona=tt.sona_osa(ee["vaartus"]),
              arv=f'{tt.p1(ee["vaartus"])}%', all=f'{ee["aasta"]}, 16–74-aastased',
              pilt=osariba(ee["vaartus"], 100, silt=f'{tt.p1(ee["vaartus"])}%'),
-             mrk=f'{y}: {pr(ee25["vaartus"])}% (Eurostat), küsimus võib erineda; seda pole veel kontrollitud.',
+             mrk=f'Aasta varem {pr(sa25["vaartus"])}% (sama Statistikaameti tabel); küsimus võib erineda, sõnastuse samasus on kontrollimata.',
              liik="mõõdetud", allikas="Statistikaamet " + ee["allikas"].split("tabel ")[-1], kuup=kp(ee["avaldatud"])),
         dict(kys="Kus on Eesti ELis?", ank="kasutus", ava="Ava kaart ja riikide järjestus", sona=tt.sona_koht(koht, J_IN["n"]),
              arv=f"{koht}. koht", all=f'{J_IN["n"]} riigist, {y}', pilt=ribarida(J_IN),
              mrk=f'Eesti {pr(J_IN["ee"])}%, <span class="tv-lg eu"></span>EL {pr(J_IN["eu"])}%. Eurostat mõõtis seda esimest korda {y}. aastal.',
              liik="mõõdetud", allikas="Eurostat isoc_ai_iaiu", kuup=str(y)),
     ]
-    if len(pp) > 1:
-        read.append(dict(kys="Kas naabrid kasvavad sama kiiresti?", ank="kasutus", ava="Ava riikide kasv aastaga", sona=sona_naabrid,
-                         arv=f'Eesti +{tt.p1(kasv)} p', all=f"{y} → {y + 1}, kontrollimata võrdlus",
-                         pilt=tt.mini_hantlid(pp, riik), mrk=f"{teised}. {y} Eurostat, {y + 1} riiklik statistika; küsimuse samasus kontrollimata.",
-                         liik="arvutatud", allikas="riiklikud statistikaametid", kuup=f"{y} ja {y + 1}"))
     read += [
-        dict(kys="Kui paljud kasutavad tööl?", ank="tool", ava="Ava tööalane kasutus", sona=tt.sona_osa(too["vaartus"]),
-             arv=f'{tt.p1(too["vaartus"])}%', all=f'{too["aasta"]}, kõigist 16–74-aastastest',
-             pilt=ribarida(J_TOO), mrk=f'Arvus on ka töötud, õpilased ja pensionärid. ELi skaalal {J_TOO["koht"]}. koht ({y}: Eesti {pr(J_TOO["ee"])}%, EL {pr(J_TOO["eu"])}%).',
+        dict(kys="Kui paljud töötajad kasutavad tööl?", ank="tool", ava="Ava tööalane kasutus", sona=tt.sona_osa(th["vaartus"]),
+             arv=f'{tt.p1(th["vaartus"])}%', all=f'{th["aasta"]}, hõivatutest' + (f'; aasta varem {pr(th0["vaartus"])}%' if th0 else ""),
+             pilt=osariba(th["vaartus"], 100, silt=f'{tt.p1(th["vaartus"])}% hõivatutest'),
+             mrk=(f'Kõigist 16–74-aastastest (ka töötud, õpilased ja pensionärid) {pr(too["vaartus"])}%. ELiga võrreldakse seda alust: '
+                  f'{J_TOO["koht"]}. koht ({y}: Eesti {pr(J_TOO["ee"])}%, EL {pr(J_TOO["eu"])}%).'),
              liik="mõõdetud", allikas="Statistikaamet " + too["allikas"].split("tabel ")[-1], kuup=kp(too["avaldatud"]) if too.get("avaldatud") else str(too["aasta"])),
         dict(kys="Kas digioskused paranevad?", ank="digi", ava="Ava digioskused riigiti",
              sona=tt.sona_muutus(ds["vaartus"] - ds23["vaartus"], PIIR_DIGI_P, "Jah", "Ei, langevad", "Püsivad samal tasemel"),
@@ -323,8 +318,9 @@ def inimesed(A, vaade, vaated=None):
              mrk=f'<span class="tv-lg siht"></span>ELi siht {siht["siht"]}% ({siht["aasta"]}) on kogu ELi kohta.',
              liik="mõõdetud", allikas="Eurostat isoc_sk_dskl_i21", kuup=str(ds["aasta"])),
         dict(kys="Kui paljusid takistab oskuste puudus?", ank="ei-oska", ava="Ava riikide võrdlus", sona=tt.sona_osa(J_OS["ee"]),
-             arv=f'{pr(J_OS["ee"])}%', all=f"{y}, ei kasutanud, sest ei osanud",
-             pilt=ribarida(J_OS), mrk=f'ELis {J_OS["koht"]}. väikseim, EL {pr(J_OS["eu"])}%. Statistikaamet annab {pr(it72["vaartus"])}%, sest seal võib inimesel olla mitu põhjust (lahknevus C6).',
+             arv=f'{pr(J_OS["ee"])}%', all=f'{y}, Eurostat; Statistikaameti järgi {pr(it72["vaartus"])}%',
+             pilt=ribarida(J_OS), mrk=(f'Kaks allikat, kaks arvu: Eurostatis on inimene ühe põhjuse all, Statistikaameti tabelis võib olla mitme all '
+                                       f'(lahknevus C6). Riikide võrdluses kasutatakse Eurostati: ELis {J_OS["koht"]}. väikseim, EL {pr(J_OS["eu"])}%.'),
              liik="mõõdetud", allikas="Eurostat isoc_ai_iaiuxr", kuup=str(y)),
     ]
     vv = [v for v in A["vaited"] if vaite_teema(v) == "inimesed"]
@@ -585,19 +581,25 @@ def too(A, vaade, vaated=None):
     def mt(x):
         return f'{"+" if x >= 0 else "−"}{pr(abs(x))}%'
     ee_av, ee_mu, el_av, el_mu = mu("EE", "T", "avatud"), mu("EE", "T", "muud"), mu(EL, "T", "avatud"), mu(EL, "T", "muud")
-    if not ee_av < ee_mu:
-        raise AndmeViga("Pealkiri ütleb, et Eestis kasvas hõive avatud ametites vähem kui teistes; andmed seda enam ei näita")
+    # Kadri 26.11.2026 (nõrgad numbrid): pealkiri ütleb Eesti kohta suuna ainult siis, kui rühmade vahe on üle valimivea
+    # piiri (too_tahvel.PIIR_HOIVE_PR, seire hinnang). ELi valim on suur, seal öeldakse suund alati.
+    from too_tahvel import PIIR_HOIVE_PR
+    if abs(ee_av - ee_mu) >= PIIR_HOIVE_PR:
+        hoive_lause = f'Eestis kasvas hõive avatud ametites <b>{"vähem" if ee_av < ee_mu else "rohkem"} kui teistes</b>'
+    else:
+        hoive_lause = f'Eestis on avatud ja teiste ametite vahe <b>liiga väike, et suunda öelda</b> ({mt(ee_av)} ja {mt(ee_mu)})'
+    el_lause = f'ELis kasvas hõive avatud ametites {"rohkem" if el_av > el_mu else "vähem"} kui teistes ({mt(el_av)} ja {mt(el_mu)})'
     m_read = [("Eesti, avatud ametid", "aste 1–4", ee_av, mt(ee_av)), ("Eesti, teised ametid", "minimaalne või ei puutu", ee_mu, mt(ee_mu)),
               ("EL, avatud ametid", "aste 1–4", el_av, mt(el_av)), ("EL, teised ametid", "minimaalne või ei puutu", el_mu, mt(el_mu))]
     def osa_pr(sugu, y, osa_="avatud"):
         g = aeg[("EE", sugu)][y]
         return g[osa_] / g["kokku"] * 100
     n_k0, m_k0 = mu("EE", "F", "korge"), mu("EE", "M", "korge")
-    sugu_lause = f'{A1}. aastal töötas Eestis avatud ametites {pr(osa_pr("F", A1), 0)}% naistest ja {pr(osa_pr("M", A1), 0)}% meestest. Kõige avatumates ametites (aste 3–4) vähenes naiste hõive {A0}–{A1} {pr(abs(n_k0), 0)}% ja meeste oma kasvas {pr(m_k0, 0)}%.' if n_k0 < 0 < m_k0 else f'{A1}. aastal töötas Eestis avatud ametites {pr(osa_pr("F", A1), 0)}% naistest ja {pr(osa_pr("M", A1), 0)}% meestest.'
+    sugu_lause = f'{A1}. aastal töötas Eestis avatud ametites {pr(osa_pr("F", A1), 0)}% naistest ja {pr(osa_pr("M", A1), 0)}% meestest. Kõige avatumates ametites (aste 3–4) oli naiste hõive muutus {A0}–{A1} {mt(n_k0)} ja meeste oma {mt(m_k0)}; rühmad on väikesed (umbes {pr(K["aeg_uhtlane"][("EE", "F")][A1]["korge"], 0)} ja {pr(K["aeg_uhtlane"][("EE", "M")][A1]["korge"], 0)} tuhat hõivatut) ja selline vahe võib olla valimiviga.'
     sec_hoive = f"""
 <section class="jaotis" id="hoive" aria-labelledby="h-hoive">
   <header>
-    <h2 id="h-hoive"><span class="kys">Kuidas muutus hõive avatud ametites?</span> Eestis kasvas hõive avatud ametites <b>vähem kui teistes</b> ¦ see kehtib aastate {A0}–{A1} kohta. ELis oli vastupidi</h2>
+    <h2 id="h-hoive"><span class="kys">Kuidas muutus hõive avatud ametites?</span> {hoive_lause} ¦ {A0}–{A1}. {el_lause}</h2>
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-hoive">
@@ -607,7 +609,7 @@ def too(A, vaade, vaated=None):
       {allikarida([("Eurostat, lfsa_egai2d", EUROSTAT.format("lfsa_egai2d"), "uuendatud 30.10.2026"), (f"ILO {ilo['aasta']}", ilo["url"], "")])}
     </figure>
     <div class="kulg">
-      {vastavus("osaliselt", "See on kirjeldus, mitte põhjus. Eesti majandus oli 2023–2024 langusel ja see mõjutas harusid eri moodi. Eesti tööjõu-uuringu valim on väike: mõne tuhande inimese muutus võib olla juhuslik.")}
+      {vastavus("osaliselt", f"See on kirjeldus, mitte põhjus. Eesti majandus oli 2023–2024 langusel ja see mõjutas harusid eri moodi. Eesti arvud tulevad tööjõu-uuringu valimist: mõne protsendi suurune muutus võib olla valimiviga. Alla {PIIR_HOIVE_PR}% vahet seire Eesti kohta ei tõlgenda; piir on seire hinnang, Statistikaameti usalduspiire pole kontrollitud.")}
       {faktid([
           ("Mida jälgida", "s", "Kui see erinevus püsib ka 2026. ja 2027. aastal ning on suurem noorte seas, on see märk, mida tasub uurida registriandmetega, nagu Taanis ja USAs tehti."),
       ])}

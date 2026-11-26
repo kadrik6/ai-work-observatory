@@ -71,35 +71,21 @@ def kaks_riba(read, skaala=100, w=150, h=34):
     return f'<svg class="tt-svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="{aria}">{"".join(out)}</svg>'
 
 
-def vahemikud(D, w=150, h=46):
-    """OECD indeksi 4 mõõdet 0–1: madalaim kuni kõrgeim valitsemisala; mõju fookuses."""
-    out = []
-    X = lambda x: 2 + x * (w - 30)  # noqa: E731
-    for i, (n, m) in enumerate(MO):
-        y = 4 + i * 11
-        a0, a1 = D.v(f"indeks-{m}-min"), D.v(f"indeks-{m}-max")
-        f = m == "moju"
-        out.append(f'<line class="tv-ax" x1="{X(0)}" x2="{X(1):.1f}" y1="{y}" y2="{y}" opacity=".4"/>'
-                   f'<line class="{"tv-lf" if f else "av-hall"}" x1="{X(a0):.1f}" x2="{X(a1):.1f}" y1="{y}" y2="{y}" stroke-width="5" stroke-linecap="round"/>'
-                   f'<text class="tt-t{" b" if f else ""}" x="{X(1) + 4:.1f}" y="{y + 3.5}">{n[:3]}.</text>')
-    aria = "OECD indeks 0–1: " + "; ".join(f'{n} {pr(D.v(f"indeks-{m}-min"), 2)}–{pr(D.v(f"indeks-{m}-max"), 2)}' for n, m in MO)
-    return f'<svg class="tt-svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="{aria}">{"".join(out)}</svg>'
-
-
 # Vastus sõnaga (Kadri 25.11.2026): sõna tuleb numbrist. Piirid on teema_tahvel.sona_osa ja siin.
-PIIR_MOJU = (0.33, 0.66)   # mõjuskoor 0–1: kõrgeim valitsemisala alla esimese = vähe, madalaim üle teise = jah
 PIIR_RAHA = (50, 66)       # ELi osa uuendusrahast, %: üle teise = peamiselt, üle esimese = üle poole
 
 
-def sona_moju(lo, hi):
-    return "Vähe" if hi < PIIR_MOJU[0] else "Jah" if lo >= PIIR_MOJU[1] else "Osaliselt"
-
-
 def sona_kord(k, kr):
-    """k asutust kasutas tehisaru, neist kr ilma oma korrata."""
+    """k asutust kasutas tehisaru, neist kr ilma oma korrata. Vastus käib küsitluse aasta järele („2025. aastal …“)."""
     if not 0 <= kr <= k or not k:
         raise AndmeViga(f"Asutuste korra arvud ei klapi: {kr} / {k}")
-    return "Jah" if kr == 0 else "Enamikul veel mitte" if kr * 2 > k else "Enamikul on"
+    return "kõigil oli" if kr == 0 else "enamikul veel mitte" if kr * 2 > k else "enamikul oli"
+
+
+def sona_katse(p):
+    """Mitu protsenti hindamistest oli juhuslikustatud katse → sõna."""
+    osa = tt.sona_osa(p)
+    return f"{osa} hindamine on katse" if float(p) < 15 else f"{osa} hindamistest on katse"
 
 
 def sona_raha(p):
@@ -125,21 +111,27 @@ def read(D):
              mrk=f'Omavalitsustes {gl["vaartus"]}% ({gl["lugeja"]}/{gl["nimetaja"]}). Küsiti ainult uuenduse teinutelt.',
              liik="mõõdetud", allikas="OECD küsitlus", kuup="12.2025–02.2026"),
         dict(kys="Kas uuenduste mõju mõõdetakse?", ank="moju", ava="Ava indeks valitsemisalade kaupa",
-             sona=sona_moju(v("indeks-moju-min"), v("indeks-moju-max")),
-             arv=f'{pr(v("indeks-moju-min"), 2)}–{pr(v("indeks-moju-max"), 2)}', all="mõjuskoor 0–1, madalaim ja kõrgeim valitsemisala",
-             pilt=vahemikud(D),
-             mrk=f'Võimekus {pr(v("indeks-voimekus-min"), 2)}–{pr(v("indeks-voimekus-max"), 2)}. Katset kasutab {pr(v("hindamine-rct-tootajad"), 0)}% hindamistest.',
-             liik="arvutatud", allikas="OECD indeks", kuup="2026"),
-        dict(kys="Kas asutustel on tehisaru kord?", ank="asutused", ava="Vaata asutusi", sona=sona_kord(D.k, D.kr),
-             arv=f"{D.kr} / {D.n}", all="asutust kasutas valmislahendusi ilma oma korrata",
-             pilt=jaotusriba([("s", D.kr / D.n * 100), ("m", (D.k - D.kr) / D.n * 100)],
-                             f"{D.kr} asutust kasutas ilma korrata, {D.k - D.kr} korraga, {D.n - D.k} ei kasutanud"),
-             mrk=f"{D.k} asutust {D.n}-st kasutas välismaiseid valmislahendusi; neist {D.k - D.kr} asutusel oli oma kord. Ainult vastanud asutused.",
+             # Kadri 26.11.2026 (nõrgad numbrid): nähtav arv on osakaal, mida saab lugeda (katsete osa hindamistest).
+             # OECD mõjuskoor 0–1 on koondhinnang ilma loetava ühikuta; see jääb märkusesse ja plokki.
+             sona=sona_katse(v("hindamine-rct-tootajad")),
+             arv=f'{pr(v("hindamine-rct-tootajad"), 0)}%', all="hindamistest oli juhuvalikuga katse",
+             pilt=osariba(v("hindamine-rct-tootajad"), 100, silt=f'{pr(v("hindamine-rct-tootajad"), 0)}%'),
+             mrk=(f'OECD mõjuskoor (0–1, kas uuenduste tulemusi mõõdetakse) on valitsemisalati {pr(v("indeks-moju-min"), 2)}–{pr(v("indeks-moju-max"), 2)}, '
+                  f'võimekuse skoor {pr(v("indeks-voimekus-min"), 2)}–{pr(v("indeks-voimekus-max"), 2)}. Skoor on koondhinnang, mitte osakaal. '
+                  "Katsete osa on teenistujate vastuste järgi."),
+             liik="mõõdetud", allikas="OECD küsitlus", kuup="12.2025–02.2026"),
+        # Jagaja on asutused, kes valmislahendusi kasutasid (enne oli jagaja kõik vastanud asutused); aasta on vastuses näha.
+        dict(kys="Kas asutustel on tehisaru kord?", ank="asutused", ava="Vaata asutusi", sona=f'{D.rk["aasta"]}. aastal {sona_kord(D.k, D.kr)}',
+             arv=f"{D.k - D.kr} / {D.k}", all="tehisaru kasutanud asutusest oli oma kord",
+             pilt=jaotusriba([("s", (D.k - D.kr) / D.k * 100)], f"{D.k - D.kr} asutusel {D.k}-st oli oma kord"),
+             mrk=(f"Riigikontrolli küsitlusele vastas {D.n} ministeeriumi ja suuremat asutust; {D.k} kasutas välismaiseid valmislahendusi. "
+                  f'Seis on aastast {D.rk["aasta"]} ja võib olla muutunud.'),
              liik="mõõdetud", allikas="Riigikontroll", kuup=kp(D.rk["avaldatud"])),
         dict(kys="Kust tuleb uuendusraha?", ank="rahastus", ava="Ava rahastus", sona=sona_raha(v("raha-el")),
              arv=f'{pr(v("raha-el"), 0)}%', all="keskvalitsuse uuendusrahast ELilt",
              pilt=osariba(v("raha-el"), 100, silt=f'{pr(v("raha-el"), 0)}% ELilt'),
-             mrk=f'Innovatsioonihangetele läheb {pr(v("hanked-innovatsioon"), 1)}% hangete eelarvest; neid on alla 1% hangetest, siht on 2% aastaks 2027.',
+             mrk=(f'Innovatsioonihangetele läheb {pr(v("hanked-innovatsioon"), 1)}% hangete eelarvest; neid on alla 1% hangete arvust. '
+                  "Riigi siht on 2% aastaks 2027; kas siht käib arvu või eelarve kohta, pole kontrollitud."),
              liik="mõõdetud", allikas="OECD aruanne", kuup="2026"),
     ]
 

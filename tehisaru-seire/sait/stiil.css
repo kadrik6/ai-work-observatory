@@ -646,6 +646,22 @@ h3.veerg { font-size: 13.5px; }
 /* Koondamiste tulbad (Töö, Kadri 5.11 23:06): rida = 3 + 4 + 5 veergu */
 .sp5 .kk-v { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .kr-ribad { display: flex; flex-direction: column; gap: 6px; }
+/* Koondamisteated ajajärjekorras, kuu on vahepealkiri (Kadri 26.11.2026: näha, kuidas asi ajas areneb, mitte suurim number ees) */
+.kr-aeg { display: flex; flex-direction: column; gap: 6px; margin: 6px 0 4px; max-width: 780px; }  /* laiemal venib tulp tühjaks ja arv jääb nimest kaugele (Kadri 26.11.2026) */
+.kr-kuu { margin: 8px 0 0; padding-bottom: 3px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 600; color: var(--ink); }
+.kr-kuu:first-child { margin-top: 0; }
+/* Nimi ühel real, kuupäev selle all (Kadri 26.11.2026). Laial ekraanil on nimeveerg nii lai, et pikk nimi ei murdu;
+   kitsal on nimi ja kuupäev ühel real tulba kohal. */
+@media (min-width: 700px) {
+  .kr-aeg .kr { grid-template-columns: 17em minmax(0, 1fr) 4.6em; }
+  .kr-aeg .kr-n { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+@media (max-width: 699px) {
+  .kr-aeg .kr { grid-template-columns: minmax(0, 1fr) 4.6em; row-gap: 2px; }
+  .kr-aeg .kr-n { grid-column: 1 / -1; text-align: left; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; color: var(--ink); }
+  .kr-aeg .kr-n small { display: inline; }
+  .kr-aeg .kr-ribad { gap: 9px; }
+}
 .kr { display: grid; grid-template-columns: 8.5em minmax(0, 1fr) 4.6em; gap: 8px; align-items: center; font-size: 13px; }
 .kr-n { text-align: right; color: var(--ink-2); line-height: 1.15; }
 .kr-n small { display: block; font-size: 11.5px; color: var(--ink-3); }
@@ -1822,6 +1838,44 @@ html[data-t] .tt-pl > .g12 { margin-top: 0; margin-bottom: 24px; }
 .tt-ring { fill: var(--panel); stroke: var(--ink-3); stroke-width: 1.5; }
 .tt-elp { fill: var(--panel); stroke: var(--ink-2); stroke-width: 2; }
 .tt-as { font-size: 13.5px; }
+/* Töö: hõive avatuse astme järgi. Iga rida on aste koos kolme suurima ametiga Eestis (Kadri 26.11.2026: aste üksi ei ütle midagi).
+   HTML-read, et ametinimed murduksid ise; telje samm on 1 / --as-n riba laiusest. */
+.as-fig { max-width: 1100px; margin: 24px 0 0; }
+.as-pea, .as-r, .as-telg { display: grid; grid-template-columns: minmax(0, 1fr) 176px minmax(0, 300px); column-gap: 28px; }
+.as-pea { align-items: end; padding-bottom: 8px; border-bottom: 1px solid var(--border); font-size: 13.6px; color: var(--ink-2); }
+.as-leg { white-space: nowrap; }
+.as-leg i { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin: 0 4px 0 8px; vertical-align: -1px; box-sizing: border-box; }
+.as-l { list-style: none; margin: 0; padding: 0; }
+.as-r { border-bottom: 1px solid var(--border); }
+.as-n { display: flex; flex-direction: column; gap: 2px; padding: 7px 0; }
+.as-n b { font-size: 15px; font-weight: 500; color: var(--ink-2); } .as-r.f .as-n b { font-weight: 700; color: var(--ink); }
+.as-n small { font-size: 13.6px; line-height: 1.4; color: var(--ink-2); }
+.as-h { display: flex; align-items: center; gap: 6px; font-size: 13.6px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.as-h i { flex: none; height: 12px; border-radius: 2px; width: calc(var(--w) * (100% - 36px)); min-width: 2px; background: var(--surface-3); }
+.as-r.f .as-h i { background: var(--signal); }
+.as-m { position: relative; min-height: 44px; border-right: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  background: repeating-linear-gradient(to right, color-mix(in srgb, var(--border) 55%, transparent) 0 1px, transparent 1px calc(100% / var(--as-n))); }
+.as-m > i, .as-m > b { position: absolute; top: 66%; }
+.as-m > .as-0 { top: 0; bottom: 0; width: 1px; background: var(--ink-3); }
+.as-m > .as-v { height: 0; margin-top: -1px; border-top: 2px dashed var(--ink-2); }
+.as-m > .as-el, .as-m > .as-ee { width: 12px; height: 12px; border-radius: 50%; box-sizing: border-box; transform: translate(-50%, -50%); }
+.as-el { background: var(--panel); border: 2px solid var(--ink-2); } .as-ee { background: var(--signal); }
+.as-m > b { top: calc(66% - 27px); transform: translateX(-50%); padding: 0 2px; background: var(--panel); font-size: 12.5px; line-height: 1.3; font-weight: 700; color: var(--signal); white-space: nowrap; }
+.as-telg { padding-top: 6px; }
+.as-tl { grid-column: 3; position: relative; height: 18px; font-size: 12px; color: var(--ink-3); }
+.as-tl span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+@media (max-width: 980px) {
+  .as-pea, .as-r, .as-telg { grid-template-columns: minmax(0, 1fr) minmax(0, 270px); }
+  .as-pea > span:nth-child(2), .as-h { display: none; }
+  .as-tl { grid-column: 2; }
+}
+@media (max-width: 680px) {
+  .as-pea, .as-r, .as-telg { grid-template-columns: minmax(0, 1fr); }
+  .as-pea > span:first-child { display: none; }
+  .as-n { padding: 10px 0 0; }
+  .as-m { min-height: 46px; margin: 0 18px; }
+  .as-tl { grid-column: 1; margin: 0 18px; } .as-tl span:nth-child(even) { display: none; }
+}
 .tk-laud { margin-top: 24px; }
 .tk-laud table { width: 100%; border-collapse: collapse; font-size: 14.5px; table-layout: fixed; }
 .tk-laud th[scope=row] { width: 24%; text-align: left; font-weight: 600; vertical-align: top; }

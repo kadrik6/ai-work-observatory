@@ -32,6 +32,9 @@ STATISTIKAAMET = [
      {"Näitaja": ["PC_I_USER"], "Isikute rühm": ["IND_TOTAL"], "Tehisintellekti kasutamise eesmärk": ["II_IUAI"]}, ""),
     ("sa-it71-too", "majandus/infotehnoloogia/infotehnoloogia-leibkonnas/IT71",
      {"Näitaja": ["PC_IND"], "Isikute rühm": ["IND_TOTAL"], "Tehisintellekti kasutamise eesmärk": ["II_IUAIWP"]}, ""),
+    # Hõivatutest (26.11.2026): küsimus „kui paljud kasutavad tööl“ vajab jagajaks töötajaid, mitte kõiki 16–74-aastaseid
+    ("sa-it71-too-hoivatud", "majandus/infotehnoloogia/infotehnoloogia-leibkonnas/IT71",
+     {"Näitaja": ["PC_IND"], "Isikute rühm": ["SAL_SELF_FAM"], "Tehisintellekti kasutamise eesmärk": ["II_IUAIWP"]}, ""),
     ("sa-it72-oskus", "majandus/infotehnoloogia/infotehnoloogia-leibkonnas/IT72",
      {"Näitaja": ["PC_IND"], "Isikute rühm": ["IND_TOTAL"], "Tehisintellekti mittekasutamise põhjus": ["II_IUAIR_2"]},
      "Põhjused liituvad üle 100% mittekasutajatest: üks inimene võib olla mitmes reas."),

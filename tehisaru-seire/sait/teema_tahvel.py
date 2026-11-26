@@ -6,12 +6,10 @@ praegused plokid kokkupandult („Üksikasjad“). Telefonis on tabelil kolm vee
 (sama muster nagu avalehe signaalitahvlil). Võrreldamatuid numbreid ei liideta ega panda samale teljele.
 Värvid tulevad CSS-ist (stiil.css, plokk „Teemalehe tahvel“).
 """
-import datetime
 import re
-from collections import Counter
 
 from andmekiht import AndmeViga
-from komponendid import e, kp, pr
+from komponendid import e, pr
 
 # Tõendi liik: sõna lugejale ja CSS klass
 LIIK = {"mõõdetud": "m", "arvutatud": "a", "katse": "k", "uudised": "u"}
@@ -64,7 +62,8 @@ def sona_muutus(vahe, piir, kasv, kahanemine, sama):
 def vastustahvel(hid, kysimus, hoiatus, read):
     """Kadri 25.11.2026: oluline enne valikulist. Rida = küsimus, vastus sõnaga, number ja väike pilt.
     Märkus, tõendi liik ja allikas avanevad real (sama muster igal laiusel), link viib graafiku juurde.
-    read: [dict(kys, ank, sona, arv, all, pilt, mrk, liik, allikas, kuup, ava)]. sona on arvutatud andmetest, mitte käsitsi kirjutatud."""
+    read: [dict(kys, ank, sona, arv, all, pilt, mrk, liik, allikas, kuup, ava)]. sona on arvutatud andmetest, mitte käsitsi kirjutatud.
+    Valikuline `leht` (nt „inimesed.html“): graafik on teisel lehel ja link viib sinna, `ank` on selle lehe ankur."""
     for r in read:
         if r["liik"] not in LIIK:
             raise AndmeViga(f"Tahvli rida „{r['kys']}“: tundmatu tõendi liik {r['liik']}")
@@ -76,7 +75,7 @@ def vastustahvel(hid, kysimus, hoiatus, read):
         f'<span class="vt-p">{r["pilt"]}</span></summary>'
         f'<div class="vt-d"><dl><dt>Märkus</dt><dd>{r["mrk"]}</dd><dt>Tõend</dt><dd><span class="tt-liik {LIIK[r["liik"]]}">{e(r["liik"])}</span></dd>'
         f'<dt>Allikas</dt><dd>{e(r["allikas"])}, {r["kuup"]}</dd></dl>'
-        f'<p class="vt-ava"><a href="#{r["ank"]}">{e(r["ava"])} →</a></p></div></details>' for r in read)
+        f'<p class="vt-ava"><a href="{e(r.get("leht", ""))}#{r["ank"]}">{e(r["ava"])} →</a></p></div></details>' for r in read)
     return f"""
 <section class="jaotis vt" id="{hid}" aria-labelledby="h-{hid}">
   <header>
@@ -136,33 +135,6 @@ def koha_joon(koht, w=200, h=50):
             + ", ".join(f"{y} {koht[y]}." for y in ys) + f'"><polyline class="tv-lf" points="{d}"/>{pts}{aa}</svg>')
 
 
-GRUPP = {"avab_koigile": "ava", "avab_ehitamise_piirab_avaldamise": "ava", "piirab_rolliga": "pii", "keelab": "kee"}
-GRUPI_NIMI = {"ava": "avas kõigile", "pii": "piirab rolliga", "kee": "keelas"}
-
-
-def otsuste_aeg(sundmused, nimi, w=200, h=50):
-    """Ettevõtete ligipääsuotsused ajateljel, värv = rühm (avab, piirab, keelab)."""
-    aastad = sorted({int(r["kuupaev"][:4]) for r in sundmused})
-    t0, t1 = datetime.date(aastad[0], 1, 1), datetime.date(aastad[-1], 12, 31)
-    X = lambda d: 6 + (d - t0).days / (t1 - t0).days * (w - 12)  # noqa: E731
-    virn, out = {}, [f'<line class="tv-ax" x1="6" x2="{w - 6}" y1="{h - 16}" y2="{h - 16}"/>']
-    for r in sorted(sundmused, key=lambda r: r["kuupaev"]):
-        d = datetime.date.fromisoformat(r["kuupaev"])
-        k = round(X(d) / 9)
-        n = virn[k] = virn.get(k, -1) + 1
-        out.append(f'<circle class="tt-o {GRUPP[r["ligipaas"]]}" cx="{X(d):.1f}" cy="{h - 22 - n * 9}" r="3.5">'
-                   f'<title>{e(r["ettevote"])} {kp(r["kuupaev"])}: {e(nimi[r["ligipaas"]])}</title></circle>')
-    for a in (aastad[0], aastad[-1]):
-        out.append(f'<text class="tt-t" x="{X(datetime.date(a, 7, 1)):.1f}" y="{h - 3}" text-anchor="middle">{a}</text>')
-    return (f'<svg class="tt-svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" '
-            f'aria-label="{len(sundmused)} ettevõtte otsust ajateljel {aastad[0]}–{aastad[-1]}">{"".join(out)}</svg>')
-
-
-def otsuste_legend(sundmused):
-    c = Counter(GRUPP[r["ligipaas"]] for r in sundmused)
-    return " · ".join(f'<span class="tt-lg {k}"></span>{c[k]} {GRUPI_NIMI[k]}' for k in ("ava", "pii", "kee") if c[k])
-
-
 def katse_number(leid):
     """Katse peamine number leiu tekstist. Kui muster ei leia, kukub ehitus (number ei tohi vaikselt kaduda)."""
     for muster, silt in [(r"(\d+)% rohkem töid", "+{} % lõpetatud töid"), (r"tunnis (\d+)% rohkem", "+{} % pöördumisi tunnis"),
@@ -182,7 +154,7 @@ def katse_ruudud(uuringud, r=12):
         out.append(f'<rect class="tt-r9 {"ok" if hea else "maas"}" x="{i * (r + 4)}" y="1" width="{r}" height="{r}" rx="2"><title>{e(silt)}, {e(u["uuring"])}</title></rect>')
     w = len(uuringud) * (r + 4)
     return (f'<svg class="tt-svg" viewBox="0 0 {w} {r + 2}" width="{w}" height="{r + 2}" role="img" '
-            f'aria-label="{n} katses {len(uuringud)}-st tootlikkus kasvas">{"".join(out)}</svg>')
+            f'aria-label="{len(uuringud)} katset; {n} katses tootlikkus kasvas">{"".join(out)}</svg>')
 
 
 def katse_loend(uuringud):
@@ -215,20 +187,6 @@ def ruudud(P, r=12):
 def p1(v):
     """Täisarv ilma komakohata (65%), muidu üks koht (36,9%): ümardus ei tohi muuta võrdlust märkusega."""
     return pr(v, 0) if round(v, 1) == round(v) else pr(v)
-
-
-def mini_hantlid(paarid, riik, lo=30, hi=80, w=200, h=50):
-    """Kasv aastaga riikide kaupa: [(vana, uus)] vaatlused; joon vanast uueni, Eesti sinine."""
-    X = lambda v: 4 + (v - lo) / (hi - lo) * (w - 40)  # noqa: E731
-    out = []
-    for i, (v0, v1) in enumerate(paarid):
-        yy = 8 + i * (h - 12) / max(1, len(paarid) - 1)
-        k = "f" if v1["geo"] == "EE" else "r"
-        out.append(f'<line class="tv-l{k}" x1="{X(v0["vaartus"]):.1f}" x2="{X(v1["vaartus"]):.1f}" y1="{yy:.1f}" y2="{yy:.1f}" stroke-width="2"/>'
-                   f'<circle class="tv-p{k}" cx="{X(v1["vaartus"]):.1f}" cy="{yy:.1f}" r="3"/>'
-                   f'<text class="tt-t{" b" if k == "f" else ""}" x="{X(v1["vaartus"]) + 6:.1f}" y="{yy + 4:.1f}">{v1["geo"]}</text>')
-    silt = ", ".join(f'{riik(v1["geo"])} {pr(v0["vaartus"], 0)} → {pr(v1["vaartus"], 0)}' for v0, v1 in paarid)
-    return f'<svg class="tt-svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="{e(silt)}">{"".join(out)}</svg>'
 
 
 VAHVLI_RUHM = {"tool": "kasutas tööl", "kas": "kasutas, aga mitte tööl", "oska": "ei kasutanud, sest ei osanud", "muu": "ei kasutanud muul põhjusel"}
