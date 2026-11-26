@@ -1,10 +1,10 @@
 {
-  "viimane_kontroll": "2026-11-26T08:50:00+02:00",
+  "viimane_kontroll": "2026-11-26T18:10:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "26.11: Finesta ligi 140, Barona 60 ja Makron ligi 40 koondamist (AK); Nestori intervjuu miinimumpalga andmetest"
+      "markus": "26.11 õhtu: valitsus kiitis heaks andmejälgija seaduse; tühjad büroopinnad; AKI kaamerajälgimine"
     },
     {
       "nimi": "ERR News (RSS)",
@@ -14,12 +14,12 @@
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "26.11: renditöö loo jätkulugu kinnitab firmad ja arvud; Makron uus koondaja"
+      "markus": "26.11 õhtu: uusi Eesti koondamisi pole; Lauri Haavi intervjuu IT-koondamistest (Õhtuleht)"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "26.11: Rootsi LO analüüs valgekraede töötusest (Social Europe); Ubisoft juba olemas, Workday lugu ilma avatava allikata"
+      "markus": "26.11 õhtu: EL-i 50 mld fondi plaan (Postimees); Euroopa tööandjate tehisaruga seotud kärbete uuring jäi välja (algallikat ei leidnud)"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -44,7 +44,7 @@
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "26.11: valitsuse 26.11 istungil avaliku teabe seaduse eelnõu (andmejälgija, andmete teabevärav, DORIS); KONTROLL 4/7"
+      "markus": "26.11 õhtu: JDM andmejälgija muutub kohustuslikuks; KONTROLL 4/7"
     },
     {
       "nimi": "OECD uudised (otsing)",
