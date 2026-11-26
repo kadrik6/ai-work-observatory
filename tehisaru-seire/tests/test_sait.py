@@ -1864,15 +1864,16 @@ def test_autor_on_igal_lehel(sait):
     assert "luba" not in s.split('id="autor"')[1].split("</section>")[0]
 
 
-def test_saidil_pole_kadri_nime(sait):
+def test_saidil_pole_kadri_nime(A, tmp_path):
     """Kadri 27.11.2026: nime ei ole ühelgi avaldataval lehel ega failis; CSS ja JS lähevad välja ilma märkmeteta,
     sest märkmetes on „Kadri 8.11.2026 …“. Kadrioru on kohanimi ja on lubatud."""
-    for f in sorted(ehita.VALJUND.rglob("*")):
+    ehita.ehita(tmp_path, A)  # ehitus ise kukub nime korral (nime_kontroll); siin kontrollitakse veel kord
+    for f in sorted(tmp_path.rglob("*")):
         if f.suffix in (".html", ".css", ".js", ".txt", ".xml", ".json", ".csv"):
             t = f.read_text(encoding="utf-8")
             assert not ehita.NIME_KONTROLL.search(t), f
-    css = (ehita.VALJUND / "stiil.css").read_text(encoding="utf-8")
-    js = (ehita.VALJUND / "sait.js").read_text(encoding="utf-8")
+    css = (tmp_path / "stiil.css").read_text(encoding="utf-8")
+    js = (tmp_path / "sait.js").read_text(encoding="utf-8")
     assert "/*" not in css and "/*" not in js and not re.search(r"(?m)^\s*//", js)
     assert ehita.ilma_markmeteta("a.js", "var u = 'https://x.ee/a'; // märge\n  // rida\nf();") == "var u = 'https://x.ee/a';\nf();"
     assert ehita.NIME_KONTROLL.search("Kadrioru park") is None and ehita.NIME_KONTROLL.search("Kadri K")
