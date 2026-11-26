@@ -1,20 +1,21 @@
 /* Tehisaru seire: üks stiilisüsteem kogu saidile.
-   Disainisüsteem Sinine Fookus (tokenid TEDI neutraalidest, põhivärv #0030DE, kiri Space Grotesk + Inter).
+   Disainisüsteem Sinine Fookus (kiri Space Grotesk + Inter). Hele teema = V9 „Meresinine, erksam“ (Kadri 26.11.2026
+   „Let's apply version 9 for now“): jahe hele leht, tumesinine tekst, fookus #0F39C2 (endine #0030DE oli liiga elektriline).
    Reeglid: üks fookus vaate kohta, hall kontekst, pealkiri ütleb leiu; pealkirja fookusfraas on paks ja sinine
    (Kadri 4.11.2026), ülejäänud pealkiri peaaegu must. Teksti ja graafiku vahel vähemalt 24 px. */
 
 :root {
-  --surface: #ffffff; --surface-2: #f9f9f9; --surface-3: #f0f0f2; --brand-soft: #e6eafc;
-  --ink: #151926; --ink-2: #4b4e62; --ink-3: #666774;
-  --signal: #0030de; --signal-strong: #0024a8; --on-signal: #ffffff;
-  --context: #d2d3d8; --context-strong: #34394c;
-  --border: #e1e2e5; --grid: #f0f0f2; --control: #838494;
+  --surface: #ffffff; --surface-2: #eef1f8; --surface-3: #e4e9f3; --brand-soft: #e2e8fa;
+  --ink: #0f1a38; --ink-2: #3d4868; --ink-3: #566180;
+  --signal: #0f39c2; --signal-strong: #0a2a96; --on-signal: #ffffff;
+  --context: #cdd4e4; --context-strong: #27335a;
+  --border: #dbe1ee; --grid: #e8ecf5; --control: #7a849f;
   --accent: #e77400; --accent-text: #994d00;
-  --mark-ctx: #8b8d99; --mark-signal: #0030de; --target: #c06400;
+  --mark-ctx: #838ca6; --mark-signal: #0f39c2; --target: #c06400;
   --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
   --font-sans: Inter, "Segoe UI", system-ui, sans-serif;
   --gap-block: 24px; --gap-section: 48px; --pad: 20px; --radius: 10px;
-  --wrap: 1240px; --panel: #ffffff; --page: #ffffff;
+  --wrap: 1240px; --panel: #ffffff; --page: #f5f7fb;
   color-scheme: light;
 }
 /* Teemad (Kadri 8.11.2026): Hele = endine Pehme (data-seire-teema="soft") ja Tume. Valge :root on ainult ilma skriptita. Andmevärv kõigis sinine. */
@@ -42,14 +43,15 @@
   --panel: #27282c; --page: #1f2023;
   color-scheme: dark;
 }
-/* Hele (väärtus "soft") = A1 „Tehisaru 2027“ valge leht (Kadri 8.11.2026 23:41: „A1 teema sobib kõige paremini“);
-   asendab 21:01 lukustatud Helehalli. Valge leht, helehallid numbrikaardid, jaotised ilma kastita. */
+/* Hele (väärtus "soft") = V9 „Meresinine, erksam“ (Kadri 26.11.2026; asendab 8.11 A1 valge lehe, mis oli „paper clean“).
+   Paigutus jääb A1 omaks: jaotised ilma kastita, numbrikaardid helesinakashallid. Labor: kirjeldused/stiilid/hele-labor. */
 :root[data-seire-teema="soft"] {
-  --surface: #ffffff; --surface-2: #f9f9f9; --surface-3: #f0f0f2; --brand-soft: #e6eafc;
-  --ink: #151926; --ink-2: #4b4e62; --ink-3: #666774;
-  --context: #d2d3d8; --context-strong: #34394c;
-  --border: #e1e2e5; --grid: #f0f0f2; --control: #838494;
-  --mark-ctx: #8b8d99; --panel: #ffffff; --page: #ffffff;
+  --surface: #ffffff; --surface-2: #eef1f8; --surface-3: #e4e9f3; --brand-soft: #e2e8fa;
+  --ink: #0f1a38; --ink-2: #3d4868; --ink-3: #566180;
+  --signal: #0f39c2; --signal-strong: #0a2a96; --mark-signal: #0f39c2;
+  --context: #cdd4e4; --context-strong: #27335a;
+  --border: #dbe1ee; --grid: #e8ecf5; --control: #7a849f;
+  --mark-ctx: #838ca6; --panel: #ffffff; --page: #f5f7fb;
   color-scheme: light;
 }
 
@@ -246,12 +248,12 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
 
 /* ELi kaart: üks toon, hele → tume (väike number → suur number). Tume teema algab pinna lähedalt. */
-:root { --k0: #a3b3f3; --k1: #7e96f0; --k2: #5879eb; --k3: #3159e5; --k4: #0030de; --k-bg: #e9e9ed; --k-na: #ffffff; --osa-b: #7189ec; --osa-c: #dde3fb; }
+:root { --k0: #abbaed; --k1: #859be4; --k2: #5e7dda; --k3: #385ccf; --k4: #0f39c2; --k-bg: #dfe5f1; --k-na: #ffffff; --osa-b: #778ee0; --osa-c: #d9e1f8; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-seire-teema]) { --k0: #46549a; --k1: #5c6dc0; --k2: #7688de; --k3: #98a8f2; --k4: #c0cbff; --k-bg: #38393e; --k-na: #1f2023; --osa-b: #6b7fe0; --osa-c: #3a4680; }
 }
 :root[data-seire-teema="dark"] { --k0: #46549a; --k1: #5c6dc0; --k2: #7688de; --k3: #98a8f2; --k4: #c0cbff; --k-bg: #38393e; --k-na: #1f2023; --osa-b: #6b7fe0; --osa-c: #3a4680; }
-:root[data-seire-teema="soft"] { --k-bg: #dbe0ec; --k-na: #ffffff; --osa-c: #d6defa; }
+:root[data-seire-teema="soft"] { --k-bg: #dfe5f1; --k-na: #ffffff; --osa-c: #d9e1f8; }
 .kaart-ala { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 24px; align-items: end; }
 @media (max-width: 680px) { .kaart-ala { grid-template-columns: minmax(0, 1fr); } }
 .kaart { position: relative; }
@@ -1450,6 +1452,10 @@ html[data-t][data-seire-teema="dark"] .pea-rahu.pilt::before { opacity: .3;
                 linear-gradient(0deg, var(--page) 0%, color-mix(in srgb, var(--page) 75%, transparent) 30%, transparent 70%),
                 url("pilt/avaleht-tume.jpg") right top / cover no-repeat; opacity: .26; }
 }
+
+/* V9 (Kadri 26.11.2026): heledas teemas on pilt sinise tooniga. Hall pilt segatakse tooniga (luminosity), filter jääb ära,
+   sest grayscale muudaks halliks ka lehevärvi katte. Nähtavus 42% nagu laboris, kus Kadri V9 valis; tumedas ei muutu. */
+html[data-t][data-seire-teema="soft"] .pea-rahu.pilt::before { filter: none; opacity: .42; background-color: #3f60cc; background-blend-mode: normal, normal, luminosity; }
 
 /* Saidi nimi päises: suurem ja must, ka avalehel (Kadri 9.11.2026 00:13) */
 .top .mark, .top .mark[aria-current="page"] { color: var(--ink); font-size: 24px; letter-spacing: -0.02em; line-height: 1.1; }
