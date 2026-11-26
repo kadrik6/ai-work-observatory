@@ -984,7 +984,9 @@ def test_neli_vaiteparandust_8_11(sait):
     assert re.search(r"ELis \d+\. ja ettevõtted \d+\. kohal \(20\d\d\)", h1("index.html"))  # ELi kohal on aasta
     assert "aastaga" not in h1("inimesed.html")
     assert "küsimus võib erineda" in sait["inimesed.html"] and "küsimus võib erineda" in sait["index.html"]
-    assert h1("too.html").startswith("Eesti andmetest")  # 8.11 õhtu: h1 algab Eestist (läbivaatus P4)
+    # 8.11 õhtu: h1 algab Eestist (läbivaatus P4). 26.11.2026 Kadri: „ei selgu, kas vähendab“ jättis mulje, et mõju pole;
+    # uus h1 ütleb mõõdetud mõju (tööalane kasutus, IT71 hõivatud) ja jätab lahtiseks ainult koondamiste põhjuse.
+    assert h1("too.html").startswith("Eestis muudab tehisaru tööd")
     hanked = _jaotis(sait["hanked.html"], "tahvel")  # 19.11.2026: hangete arv on tahvli esimesel real
     avaleht = _jaotis(sait["index.html"], "teemad").split('href="hanked.html"')[1].split("</tr>")[0]
     assert re.search(r'class="tv-arv"[^>]*>(\d+)<', avaleht).group(1) == re.search(r'class="vt-n"[^>]*>umbes (\d+)<', hanked).group(1)
@@ -1108,6 +1110,29 @@ def test_labivaatus_8_11_parandused(sait):
     assert 'class="seis-t"' not in sait["index.html"]
     js = (Path(__file__).resolve().parents[1] / "sait" / "sait.js").read_text(encoding="utf-8")
     assert "button.kopeeri" in js and "navigator.clipboard" in js and "execCommand('copy')" in js
+
+
+def test_allikad_ja_kuupaevad_iga_tabel_eraldi(sait):
+    # Kadri 26.11.2026: avalehel on iga numbri allikas, tabel ja allika viimane uuendus, uusim üleval; hiline uuendus
+    # (IT1490 avaldati 16.09, uuendati 21.10) on näha. Päise kuupäevarida („Numbrid … · uudised …“) on kõigilt lehtedelt ära.
+    import csv as _csv
+    from datetime import date as _d
+    for f, h in sait.items():
+        if f.endswith(".html"):
+            assert 'class="seis"' not in h and "Numbrid " not in re.search(r"<header.*?</header>", h, re.S).group(0), f
+    p = re.search(r'<details class="allikad-l">.*?</details>', sait["index.html"], re.S).group(0)
+    kp_ = re.findall(r'<li><time datetime="(\d{4}-\d{2}-\d{2})">', p)
+    assert len(kp_) >= 9 and kp_ == sorted(kp_, reverse=True), kp_
+    U = {(r["allikas"], r["tabel"]): r["uuendatud"]
+         for r in _csv.DictReader(open(Path(__file__).resolve().parents[1] / "sait" / "sisu" / "tabelite-uuendused.csv", encoding="utf-8"))}
+    for (allikas, tabel), k in U.items():
+        li = re.search(rf'<li><time datetime="{k}">[^<]*</time>(?:(?!</li>).)*>{tabel}</a>', p, re.S)
+        assert li, (allikas, tabel, k)
+    assert "une_rt_m</a> · Eesti uusim kuu tabelis on" in p
+    for k in kp_:
+        assert _d.fromisoformat(k) <= _d.today()
+    if U[("Statistikaamet", "IT1490")] > "2026-09-16":
+        assert "number avaldati 16.09.2026, tabelit uuendati hiljem" in p
 
 
 def test_eksitav_silt_on_heleroosa(sait):

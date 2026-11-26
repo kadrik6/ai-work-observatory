@@ -121,3 +121,29 @@ def test_reg_tootud_repo_fail_ja_igapaevane_too():
     yml = (JUUR.parent / ".github" / "workflows" / "sait-andmed.yml").read_text(encoding="utf-8")
     assert "python sait/lae_reg_tootud.py" in yml
     assert "tehisaru-seire/sait/sisu/reg-tootud-kuud.csv" in yml.split("git add")[1].split("git diff")[0]
+
+
+# ---------- tabelite viimane uuendus (sait/lae_uuendused.py, Kadri 26.11.2026) ----------
+
+import lae_uuendused  # noqa: E402
+
+
+def test_uuendused_statistikaameti_kaustast():
+    loend = [{"id": "IT149.px", "updated": "2026-09-03T11:09:12"}, {"id": "IT1490.px", "updated": "2026-10-21T13:19:55"}]
+    assert lae_uuendused.sa_kuupaev(loend, "IT1490") == "2026-10-21"  # mitte IT149 (sama algus)
+    with pytest.raises(ValueError):
+        lae_uuendused.sa_kuupaev(loend, "IT71")
+
+
+def test_uuendused_eurostatist():
+    assert lae_uuendused.es_kuupaev({"updated": "2026-11-24T11:00:00+0100"}, "une_rt_m") == "2026-11-24"
+    with pytest.raises(ValueError):
+        lae_uuendused.es_kuupaev({}, "une_rt_m")
+
+
+def test_uuendused_vana_rida_jaab_ja_muutuseta_ei_kirjuta():
+    vanad = [{"allikas": "Eurostat", "tabel": "une_rt_m", "uuendatud": "2026-10-30"},
+             {"allikas": "Statistikaamet", "tabel": "IT71", "uuendatud": "2026-09-10"}]
+    assert lae_uuendused.uus_seis(vanad, {("Statistikaamet", "IT71"): "2026-09-10"}) is None
+    uued = lae_uuendused.uus_seis(vanad, {("Eurostat", "une_rt_m"): "2026-11-24"})  # IT71 päring ebaõnnestus
+    assert {(r["tabel"], r["uuendatud"]) for r in uued} == {("une_rt_m", "2026-11-24"), ("IT71", "2026-09-10")}

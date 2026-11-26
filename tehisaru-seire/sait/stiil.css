@@ -77,7 +77,6 @@ h3 { font-size: 18px; font-weight: 700; line-height: 1.3; }
 .top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--border); }
 .top-1 { display: flex; align-items: center; gap: 8px 24px; padding-top: 10px; }
 .mark { font: 700 19px/1.2 var(--font-display); color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
-.seis { font-size: 16px; color: var(--ink-2); margin-left: auto; }
 .teema { display: inline-grid; place-items: center; width: 32px; height: 32px; padding: 0; border-radius: 100px; border: 1px solid transparent; background: none; color: var(--ink-2); cursor: pointer; }
 .teema:hover { color: var(--ink); border-color: var(--border); }
 .teema svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
@@ -240,7 +239,6 @@ details ul { margin: 0; padding-left: 20px; display: flex; flex-direction: colum
   .faktid li { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .rida, .telg { grid-template-columns: 5.6em minmax(0, 1fr) 3em; font-size: 15px; }
   .hantlid .rida, .hantlid .telg { grid-template-columns: 5.6em minmax(0, 1fr) 6.2em; }
-  .seis { display: none; }
   .teema { width: 44px; height: 44px; }
   .menu a, .menu span { height: 44px; }
   .kogus button { height: 36px; }
@@ -430,7 +428,6 @@ body { font-size: 15px; line-height: 1.45; background: var(--page); }
 body::before { background: var(--page); }
 .top-1 { padding-top: 6px; gap: 6px 16px; }
 .mark { font-size: 15px; }
-.seis { font-size: 13px; }
 .menu { margin-top: 2px; }
 .menu a, .menu span { height: 32px; padding: 0 10px; font-size: 14px; border-bottom-width: 2px; }
 h1 { font-size: 20px; max-width: 70ch; font-weight: 500; line-height: 1.25; }
@@ -807,7 +804,6 @@ h3.veerg { font-size: 13.5px; }
 .jrj-r.on .rada .v { background: var(--surface-3); }
 .el-rida .jrj { max-width: 480px; }
 .u-t.lv { color: var(--ink-2); font-weight: 700; }
-a.seis { color: inherit; text-decoration: none; } a.seis:hover { text-decoration: underline; }
 
 /* ---- Navigeerimine (Kadri 6.11.2026): „Sellel lehel“ on päises teemade menüü all ja jääb kerimisel nähtavaks.
    Ankurlink viib jaotise ülaserva päise alla; vahe arvutab sait.js päise kõrgusest (--top-h). ---- */
@@ -847,7 +843,6 @@ html { scroll-padding-top: calc(var(--top-h, 110px) + 8px); }
    telefonis filtrid, sakid ja „Näita“ 40 px; koondamiste punkt jääb väikeseks, vajutusala on 24 px. */
 .mark { display: inline-block; padding-block: 3px; }
 .mark[aria-current="page"] { color: var(--signal); }
-@media (min-width: 681px) { .seis { display: inline-flex; align-items: center; min-height: 24px; } }
 summary { padding-block: 3px; }
 .sellel a { display: inline-flex; align-items: center; min-height: 24px; }
 .u-f button, .p-tabs button, .kogus button { min-height: 24px; }
@@ -1324,8 +1319,7 @@ ol.sammud p { margin: 0; max-width: 72ch; }
 @media (min-width: 681px) {
   .top > .wrap { display: grid; grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr); grid-template-rows: auto auto; align-items: center; column-gap: 20px; }
   .top-1 { display: contents; }
-  .top .mark { grid-column: 1; grid-row: 1; align-self: end; padding: 8px 0 0; }
-  .top .seis { grid-column: 1; grid-row: 2; align-self: start; margin: 0; font-size: 12.5px; min-height: 0; padding-bottom: 8px; color: var(--ink-3); }
+  .top .mark { grid-column: 1; grid-row: 1 / span 2; align-self: center; padding: 0; }  /* kuupäevarida päisest ära (Kadri 26.11.2026) */
   .top .paisteemad { grid-column: 2; grid-row: 1 / span 2; align-self: stretch; display: flex; justify-content: center; }
   .top .menu { margin: 0; align-items: stretch; height: 100%; justify-content: center; }
   .top .menu a, .top .menu span { height: auto; min-height: 44px; }
@@ -1356,6 +1350,15 @@ ol.sammud p { margin: 0; max-width: 72ch; }
 .allikad-l summary:hover { text-decoration: underline; }
 .allikad-l > div { margin-top: 6px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); max-width: 60ch; line-height: 1.5; font-size: 14px; }
 .allikad-l > div p { margin: 0 0 4px; }
+/* Iga avalehe number eraldi koos allika viimase uuendusega, uusim üleval (Kadri 26.11.2026) */
+.allikad-l > div:has(.uu-l) { max-width: 72ch; }
+.uu-l { list-style: none; margin: 0 0 8px; padding: 0; }
+.uu-l li { display: grid; grid-template-columns: 6.4em minmax(0, 1fr); column-gap: 12px; padding: 6px 0; border-top: 1px solid var(--grid); }
+.uu-l li:first-child { border-top: 0; padding-top: 0; }
+.uu-l time { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; white-space: nowrap; }
+.uu-l b { display: block; font-weight: 600; color: var(--ink); }
+.uu-l small { display: block; font-size: 13.6px; color: var(--ink-3); }
+.uu-l a { color: var(--signal); }
 
 html[data-t] {
   /* Kadri 9.11.2026: laial ekraanil poole väiksemad külgvarud kui 1280 px piiriga: (ekraan + 1280) / 2, kuni 1920 px */
@@ -1461,7 +1464,6 @@ html[data-t][data-seire-teema="soft"] .pea-rahu.pilt::before { filter: none; opa
 .top .mark, .top .mark[aria-current="page"] { color: var(--ink); font-size: 24px; letter-spacing: -0.02em; line-height: 1.1; }
 @media (max-width: 680px) { .top .mark, .top .mark[aria-current="page"] { font-size: 20px; } }
 /* Kadri 9.11.2026 00:45: saidi nimi ja kuupäevarida natuke väiksemaks */
-@media (min-width: 681px) { .top .seis { font-size: 11.5px; } }
 
 /* Menüüs on 9 teemat (Avaleht esimesena, Kadri 9.11.2026): kitsamal sülearvutil väiksem vahe, et rida mahuks */
 @media (min-width: 681px) and (max-width: 1439px) { .top .menu a { padding: 0 9px; } }
