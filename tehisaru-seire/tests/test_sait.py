@@ -1265,7 +1265,9 @@ def test_a1_kujundus_kogu_saidil(sait):
     assert "html[data-t] .plaat" in css and ".pea-rahu" in css
     assert "setAttribute('data-t','1')" in kest.TEEMA_JS  # artefaktis kirjutatakse <html> üle
     pehme = css.split(':root[data-seire-teema="soft"] {', 1)[1].split("}", 1)[0]
-    assert "--page: #ffffff" in pehme and "--surface-2: #f9f9f9" in pehme
+    # 26.11.2026 Kadri valis heledaks teemaks V9 („Let's apply version 9 for now“): A1 paigutus jääb, valge leht ja
+    # hallid asendusid jaheda heleda lehe ja sinakate hallidega (vt test_hele_teema_v9)
+    assert "--page: #f5f7fb" in pehme and "--surface-2: #eef1f8" in pehme
     h1 = re.search(r"<h1>(.*?)</h1>", sait["index.html"], re.S).group(1)
     assert re.fullmatch(r"Tehisaru kasutuses on Eesti inimesed ELis \d+\. ja <b>ettevõtted \d+\. kohal</b> \(20\d\d\)", h1), h1
 
@@ -1335,16 +1337,22 @@ def test_avalehe_pilt_on_lehe_taust():
     assert "min-height" not in pais and "padding-bottom: 0" in pais
     # isolation tooks pildi sisu peale, kui pilt ulatub päisest allapoole; pilt peab jääma kogu sisu taha
     assert "isolation:" not in pais
-    pildid = [r for r in reeglid if ".pea-rahu.pilt::before" in r]
-    assert len(pildid) == 4
+    koik = [r for r in reeglid if ".pea-rahu.pilt::before" in r]
+    # V9 (Kadri 26.11.2026 „apply version 9“): heleda teema toonireegel tuleb lisaks neljale pildireeglile
+    toon = [r for r in koik if '[data-seire-teema="soft"] .pea-rahu.pilt::before' in r]
+    pildid = [r for r in koik if r not in toon]
+    assert len(pildid) == 4 and len(toon) == 1
     assert "z-index: -1" in pildid[0] and "pointer-events: none" in pildid[0]
     # pilt on päisest kõrgem (ulatub tahvli taha) ja hajub alla lehe taustaks
     assert int(re.search(r"height: (\d+)px", pildid[0]).group(1)) >= 460
     assert all("linear-gradient(0deg, var(--page) 0%" in r for r in pildid)
     # heledus- ja kontrastifilter muutis ka katte värvi ja jättis pildi alla serva
-    assert "filter: grayscale(1);" in pildid[0] and "brightness(" not in "".join(pildid)
+    assert "filter: grayscale(1);" in pildid[0] and "brightness(" not in "".join(koik)
     nahtavus = [float(x) for r in pildid for x in re.findall(r"opacity: (\.\d+)", r)]
     assert len(nahtavus) == 4 and max(nahtavus) <= .3
+    # heledas teemas: pilt sinise tooniga, filter ei muuda katte värvi, nähtavus nagu laboris (42%), tume ei muutu
+    assert "filter: none" in toon[0] and "luminosity" in toon[0] and "opacity: .42" in toon[0]
+    assert "dark" not in toon[0]
 
 
 def test_ai_kuulutuste_leiud_asukoht_ja_uks_tooandja(A, sait):
@@ -2477,3 +2485,21 @@ def test_norgad_numbrid_26_11(A, sait):
     assert f'<span class="vt-n">{DA.k - DA.kr} / {DA.k}</span>' in kord and f'{DA.rk["aasta"]}. aastal' in kord and "võib olla muutunud" in kord
     moju = _jaotis(sait["avalik-sektor.html"], "tahvel").split("Kas uuenduste mõju mõõdetakse?")[1].split("</details>")[0]
     assert "hindamistest" in moju.split("</summary>")[0] and "koondhinnang, mitte osakaal" in moju
+
+
+def test_hele_teema_v9(sait):
+    """Kadri 26.11.2026: valge hele teema oli „paper clean“; laborist valis ta V9 („Let's apply version 9 for now“)."""
+    css = (JUUR / "sait" / "stiil.css").read_text(encoding="utf-8")
+    hele = re.search(r':root\[data-seire-teema="soft"\] \{([^}]*)\}', css).group(1)
+    t = dict(re.findall(r"--([\w-]+):\s*(#[0-9a-fA-F]{6})", hele))
+    # sinine on V4 (#1c3faa) ja endise (#0030de) vahel; leht ei ole enam puhas valge
+    assert t["signal"] == "#0f39c2" and t["mark-signal"] == "#0f39c2" and t["page"] == "#f5f7fb"
+    assert t["panel"] == "#ffffff" and t["ink"] == "#0f1a38"
+    # tekst, abitekst ja sinine on lehe ja kasti taustal loetavad, graafikute hall vähemalt 3:1
+    for taust in ("page", "surface-2", "brand-soft"):
+        assert _kontrast(t["ink-3"], t[taust]) >= 4.5 and _kontrast(t["signal"], t[taust]) >= 4.5, taust
+    assert _kontrast(t["mark-ctx"], t["page"]) >= 3
+    # kaardi skaala lõpeb sama sinisega; tume teema jääb endiseks
+    assert "--k4: #0f39c2" in css
+    tume = re.search(r':root\[data-seire-teema="dark"\] \{([^}]*)\}', css).group(1)
+    assert "--signal: #9fb0f5" in tume and "--page: #1f2023" in tume
