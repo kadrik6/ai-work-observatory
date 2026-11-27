@@ -10,12 +10,13 @@ import datetime
 import re
 
 import andmekiht as andmed
-from abi import link
+from abi import ARVSONAD, link
 from andmekiht import EL, AndmeViga
 from komponendid import KUUD, e, kp, pr, riik
 from lehed_usaldus import RASKUS, _raskus
 
 VARSKE_PAEVI = 92
+VOO_KLASS = {"uus number": "n", "koondamine": "k"}  # muu (väide) = "v"
 VOO_PAEVI = 30
 
 
@@ -193,6 +194,11 @@ def tahvel(A, vaated, d, vaite_teema, tootus_el_koht):
          HL["seis"]["kuupaev"]),
     ]
     viimane = max(r[-1] for r in R)
+    # „Täna“ (Kadri 27.11.2026, kaks osa): avalehe tabel on osa A teemad, Töö esimesena. Avalik sektor ja hanked on osa
+    # „Riik ja Eesti“; avalehel on neist üks rida tabeli all, menüüs jäävad nad alles.
+    jrk = {"too": 0, "inimesed": 1, "ettevotted": 2}
+    riik_r = [r for r in R if r[0] not in jrk]
+    R = sorted((r for r in R if r[0] in jrk), key=lambda r: jrk[r[0]])
 
     laud, tel = [], []
     for tid, nimi, ank, arv, sel, kulg, kulg_all, muutus, el, el_tel, (v_html, _), siht, kuup in R:
@@ -214,12 +220,13 @@ def tahvel(A, vaated, d, vaite_teema, tootus_el_koht):
 
     sec = f"""
 <section class="pn sp12 tv" id="teemad" aria-labelledby="h-teemad">
-  <div class="pn-h"><h2 id="h-teemad"><span class="kys">Mis on iga teema seis?</span> <b>Viis teemat, igaüks ühel real</b></h2></div>
+  <div class="pn-h"><h2 id="h-teemad"><span class="kys">Mis on iga teema seis?</span> <b>{ARVSONAD[len(R)].capitalize()} teemat, igaüks ühel real</b></h2></div>
   <p class="ps">Teema nimi viib teema lehele. Iga rida on oma skaalal. <span class="tv-lg ee"></span> Eesti, <span class="tv-lg eu"></span> ELi keskmine, <span class="tv-lg siht"></span> siht. Koht ELis on uusima Eurostati aasta kohta.</p>
   <div class="tbl tv-laud"><table><caption class="peidus">Teemade seis</caption>
   <thead><tr><th scope="col">Teema</th><th scope="col">Praegu</th><th scope="col">Kulg</th><th scope="col">Muutus</th><th scope="col">Koht ELis</th><th scope="col">Väited</th><th scope="col">Siht ja reeglid</th><th scope="col">Värskus</th></tr></thead>
   <tbody>{"".join(laud)}</tbody></table></div>
   <div class="tv-tel"><div class="tv-pea" aria-hidden="true"><span>Teema</span><span>Praegu</span><span>Kulg</span><span>Koht</span></div>{"".join(tel)}</div>
+  <p class="ps tv-riik"><b>Riik ja Eesti:</b> {"; ".join(f'{menuu(tid, nimi)} {e(arv)} {e(sel)}' for tid, nimi, _a, arv, sel, *_r in riik_r)}.</p>
   <p class="allikas">Värske = avaldatud kuni {VARSKE_PAEVI} päeva enne kõige uuemat ({kp(viimane)}). Iga numbri allikas on teema lehel numbri juures.</p>
 </section>"""
     return sec, R
@@ -246,7 +253,7 @@ def ajajoon(voog, tulevad, tana, w=900, h=96, paevi_tagasi=60, paevi_ette=400):
         if dd < t0 or dd > tana:
             continue
         k = virn[round(X(dd) / 12)] = virn.get(round(X(dd) / 12), -1) + 1
-        out.append(f'<circle class="tv-a{"n" if liik == "uus number" else "v"}" cx="{X(dd):.1f}" cy="{56 - min(k, 2) * 12}" r="5"><title>{kp(iso)}: {tekst}</title></circle>')
+        out.append(f'<circle class="tv-a{VOO_KLASS.get(liik, "v")}" cx="{X(dd):.1f}" cy="{56 - min(k, 2) * 12}" r="5"><title>{kp(iso)}: {tekst}</title></circle>')
     viimane_x = 0
     for iso, tekst, k in tulevad:
         dd = datetime.date.fromisoformat(iso)
@@ -266,19 +273,43 @@ def tulevad_tahtajad(A, tana):
     return sorted(x for x in el + ee if x[0] > iso)
 
 
+def koondamised_uheks(kanded):
+    """Loendis on koondamisteated üks rida (Kadri 27.11.2026 eelvaade: seitse koondamisrida tõrjusid uued numbrid loendist
+    välja). Ajajoonel jääb iga teade oma täpiks. silt = "roll\tettevõte\tarv"; mitme firma teade („A; B“) ei loe firmat
+    teist korda."""
+    kk = [r for r in kanded if r[1] == "koondamine"]
+    if len(kk) < 2:
+        return kanded
+    firmad, pohjus = {}, set()
+    for r in sorted(kk, key=lambda r: r[0]):
+        roll, firma, arv = r[2].split("\t")
+        osad = firma.split("; ")
+        for f in osad:
+            if f not in firmad or (len(osad) == 1 and arv != "arv pole teada"):
+                firmad[f] = arv if len(osad) == 1 else firmad.get(f, "arv pole teada")
+        if roll in ("otsene", "osaline"):
+            pohjus.update(osad)
+    nimed = ", ".join(f'{e(f)} {e(a)}' if a != "arv pole teada" else e(f) for f, a in sorted(firmad.items(), key=lambda x: x[0]))
+    p = "ükski ei nimeta" if not pohjus else ("tehisaru nimetab põhjusena " + ", ".join(e(f) for f in sorted(pohjus)))
+    rida = (kk[0][0], "koondamine", "", f"{ARVSONAD.get(len(firmad), str(len(firmad))).capitalize()} ettevõtet teatas koondamisest "
+            f"({nimed}); {p}", "too.html#koondamised")
+    return sorted([r for r in kanded if r[1] != "koondamine"] + [rida], key=lambda r: r[0], reverse=True)
+
+
 def aja_jaotis(voog, tulevad, tana, vaated):
     """voog: [(iso, liik, silt, tekst html, url)] nagu avalehel (uuemad ees)."""
     d = lambda iso: datetime.date.fromisoformat(iso[:10])  # noqa: E731
     hiljuti = [r for r in voog if 0 <= (tana - d(r[0])).days <= VOO_PAEVI]
     jargmine = tulevad[0] if tulevad else None
     lyh = [(r[0], r[1], r[3], r[4]) for r in voog]
-    li1 = "".join(f'<li><span class="tv-lg {"n" if r[1] == "uus number" else "v"}"></span><time datetime="{r[0][:10]}">{kp(r[0])}</time>'
-                  f'<span>{f"<a href={chr(34)}{e(r[4])}{chr(34)}>{r[3]}</a>" if r[4] else r[3]}</span></li>' for r in hiljuti[:5])
+    loend = koondamised_uheks(hiljuti)
+    li1 = "".join(f'<li><span class="tv-lg {VOO_KLASS.get(r[1], "v")}"></span><time datetime="{r[0][:10]}">{kp(r[0])}</time>'
+                  f'<span>{f"<a href={chr(34)}{e(r[4])}{chr(34)}>{r[3]}</a>" if r[4] else r[3]}</span></li>' for r in loend[:8])
     li2 = "".join(f'<li><span class="tv-lg t{k}"></span><time datetime="{iso}">{kp(iso)}</time><span>{e(t)}</span></li>' for iso, t, k in tulevad[:3])
     return f"""
 <section class="pn sp12 tv" id="muutus" aria-labelledby="h-muutus">
   <div class="pn-h"><h2 id="h-muutus"><span class="kys">Mis muutus ja mis tuleb?</span> <b>{len(hiljuti)} {"kanne" if len(hiljuti) == 1 else "kannet"} {VOO_PAEVI} päevaga{f", järgmine tähtaeg {kp(jargmine[0])}" if jargmine else ""}</b></h2></div>
-  <p class="ps"><span class="tv-lg n"></span> uus number · <span class="tv-lg v"></span> kontrollitud väide · <span class="tv-lg tel"></span> ELi tehisaru määruse tähtaeg · <span class="tv-lg tee"></span> Eesti tähtaeg</p>
+  <p class="ps"><span class="tv-lg n"></span> uus number · <span class="tv-lg k"></span> koondamisteade · <span class="tv-lg v"></span> kontrollitud väide · <span class="tv-lg tel"></span> ELi tehisaru määruse tähtaeg · <span class="tv-lg tee"></span> Eesti tähtaeg</p>
   <div class="tv-aeg-lai">{ajajoon(lyh, tulevad, tana)}</div>
   <div class="tv-loendid"><div><h3>Mis muutus ({VOO_PAEVI} päeva)</h3><ul>{li1 or "<li>Viimase 30 päeva jooksul uusi kandeid pole.</li>"}</ul></div>
   <div><h3>Mis tuleb</h3><ul>{li2 or "<li>Tulevaid tähtaegu pole.</li>"}</ul></div></div>
