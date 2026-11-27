@@ -184,7 +184,7 @@ def varskus_ja_muutused(A, vaated):
     sec_muut = f"""
 <section class="jaotis" id="muutused" aria-labelledby="h-muutused">
   <header>
-    <h2 id="h-muutused"><span class="kys">Mis allikates viimati muutus?</span> Logi viimane kanne on <b>{kp(S[0]["kuupaev"])}</b></h2>
+    <h2 id="h-muutused"><span class="kys">Mis allikates viimati muutus?</span> Viimane logikanne on <b>{kp(S[0]["kuupaev"])}</b></h2>
     <p class="alam">Logis on allikate uued numbrid ja leitud lahknevused, uuemad üleval.</p>
   </header>
   {tabel(["Kuupäev", "Liik", "Mis muutus"], s_read, numbrid=[], piir=True, pealdis="Muutuste logi", tel="1:6.6em 2:5.6em")}
@@ -301,7 +301,7 @@ MOISTED = [
     ("Ettevõtete tehisaru kasutus", "Eurostat, Statistikaamet", "Ettevõte kasutab vähemalt üht tehisaru tehnoloogiat. Vähemalt 10 hõivatuga ettevõtted, finantssektorita.", "ettevotted"),
     ("Digioskused", "Eurostat", "Inimese vähemalt baastasemel digioskused. Arvutatakse tegevuste põhjal, mida inimene on teinud, mitte testiga.", "inimesed"),
     ("Digiintensiivsus", "Eurostat, Arenguseire Keskus", "Kui paljusid digitehnoloogiaid ettevõte kasutab (12 tunnusest). Seire näitab vähemalt baastaset; Arenguseire raport kasutab kõrget ja väga kõrget taset.", "ettevotted"),
-    ("OECD vastajad", "OECD", "Vabatahtlikult vastanud avaliku sektori juhid ja töötajad, mitte kõik töötajad. Kas nad esindavad kõiki, aruanne ei hinda.", "avalik-sektor"),
+    ("OECD vastajad", "OECD", "Vabatahtlikult vastanud avaliku sektori juhid ja töötajad, mitte kõik töötajad. Aruanne ei hinda, kas nad esindavad kõiki.", "avalik-sektor"),
 ]
 EI_NAITA = [
     ("Kasutus ei ole sama mis kasu", f'Eurostat ja Statistikaamet küsivad, kas inimene või ettevõte kasutab tehisaru. Kas see tõstab tootlikkust, need andmed ei ütle. '
@@ -417,7 +417,7 @@ def kuidas(A, vaade, vaated=None):
     sec_u = f"""
 <section class="jaotis" id="uuringud" aria-labelledby="h-uuringud">
   <header>
-    <h2 id="h-uuringud">Kogus on <b>{len(U)} uuringut</b>, neist {n_tugev} tugeva tõendiga (katse või registriandmed)</h2>
+    <h2 id="h-uuringud">Kogumikus on <b>{len(U)} uuringut</b>, neist {n_tugev} tugeva tõendiga (katse või registriandmed)</h2>
     <p class="alam">Iga arv on võetud allika kokkuvõttest ja kontrollitud lingi kaudu ({kp(T.get("kontrollitud", ""))}).</p>
   </header>
   {tabel(["Uuring", "Tõend", "Kus", "Mida leiti"], u_read, numbrid=[], piir=True, pealdis="Uuringute kogu", tel="-3 2:5.4em")}
@@ -553,7 +553,7 @@ def saidist(A, vaade, vaated):
   <ul class="loend">
     <li>Statistika, uudised, koondamised, tööpakkumised ja hanked tulevad allikatest automaatselt. Mis ja kui tihti uueneb: {link(vaated, "kuidas", "Mis uueneb ise", "uuendused")}.</li>
     <li>Kui kaks allikat annavad sama asja kohta eri numbri, jääb lahknevus nähtavale ja seda ei peideta: {link(vaated, "kas-tosi", "Usaldus")}.</li>
-    <li>Hangete tehisaru- ja andmehanked märgistab keelemudel; märgistust on võrreldud käsitsi pimeülevaatusega ja tulemus on hangete lehel.</li>
+    <li>Tehisaru- ja andmehanked märgistab keelemudel; märgistust on võrreldud käsitsi pimeülevaatusega ja tulemus on hangete lehel.</li>
   </ul>
 </section>
 <section class="jaotis" id="mida-ei-ole" aria-labelledby="h-mida-ei-ole">

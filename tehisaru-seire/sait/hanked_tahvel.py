@@ -84,7 +84,7 @@ def read(D):
         dict(kys="Kas hinnatakse ka kvaliteeti?", ank="kuidas", ava="Vaata, kuidas hangitakse", sona=tt.sona_osa(kv["ai_andmed"]) + " hangetest",
              arv=f'{pr(kv["ai_andmed"], 0)}%', all=f"hangetest {D.p0}–{D.p1}",
              pilt=kaks_riba([("need", kv["ai_andmed"], True), ("IT", kv["it_muud"], False), ("kõik", kv["koik"], False)], h=44),
-             mrk=f'Teistes IT-hangetes {pr(kv["it_muud"], 0)}%, kõigis hangetes {pr(kv["koik"], 0)}%. Ülejäänud hindasid ainult hinda.',
+             mrk=f'Teistes IT-hangetes {pr(kv["it_muud"], 0)}%, kõigis hangetes {pr(kv["koik"], 0)}%. Ülejäänutes oli ainus kriteerium hind.',
              liik="mõõdetud", allikas="Riigihangete register", kuup=f"{D.p0}–{D.p1}"),
         dict(kys="Kui sageli tuleb ainult üks pakkumus?", ank="kuidas", ava="Vaata, kuidas hangitakse", sona=tt.sona_osa(uk["ai_andmed"]) + " hangetest",
              arv=f'{pr(uk["ai_andmed"], 0)}%', all=f'{V["ai_andmed"]["pakkumusi_teada"]} hankest, mille pakkumuste arv on teada',
@@ -190,7 +190,7 @@ def sec_naited(D):
     return f"""
 <section class="jaotis" id="naited-kokku" aria-labelledby="h-naited-kokku">
   <header><h2 id="h-naited-kokku"><span class="kys">Kust leida hea näide?</span> <b>{D.hea} hanget {n}-st vastab kõigile kolmele tingimusele</b> ¦ pakkumuste arv on teadmata {n - D.pk2 - D.pk1} hankel</h2>
-  <p class="alam">Kõik klassifikaatori leitud hanked {D.a0}–{D.a1}. Hea näide: kvaliteeti hinnati, pakkumusi oli vähemalt kaks ja hange ei katkenud. Teadmata väärtus loeb tingimuse täitmata.</p></header>
+  <p class="alam">Kõik klassifikaatori leitud hanked {D.a0}–{D.a1}. Hea näide: kvaliteeti hinnati, pakkumusi oli vähemalt kaks ja hange ei katkenud. Kui väärtus on teadmata, loetakse tingimus täitmata.</p></header>
   <div class="av-kaks">
     <div><ul class="hk-leg"><li><i class="av-q b hk-l"></i>täidetud</li><li><i class="av-q hk-m hk-l"></i>täitmata</li><li><i class="av-q c hk-l"></i>teadmata</li></ul>
       <div class="hk-cc">{"".join(out)}</div></div>
