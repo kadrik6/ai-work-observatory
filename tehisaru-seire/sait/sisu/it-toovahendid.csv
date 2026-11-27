@@ -1,0 +1,71 @@
+teema,naitaja,allikas,aasta,valja_kogumine,valim_kusimusele,vaartus_protsent,definitsioon,url,vorreldavus
+IDE,VS Code kasutajad,Stack Overflow Developer Survey,2018,2018,75398,34.9,"Kõik vastajad; arenduskeskkonnad, mida kasutati regulaarselt; mitu valikut",https://insights.stackoverflow.com/survey/2018,"Sama küsimuse tüüp 2018–2025; 2026 sõnastus laienes (IDE või agentidega töö)"
+IDE,VS Code kasutajad,Stack Overflow Developer Survey,2019,2019,87317,50.7,"Kõik vastajad; mitu valikut",https://insights.stackoverflow.com/survey/2019,"vt 2018"
+IDE,VS Code kasutajad,Stack Overflow Developer Survey,2021,2021,82277,71.06,"Kõik vastajad; mitu valikut",https://insights.stackoverflow.com/survey/2021,"vt 2018"
+IDE,VS Code kasutajad,Stack Overflow Developer Survey,2022,2022,71010,74.48,"Kõik vastajad; mitu valikut",https://survey.stackoverflow.co/2022/,"vt 2018"
+IDE,VS Code kasutajad,Stack Overflow Developer Survey,2023,08.–19.05.2023,86544,73.71,"Kõik vastajad; mitu valikut",https://survey.stackoverflow.co/2023/,"vt 2018"
+IDE,VS Code kasutajad,Stack Overflow Developer Survey,2024,19.05.–20.06.2024,,73.6,"Kõik vastajad; mitu valikut; vastajate arvu lehelt ei lugenud",https://survey.stackoverflow.co/2024/technology,"vt 2018"
+IDE,VS Code kasutajad,Stack Overflow Developer Survey,2025,29.05.–23.06.2025,26143,75.9,"Kõik vastajad; arenduskeskkonnad ja tehisaruga koodiredaktorid",https://survey.stackoverflow.co/2025/technology,"2025 lisandusid nimekirja AI-redaktorid (Cursor, Claude Code)"
+IDE,VS Code kasutajad,Stack Overflow Developer Survey,2026,23.06.–05.08.2026,13193,70.9,"Kõik vastajad; IDE koodi kirjutamiseks või agentidega tööks",https://survey.stackoverflow.co/2026/technology/data,"Valim väiksem ja sõnastus muutus; Claude Code liikus agentide küsimusse"
+IDE,Cursor kasutajad,Stack Overflow Developer Survey,2025,29.05.–23.06.2025,26143,17.9,"Kõik vastajad, IDE küsimus",https://survey.stackoverflow.co/2025/technology,"vt VS Code 2026"
+IDE,Cursor kasutajad,Stack Overflow Developer Survey,2026,23.06.–05.08.2026,13193,14.9,"Kõik vastajad, IDE küsimus",https://survey.stackoverflow.co/2026/technology/data,"vt VS Code 2026"
+IDE,Zed kasutajad,Stack Overflow Developer Survey,2025,29.05.–23.06.2025,26143,7.3,"Kõik vastajad, IDE küsimus",https://survey.stackoverflow.co/2025/technology,
+IDE,Zed kasutajad,Stack Overflow Developer Survey,2026,23.06.–05.08.2026,13193,11.4,"Kõik vastajad, IDE küsimus",https://survey.stackoverflow.co/2026/technology/data,
+IDE,Visual Studio kasutajad,Stack Overflow Developer Survey,2018,2018,75398,34.3,"Kõik vastajad",https://insights.stackoverflow.com/survey/2018,
+IDE,Visual Studio kasutajad,Stack Overflow Developer Survey,2026,23.06.–05.08.2026,13193,27.6,"Kõik vastajad",https://survey.stackoverflow.co/2026/technology/data,
+IDE,Sublime Text kasutajad,Stack Overflow Developer Survey,2018,2018,75398,28.9,"Kõik vastajad",https://insights.stackoverflow.com/survey/2018,
+IDE,Sublime Text kasutajad,Stack Overflow Developer Survey,2026,23.06.–05.08.2026,13193,9.8,"Kõik vastajad",https://survey.stackoverflow.co/2026/technology/data,
+IDE,Atom kasutajad,Stack Overflow Developer Survey,2018,2018,75398,18.0,"Kõik vastajad; Atom lõpetati 2022",https://insights.stackoverflow.com/survey/2018,
+IDE,Eclipse kasutajad,Stack Overflow Developer Survey,2018,2018,75398,18.9,"Kõik vastajad",https://insights.stackoverflow.com/survey/2018,
+IDE,Eclipse kasutajad,Stack Overflow Developer Survey,2026,23.06.–05.08.2026,13193,6.9,"Kõik vastajad",https://survey.stackoverflow.co/2026/technology/data,
+IDE,Neovim kasutajad,Stack Overflow Developer Survey,2019,2019,87317,,"2019 nimekirjas puudus",https://insights.stackoverflow.com/survey/2019,
+IDE,Neovim kasutajad,Stack Overflow Developer Survey,2021,2021,82277,4.99,"Kõik vastajad",https://insights.stackoverflow.com/survey/2021,
+IDE,Neovim kasutajad,Stack Overflow Developer Survey,2026,23.06.–05.08.2026,13193,14.7,"Kõik vastajad",https://survey.stackoverflow.co/2026/technology/data,
+AI kasutus,Kasutab AI-tööriistu arendustöös,Stack Overflow Developer Survey,2023,08.–19.05.2023,89184,43.78,"Jah; lisaks 25.46% plaanib",https://survey.stackoverflow.co/2023/,"Küsimus 2023–2025 sama tüüpi; 2026 küsiti tööriistaliikide kaupa"
+AI kasutus,Kasutab AI-tööriistu arendustöös,Stack Overflow Developer Survey,2024,19.05.–20.06.2024,,61.8,"Jah; lisaks 13.8% plaanib",https://survey.stackoverflow.co/2024/ai,"vt 2023"
+AI kasutus,Kasutab AI-tööriistu arendustöös,Stack Overflow Developer Survey,2025,29.05.–23.06.2025,,78.5,"Igapäevaselt 47.1 + iganädalaselt 17.7 + harvem 13.7 (minu liitmine); lisaks 5.3% plaanib",https://survey.stackoverflow.co/2025/ai,"vt 2023"
+AI kasutus,Kasutab mõnda AI-tööriista,Stack Overflow Developer Survey,2026,23.06.–05.08.2026,17464,82.8,"100 − 17.2% 'ei kasuta AI-tööriistu' (minu arvutus)",https://survey.stackoverflow.co/2026/ai/data,"Teine küsimus kui 2023–2025; trend ainult suunana"
+AI kasutus,Kasutab koodiassistenti või koodiagenti,Stack Overflow Developer Survey,2026,23.06.–05.08.2026,17464,65.9,"Kõik vastajad",https://survey.stackoverflow.co/2026/ai/data,
+AI kasutus,Kasutab üldist AI-vestlusrobotit,Stack Overflow Developer Survey,2026,23.06.–05.08.2026,17464,62.5,"Kõik vastajad",https://survey.stackoverflow.co/2026/ai/data,
+Agendid,Kasutab AI-agente tööl (vähemalt harva),Stack Overflow Developer Survey,2025,29.05.–23.06.2025,,30.9,"Igapäevaselt 14.1 + iganädalaselt 9.0 + harvem 7.8 (minu liitmine); 13.8% ainult autocomplete",https://survey.stackoverflow.co/2025/ai,"2026 küsimus erinev"
+Agendid,Kasutab agente vähemalt kord nädalas tööl,JetBrains Developer Ecosystem,2026,mai–juuli 2026,15000+,90,"Professionaalsed arendajad; kaalutud; lokaalsed või pilveagendid",https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/,"Kaalutud valim, mitte SO-ga liidetav"
+Agendid,Kasutab agente iga päev tööl,JetBrains Developer Ecosystem,2026,mai–juuli 2026,15000+,68,"Professionaalsed arendajad; kaalutud",https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/,
+Agendid,Agendi alustatud PR-id GitHubis,GitHub Octoverse,2026,märts 2026,,17,"Kõigist PR-idest, mille esimese mustandi tegi tuvastatav agent",https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/,"Platvormi mõõtmine, alampiir"
+Agendid,Agendi alustatud PR-id GitHubis,GitHub Octoverse,2026,september 2026,,40,"Üle 40%; 110 mln PR-i",https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/,"Platvormi mõõtmine, alampiir"
+Agendid,Copilot kuukasutajatest agendifunktsioone kasutav osa,GitHub Octoverse,2025,2025,,35,"Copiloti kuised aktiivsed kasutajad",https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/,
+Agendid,Copilot kuukasutajatest agendifunktsioone kasutav osa,GitHub Octoverse,2026,2026,,55,"Copiloti kuised aktiivsed kasutajad",https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/,
+Tööriist,Claude Code kasutus tööl,JetBrains AI Pulse,2025,aprill–juuni 2025,,3,"Professionaalsed arendajad; ligikaudu 3%",https://blog.jetbrains.com/research/2026/04/which-ai-coding-tools-do-developers-actually-use-at-work/,"JetBrainsi lained on kaalutud sama raamistiku järgi"
+Tööriist,Claude Code kasutus tööl,JetBrains AI Pulse,2026,jaanuar 2026,10000+,18,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/04/which-ai-coding-tools-do-developers-actually-use-at-work/,
+Tööriist,Claude Code kasutus tööl,JetBrains Developer Ecosystem,2026,mai–juuli 2026,15000+,39,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/,
+Tööriist,GitHub Copilot kasutus tööl,JetBrains Developer Ecosystem,2025,2025,,29,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/,
+Tööriist,GitHub Copilot kasutus tööl,JetBrains Developer Ecosystem,2026,mai–juuli 2026,15000+,21,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/,
+Tööriist,Cursor kasutus tööl,JetBrains AI Pulse,2026,jaanuar 2026,10000+,18,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/04/which-ai-coding-tools-do-developers-actually-use-at-work/,
+Tööriist,Cursor kasutus tööl,JetBrains Developer Ecosystem,2026,mai–juuli 2026,15000+,12,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/,
+Tööriist,OpenAI Codex kasutus tööl,JetBrains AI Pulse,2026,jaanuar 2026,10000+,3,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/04/which-ai-coding-tools-do-developers-actually-use-at-work/,
+Tööriist,OpenAI Codex kasutus tööl,JetBrains Developer Ecosystem,2026,mai–juuli 2026,15000+,16,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/,
+Tööriist,OpenCode kasutus tööl,JetBrains Developer Ecosystem,2026,mai–juuli 2026,15000+,7,"Avatud lähtekoodiga agent",https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/,
+Tööriist,ChatGPT vestlusrobot arendustööks tööl,JetBrains AI Pulse,2026,jaanuar 2026,10000+,28,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/04/which-ai-coding-tools-do-developers-actually-use-at-work/,
+Tööriist,Claude vestlusrobot arendustööks tööl,JetBrains AI Pulse,2026,jaanuar 2026,10000+,7,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/04/which-ai-coding-tools-do-developers-actually-use-at-work/,
+Tööriist,Gemini vestlusrobot arendustööks tööl,JetBrains AI Pulse,2026,jaanuar 2026,10000+,8,"Professionaalsed arendajad",https://blog.jetbrains.com/research/2026/04/which-ai-coding-tools-do-developers-actually-use-at-work/,
+Tööriist,GitHub Copilot (arendaja AI-tööriistade kasutajatest),Stack Overflow Developer Survey,2023,08.–19.05.2023,40307,54.77,"Need, kes vastasid AI arendustööriistade küsimusele",https://survey.stackoverflow.co/2023/,"Alamhulk, nimekiri teine kui 2026"
+Tööriist,ChatGPT (AI-otsingutööriistade kasutajatest),Stack Overflow Developer Survey,2023,08.–19.05.2023,63024,83.24,"Need, kes vastasid AI otsingutööriistade küsimusele",https://survey.stackoverflow.co/2023/,"Alamhulk"
+Tööriist,Claude Code (koodiagentide kasutajatest),Stack Overflow Developer Survey,2026,23.06.–05.08.2026,12255,65.5,"Need, kes vastasid koodiagentide küsimusele",https://survey.stackoverflow.co/2026/ai/data,"Alamhulk"
+Tööriist,GitHub Copilot (koodiagentide kasutajatest),Stack Overflow Developer Survey,2026,23.06.–05.08.2026,12255,58.7,"vt eelmine",https://survey.stackoverflow.co/2026/ai/data,"Alamhulk"
+Tööriist,OpenAI Codex (koodiagentide kasutajatest),Stack Overflow Developer Survey,2026,23.06.–05.08.2026,12255,29.5,"vt eelmine",https://survey.stackoverflow.co/2026/ai/data,"Alamhulk"
+Tööriist,Cursor (koodiagentide kasutajatest),Stack Overflow Developer Survey,2026,23.06.–05.08.2026,12255,25.5,"vt eelmine",https://survey.stackoverflow.co/2026/ai/data,"Alamhulk"
+Mudelid,OpenAI GPT mudelid,Stack Overflow Developer Survey,2025,29.05.–23.06.2025,,81.4,"LLM-id arendustööks; mudeliperede kaupa",https://survey.stackoverflow.co/2025/technology,"2026 küsiti pakkuja kaupa, ei ole võrreldav"
+Mudelid,Claude Sonnet,Stack Overflow Developer Survey,2025,29.05.–23.06.2025,,42.8,"vt eelmine",https://survey.stackoverflow.co/2025/technology,"vt eelmine"
+Mudelid,Meta Llama,Stack Overflow Developer Survey,2025,29.05.–23.06.2025,,17.8,"vt eelmine; avatud kaaludega, aga ei tähenda lokaalset kasutust",https://survey.stackoverflow.co/2025/technology,"vt eelmine"
+Mudelid,Anthropic (pakkuja),Stack Overflow Developer Survey,2026,23.06.–05.08.2026,11895,74.6,"LLM-pakkujad, keda kasutati",https://survey.stackoverflow.co/2026/technology/data,
+Mudelid,OpenAI (pakkuja),Stack Overflow Developer Survey,2026,23.06.–05.08.2026,11895,74.3,"vt eelmine",https://survey.stackoverflow.co/2026/technology/data,
+Mudelid,Google (pakkuja),Stack Overflow Developer Survey,2026,23.06.–05.08.2026,11895,54.5,"vt eelmine",https://survey.stackoverflow.co/2026/technology/data,
+Mudelid,DeepSeek (pakkuja),Stack Overflow Developer Survey,2026,23.06.–05.08.2026,11895,18.9,"vt eelmine",https://survey.stackoverflow.co/2026/technology/data,
+Mudelid,Alibaba Qwen (pakkuja),Stack Overflow Developer Survey,2026,23.06.–05.08.2026,11895,10.1,"vt eelmine",https://survey.stackoverflow.co/2026/technology/data,
+Mudelid,Mistral AI (pakkuja),Stack Overflow Developer Survey,2026,23.06.–05.08.2026,11895,9.8,"vt eelmine",https://survey.stackoverflow.co/2026/technology/data,
+Lokaalne,Ollama agentide raamistikuna,Stack Overflow Developer Survey,2025,29.05.–23.06.2025,,51.1,"Ainult need, kes ehitavad või kasutavad AI-agente; mitte kõik arendajad",https://survey.stackoverflow.co/2025/ai,"Väike alamhulk, ei näita lokaalse kasutuse levikut"
+Lokaalne,Avatud kaaludega mudelite osa tokenitest,OpenRouter State of AI,2025,nov 2024 – nov 2025,100 trln tokenit,33,"Ligikaudu kolmandik 2025 lõpus; pilve API kaudu, mitte lokaalne",https://openrouter.ai/state-of-ai,"Ühe vahendusplatvormi liiklus"
+Mudelid,Programmeerimise osa kõigist tokenitest,OpenRouter State of AI,2025,alguses 2025,,11,"Ligikaudu 11% 2025 alguses",https://openrouter.ai/state-of-ai,"Ühe platvormi liiklus"
+Mudelid,Programmeerimise osa kõigist tokenitest,OpenRouter State of AI,2025,nov 2025,,50,"Üle 50% viimastel nädalatel",https://openrouter.ai/state-of-ai,"Ühe platvormi liiklus"
+Mudelid,Anthropicu osa programmeerimise kulust,OpenRouter State of AI,2025,2025,,60,"Üle 60% suurema osa perioodist; 17.11.2025 nädalal alla 60",https://openrouter.ai/state-of-ai,"Ühe platvormi liiklus"
+Kood,Agendi täielikult kirjutatud koodi osa (keskmine),JetBrains Developer Ecosystem,2026,mai–juuli 2026,15000+,47,"Enesehinnang eelmise kuu töökoodi kohta; vahemike keskpunktid",https://blog.jetbrains.com/research/2026/08/how-much-code-do-developers-really-let-agents-write/,"Enesehinnang"
+Kood,Täiesti käsitsi kirjutatud koodi osa (keskmine),JetBrains Developer Ecosystem,2026,mai–juuli 2026,15000+,27,"vt eelmine",https://blog.jetbrains.com/research/2026/08/how-much-code-do-developers-really-let-agents-write/,"Enesehinnang"
