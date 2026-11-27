@@ -32,6 +32,39 @@
    "koondab_ee": {
     "arv": 236,
     "tekst": "töötukassale teatatud (24.11), 62% Eesti 380 töötajast; neist Tartus 38 (Tartu Postimees 24.11); varem 267 (Tallinn 219, Tartu 48)"
+   },
+   "avatus": {
+    "tase": "kõrge",
+    "skoor_max": 0.54,
+    "liigid": [
+     {
+      "liik": "analüütika",
+      "skoor": 0.54,
+      "tase": "kõrge"
+     },
+     {
+      "liik": "disain ja turundus",
+      "skoor": 0.45,
+      "tase": "keskmine"
+     },
+     {
+      "liik": "juhtimine",
+      "skoor": 0.36,
+      "tase": "madal"
+     }
+    ],
+    "markus": "Kaotatud ametiliikide kõrgeim ILO 2025 tehisarule avatuse skoor (0–1).",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": false,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 0,
+    "tekst": "Signaali pole: koondatud ametid ei ole avatud või firma ei otsi AI-, andme- ega IT-töötajaid.",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   },
   "Coolbet (VG Estonia)": {
@@ -52,6 +85,23 @@
    "koondab_ee": {
     "arv": 134,
     "tekst": "kuni; peaaegu pool peakontorist"
+   },
+   "avatus": {
+    "tase": "teadmata",
+    "skoor_max": null,
+    "liigid": [],
+    "markus": "Uudis ameteid ei nimeta, avatust ei saa hinnata.",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": false,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 0,
+    "tekst": "Signaali pole: koondatud ametid ei ole avatud või firma ei otsi AI-, andme- ega IT-töötajaid.",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   },
   "Swedbank": {
@@ -85,6 +135,29 @@
    "koondab_ee": {
     "arv": null,
     "tekst": "umbes 100 Balti riikides kokku, Eesti osa teadmata"
+   },
+   "avatus": {
+    "tase": "kõrge",
+    "skoor_max": 0.5,
+    "liigid": [
+     {
+      "liik": "IT ja andmed",
+      "skoor": 0.5,
+      "tase": "kõrge"
+     }
+    ],
+    "markus": "Kaotatud ametiliikide kõrgeim ILO 2025 tehisarule avatuse skoor (0–1).",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": true,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 1,
+    "tekst": "Koondab tehisarule avatud ameteid ja otsib samal ajal 1 IT- või analüütikatöötajat (oma tööpakkumiste leht).",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   },
   "Telia Eesti": {
@@ -116,6 +189,34 @@
    "koondab_ee": {
     "arv": 100,
     "tekst": "oktoober; jaanuaris lisaks 30–50"
+   },
+   "avatus": {
+    "tase": "kõrge",
+    "skoor_max": 0.5,
+    "liigid": [
+     {
+      "liik": "IT ja andmed",
+      "skoor": 0.5,
+      "tase": "kõrge"
+     },
+     {
+      "liik": "juhtimine",
+      "skoor": 0.36,
+      "tase": "madal"
+     }
+    ],
+    "markus": "Kaotatud ametiliikide kõrgeim ILO 2025 tehisarule avatuse skoor (0–1).",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": true,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 1,
+    "tekst": "Koondab tehisarule avatud ameteid ja otsib samal ajal 1 IT- või analüütikatöötajat (oma tööpakkumiste leht).",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   },
   "Eesti Energia": {
@@ -138,6 +239,39 @@
    "koondab_ee": {
     "arv": 343,
     "tekst": "lõplik (23.11; esialgu 390): Enefit Industry 204, Enefit Power 85, Eesti Energia AS 54. Maalehe (26.11) järgi on koondatavatest Narva elanikke 151."
+   },
+   "avatus": {
+    "tase": "kõrge",
+    "skoor_max": 0.5,
+    "liigid": [
+     {
+      "liik": "tootmise tugiteenused",
+      "skoor": 0.19,
+      "tase": "madal"
+     },
+     {
+      "liik": "IT ja andmed",
+      "skoor": 0.5,
+      "tase": "kõrge"
+     },
+     {
+      "liik": "disain ja turundus",
+      "skoor": 0.45,
+      "tase": "keskmine"
+     }
+    ],
+    "markus": "Kaotatud ametiliikide kõrgeim ILO 2025 tehisarule avatuse skoor (0–1).",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": false,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 0,
+    "tekst": "Signaali pole: koondatud ametid ei ole avatud või firma ei otsi AI-, andme- ega IT-töötajaid.",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   },
   "RMK": {
@@ -171,6 +305,29 @@
     ],
     "tekst": "RMK vabade töökohtade lehel 3 kuulutust: kinnisvarahaldur Lääne-Eestisse (tähtaeg 29.11) ning kinnisvarahaldur Kirde-Eestisse ja QGIS-i analüütik-arendaja, mille tähtajad on möödas. Süsteemiinseneri kuulutust enam pole (23.11).",
     "url": "https://rmk.ee/kuulutused/vabad-tookohad/"
+   },
+   "avatus": {
+    "tase": "madal",
+    "skoor_max": 0.35,
+    "liigid": [
+     {
+      "liik": "müük ja klienditeenindus",
+      "skoor": 0.35,
+      "tase": "madal"
+     }
+    ],
+    "markus": "Kaotatud ametiliikide kõrgeim ILO 2025 tehisarule avatuse skoor (0–1).",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": false,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 1,
+    "tekst": "Signaali pole: koondatud ametid ei ole avatud või firma ei otsi AI-, andme- ega IT-töötajaid.",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   },
   "Guestjoy OÜ (SiteMinder)": {
@@ -191,6 +348,23 @@
    "koondab_ee": {
     "arv": null,
     "tekst": "Eesti arv avalõigus puudub; SiteMinder koondab üleilmselt iga kümnenda töötaja."
+   },
+   "avatus": {
+    "tase": "teadmata",
+    "skoor_max": null,
+    "liigid": [],
+    "markus": "Uudis ameteid ei nimeta, avatust ei saa hinnata.",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": false,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 0,
+    "tekst": "Signaali pole: koondatud ametid ei ole avatud või firma ei otsi AI-, andme- ega IT-töötajaid.",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   },
   "Limestone Factories of Estonia": {
@@ -211,6 +385,23 @@
    "koondab_ee": {
     "arv": 40,
     "tekst": "umbes 40 töökohta sajast (Postimehe kokkuvõte Äripäeva loost)"
+   },
+   "avatus": {
+    "tase": "teadmata",
+    "skoor_max": null,
+    "liigid": [],
+    "markus": "Uudis ameteid ei nimeta, avatust ei saa hinnata.",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": false,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 0,
+    "tekst": "Signaali pole: koondatud ametid ei ole avatud või firma ei otsi AI-, andme- ega IT-töötajaid.",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   },
   "Finesta Baltic": {
@@ -231,6 +422,23 @@
    "koondab_ee": {
     "arv": 140,
     "tekst": "ligi 140 renditöötajat (Äripäev: 137–141), teade töötukassale"
+   },
+   "avatus": {
+    "tase": "teadmata",
+    "skoor_max": null,
+    "liigid": [],
+    "markus": "Uudis ameteid ei nimeta, avatust ei saa hinnata.",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": false,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 0,
+    "tekst": "Signaali pole: koondatud ametid ei ole avatud või firma ei otsi AI-, andme- ega IT-töötajaid.",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   },
   "Barona Eesti": {
@@ -276,6 +484,23 @@
    "koondab_ee": {
     "arv": 60,
     "tekst": "60 töökohta (Äripäev: 60–64), Statistikaameti novembri andmed"
+   },
+   "avatus": {
+    "tase": "teadmata",
+    "skoor_max": null,
+    "liigid": [],
+    "markus": "Uudis ameteid ei nimeta, avatust ei saa hinnata.",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": false,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 0,
+    "tekst": "Signaali pole: koondatud ametid ei ole avatud või firma ei otsi AI-, andme- ega IT-töötajaid.",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   },
   "Makron": {
@@ -296,6 +521,23 @@
    "koondab_ee": {
     "arv": 40,
     "tekst": "ligi 40 inimest (ERR)"
+   },
+   "avatus": {
+    "tase": "teadmata",
+    "skoor_max": null,
+    "liigid": [],
+    "markus": "Uudis ameteid ei nimeta, avatust ei saa hinnata.",
+    "allikas": "ILO 2025 (Gmyrek jt), lisa A1; seos ametiliikidega failis avatus/ametiliigid-isco.json",
+    "arvutatud": "2026-11-27"
+   },
+   "koondab_ja_palkab": {
+    "signaal": false,
+    "ai_ja_andmekuulutusi_cv": 0,
+    "naited": [],
+    "otsib_it_voi_analuutikat": 0,
+    "tekst": "Signaali pole: koondatud ametid ei ole avatud või firma ei otsi AI-, andme- ega IT-töötajaid.",
+    "allikas": "ai_tookuulutused.json (2026-11-27) ja koondajad.json otsib",
+    "arvutatud": "2026-11-27"
    }
   }
  }
