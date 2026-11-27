@@ -1372,7 +1372,13 @@ def test_avalehe_pilt_on_lehe_taust():
     # V9 (Kadri 26.11.2026 „apply version 9“): heleda teema toonireegel tuleb lisaks neljale pildireeglile
     toon = [r for r in koik if '[data-seire-teema="soft"] .pea-rahu.pilt::before' in r]
     pildid = [r for r in koik if r not in toon]
-    assert len(pildid) == 4 and len(toon) == 1
+    # Kadri 27.11.2026: telefonis tundus pilt erksam – heleda teema 42% kirjutas üle telefoni nõrgema nähtavuse.
+    # Telefoni toonireegel hoiab sama vahekorda nagu hallis pildis (24/30).
+    tel = [r for r in toon if "@media (max-width: 680px)" in r]
+    toon = [r for r in toon if r not in tel]
+    assert len(pildid) == 4 and len(toon) == 1 and len(tel) == 1
+    tel_n = float(re.search(r"opacity: (\.\d+)", tel[0]).group(1))
+    assert abs(tel_n - .42 * .24 / .3) < .01, tel_n
     assert "z-index: -1" in pildid[0] and "pointer-events: none" in pildid[0]
     # pilt on päisest kõrgem (ulatub tahvli taha) ja hajub alla lehe taustaks
     assert int(re.search(r"height: (\d+)px", pildid[0]).group(1)) >= 460
