@@ -966,8 +966,14 @@ def palkamine(A):
                 for a in o["ametid"])
         link_ = f'<small>{a(o["url"], "tööpakkumiste leht")}</small>' if o.get("url") else ""
         # Viis veergu kuue asemel ja ametiliikide pikk selgitus tabeli all (Kadri 7.11.2026: liiga palju infot ühel taustal)
+        # Kaudne mõõt (Kadri 26.11.2026, valik A): kaotatud ametite tehisarule avatus ja „koondab ja palkab“; seos, mitte põhjus
+        av = x.get("avatus") or {}
+        if av.get("tase"):
+            kaotatud += f'<small class="pk-av">tehisarule avatus: <b>{e(av["tase"])}</b></small>'
+        kp_ = x.get("koondab_ja_palkab") or {}
+        sig = f'<small class="pk-sig">koondab avatud ameteid ja palkab IT-, andme- või analüütikatöötajaid</small>' if kp_.get("signaal") else ""
         read.append(f'<tr><td><b>{e(f)}</b><small>{e(x["sektor"])} · {e(x["omand"])}</small></td><td>{arvud}</td><td>{pohjused}</td>'
-                    f'<td>{kaotatud}</td><td>{otsib}{link_}</td></tr>')
+                    f'<td>{kaotatud}</td><td>{otsib}{sig}{link_}</td></tr>')
         if x.get("kaotatud_tekst"):
             selgitused.append(f'<li><b>{e(f)}</b>: {e(x["kaotatud_tekst"])}</li>')
     n_k = len(kontrollitud)
@@ -977,7 +983,7 @@ def palkamine(A):
 <div class="g12">
 <section class="pn sp12" id="palkamine" aria-labelledby="h-palkamine">
   <div class="pn-h"><h2 id="h-palkamine">{h2} otsib praegu Eestis töötajaid <b>{ARVSONAD.get(len(otsivad), len(otsivad))}</b> ({sonaga(kuulutusi)} kuulutust){sama_t}</h2></div>
-  <p class="ps">Tööpakkumiste lehed on kontrollitud {kp(kp_min)}. Sinise äärega ametiliik on sama, mida koondatakse.</p>
+  <p class="ps">Tööpakkumiste lehed on kontrollitud {kp(kp_min)}. Sinise äärega ametiliik on sama, mida koondatakse. „Tehisarule avatus“ on kaotatud ametite kõrgeim tase ILO 2025 indeksi järgi; see on seos, mitte põhjus.</p>
   {tbl_div("-3 -4")}<table class="pk"><thead><tr><th scope="col">Ettevõte</th><th scope="col">Koondab Eestis</th><th scope="col">Põhjus ettevõtte sõnul</th><th scope="col">Kaotab</th><th scope="col">Otsib praegu Eestis</th></tr></thead>
   <tbody>{"".join(read)}</tbody></table></div>
   <details><summary>Täpsustused: ametiliigid ja mida tabel ei näita</summary><div>
