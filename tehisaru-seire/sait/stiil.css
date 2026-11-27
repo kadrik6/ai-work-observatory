@@ -2049,3 +2049,23 @@ html[data-t] main[data-teema="uudised"] > .pea + .lehel-rida { margin-top: 6px; 
                 url("pilt/avaleht-tume.jpg") right 38% / cover no-repeat; }
   html[data-t][data-seire-teema="soft"] main[data-teema="uudised"] > .pea::before { background-color: #546ab6; background-blend-mode: normal, luminosity; }
 }
+
+/* Töö › Minu amet (Kadri 27.11.2026) */
+.ma-otsi { max-width: 40rem; margin: 16px 0 8px; }
+.ma-otsi label { display: block; font-weight: 600; margin-bottom: 6px; }
+.ma-otsi input { width: 100%; box-sizing: border-box; min-height: 44px; padding: 8px 12px; font: inherit; font-size: 17px;
+  color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.ma-otsi input:focus-visible { outline: 2px solid var(--signal); outline-offset: 1px; }
+.ma-tul { list-style: none; margin: 8px 0 0; padding: 0; }
+.ma-tul li { border-bottom: 1px solid var(--border); }
+.ma-tul button { all: unset; box-sizing: border-box; display: block; width: 100%; min-height: 44px; padding: 10px 4px; cursor: pointer; color: var(--signal); text-decoration: underline; }
+.ma-tul button:hover { background: var(--surface-2); }
+.ma-tul button:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
+.ma-kaart { max-width: 46rem; margin: 16px 0 24px; padding: 16px 20px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.ma-kaart h3 { font: 600 22px var(--font-display); margin: 0 0 12px; }
+.ma-kaart p { margin: 10px 0 0; }
+.ma-sk { list-style: none; display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 0 0 4px; padding: 0; }
+.ma-sk li { font-size: 13px; color: var(--ink-3); border-top: 6px solid var(--surface-3); padding-top: 4px; line-height: 1.25; }
+.ma-sk li.on { color: var(--ink); font-weight: 600; border-top-color: var(--signal); }
+@media (max-width: 680px) { .ma-sk li span { display: none; } .ma-kaart { padding: 16px; } }
+.minu-amet-l { margin: 4px 0 8px; } .minu-amet-l a { font-weight: 600; color: var(--signal); }

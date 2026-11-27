@@ -132,6 +132,8 @@ def vota(proj):
     (SISU / "uudiste-vaited.json").write_text(json.dumps(vaited, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     shutil.copyfile(uu / "olek.json", SISU / "uudiste-olek.json")
     shutil.copyfile(uu / "koondajad.json", SISU / "koondajad.json")  # keda koondajad ise tööle otsivad
+    if (uu / "avatus" / "ametiliigid-isco.json").exists():  # ametiliikide seos ISCO-ga (Kadri valik A 27.11.2026, Minu amet)
+        shutil.copyfile(uu / "avatus" / "ametiliigid-isco.json", SISU / "ametiliigid-isco.json")
     if (uu / "toopakkumised.json").exists():  # tööportaalide kuulutuste arv ja jaotused (Kadri 7.11.2026)
         shutil.copyfile(uu / "toopakkumised.json", SISU / "toopakkumised.json")
     if (uu / "ai_tookuulutused.json").exists():  # tehisaru- ja andmetööde kuulutused (Kadri 8.11.2026)

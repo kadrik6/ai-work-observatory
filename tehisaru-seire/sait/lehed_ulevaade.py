@@ -168,7 +168,8 @@ def kpi_plaat(pid, lbl, big, per, kontekst, src, fookus=False, href=""):
 
 # Esmakordsele lugejale (kolleeg, kes saab lingi): mis sait see on. Kadri 8.11.2026, enne kolleegidele näitamist.
 # Lühike päis (Kadri 8.11.2026: pealkiri ja selle all olev tekst lühemaks, allikad ühe lingi taha)
-TUTVUS = "Tehisaru kasutus ja mõju Eestis ja ELis: statistika, uuringud ja väidete kontroll, iga number allikaga."
+# Kadri 27.11.2026 (eesmärk): sait on „täna“ orienteerumise koht: tehisaru seis, mõju tööle ja mis on muutunud
+TUTVUS = "Igapäevane ülevaade: kui palju Eestis tehisaru kasutatakse, mida see tööga teeb ja mis on muutunud. Iga number on allikaga."
 
 KOOPIA_KES = {"ma-": "ELi tehisaru määrus"}
 
@@ -421,6 +422,7 @@ def avaleht(A, vaade, vaated):
   <h1>{taida(vaade["h1"], A)}</h1>
   <div class="alla">
     <p class="tutvus">{TUTVUS} {menuu("saidist", "Mis see sait on?")}</p>
+    <p class="minu-amet-l"><a href="too-minu-amet.html">Kui avatud on sinu amet tehisarule? →</a></p>
     <details class="allikad-l"><summary>Allikad ja kuupäevad</summary><div>
       {uuenduste_loend(A, vaated, ein, ein25, eeb, ds, kuu, t_ee, t_koht, h_uus, h_seis)}
       <p>Kuupäev on päev, mil allikas tabelit viimati muutis; uusim on üleval. {menuu("kuidas", "Kuidas numbreid lugeda")}</p>

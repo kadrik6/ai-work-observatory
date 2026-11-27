@@ -736,3 +736,71 @@
     } else if (vana(tekst)) tehtud(nupp); else naita(nupp, tekst);
   });
 })();
+
+// Töö › Minu amet (Kadri 27.11.2026): lugeja kirjutab ameti nime ja näeb ILO astet, töötajate arvu, ametirühma hõive
+// muutust ja koondajaid, kes on seda liiki töökohti kaotanud. Valik jääb aadressi (#amet-2411), et lingi saaks saata.
+(function minuAmet() {
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', minuAmet); return; }
+  var a = document.getElementById('ma-andmed');
+  if (!a) return;
+  var D = JSON.parse(a.textContent);
+  var otsi = document.querySelector('.ma-otsi'), sis = document.getElementById('ma-sisend'),
+      tul = document.getElementById('ma-tulemused'), kaart = document.getElementById('ma-kaart');
+  otsi.hidden = false;
+  var nf = function (x, k) { // nagu saidi numbrid: koma ja tuhandete vahel kitsas tühik
+    var o = x.toFixed(k || 0).split('.');
+    return o[0].replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0') + (o[1] ? ',' + o[1] : '');
+  };
+  var el = function (id, html) { document.getElementById(id).innerHTML = html; };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  function naita(kood, keri) {
+    var r = D.ametid.filter(function (x) { return x[0] === kood; })[0];
+    if (!r) return;
+    var g = D.ryhmad[kood[0]], s = D.astmed[r[3]], avatud = ['1', '2', '3', '4'].indexOf(r[3]) >= 0;
+    el('ma-nimi', esc(r[1]));
+    kaart.querySelectorAll('.ma-sk li').forEach(function (li) { li.classList.toggle('on', li.getAttribute('data-a') === r[3]); });
+    el('ma-aste', '<b>ILO hinnang: ' + esc(s.nimi) + '.</b> ' + (avatud
+      ? 'Osa selle ameti ülesannetest on sellised, mida generatiivne tehisaru suudab teha või toetada. See ei ütle, kas töö kaob.'
+      : 'Generatiivne tehisaru puudutab selle ameti ülesandeid vähe.') +
+      ' Samas astmes töötab ' + nf(s.osa, 1) + '% Eesti töötajatest.');
+    el('ma-tootajad', 'Eestis töötas selles ametis 2022. aasta oktoobris umbes <b>' + nf(r[2]) + ' inimest</b> (täistööajale taandatult).');
+    el('ma-ryhm', 'Ametirühm <b>' + esc(g.nimi.toLowerCase()) + '</b>: hõive ' + esc(g.muutus) + ' (' + D.alus + '. aastal keskmiselt ' +
+      nf(g.k0, 1) + ' tuhat, ' + esc(g.periood) + ' ' + nf(g.k1, 1) + ' tuhat).');
+    var kk = D.koondajad.filter(function (k) { return k.isco.some(function (p) { return kood.indexOf(p) === 0; }); });
+    var ff = [];
+    kk.forEach(function (k) { k.firmad.forEach(function (f) { if (ff.indexOf(f) < 0) ff.push(f); }); });
+    el('ma-koond', ff.length
+      ? 'Seda liiki töökohti (' + esc(kk.map(function (k) { return k.liik; }).join(', ')) + ') on uudiste järgi koondanud: ' + esc(ff.join(', ')) + '. <a href="too.html#koondamised">Koondamised</a>'
+      : 'Kogutud koondamisuudistes pole seda liiki töökohti nimetatud. <a href="too.html#koondamised">Koondamised</a>');
+    document.getElementById('ma-link').href = '#amet-' + kood;
+    kaart.hidden = false;
+    if (location.hash !== '#amet-' + kood) history.replaceState(null, '', '#amet-' + kood);
+    if (keri) kaart.scrollIntoView({ block: 'nearest' });
+  }
+  function otsing() {
+    var q = sis.value.trim().toLowerCase();
+    tul.innerHTML = '';
+    if (q.length < 3) return;
+    // Ametinimed on Statistikaameti loendist („Raamatupidamise tippspetsialistid“), lugeja kirjutab „raamatupidaja“:
+    // kui täpset vastet pole, lühendab otsing sõna lõpust kuni kolm tähte (tüvi), aga mitte alla nelja tähe.
+    var leitud = [];
+    for (var k = q.length; k >= Math.max(4, q.length - 3) && !leitud.length; k--) {
+      var t = q.slice(0, k);
+      leitud = D.ametid.filter(function (x) { return x[1].toLowerCase().indexOf(t) >= 0; });
+    }
+    if (!leitud.length) { tul.innerHTML = '<li class="ps">Sellist ametit ei leidnud. Proovi lühemat sõna, näiteks „õpeta“ või „juh“.</li>'; return; }
+    leitud.slice(0, 8).forEach(function (x) {
+      var li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.textContent = x[1];
+      b.addEventListener('click', function () { naita(x[0], true); tul.innerHTML = ''; sis.value = x[1]; });
+      li.appendChild(b); tul.appendChild(li);
+    });
+    if (leitud.length > 8) { var li = document.createElement('li'); li.className = 'ps'; li.textContent = '… veel ' + (leitud.length - 8) + ' ametit, kirjuta täpsemalt'; tul.appendChild(li); }
+  }
+  sis.addEventListener('input', otsing);
+  sis.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter') { var b = tul.querySelector('button'); if (b) { ev.preventDefault(); b.click(); } }
+  });
+  var m = location.hash.match(/^#amet-(\d{4})$/);
+  if (m) naita(m[1], false);
+})();
