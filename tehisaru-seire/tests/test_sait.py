@@ -2592,3 +2592,34 @@ def test_alamlehe_pais_pildiga(sait):
         assert '<main id="sisu" class="wrap" data-teema="uudised">' in sait[f], f
     assert '<main id="sisu" class="wrap" data-teema="too">' in sait["too.html"]
     assert 'class="pea' not in sait["index.html"].replace('class="pea-', "")  # avalehe päis (pea-rahu) ei muutu
+
+
+def test_arendajate_toovahendite_leht(sait):
+    """Kadri 27.11.2026: arendajate tööriistad eraldi lehel ja visualiseeritult, ka käsurea (CLI) kasutus."""
+    h = sait["too-toovahendid.html"]
+    for jid in ("agendid", "agendi-pr", "kasurida", "ide", "h-tv-uksikasjad"):
+        assert f'id="{jid}"' in h, jid
+    # Neli käsurea tööriista, igaühel oma graafik ja allikas
+    for nimi in ("Claude Code", "OpenAI Codex CLI", "GitHub Copilot CLI", "Gemini CLI"):
+        assert f'<h3 class="gt">{nimi}</h3>' in h, nimi
+    assert h.count('href="https://www.npmjs.com/package/') == 4
+    # Allalaadimisi ei esitata kasutajatena ega võrrelda tööriistade vahel
+    t = tekst(h)
+    assert "Allalaadimine ei ole kasutaja." in t and "ei saa tööriistu nende arvude järgi omavahel võrrelda" in t
+    # Eri allikaid ei liideta: agentide graafik ainult JetBrains, arenduskeskkonnad ainult Stack Overflow
+    agendid = _jaotis(h, "agendid")
+    assert "JetBrains" in agendid and "stackoverflow" not in agendid
+    assert "survey.stackoverflow.co" in _jaotis(h, "ide") and "jetbrains" not in _jaotis(h, "ide")
+    assert "Eesti kohta eraldi numbrit ei ole" in t
+    assert '<span class="alam-silt">Töö:</span>' in h
+
+
+def test_toovahendite_andmetes_on_iga_rea_juures_link():
+    import toovahendid
+    U = toovahendid.uuring()
+    assert U and all(r["url"].startswith("https://") and r["allikas"] for r in U)
+    L = toovahendid.allalaadimised()
+    for t in L.values():
+        kuud = [k for k, _ in t["read"]]
+        assert kuud == sorted(set(kuud)) and kuud[-1] < t["laaditud"][:7], t["pakett"]  # ainult täis kuud
+        assert t["url"].startswith("https://")

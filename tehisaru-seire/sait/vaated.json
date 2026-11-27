@@ -47,7 +47,7 @@
       "olek": "valmis",
       "kusimus": "Milliseid töid tehisaru mõjutab ja mida tõendid tegelikult ütlevad?",
       "h1": "**Eestis muudab tehisaru tööd juba**: tööl kasutab seda 49,2% töötajatest ¦ See on 2026. aasta number, aasta varem oli see 33,1%. Mitu koondamist tehisaru põhjustab, Eesti statistika veel ei eralda.",
-      "osad": "Kaks alamlehte: Tööturg ja uuringud (tahvel kuue Eesti küsimusega, töötus kuu kaupa, koondamised, hõive avatuse astme järgi; üksikasjad kokkupandult: kus on tõendeid, teised tööturu andmed, uuringud mujal ja Eestis, avatud ametid); Kirjandus (publikatsioonide kataloog).",
+      "osad": "Kolm alamlehte: Tööturg ja uuringud (tahvel kuue Eesti küsimusega, töötus kuu kaupa, koondamised, hõive avatuse astme järgi; üksikasjad kokkupandult: kus on tõendeid, teised tööturu andmed, uuringud mujal ja Eestis, avatud ametid); Arendajate tööriistad (agendid, käsurea tööriistad ja arenduskeskkonnad maailmas); Kirjandus (publikatsioonide kataloog).",
       "alamlehed": [
         {
           "fail": "too.html",
@@ -58,6 +58,17 @@
             "koondamised",
             "astmed",
             "uksikasjad"
+          ]
+        },
+        {
+          "fail": "too-toovahendid.html",
+          "nimi": "Arendajate tööriistad",
+          "lead": "Leht näitab, kuidas muutuvad IT-arendajate töövahendid: agendid, käsurea tööriistad ja arenduskeskkonnad. Kes töötab IT-s, otsib uut tööd või õpib ümber, näeb siit, milliseid tööriistu tööl päriselt kasutatakse.",
+          "jaotised": [
+            "tv-agendid",
+            "tv-kasurida",
+            "tv-ide",
+            "tv-uksikasjad"
           ]
         },
         {
