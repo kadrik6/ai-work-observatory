@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-26T18:10:00+02:00",
+  "viimane_kontroll": "2026-11-27T07:55:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "26.11 õhtu: valitsus kiitis heaks andmejälgija seaduse; tühjad büroopinnad; AKI kaamerajälgimine"
+      "markus": "27.11 hommik: uusi tehisaru-, andme- ega koondamislugusid pole"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "26.11: uusi tehisaru lugusid pole"
+      "markus": "27.11 hommik: uusi asjakohaseid lugusid pole"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "26.11 õhtu: uusi Eesti koondamisi pole; Lauri Haavi intervjuu IT-koondamistest (Õhtuleht)"
+      "markus": "27.11: Eesti Energia ja Pipedrive'i jätkulood, IT-firmade pankrotid, Teearu arvamus; uudiste filtriga otsing tühi, kordasin veebiotsinguga"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "26.11 õhtu: EL-i 50 mld fondi plaan (Postimees); Euroopa tööandjate tehisaruga seotud kärbete uuring jäi välja (algallikat ei leidnud)"
+      "markus": "27.11: SAP kaalub vähemalt 10 000 koha kaotamist (Bloomberg); Littleri Euroopa tööandjate küsitlus"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -29,27 +29,27 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "26.11: feed avanes; uusi postitusi pole"
+      "markus": "27.11: uut postitust pole (viimane 23.11, tervishoid)"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "26.11: avanes, uusi uudiseid pole"
+      "markus": "27.11: uut uudist pole (viimane 7.10); Arunädala kokkuvõte leitud otsinguga"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "26.11: avanes; novembri konjunktuuribaromeeter (25.11) lisatud"
+      "markus": "27.11: uut asjakohast uudist pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "26.11 õhtu: JDM andmejälgija muutub kohustuslikuks; KONTROLL 4/7"
+      "markus": "27.11: uusi riigi otsuseid pole; andmejälgija levik 4; Arunädala kokkuvõte (Eesti.ai); KONTROLL 4/7"
     },
     {
       "nimi": "OECD uudised (otsing)",
       "ok": true,
-      "markus": "26.11: tehisaru ja töö teemalisi OECD uudiseid ei leitud"
+      "markus": "27.11: OECD.AI intsidendid, töö kohta uut pole"
     },
     {
       "nimi": "Riikide strateegiad",

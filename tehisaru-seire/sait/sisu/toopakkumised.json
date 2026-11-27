@@ -364,42 +364,42 @@
       "valdkonniti": [
         {
           "nimi": "Teenindus",
-          "arv": 743,
+          "arv": 715,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 317
+              "arv": 293
             },
             {
               "nimi": "Tartu",
-              "arv": 75
+              "arv": 81
             },
             {
               "nimi": "Pärnu",
-              "arv": 34
-            },
-            {
-              "nimi": "Viljandi",
-              "arv": 13
-            },
-            {
-              "nimi": "Viimsi",
-              "arv": 11
+              "arv": 33
             },
             {
               "nimi": "Kuressaare",
+              "arv": 12
+            },
+            {
+              "nimi": "Haapsalu",
               "arv": 10
             },
             {
-              "nimi": "Rakvere",
+              "nimi": "Viimsi",
+              "arv": 9
+            },
+            {
+              "nimi": "Viljandi",
+              "arv": 9
+            },
+            {
+              "nimi": "Jõhvi",
               "arv": 8
             },
             {
-              "nimi": "Valga",
-              "arv": 8
-            },
-            {
-              "nimi": "Paide",
+              "nimi": "Rapla",
               "arv": 7
             },
             {
@@ -410,42 +410,46 @@
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 442
+              "arv": 408
             },
             {
               "nimi": "Tartumaa",
-              "arv": 92
+              "arv": 105
             },
             {
               "nimi": "Pärnumaa",
               "arv": 39
             },
             {
-              "nimi": "Lääne-Virumaa",
-              "arv": 18
-            },
-            {
               "nimi": "Viljandimaa",
-              "arv": 16
+              "arv": 19
             },
             {
               "nimi": "Ida-Virumaa",
               "arv": 16
             },
             {
-              "nimi": "Järvamaa",
-              "arv": 12
+              "nimi": "Lääne-Virumaa",
+              "arv": 15
             },
             {
               "nimi": "Saaremaa",
-              "arv": 12
+              "arv": 13
             },
             {
               "nimi": "Raplamaa",
               "arv": 11
             },
             {
-              "nimi": "Valgamaa",
+              "nimi": "Võrumaa",
+              "arv": 11
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 10
+            },
+            {
+              "nimi": "Läänemaa",
               "arv": 10
             },
             {
@@ -453,95 +457,91 @@
               "arv": 10
             },
             {
-              "nimi": "Läänemaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Põlvamaa",
+              "nimi": "Valgamaa",
               "arv": 4
             },
             {
               "nimi": "Hiiumaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Põlvamaa",
               "arv": 1
             }
           ],
           "tooandjad": [
             {
-              "nimi": "Selver AS",
-              "arv": 75
+              "nimi": "Rimi Eesti Food AS",
+              "arv": 70
             },
             {
-              "nimi": "Rimi Eesti Food AS",
-              "arv": 57
+              "nimi": "Selver AS",
+              "arv": 70
             },
             {
               "nimi": "MAXIMA Eesti OÜ",
-              "arv": 30
+              "arv": 23
             },
             {
               "nimi": "SOL Baltics OÜ",
-              "arv": 24
-            },
-            {
-              "nimi": "Forus",
-              "arv": 9
+              "arv": 18
             },
             {
               "nimi": "Kesko Senukai Estonia",
-              "arv": 7
+              "arv": 10
+            },
+            {
+              "nimi": "Forus",
+              "arv": 6
             },
             {
               "nimi": "Sanitex OÜ",
               "arv": 6
             },
             {
-              "nimi": "G4S Eesti AS",
+              "nimi": "Circle K Eesti AS",
               "arv": 5
             },
             {
-              "nimi": "Circle K Eesti AS",
+              "nimi": "BENU Apteek",
               "arv": 4
             },
             {
-              "nimi": "Stockmann AS",
+              "nimi": "G4S Eesti AS",
               "arv": 4
             },
             {
-              "nimi": "Karlskrona Bilcenter AB",
+              "nimi": "Bolt",
               "arv": 3
             },
             {
-              "nimi": "Bestor Grupp AS",
+              "nimi": "Inchcape Motors Estonia OÜ",
               "arv": 3
             }
           ]
         },
         {
           "nimi": "Tootmine / töötlemine",
-          "arv": 539,
+          "arv": 506,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 144
-            },
-            {
-              "nimi": "Tartu",
-              "arv": 26
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 26
+              "arv": 123
             },
             {
               "nimi": "Narva",
-              "arv": 15
+              "arv": 21
             },
             {
               "nimi": "Kohtla-Järve",
+              "arv": 21
+            },
+            {
+              "nimi": "Tartu",
+              "arv": 17
+            },
+            {
+              "nimi": "Pärnu",
               "arv": 14
             },
             {
@@ -553,115 +553,111 @@
               "arv": 9
             },
             {
-              "nimi": "Jõhvi",
-              "arv": 7
-            },
-            {
               "nimi": "Keila",
-              "arv": 7
+              "arv": 8
             },
             {
               "nimi": "Võru",
-              "arv": 5
+              "arv": 7
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 7
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 259
-            },
-            {
-              "nimi": "Tartumaa",
-              "arv": 52
+              "arv": 216
             },
             {
               "nimi": "Ida-Virumaa",
-              "arv": 45
+              "arv": 70
+            },
+            {
+              "nimi": "Tartumaa",
+              "arv": 55
             },
             {
               "nimi": "Pärnumaa",
-              "arv": 36
-            },
-            {
-              "nimi": "Raplamaa",
-              "arv": 26
+              "arv": 22
             },
             {
               "nimi": "Järvamaa",
-              "arv": 20
+              "arv": 19
             },
             {
               "nimi": "Viljandimaa",
               "arv": 19
             },
             {
+              "nimi": "Raplamaa",
+              "arv": 14
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 14
+            },
+            {
               "nimi": "Valgamaa",
               "arv": 13
             },
             {
-              "nimi": "Lääne-Virumaa",
-              "arv": 11
+              "nimi": "Saaremaa",
+              "arv": 9
+            },
+            {
+              "nimi": "Võrumaa",
+              "arv": 8
             },
             {
               "nimi": "Jõgevamaa",
-              "arv": 7
+              "arv": 8
             },
             {
               "nimi": "Läänemaa",
               "arv": 7
             },
             {
-              "nimi": "Võrumaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Saaremaa",
-              "arv": 6
-            },
-            {
               "nimi": "Põlvamaa",
-              "arv": 3
+              "arv": 1
+            },
+            {
+              "nimi": "Hiiumaa",
+              "arv": 1
             }
           ],
           "tooandjad": [
             {
-              "nimi": "MAXIMA Eesti OÜ",
-              "arv": 20
-            },
-            {
-              "nimi": "Barona Eesti OÜ",
+              "nimi": "BLRT Grupp AS",
               "arv": 12
             },
             {
-              "nimi": "BLRT Grupp AS",
+              "nimi": "Barona Eesti OÜ",
+              "arv": 10
+            },
+            {
+              "nimi": "SOL Baltics OÜ",
               "arv": 9
             },
             {
-              "nimi": "DECK Marine Systems OÜ",
-              "arv": 5
+              "nimi": "Ericsson Estonia AS",
+              "arv": 6
             },
             {
-              "nimi": "Coop Eesti Keskühistu",
-              "arv": 4
+              "nimi": "MAXIMA Eesti OÜ",
+              "arv": 6
             },
             {
               "nimi": "Manpower",
               "arv": 4
             },
             {
-              "nimi": "Repligen Estonia OÜ",
-              "arv": 4
-            },
-            {
-              "nimi": "Kohila Vineer OÜ",
+              "nimi": "DS Smith Packaging Estonia AS",
               "arv": 3
             },
             {
-              "nimi": "SOL Baltics OÜ",
-              "arv": 3
-            },
-            {
-              "nimi": "CVAgent OÜ",
+              "nimi": "GPV Estonia AS",
               "arv": 3
             },
             {
@@ -669,18 +665,26 @@
               "arv": 3
             },
             {
-              "nimi": "Brandem Baltic OÜ",
-              "arv": 3
+              "nimi": "BANE ROCO OÜ",
+              "arv": 2
+            },
+            {
+              "nimi": "Brentex OÜ",
+              "arv": 2
+            },
+            {
+              "nimi": "CV-Online värbamisteenused",
+              "arv": 2
             }
           ]
         },
         {
           "nimi": "Haridus / teadus",
-          "arv": 324,
+          "arv": 373,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 114
+              "arv": 147
             },
             {
               "nimi": "Tartu",
@@ -688,10 +692,14 @@
             },
             {
               "nimi": "Kohtla-Järve",
-              "arv": 4
+              "arv": 7
             },
             {
-              "nimi": "Tapa",
+              "nimi": "Narva",
+              "arv": 5
+            },
+            {
+              "nimi": "Valga",
               "arv": 4
             },
             {
@@ -699,115 +707,103 @@
               "arv": 3
             },
             {
-              "nimi": "Valga",
+              "nimi": "Keila",
               "arv": 3
             },
             {
-              "nimi": "Viljandi",
+              "nimi": "Pärnu",
               "arv": 2
             },
             {
-              "nimi": "Keila",
-              "arv": 2
-            },
-            {
-              "nimi": "Narva",
+              "nimi": "Võru",
               "arv": 2
             },
             {
               "nimi": "Jõhvi",
-              "arv": 2
+              "arv": 1
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 172
+              "arv": 223
             },
             {
               "nimi": "Tartumaa",
               "arv": 23
             },
             {
-              "nimi": "Valgamaa",
-              "arv": 11
-            },
-            {
               "nimi": "Ida-Virumaa",
-              "arv": 10
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 8
+              "arv": 19
             },
             {
               "nimi": "Viljandimaa",
+              "arv": 10
+            },
+            {
+              "nimi": "Valgamaa",
               "arv": 7
             },
             {
-              "nimi": "Raplamaa",
-              "arv": 6
+              "nimi": "Pärnumaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Võrumaa",
+              "arv": 3
             },
             {
               "nimi": "Põlvamaa",
-              "arv": 6
+              "arv": 1
             },
             {
-              "nimi": "Pärnumaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Järvamaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 2
+              "nimi": "Raplamaa",
+              "arv": 1
             },
             {
               "nimi": "Läänemaa",
               "arv": 1
             },
             {
-              "nimi": "Hiiumaa",
+              "nimi": "Jõgevamaa",
               "arv": 1
             }
           ],
           "tooandjad": [
             {
-              "nimi": "Tallinna Laagna Lasteaed-Põhikool",
-              "arv": 8
+              "nimi": "Tartu Ülikool",
+              "arv": 12
             },
             {
               "nimi": "Saue Vallavalitsuse allasutus",
+              "arv": 9
+            },
+            {
+              "nimi": "Tallinna Laagna Lasteaed-Põhikool",
               "arv": 7
             },
             {
-              "nimi": "Lasnamäe Gümnaasium",
+              "nimi": "TalTech (Tallinna Tehnikaülikool)",
               "arv": 6
             },
             {
-              "nimi": "TalTech (Tallinna Tehnikaülikool)",
+              "nimi": "Haridus- ja Noorteamet",
               "arv": 5
             },
             {
-              "nimi": "Kadrioru Saksa Gümnaasium",
-              "arv": 5
-            },
-            {
-              "nimi": "Anija Vallavalitsus",
+              "nimi": "Tallinna Kesklinna Vene Gümnaasium",
               "arv": 4
             },
             {
-              "nimi": "Haridus- ja Teadusministeerium",
+              "nimi": "Tallinna Mahtra Põhikool",
               "arv": 4
             },
             {
-              "nimi": "Tallinna Laagna Gümnaasium",
-              "arv": 4
-            },
-            {
-              "nimi": "Peetri Lasteaed-Põhikool",
+              "nimi": "Kindluse Kool",
               "arv": 4
             },
             {
@@ -815,241 +811,87 @@
               "arv": 4
             },
             {
-              "nimi": "Tartu Ülikool",
-              "arv": 3
+              "nimi": "Tallinna Tehnoloogiakolledž",
+              "arv": 4
             },
             {
-              "nimi": "Tallinna Mustamäe Reaalgümnaasium",
-              "arv": 3
+              "nimi": "Järveküla Lasteaed",
+              "arv": 4
+            },
+            {
+              "nimi": "Tallinna Lilleküla Gümnaasium",
+              "arv": 4
             }
           ]
         },
         {
-          "nimi": "Ehitus / kinnisvara",
-          "arv": 290,
+          "nimi": "Tervishoid ja sotsiaaltöö",
+          "arv": 311,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 92
+              "arv": 81
             },
             {
               "nimi": "Tartu",
-              "arv": 28
+              "arv": 17
+            },
+            {
+              "nimi": "Kohtla-Järve",
+              "arv": 9
+            },
+            {
+              "nimi": "Tapa",
+              "arv": 9
             },
             {
               "nimi": "Pärnu",
               "arv": 9
             },
             {
-              "nimi": "Narva",
-              "arv": 2
-            },
-            {
-              "nimi": "Rakvere",
-              "arv": 2
-            },
-            {
               "nimi": "Jõhvi",
-              "arv": 2
-            },
-            {
-              "nimi": "Võru",
-              "arv": 2
-            },
-            {
-              "nimi": "Kohtla-Järve",
-              "arv": 2
-            },
-            {
-              "nimi": "Viljandi",
-              "arv": 1
-            }
-          ],
-          "maakonnad": [
-            {
-              "nimi": "Harjumaa",
-              "arv": 132
-            },
-            {
-              "nimi": "Tartumaa",
-              "arv": 44
-            },
-            {
-              "nimi": "Ida-Virumaa",
-              "arv": 19
-            },
-            {
-              "nimi": "Pärnumaa",
-              "arv": 14
-            },
-            {
-              "nimi": "Viljandimaa",
-              "arv": 8
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 6
-            },
-            {
-              "nimi": "Raplamaa",
-              "arv": 6
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Saaremaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Hiiumaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Valgamaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Põlvamaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Järvamaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Läänemaa",
-              "arv": 1
-            }
-          ],
-          "tooandjad": [
-            {
-              "nimi": "SOL Baltics OÜ",
-              "arv": 27
-            },
-            {
-              "nimi": "Kesko Senukai Estonia",
-              "arv": 10
-            },
-            {
-              "nimi": "Rail Baltic Estonia OÜ",
-              "arv": 4
-            },
-            {
-              "nimi": "BLRT Grupp AS",
-              "arv": 4
-            },
-            {
-              "nimi": "Bestor Grupp AS",
-              "arv": 3
-            },
-            {
-              "nimi": "Reaalprojekt OÜ",
-              "arv": 3
-            },
-            {
-              "nimi": "LEONHARD WEISS OÜ",
-              "arv": 3
-            },
-            {
-              "nimi": "Brandem Baltic OÜ",
-              "arv": 2
-            },
-            {
-              "nimi": "Millerhawk OÜ",
-              "arv": 1
-            },
-            {
-              "nimi": "Revin Grupp OÜ",
-              "arv": 1
-            },
-            {
-              "nimi": "Eesti Kunstnike Liit",
-              "arv": 1
-            },
-            {
-              "nimi": "PROACT Haldus OÜ",
-              "arv": 1
-            }
-          ]
-        },
-        {
-          "nimi": "Tervishoid ja sotsiaaltöö",
-          "arv": 283,
-          "linnad": [
-            {
-              "nimi": "Tallinn",
-              "arv": 66
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 14
-            },
-            {
-              "nimi": "Tartu",
-              "arv": 14
-            },
-            {
-              "nimi": "Kuressaare",
-              "arv": 12
-            },
-            {
-              "nimi": "Kohtla-Järve",
-              "arv": 11
-            },
-            {
-              "nimi": "Tapa",
-              "arv": 8
+              "arv": 7
             },
             {
               "nimi": "Valga",
-              "arv": 6
-            },
-            {
-              "nimi": "Paide",
-              "arv": 4
+              "arv": 7
             },
             {
               "nimi": "Narva",
-              "arv": 4
+              "arv": 6
             },
             {
-              "nimi": "Jõhvi",
-              "arv": 3
+              "nimi": "Võru",
+              "arv": 5
+            },
+            {
+              "nimi": "Paide",
+              "arv": 5
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 96
+              "arv": 116
             },
             {
               "nimi": "Ida-Virumaa",
-              "arv": 30
+              "arv": 33
             },
             {
               "nimi": "Tartumaa",
-              "arv": 22
+              "arv": 24
             },
             {
               "nimi": "Lääne-Virumaa",
               "arv": 20
             },
             {
-              "nimi": "Pärnumaa",
-              "arv": 19
-            },
-            {
               "nimi": "Järvamaa",
               "arv": 15
             },
             {
-              "nimi": "Saaremaa",
+              "nimi": "Pärnumaa",
               "arv": 13
             },
             {
@@ -1058,26 +900,30 @@
             },
             {
               "nimi": "Jõgevamaa",
-              "arv": 9
+              "arv": 11
+            },
+            {
+              "nimi": "Võrumaa",
+              "arv": 11
             },
             {
               "nimi": "Viljandimaa",
+              "arv": 9
+            },
+            {
+              "nimi": "Põlvamaa",
               "arv": 8
             },
             {
               "nimi": "Raplamaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 5
-            },
-            {
-              "nimi": "Põlvamaa",
-              "arv": 5
+              "arv": 8
             },
             {
               "nimi": "Läänemaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Saaremaa",
               "arv": 3
             },
             {
@@ -1087,135 +933,285 @@
           ],
           "tooandjad": [
             {
+              "nimi": "Kaitseressursside Amet",
+              "arv": 16
+            },
+            {
               "nimi": "Põhja-Eesti Regionaalhaigla SA",
-              "arv": 11
+              "arv": 13
             },
             {
               "nimi": "Narva Haigla SA*",
               "arv": 9
             },
             {
-              "nimi": "Kaitseressursside Amet",
+              "nimi": "Ida-Tallinna Keskhaigla",
               "arv": 7
             },
             {
-              "nimi": "Ida-Tallinna Keskhaigla",
+              "nimi": "SA Viljandi Haigla",
+              "arv": 6
+            },
+            {
+              "nimi": "ARSTIKESKUS CONFIDO AS",
               "arv": 6
             },
             {
               "nimi": "Tallinna Erihoolekande- ja Rehabilitatsiooniteenuste Keskus",
-              "arv": 5
+              "arv": 6
+            },
+            {
+              "nimi": "Aktsiaselts Tallinna Haigla",
+              "arv": 4
+            },
+            {
+              "nimi": "BENU Apteek",
+              "arv": 4
             },
             {
               "nimi": "Tartu Ülikool",
               "arv": 4
             },
             {
-              "nimi": "SA Viljandi Haigla",
-              "arv": 4
-            },
-            {
-              "nimi": "Pärnu Haigla",
-              "arv": 4
-            },
-            {
-              "nimi": "Tallinna Lastekodu",
+              "nimi": "Tallinna Tehnoloogiakolledž",
               "arv": 3
             },
             {
               "nimi": "Lääne-Tallinna Keskhaigla AS",
               "arv": 3
-            },
-            {
-              "nimi": "ARSTIKESKUS CONFIDO AS",
-              "arv": 2
-            },
-            {
-              "nimi": "Enna Limited OÜ",
-              "arv": 1
             }
           ]
         },
         {
-          "nimi": "Logistika / transport",
-          "arv": 275,
+          "nimi": "Ehitus / kinnisvara",
+          "arv": 305,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 95
+              "arv": 112
             },
             {
               "nimi": "Tartu",
-              "arv": 18
+              "arv": 24
             },
             {
               "nimi": "Pärnu",
-              "arv": 12
-            },
-            {
-              "nimi": "Viljandi",
-              "arv": 6
+              "arv": 8
             },
             {
               "nimi": "Narva",
-              "arv": 4
+              "arv": 6
             },
             {
-              "nimi": "Paide",
-              "arv": 4
+              "nimi": "Võru",
+              "arv": 3
+            },
+            {
+              "nimi": "Haapsalu",
+              "arv": 3
             },
             {
               "nimi": "Jõhvi",
-              "arv": 4
+              "arv": 3
             },
             {
               "nimi": "Kohtla-Järve",
-              "arv": 4
-            },
-            {
-              "nimi": "Valga",
-              "arv": 4
-            },
-            {
-              "nimi": "Rakvere",
               "arv": 3
+            },
+            {
+              "nimi": "Viljandi",
+              "arv": 2
+            },
+            {
+              "nimi": "Tapa",
+              "arv": 2
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 134
+              "arv": 148
             },
             {
               "nimi": "Tartumaa",
-              "arv": 30
+              "arv": 40
             },
             {
               "nimi": "Ida-Virumaa",
-              "arv": 19
+              "arv": 26
             },
             {
               "nimi": "Pärnumaa",
-              "arv": 17
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 12
-            },
-            {
-              "nimi": "Järvamaa",
-              "arv": 9
+              "arv": 14
             },
             {
               "nimi": "Viljandimaa",
               "arv": 8
             },
             {
+              "nimi": "Lääne-Virumaa",
+              "arv": 6
+            },
+            {
               "nimi": "Valgamaa",
-              "arv": 8
+              "arv": 4
+            },
+            {
+              "nimi": "Saaremaa",
+              "arv": 4
             },
             {
               "nimi": "Võrumaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Raplamaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Läänemaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Jõgevamaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Põlvamaa",
+              "arv": 1
+            }
+          ],
+          "tooandjad": [
+            {
+              "nimi": "SOL Baltics OÜ",
+              "arv": 14
+            },
+            {
+              "nimi": "Kesko Senukai Estonia",
+              "arv": 12
+            },
+            {
+              "nimi": "BLRT Grupp AS",
+              "arv": 6
+            },
+            {
+              "nimi": "CV-Online värbamisteenused",
+              "arv": 4
+            },
+            {
+              "nimi": "Kaitseressursside Amet",
+              "arv": 4
+            },
+            {
+              "nimi": "TalTech (Tallinna Tehnikaülikool)",
+              "arv": 2
+            },
+            {
+              "nimi": "SMARTECON OÜ",
+              "arv": 2
+            },
+            {
+              "nimi": "Barona Eesti OÜ",
+              "arv": 2
+            },
+            {
+              "nimi": "Tori Vallavalitsus",
+              "arv": 2
+            },
+            {
+              "nimi": "Pindi Kinnisvarahaldus OÜ",
+              "arv": 2
+            },
+            {
+              "nimi": "Projektibüroo OÜ",
+              "arv": 2
+            },
+            {
+              "nimi": "LEONHARD WEISS OÜ",
+              "arv": 2
+            }
+          ]
+        },
+        {
+          "nimi": "Logistika / transport",
+          "arv": 303,
+          "linnad": [
+            {
+              "nimi": "Tallinn",
+              "arv": 103
+            },
+            {
+              "nimi": "Tartu",
+              "arv": 15
+            },
+            {
+              "nimi": "Narva",
+              "arv": 8
+            },
+            {
+              "nimi": "Pärnu",
+              "arv": 6
+            },
+            {
+              "nimi": "Paide",
+              "arv": 5
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 5
+            },
+            {
+              "nimi": "Kohtla-Järve",
+              "arv": 5
+            },
+            {
+              "nimi": "Viljandi",
+              "arv": 4
+            },
+            {
+              "nimi": "Rakvere",
+              "arv": 4
+            },
+            {
+              "nimi": "Haapsalu",
+              "arv": 3
+            }
+          ],
+          "maakonnad": [
+            {
+              "nimi": "Harjumaa",
+              "arv": 152
+            },
+            {
+              "nimi": "Tartumaa",
+              "arv": 31
+            },
+            {
+              "nimi": "Ida-Virumaa",
+              "arv": 26
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 17
+            },
+            {
+              "nimi": "Pärnumaa",
+              "arv": 13
+            },
+            {
+              "nimi": "Valgamaa",
+              "arv": 7
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 6
+            },
+            {
+              "nimi": "Viljandimaa",
               "arv": 5
             },
             {
@@ -1223,16 +1219,16 @@
               "arv": 4
             },
             {
-              "nimi": "Jõgevamaa",
-              "arv": 2
+              "nimi": "Võrumaa",
+              "arv": 4
             },
             {
-              "nimi": "Põlvamaa",
-              "arv": 2
+              "nimi": "Jõgevamaa",
+              "arv": 3
             },
             {
               "nimi": "Läänemaa",
-              "arv": 1
+              "arv": 3
             },
             {
               "nimi": "Saaremaa",
@@ -1241,20 +1237,28 @@
           ],
           "tooandjad": [
             {
-              "nimi": "Bolt",
-              "arv": 10
-            },
-            {
               "nimi": "Kaitseressursside Amet",
-              "arv": 10
+              "arv": 19
             },
             {
-              "nimi": "OMNIVA",
+              "nimi": "Bolt",
               "arv": 7
+            },
+            {
+              "nimi": "Coop Eesti Keskühistu",
+              "arv": 6
             },
             {
               "nimi": "MAXIMA Eesti OÜ",
               "arv": 5
+            },
+            {
+              "nimi": "Selver AS",
+              "arv": 5
+            },
+            {
+              "nimi": "OMNIVA",
+              "arv": 4
             },
             {
               "nimi": "Karlskrona Bilcenter AB",
@@ -1262,122 +1266,110 @@
             },
             {
               "nimi": "Siseturvalisuse karjäärikeskus",
-              "arv": 4
-            },
-            {
-              "nimi": "Selver AS",
-              "arv": 4
+              "arv": 3
             },
             {
               "nimi": "Riigilaevastik",
               "arv": 3
             },
             {
-              "nimi": "Coop Eesti Keskühistu",
-              "arv": 3
-            },
-            {
-              "nimi": "HHLA TK Estonia AS",
+              "nimi": "Ericsson Estonia AS",
               "arv": 2
             },
             {
-              "nimi": "Inchcape Motors Estonia OÜ",
+              "nimi": "Sanitex OÜ",
               "arv": 2
             },
             {
-              "nimi": "Forus",
+              "nimi": "Tripod Grupp OÜ",
               "arv": 2
             }
           ]
         },
         {
           "nimi": "Müük",
-          "arv": 240,
+          "arv": 237,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 137
+              "arv": 131
             },
             {
               "nimi": "Tartu",
-              "arv": 20
+              "arv": 21
             },
             {
               "nimi": "Pärnu",
-              "arv": 10
+              "arv": 12
+            },
+            {
+              "nimi": "Kuressaare",
+              "arv": 4
             },
             {
               "nimi": "Viimsi",
-              "arv": 5
+              "arv": 3
             },
             {
-              "nimi": "Rakvere",
-              "arv": 2
+              "nimi": "Narva",
+              "arv": 3
             },
             {
               "nimi": "Rapla",
               "arv": 2
             },
             {
-              "nimi": "Kuressaare",
+              "nimi": "Rakvere",
               "arv": 2
             },
             {
-              "nimi": "Võru",
+              "nimi": "Haapsalu",
               "arv": 2
             },
             {
-              "nimi": "Valga",
-              "arv": 2
-            },
-            {
-              "nimi": "Narva",
+              "nimi": "Jõhvi",
               "arv": 1
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 169
+              "arv": 157
             },
             {
               "nimi": "Tartumaa",
-              "arv": 22
+              "arv": 23
             },
             {
               "nimi": "Pärnumaa",
-              "arv": 10
+              "arv": 13
             },
             {
               "nimi": "Ida-Virumaa",
-              "arv": 3
+              "arv": 6
             },
             {
-              "nimi": "Lääne-Virumaa",
-              "arv": 2
+              "nimi": "Saaremaa",
+              "arv": 4
             },
             {
               "nimi": "Raplamaa",
               "arv": 2
             },
             {
-              "nimi": "Saaremaa",
+              "nimi": "Viljandimaa",
               "arv": 2
             },
             {
-              "nimi": "Järvamaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Valgamaa",
+              "nimi": "Lääne-Virumaa",
               "arv": 2
             },
             {
               "nimi": "Läänemaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Valgamaa",
               "arv": 1
             },
             {
@@ -1385,487 +1377,199 @@
               "arv": 1
             },
             {
-              "nimi": "Viljandimaa",
+              "nimi": "Järvamaa",
               "arv": 1
             }
           ],
           "tooandjad": [
             {
               "nimi": "Rimi Eesti Food AS",
-              "arv": 57
+              "arv": 69
             },
             {
               "nimi": "Selver AS",
-              "arv": 48
+              "arv": 41
             },
             {
               "nimi": "MAXIMA Eesti OÜ",
-              "arv": 27
+              "arv": 13
             },
             {
               "nimi": "Kesko Senukai Estonia",
-              "arv": 9
-            },
-            {
-              "nimi": "Bolt",
-              "arv": 6
+              "arv": 12
             },
             {
               "nimi": "JYSK Linnen`n Furniture OÜ",
-              "arv": 6
+              "arv": 12
             },
             {
               "nimi": "Sanitex OÜ",
-              "arv": 6
+              "arv": 7
             },
             {
               "nimi": "Circle K Eesti AS",
+              "arv": 5
+            },
+            {
+              "nimi": "Bolt",
               "arv": 4
             },
             {
-              "nimi": "PET CITY",
-              "arv": 2
-            },
-            {
-              "nimi": "Lindström OÜ",
-              "arv": 2
-            },
-            {
-              "nimi": "Bestor Grupp AS",
-              "arv": 2
-            },
-            {
-              "nimi": "Fontes PMP",
-              "arv": 2
-            }
-          ]
-        },
-        {
-          "nimi": "Turism / hotellindus / toitlustus",
-          "arv": 228,
-          "linnad": [
-            {
-              "nimi": "Tallinn",
-              "arv": 76
-            },
-            {
-              "nimi": "Tartu",
-              "arv": 31
-            },
-            {
-              "nimi": "Rakvere",
-              "arv": 10
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 7
-            },
-            {
-              "nimi": "Tapa",
-              "arv": 5
-            },
-            {
-              "nimi": "Jõhvi",
-              "arv": 5
-            },
-            {
-              "nimi": "Võru",
-              "arv": 4
-            },
-            {
-              "nimi": "Viimsi",
-              "arv": 4
-            },
-            {
-              "nimi": "Narva",
-              "arv": 4
-            },
-            {
-              "nimi": "Valga",
-              "arv": 3
-            }
-          ],
-          "maakonnad": [
-            {
-              "nimi": "Harjumaa",
-              "arv": 91
-            },
-            {
-              "nimi": "Tartumaa",
-              "arv": 34
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 18
-            },
-            {
-              "nimi": "Ida-Virumaa",
-              "arv": 16
-            },
-            {
-              "nimi": "Valgamaa",
-              "arv": 8
-            },
-            {
-              "nimi": "Pärnumaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Viljandimaa",
-              "arv": 6
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 4
-            },
-            {
-              "nimi": "Saaremaa",
-              "arv": 4
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 4
-            },
-            {
-              "nimi": "Järvamaa",
+              "nimi": "Lidl Eesti OÜ",
               "arv": 3
             },
             {
-              "nimi": "Läänemaa",
+              "nimi": "CV-Online värbamisteenused",
               "arv": 3
             },
             {
-              "nimi": "Põlvamaa",
+              "nimi": "Nobel Digital OÜ",
               "arv": 2
             },
             {
-              "nimi": "Raplamaa",
-              "arv": 1
-            }
-          ],
-          "tooandjad": [
-            {
-              "nimi": "Selver AS",
-              "arv": 26
-            },
-            {
-              "nimi": "SOL Baltics OÜ",
-              "arv": 22
-            },
-            {
-              "nimi": "Coop Eesti Keskühistu",
-              "arv": 4
-            },
-            {
-              "nimi": "Circle K Eesti AS",
-              "arv": 3
-            },
-            {
-              "nimi": "SIA INTERLUX Travel",
-              "arv": 3
-            },
-            {
-              "nimi": "Kaitseressursside Amet",
-              "arv": 3
-            },
-            {
-              "nimi": "Kajakas Pizza OÜ",
+              "nimi": "Uuskasutuskeskus MTÜ",
               "arv": 2
-            },
-            {
-              "nimi": "SPA Tours OÜ",
-              "arv": 2
-            },
-            {
-              "nimi": "Stockmann AS",
-              "arv": 2
-            },
-            {
-              "nimi": "Unic Management OÜ",
-              "arv": 2
-            },
-            {
-              "nimi": "Majorel Estonia OÜ",
-              "arv": 1
-            },
-            {
-              "nimi": "Saku Vallavalitsus",
-              "arv": 1
-            }
-          ]
-        },
-        {
-          "nimi": "Avalik sektor",
-          "arv": 206,
-          "linnad": [
-            {
-              "nimi": "Tallinn",
-              "arv": 85
-            },
-            {
-              "nimi": "Tartu",
-              "arv": 17
-            },
-            {
-              "nimi": "Tapa",
-              "arv": 15
-            },
-            {
-              "nimi": "Jõhvi",
-              "arv": 9
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 5
-            },
-            {
-              "nimi": "Viimsi",
-              "arv": 2
-            },
-            {
-              "nimi": "Rakvere",
-              "arv": 1
-            },
-            {
-              "nimi": "Haapsalu",
-              "arv": 1
-            },
-            {
-              "nimi": "Võru",
-              "arv": 1
-            },
-            {
-              "nimi": "Narva",
-              "arv": 1
-            }
-          ],
-          "maakonnad": [
-            {
-              "nimi": "Harjumaa",
-              "arv": 107
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 20
-            },
-            {
-              "nimi": "Tartumaa",
-              "arv": 17
-            },
-            {
-              "nimi": "Ida-Virumaa",
-              "arv": 14
-            },
-            {
-              "nimi": "Pärnumaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Raplamaa",
-              "arv": 3
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Valgamaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Hiiumaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Läänemaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Järvamaa",
-              "arv": 1
-            }
-          ],
-          "tooandjad": [
-            {
-              "nimi": "Kaitseressursside Amet",
-              "arv": 48
-            },
-            {
-              "nimi": "Siseturvalisuse karjäärikeskus",
-              "arv": 26
-            },
-            {
-              "nimi": "Siseministeeriumi infotehnoloogia- ja arenduskeskus",
-              "arv": 6
-            },
-            {
-              "nimi": "Ida-Tallinna Keskhaigla",
-              "arv": 6
-            },
-            {
-              "nimi": "Riigi IT Keskus",
-              "arv": 5
-            },
-            {
-              "nimi": "Kohtud",
-              "arv": 5
-            },
-            {
-              "nimi": "Tallinna Erihoolekande- ja Rehabilitatsiooniteenuste Keskus",
-              "arv": 5
-            },
-            {
-              "nimi": "Keskkonnaamet",
-              "arv": 5
-            },
-            {
-              "nimi": "Tartu Ülikool",
-              "arv": 5
-            },
-            {
-              "nimi": "Kadrioru Saksa Gümnaasium",
-              "arv": 5
-            },
-            {
-              "nimi": "Riigilaevastik",
-              "arv": 3
-            },
-            {
-              "nimi": "Regionaal- ja Põllumajandusministeerium",
-              "arv": 3
             }
           ]
         },
         {
           "nimi": "Tehnika",
-          "arv": 189,
+          "arv": 231,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 66
+              "arv": 86
             },
             {
               "nimi": "Tartu",
-              "arv": 13
+              "arv": 14
             },
             {
               "nimi": "Pärnu",
-              "arv": 6
-            },
-            {
-              "nimi": "Jõhvi",
-              "arv": 3
-            },
-            {
-              "nimi": "Paide",
-              "arv": 2
-            },
-            {
-              "nimi": "Viljandi",
-              "arv": 2
+              "arv": 7
             },
             {
               "nimi": "Narva",
-              "arv": 1
+              "arv": 7
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 4
+            },
+            {
+              "nimi": "Paide",
+              "arv": 4
             },
             {
               "nimi": "Kuressaare",
+              "arv": 3
+            },
+            {
+              "nimi": "Võru",
+              "arv": 2
+            },
+            {
+              "nimi": "Rakvere",
               "arv": 1
             },
             {
-              "nimi": "Valga",
-              "arv": 1
-            },
-            {
-              "nimi": "Haapsalu",
+              "nimi": "Keila",
               "arv": 1
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 108
+              "arv": 122
             },
             {
               "nimi": "Tartumaa",
-              "arv": 15
+              "arv": 18
             },
             {
               "nimi": "Ida-Virumaa",
-              "arv": 11
+              "arv": 15
             },
             {
               "nimi": "Pärnumaa",
-              "arv": 8
-            },
-            {
-              "nimi": "Raplamaa",
-              "arv": 7
+              "arv": 10
             },
             {
               "nimi": "Järvamaa",
+              "arv": 8
+            },
+            {
+              "nimi": "Lääne-Virumaa",
               "arv": 5
             },
             {
-              "nimi": "Viljandimaa",
+              "nimi": "Raplamaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Saaremaa",
               "arv": 3
             },
             {
-              "nimi": "Läänemaa",
+              "nimi": "Võrumaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Jõgevamaa",
               "arv": 3
             },
             {
               "nimi": "Valgamaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Läänemaa",
               "arv": 2
             },
             {
-              "nimi": "Jõgevamaa",
+              "nimi": "Viljandimaa",
               "arv": 2
             },
             {
-              "nimi": "Saaremaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Lääne-Virumaa",
+              "nimi": "Põlvamaa",
               "arv": 1
             }
           ],
           "tooandjad": [
             {
-              "nimi": "Barona Eesti OÜ",
-              "arv": 11
-            },
-            {
               "nimi": "Kaitseressursside Amet",
-              "arv": 8
+              "arv": 19
             },
             {
-              "nimi": "DECK Marine Systems OÜ",
-              "arv": 5
-            },
-            {
-              "nimi": "SOL Baltics OÜ",
-              "arv": 5
+              "nimi": "Barona Eesti OÜ",
+              "arv": 10
             },
             {
               "nimi": "BLRT Grupp AS",
-              "arv": 4
-            },
-            {
-              "nimi": "LHV Bank AS",
-              "arv": 4
-            },
-            {
-              "nimi": "Rail Baltic Estonia OÜ",
-              "arv": 4
+              "arv": 6
             },
             {
               "nimi": "Metrosert AS",
+              "arv": 5
+            },
+            {
+              "nimi": "LHV Bank AS",
+              "arv": 5
+            },
+            {
+              "nimi": "Cybernetica AS",
+              "arv": 4
+            },
+            {
+              "nimi": "TalTech (Tallinna Tehnikaülikool)",
+              "arv": 3
+            },
+            {
+              "nimi": "Nordic Marine Technologies OÜ",
+              "arv": 3
+            },
+            {
+              "nimi": "CV-Online värbamisteenused",
               "arv": 3
             },
             {
@@ -1873,177 +1577,343 @@
               "arv": 3
             },
             {
-              "nimi": "CVAgent OÜ",
-              "arv": 3
+              "nimi": "Grafton Estonia OÜ",
+              "arv": 2
             },
             {
-              "nimi": "Fontes PMP",
-              "arv": 3
-            },
-            {
-              "nimi": "Manpower",
-              "arv": 3
+              "nimi": "Siseturvalisuse karjäärikeskus",
+              "arv": 2
             }
           ]
         },
         {
           "nimi": "Infotehnoloogia",
-          "arv": 189,
+          "arv": 226,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 137
+              "arv": 166
             },
             {
               "nimi": "Tartu",
               "arv": 16
             },
             {
-              "nimi": "Haapsalu",
+              "nimi": "Kuressaare",
               "arv": 1
             },
             {
-              "nimi": "Viljandi",
+              "nimi": "Rapla",
               "arv": 1
             },
             {
-              "nimi": "Jõhvi",
+              "nimi": "Narva",
               "arv": 1
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 150
+              "arv": 175
             },
             {
               "nimi": "Tartumaa",
-              "arv": 16
+              "arv": 18
+            },
+            {
+              "nimi": "Jõgevamaa",
+              "arv": 2
             },
             {
               "nimi": "Ida-Virumaa",
-              "arv": 3
+              "arv": 2
             },
             {
-              "nimi": "Läänemaa",
+              "nimi": "Saaremaa",
               "arv": 1
             },
             {
-              "nimi": "Viljandimaa",
+              "nimi": "Raplamaa",
               "arv": 1
             }
           ],
           "tooandjad": [
             {
               "nimi": "Bolt",
-              "arv": 31
+              "arv": 52
             },
             {
               "nimi": "Playtech Estonia OÜ",
               "arv": 13
             },
             {
-              "nimi": "SEB",
-              "arv": 9
-            },
-            {
               "nimi": "LHV Bank AS",
-              "arv": 8
-            },
-            {
-              "nimi": "Siseministeeriumi infotehnoloogia- ja arenduskeskus",
-              "arv": 6
-            },
-            {
-              "nimi": "Riigi IT Keskus",
-              "arv": 5
+              "arv": 10
             },
             {
               "nimi": "Kaitseressursside Amet",
-              "arv": 5
+              "arv": 8
             },
             {
-              "nimi": "pawaTech OÜ",
-              "arv": 4
-            },
-            {
-              "nimi": "Sisu Tech OÜ",
-              "arv": 4
+              "nimi": "SEB",
+              "arv": 7
             },
             {
               "nimi": "ERGO Insurance SE",
+              "arv": 5
+            },
+            {
+              "nimi": "Primend OÜ",
               "arv": 3
             },
             {
-              "nimi": "Elisa Eesti AS",
+              "nimi": "TalTech (Tallinna Tehnikaülikool)",
               "arv": 3
             },
             {
-              "nimi": "DataShift OÜ",
-              "arv": 2
+              "nimi": "Cybernetica AS",
+              "arv": 3
+            },
+            {
+              "nimi": "Sisu Tech OÜ",
+              "arv": 3
+            },
+            {
+              "nimi": "Riverty",
+              "arv": 3
+            },
+            {
+              "nimi": "Tartu Ülikool",
+              "arv": 3
             }
           ]
         },
         {
-          "nimi": "Kaubandus",
-          "arv": 185,
+          "nimi": "Turism / hotellindus / toitlustus",
+          "arv": 218,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 105
+              "arv": 80
             },
             {
               "nimi": "Tartu",
-              "arv": 15
+              "arv": 17
+            },
+            {
+              "nimi": "Haapsalu",
+              "arv": 6
             },
             {
               "nimi": "Pärnu",
-              "arv": 8
+              "arv": 6
             },
             {
-              "nimi": "Viimsi",
-              "arv": 4
-            },
-            {
-              "nimi": "Rapla",
-              "arv": 2
+              "nimi": "Tapa",
+              "arv": 6
             },
             {
               "nimi": "Kuressaare",
+              "arv": 5
+            },
+            {
+              "nimi": "Keila",
+              "arv": 4
+            },
+            {
+              "nimi": "Narva",
+              "arv": 3
+            },
+            {
+              "nimi": "Viimsi",
+              "arv": 3
+            },
+            {
+              "nimi": "Rakvere",
               "arv": 2
+            }
+          ],
+          "maakonnad": [
+            {
+              "nimi": "Harjumaa",
+              "arv": 103
+            },
+            {
+              "nimi": "Tartumaa",
+              "arv": 21
+            },
+            {
+              "nimi": "Ida-Virumaa",
+              "arv": 12
+            },
+            {
+              "nimi": "Valgamaa",
+              "arv": 10
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 9
+            },
+            {
+              "nimi": "Läänemaa",
+              "arv": 7
+            },
+            {
+              "nimi": "Saaremaa",
+              "arv": 7
+            },
+            {
+              "nimi": "Pärnumaa",
+              "arv": 6
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 6
+            },
+            {
+              "nimi": "Jõgevamaa",
+              "arv": 5
+            },
+            {
+              "nimi": "Võrumaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Põlvamaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Viljandimaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Raplamaa",
+              "arv": 1
+            }
+          ],
+          "tooandjad": [
+            {
+              "nimi": "Selver AS",
+              "arv": 29
+            },
+            {
+              "nimi": "SOL Baltics OÜ",
+              "arv": 12
+            },
+            {
+              "nimi": "Circle K Eesti AS",
+              "arv": 5
+            },
+            {
+              "nimi": "SIA INTERLUX Travel",
+              "arv": 2
+            },
+            {
+              "nimi": "Vanglad",
+              "arv": 2
+            },
+            {
+              "nimi": "Hardmoney Invest OÜ",
+              "arv": 1
+            },
+            {
+              "nimi": "Stockmann AS",
+              "arv": 1
+            },
+            {
+              "nimi": "Siseturvalisuse karjäärikeskus",
+              "arv": 1
+            },
+            {
+              "nimi": "SPA Tours OÜ",
+              "arv": 1
+            },
+            {
+              "nimi": "Red Umbrella Tours Helsinki",
+              "arv": 1
+            },
+            {
+              "nimi": "Haapsalu Kutsehariduskeskus",
+              "arv": 1
+            },
+            {
+              "nimi": "Nõo Lihatööstus OÜ",
+              "arv": 1
+            }
+          ]
+        },
+        {
+          "nimi": "Avalik sektor",
+          "arv": 216,
+          "linnad": [
+            {
+              "nimi": "Tallinn",
+              "arv": 78
+            },
+            {
+              "nimi": "Tapa",
+              "arv": 19
+            },
+            {
+              "nimi": "Tartu",
+              "arv": 18
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 12
+            },
+            {
+              "nimi": "Pärnu",
+              "arv": 4
             },
             {
               "nimi": "Võru",
               "arv": 2
             },
             {
-              "nimi": "Rakvere",
-              "arv": 1
-            },
-            {
               "nimi": "Narva",
+              "arv": 2
+            },
+            {
+              "nimi": "Rapla",
+              "arv": 2
+            },
+            {
+              "nimi": "Viljandi",
               "arv": 1
             },
             {
-              "nimi": "Jõhvi",
+              "nimi": "Viimsi",
               "arv": 1
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 140
+              "arv": 109
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 22
             },
             {
               "nimi": "Tartumaa",
-              "arv": 16
-            },
-            {
-              "nimi": "Pärnumaa",
-              "arv": 8
+              "arv": 19
             },
             {
               "nimi": "Ida-Virumaa",
+              "arv": 18
+            },
+            {
+              "nimi": "Pärnumaa",
+              "arv": 6
+            },
+            {
+              "nimi": "Raplamaa",
+              "arv": 6
+            },
+            {
+              "nimi": "Võrumaa",
               "arv": 3
             },
             {
@@ -2051,87 +1921,217 @@
               "arv": 2
             },
             {
-              "nimi": "Raplamaa",
+              "nimi": "Hiiumaa",
               "arv": 2
-            },
-            {
-              "nimi": "Saaremaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Läänemaa",
-              "arv": 1
             },
             {
               "nimi": "Viljandimaa",
               "arv": 1
             },
             {
-              "nimi": "Valgamaa",
+              "nimi": "Järvamaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Läänemaa",
               "arv": 1
             }
           ],
           "tooandjad": [
             {
-              "nimi": "Selver AS",
-              "arv": 70
+              "nimi": "Kaitseressursside Amet",
+              "arv": 64
             },
             {
-              "nimi": "Rimi Eesti Food AS",
-              "arv": 57
+              "nimi": "Siseturvalisuse karjäärikeskus",
+              "arv": 18
             },
             {
-              "nimi": "MAXIMA Eesti OÜ",
-              "arv": 12
+              "nimi": "Tartu Ülikool",
+              "arv": 10
             },
             {
-              "nimi": "Sanitex OÜ",
-              "arv": 8
+              "nimi": "Vanglad",
+              "arv": 7
             },
             {
-              "nimi": "Stockmann AS",
+              "nimi": "Ida-Tallinna Keskhaigla",
+              "arv": 7
+            },
+            {
+              "nimi": "Haridus- ja Noorteamet",
               "arv": 5
             },
             {
-              "nimi": "Forus",
+              "nimi": "Keskkonnaamet",
+              "arv": 4
+            },
+            {
+              "nimi": "Tallinna Lilleküla Gümnaasium",
+              "arv": 4
+            },
+            {
+              "nimi": "Riigimetsa Majandamise Keskus",
               "arv": 3
+            },
+            {
+              "nimi": "Maardu linnavalitsus",
+              "arv": 3
+            },
+            {
+              "nimi": "Transpordiamet",
+              "arv": 3
+            },
+            {
+              "nimi": "Saku Gümnaasium",
+              "arv": 3
+            }
+          ]
+        },
+        {
+          "nimi": "Kaubandus",
+          "arv": 198,
+          "linnad": [
+            {
+              "nimi": "Tallinn",
+              "arv": 103
+            },
+            {
+              "nimi": "Tartu",
+              "arv": 21
+            },
+            {
+              "nimi": "Pärnu",
+              "arv": 10
+            },
+            {
+              "nimi": "Kuressaare",
+              "arv": 5
+            },
+            {
+              "nimi": "Viimsi",
+              "arv": 3
+            },
+            {
+              "nimi": "Rapla",
+              "arv": 2
+            },
+            {
+              "nimi": "Rakvere",
+              "arv": 2
+            },
+            {
+              "nimi": "Haapsalu",
+              "arv": 2
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 1
+            },
+            {
+              "nimi": "Keila",
+              "arv": 1
+            }
+          ],
+          "maakonnad": [
+            {
+              "nimi": "Harjumaa",
+              "arv": 138
+            },
+            {
+              "nimi": "Tartumaa",
+              "arv": 25
+            },
+            {
+              "nimi": "Pärnumaa",
+              "arv": 11
+            },
+            {
+              "nimi": "Saaremaa",
+              "arv": 5
+            },
+            {
+              "nimi": "Ida-Virumaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Raplamaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Läänemaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Viljandimaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Jõgevamaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 1
+            }
+          ],
+          "tooandjad": [
+            {
+              "nimi": "Rimi Eesti Food AS",
+              "arv": 69
+            },
+            {
+              "nimi": "Selver AS",
+              "arv": 64
+            },
+            {
+              "nimi": "MAXIMA Eesti OÜ",
+              "arv": 18
+            },
+            {
+              "nimi": "Sanitex OÜ",
+              "arv": 6
             },
             {
               "nimi": "Lidl Eesti OÜ",
               "arv": 3
             },
             {
+              "nimi": "Forus",
+              "arv": 3
+            },
+            {
+              "nimi": "GPV Estonia AS",
+              "arv": 2
+            },
+            {
+              "nimi": "Sandmani Grupi AS",
+              "arv": 2
+            },
+            {
+              "nimi": "JYSK Linnen`n Furniture OÜ",
+              "arv": 2
+            },
+            {
               "nimi": "G4S Eesti AS",
               "arv": 2
             },
             {
-              "nimi": "Matkasport OÜ",
+              "nimi": "Stockmann AS",
               "arv": 2
             },
             {
-              "nimi": "CV-Online värbamisteenused",
-              "arv": 2
-            },
-            {
-              "nimi": "Prisma Peremarket AS",
-              "arv": 2
-            },
-            {
-              "nimi": "WorkingDay Latvia SIA",
+              "nimi": "ASBIS Baltics SIA",
               "arv": 1
             }
           ]
         }
       ],
-      "valdkonniti_kuupaev": "2026-11-10",
+      "valdkonniti_kuupaev": "2026-11-27",
       "valdkonniti_markus": "Arvutatud CV.ee avaliku otsingu kõigist kuulutustest; mitme valdkonnaga kuulutus on iga valdkonna all. Tööandjates pole silti „Töötukassa vahendatud pakkumised“. Linnad on need, mida CV.ee nimetab linnadena; teiste asulate ja ainult maakonnaga kuulutused on ainult maakondades."
     },
     {
@@ -2423,304 +2423,416 @@
       "ametivaldkond": [
         {
           "nimi": "Teenindus",
-          "arv": 453
+          "arv": 435
         },
         {
           "nimi": "Tootmine / töötlemine",
-          "arv": 403
-        },
-        {
-          "nimi": "Tervishoid ja sotsiaaltöö",
-          "arv": 206
+          "arv": 379
         },
         {
           "nimi": "Ehitus / kinnisvara",
-          "arv": 195
+          "arv": 216
         },
         {
           "nimi": "Logistika / transport",
-          "arv": 190
+          "arv": 209
+        },
+        {
+          "nimi": "Tervishoid ja sotsiaaltöö",
+          "arv": 202
         },
         {
           "nimi": "Turism / hotellindus / toitlustus",
-          "arv": 149
+          "arv": 147
         },
         {
           "nimi": "Haridus / teadus",
-          "arv": 133
+          "arv": 132
         },
         {
           "nimi": "Tehnika",
-          "arv": 70
+          "arv": 87
         },
         {
           "nimi": "Turundus / reklaam",
-          "arv": 51
+          "arv": 64
         },
         {
           "nimi": "Põllumajandus / keskkonnakaitse",
-          "arv": 48
+          "arv": 59
         },
         {
           "nimi": "Korrakaitse / päästeteenistus / julgeolek",
-          "arv": 46
+          "arv": 53
         },
         {
           "nimi": "Energeetika / elekter",
-          "arv": 37
+          "arv": 34
         },
         {
           "nimi": "Administratiivtöö",
-          "arv": 24
+          "arv": 21
         },
         {
           "nimi": "Infotehnoloogia",
           "arv": 20
         },
         {
+          "nimi": "Juhtimine",
+          "arv": 13
+        },
+        {
           "nimi": "Finants / raamatupidamine",
-          "arv": 17
+          "arv": 11
         },
         {
           "nimi": "Avalik sektor",
-          "arv": 14
-        },
-        {
-          "nimi": "Kultuur / kunst / meelelahutus / sport",
           "arv": 10
         },
         {
-          "nimi": "Juhtimine",
+          "nimi": "Kultuur / kunst / meelelahutus / sport",
           "arv": 9
         },
         {
           "nimi": "Õigusabi / juura",
-          "arv": 4
+          "arv": 6
         },
         {
           "nimi": "Meedia / avalikud suhted",
-          "arv": 3
+          "arv": 4
         }
       ],
       "asukoht_maakond": [
         {
           "nimi": "Harjumaa",
-          "arv": 935
+          "arv": 936
         },
         {
           "nimi": "Tartumaa",
-          "arv": 249
+          "arv": 243
         },
         {
           "nimi": "Ida-Virumaa",
-          "arv": 164
-        },
-        {
-          "nimi": "Pärnumaa",
-          "arv": 126
+          "arv": 207
         },
         {
           "nimi": "Lääne-Virumaa",
-          "arv": 107
+          "arv": 106
+        },
+        {
+          "nimi": "Pärnumaa",
+          "arv": 106
         },
         {
           "nimi": "Viljandimaa",
-          "arv": 73
-        },
-        {
-          "nimi": "Valgamaa",
-          "arv": 65
-        },
-        {
-          "nimi": "Raplamaa",
-          "arv": 63
+          "arv": 72
         },
         {
           "nimi": "Järvamaa",
-          "arv": 62
+          "arv": 66
         },
         {
-          "nimi": "Saaremaa",
-          "arv": 43
+          "nimi": "Valgamaa",
+          "arv": 59
         },
         {
           "nimi": "Jõgevamaa",
-          "arv": 42
+          "arv": 54
         },
         {
           "nimi": "Võrumaa",
-          "arv": 37
+          "arv": 51
+        },
+        {
+          "nimi": "Raplamaa",
+          "arv": 43
+        },
+        {
+          "nimi": "Saaremaa",
+          "arv": 41
         },
         {
           "nimi": "Läänemaa",
-          "arv": 26
+          "arv": 31
         },
         {
           "nimi": "Põlvamaa",
-          "arv": 25
-        },
-        {
-          "nimi": "Hiiumaa",
-          "arv": 5
-        }
-      ],
-      "top_tooandjad": "puudub",
-      "markus": "Jaotused on 2082 Töötukassa vahendatud kuulutusest, mida CV.ee 2026-11-10 näitas, mitte Töötukassa portaali enda andmetest. Kogu arv on Töötukassa lehelt ja mõõdab teist asja, seega jaotuse summa ei pea sellega klappima. Valdkonnad on CV.ee omad. Linnad on need, mida CV.ee nimetab linnadena; teiste asulate ja ainult maakonnaga kuulutused on ainult maakondades. || Kogusumma on arvutatud (20 + 1357). Kui leht muudab nupu teksti tähendust, kontrolli.",
-      "asukoht_linn": [
-        {
-          "nimi": "Tallinn",
-          "arv": 627
-        },
-        {
-          "nimi": "Tartu",
-          "arv": 154
-        },
-        {
-          "nimi": "Pärnu",
-          "arv": 91
-        },
-        {
-          "nimi": "Kohtla-Järve",
-          "arv": 42
-        },
-        {
-          "nimi": "Narva",
-          "arv": 38
-        },
-        {
-          "nimi": "Viljandi",
-          "arv": 36
-        },
-        {
-          "nimi": "Jõhvi",
-          "arv": 29
-        },
-        {
-          "nimi": "Kuressaare",
-          "arv": 29
-        },
-        {
-          "nimi": "Valga",
-          "arv": 28
-        },
-        {
-          "nimi": "Paide",
-          "arv": 27
-        },
-        {
-          "nimi": "Rakvere",
-          "arv": 27
-        },
-        {
-          "nimi": "Tapa",
-          "arv": 25
-        },
-        {
-          "nimi": "Võru",
           "arv": 21
         },
         {
-          "nimi": "Keila",
-          "arv": 17
+          "nimi": "Hiiumaa",
+          "arv": 8
+        }
+      ],
+      "top_tooandjad": "puudub",
+      "markus": "Jaotused on 2111 Töötukassa vahendatud kuulutusest, mida CV.ee 2026-11-27 näitas, mitte Töötukassa portaali enda andmetest. Kogu arv on Töötukassa lehelt ja mõõdab teist asja, seega jaotuse summa ei pea sellega klappima. Valdkonnad on CV.ee omad. Linnad on need, mida CV.ee nimetab linnadena; teiste asulate ja ainult maakonnaga kuulutused on ainult maakondades. || Kogusumma on arvutatud (20 + 1357). Kui leht muudab nupu teksti tähendust, kontrolli.",
+      "asukoht_linn": [
+        {
+          "nimi": "Tallinn",
+          "arv": 642
+        },
+        {
+          "nimi": "Tartu",
+          "arv": 136
+        },
+        {
+          "nimi": "Pärnu",
+          "arv": 70
+        },
+        {
+          "nimi": "Narva",
+          "arv": 54
+        },
+        {
+          "nimi": "Kohtla-Järve",
+          "arv": 52
+        },
+        {
+          "nimi": "Jõhvi",
+          "arv": 33
+        },
+        {
+          "nimi": "Paide",
+          "arv": 30
+        },
+        {
+          "nimi": "Tapa",
+          "arv": 27
+        },
+        {
+          "nimi": "Viljandi",
+          "arv": 26
+        },
+        {
+          "nimi": "Kuressaare",
+          "arv": 26
+        },
+        {
+          "nimi": "Võru",
+          "arv": 26
+        },
+        {
+          "nimi": "Valga",
+          "arv": 24
         },
         {
           "nimi": "Haapsalu",
-          "arv": 16
+          "arv": 23
         },
         {
-          "nimi": "Viimsi",
-          "arv": 9
+          "nimi": "Keila",
+          "arv": 20
+        },
+        {
+          "nimi": "Rakvere",
+          "arv": 20
         },
         {
           "nimi": "Rapla",
-          "arv": 8
+          "arv": 11
+        },
+        {
+          "nimi": "Viimsi",
+          "arv": 5
         }
       ],
       "valdkonniti": [
         {
           "nimi": "Teenindus",
-          "arv": 453,
+          "arv": 435,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 177
+              "arv": 164
             },
             {
               "nimi": "Tartu",
-              "arv": 49
+              "arv": 51
             },
             {
               "nimi": "Pärnu",
-              "arv": 21
+              "arv": 18
             },
             {
-              "nimi": "Viljandi",
-              "arv": 11
+              "nimi": "Haapsalu",
+              "arv": 8
             },
             {
               "nimi": "Kuressaare",
               "arv": 8
             },
             {
-              "nimi": "Valga",
+              "nimi": "Viljandi",
+              "arv": 8
+            },
+            {
+              "nimi": "Jõhvi",
               "arv": 7
             },
             {
               "nimi": "Keila",
-              "arv": 7
-            },
-            {
-              "nimi": "Rakvere",
               "arv": 6
             },
             {
-              "nimi": "Paide",
-              "arv": 6
+              "nimi": "Rapla",
+              "arv": 5
             },
             {
-              "nimi": "Viimsi",
+              "nimi": "Võru",
               "arv": 5
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 258
+              "arv": 236
             },
             {
               "nimi": "Tartumaa",
-              "arv": 64
+              "arv": 70
             },
             {
               "nimi": "Pärnumaa",
-              "arv": 25
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 15
+              "arv": 22
             },
             {
               "nimi": "Viljandimaa",
-              "arv": 14
+              "arv": 16
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 13
             },
             {
               "nimi": "Ida-Virumaa",
               "arv": 13
             },
             {
-              "nimi": "Järvamaa",
-              "arv": 10
-            },
-            {
-              "nimi": "Saaremaa",
-              "arv": 10
-            },
-            {
-              "nimi": "Valgamaa",
+              "nimi": "Raplamaa",
               "arv": 9
             },
             {
+              "nimi": "Võrumaa",
+              "arv": 9
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 9
+            },
+            {
+              "nimi": "Jõgevamaa",
+              "arv": 9
+            },
+            {
+              "nimi": "Saaremaa",
+              "arv": 9
+            },
+            {
+              "nimi": "Läänemaa",
+              "arv": 8
+            },
+            {
+              "nimi": "Hiiumaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Valgamaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Põlvamaa",
+              "arv": 1
+            }
+          ]
+        },
+        {
+          "nimi": "Tootmine / töötlemine",
+          "arv": 379,
+          "linnad": [
+            {
+              "nimi": "Tallinn",
+              "arv": 77
+            },
+            {
+              "nimi": "Kohtla-Järve",
+              "arv": 21
+            },
+            {
+              "nimi": "Narva",
+              "arv": 20
+            },
+            {
+              "nimi": "Paide",
+              "arv": 11
+            },
+            {
+              "nimi": "Pärnu",
+              "arv": 11
+            },
+            {
+              "nimi": "Tartu",
+              "arv": 11
+            },
+            {
+              "nimi": "Võru",
+              "arv": 7
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 7
+            },
+            {
+              "nimi": "Viljandi",
+              "arv": 7
+            },
+            {
+              "nimi": "Kuressaare",
+              "arv": 6
+            }
+          ],
+          "maakonnad": [
+            {
+              "nimi": "Harjumaa",
+              "arv": 140
+            },
+            {
+              "nimi": "Ida-Virumaa",
+              "arv": 65
+            },
+            {
+              "nimi": "Tartumaa",
+              "arv": 40
+            },
+            {
+              "nimi": "Pärnumaa",
+              "arv": 19
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 17
+            },
+            {
+              "nimi": "Viljandimaa",
+              "arv": 16
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 14
+            },
+            {
+              "nimi": "Valgamaa",
+              "arv": 13
+            },
+            {
               "nimi": "Raplamaa",
+              "arv": 11
+            },
+            {
+              "nimi": "Saaremaa",
+              "arv": 9
+            },
+            {
+              "nimi": "Võrumaa",
               "arv": 8
             },
             {
@@ -2729,15 +2841,11 @@
             },
             {
               "nimi": "Läänemaa",
-              "arv": 6
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 5
+              "arv": 7
             },
             {
               "nimi": "Põlvamaa",
-              "arv": 4
+              "arv": 1
             },
             {
               "nimi": "Hiiumaa",
@@ -2746,16 +2854,12 @@
           ]
         },
         {
-          "nimi": "Tootmine / töötlemine",
-          "arv": 403,
+          "nimi": "Ehitus / kinnisvara",
+          "arv": 216,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 96
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 24
+              "arv": 70
             },
             {
               "nimi": "Tartu",
@@ -2763,134 +2867,346 @@
             },
             {
               "nimi": "Narva",
-              "arv": 15
-            },
-            {
-              "nimi": "Kohtla-Järve",
-              "arv": 14
-            },
-            {
-              "nimi": "Paide",
-              "arv": 10
-            },
-            {
-              "nimi": "Viljandi",
-              "arv": 8
-            },
-            {
-              "nimi": "Jõhvi",
               "arv": 6
             },
             {
-              "nimi": "Keila",
-              "arv": 6
+              "nimi": "Pärnu",
+              "arv": 5
             },
             {
               "nimi": "Võru",
-              "arv": 5
+              "arv": 3
+            },
+            {
+              "nimi": "Haapsalu",
+              "arv": 3
+            },
+            {
+              "nimi": "Kohtla-Järve",
+              "arv": 3
+            },
+            {
+              "nimi": "Viljandi",
+              "arv": 2
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 2
+            },
+            {
+              "nimi": "Keila",
+              "arv": 1
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 176
-            },
-            {
-              "nimi": "Ida-Virumaa",
-              "arv": 43
+              "arv": 96
             },
             {
               "nimi": "Tartumaa",
-              "arv": 36
+              "arv": 32
+            },
+            {
+              "nimi": "Ida-Virumaa",
+              "arv": 24
             },
             {
               "nimi": "Pärnumaa",
-              "arv": 34
-            },
-            {
-              "nimi": "Raplamaa",
-              "arv": 21
-            },
-            {
-              "nimi": "Viljandimaa",
-              "arv": 17
-            },
-            {
-              "nimi": "Järvamaa",
-              "arv": 16
-            },
-            {
-              "nimi": "Valgamaa",
-              "arv": 13
-            },
-            {
-              "nimi": "Lääne-Virumaa",
               "arv": 9
             },
             {
-              "nimi": "Läänemaa",
+              "nimi": "Viljandimaa",
               "arv": 7
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 6
             },
             {
               "nimi": "Saaremaa",
-              "arv": 6
+              "arv": 4
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Võrumaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Valgamaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Läänemaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Raplamaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Jõgevamaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 1
             },
             {
               "nimi": "Põlvamaa",
+              "arv": 1
+            }
+          ]
+        },
+        {
+          "nimi": "Logistika / transport",
+          "arv": 209,
+          "linnad": [
+            {
+              "nimi": "Tallinn",
+              "arv": 58
+            },
+            {
+              "nimi": "Tartu",
+              "arv": 13
+            },
+            {
+              "nimi": "Narva",
+              "arv": 7
+            },
+            {
+              "nimi": "Pärnu",
+              "arv": 6
+            },
+            {
+              "nimi": "Paide",
+              "arv": 5
+            },
+            {
+              "nimi": "Kohtla-Järve",
+              "arv": 5
+            },
+            {
+              "nimi": "Rakvere",
+              "arv": 4
+            },
+            {
+              "nimi": "Viljandi",
               "arv": 3
+            },
+            {
+              "nimi": "Valga",
+              "arv": 3
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 3
+            }
+          ],
+          "maakonnad": [
+            {
+              "nimi": "Harjumaa",
+              "arv": 92
+            },
+            {
+              "nimi": "Tartumaa",
+              "arv": 28
+            },
+            {
+              "nimi": "Ida-Virumaa",
+              "arv": 22
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 16
+            },
+            {
+              "nimi": "Pärnumaa",
+              "arv": 12
+            },
+            {
+              "nimi": "Valgamaa",
+              "arv": 7
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 6
+            },
+            {
+              "nimi": "Viljandimaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Raplamaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Võrumaa",
+              "arv": 4
+            },
+            {
+              "nimi": "Jõgevamaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Läänemaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Saaremaa",
+              "arv": 1
             }
           ]
         },
         {
           "nimi": "Tervishoid ja sotsiaaltöö",
-          "arv": 206,
+          "arv": 202,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 36
-            },
-            {
-              "nimi": "Kuressaare",
-              "arv": 12
-            },
-            {
-              "nimi": "Kohtla-Järve",
-              "arv": 11
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 9
+              "arv": 39
             },
             {
               "nimi": "Tartu",
+              "arv": 10
+            },
+            {
+              "nimi": "Kohtla-Järve",
               "arv": 9
             },
             {
               "nimi": "Valga",
+              "arv": 7
+            },
+            {
+              "nimi": "Pärnu",
+              "arv": 7
+            },
+            {
+              "nimi": "Paide",
+              "arv": 5
+            },
+            {
+              "nimi": "Võru",
+              "arv": 4
+            },
+            {
+              "nimi": "Tapa",
+              "arv": 4
+            },
+            {
+              "nimi": "Narva",
+              "arv": 4
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 3
+            }
+          ],
+          "maakonnad": [
+            {
+              "nimi": "Harjumaa",
+              "arv": 62
+            },
+            {
+              "nimi": "Ida-Virumaa",
+              "arv": 20
+            },
+            {
+              "nimi": "Tartumaa",
+              "arv": 17
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 15
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 15
+            },
+            {
+              "nimi": "Valgamaa",
+              "arv": 12
+            },
+            {
+              "nimi": "Jõgevamaa",
+              "arv": 11
+            },
+            {
+              "nimi": "Pärnumaa",
+              "arv": 11
+            },
+            {
+              "nimi": "Võrumaa",
+              "arv": 10
+            },
+            {
+              "nimi": "Põlvamaa",
+              "arv": 8
+            },
+            {
+              "nimi": "Raplamaa",
+              "arv": 7
+            },
+            {
+              "nimi": "Viljandimaa",
+              "arv": 6
+            },
+            {
+              "nimi": "Saaremaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Hiiumaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Läänemaa",
+              "arv": 1
+            }
+          ]
+        },
+        {
+          "nimi": "Turism / hotellindus / toitlustus",
+          "arv": 147,
+          "linnad": [
+            {
+              "nimi": "Tallinn",
+              "arv": 52
+            },
+            {
+              "nimi": "Tartu",
+              "arv": 12
+            },
+            {
+              "nimi": "Pärnu",
               "arv": 6
             },
             {
               "nimi": "Tapa",
+              "arv": 6
+            },
+            {
+              "nimi": "Kuressaare",
               "arv": 5
             },
             {
-              "nimi": "Paide",
-              "arv": 4
+              "nimi": "Haapsalu",
+              "arv": 5
             },
             {
-              "nimi": "Võru",
+              "nimi": "Narva",
               "arv": 3
             },
             {
-              "nimi": "Viljandi",
+              "nimi": "Keila",
+              "arv": 3
+            },
+            {
+              "nimi": "Rakvere",
+              "arv": 2
+            },
+            {
+              "nimi": "Valga",
               "arv": 2
             }
           ],
@@ -2900,339 +3216,39 @@
               "arv": 60
             },
             {
-              "nimi": "Ida-Virumaa",
-              "arv": 19
-            },
-            {
               "nimi": "Tartumaa",
-              "arv": 17
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 17
-            },
-            {
-              "nimi": "Järvamaa",
               "arv": 15
             },
             {
-              "nimi": "Pärnumaa",
-              "arv": 14
-            },
-            {
-              "nimi": "Saaremaa",
-              "arv": 13
+              "nimi": "Ida-Virumaa",
+              "arv": 11
             },
             {
               "nimi": "Valgamaa",
-              "arv": 12
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 8
-            },
-            {
-              "nimi": "Viljandimaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Raplamaa",
-              "arv": 6
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 5
-            },
-            {
-              "nimi": "Põlvamaa",
-              "arv": 5
-            },
-            {
-              "nimi": "Läänemaa",
-              "arv": 3
-            },
-            {
-              "nimi": "Hiiumaa",
-              "arv": 2
-            }
-          ]
-        },
-        {
-          "nimi": "Ehitus / kinnisvara",
-          "arv": 195,
-          "linnad": [
-            {
-              "nimi": "Tallinn",
-              "arv": 55
-            },
-            {
-              "nimi": "Tartu",
-              "arv": 15
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 6
-            },
-            {
-              "nimi": "Narva",
-              "arv": 2
-            },
-            {
-              "nimi": "Jõhvi",
-              "arv": 2
-            },
-            {
-              "nimi": "Võru",
-              "arv": 2
-            },
-            {
-              "nimi": "Kohtla-Järve",
-              "arv": 2
-            },
-            {
-              "nimi": "Viljandi",
-              "arv": 1
-            },
-            {
-              "nimi": "Rakvere",
-              "arv": 1
-            }
-          ],
-          "maakonnad": [
-            {
-              "nimi": "Harjumaa",
-              "arv": 86
-            },
-            {
-              "nimi": "Tartumaa",
-              "arv": 30
-            },
-            {
-              "nimi": "Ida-Virumaa",
-              "arv": 18
-            },
-            {
-              "nimi": "Pärnumaa",
               "arv": 10
-            },
-            {
-              "nimi": "Viljandimaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Raplamaa",
-              "arv": 6
             },
             {
               "nimi": "Lääne-Virumaa",
-              "arv": 5
-            },
-            {
-              "nimi": "Võrumaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Saaremaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Hiiumaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Valgamaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Põlvamaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Järvamaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Läänemaa",
-              "arv": 1
-            }
-          ]
-        },
-        {
-          "nimi": "Logistika / transport",
-          "arv": 190,
-          "linnad": [
-            {
-              "nimi": "Tallinn",
-              "arv": 51
-            },
-            {
-              "nimi": "Tartu",
-              "arv": 14
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 10
-            },
-            {
-              "nimi": "Viljandi",
-              "arv": 5
-            },
-            {
-              "nimi": "Narva",
-              "arv": 4
-            },
-            {
-              "nimi": "Paide",
-              "arv": 4
-            },
-            {
-              "nimi": "Jõhvi",
-              "arv": 4
-            },
-            {
-              "nimi": "Kohtla-Järve",
-              "arv": 4
-            },
-            {
-              "nimi": "Valga",
-              "arv": 4
-            },
-            {
-              "nimi": "Rakvere",
-              "arv": 2
-            }
-          ],
-          "maakonnad": [
-            {
-              "nimi": "Harjumaa",
-              "arv": 78
-            },
-            {
-              "nimi": "Tartumaa",
-              "arv": 26
-            },
-            {
-              "nimi": "Ida-Virumaa",
-              "arv": 18
-            },
-            {
-              "nimi": "Pärnumaa",
-              "arv": 13
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 10
-            },
-            {
-              "nimi": "Järvamaa",
               "arv": 9
             },
             {
-              "nimi": "Valgamaa",
-              "arv": 8
-            },
-            {
-              "nimi": "Viljandimaa",
+              "nimi": "Saaremaa",
               "arv": 7
             },
             {
-              "nimi": "Võrumaa",
-              "arv": 5
-            },
-            {
-              "nimi": "Raplamaa",
-              "arv": 4
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Põlvamaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Saaremaa",
-              "arv": 1
-            }
-          ]
-        },
-        {
-          "nimi": "Turism / hotellindus / toitlustus",
-          "arv": 149,
-          "linnad": [
-            {
-              "nimi": "Tallinn",
-              "arv": 50
-            },
-            {
-              "nimi": "Tartu",
-              "arv": 23
-            },
-            {
-              "nimi": "Rakvere",
-              "arv": 10
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 5
-            },
-            {
-              "nimi": "Tapa",
-              "arv": 4
-            },
-            {
-              "nimi": "Võru",
-              "arv": 4
-            },
-            {
-              "nimi": "Narva",
-              "arv": 4
-            },
-            {
-              "nimi": "Jõhvi",
-              "arv": 4
-            },
-            {
-              "nimi": "Valga",
-              "arv": 3
-            },
-            {
-              "nimi": "Haapsalu",
-              "arv": 3
-            }
-          ],
-          "maakonnad": [
-            {
-              "nimi": "Harjumaa",
-              "arv": 52
-            },
-            {
-              "nimi": "Tartumaa",
-              "arv": 26
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 17
-            },
-            {
-              "nimi": "Ida-Virumaa",
-              "arv": 14
-            },
-            {
-              "nimi": "Valgamaa",
-              "arv": 8
-            },
-            {
-              "nimi": "Viljandimaa",
+              "nimi": "Läänemaa",
               "arv": 6
             },
             {
               "nimi": "Pärnumaa",
+              "arv": 6
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 6
+            },
+            {
+              "nimi": "Jõgevamaa",
               "arv": 5
             },
             {
@@ -3240,23 +3256,11 @@
               "arv": 4
             },
             {
-              "nimi": "Saaremaa",
-              "arv": 4
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 4
-            },
-            {
-              "nimi": "Järvamaa",
-              "arv": 3
-            },
-            {
-              "nimi": "Läänemaa",
-              "arv": 3
-            },
-            {
               "nimi": "Põlvamaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Viljandimaa",
               "arv": 2
             },
             {
@@ -3267,130 +3271,130 @@
         },
         {
           "nimi": "Haridus / teadus",
-          "arv": 133,
+          "arv": 132,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 44
-            },
-            {
-              "nimi": "Tartu",
-              "arv": 9
+              "arv": 53
             },
             {
               "nimi": "Kohtla-Järve",
-              "arv": 4
+              "arv": 7
             },
             {
               "nimi": "Valga",
-              "arv": 3
-            },
-            {
-              "nimi": "Tapa",
-              "arv": 3
-            },
-            {
-              "nimi": "Viljandi",
-              "arv": 2
-            },
-            {
-              "nimi": "Keila",
-              "arv": 2
+              "arv": 4
             },
             {
               "nimi": "Narva",
-              "arv": 2
+              "arv": 3
             },
             {
-              "nimi": "Jõhvi",
+              "nimi": "Keila",
+              "arv": 3
+            },
+            {
+              "nimi": "Tartu",
+              "arv": 3
+            },
+            {
+              "nimi": "Võru",
               "arv": 2
             },
             {
               "nimi": "Pärnu",
+              "arv": 1
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 1
+            },
+            {
+              "nimi": "Viljandi",
               "arv": 1
             }
           ],
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 60
-            },
-            {
-              "nimi": "Tartumaa",
-              "arv": 17
+              "arv": 73
             },
             {
               "nimi": "Ida-Virumaa",
+              "arv": 17
+            },
+            {
+              "nimi": "Tartumaa",
               "arv": 10
             },
             {
               "nimi": "Viljandimaa",
-              "arv": 7
+              "arv": 10
             },
             {
               "nimi": "Valgamaa",
-              "arv": 7
+              "arv": 5
             },
             {
               "nimi": "Lääne-Virumaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Raplamaa",
-              "arv": 6
-            },
-            {
-              "nimi": "Põlvamaa",
-              "arv": 6
+              "arv": 4
             },
             {
               "nimi": "Pärnumaa",
-              "arv": 2
+              "arv": 3
             },
             {
-              "nimi": "Järvamaa",
-              "arv": 2
+              "nimi": "Võrumaa",
+              "arv": 3
             },
             {
-              "nimi": "Jõgevamaa",
-              "arv": 2
+              "nimi": "Põlvamaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Raplamaa",
+              "arv": 1
             },
             {
               "nimi": "Läänemaa",
               "arv": 1
             },
             {
-              "nimi": "Hiiumaa",
+              "nimi": "Jõgevamaa",
               "arv": 1
             }
           ]
         },
         {
           "nimi": "Tehnika",
-          "arv": 70,
+          "arv": 87,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 21
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 6
+              "arv": 24
             },
             {
               "nimi": "Tartu",
-              "arv": 5
-            },
-            {
-              "nimi": "Jõhvi",
-              "arv": 2
-            },
-            {
-              "nimi": "Paide",
-              "arv": 2
+              "arv": 9
             },
             {
               "nimi": "Narva",
+              "arv": 6
+            },
+            {
+              "nimi": "Pärnu",
+              "arv": 5
+            },
+            {
+              "nimi": "Paide",
+              "arv": 4
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 3
+            },
+            {
+              "nimi": "Rakvere",
               "arv": 1
             },
             {
@@ -3398,15 +3402,11 @@
               "arv": 1
             },
             {
+              "nimi": "Võru",
+              "arv": 1
+            },
+            {
               "nimi": "Valga",
-              "arv": 1
-            },
-            {
-              "nimi": "Kohtla-Järve",
-              "arv": 1
-            },
-            {
-              "nimi": "Viljandi",
               "arv": 1
             }
           ],
@@ -3416,31 +3416,39 @@
               "arv": 31
             },
             {
-              "nimi": "Ida-Virumaa",
-              "arv": 8
+              "nimi": "Tartumaa",
+              "arv": 13
             },
             {
-              "nimi": "Tartumaa",
-              "arv": 7
+              "nimi": "Ida-Virumaa",
+              "arv": 11
             },
             {
               "nimi": "Pärnumaa",
-              "arv": 6
-            },
-            {
-              "nimi": "Raplamaa",
-              "arv": 5
+              "arv": 7
             },
             {
               "nimi": "Järvamaa",
-              "arv": 4
+              "arv": 6
+            },
+            {
+              "nimi": "Jõgevamaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 3
+            },
+            {
+              "nimi": "Võrumaa",
+              "arv": 2
             },
             {
               "nimi": "Läänemaa",
               "arv": 2
             },
             {
-              "nimi": "Jõgevamaa",
+              "nimi": "Valgamaa",
               "arv": 2
             },
             {
@@ -3448,11 +3456,11 @@
               "arv": 1
             },
             {
-              "nimi": "Lääne-Virumaa",
+              "nimi": "Raplamaa",
               "arv": 1
             },
             {
-              "nimi": "Valgamaa",
+              "nimi": "Põlvamaa",
               "arv": 1
             },
             {
@@ -3463,19 +3471,15 @@
         },
         {
           "nimi": "Turundus / reklaam",
-          "arv": 51,
+          "arv": 64,
           "linnad": [
             {
               "nimi": "Tallinn",
-              "arv": 26
+              "arv": 34
             },
             {
               "nimi": "Tartu",
-              "arv": 4
-            },
-            {
-              "nimi": "Jõhvi",
-              "arv": 3
+              "arv": 6
             },
             {
               "nimi": "Pärnu",
@@ -3486,7 +3490,11 @@
               "arv": 2
             },
             {
-              "nimi": "Viimsi",
+              "nimi": "Jõhvi",
+              "arv": 2
+            },
+            {
+              "nimi": "Võru",
               "arv": 1
             },
             {
@@ -3497,27 +3505,31 @@
           "maakonnad": [
             {
               "nimi": "Harjumaa",
-              "arv": 30
+              "arv": 42
             },
             {
               "nimi": "Tartumaa",
-              "arv": 7
-            },
-            {
-              "nimi": "Ida-Virumaa",
-              "arv": 4
+              "arv": 8
             },
             {
               "nimi": "Pärnumaa",
-              "arv": 3
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 2
+              "arv": 4
             },
             {
               "nimi": "Lääne-Virumaa",
               "arv": 2
+            },
+            {
+              "nimi": "Ida-Virumaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Võrumaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Saaremaa",
+              "arv": 1
             },
             {
               "nimi": "Viljandimaa",
@@ -3528,175 +3540,75 @@
               "arv": 1
             },
             {
-              "nimi": "Saaremaa",
+              "nimi": "Jõgevamaa",
               "arv": 1
             }
           ]
         },
         {
           "nimi": "Põllumajandus / keskkonnakaitse",
-          "arv": 48,
+          "arv": 59,
           "linnad": [
-            {
-              "nimi": "Pärnu",
-              "arv": 2
-            },
-            {
-              "nimi": "Võru",
-              "arv": 2
-            },
             {
               "nimi": "Tallinn",
               "arv": 2
             },
             {
+              "nimi": "Kohtla-Järve",
+              "arv": 2
+            },
+            {
               "nimi": "Tartu",
+              "arv": 1
+            },
+            {
+              "nimi": "Rapla",
+              "arv": 1
+            },
+            {
+              "nimi": "Pärnu",
               "arv": 1
             }
           ],
           "maakonnad": [
             {
-              "nimi": "Pärnumaa",
-              "arv": 8
+              "nimi": "Lääne-Virumaa",
+              "arv": 11
             },
             {
-              "nimi": "Lääne-Virumaa",
+              "nimi": "Ida-Virumaa",
               "arv": 7
             },
             {
-              "nimi": "Võrumaa",
-              "arv": 6
+              "nimi": "Jõgevamaa",
+              "arv": 5
             },
             {
               "nimi": "Tartumaa",
               "arv": 5
             },
             {
-              "nimi": "Jõgevamaa",
+              "nimi": "Pärnumaa",
+              "arv": 5
+            },
+            {
+              "nimi": "Viljandimaa",
               "arv": 4
             },
             {
-              "nimi": "Ida-Virumaa",
-              "arv": 3
-            },
-            {
               "nimi": "Harjumaa",
-              "arv": 3
-            },
-            {
-              "nimi": "Valgamaa",
-              "arv": 3
+              "arv": 4
             },
             {
               "nimi": "Saaremaa",
               "arv": 3
             },
             {
-              "nimi": "Viljandimaa",
-              "arv": 2
-            },
-            {
-              "nimi": "Põlvamaa",
-              "arv": 1
-            }
-          ]
-        },
-        {
-          "nimi": "Korrakaitse / päästeteenistus / julgeolek",
-          "arv": 46,
-          "linnad": [
-            {
-              "nimi": "Tallinn",
-              "arv": 13
-            },
-            {
-              "nimi": "Tapa",
-              "arv": 9
-            },
-            {
-              "nimi": "Pärnu",
-              "arv": 1
-            },
-            {
-              "nimi": "Võru",
-              "arv": 1
-            },
-            {
-              "nimi": "Narva",
-              "arv": 1
-            },
-            {
-              "nimi": "Tartu",
-              "arv": 1
-            }
-          ],
-          "maakonnad": [
-            {
-              "nimi": "Harjumaa",
-              "arv": 28
-            },
-            {
-              "nimi": "Lääne-Virumaa",
-              "arv": 11
-            },
-            {
-              "nimi": "Pärnumaa",
-              "arv": 1
-            },
-            {
               "nimi": "Võrumaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Ida-Virumaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Valgamaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Jõgevamaa",
-              "arv": 1
-            },
-            {
-              "nimi": "Tartumaa",
-              "arv": 1
-            }
-          ]
-        },
-        {
-          "nimi": "Energeetika / elekter",
-          "arv": 37,
-          "linnad": [
-            {
-              "nimi": "Tallinn",
-              "arv": 11
-            },
-            {
-              "nimi": "Narva",
-              "arv": 1
-            },
-            {
-              "nimi": "Tartu",
-              "arv": 1
-            }
-          ],
-          "maakonnad": [
-            {
-              "nimi": "Harjumaa",
-              "arv": 21
-            },
-            {
-              "nimi": "Lääne-Virumaa",
               "arv": 3
             },
             {
               "nimi": "Raplamaa",
-              "arv": 3
-            },
-            {
-              "nimi": "Ida-Virumaa",
               "arv": 2
             },
             {
@@ -3704,23 +3616,151 @@
               "arv": 2
             },
             {
-              "nimi": "Tartumaa",
+              "nimi": "Põlvamaa",
               "arv": 2
-            },
-            {
-              "nimi": "Viljandimaa",
-              "arv": 1
             },
             {
               "nimi": "Valgamaa",
               "arv": 1
             }
           ]
+        },
+        {
+          "nimi": "Korrakaitse / päästeteenistus / julgeolek",
+          "arv": 53,
+          "linnad": [
+            {
+              "nimi": "Tallinn",
+              "arv": 13
+            },
+            {
+              "nimi": "Tapa",
+              "arv": 10
+            },
+            {
+              "nimi": "Jõhvi",
+              "arv": 4
+            },
+            {
+              "nimi": "Võru",
+              "arv": 2
+            },
+            {
+              "nimi": "Narva",
+              "arv": 1
+            },
+            {
+              "nimi": "Pärnu",
+              "arv": 1
+            }
+          ],
+          "maakonnad": [
+            {
+              "nimi": "Harjumaa",
+              "arv": 29
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 11
+            },
+            {
+              "nimi": "Ida-Virumaa",
+              "arv": 5
+            },
+            {
+              "nimi": "Raplamaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Võrumaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Valgamaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Pärnumaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Jõgevamaa",
+              "arv": 1
+            }
+          ]
+        },
+        {
+          "nimi": "Energeetika / elekter",
+          "arv": 34,
+          "linnad": [
+            {
+              "nimi": "Tallinn",
+              "arv": 12
+            },
+            {
+              "nimi": "Kuressaare",
+              "arv": 1
+            },
+            {
+              "nimi": "Rakvere",
+              "arv": 1
+            },
+            {
+              "nimi": "Paide",
+              "arv": 1
+            },
+            {
+              "nimi": "Pärnu",
+              "arv": 1
+            }
+          ],
+          "maakonnad": [
+            {
+              "nimi": "Harjumaa",
+              "arv": 20
+            },
+            {
+              "nimi": "Järvamaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Ida-Virumaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Lääne-Virumaa",
+              "arv": 2
+            },
+            {
+              "nimi": "Saaremaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Põlvamaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Valgamaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Pärnumaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Viljandimaa",
+              "arv": 1
+            },
+            {
+              "nimi": "Raplamaa",
+              "arv": 1
+            }
+          ]
         }
       ],
-      "valdkonniti_kuupaev": "2026-11-10",
+      "valdkonniti_kuupaev": "2026-11-27",
       "top_tooandjad_pohjus": "CV.ee näitab Töötukassa vahendatud kuulutusi tööandja nimeta; Töötukassa enda otsingulehti robots.txt keelab.",
-      "jaotuse_kuulutusi": 2082,
+      "jaotuse_kuulutusi": 2111,
       "jaotuse_allikas": "https://www.cv.ee/et/search (tööandja „Töötukassa vahendatud pakkumised“)",
       "ametivaldkond_url": "https://www.cv.ee/et/categories",
       "asukoht_url": "https://www.cv.ee/et/locations"
