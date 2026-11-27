@@ -1,15 +1,17 @@
 {
-  "kirjeldus": "Usaldatud ürituste ja asutuste avalikud videokanalid ettekannete igapäevaseks otsinguks (Kadri valik 8.11.2026: „jah 1-4, 6-8“; Tallinn Digital Summit ja Tartu Ülikooli UTTV lisatud 12.11.2026). sait/lae_ettekanded.py loeb seda faili.",
+  "kirjeldus": "Usaldatud ürituste ja asutuste avalikud videokanalid ettekannete igapäevaseks otsinguks (Kadri valik 8.11.2026: „jah 1-4, 6-8“; Tallinn Digital Summit ja Tartu Ülikooli UTTV lisatud 12.11.2026). „filter“: false tähendab teemakanalit, kust tuleb kandidaadiks iga video peale kursuse tundide, tseremooniate ja kokkuvõttevideote (27.11.2026). sait/lae_ettekanded.py loeb seda faili.",
   "kanalid": [
     {"id": "ut-dss", "nimi": "Tartu Ülikooli andmeteaduse seminar", "riik": "EE", "leht": "https://cs.ut.ee/en/content/data-science-seminars", "miks": "TÜ arvutiteaduse instituudi seminarisari; salvestised avalikud YouTube'is", "filter": false},
     {"id": "latitude59", "nimi": "Latitude59", "riik": "EE", "kanal": "UCVSEYuF5-xS99L8vhVfn34A", "url": "https://latitude59.ee/", "miks": "Eesti suurim tehnoloogia- ja idukonverents"},
     {"id": "startup-day", "nimi": "sTARTUp Day", "riik": "EE", "kanal": "UCG9hcEbq8awVkt0Ro47D1yQ", "url": "https://www.startupday.ee/", "miks": "Tartu ettevõtlusfestival; korraldajate seas Tartu Ülikool ja Tartu linn"},
     {"id": "arenguseire", "nimi": "Arenguseire Keskus", "riik": "EE", "esitusloend": "PLU985AFYCOtNG_XT2Fq7fTJJpYtKUNZ_G", "url": "https://arenguseire.ee/", "miks": "Riigikogu juures tegutsev tulevikuuuringute keskus; tööturu ja tehnoloogia seminarid"},
     {"id": "oecd", "nimi": "OECD", "riik": "INT", "kasutaja": "@OECD", "url": "https://www.oecd.org/", "miks": "Rahvusvaheline organisatsioon; tehisaru ja töö tuleviku poliitika"},
-    {"id": "oecd-ai", "nimi": "OECD.AI", "riik": "INT", "kasutaja": "@OECD-AI", "url": "https://oecd.ai/", "miks": "OECD tehisaru poliitika vaatluskeskus, sh AI-WIPS (tehisaru töös, oskustes ja tootlikkuses)"},
+    {"id": "oecd-ai", "nimi": "OECD.AI", "riik": "INT", "kasutaja": "@OECD-AI", "url": "https://oecd.ai/", "miks": "OECD tehisaru poliitika vaatluskeskus, sh AI-WIPS (tehisaru töös, oskustes ja tootlikkuses)", "filter": false},
     {"id": "ilo", "nimi": "Rahvusvaheline Tööorganisatsioon (ILO)", "riik": "INT", "kasutaja": "@ILO", "url": "https://www.ilo.org/", "miks": "ÜRO tööorganisatsioon; tehisaru ja töö globaalne vaade"},
-    {"id": "stanford-hai", "nimi": "Stanford HAI", "riik": "INT", "kasutaja": "@StanfordHAI", "url": "https://hai.stanford.edu/", "miks": "Stanfordi inimkeskse tehisaru instituut; AI Index ja uuringud"},
+    {"id": "stanford-hai", "nimi": "Stanford HAI", "riik": "INT", "kasutaja": "@StanfordHAI", "url": "https://hai.stanford.edu/", "miks": "Stanfordi inimkeskse tehisaru instituut; AI Index ja uuringud", "filter": false},
     {"id": "uttv", "nimi": "Tartu Ülikooli videoportaal UTTV", "riik": "EE", "uttv_alates": 43942, "url": "https://uttv.ee/", "miks": "Tartu Ülikooli avalikud loengud, inauguratsiooniloengud, konverentsid ja seminarid kõigist valdkondadest; RSS-i pole, otsing loeb uusi video lehti id järgi"},
-    {"id": "tds", "nimi": "Tallinn Digital Summit", "riik": "EE", "kanal": "UC9ptGynkOPe3vFRW6otoI3g", "url": "https://tds.icds.ee/", "miks": "Riigipeade ja tehnoloogiajuhtide iga-aastane digiriigi tippkohtumine Tallinnas; paneelide salvestised avalikud"}
+    {"id": "tds", "nimi": "Tallinn Digital Summit", "riik": "EE", "kanal": "UC9ptGynkOPe3vFRW6otoI3g", "url": "https://tds.icds.ee/", "miks": "Riigipeade ja tehnoloogiajuhtide iga-aastane digiriigi tippkohtumine Tallinnas; paneelide salvestised avalikud", "filter": false},
+    {"id": "lex-fridman", "nimi": "Lex Fridman Podcast", "riik": "INT", "rss": "https://lexfridman.com/feed/podcast/", "url": "https://lexfridman.com/podcast/", "miks": "Pikad vestlused tehisaru arendajate, teadlaste ja ettevõtjatega; igal osal on avalik transkriptsioon (Kadri valik 11.11.2026, automaatselt alates 27.11.2026)"},
+    {"id": "mindscape", "nimi": "Sean Carroll's Mindscape", "riik": "INT", "rss": "https://www.preposterousuniverse.com/feed/", "rss_tee": "/podcast/", "url": "https://www.preposterousuniverse.com/podcast/", "miks": "Teadlaste ja mõtlejate vestlused teadusest, ühiskonnast ja tehisarust; osa lehel on transkriptsioon (Kadri valik 11.11.2026, automaatselt alates 27.11.2026)"}
   ]
 }

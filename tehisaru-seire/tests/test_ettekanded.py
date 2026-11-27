@@ -23,9 +23,9 @@ RSS = """<?xml version="1.0" encoding="UTF-8"?>
 def test_kanalite_loend_on_kadri_valik():
     K = json.loads((JUUR / "kataloog" / "ettekannete-kanalid.json").read_text(encoding="utf-8"))
     ids = [k["id"] for k in K["kanalid"]]
-    assert ids == ["ut-dss", "latitude59", "startup-day", "arenguseire", "oecd", "oecd-ai", "ilo", "stanford-hai", "uttv", "tds"]
+    assert ids == ["ut-dss", "latitude59", "startup-day", "arenguseire", "oecd", "oecd-ai", "ilo", "stanford-hai", "uttv", "tds", "lex-fridman", "mindscape"]
     for k in K["kanalid"]:
-        allikaid = [x for x in ("leht", "kanal", "esitusloend", "kasutaja", "uttv_alates") if k.get(x)]
+        allikaid = [x for x in ("leht", "kanal", "esitusloend", "kasutaja", "uttv_alates", "rss") if k.get(x)]
         assert len(allikaid) == 1, k["id"]
         assert k.get("miks") and k.get("nimi")
         if k.get("kanal"):
@@ -37,6 +37,82 @@ def test_voog_ja_teemafilter():
     assert [r["id"] for r in rr] == ["AAAAAAAAAAA", "BBBBBBBBBBB", "CCCCCCCCCCC"]
     assert rr[0]["avaldatud"] == "2026-11-01" and rr[0]["url"].endswith("v=AAAAAAAAAAA")
     assert [L.teemas(r) for r in rr] == [True, False, True]
+
+
+def test_sool_jatab_tehisaru_ja_viskab_uldise_too_valja():
+    """Kadri 27.11.2026: liiga palju teemaväliseid kandidaate. Üldsõnad (work, jobs, skills, digital) üksi ei piisa."""
+    sees = ["Artificial intelligence and creative professions: threats or opportunities?",
+            "Lessons from 25 years of crowd (and A.I.) forecasting",
+            "From results to the next cycle: Just transition and human capacity in the AI era",
+            "TDS2026 - Building the agentic nation: what governments need to get right first",
+            "Tehisintellekt juristi töölaual", "AI-põhine klienditeenindus", "The Future of Work in Africa Starts Now"]
+    valjas = ["Roadmaps for more and better jobs through sustainable investment",
+              "How productivity ecosystems can drive decent work in Viet Nam?",
+              "What workers' organizations can do to support quality apprenticeships",
+              "XIV Pärandtehnoloogia konverents", "Kogukonna- ja huvijuhtide üliõpilastööde konverents 2026 I osa"]
+    assert all(L.teemas({"pealkiri": t}) for t in sees)
+    assert not any(L.teemas({"pealkiri": t}) for t in valjas)
+
+
+def test_kursuse_tunnid_ja_tseremooniad_ei_tule_ka_teemakanalilt():
+    for t in ["Programmeerimine - Nädal 13 - 25.11.2026 - objektorienteeritud programmeerimine.", "A&A Tasemetöö 2 kordamine",
+              "Tartu Ülikooli teenetemärkide üleandmine 2026", "Tallinn Digital Summit 2026 I Official Aftermovie",
+              "Best Bits from the Tallinn Digital Summit | TDS 2026", "TDS2026 - Closing Ceremony",
+              "Doctoral defence: Tauri Tölpt", "Behind the scenes - Why languages matter at the OECD (English)"]:
+        assert L.hinda({"pealkiri": t, "filter": False}) == "teemaväline", t
+    assert L.hinda({"pealkiri": "Teachers and technology | TDS 2026", "filter": False}) == "uus"  # teemakanal
+    assert L.hinda({"pealkiri": "Teachers and technology | TDS 2026", "filter": True}) == "teemaväline"
+
+
+def test_soelu_uuesti_muudab_ainult_ootel_kandidaate():
+    kanalid = [{"id": "tds", "filter": False}, {"id": "ilo"}]
+    k = [{"id": "a", "allikas": "ilo", "pealkiri": "Decent Work in Action", "olek": "uus"},
+         {"id": "g", "allikas": "ilo", "pealkiri": "Decent Work in Action", "olek": "uus", "leitud": "2026-11-27"},
+         {"id": "b", "allikas": "ilo", "pealkiri": "Artificial intelligence and creative professions", "olek": "uus"},
+         {"id": "c", "allikas": "tds", "pealkiri": "Rules and innovation | TDS 2026", "olek": "uus"},
+         {"id": "d", "allikas": "tds", "pealkiri": "TDS2026 - Closing Ceremony", "olek": "uus"},
+         {"id": "e", "allikas": "ilo", "pealkiri": "Decent Work in Action", "olek": "vana"},
+         {"id": "f", "allikas": "uttv", "pealkiri": "Astronoomialoeng:&nbsp;&bdquo;Tähe teekond&quot;", "olek": "uus"}]
+    assert L.soelu_uuesti(k, kanalid, dt.date(2026, 11, 27)) == ["a", "d", "f"]
+    assert [x["olek"] for x in k] == ["teemaväline", "uus", "uus", "uus", "teemaväline", "vana", "teemaväline"]  # g: uue sõelaga leitud
+    assert L.soelu_uuesti(k, kanalid, dt.date(2026, 11, 28)) == []
+    assert k[0]["soelutud"] == "2026-11-27" and "soelutud" not in k[1]
+
+
+PODCAST_RSS = """<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>
+<item><title>#505 &#8211; Jane Doe: AI Agents and the Future of Programming</title>
+ <link>https://lexfridman.com/jane-doe/?utm_source=rss&amp;utm_medium=rss</link><pubDate>Tue, 24 Nov 2026 20:00:00 +0000</pubDate>
+ <description><![CDATA[<p>Jane builds coding agents.</p><p><b>Transcript:</b><br /><a href="https://lexfridman.com/jane-doe-transcript">x</a></p>]]></description></item>
+<item><title>#504 &#8211; Russia-Ukraine War</title><link>https://lexfridman.com/ukraine-war/</link><pubDate>Tue, 10 Nov 2026 23:52:44 +0000</pubDate>
+ <description><![CDATA[<p>Military analysts.</p><p>Thank you for listening. SPONSORS: Fin: AI agent for customer service.</p>]]></description></item>
+<item><title>Blog post</title><link>https://preposterousuniverse.com/blog/2026/11/01/x/</link><pubDate>Sun, 01 Nov 2026 10:00:00 +0000</pubDate></item>
+</channel></rss>"""
+
+
+def test_podcasti_voog_ja_transkriptsioon():
+    """Kadri 27.11.2026: podcastid tulevad ise. Lex Fridmani ja Mindscape'i osadel on avalik tekst, Kadri arvutit pole vaja."""
+    rr = L.podcasti_voog(PODCAST_RSS, "lex-fridman")
+    assert [r["id"] for r in rr] == ["lex-fridman-jane-doe", "lex-fridman-ukraine-war", "lex-fridman-x"]
+    assert rr[0]["url"] == "https://lexfridman.com/jane-doe/" and rr[0]["avaldatud"] == "2026-11-24"
+    assert rr[0]["pealkiri"] == "#505 – Jane Doe: AI Agents and the Future of Programming"
+    assert rr[0]["tekst_url"] == "https://lexfridman.com/jane-doe-transcript"
+    assert rr[1]["tekst_url"] == rr[1]["url"]
+    assert [L.teemas(r) for r in rr[:2]] == [True, False]  # sponsori „AI agent“ ei tee osa teemaks
+    assert L.hinda({"pealkiri": "AMA | November 2026", "filter": False}) == "teemaväline"
+    assert [r["id"] for r in L.podcasti_voog(PODCAST_RSS, "mindscape", tee="/podcast/")] == []
+    for r in rr:
+        r["filter"] = True
+    k = []
+    assert L.uuenda(k, rr, {"https://lexfridman.com/ukraine-war/"}, dt.date(2026, 11, 27), esimene=False) == ["lex-fridman-jane-doe"]
+    assert k[0]["tekst_url"].endswith("-transcript") and len(k) == 2  # tuntud osa (saidil) ei tule kandidaadiks
+    assert L.vajab_teksti_teade(k).startswith("Kõigil")
+
+
+def test_tuntud_podcasti_osa_lehe_jargi(tmp_path, monkeypatch):
+    f = tmp_path / "ettekanded.json"
+    f.write_text(json.dumps({"ettekanded": [{"id": "lex-503", "uritus_url": "https://lexfridman.com/math-ai-crisis/"}]}), encoding="utf-8")
+    monkeypatch.setattr(L, "TUNTUD", f)
+    assert L.tuntud_videod() == {"lex-503", "https://lexfridman.com/math-ai-crisis/"}
 
 
 def test_uued_kandidaadid_vanad_ja_tuntud_valja():
