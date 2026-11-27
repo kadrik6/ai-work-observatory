@@ -467,7 +467,7 @@ def test_koondamiste_visuaali_pealkiri_tuleb_andmetest(A, sait):
     # ilma jagajata; kogutud teadete arv ja töökohtade summa on eraldi lauses koos põhjendusega.
     h2 = sait["too.html"].split('id="h-koondamised">')[1].split("</h2>")[0]
     mainib = sum(r["roll"] in ("otsene", "osaline") for r in j)
-    assert f'<b>{abi.ARVSONAD[mainib]} {"ettevõte" if mainib == 1 else "ettevõtet"}</b>' in h2
+    assert f'<b>{abi.ARVSONAD[mainib].capitalize()} {"ettevõte" if mainib == 1 else "ettevõtet"}</b> nimetas koondamise põhjusena tehisaru' in h2
     for pealkiri in (h2, h3):
         assert "koondamisest" not in pealkiri and "töökohast" not in pealkiri and not re.search(r"\d-st\b", pealkiri), pealkiri
     ps = sait["too.html"].split('id="h-koondamised-v">')[1].split('<div class="kr-aeg">')[0]
@@ -597,7 +597,7 @@ def test_palkamise_pealkiri_tuleb_andmetest(A, sait):
     k = [f for f in F.values() if f["otsib"].get("kontrollitud")]
     kuulutusi = sum(len(f["otsib"]["ametid"]) for f in k)
     h2 = sait["too.html"].split('id="h-palkamine">')[1].split("</h2>")[0]
-    assert f"(kokku {abi.sonaga(kuulutusi)} kuulutust)" in h2
+    assert f"({abi.sonaga(kuulutusi)} kuulutust)" in h2
 
 
 def test_uudise_levik_on_valjaannete_arv(A):
@@ -986,7 +986,7 @@ def test_neli_vaiteparandust_8_11(sait):
     assert "küsimus võib erineda" in sait["inimesed.html"] and "küsimus võib erineda" in sait["index.html"]
     # 8.11 õhtu: h1 algab Eestist (läbivaatus P4). 26.11.2026 Kadri: „ei selgu, kas vähendab“ jättis mulje, et mõju pole;
     # uus h1 ütleb mõõdetud mõju (tööalane kasutus, IT71 hõivatud) ja jätab lahtiseks ainult koondamiste põhjuse.
-    assert h1("too.html").startswith("Eestis muudab tehisaru tööd")
+    assert h1("too.html").startswith("Tehisaru muudab Eestis juba tööd")
     hanked = _jaotis(sait["hanked.html"], "tahvel")  # 19.11.2026: hangete arv on tahvli esimesel real
     avaleht = _jaotis(sait["index.html"], "teemad").split('href="hanked.html"')[1].split("</tr>")[0]
     assert re.search(r'class="tv-arv"[^>]*>(\d+)<', avaleht).group(1) == re.search(r'class="vt-n"[^>]*>umbes (\d+)<', hanked).group(1)
@@ -1077,7 +1077,7 @@ def test_labivaatus_8_11_parandused(sait):
     assert "kõige kaugemal" not in sait["index.html"]
     # P2: iga „viimati“ ütleb, mille kohta see on
     assert h2("index.html", "muutus").startswith("Mis muutus ja mis tuleb? ")
-    assert h2("lahknevused.html", "muutused").startswith("Mis allikates viimati muutus? Logi viimane kanne on")
+    assert h2("lahknevused.html", "muutused").startswith("Mis allikates viimati muutus? Viimane logikanne on")
     # P3: alamlehtede h1 on vastus, mitte teema nimi
     for f, nimi in [("too-kirjandus.html", "Mida maailmas ja Eestis tehisarust ja tööst kirjutatakse")]:
         assert h1(f) != nimi and len(h1(f)) > len(nimi) and "<b>" in re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1), f
@@ -1279,7 +1279,7 @@ def test_uuringutulemused_ja_metoodika_on_seire_saidil(sait):
     av = sait["avalik-sektor.html"]
     for i in ("teekond", "liigid", "moju", "asutused", "kupsus", "rahastus"):  # 17.11.2026: etapid → teekond, oskused → asutused
         assert f'id="{i}"' in av, i
-    assert "Prototüübist hindamiseni kukub 22 protsendipunkti" in tekst(av) and "83% uuendusrahast tuli ELilt" in tekst(av)
+    assert "Prototüübist hindamiseni jõuab 22 protsendipunkti vähem projekte" in tekst(av) and "83% uuendusrahast tuli ELilt" in tekst(av)
     ev = sait["ettevotted.html"]
     assert 'id="arenguseire"' in ev and 'id="pohjamaad"' in ev and "Arvutatud: indeks" in ev
     kl = sait["kuidas-lugeda.html"]
@@ -2242,7 +2242,7 @@ def test_avalik_sektor_on_tahvel_teekond_ja_asutused(A, sait):
     for svg in tk.split('class="tt-svg tt-sc-')[1:]:
         svg = svg.split("</svg>")[0]
         assert svg.count('<rect class="tv-v"') == 2 and svg.count('<rect class="tt-jr m"') == 3
-    assert "Prototüübist hindamiseni kukub 22 protsendipunkti" in tekst(tk) and "Katse (RCT)" in tk
+    assert "Prototüübist hindamiseni jõuab 22 protsendipunkti vähem projekte" in tekst(tk) and "Katse (RCT)" in tk
     # asutused: üks ruut = üks vastanud asutus; korrata asutused on kasutajate hulgas
     asu = _jaotis(h, "asutused")
     R = {r["ruhm"]: int(r["vaartus"]) for r in A["leiud_arvud"] if r["leid"] == "rk-ai-kord"}

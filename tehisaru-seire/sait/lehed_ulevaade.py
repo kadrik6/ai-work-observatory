@@ -501,7 +501,7 @@ def too_eesti(A):
     if mainib == 0:
         k_lause = "<b>Ükski ettevõte</b> ei nimetanud tehisaru koondamise põhjusena"
     else:
-        k_lause = (f'Tehisaru nimetas koondamise põhjusena <b>{ARVSONAD.get(mainib, str(mainib))} {"ettevõte" if mainib == 1 else "ettevõtet"}</b>; '
+        k_lause = (f'<b>{ARVSONAD.get(mainib, str(mainib)).capitalize()} {"ettevõte" if mainib == 1 else "ettevõtet"}</b> nimetas koondamise põhjusena tehisaru, '
                    f'otsese põhjusena {otse}')
     k_pea = f'<div class="pn-h"><h2 id="h-koondamised">{k_lause}</h2></div>'
     # Keskel: töökohad ettevõtte kaupa, värv näitab, mida ettevõte tehisaru kohta ütles (Kadri 5.11 23:06)
@@ -663,7 +663,7 @@ def _vabad_jarjestus():
     lause = f"<b>{e(fookus)}</b> tõusis {a0}. aasta {f0}. kohalt 1. kohale" if f0 and f0 > 1 else f"<b>{e(fookus)}</b> on 1. kohal"
     if teine and koht[teine].get(a1):
         lause += f", {e(teine.lower())} langes 1. kohalt {koht[teine][a1]}. kohale"
-    gt = (f'<p class="gt">Mis valdkonnas on kõige rohkem vabu ametikohti: {lause}</p>'
+    gt = (f'<p class="gt">Millises valdkonnas on kõige rohkem vabu ametikohti? {lause}</p>'
           f'<p class="ps">Tegevusala koht vabade ametikohtade arvu järgi, iga aasta {kv}. Klõpsa real, et see esile tõsta.'
           f'{" Tühi koht: Statistikaamet ei avaldanud." if any(len(v) < len(aastad) for v in koht.values()) else ""}</p>')
     nb = lambda v: f"{v:,.0f}".replace(",", NBSP)  # noqa: E731
