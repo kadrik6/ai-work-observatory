@@ -33,7 +33,7 @@
       "vanem": "avaleht",
       "kusimused": "K4, K5",
       "olek": "valmis",
-      "kusimus": "Kui suur osa ettevõtetest kasutab tehisaru ja kus on Eesti ELi skaalal?",
+      "kusimus": "Kui suur osa ettevõtetest kasutab tehisaru ja kus on Eesti ELi riikide seas?",
       "h1": "{ettevotete-tehisaru-kasutus|EE|uusim|a}. aastal kasutas tehisaru **{ettevotete-tehisaru-kasutus|EE|uusim|p0}% vähemalt 10 hõivatuga Eesti ettevõtetest** ¦ ELi võrdluses ({ettevotete-tehisaru-kasutus|EE|uusim:alus|a}) oli Eesti keskmisest ees, Soomest, Rootsist ja Taanist taga.",
       "osad": "Üks leht: kus on Eesti ELis; mida firmad töötajatele lubavad; kas tasub (uuringud ja tootlikkus); kui digitaalsed on VKEd ja T&A; Põhjamaade võrdlus; Arenguseire soovitused; väited, reeglid, allikad."
     },
@@ -46,7 +46,7 @@
       "kusimused": "K6, K7",
       "olek": "valmis",
       "kusimus": "Milliseid töid tehisaru mõjutab ja mida tõendid tegelikult ütlevad?",
-      "h1": "**Eestis muudab tehisaru tööd juba**: tööl kasutab seda 49,2% töötajatest ¦ See on 2026. aasta number, aasta varem oli see 33,1%. Mitu koondamist tehisaru põhjustab, Eesti statistika veel ei eralda.",
+      "h1": "**Tehisaru muudab Eestis juba tööd**: tööl kasutab seda 49,2% hõivatutest ¦ See on 2026. aasta number, aasta varem oli 33,1%. Eesti statistika ei näita veel, mitu koondamist on tehisaru põhjustanud.",
       "osad": "Kolm alamlehte: Tööturg ja uuringud (tahvel kuue Eesti küsimusega, töötus kuu kaupa, koondamised, hõive avatuse astme järgi; üksikasjad kokkupandult: kus on tõendeid, teised tööturu andmed, uuringud mujal ja Eestis, avatud ametid); Arendajate tööriistad (agendid, käsurea tööriistad, tööriistad staaži järgi ja arenduskeskkonnad maailmas); Kirjandus (publikatsioonide kataloog).",
       "alamlehed": [
         {
@@ -157,7 +157,7 @@
       "kusimused": "K9, K10",
       "olek": "valmis",
       "kusimus": "Millal ELi tehisaru määruse osad kehtima hakkavad?",
-      "h1": "Värbamise ja hariduse suure riskiga reeglid kehtivad alates **2.12.2027** ¦ ELi tehisaru määrus kehtib üldiselt alates 2.08.2026.",
+      "h1": "Suure riskiga kasutuse reeglid värbamises ja hariduses kehtivad alates **2.12.2027** ¦ ELi tehisaru määrus kehtib üldiselt alates 2.08.2026.",
       "osad": "Üks leht: ELi tehisaru määruse tähtajad; Eesti otsused ja tähtajad igapäevasest uudistekogumisest; teiste riikide tehisarustrateegiad ja sihid (ainult tabel, sihte ei võrrelda). Sihid on oma teema juures (Inimesed, Ettevõtted, Hanked).",
       "teema": "avalik-sektor"
     },
@@ -169,7 +169,7 @@
       "vanem": "avaleht",
       "kusimused": "K11, K12",
       "olek": "valmis",
-      "kusimus": "Mis on tehisaru, andmete ja töö kohta Eestis ja maailmas viimati teada antud ning kas see on tõend või arvamus?",
+      "kusimus": "Mida on tehisarust, andmetest ja tööst Eestis ja maailmas viimati teatatud ning kas see on tõend või arvamus?",
       "h1": "Tehisaru ja töö uudised Eestist ja maailmast ¦ uudis, uuring ja **arvamus** on eraldi märgitud.",
       "osad": "Uudised Eestist ja maailmast koos allikatega; väidete kontroll on menüüs Usaldus.",
       "alamlehed": [
@@ -232,7 +232,7 @@
         {
           "fail": "lahknevused.html",
           "nimi": "Lahknevused ja värskus",
-          "h1": "Kus allikad annavad sama asja kohta eri numbri ja kui värsked on numbrid",
+          "h1": "Kus allikad lahknevad ja kui värsked on numbrid",
           "lead": "Lahknevused jäävad nähtavale, kuni allikas need selgitab: ministeerium ja Statistikaamet kontrollivad ise, kas viga on allikas.",
           "jaotised": [
             "lahknevused",

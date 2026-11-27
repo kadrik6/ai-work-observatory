@@ -190,8 +190,8 @@ def read(D):
     if not pohjus:
         k_lause = "Ükski ettevõte ei nimetanud tehisaru koondamise põhjusena"
     else:
-        k_lause = (f'Tehisaru nimetas põhjusena {len(pohjus)} {"ettevõte" if len(pohjus) == 1 else "ettevõtet"} '
-                   f'({", ".join(e(r["ettevote"]) for r in pohjus)}); otsese põhjusena {D.k_otsene if D.k_otsene else "mitte ükski"}')
+        k_lause = (f'{len(pohjus)} {"ettevõte" if len(pohjus) == 1 else "ettevõtet"} '
+                   f'({", ".join(e(r["ettevote"]) for r in pohjus)}) nimetas põhjusena tehisaru, otsese põhjusena {D.k_otsene if D.k_otsene else "mitte ükski"}')
     too, th, th0 = D.too, D.too_h, D.too_h0
     return [
         dict(kys="Kas töötus kasvab?", ank="tootus-kuud", ava="Vaata töötuse graafikut", sona=sona_tootus(D), arv=f"{pr(D.t_ee)}%",
@@ -387,15 +387,15 @@ def sec_astmed(D):
     if D.el_k <= 0:
         raise AndmeViga("Astmete pealkiri ütleb, et ELis kõige avatumates ametites hõive kasvas; andmed seda enam ei näita")
     if selge_muutus(D.ee_k):
-        ee_lause = f'<b>{"vähenes" if D.ee_k < 0 else "kasvas"} Eesti hõive {pr(abs(D.ee_k))}%</b>'
+        ee_lause = f'<b>Eestis hõive {"vähenes" if D.ee_k < 0 else "kasvas"} {pr(abs(D.ee_k))}%</b>'
     else:
-        ee_lause = f'<b>Eesti hõives selget muutust ei ole</b> ({mt(D.ee_k)})'
+        ee_lause = f'<b>Eestis selget muutust ei ole</b> ({mt(D.ee_k)})'
     g1 = D.K["aeg_uhtlane"][("EE", "T")][D.A1]
     from lehed_ulevaade import EUROSTAT
     return f"""
 <section class="jaotis" id="astmed" aria-labelledby="h-astmed">
   <header>
-    <h2 id="h-astmed"><span class="kys">Kas kõige avatumates ametites on tööd vähem?</span> Kõige avatumates ametites (aste 3–4) {ee_lause}, ELis kasvas hõive {pr(D.el_k)}%</h2>
+    <h2 id="h-astmed"><span class="kys">Kas kõige avatumates ametites (aste 3–4) on tööd vähem?</span> {ee_lause}, ELis kasvas hõive {pr(D.el_k)}%</h2>
     <p class="alam">Aste näitab, kui suurt osa ameti ülesannetest generatiivne tehisaru puudutab (ILO hinnang).</p>
   </header>
   <figure class="as-fig">{_astmed_joonis(D)}</figure>

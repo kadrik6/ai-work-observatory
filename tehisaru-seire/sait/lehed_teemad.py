@@ -200,7 +200,7 @@ def inimesed(A, vaade, vaated=None):
     <div class="kulg">
       {vastavus("osaliselt", "Number põhineb sellel, mida inimesed ütlevad end teinud olevat (e-kirjad, internetipank, tabelarvutus), mitte oskuste testil.")}
       <div class="vahe">
-        <div><span class="big s">{pr(ds23["vaartus"])} → {pr(ds["vaartus"])}%</span><p>Eesti, 2023 → {ds["aasta"]}; ELi skaalal {k_ds}. koht</p></div>
+        <div><span class="big s">{pr(ds23["vaartus"])} → {pr(ds["vaartus"])}%</span><p>Eesti, 2023 → {ds["aasta"]}; ELis {k_ds}. koht</p></div>
         <div><span class="big">{pr(eu_ds23["vaartus"])} → {pr(eu_ds["vaartus"])}%</span><p>ELi keskmine, 2023 → {ds["aasta"]}</p></div>
       </div>
       {faktid([("Siht", "", f'{e(p_siht["selgitus"])} ({a(p_siht["url"], "Eurostat")})'),
@@ -228,7 +228,7 @@ def inimesed(A, vaade, vaated=None):
     sec_os = f"""
 <section class="jaotis" id="ei-oska" aria-labelledby="h-ei-oska">
   <header>
-    <h2 id="h-ei-oska"><span class="kys">Kui paljusid takistab oskuste puudus?</span> Oskuse puudusel jätab tehisaru kasutamata <b>{pr(os_ee["vaartus"])}% Eesti 16–74-aastastest</b> ¦ ELis {pr(os_eu["vaartus"])}% ({y})</h2>
+    <h2 id="h-ei-oska"><span class="kys">Kui paljusid takistab oskuste puudus?</span> Seetõttu jätab tehisaru kasutamata <b>{pr(os_ee["vaartus"])}% Eesti 16–74-aastastest</b> ¦ ELis {pr(os_eu["vaartus"])}% ({y})</h2>
     <p class="alam">ELi 27 riigi seas on Eestis {k_os}. väikseim osakaal. Põhjus on osaliselt see, et rohkem inimesi juba kasutab tehisaru.</p>
   </header>
   <div class="kaks">
@@ -342,7 +342,7 @@ def inimesed(A, vaade, vaated=None):
     sec_sada = f"""
 <section class="jaotis" id="sada" aria-labelledby="h-sada">
   <header>
-    <h2 id="h-sada"><span class="kys">Kui sada 16–74-aastast eestlast ritta panna?</span> <b>{pr(k_ee, 0)} kasutas tehisaru, ELis {pr(k_eu, 0)}</b></h2>
+    <h2 id="h-sada"><span class="kys">Kui sada 16–74-aastast Eesti elanikku ritta panna?</span> <b>{pr(k_ee, 0)} kasutas tehisaru, ELis {pr(k_eu, 0)}</b></h2>
     <p class="alam">Üks ruut on 1% 16–74-aastastest, {y}, Eurostat. Kõik neli rühma on samast küsitlusest, seepärast saab need ühte pilti panna. Uusim Eesti number ({ee["aasta"]}: {tt.p1(ee["vaartus"])}%) on tahvlil.</p>
   </header>
   <div class="tt-wpaar">{vah("Eesti", k_ee, r_ee)}{vah("ELi keskmine", k_eu, r_eu)}</div>
@@ -435,8 +435,8 @@ def too(A, vaade, vaated=None):
     h0, h = andmed.tooalane_hoivatutest(A)
     if h0 is None:
         raise AndmeViga("Töö h1 vajab tööalase kasutuse kahte aastat (IT71, hõivatud)")
-    kontrolli(vaade, "muudab tehisaru tööd", f"{pr(h['vaartus'])}% töötajatest",
-              f"See on {h['aasta']}. aasta number, aasta varem oli see {pr(h0['vaartus'])}%", "Mitu koondamist")
+    kontrolli(vaade, "muudab Eestis juba tööd", f"{pr(h['vaartus'])}% hõivatutest",
+              f"See on {h['aasta']}. aasta number, aasta varem oli {pr(h0['vaartus'])}%", "mitu koondamist")
     if h["aasta"] - 1 != h0["aasta"]:
         raise AndmeViga("Töö h1 „aasta varem“ eeldab kahte järjestikust aastat")
     if _muutus_arv(can["muutus"]) >= 0:
@@ -515,7 +515,7 @@ def too(A, vaade, vaated=None):
     sec_eesti = f"""
 <section class="jaotis" id="eesti" aria-labelledby="h-eesti">
   <header>
-    <h2 id="h-eesti"><span class="kys">Mida Eesti uuringud mõõdavad?</span> Eesti uuringud ei mõõda veel <b>mõju töökohtadele</b> ¦ need mõõdavad tootlikkust ja takistusi</h2>
+    <h2 id="h-eesti"><span class="kys">Mida Eesti uuringud mõõdavad?</span> <b>Mõju töökohtadele veel mitte</b> ¦ need mõõdavad tootlikkust ja takistusi</h2>
     <p class="alam">Seire kogus {len(ee_u)} Eesti uuringut tehisaru ja töö kohta (prognoosid allpool eraldi). Tootlikkuse leid on {link(vaated, "ettevotted", "vaates Ettevõtted", "tootlikkus")}.</p>
   </header>
   {vastavus("ei", "Eesti kohta pole seire leidnud uuringut, mis mõõdaks tehisaru mõju töökohtadele, palkadele või töötundidele. Taani registriandmete uuring on lähim võrdlus.")}
@@ -645,7 +645,7 @@ def too(A, vaade, vaated=None):
     sec_tulevik = f"""
 <section class="jaotis" id="tulevik" aria-labelledby="h-tulevik">
   <header>
-    <h2 id="h-tulevik">Eesti töötus langeb prognoosi järgi 2030. aastaks <b>umbes {pr(t2030["protsent"], 0)}%-ni</b>, aga prognoos ei arvesta tehisaru mõju eraldi</h2>
+    <h2 id="h-tulevik">Prognoosi järgi langeb Eesti töötus 2030. aastaks <b>umbes {pr(t2030["protsent"], 0)}%-ni</b>, aga tehisaru mõju see eraldi ei arvesta</h2>
   </header>
   <div class="kaks">
     <figure aria-labelledby="g-tulevik">
@@ -679,8 +679,8 @@ def too(A, vaade, vaated=None):
 </section>"""
 
     # Numbriplaadid too-* läksid 17.11.2026 ära: leht algab tahvliga (Kadri valis näidistest „A ja C koos“)
-    lead = ("Mõnes ametis on vähenenud ka vabakutseliste tööd. "
-            "Eesti kohta selliseid mõõtmisi veel ei ole.")
+    lead = ("Maailma uuringute järgi on mõnes ametis vabakutselistel vähem tööd; "
+            "Eesti kohta selliseid mõõtmisi pole.")
     from lehed_ulevaade import too_eesti, tootus_el, vabad_ametikohad
     from lehed_uudised import _arv, ai_kuulutused, palkamine, toopakkumised, uuringud_too
     sec_uuritakse = uuringud_too(A)
@@ -696,7 +696,7 @@ def too(A, vaade, vaated=None):
     palk_plokk = (f'<details class="tt-pl tt-yksi" id="d-palkamine"><summary><b>Keda koondajad praegu otsivad?</b>'
                   f'<span>iga koondamise arv, põhjus ettevõtte sõnul, uudise link ja avatud töökohad</span></summary>{sec_palk}</details>'
                   if sec_palk.strip() else "")
-    sec_andmed = tm.andmesakid("too", tm.kys("Mida näitavad teised tööturu andmed?", "Kas põhjus on tehisaru, need numbrid veel ei ütle"),
+    sec_andmed = tm.andmesakid("too", tm.kys("Mida näitavad teised tööturu andmed?", "Need numbrid ei ütle veel, kas põhjus on tehisaru"),
                                "Iga sakk on üks andmestik. Töötus kuu kaupa ja koondamised on lehe alguses.", [
         ("vabad", "Vabad kohad", vabad_ametikohad()),
         ("portaalid", "Tööportaalid", toopakkumised(A)),
@@ -790,7 +790,7 @@ def avalik_sektor(A, vaade, vaated=None):
     sec_lehter = f"""
 <section class="jaotis" id="lehter" aria-labelledby="h-lehter">
   <header>
-    <h2 id="h-lehter">Rakendamiseni jõuab {pr(v("rakendati"), 0)}%, <b>laiendatakse {pr(v("laiendati"), 0)}%</b> ¦ arvestatud on olulisimad uuendused</h2>
+    <h2 id="h-lehter">Olulisimatest uuendustest rakendati {pr(v("rakendati"), 0)}%, <b>laiendati {pr(v("laiendati"), 0)}%</b> ¦ arvestatud on olulisimad uuendused</h2>
     <p class="alam">Avalikud teenistujad ja asutuste juhid nimetasid oma olulisima uuenduse ja etapi, kuhu see jõudis. Küsitlus oli detsember 2025 kuni veebruar 2026.</p>
   </header>
   <div class="kaks">
@@ -1050,7 +1050,7 @@ def reeglid(A, vaade, vaated=None, tana=None):
                    "riba": kpi_riba(len(moodas), len(O))},
                   a(uld["url"], "Euroopa Komisjon")),
     )
-    j_tekst = f'Järgmine tähtaeg on {jargmine[1]}: {e(jargmine[2].lower())}.' if jargmine else ""
+    j_tekst = f'Järgmine tähtaeg on {jargmine[1]} ({e(jargmine[2][:1].lower() + jargmine[2][1:])}).' if jargmine else ""
     lead = j_tekst
     sec_ee = eesti_otsused(A, vaade, vaated, tana)
     sec_st = riikide_strateegiad(A, vaade)

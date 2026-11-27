@@ -127,7 +127,7 @@ def _kasutus(A, pais=True):
 </section>
 <section class="jaotis" id="kasutus-uued" aria-labelledby="h-kasutus-uued">
   <header>
-    <h2 id="h-kasutus-uued">{muud[0]["aasta"]}. aasta numbrid on olemas {sonaga(len(muud), "alaleytlev")} riigil, aga <b>ELi skaalale need ei sobi</b></h2>
+    <h2 id="h-kasutus-uued">{muud[0]["aasta"]}. aasta numbrid on olemas {sonaga(len(muud), "alaleytlev")} riigil, aga <b>ELi järjestusse need ei sobi</b></h2>
     <p class="alam">Riikide statistikaametid avaldasid need enne Eurostati. Küsimustik või ettevõtete kogum erineb, seepärast ei ole need kaardil.</p>
   </header>
   {uued_tbl}
@@ -256,7 +256,7 @@ def _digi_ja_ta(A):
 </section>
 <section class="jaotis" id="ta" aria-labelledby="h-ta">
   <header>
-    <h2 id="h-ta"><span class="kys">Kui palju kulub teadus- ja arendustööle?</span> Eesti teadus- ja arendustegevuse kulu kasvab, aga jääb <b>ELi keskmisest alla</b> ¦ vahe oli {pr(eu_t - ee_t, 2)} protsendipunkti (2024)</h2>
+    <h2 id="h-ta"><span class="kys">Kui palju kulub teadus- ja arendustööle?</span> Kulu kasvab, aga jääb <b>ELi keskmisest alla</b> ¦ vahe oli {pr(eu_t - ee_t, 2)} protsendipunkti (2024)</h2>
     <p class="alam">Kõigi sektorite kulu kokku, % SKPst: ettevõtted, riik, kõrgharidus ja mittetulundussektor. Ei näita, kui palju läheb tehisarule.</p>
   </header>
   <figure aria-labelledby="g-ta">
@@ -374,7 +374,7 @@ def _pohjamaad(A):
     return f"""
 <section class="jaotis" id="pohjamaad" aria-labelledby="h-pohjamaad">
   <header>
-    <h2 id="h-pohjamaad"><span class="kys">Kus jääb Eesti Põhjamaadest maha?</span> Üheksast näitajast on Eesti {arv(len(tasemel))} puhul Põhjamaade tasemel ¦ <b>{arv(len(maas))} puhul jääb Põhjamaadest maha</b></h2>
+    <h2 id="h-pohjamaad"><span class="kys">Kus jääb Eesti Põhjamaadest maha?</span> <b>{sonaga(len(maas), "omastav").capitalize()} näitaja puhul üheksast</b> ¦ {sonaga(len(tasemel), "omastav")} puhul on Eesti Põhjamaade tasemel</h2>
     {vastavus("osaliselt", "Näitajad on samast küsimustikust kõigis riikides, aga need mõõdavad eri asju (inimesed, ettevõtted, kulud). Ühte koondnumbrit neist ei arvutata.")}
   </header>
   <figure aria-labelledby="g-pohjamaad">
@@ -662,9 +662,9 @@ def ettevotted(A, vaade, vaated=None):
     kas = _kasutus(A, pais=False)
     jagu = kas.index('<section class="jaotis" id="kasutus-uued"')
     pm_ = [andmed.leia(A, EB, g, y)["vaartus"] for g in POHJAMAAD]
-    sec_andmed = tm.andmesakid("ettevotted", tm.kys("Kus on Eesti ELis?", f"{koht}. kohal, Põhjamaadest {pr(vahe)} punkti taga"),
+    sec_andmed = tm.andmesakid("ettevotted", tm.kys("Kus on Eesti ELis?", f"{koht}. kohal, Põhjamaadest {pr(vahe)} protsendipunkti taga"),
                                f'{pr(ee_el["vaartus"])}% ettevõtetest, EL {pr(eu["vaartus"])}%, Soome, Rootsi ja Taani {pr(min(pm_), 0)}–{pr(max(pm_), 0)}% ({y}). '
-                               "Riikide uued numbrid ja ekspertide hinnang on eraldi sakkides, sest need ei sobi ELi skaalale.", [
+                               "Riikide uued numbrid ja ekspertide hinnang on eraldi sakkides, sest need ei sobi ELi järjestusse.", [
         ("kasutus", "Kasutus ELis", kas[:jagu]),
         ("uued", "Riikide 2026. aasta numbrid", kas[jagu:]),
         ("gem", "Ekspertide hinnang (GEM)", _gem(A, ee_el)),
@@ -690,9 +690,9 @@ def ettevotted(A, vaade, vaated=None):
     # Endine alamleht Tootlikkus ja võimekus: digi, T&A, Põhjamaad ja Arenguseire on üks sakkidega plokk, et leht ei veniks
     # (Kadri 14.11.2026: kõrvalpaneel tegi lehe pikemaks; sakis on korraga üks vaade, ankrud #digi jt avavad oma saki).
     DI, TA = "ettevotete-digiintensiivsus", "ta-kulud"
-    alla = [nimi for nid, nimi in ((DI, "digis"), (TA, "teadus- ja arendustöös"))
+    alla = [nimi for nid, nimi in ((DI, "digitaliseerimises"), (TA, "teadus- ja arendustöös"))
             if andmed.leia(A, nid, "EE", 2024)["vaartus"] < andmed.leia(A, nid, EL, 2024)["vaartus"]]
-    vastus = (f'{" ja ".join(alla).capitalize()} jääb Eesti ELi keskmisest alla' if alla else "Digis ja teadus- ja arendustöös on Eesti ELi keskmisel tasemel") + " (2024)"
+    vastus = (f'{" ja ".join(alla).capitalize()} jääb Eesti ELi keskmisest alla' if alla else "Digitaliseerimises ja teadus- ja arendustöös on Eesti ELi keskmisel tasemel") + " (2024)"
     voimekus = tm.andmesakid("ettevotted", tm.kys("Kas ettevõtetel on võimekust kasvada?", vastus),
                              "Esimene sakk on digiintensiivsus ja teadus- ja arendustöö, teine Arenguseire Keskuse soovitused. Põhjamaade võrdlus on lehe ülaosas.", [
         ("digi-ta", "Digi ja T&A", lisa_sihid(A, lisa_sihid(A, _digi_ja_ta(A), "digi", "el-digiintensiivsus-90"), "ta", "el-ta-3")),

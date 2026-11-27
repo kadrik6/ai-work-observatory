@@ -214,7 +214,7 @@ def tahvel(A, vaated, d, vaite_teema, tootus_el_koht):
 
     sec = f"""
 <section class="pn sp12 tv" id="teemad" aria-labelledby="h-teemad">
-  <div class="pn-h"><h2 id="h-teemad"><span class="kys">Mis on iga teema seis?</span> <b>Viis teemat, iga rida üks pilk</b></h2></div>
+  <div class="pn-h"><h2 id="h-teemad"><span class="kys">Mis on iga teema seis?</span> <b>Viis teemat, igaüks ühel real</b></h2></div>
   <p class="ps">Teema nimi viib teema lehele. Iga rida on oma skaalal. <span class="tv-lg ee"></span> Eesti, <span class="tv-lg eu"></span> ELi keskmine, <span class="tv-lg siht"></span> siht. Koht ELis on uusima Eurostati aasta kohta.</p>
   <div class="tbl tv-laud"><table><caption class="peidus">Teemade seis</caption>
   <thead><tr><th scope="col">Teema</th><th scope="col">Praegu</th><th scope="col">Kulg</th><th scope="col">Muutus</th><th scope="col">Koht ELis</th><th scope="col">Väited</th><th scope="col">Siht ja reeglid</th><th scope="col">Värskus</th></tr></thead>

@@ -82,7 +82,7 @@ def vaidete_plokk(A, vaated, tid, teema_jargi, n=3):
 
 def _reeglite_vastus(kehtib, ees):
     r = lambda n: f"{sonaga(n)} {'reegel' if n == 1 else 'reeglit'}"  # noqa: E731
-    osad = ([f"{r(kehtib)} kehtib juba"] if kehtib else []) + ([f"{r(ees)} jõustub hiljem"] if ees else [])
+    osad = ([f"{r(kehtib)} on juba jõus"] if kehtib else []) + ([f"{r(ees)} jõustub hiljem"] if ees else [])
     t = " ja ".join(osad)
     return t[:1].upper() + t[1:]
 
@@ -100,7 +100,7 @@ def reeglite_plokk(A, vaated, ids, tana=None):
         kehtib = kuup < tana
         n_kehtib += kehtib
         read.append(f'<li><span class="k">{kp(o["kuupaev"]) if len(o["kuupaev"]) == 10 else e(o["kuupaev"])}</span>'
-                    f'<span><b>{e(o["nimi"])}</b> <span class="chip{"" if kehtib else " exp"}">{"kehtib" if kehtib else "ees"}</span>'
+                    f'<span><b>{e(o["nimi"])}</b> <span class="chip{"" if kehtib else " exp"}">{"kehtib" if kehtib else "tulekul"}</span>'
                     f'<small>{e(o["mida_tahendab"])}</small></span></li>')
     return f"""<section class="pn" id="t-reeglid" aria-labelledby="h-t-reeglid">
   <h2 id="h-t-reeglid">{kys("Mis reeglid kehtivad?", _reeglite_vastus(n_kehtib, len(ids) - n_kehtib))}</h2>
