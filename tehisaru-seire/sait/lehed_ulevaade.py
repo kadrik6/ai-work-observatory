@@ -545,6 +545,7 @@ def too_eesti(A):
 <div class="kk-vis" id="koondamised-visuaal">
   <h3 class="kk-h3" id="h-koondamised-v"><b>{pohjus} töökoha</b> puhul nimetati üheks põhjuseks tehisaru</h3>
   <p class="ps">Kogutud on {len(juhtumid)} koondamisteadet, kokku {piir}{kokku} töökohta. See ei ole kõigi Eesti koondamiste loend (ainult need, mille puhul uudis küsis tehisaru kohta), seepärast osakaalu ei arvutata. Teated ajajärjekorras, uuemad üleval; tulp näitab teatatud töökohti (viimane teade {kp(juhtumid[0]["kuupaev"])}).</p>
+  {avatus_rida(A, juhtumid)}
   <div class="kr-aeg">{ribad}</div>
   <p class="kr-leg">{legend}</p>
   <p class="allikas">Allikas: uudised, lingid tabelis <a href="#palkamine">Keda koondajad otsivad</a>. Ettevõtte enda selgitus ei tõenda põhjust. Katkendäärega tulp on teatatud ülempiir{"; + tähendab, et lõplik arv pole veel teada" if alam else ""}.</p>
@@ -559,6 +560,35 @@ def too_eesti(A):
 </section>"""
     return f'<div class="g12">{sec_t}</div>', f'<div class="g12">{sec_kv}</div>'
 
+
+
+AVATUSE_TASE = ("kõrge", "keskmine", "madal", "teadmata")
+
+
+def avatus_rida(A, juhtumid):
+    """Kaudne mõõt, mis ei sõltu sellest, mida firma ütleb (Kadri 26.11.2026, valik A; tooelu-uudised/README.md):
+    kaotatud ametite tehisarule avatus (ILO 2025) ja „koondab ja palkab“ signaal. Seos, mitte põhjus."""
+    F = (A.get("koondajad") or {}).get("firmad") or {}
+    firmad = list(dict.fromkeys(j["ettevote"] for j in juhtumid if j["ettevote"] in F and F[j["ettevote"]].get("avatus")))
+    if not firmad:
+        return ""
+    for f in firmad:
+        if F[f]["avatus"]["tase"] not in AVATUSE_TASE:
+            raise AndmeViga(f"koondajad.json: {f} avatuse tase {F[f]['avatus']['tase']!r} on tundmatu")
+    korge = [f for f in firmad if F[f]["avatus"]["tase"] == "kõrge"]
+    teadmata = [f for f in firmad if F[f]["avatus"]["tase"] == "teadmata"]
+    sig = [f for f in firmad if (F[f].get("koondab_ja_palkab") or {}).get("signaal")]
+    if not korge:
+        return ""
+    ilo = (A.get("uuringud") or {}).get("ilo2025")
+    ilo_l = f'<a href="{e(ilo["url"])}">ILO 2025</a>' if ilo else "ILO 2025"
+    nimed = lambda ff: (", ".join(e(f) for f in ff[:-1]) + " ja " + e(ff[-1])) if len(ff) > 1 else e(ff[0])  # noqa: E731
+    sig_lause = (f' {nimed(sig)} {"otsivad" if len(sig) > 1 else "otsib"} samal ajal IT-, andme- või analüütikatöötajaid.' if sig else "")
+    teadmata_lause = (f' {sonaga(len(teadmata), "omastav").capitalize()} koondaja puhul uudis ameteid ei nimeta, nii et avatust ei saa hinnata.'
+                      if teadmata else "")
+    return (f'<p class="ps kr-avatus"><b>Seos, mitte põhjus:</b> {sonaga(len(korge), "alaleytlev").capitalize()} koondajal {len(firmad)}-st '
+            f'on kaotatud ametid tehisarule kõrgelt avatud ({ilo_l}): {nimed(korge)}.{sig_lause}{teadmata_lause} '
+            f'See mõõt ei sõltu sellest, mida ettevõte ise põhjuseks ütleb. Firmade kaupa on see tabelis <a href="#palkamine">Keda koondajad otsivad</a>.</p>')
 
 # ---------------------------------------------------------------- Töö: kus ja mis valdkonnas palgatakse
 

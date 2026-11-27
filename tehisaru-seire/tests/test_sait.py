@@ -2592,3 +2592,25 @@ def test_alamlehe_pais_pildiga(sait):
         assert '<main id="sisu" class="wrap" data-teema="uudised">' in sait[f], f
     assert '<main id="sisu" class="wrap" data-teema="too">' in sait["too.html"]
     assert 'class="pea' not in sait["index.html"].replace('class="pea-', "")  # avalehe päis (pea-rahu) ei muutu
+
+
+def test_koondajate_avatus_seos_mitte_pohjus(A, sait):
+    """Kadri 26.11.2026 (valik A) ja 27.11 „kõigile jah“: koondajate kaotatud ametite tehisarule avatus (ILO 2025)
+    ja „koondab ja palkab“ signaal, märgitud seoseks, mitte põhjuseks."""
+    F = A["koondajad"]["firmad"]
+    t = sait["too.html"]
+    rida = re.search(r'<p class="ps kr-avatus">(.*?)</p>', t, re.S).group(1)
+    assert "Seos, mitte põhjus" in rida and "ILO 2025" in rida and 'href="#palkamine"' in rida
+    korge = [f for f, x in F.items() if (x.get("avatus") or {}).get("tase") == "kõrge"]
+    sig = [f for f, x in F.items() if (x.get("koondab_ja_palkab") or {}).get("signaal")]
+    for f in korge:
+        assert html.escape(f) in rida, f
+    # käänded: „Neljal koondajal“, mitte „Neli koondajal“; mitu firmat „otsivad“
+    assert not re.search(r"\b(Kaks|Kolm|Neli|Viis|Kuus|Seitse|Kaheksa) koondaja", rida), rida
+    if len([f for f in sig if f in rida]) > 1:
+        assert "otsivad samal ajal" in rida
+    # tabelis: igal avatusega firmal oma märge, signaal ainult signaaliga firmadel
+    pal = t[t.index('id="palkamine"'):]
+    pal = pal[:pal.index("</section>")]
+    assert pal.count('class="pk-av"') >= len([f for f in korge if f"<b>{html.escape(f)}</b>" in pal]) > 0
+    assert pal.count('class="pk-sig"') == len([f for f in sig if f"<b>{html.escape(f)}</b>" in pal])
