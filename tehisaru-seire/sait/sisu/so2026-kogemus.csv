@@ -1,0 +1,57 @@
+kusimus,naitaja,ryhm,osa,n,valim,url,kogumine
+AISelect,Kasutab koodiassistenti või koodiagenti,kõik,65.9,11509,17464,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Kasutab koodiassistenti või koodiagenti,1–5,57.8,2366,4094,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Kasutab koodiassistenti või koodiagenti,6–15,72.7,4203,5778,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Kasutab koodiassistenti või koodiagenti,16+,69.6,4595,6600,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Kasutab AI-agente või automatiseeritud töövooge,kõik,26.2,4582,17464,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Kasutab AI-agente või automatiseeritud töövooge,1–5,19.5,798,4094,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Kasutab AI-agente või automatiseeritud töövooge,6–15,30.5,1765,5778,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Kasutab AI-agente või automatiseeritud töövooge,16+,28.9,1908,6600,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Ei kasuta tehisaru tööriistu,kõik,17.2,3003,17464,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Ei kasuta tehisaru tööriistu,1–5,19.0,778,4094,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Ei kasuta tehisaru tööriistu,6–15,13.6,787,5778,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AISelect,Ei kasuta tehisaru tööriistu,16+,15.9,1051,6600,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Claude Code,kõik,65.5,8030,12255,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Claude Code,1–5,58.9,1577,2676,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Claude Code,6–15,69.4,2971,4283,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Claude Code,16+,68.0,3257,4787,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,GitHub Copilot,kõik,58.7,7196,12255,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,GitHub Copilot,1–5,58.4,1563,2676,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,GitHub Copilot,6–15,57.4,2458,4283,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,GitHub Copilot,16+,60.7,2906,4787,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,OpenAI Codex,kõik,29.5,3620,12255,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,OpenAI Codex,1–5,30.9,828,2676,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,OpenAI Codex,6–15,30.1,1290,4283,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,OpenAI Codex,16+,28.2,1351,4787,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Cursor,kõik,25.5,3127,12255,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Cursor,1–5,26.2,700,2676,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Cursor,6–15,28.8,1235,4283,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Cursor,16+,22.9,1095,4787,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Open Code,kõik,13.6,1662,12255,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Open Code,1–5,16.5,442,2676,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Open Code,6–15,13.9,596,4283,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+AICodeAgent,Open Code,16+,11.1,533,4787,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Visual Studio Code,kõik,70.9,9349,13193,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Visual Studio Code,1–5,76.6,2206,2881,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Visual Studio Code,6–15,71.1,3203,4508,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Visual Studio Code,16+,68.3,3478,5093,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Visual Studio,kõik,27.6,3643,13193,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Visual Studio,1–5,27.0,779,2881,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Visual Studio,6–15,23.3,1049,4508,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Visual Studio,16+,32.2,1640,5093,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,IntelliJ IDEA,kõik,24.3,3201,13193,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,IntelliJ IDEA,1–5,26.7,769,2881,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,IntelliJ IDEA,6–15,25.4,1147,4508,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,IntelliJ IDEA,16+,21.8,1110,5093,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Cursor,kõik,14.9,1970,13193,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Cursor,1–5,14.6,422,2881,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Cursor,6–15,17.9,807,4508,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Cursor,16+,13.3,679,5093,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Neovim,kõik,14.7,1939,13193,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Neovim,1–5,23.4,673,2881,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Neovim,6–15,14.3,645,4508,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Neovim,16+,8.3,425,5093,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Zed,kõik,11.4,1504,13193,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Zed,1–5,15.9,458,2881,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Zed,6–15,11.9,535,4508,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
+DevIDE,Zed,16+,8.0,408,5093,https://github.com/StackExchange/Survey/tree/main/packages/archive/2026,23.06.–05.08.2026
