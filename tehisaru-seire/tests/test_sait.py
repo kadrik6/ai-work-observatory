@@ -2678,3 +2678,40 @@ def test_toovahendid_staazi_jargi(sait):
     t = tekst(osa)
     assert "Staaž on aastad tööl, mitte ametinimetus" in t and "Eestist vastas 35 inimest" in t
     assert "github.com/StackExchange/Survey" in osa
+
+
+def test_minu_amet(sait):
+    """Kadri 27.11.2026 (topelt-teemandi samm 2, K2 „Minu amet“): lugeja leiab oma ameti ILO astme, töötajate arvu,
+    ametirühma hõive muutuse ja koondajad. Aste ei ole väide, et töö kaob."""
+    h = sait["too-minu-amet.html"]
+    for jid in ("minu-amet", "ametiryhmad", "h-ma-uksikasjad", "ma-sisend", "ma-kaart"):
+        assert f'id="{jid}"' in h, jid
+    d = json.loads(re.search(r'id="ma-andmed">(.*?)</script>', h, re.S).group(1))
+    assert len(d["ametid"]) > 300 and all(a[3] in andmekiht.ASTMED and len(a[0]) == 4 for a in d["ametid"])
+    assert sorted(d["ryhmad"]) == [str(i) for i in range(1, 10)]
+    assert all(set(k["firmad"]) and k["isco"] for k in d["koondajad"])
+    # Ametirühmade tabelis üheksa rida, kõige avatum üleval ja fookuses
+    tab = _jaotis(h, "ametiryhmad")
+    assert tab.count("<tr") == 10 and '<tr class="fookus"><td><b>Kontoritöötajad' in tab
+    # Pealkiri ütleb vastuse; hoiatus „ei ütle, kas töö kaob“ on samas vaates
+    assert re.search(r"Kõige avatumas rühmas, <b>kontoritöötajatel, on tööd sama palju kui 2022\. aastal</b>", h)
+    assert "See ei ütle, kas töö kaob" in tekst(_jaotis(h, "minu-amet"))
+    # Allikad: ILO, Statistikaamet, Eurostat
+    for url in ("PA633", "lfsq_eisn2", "ilo"):
+        assert url in _jaotis(h, "minu-amet"), url
+    # Lugeja jõuab siia avalehelt ja Töö lehe astmete plokist
+    assert 'href="too-minu-amet.html"' in sait["index.html"] and 'href="too-minu-amet.html"' in _jaotis(sait["too.html"], "astmed")
+    assert '<span class="alam-silt">Töö:</span>' in h
+
+
+def test_ametiruhmade_kvartalid_eurostatist():
+    """lae_ee_kvartal: üheksa pearühma, avaldamata kvartal jääb välja, märgend tuleb kaasa."""
+    import lae_ee_kvartal as L
+    isco = {"TOTAL": 0, **{f"OC{i}": i for i in range(1, 10)}}
+    aeg = {"2026-Q1": 0, "2026-Q2": 1}
+    v = {str(i * 2): 10.0 + i for i in range(1, 10)}
+    v.update({str(i * 2 + 1): 20.0 + i for i in range(1, 9)})  # OC9 2026-Q2 puudub
+    d = {"dimension": {"isco08": {"category": {"index": isco}}, "time": {"category": {"index": aeg}}},
+         "value": v, "status": {"2": "u"}}
+    read = L.read_vastusest(d)
+    assert len(read) == 9 and {r[0] for r in read} == {"2026-Q1"} and ("2026-Q1", "OC1", 11.0, "u") in read

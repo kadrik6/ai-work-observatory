@@ -739,6 +739,7 @@ def too(A, vaade, vaated=None):
     import teema_tahvel as tt
     import too_tahvel
     import toovahendid
+    import minu_amet
     D = too_tahvel.Andmed(A)
     vv = [v for v in A["vaited"] if vaite_teema(v) == "too"]
     uks = tt.uksikasjad([
@@ -757,6 +758,8 @@ def too(A, vaade, vaated=None):
         ("astmed", [("astmed", "Avatud ametid")], too_tahvel.sec_astmed(D)),
         ("uksikasjad", [("h-uksikasjad", "Üksikasjad")], uks),
         ("uuritakse", [("uuritakse", "Mida uuritakse"), ("publikatsioonid", "Publikatsioonid"), ("eesti-allikad", "Eesti allikad")], sec_uuritakse),
+        # Minu amet (Kadri 27.11.2026, topelt-teemandi samm 2): ameti valik, ametirühmad, üksikasjad
+        *minu_amet.plokid(A, vaade),
         # Arendajate tööriistad (Kadri 27.11.2026: eraldi lehel ja visualiseeritult, ka käsurea kasutus)
         *toovahendid.plokid(A, vaade),
     ])

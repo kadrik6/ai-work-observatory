@@ -396,7 +396,7 @@ def sec_astmed(D):
 <section class="jaotis" id="astmed" aria-labelledby="h-astmed">
   <header>
     <h2 id="h-astmed"><span class="kys">Kas kõige avatumates ametites (aste 3–4) on tööd vähem?</span> {ee_lause}, ELis kasvas hõive {pr(D.el_k)}%</h2>
-    <p class="alam">Aste näitab, kui suurt osa ameti ülesannetest generatiivne tehisaru puudutab (ILO hinnang).</p>
+    <p class="alam">Aste näitab, kui suurt osa ameti ülesannetest generatiivne tehisaru puudutab (ILO hinnang). <a href="too-minu-amet.html">Vaata oma ametit</a></p>
   </header>
   <figure class="as-fig">{_astmed_joonis(D)}</figure>
   {allikarida([("Eurostat, lfsa_egai2d", EUROSTAT.format("lfsa_egai2d"), "uuendatud 30.10.2026"), (f"ILO {ilo['aasta']}, kokkupuute indeks", ilo["url"], ""),

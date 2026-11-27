@@ -61,6 +61,16 @@
           ]
         },
         {
+          "fail": "too-minu-amet.html",
+          "nimi": "Minu amet",
+          "lead": "Kirjuta allpool oma ameti nimi: näed ILO hinnangut, töötajate arvu, ametirühma hõive muutust ja koondajaid.",
+          "jaotised": [
+            "ma-vali",
+            "ma-ryhmad",
+            "ma-uksikasjad"
+          ]
+        },
+        {
           "fail": "too-toovahendid.html",
           "nimi": "Arendajate tööriistad",
           "lead": "Leht näitab, kuidas muutuvad IT-arendajate töövahendid: agendid, käsurea tööriistad ja arenduskeskkonnad. Kes töötab IT-s, otsib uut tööd või õpib ümber, näeb siit, milliseid tööriistu tööl päriselt kasutatakse.",

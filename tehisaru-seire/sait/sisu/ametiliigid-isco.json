@@ -1,0 +1,20 @@
+{
+ "kirjeldus": "Koondajate ametiliikide (koondajad.json ametiliigid) seos ISCO-08 ametirühmadega, et anda koondatud ametitele tehisarule avatuse hinnang ILO 2025 indeksi järgi. Kood 1–4 numbrit: kõik selle rühma 4-kohalised ametid. Kadri valik A 27.11.2026. Seos on lihtsustus: ametiliik on uudise järgi laiem kui ISCO amet.",
+ "allikas": "Gmyrek jt (2025) Generative AI and Jobs: A Refined Global Index of Occupational Exposure. ILO Working Paper 140, lisa tabel A1 (CC BY 4.0). https://webapps.ilo.org/static/english/intserv/working-papers/wp140/index.html",
+ "tasemed": {
+  "kõrge": "keskmine ülesannete skoor ≥ 0,5 (ILO gradientide 3–4 piir)",
+  "keskmine": "0,4 ≤ skoor < 0,5 (ILO gradient 2 piir)",
+  "madal": "skoor < 0,4"
+ },
+ "seosed": {
+  "IT ja andmed": {"isco": ["25", "35"], "miks": "IKT tippspetsialistid ja IKT tehnikud"},
+  "analüütika": {"isco": ["2120", "2413", "2421", "2511", "2631", "3314"], "miks": "statistikud, finantsanalüütikud, organisatsioonianalüütikud, süsteemianalüütikud, majandusteadlased, statistika abispetsialistid"},
+  "disain ja turundus": {"isco": ["1221", "2163", "2166", "2431", "2432"], "miks": "müügi- ja turundusjuhid, tootedisainerid, graafilised disainerid, reklaami- ja turundusspetsialistid, avalike suhete spetsialistid"},
+  "juhtimine": {"isco": ["1"], "miks": "juhid (ISCO pearühm 1)"},
+  "müük ja klienditeenindus": {"isco": ["42", "51", "52", "3322"], "miks": "klienditeenindajad, isikuteenindajad (sh hotell ja toitlustus), müügitöötajad, müügiesindajad"},
+  "risk ja vastavus": {"isco": ["241", "261"], "miks": "finantsspetsialistid ja juristid"},
+  "tootmise tugiteenused": {"isco": ["72", "74", "83", "432", "93"], "miks": "metalli- ja masinatöölised (remont), elektrikud, juhid ja masinaoperaatorid (transport), laoametnikud, transpordi- ja tootmise lihttöölised"},
+  "muu": {"isco": [], "miks": "liiga lai, hinnangut ei anna"},
+  "teadmata": {"isco": [], "miks": "uudis ameteid ei nimeta"}
+ }
+}
