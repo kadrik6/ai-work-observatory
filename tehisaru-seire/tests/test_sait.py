@@ -2623,3 +2623,18 @@ def test_toovahendite_andmetes_on_iga_rea_juures_link():
         kuud = [k for k, _ in t["read"]]
         assert kuud == sorted(set(kuud)) and kuud[-1] < t["laaditud"][:7], t["pakett"]  # ainult täis kuud
         assert t["url"].startswith("https://")
+
+
+def test_toovahendid_staazi_jargi(sait):
+    """Kadri 27.11.2026: mis tööriistu kasutavad kogenud arendajad võrreldes teistega (Stack Overflow toorandmed)."""
+    import toovahendid
+    K = toovahendid.kogemus()
+    # Kogu valim klapib Stack Overflow' avaldatud arvudega (65,9% n 17 464; Claude Code 65,5% n 12 255; VS Code 70,9%)
+    assert (K[("AISelect", "Kasutab koodiassistenti või koodiagenti", "kõik")]["osa"],
+            K[("AISelect", "Kasutab koodiassistenti või koodiagenti", "kõik")]["valim"]) == (65.9, 17464)
+    assert K[("AICodeAgent", "Claude Code", "kõik")]["osa"] == 65.5 and K[("AICodeAgent", "Claude Code", "kõik")]["valim"] == 12255
+    assert K[("DevIDE", "Visual Studio Code", "kõik")]["osa"] == 70.9
+    osa = sait["too-toovahendid.html"].split('id="kogemus"')[1].split('id="ide"')[0]
+    t = tekst(osa)
+    assert "Staaž on aastad tööl, mitte ametinimetus" in t and "Eestist vastas 35 inimest" in t
+    assert "github.com/StackExchange/Survey" in osa

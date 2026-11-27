@@ -13,7 +13,7 @@ import csv
 from pathlib import Path
 
 from andmekiht import AndmeViga
-from komponendid import allikarida, e, kp, lihtribad, pr
+from komponendid import allikarida, e, kp, lihtribad, pr, tabel
 
 SISU = Path(__file__).resolve().parent / "sisu"
 NPM_API = "https://api.npmjs.org/downloads/range/{alg}:{lopp}/{pakett}"
@@ -271,6 +271,75 @@ def uksikasjad(U, L):
     ]).replace('id="h-uksikasjad"', 'id="h-tv-uksikasjad"').replace('aria-labelledby="h-uksikasjad"', 'aria-labelledby="h-tv-uksikasjad"')
 
 
+RYHMAD = ("1–5", "6–15", "16+")
+JB_2026 = "https://blog.jetbrains.com/research/2026/11/state-of-developer-ecosystem-2026"
+SLASHDATA = "https://www.slashdata.co/blog/ai-developer-tools-roi-experience"
+
+
+def kogemus():
+    """{(küsimus, näitaja, rühm): rida} failist sisu/so2026-kogemus.csv (sait/lae_so_kogemus.py, Stack Overflow toorandmed)."""
+    out = {}
+    for r in _loe("so2026-kogemus.csv"):
+        if not r["url"].startswith("https://"):
+            raise AndmeViga(f"sisu/so2026-kogemus.csv: real {r['naitaja']} puudub link")
+        out[(r["kusimus"], r["naitaja"], r["ryhm"])] = {**r, "osa": float(r["osa"]), "valim": int(r["valim"])}
+    return out
+
+
+def sec_kogemus(K, U):
+    """Kadri 27.11.2026: kas kogenud (senior) arendajad kasutavad teisi tööriistu kui teised?
+    Stack Overflow ei avalda tööriistu staaži järgi; arvutasime toorandmetest (lae_so_kogemus.py). Kogu valimi arvud
+    peavad klappima Stack Overflow' avaldatud arvudega, muidu on arvutus vale."""
+    def o(kus, n, g):
+        r = K.get((kus, n, g))
+        if r is None:
+            raise AndmeViga(f"sisu/so2026-kogemus.csv: puudub {kus} {n} {g}")
+        return r
+    avaldatud = _v(U, "Kasutab koodiassistenti või koodiagenti", SO, "2026")[0]
+    if abs(o("AISelect", "Kasutab koodiassistenti või koodiagenti", "kõik")["osa"] - avaldatud) > 0.05:
+        raise AndmeViga("Toorandmetest arvutatud koodiagentide osa ei klapi Stack Overflow' avaldatud arvuga")
+    pea = "Kasutab koodiassistenti või koodiagenti"
+    a = [o("AISelect", pea, g) for g in RYHMAD]
+    if not (a[0]["osa"] < a[1]["osa"] and a[0]["osa"] < a[2]["osa"]):
+        raise AndmeViga("Kogemuse pealkiri ütleb, et 1–5 aasta staažiga arendajad kasutavad koodiagente kõige vähem")
+    ribad = lihtribad([(f"{g} aastat tööl", r["osa"], f"{pr(r['osa'])}%") for g, r in zip(RYHMAD, a)], 100, 20, fookus=0)
+    def rida(kus, n, nimi=None):
+        return [f"<b>{e(nimi or n)}</b>"] + [f"{pr(o(kus, n, g)['osa'], 0)}%" for g in RYHMAD]
+    agendid = tabel(["Koodiagent", "1–5 a", "6–15 a", "16+ a"],
+                    [rida("AICodeAgent", n, s) for n, s in [("Claude Code", None), ("GitHub Copilot", None), ("OpenAI Codex", None),
+                                                           ("Cursor", None), ("Open Code", "OpenCode")]],
+                    pealdis="Koodiagendi kasutajatest, kes tööriista kasutas, tööstaaži järgi", tel="1:40%")
+    ide = tabel(["Arenduskeskkond", "1–5 a", "6–15 a", "16+ a"],
+                [rida("DevIDE", n, s) for n, s in [("Visual Studio Code", "VS Code"), ("Neovim", None), ("Zed", None),
+                                                   ("Cursor", None), ("Visual Studio", None)]],
+                pealdis="Arenduskeskkonna kasutajad tööstaaži järgi", tel="1:40%")
+    cc = [o("AICodeAgent", "Claude Code", g)["osa"] for g in RYHMAD]
+    nv = [o("DevIDE", "Neovim", g)["osa"] for g in RYHMAD]
+    va = lambda kus, n: "; ".join(f"{g} a: {_tuh(o(kus, n, g)['valim'])}" for g in RYHMAD)  # noqa: E731
+    return f"""
+<section class="jaotis" id="kogemus" aria-labelledby="h-kogemus">
+  <header>
+    <h2 id="h-kogemus"><span class="kys">Kas kogenud arendajad kasutavad teisi tööriistu?</span> <b>Alla kuueaastase staažiga arendajad kasutavad koodiagente kõige vähem</b>: {pr(a[0]["osa"])}%, 6–15 aasta staažiga {pr(a[1]["osa"])}%</h2>
+    <p class="alam">Stack Overflow 2026, kõik vastajad, % igas staažirühmas. Staaž on aastad tööl, mitte ametinimetus (näiteks senior). Toorandmetest arvutanud seire; kõigi vastajate arvud klapivad Stack Overflow' avaldatud arvudega.</p>
+  </header>
+  {ribad}
+  <div class="g12">
+    <section class="pn sp6" aria-label="Koodiagendid staaži järgi">
+      <h3 class="gt">Kogenumad kasutavad sagedamini Claude Code'i: {pr(cc[0], 0)}% vs {pr(min(cc[1:]), 0)}–{pr(max(cc[1:]), 0)}%</h3>
+      <p class="ps">% koodiagendi kasutajatest. Copiloti ja Codexi kasutus staažist peaaegu ei sõltu.</p>
+      {agendid}
+    </section>
+    <section class="pn sp6" aria-label="Arenduskeskkonnad staaži järgi">
+      <h3 class="gt">Algajad kasutavad sagedamini Neovimi: {pr(nv[0], 0)}% vs {pr(nv[2], 0)}% 16+ aasta staažiga</h3>
+      <p class="ps">% arenduskeskkonna küsimusele vastanutest. Neovim on terminalis töötav redaktor.</p>
+      {ide}
+    </section>
+  </div>
+  {allikarida([("Stack Overflow Developer Survey 2026, toorandmed", o("AISelect", pea, "kõik")["url"], "kogutud 23.06.–05.08.2026")])}
+  <p class="allikas">Tehisaru tööriistade küsimusele vastas {va("AISelect", pea)}. Vastajad valivad end ise ja tulemusi ei kaaluta. Eestist vastas 35 inimest, seepärast Eesti jaotust ei näidata. Teised uuringud kogemuse kohta: JetBrainsi 2026. aasta küsitluses peab AI lahendust enda omast paremaks 60% 1–2 aasta ja 47% 16+ aasta kogemusega arendajatest (<a href="{JB_2026}">JetBrains</a>); SlashData Q1 2026 järgi hoiab AI kordusülesannetelt aega kokku 62%-l 16+ aasta ja 42%-l 0–2 aasta kogemusega arendajatest (<a href="{SLASHDATA}">SlashData</a>).</p>
+</section>"""
+
+
 def plokid(A, vaade):
     """Töö vaate plokid alamlehele too-toovahendid.html."""
     from abi import alam_h1
@@ -279,6 +348,7 @@ def plokid(A, vaade):
     return [
         ("tv-agendid", [("agendid", "Agendid")], sec_agendid(U)),
         ("tv-kasurida", [("kasurida", "Käsurida")], sec_kasurida(L)),
+        ("tv-kogemus", [("kogemus", "Staaži järgi")], sec_kogemus(kogemus(), U)),
         ("tv-ide", [("ide", "Arenduskeskkonnad")], sec_ide(U)),
         ("tv-uksikasjad", [("h-tv-uksikasjad", "Üksikasjad")], uksikasjad(U, L)),
     ]
