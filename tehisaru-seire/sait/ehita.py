@@ -171,6 +171,9 @@ def ehita(valjund=VALJUND, A=None):
         if v["id"] == "kas-tosi":  # väidete arv muutub iga päev (uudiste väited): pealkiri arvutatakse andmetest
             from lehed_usaldus import kas_tosi_h1
             v["h1"] = kas_tosi_h1(A)
+        if v["id"] == "avaleht":  # „Täna“ (Kadri 27.11.2026): pealkiri arvutatakse andmetest ja kontrollitakse
+            from lehed_ulevaade import tana_h1
+            v["h1"] = tana_h1(A)
         taida(v["h1"], A)  # iga h1 mall peab olema täidetav, ka ehitamata vaatel
     valjund = Path(valjund)
     valjund.mkdir(parents=True, exist_ok=True)

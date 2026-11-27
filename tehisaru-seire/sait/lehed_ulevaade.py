@@ -341,6 +341,28 @@ def uuenduste_loend(A, vaated, ein, ein25, eeb, ds, kuu, t_ee, t_koht, h_uus, h_
     return f'<ol class="uu-l">{li}</ol>'
 
 
+def tana_h1(A):
+    """Avalehe „Täna“ pealkiri (Kadri 27.11.2026: sait on tänase seisu orienteerumispunkt; topelt-teemandi kontroll:
+    lugeja tahab eristada, mis tööl on juba muutunud ja mis on alles ootus). Väide „töökohtade arvus pole mõju veel näha“
+    kehtib ainult siis, kui hõive muutus avatud ja teistes ametites erineb alla valimivea piiri (sama arvutus nagu Töö
+    lehe plokis #hoive); muidu ehitus peatub ja pealkiri tuleb ümber kirjutada."""
+    from too_tahvel import PIIR_HOIVE_PR
+    eel, uus = andmed.tooalane_hoivatutest(A)
+    K = A["kokkupuude"]
+    A0, A1 = 2022, max(K["aeg"][("EE", "T")])
+    g = K["aeg_uhtlane"][("EE", "T")]
+    mu = lambda osa_: (g[A1][osa_] / g[A0][osa_] - 1) * 100  # noqa: E731
+    if abs(mu("avatud") - mu("muud")) >= PIIR_HOIVE_PR:
+        raise AndmeViga("Avalehe h1 ütleb, et töökohtade arvus pole tehisaru mõju näha, aga hõive avatud ametites erineb "
+                        f"teistest {pr(abs(mu('avatud') - mu('muud')))} p ({A0}–{A1}); kirjuta pealkiri ümber")
+    jj = (A.get("koondamised") or {}).get("juhtumid", [])
+    mainib = sum(r["roll"] in ("otsene", "osaline") for r in jj)
+    eel_l = f", aasta varem {pr(eel['vaartus'])}%" if eel else ""
+    return (f"Tööl kasutab tehisaru **{pr(uus['vaartus'])}% hõivatutest**, töökohtade arvus pole mõju veel näha ¦ "
+            f"See on {uus['aasta']}. aasta number{eel_l}. Hõive tehisarule avatud ametites pole {A0}–{A1} teistest selgelt "
+            f"erinenud. {len(jj)}-st kogutud koondamisteatest {'ükski ei nimeta' if mainib == 0 else ARVSONAD.get(mainib, str(mainib)) + ' nimetab'} tehisaru põhjusena.")
+
+
 def avaleht(A, vaade, vaated):
     """Avaleht on signaalitahvel (Kadri 14.11.2026 valis näidise C): teemade tabel ja ajajoon.
     Varasemad plokid (KPI-plaadid, ELi kaart, töötuse prognoos, ettevõtete trend, sihid, hanked, väited) on teemalehtedel."""
@@ -384,6 +406,9 @@ def avaleht(A, vaade, vaated):
         if v["kuupaev"]:
             lyh = v["vaide"] if len(v["vaide"]) <= 70 else v["vaide"][:67].rsplit(" ", 1)[0] + "…"
             voog.append((v["kuupaev"], "väide", "", f'{e(v["valjaanne"])}: „{e(lyh)}“ ({e(RASKUS[_raskus(v)][0].lower())})', ""))
+    # Koondamisteated (Kadri 27.11.2026, „Täna“): uudistest kogutud ja kontrollitud teated on samas voos
+    for j in (A.get("koondamised") or {}).get("juhtumid", []):
+        voog.append((j["kuupaev"], "koondamine", f'{j["roll"]}\t{j["ettevote"]}\t{koondamise_arv(j)}', f'Koondamine: {e(j["ettevote"])}, {e(koondamise_arv(j)) + " töökohta" if koondamise_arv(j) != "arv pole teada" else "arv pole teada"}; tehisaru: {e(ROLL_NIMI[j["roll"]])}', j.get("url", "")))
     voog.append((UNE_UUENDATUD, "uus number", "uus", f"Eesti töötus {kuu_seesytlev(kuu)} {pr(t_ee)}% (Eurostat)", UNE_URL))
     voog.append((ein["avaldatud"], "uus number", "uus", f"Inimeste tehisaru kasutus {pr(ein['vaartus'])}% (Statistikaamet)", ein["url"]))
     voog.append((eeb["avaldatud"], "uus number", "uus", f"Ettevõtete tehisaru kasutus {pr(eeb['vaartus'])}% (Statistikaamet)", eeb["url"]))
@@ -402,7 +427,8 @@ def avaleht(A, vaade, vaated):
     </div></details>
   </div>
 </div>"""
-    return pea + '<div class="g12">' + sec_tahvel + "</div>" + '<div class="g12">' + sec_aeg + "</div>"
+    # „Täna“ (Kadri 27.11.2026): mis muutus on enne teemade seisu
+    return pea + '<div class="g12">' + sec_aeg + "</div>" + '<div class="g12">' + sec_tahvel + "</div>"
 
 
 # ---------------------------------------------------------------- Töö vaate Eesti rida

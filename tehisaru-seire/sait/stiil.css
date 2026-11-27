@@ -1719,14 +1719,14 @@ html[data-t] h2:has(> .kys) { max-width: 76ch; }
 .tv-tapid i { width: 9px; height: 9px; border-radius: 50%; background: var(--mark-ctx); }
 .tv-tapid i.risk { background: var(--tv-risk); } .tv-tapid i.warn { background: var(--tv-warn); }
 .tv-lg { display: inline-block; vertical-align: middle; margin: 0 2px 2px; width: 10px; height: 10px; border-radius: 50%; }
-.tv-lg.ee { background: var(--signal); } .tv-lg.n { background: var(--signal); } .tv-lg.v { background: var(--tv-risk); }
+.tv-lg.ee { background: var(--signal); } .tv-lg.n { background: var(--signal); } .tv-lg.v { background: var(--tv-risk); } .tv-lg.k { background: var(--ink-2); }
 .tv-lg.eu { width: 2px; height: 14px; border-radius: 0; background: var(--ink); }
 .tv-lg.siht { width: 2.5px; height: 14px; border-radius: 0; background: var(--target); }
 .tv-lg.tel, .tv-lg.tee { width: 9px; height: 9px; border-radius: 1px; transform: rotate(45deg); background: var(--ink); }
 .tv-lg.tee { background: var(--accent); }
 .tv-aeg text { font: 11px var(--font-sans); fill: var(--ink-3); } .tv-aeg .tv-tt { fill: var(--ink); font-weight: 600; font-size: 12px; }
 .tv-tana { stroke: var(--ink); stroke-dasharray: 3 3; }
-.tv-an { fill: var(--signal); } .tv-av { fill: var(--tv-risk); } .tv-ael { fill: var(--ink); } .tv-aee { fill: var(--accent); }
+.tv-an { fill: var(--signal); } .tv-av { fill: var(--tv-risk); } .tv-ak { fill: var(--ink-2); } .tv-ael { fill: var(--ink); } .tv-aee { fill: var(--accent); }
 .tv-loendid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 32px; margin-top: 24px; }
 .tv-loendid h3 { font: 600 15px var(--font-display); margin: 0 0 6px; color: var(--ink); }
 .tv-loendid ul { list-style: none; margin: 0; padding: 0; }

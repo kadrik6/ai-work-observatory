@@ -353,16 +353,26 @@ def test_avaleht_on_signaalitahvel(A, sait):
     """Kadri 14.11.2026 valis avalehe näidise C: teemade tahvel ja ajajoon; telefonis neli veergu ja avanev rida."""
     h = sait["index.html"]
     main = h[h.index("<main"):h.index("</main>")]
-    assert main.index('id="teemad"') < main.index('id="muutus"')
+    # Kadri 27.11.2026 („Täna“, kaks osa): mis muutus on enne teemade seisu
+    assert main.index('id="muutus"') < main.index('id="teemad"')
+    # Kadri 27.11.2026 eelvaade: koondamisteated on loendis üks rida, iga firma üks kord, link Töö koondamistele
+    loend = _jaotis(sait["index.html"], "muutus").split("Mis muutus (")[1].split("Mis tuleb")[0]
+    assert loend.count("Koondamine:") == 0 and loend.count("teatas koondamisest") <= 1
+    if "teatas koondamisest" in loend:
+        rida = tekst(loend.split("teatas koondamisest")[1].split("</li>")[0])
+        assert 'href="too.html#koondamised"' in loend and rida.count("Barona Eesti") <= 1
     assert 'class="plaadid' not in main and 'id="el"' not in main and 'aria-label="Sellel lehel"' not in h
     jao = _jaotis(h, "teemad")
     laud = jao[jao.index('class="tbl tv-laud"'):jao.index('class="tv-tel"')]
     assert re.findall(r'<th scope="col">([^<]+)</th>', laud) == ["Teema", "Praegu", "Kulg", "Muutus", "Koht ELis", "Väited", "Siht ja reeglid", "Värskus"]
     read = re.findall(r'<th scope="row"><a href="([^"#]+)', laud)
-    assert read == ["inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"]
-    assert laud.count("<tr>") == 6 and laud.count('class="tv-riba"') == 2  # ELi koht ainult seal, kus on 27 riigi andmed
-    tel = jao[jao.index('class="tv-tel"'):]
-    assert tel.count('<details class="tv-r">') == 5 and tel.count("<summary>") == 5
+    # Kadri 27.11.2026: tabel on osa A teemad, Töö esimesena; avalik sektor ja hanked on rida „Riik ja Eesti“ tabeli all
+    assert read == ["too.html", "inimesed.html", "ettevotted.html"]
+    assert laud.count("<tr>") == 4 and laud.count('class="tv-riba"') == 2  # ELi koht ainult seal, kus on 27 riigi andmed
+    tel = jao[jao.index('class="tv-tel"'):jao.index('class="ps tv-riik"')]
+    assert tel.count('<details class="tv-r">') == 3 and tel.count("<summary>") == 3
+    riik = jao.split('class="ps tv-riik"')[1].split("</p>")[0]
+    assert 'href="avalik-sektor.html"' in riik and 'href="hanked.html"' in riik and "Kolm teemat" in jao
     assert all(f'href="{f}">Ava teema' in tel for f in read)
     css = (ehita.SIIN / "stiil.css").read_text(encoding="utf-8")
     assert ".tv-laud, .tv-aeg-lai { display: none; }" in css and ".tv-tel { display: block; }" in css
@@ -414,8 +424,9 @@ def test_hangete_aastaid_ei_vorrelda_enne_inimese_kontrolli(sait):
     osa = _jaotis(sait["hanked.html"], "aastad")
     # Kadri 8.11.2026 16:29: pimeülevaatus tehtud, „katseline“ ära; aastaid ikka ei võrrelda enne klassifikaatori uuendust
     assert "katseline" not in osa and "pimesi" in osa and "tulbad2" not in osa
-    rida = _jaotis(sait["index.html"], "teemad").split('href="hanked.html"')[1].split("</tr>")[0]
-    assert "aastaid veel ei võrrelda" in rida and "aastatulbad" not in sait["index.html"]
+    # 27.11.2026: hanked on avalehel rida „Riik ja Eesti“ ainult viimase arvuga, aastaid ei võrrelda
+    rida = _jaotis(sait["index.html"], "teemad").split('class="ps tv-riik"')[1].split("</p>")[0]
+    assert "hanget" in rida and not re.search(r"20\d\d[–-]20\d\d", tekst(rida)) and "aastatulbad" not in sait["index.html"]
     assert 'id="hanked"' not in sait["avalik-sektor.html"]
 
 
@@ -423,11 +434,12 @@ def test_menuus_on_kaheksa_teemat_ja_usaldus_on_oma_teema(sait):
     # Kadri 6.11.2026 21:59: Hanked on oma menüüpunkt. 22:27 (paigutuse ettepanekud 1–3, 10): Usaldus oma menüükoht
     menuu = re.search(r'<ul class="menu">(.*?)</ul>', sait["index.html"], re.S).group(1)
     # Kadri 11.11.2026 (ülesehituse kontroll D): Avalik sektor, Hanked ja Tehisaru määrus on ühe punkti „Riik“ all
-    assert re.findall(r">([^<>]+)</a>", menuu) == ["Avaleht", "Inimesed", "Ettevõtted", "Töö", "Riik", "Uudised", "Usaldus"]
+    # Kadri 27.11.2026 (kaks osa): punkt „Riik“ on „Riik ja Eesti“, aadressid ei muutu
+    assert re.findall(r">([^<>]+)</a>", menuu) == ["Avaleht", "Inimesed", "Ettevõtted", "Töö", "Riik ja Eesti", "Uudised", "Usaldus"]
     # Kadri 12.11.2026 („jah kõik“, ettepanek sp-2026-11-11-1): Riik › Riikide strateegiad
     # Kadri 14.11.2026: Tehisaru määrus, Eesti otsused ja Riikide strateegiad on üks leht „Reeglid ja otsused“
     for f in ("avalik-sektor.html", "hanked.html", "hanked-naited.html", "tehisaru-maarus.html"):
-        assert '<a href="avalik-sektor.html" aria-current="page">Riik</a>' in sait[f], f
+        assert '<a href="avalik-sektor.html" aria-current="page">Riik ja Eesti</a>' in sait[f], f
         alam = re.search(r'<ul class="alamlehed">(.*?)</ul>', sait[f]).group(1)
         assert re.findall(r">([^<>]+)</a>", alam) == ["Avalik sektor", "Hanked", "Hangete näited", "Reeglid ja otsused"], f
         assert alam.count('aria-current="page"') == 1 and f'href="{f}" aria-current="page"' in alam, f
@@ -981,15 +993,16 @@ def test_ai_kuulutused_filtreeritavad_ruhma_ja_maakonna_jargi(sait):
 def test_neli_vaiteparandust_8_11(sait):
     """Sisuloogika ülevaatus 8.11.2026: ELi kohtadel aasta, kasvu võrreldavus, Töö h1 USA kohta, hangete üks number."""
     h1 = lambda f: tekst(re.search(r"<h1>(.*?)</h1>", sait[f], re.S).group(1))  # noqa: E731
-    assert re.search(r"ELis \d+\. ja ettevõtted \d+\. kohal \(20\d\d\)", h1("index.html"))  # ELi kohal on aasta
+    # 27.11.2026 („Täna“): avalehe h1 on töö kohta; ELi kohad (koos aastaga) on Inimeste ja Ettevõtete real
+    assert "hõivatutest" in h1("index.html") and re.search(r"\d+\. 27st · 20\d\d", tekst(_jaotis(sait["index.html"], "teemad")))
     assert "aastaga" not in h1("inimesed.html")
     assert "küsimus võib erineda" in sait["inimesed.html"] and "küsimus võib erineda" in sait["index.html"]
     # 8.11 õhtu: h1 algab Eestist (läbivaatus P4). 26.11.2026 Kadri: „ei selgu, kas vähendab“ jättis mulje, et mõju pole;
     # uus h1 ütleb mõõdetud mõju (tööalane kasutus, IT71 hõivatud) ja jätab lahtiseks ainult koondamiste põhjuse.
     assert h1("too.html").startswith("Tehisaru muudab Eestis juba tööd")
     hanked = _jaotis(sait["hanked.html"], "tahvel")  # 19.11.2026: hangete arv on tahvli esimesel real
-    avaleht = _jaotis(sait["index.html"], "teemad").split('href="hanked.html"')[1].split("</tr>")[0]
-    assert re.search(r'class="tv-arv"[^>]*>(\d+)<', avaleht).group(1) == re.search(r'class="vt-n"[^>]*>umbes (\d+)<', hanked).group(1)
+    avaleht = tekst(_jaotis(sait["index.html"], "teemad").split('class="ps tv-riik"')[1].split("</p>")[0])
+    assert re.search(r"Hanked (\d+) ", avaleht).group(1) == re.search(r'class="vt-n"[^>]*>umbes (\d+)<', hanked).group(1)
     assert "jaan" not in avaleht
 
 
@@ -1002,8 +1015,8 @@ def test_avalehe_tahvel_numbrid_ja_skaalad(A, sait):
     assert "küsimus võib erineda" in rida("inimesed.html") and "ELi siht 80%" in rida("inimesed.html")
     assert "siht 75%" in rida("ettevotted.html") and 'class="tv-siht"' in rida("ettevotted.html")
     assert "kõrgeim töötus" in rida("too.html") and "põhjust kuunumber ei ütle" in rida("too.html")
-    assert "esimene mõõtmine" in rida("avalik-sektor.html") and "100 ruutu = kõik hanked" in rida("hanked.html")
-    for f in ("inimesed.html", "ettevotted.html", "too.html", "avalik-sektor.html", "hanked.html"):
+    # 27.11.2026: avalik sektor ja hanked on tabeli all real „Riik ja Eesti“ (test_avaleht_on_signaalitahvel)
+    for f in ("inimesed.html", "ettevotted.html", "too.html"):
         assert 'class="v-tapp' in rida(f), f
 
 
@@ -1298,7 +1311,8 @@ def test_a1_kujundus_kogu_saidil(sait):
     # hallid asendusid jaheda heleda lehe ja sinakate hallidega (vt test_hele_teema_v9)
     assert "--page: #f5f7fb" in pehme and "--surface-2: #eef1f8" in pehme
     h1 = re.search(r"<h1>(.*?)</h1>", sait["index.html"], re.S).group(1)
-    assert re.fullmatch(r"Tehisaru kasutuses on Eesti inimesed ELis \d+\. ja <b>ettevõtted \d+\. kohal</b> \(20\d\d\)", h1), h1
+    # 27.11.2026 („Täna“): fookusfraas on number tööl kasutajate kohta
+    assert re.fullmatch(r"Tööl kasutab tehisaru <b>\d+,\d% hõivatutest</b>, töökohtade arvus pole mõju veel näha", h1), h1
 
 
 def test_liikumine_l2_aeglane_ja_vahendatud_liikumise_austus():
