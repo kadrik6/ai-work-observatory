@@ -1,14 +1,14 @@
 {
 "kirjeldus": "Tehisaru- ja andmetööde kuulutused CV.ee-s. Kolm rühma: ai_amet = pealkirjas on tehisaru (AI, ML, LLM, tehisintellekt, masinõpe, andmeteadlane jne); andmeamet = pealkirjas on andmed, data, BI, analytics, statistik või andmebaas; ai_oskus = muu amet, mille kuulutuse tekst mainib tehisaru või tehisaru tööriistu; ai_firma_noue = muu amet, kus tehisaru on ainult tööandja ühises lauses (sama lõik vähemalt kolmes selle firma kuulutuses, nt firma üldnõue). Rühmad ei kattu. Märksõnapõhine liigitus, mitte käsitsi kontrollitud.",
 "allikas": "CV.ee avalik otsing (https://www.cv.ee/et/search), kõik kuulutused",
-"uuendatud": "2026-11-27T12:29+02:00",
-"kuulutusi_kokku": 3416,
-"portaali_kokku": 3416,
+"uuendatud": "2026-11-28T07:28+02:00",
+"kuulutusi_kokku": 3347,
+"portaali_kokku": 3347,
 "uus_tahendab": "kuulutus, mida eelmisel kontrollil polnud",
 "ruhmad": {
 "ai_amet": {
-"arv": 20,
-"uusi": 11,
+"arv": 19,
+"uusi": 0,
 "tooandjad": [
 {
 "nimi": "Bolt",
@@ -39,10 +39,6 @@
 "arv": 1
 },
 {
-"nimi": "ESTO AS",
-"arv": 1
-},
-{
 "nimi": "Tervise ja Heaolu Infosüsteemide Keskus",
 "arv": 1
 },
@@ -70,7 +66,7 @@
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 14
+"arv": 13
 },
 {
 "nimi": "Eesti (täpsustamata)",
@@ -83,8 +79,8 @@
 ]
 },
 "andmeamet": {
-"arv": 34,
-"uusi": 22,
+"arv": 35,
+"uusi": 3,
 "tooandjad": [
 {
 "nimi": "Bolt",
@@ -92,7 +88,7 @@
 },
 {
 "nimi": "Luminor",
-"arv": 3
+"arv": 4
 },
 {
 "nimi": "LHV Bank AS",
@@ -113,6 +109,14 @@
 {
 "nimi": "Tartu Ülikool",
 "arv": 2
+},
+{
+"nimi": "Riverty",
+"arv": 1
+},
+{
+"nimi": "Tallinna Keskkonna- ja Kommunaalamet",
+"arv": 1
 },
 {
 "nimi": "Proact Estonia AS",
@@ -137,20 +141,12 @@
 {
 "nimi": "ROBERT BOSCH OÜ",
 "arv": 1
-},
-{
-"nimi": "Kaitsepolitseiamet",
-"arv": 1
-},
-{
-"nimi": "CV-Online värbamisteenused",
-"arv": 1
 }
 ],
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 29
+"arv": 30
 },
 {
 "nimi": "Tartumaa",
@@ -163,16 +159,16 @@
 ]
 },
 "ai_oskus": {
-"arv": 74,
-"uusi": 54,
+"arv": 70,
+"uusi": 1,
 "tooandjad": [
 {
 "nimi": "Bolt",
-"arv": 22
+"arv": 20
 },
 {
 "nimi": "Töötukassa vahendatud pakkumised",
-"arv": 13
+"arv": 12
 },
 {
 "nimi": "Hurtigruten Estonia OÜ",
@@ -195,10 +191,6 @@
 "arv": 2
 },
 {
-"nimi": "ESTO AS",
-"arv": 2
-},
-{
 "nimi": "Playtech Estonia OÜ",
 "arv": 2
 },
@@ -211,6 +203,14 @@
 "arv": 2
 },
 {
+"nimi": "AS Mapon",
+"arv": 1
+},
+{
+"nimi": "Infomedia OÜ",
+"arv": 1
+},
+{
 "nimi": "pawaTech OÜ",
 "arv": 1
 },
@@ -221,16 +221,12 @@
 {
 "nimi": "Agentuur La Ecwador OÜ",
 "arv": 1
-},
-{
-"nimi": "AS Terminal",
-"arv": 1
 }
 ],
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 63
+"arv": 59
 },
 {
 "nimi": "Tartumaa",
@@ -263,23 +259,67 @@
 ]
 },
 "ai_firma_noue": {
-"arv": 43,
-"uusi": 9,
+"arv": 44,
+"uusi": 1,
 "tooandjad": [
 {
 "nimi": "Bolt",
-"arv": 43
+"arv": 44
 }
 ],
 "maakonnad": [
 {
 "nimi": "Harjumaa",
-"arv": 43
+"arv": 44
 }
 ]
 }
 },
 "kuulutused": [
+{
+"id": 1686251,
+"ruhm": "andmeamet",
+"pealkiri": "Data Steward",
+"tooandja": "Luminor",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-27",
+"url": "https://www.cv.ee/et/vacancy/1686251",
+"uus": true,
+"valdkonnad": [
+"Infotehnoloogia",
+"Pangandus / kindlustus"
+]
+},
+{
+"id": 1686222,
+"ruhm": "andmeamet",
+"pealkiri": "Senior Data Engineer (Risk Data Service) (m/f/d)",
+"tooandja": "Riverty",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-27",
+"url": "https://www.cv.ee/et/vacancy/1686222",
+"uus": true,
+"valdkonnad": [
+"Infotehnoloogia"
+]
+},
+{
+"id": 1686202,
+"ruhm": "andmeamet",
+"pealkiri": "Andmehalduse arendusjuht",
+"tooandja": "Tallinna Keskkonna- ja Kommunaalamet",
+"maakond": "Harjumaa",
+"kaugtoo": "ON_SITE",
+"avaldatud": "2026-11-27",
+"url": "https://www.cv.ee/et/vacancy/1686202",
+"uus": true,
+"valdkonnad": [
+"Avalik sektor",
+"Infotehnoloogia"
+]
+},
 {
 "id": 1686076,
 "ruhm": "andmeamet",
@@ -289,7 +329,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-27",
 "url": "https://www.cv.ee/et/vacancy/1686076",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine",
 "Infotehnoloogia",
@@ -305,7 +345,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1685680",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine",
 "Infotehnoloogia",
@@ -337,7 +377,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-25",
 "url": "https://www.cv.ee/et/vacancy/1685115",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -351,7 +391,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1684851",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia",
 "Tehnika"
@@ -366,7 +406,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1684800",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Haridus / teadus",
 "Infotehnoloogia"
@@ -423,7 +463,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-23",
 "url": "https://www.cv.ee/et/vacancy/1684126",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Avalik sektor",
 "Infotehnoloogia",
@@ -439,7 +479,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-23",
 "url": "https://www.cv.ee/et/vacancy/1682235",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Tehnika"
 ]
@@ -453,7 +493,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-20",
 "url": "https://www.cv.ee/et/vacancy/1683695",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Avalik sektor",
 "Finants / raamatupidamine",
@@ -469,7 +509,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-19",
 "url": "https://www.cv.ee/et/vacancy/1683250",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine",
 "Pangandus / kindlustus",
@@ -485,7 +525,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-19",
 "url": "https://www.cv.ee/et/vacancy/1683143",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine",
 "Infotehnoloogia",
@@ -501,7 +541,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-18",
 "url": "https://www.cv.ee/et/vacancy/1682739",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Avalik sektor",
 "Haridus / teadus",
@@ -517,7 +557,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-18",
 "url": "https://www.cv.ee/et/vacancy/1682738",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Avalik sektor",
 "Haridus / teadus",
@@ -533,7 +573,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-17",
 "url": "https://www.cv.ee/et/vacancy/1682502",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine",
 "Muu",
@@ -549,7 +589,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-17",
 "url": "https://www.cv.ee/et/vacancy/1682194",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia",
 "Pangandus / kindlustus",
@@ -565,7 +605,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-13",
 "url": "https://www.cv.ee/et/vacancy/1681454",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia",
 "Pangandus / kindlustus"
@@ -580,7 +620,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-13",
 "url": "https://www.cv.ee/et/vacancy/1681340",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -594,7 +634,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-13",
 "url": "https://www.cv.ee/et/vacancy/1681339",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -608,7 +648,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-13",
 "url": "https://www.cv.ee/et/vacancy/1681338",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -622,25 +662,9 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-13",
 "url": "https://www.cv.ee/et/vacancy/1681337",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
-]
-},
-{
-"id": 1680763,
-"ruhm": "andmeamet",
-"pealkiri": "Andmeplatvormi insener",
-"tooandja": "Kaitsepolitseiamet",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-11-12",
-"url": "https://www.cv.ee/et/vacancy/1680763",
-"uus": true,
-"valdkonnad": [
-"Avalik sektor",
-"Infotehnoloogia",
-"Korrakaitse / päästeteenistus / julgeolek"
 ]
 },
 {
@@ -652,7 +676,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-10",
 "url": "https://www.cv.ee/et/vacancy/1679520",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine"
 ]
@@ -666,7 +690,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-10",
 "url": "https://www.cv.ee/et/vacancy/1679162",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine",
 "Infotehnoloogia",
@@ -699,22 +723,6 @@
 "uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
-]
-},
-{
-"id": 1678185,
-"ruhm": "andmeamet",
-"pealkiri": "Tooteandmete ja e-poe spetsialist",
-"tooandja": "CV-Online värbamisteenused",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-06",
-"url": "https://www.cv.ee/et/vacancy/1678185",
-"uus": false,
-"valdkonnad": [
-"Administratiivtöö",
-"Infotehnoloogia",
-"Kaubandus"
 ]
 },
 {
@@ -789,6 +797,49 @@
 ]
 },
 {
+"id": 1686420,
+"ruhm": "ai_oskus",
+"pealkiri": "Administraator",
+"tooandja": "Töötukassa vahendatud pakkumised",
+"maakond": "Harjumaa",
+"kaugtoo": "ON_SITE",
+"avaldatud": "2026-11-28",
+"url": "https://www.cv.ee/et/vacancy/1686420",
+"uus": true,
+"valdkonnad": [
+"Teenindus"
+]
+},
+{
+"id": 1675840,
+"ruhm": "ai_oskus",
+"pealkiri": "Senior Product Designer",
+"tooandja": "AS Mapon",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-27",
+"url": "https://www.cv.ee/et/vacancy/1675840",
+"uus": false,
+"valdkonnad": [
+"Infotehnoloogia",
+"Logistika / transport"
+]
+},
+{
+"id": 1675713,
+"ruhm": "ai_oskus",
+"pealkiri": "IT Support Specialist",
+"tooandja": "Infomedia OÜ",
+"maakond": "Harjumaa",
+"kaugtoo": "HYBRID",
+"avaldatud": "2026-11-27",
+"url": "https://www.cv.ee/et/vacancy/1675713",
+"uus": false,
+"valdkonnad": [
+"Infotehnoloogia"
+]
+},
+{
 "id": 1678170,
 "ruhm": "ai_oskus",
 "pealkiri": "Network Engineer",
@@ -811,7 +862,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-27",
 "url": "https://www.cv.ee/et/vacancy/1685971",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -825,7 +876,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-27",
 "url": "https://www.cv.ee/et/vacancy/1685941",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -839,7 +890,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1685840",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Administratiivtöö",
 "Pangandus / kindlustus",
@@ -855,7 +906,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1683210",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine",
 "Juhtimine",
@@ -871,7 +922,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1683205",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine",
 "Pangandus / kindlustus"
@@ -886,7 +937,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1680792",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Juhtimine",
 "Müük",
@@ -902,7 +953,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1685607",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -916,7 +967,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1685632",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Haridus / teadus",
 "Infotehnoloogia",
@@ -932,7 +983,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1685600",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Elektroonika / telekommunikatsioon",
 "Infotehnoloogia",
@@ -948,7 +999,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1683006",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Juhtimine",
 "Õigusabi / juura"
@@ -963,7 +1014,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1685573",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Ehitus / kinnisvara",
 "Energeetika / elekter",
@@ -979,7 +1030,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-25",
 "url": "https://www.cv.ee/et/vacancy/1685320",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Teenindus"
 ]
@@ -993,7 +1044,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-25",
 "url": "https://www.cv.ee/et/vacancy/1682809",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Administratiivtöö",
 "Logistika / transport",
@@ -1009,7 +1060,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-25",
 "url": "https://www.cv.ee/et/vacancy/1685174",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1023,7 +1074,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-25",
 "url": "https://www.cv.ee/et/vacancy/1682731",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Elektroonika / telekommunikatsioon",
 "Logistika / transport",
@@ -1055,7 +1106,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1684922",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1069,7 +1120,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1684917",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine"
 ]
@@ -1083,7 +1134,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1684828",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1097,7 +1148,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1684708",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1111,7 +1162,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1683922",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Administratiivtöö",
 "Kultuur / kunst / meelelahutus / sport"
@@ -1126,24 +1177,9 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1679380",
-"uus": true,
-"valdkonnad": [
-"Õigusabi / juura"
-]
-},
-{
-"id": 1674078,
-"ruhm": "ai_oskus",
-"pealkiri": "Product Owner (Credit Line)",
-"tooandja": "ESTO AS",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-24",
-"url": "https://www.cv.ee/et/vacancy/1674078",
 "uus": false,
 "valdkonnad": [
-"Finants / raamatupidamine",
-"Pangandus / kindlustus"
+"Õigusabi / juura"
 ]
 },
 {
@@ -1155,7 +1191,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1682242",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1169,7 +1205,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1682240",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1183,7 +1219,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1684451",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia",
 "Muu"
@@ -1198,7 +1234,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1684444",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Elektroonika / telekommunikatsioon",
 "Infotehnoloogia",
@@ -1214,7 +1250,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-23",
 "url": "https://www.cv.ee/et/vacancy/1684261",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia",
 "Kultuur / kunst / meelelahutus / sport"
@@ -1229,7 +1265,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-23",
 "url": "https://www.cv.ee/et/vacancy/1684118",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1259,7 +1295,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-21",
 "url": "https://www.cv.ee/et/vacancy/1683877",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Turundus / reklaam"
 ]
@@ -1273,24 +1309,9 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-21",
 "url": "https://www.cv.ee/et/vacancy/1683855",
-"uus": true,
-"valdkonnad": [
-"Haridus / teadus"
-]
-},
-{
-"id": 1675840,
-"ruhm": "ai_oskus",
-"pealkiri": "Senior Product Designer",
-"tooandja": "AS Mapon",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-20",
-"url": "https://www.cv.ee/et/vacancy/1675840",
 "uus": false,
 "valdkonnad": [
-"Infotehnoloogia",
-"Logistika / transport"
+"Haridus / teadus"
 ]
 },
 {
@@ -1302,7 +1323,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-20",
 "url": "https://www.cv.ee/et/vacancy/1683750",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1316,7 +1337,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-20",
 "url": "https://www.cv.ee/et/vacancy/1683654",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1330,20 +1351,6 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-20",
 "url": "https://www.cv.ee/et/vacancy/1683615",
-"uus": true,
-"valdkonnad": [
-"Infotehnoloogia"
-]
-},
-{
-"id": 1675713,
-"ruhm": "ai_oskus",
-"pealkiri": "IT Support Specialist",
-"tooandja": "Infomedia OÜ",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-20",
-"url": "https://www.cv.ee/et/vacancy/1675713",
 "uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
@@ -1355,10 +1362,10 @@
 "pealkiri": "Haldusjuht",
 "tooandja": "Töötukassa vahendatud pakkumised",
 "maakond": "Läänemaa",
-"kaugtoo": "HYBRID",
+"kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-20",
 "url": "https://www.cv.ee/et/vacancy/1683333",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Juhtimine"
 ]
@@ -1372,7 +1379,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-19",
 "url": "https://www.cv.ee/et/vacancy/1683209",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1386,7 +1393,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-19",
 "url": "https://www.cv.ee/et/vacancy/1683148",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1400,7 +1407,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-18",
 "url": "https://www.cv.ee/et/vacancy/1682671",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Administratiivtöö",
 "Logistika / transport",
@@ -1416,7 +1423,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-18",
 "url": "https://www.cv.ee/et/vacancy/1682640",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1430,7 +1437,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-18",
 "url": "https://www.cv.ee/et/vacancy/1682576",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Teenindus"
 ]
@@ -1444,7 +1451,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-17",
 "url": "https://www.cv.ee/et/vacancy/1682381",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1458,7 +1465,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-17",
 "url": "https://www.cv.ee/et/vacancy/1682284",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1472,7 +1479,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-14",
 "url": "https://www.cv.ee/et/vacancy/1681557",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Turundus / reklaam"
 ]
@@ -1486,7 +1493,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-13",
 "url": "https://www.cv.ee/et/vacancy/1681475",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1500,7 +1507,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-13",
 "url": "https://www.cv.ee/et/vacancy/1681335",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Turism / hotellindus / toitlustus"
 ]
@@ -1514,7 +1521,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-13",
 "url": "https://www.cv.ee/et/vacancy/1681036",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Administratiivtöö"
 ]
@@ -1528,7 +1535,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-13",
 "url": "https://www.cv.ee/et/vacancy/1680929",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Teenindus"
 ]
@@ -1542,7 +1549,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-12",
 "url": "https://www.cv.ee/et/vacancy/1680510",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Turundus / reklaam"
 ]
@@ -1556,7 +1563,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-12",
 "url": "https://www.cv.ee/et/vacancy/1680463",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Haridus / teadus"
 ]
@@ -1570,7 +1577,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-12",
 "url": "https://www.cv.ee/et/vacancy/1680400",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1584,7 +1591,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-11",
 "url": "https://www.cv.ee/et/vacancy/1680162",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1598,7 +1605,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-11",
 "url": "https://www.cv.ee/et/vacancy/1680152",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Elektroonika / telekommunikatsioon",
 "Infotehnoloogia"
@@ -1613,7 +1620,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-11",
 "url": "https://www.cv.ee/et/vacancy/1679822",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia",
 "Kultuur / kunst / meelelahutus / sport"
@@ -1628,7 +1635,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-10",
 "url": "https://www.cv.ee/et/vacancy/1679511",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine",
 "Juhtimine"
@@ -1643,7 +1650,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-10",
 "url": "https://www.cv.ee/et/vacancy/1679129",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1685,20 +1692,6 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-04",
 "url": "https://www.cv.ee/et/vacancy/1677317",
-"uus": false,
-"valdkonnad": [
-"Infotehnoloogia"
-]
-},
-{
-"id": 1677203,
-"ruhm": "ai_oskus",
-"pealkiri": "Head of Information Security",
-"tooandja": "Bolt",
-"maakond": "Harjumaa",
-"kaugtoo": "FULLY_REMOTE",
-"avaldatud": "2026-11-04",
-"url": "https://www.cv.ee/et/vacancy/1677203",
 "uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
@@ -1785,51 +1778,9 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-02",
 "url": "https://www.cv.ee/et/vacancy/1676191",
-"uus": true,
-"valdkonnad": [
-"Infotehnoloogia"
-]
-},
-{
-"id": 1674978,
-"ruhm": "ai_oskus",
-"pealkiri": "IT kasutajatoe spetsialist",
-"tooandja": "Töötukassa vahendatud pakkumised",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-10-29",
-"url": "https://www.cv.ee/et/vacancy/1674978",
 "uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
-]
-},
-{
-"id": 1674883,
-"ruhm": "ai_oskus",
-"pealkiri": "Tootejuht",
-"tooandja": "Töötukassa vahendatud pakkumised",
-"maakond": "Harjumaa",
-"kaugtoo": "ON_SITE",
-"avaldatud": "2026-10-29",
-"url": "https://www.cv.ee/et/vacancy/1674883",
-"uus": false,
-"valdkonnad": [
-"Infotehnoloogia"
-]
-},
-{
-"id": 1668078,
-"ruhm": "ai_oskus",
-"pealkiri": "Senior Salesforce Developer, Bolt Food",
-"tooandja": "Bolt",
-"maakond": "Harjumaa",
-"kaugtoo": "FULLY_REMOTE",
-"avaldatud": "2026-10-12",
-"url": "https://www.cv.ee/et/vacancy/1668078",
-"uus": false,
-"valdkonnad": [
-"Logistika / transport"
 ]
 },
 {
@@ -1861,6 +1812,20 @@
 ]
 },
 {
+"id": 1686308,
+"ruhm": "ai_firma_noue",
+"pealkiri": "Engineering Manager, Wallet",
+"tooandja": "Bolt",
+"maakond": "Harjumaa",
+"kaugtoo": "ON_SITE",
+"avaldatud": "2026-11-27",
+"url": "https://www.cv.ee/et/vacancy/1686308",
+"uus": true,
+"valdkonnad": [
+"Infotehnoloogia"
+]
+},
+{
 "id": 1685312,
 "ruhm": "ai_firma_noue",
 "pealkiri": "Senior Cloud Security Engineer",
@@ -1869,7 +1834,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-25",
 "url": "https://www.cv.ee/et/vacancy/1685312",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1883,7 +1848,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1684807",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1897,7 +1862,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-21",
 "url": "https://www.cv.ee/et/vacancy/1683801",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Juhtimine"
 ]
@@ -1911,7 +1876,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-18",
 "url": "https://www.cv.ee/et/vacancy/1682684",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1925,7 +1890,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-16",
 "url": "https://www.cv.ee/et/vacancy/1681769",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine"
 ]
@@ -1939,7 +1904,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-14",
 "url": "https://www.cv.ee/et/vacancy/1681486",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1953,7 +1918,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-13",
 "url": "https://www.cv.ee/et/vacancy/1681294",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Finants / raamatupidamine"
 ]
@@ -1967,7 +1932,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-12",
 "url": "https://www.cv.ee/et/vacancy/1680541",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -1981,7 +1946,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-11",
 "url": "https://www.cv.ee/et/vacancy/1680302",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -2485,7 +2450,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1685734",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -2499,7 +2464,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-26",
 "url": "https://www.cv.ee/et/vacancy/1685621",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -2513,7 +2478,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-25",
 "url": "https://www.cv.ee/et/vacancy/1682752",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Juhtimine",
 "Müük",
@@ -2529,7 +2494,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-25",
 "url": "https://www.cv.ee/et/vacancy/1685068",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Tehnika"
 ]
@@ -2557,7 +2522,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1679475",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -2571,7 +2536,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1684680",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -2593,20 +2558,6 @@
 ]
 },
 {
-"id": 1674075,
-"ruhm": "ai_amet",
-"pealkiri": "Lifecycle Marketing Manager (AI-native)",
-"tooandja": "ESTO AS",
-"maakond": "Harjumaa",
-"kaugtoo": "HYBRID",
-"avaldatud": "2026-11-24",
-"url": "https://www.cv.ee/et/vacancy/1674075",
-"uus": false,
-"valdkonnad": [
-"Turundus / reklaam"
-]
-},
-{
 "id": 1679285,
 "ruhm": "ai_amet",
 "pealkiri": "AI tarkvaraarendaja",
@@ -2615,7 +2566,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-24",
 "url": "https://www.cv.ee/et/vacancy/1679285",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -2629,7 +2580,7 @@
 "kaugtoo": "HYBRID",
 "avaldatud": "2026-11-19",
 "url": "https://www.cv.ee/et/vacancy/1683188",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia",
 "Juhtimine",
@@ -2645,7 +2596,7 @@
 "kaugtoo": "FULLY_REMOTE",
 "avaldatud": "2026-11-11",
 "url": "https://www.cv.ee/et/vacancy/1680176",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia"
 ]
@@ -2659,7 +2610,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-11-11",
 "url": "https://www.cv.ee/et/vacancy/1680054",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Infotehnoloogia",
 "Tehnika"
@@ -2736,7 +2687,7 @@
 "kaugtoo": "ON_SITE",
 "avaldatud": "2026-10-16",
 "url": "https://www.cv.ee/et/vacancy/1670066",
-"uus": true,
+"uus": false,
 "valdkonnad": [
 "Avalik sektor",
 "Infotehnoloogia"
@@ -2789,22 +2740,30 @@
 "andmeamet": 34,
 "ai_oskus": 74,
 "ai_firma_noue": 43
+},
+{
+"kuupaev": "2026-11-28",
+"kuulutusi_kokku": 3347,
+"ai_amet": 19,
+"andmeamet": 35,
+"ai_oskus": 70,
+"ai_firma_noue": 44
 }
 ],
-"valdkonniti_kuupaev": "2026-11-27",
+"valdkonniti_kuupaev": "2026-11-28",
 "valdkonniti_markus": "CV.ee valdkonnad (sama nimestik mis toopakkumised.json ametivaldkond). kokku = kõik CV.ee kuulutused selles valdkonnas samal päeval; rühmade arvud on sama valdkonna kuulutused rühmas. Mitme valdkonnaga kuulutus on iga valdkonna all.",
 "valdkonniti": [
 {
 "nimi": "Teenindus",
-"kokku": 715,
+"kokku": 689,
 "ai_amet": 0,
 "andmeamet": 0,
-"ai_oskus": 5,
+"ai_oskus": 6,
 "ai_firma_noue": 0
 },
 {
 "nimi": "Tootmine / töötlemine",
-"kokku": 506,
+"kokku": 499,
 "ai_amet": 0,
 "andmeamet": 0,
 "ai_oskus": 3,
@@ -2812,7 +2771,7 @@
 },
 {
 "nimi": "Haridus / teadus",
-"kokku": 373,
+"kokku": 366,
 "ai_amet": 1,
 "andmeamet": 3,
 "ai_oskus": 3,
@@ -2820,31 +2779,31 @@
 },
 {
 "nimi": "Tervishoid ja sotsiaaltöö",
-"kokku": 311,
+"kokku": 306,
 "ai_amet": 0,
 "andmeamet": 0,
 "ai_oskus": 0,
 "ai_firma_noue": 0
 },
 {
+"nimi": "Logistika / transport",
+"kokku": 298,
+"ai_amet": 0,
+"andmeamet": 0,
+"ai_oskus": 5,
+"ai_firma_noue": 5
+},
+{
 "nimi": "Ehitus / kinnisvara",
-"kokku": 305,
+"kokku": 297,
 "ai_amet": 0,
 "andmeamet": 0,
 "ai_oskus": 1,
 "ai_firma_noue": 0
 },
 {
-"nimi": "Logistika / transport",
-"kokku": 303,
-"ai_amet": 0,
-"andmeamet": 0,
-"ai_oskus": 6,
-"ai_firma_noue": 5
-},
-{
 "nimi": "Müük",
-"kokku": 237,
+"kokku": 236,
 "ai_amet": 1,
 "andmeamet": 0,
 "ai_oskus": 1,
@@ -2852,7 +2811,7 @@
 },
 {
 "nimi": "Tehnika",
-"kokku": 231,
+"kokku": 229,
 "ai_amet": 5,
 "andmeamet": 4,
 "ai_oskus": 2,
@@ -2862,45 +2821,45 @@
 "nimi": "Infotehnoloogia",
 "kokku": 226,
 "ai_amet": 17,
-"andmeamet": 29,
-"ai_oskus": 43,
-"ai_firma_noue": 21
-},
-{
-"nimi": "Turism / hotellindus / toitlustus",
-"kokku": 218,
-"ai_amet": 0,
-"andmeamet": 0,
-"ai_oskus": 1,
-"ai_firma_noue": 0
+"andmeamet": 30,
+"ai_oskus": 40,
+"ai_firma_noue": 22
 },
 {
 "nimi": "Avalik sektor",
-"kokku": 216,
+"kokku": 221,
 "ai_amet": 1,
 "andmeamet": 5,
 "ai_oskus": 0,
 "ai_firma_noue": 0
 },
 {
-"nimi": "Kaubandus",
-"kokku": 198,
+"nimi": "Turism / hotellindus / toitlustus",
+"kokku": 216,
 "ai_amet": 0,
-"andmeamet": 1,
+"andmeamet": 0,
+"ai_oskus": 1,
+"ai_firma_noue": 0
+},
+{
+"nimi": "Kaubandus",
+"kokku": 195,
+"ai_amet": 0,
+"andmeamet": 0,
 "ai_oskus": 1,
 "ai_firma_noue": 0
 },
 {
 "nimi": "Korrakaitse / päästeteenistus / julgeolek",
-"kokku": 177,
+"kokku": 171,
 "ai_amet": 0,
-"andmeamet": 1,
+"andmeamet": 0,
 "ai_oskus": 0,
 "ai_firma_noue": 0
 },
 {
 "nimi": "Juhtimine",
-"kokku": 131,
+"kokku": 137,
 "ai_amet": 3,
 "andmeamet": 1,
 "ai_oskus": 5,
@@ -2908,35 +2867,27 @@
 },
 {
 "nimi": "Turundus / reklaam",
-"kokku": 97,
-"ai_amet": 2,
+"kokku": 95,
+"ai_amet": 1,
 "andmeamet": 0,
 "ai_oskus": 6,
 "ai_firma_noue": 4
 },
 {
 "nimi": "Administratiivtöö",
-"kokku": 84,
+"kokku": 87,
 "ai_amet": 0,
-"andmeamet": 1,
+"andmeamet": 0,
 "ai_oskus": 6,
 "ai_firma_noue": 0
 },
 {
 "nimi": "Finants / raamatupidamine",
-"kokku": 75,
+"kokku": 78,
 "ai_amet": 0,
 "andmeamet": 8,
-"ai_oskus": 6,
+"ai_oskus": 5,
 "ai_firma_noue": 5
-},
-{
-"nimi": "Energeetika / elekter",
-"kokku": 75,
-"ai_amet": 0,
-"andmeamet": 0,
-"ai_oskus": 1,
-"ai_firma_noue": 0
 },
 {
 "nimi": "Põllumajandus / keskkonnakaitse",
@@ -2947,16 +2898,24 @@
 "ai_firma_noue": 0
 },
 {
+"nimi": "Energeetika / elekter",
+"kokku": 72,
+"ai_amet": 0,
+"andmeamet": 0,
+"ai_oskus": 1,
+"ai_firma_noue": 0
+},
+{
 "nimi": "Pangandus / kindlustus",
-"kokku": 61,
+"kokku": 62,
 "ai_amet": 4,
-"andmeamet": 10,
-"ai_oskus": 5,
+"andmeamet": 11,
+"ai_oskus": 4,
 "ai_firma_noue": 0
 },
 {
 "nimi": "Elektroonika / telekommunikatsioon",
-"kokku": 50,
+"kokku": 47,
 "ai_amet": 0,
 "andmeamet": 1,
 "ai_oskus": 5,
@@ -2964,7 +2923,7 @@
 },
 {
 "nimi": "Õigusabi / juura",
-"kokku": 43,
+"kokku": 41,
 "ai_amet": 0,
 "andmeamet": 1,
 "ai_oskus": 2,
@@ -2972,19 +2931,19 @@
 },
 {
 "nimi": "Kultuur / kunst / meelelahutus / sport",
-"kokku": 29,
+"kokku": 27,
 "ai_amet": 0,
 "andmeamet": 0,
 "ai_oskus": 3,
 "ai_firma_noue": 0
 },
 {
-"nimi": "Meedia / avalikud suhted",
-"kokku": 16,
+"nimi": "Personalijuhtimine",
+"kokku": 15,
 "ai_amet": 0,
 "andmeamet": 0,
 "ai_oskus": 1,
-"ai_firma_noue": 0
+"ai_firma_noue": 1
 },
 {
 "nimi": "Muu",
@@ -2995,19 +2954,11 @@
 "ai_firma_noue": 0
 },
 {
-"nimi": "Personalijuhtimine",
+"nimi": "Meedia / avalikud suhted",
 "kokku": 14,
 "ai_amet": 0,
 "andmeamet": 0,
 "ai_oskus": 1,
-"ai_firma_noue": 1
-},
-{
-"nimi": "Farmaatsia",
-"kokku": 9,
-"ai_amet": 0,
-"andmeamet": 0,
-"ai_oskus": 0,
 "ai_firma_noue": 0
 },
 {
@@ -3019,8 +2970,8 @@
 "ai_firma_noue": 0
 },
 {
-"nimi": "Metsandus / puidutöötlemine",
-"kokku": 4,
+"nimi": "Farmaatsia",
+"kokku": 9,
 "ai_amet": 0,
 "andmeamet": 0,
 "ai_oskus": 0,
@@ -3028,6 +2979,14 @@
 },
 {
 "nimi": "Tööampsud / hooajaline",
+"kokku": 5,
+"ai_amet": 0,
+"andmeamet": 0,
+"ai_oskus": 0,
+"ai_firma_noue": 0
+},
+{
+"nimi": "Metsandus / puidutöötlemine",
 "kokku": 4,
 "ai_amet": 0,
 "andmeamet": 0,

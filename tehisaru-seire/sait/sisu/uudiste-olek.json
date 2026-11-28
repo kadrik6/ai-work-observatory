@@ -1,25 +1,25 @@
 {
-  "viimane_kontroll": "2026-11-27T18:15:00+02:00",
+  "viimane_kontroll": "2026-11-28T07:50:00+02:00",
   "allikad": [
     {
       "nimi": "ERR uudised (RSS)",
       "ok": true,
-      "markus": "27.11 hommik: uusi tehisaru-, andme- ega koondamislugusid pole"
+      "markus": "28.11 hommik: valimisteenistuse juhi intervjuu (m-hääletus, jätkulugu)"
     },
     {
       "nimi": "ERR News (RSS)",
       "ok": true,
-      "markus": "27.11 hommik: uusi asjakohaseid lugusid pole"
+      "markus": "28.11 hommik: uusi asjakohaseid lugusid pole"
     },
     {
       "nimi": "Uudisteotsing (Eesti)",
       "ok": true,
-      "markus": "27.11: Eesti Energia ja Pipedrive'i jätkulood, IT-firmade pankrotid, Teearu arvamus; uudiste filtriga otsing tühi, kordasin veebiotsinguga"
+      "markus": "28.11: Lidli töötajate juturobot, Signal (Delfi); koondajate jätkulood olid olemas"
     },
     {
       "nimi": "Uudisteotsing (maailm)",
       "ok": true,
-      "markus": "27.11: SAP kaalub vähemalt 10 000 koha kaotamist (Bloomberg); Littleri Euroopa tööandjate küsitlus"
+      "markus": "28.11: SAP-i loo levik 12; ombudsman tehisaru standardite läbipaistvusest"
     },
     {
       "nimi": "Challenger kuuaruanne",
@@ -29,27 +29,27 @@
     {
       "nimi": "Arenguseire Keskus (RSS)",
       "ok": true,
-      "markus": "27.11: uut postitust pole (viimane 23.11, tervishoid)"
+      "markus": "28.11: uut postitust pole"
     },
     {
       "nimi": "Eesti.ai uudised",
       "ok": true,
-      "markus": "27.11: uut uudist pole (viimane 7.10); Arunädala kokkuvõte leitud otsinguga"
+      "markus": "28.11: uut uudist pole"
     },
     {
       "nimi": "Statistikaamet uudised",
       "ok": true,
-      "markus": "27.11: uut asjakohast uudist pole"
+      "markus": "28.11: uut asjakohast uudist pole"
     },
     {
       "nimi": "Riigi otsingud (site: ja uudised)",
       "ok": true,
-      "markus": "27.11: uusi riigi otsuseid pole; andmejälgija levik 4; Arunädala kokkuvõte (Eesti.ai); KONTROLL 4/7"
+      "markus": "28.11: uusi riigi otsuseid pole; KONTROLL 4/7"
     },
     {
       "nimi": "OECD uudised (otsing)",
       "ok": true,
-      "markus": "27.11: OECD.AI intsidendid, töö kohta uut pole"
+      "markus": "28.11: töö kohta uut pole"
     },
     {
       "nimi": "Riikide strateegiad",
